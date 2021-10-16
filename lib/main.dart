@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:qlkcl/theme/app_theme.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 void main() {
   runApp(MyApp());
@@ -9,105 +13,255 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page (Hehe)'),
+      title: 'Quản lý khu cách ly',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      home: ManagerHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class ManagerHomePage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _ManagerHomePageState createState() {
+    return _ManagerHomePageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _ManagerHomePageState extends State<ManagerHomePage> {
+  int _currentIndex = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text("Trang chủ"),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.help_outline),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.add_box_outlined),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+          child: Column(
+        children: <Widget>[
+          ListItem(
+            title: "Xét nghiệm cần cập nhật",
+            subtitle: "50",
+            icon: Image.asset("assets/images/xet_nghiem_cap_nhat.png"),
+            onTap: () {},
+          ),
+          ListItem(
+            title: "Chờ xét duyệt",
+            subtitle: "50",
+            icon: Image.asset("assets/images/cho_xet_duyet.png"),
+            onTap: () {},
+          ),
+          ListItem(
+            title: "Nghi nhiễm",
+            subtitle: "50",
+            icon: Image.asset("assets/images/nghi_nhiem.png"),
+            onTap: () {},
+          ),
+          ListItem(
+            title: "Tới hạn xét nghiệm",
+            subtitle: "50",
+            icon: Image.asset("assets/images/toi_han_xet_nghiem.png"),
+            onTap: () {},
+          ),
+          ListItem(
+            title: "Sắp hoàn thành cách ly",
+            subtitle: "50",
+            icon: Image.asset("assets/images/sap_hoan_thanh_cach_ly.png"),
+            onTap: () {},
+          ),
+          Container(
+            height: 400,
+            // padding: EdgeInsets.all(20),
+            child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text("Thống kê người cách ly"),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Expanded(
+                      child: GroupedFillColorBarChart.withSampleData(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      )),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _currentIndex,
+        selectedItemColor: CustomColors.secondary,
+        onTap: (value) {
+          // Respond to item press.
+          setState(() => _currentIndex = value);
+        },
+        items: [
+          BottomNavigationBarItem(
+            label: 'Trang chủ',
+            icon: Icon(Icons.home_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: 'Người cách ly',
+            icon: Icon(Icons.groups_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: 'Quét mã',
+            icon: Icon(Icons.qr_code_scanner),
+          ),
+          BottomNavigationBarItem(
+            label: 'Khu cách ly',
+            icon: Icon(Icons.apartment_outlined),
+          ),
+          BottomNavigationBarItem(
+            label: 'Tài khoản',
+            icon: Icon(Icons.person_outline),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ListItem extends StatelessWidget {
+  final VoidCallback onTap;
+  final Image icon;
+  final String title;
+  final String subtitle;
+  const ListItem(
+      {required this.onTap,
+      required this.icon,
+      required this.title,
+      required this.subtitle});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: icon,
+            ),
+            Expanded(
+              flex: 3,
+              child: ListTile(
+                  title: Text(title),
+                  subtitle: Text.rich(
+                    TextSpan(
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          child: Icon(Icons.groups_rounded),
+                        ),
+                        TextSpan(
+                          text: " " + subtitle,
+                        )
+                      ],
+                    ),
+                  )),
+            ),
+            Expanded(flex: 1, child: Icon(Icons.keyboard_arrow_right)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Example of a grouped bar chart with three series, each rendered with
+/// different fill colors.
+class GroupedFillColorBarChart extends StatelessWidget {
+  final List<charts.Series<dynamic, String>> seriesList;
+  final bool animate;
+
+  GroupedFillColorBarChart(this.seriesList, {required this.animate});
+
+  factory GroupedFillColorBarChart.withSampleData() {
+    return new GroupedFillColorBarChart(
+      _createSampleData(),
+      // Disable animations for image tests.
+      animate: false,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return new charts.BarChart(
+      seriesList,
+      animate: animate,
+      // Configure a stroke width to enable borders on the bars.
+      defaultRenderer: new charts.BarRendererConfig(
+          groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
+      behaviors: [new charts.SeriesLegend(position: charts.BehaviorPosition.bottom,)],
     );
   }
+
+  /// Create series list with multiple series
+  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
+    final inData = [
+      new OrdinalSales('17/10', 5),
+      new OrdinalSales('18/10', 25),
+      new OrdinalSales('19/10', 80),
+      new OrdinalSales('20/10', 75),
+    ];
+
+    final outData = [
+      new OrdinalSales('17/10', 10),
+      new OrdinalSales('18/10', 40),
+      new OrdinalSales('19/10', 50),
+      new OrdinalSales('20/10', 45),
+    ];
+
+    return [
+      // Blue bars with a lighter center color.
+      new charts.Series<OrdinalSales, String>(
+        id: 'Mới cách ly',
+        domainFn: (OrdinalSales num, _) => num.day,
+        measureFn: (OrdinalSales num, _) => num.num,
+        data: inData,
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        fillColorFn: (_, __) =>
+            charts.MaterialPalette.red.shadeDefault.lighter,
+      ),
+      // Hollow green bars.
+      new charts.Series<OrdinalSales, String>(
+        id: 'Hoàn thành cách ly',
+        domainFn: (OrdinalSales num, _) => num.day,
+        measureFn: (OrdinalSales num, _) => num.num,
+        data: outData,
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+      ),
+    ];
+  }
+}
+
+/// Sample ordinal data type.
+class OrdinalSales {
+  final String day;
+  final int num;
+
+  OrdinalSales(this.day, this.num);
 }
