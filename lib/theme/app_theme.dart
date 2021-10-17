@@ -17,20 +17,36 @@ class AppTheme with ChangeNotifier {
         fontFamily: 'Roboto',
         // textTheme: TextTheme(
         //   subtitle2: TextStyle(color: CustomColors.secondary),
-          // bodyText1: TextStyle(
-          //     fontSize: 16.0,
-          //     fontWeight: FontWeight.normal,
-          //     color: CustomColors.primaryText),
-          // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+        // bodyText1: TextStyle(
+        //     fontSize: 16.0,
+        //     fontWeight: FontWeight.normal,
+        //     color: CustomColors.primaryText),
+        // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
         // ),
         // primaryTextTheme: TextTheme(
         //     bodyText1: TextStyle(color: Colors.white, fontFamily: "Roboto")),
         // primaryIconTheme: IconThemeData(color: CustomColors.primaryText),
-        buttonTheme: ButtonThemeData(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-          buttonColor: CustomColors.secondary,
+
+        // textButtonTheme: TextButtonThemeData(
+        //   style: TextButton.styleFrom(
+        //     primary: Colors.orange,
+        //   ),
+        // ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            // onPrimary: Colors.yellow,
+            primary: CustomColors.primary,
+            minimumSize: Size(double.infinity, 48),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0)),
+          ),
         ),
+        // outlinedButtonTheme: OutlinedButtonThemeData(
+        //   style: OutlinedButton.styleFrom(
+        //     primary: Colors.purple,
+        //     backgroundColor: Colors.green,
+        //   ),
+        // ),
         cardTheme: CardTheme(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
