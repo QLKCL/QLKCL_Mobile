@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:qlkcl/home/manager_home_page.dart';
 import 'package:qlkcl/home/member_home_page.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 

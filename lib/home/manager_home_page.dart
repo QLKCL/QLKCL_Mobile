@@ -73,10 +73,18 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: <Widget>[
-                    Text("Thống kê người cách ly"),
-                    SizedBox(
-                      height: 20,
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      // margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                      child: Text(
+                        "Thống kê người cách ly",
+                        // textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
                     ),
+                    // SizedBox(
+                    //   height: 200,
+                    // ),
                     Expanded(
                       child: GroupedFillColorBarChart.withSampleData(),
                     ),
