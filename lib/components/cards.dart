@@ -55,12 +55,12 @@ class InfoManagerHomePage extends StatelessWidget {
   }
 }
 
-class InfoMemberHomePage extends StatelessWidget {
+class InfoCovid extends StatelessWidget {
   final Color color;
   final String title;
   final String newCase;
   final String totalCase;
-  const InfoMemberHomePage(
+  const InfoCovid(
       {required this.color,
       required this.title,
       required this.newCase,
@@ -73,7 +73,7 @@ class InfoMemberHomePage extends StatelessWidget {
       height: 128,
       child: Card(
         color: color,
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(5),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -98,5 +98,74 @@ class InfoMemberHomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class InfoCovidHomePage extends StatelessWidget {
+  final String increaseConfirmed;
+  final String confirmed;
+  final String increaseDeaths;
+  final String deaths;
+  final String increaseRecovered;
+  final String recovered;
+  final String lastUpdate;
+
+  const InfoCovidHomePage(
+      {required this.increaseConfirmed,
+      required this.confirmed,
+      required this.increaseDeaths,
+      required this.deaths,
+      required this.increaseRecovered,
+      required this.recovered,
+      required this.lastUpdate});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: <Widget>[
+      Container(
+        margin: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 3,
+              child: InfoCovid(
+                color: CustomColors.warning,
+                title: "Nhiễm bệnh",
+                newCase: increaseConfirmed,
+                totalCase: confirmed,
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: InfoCovid(
+                color: CustomColors.error,
+                title: "Tử vong",
+                newCase: increaseDeaths,
+                totalCase: deaths,
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: InfoCovid(
+                color: CustomColors.success,
+                title: "Bình phục",
+                newCase: increaseRecovered,
+                totalCase: recovered,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Container(
+        alignment: Alignment.centerLeft,
+        margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+        child: Text(
+          "Cập nhật: " + lastUpdate,
+          textAlign: TextAlign.left,
+        ),
+      )
+    ]);
   }
 }
