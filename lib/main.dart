@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:qlkcl/screens/home/manager_home_page.dart';
-import 'package:qlkcl/screens/home/member_home_page.dart';
+import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 void main() {
@@ -17,8 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'Quản lý khu cách ly',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      // home: MemberHomePage(),
-      home: ManagerHomePage(),
+      home: App(),
     );
   }
 }

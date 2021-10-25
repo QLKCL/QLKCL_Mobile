@@ -111,13 +111,13 @@ class InfoCovidHomePage extends StatelessWidget {
   final String lastUpdate;
 
   const InfoCovidHomePage(
-      {required this.increaseConfirmed,
-      required this.confirmed,
-      required this.increaseDeaths,
-      required this.deaths,
-      required this.increaseRecovered,
-      required this.recovered,
-      required this.lastUpdate});
+      {this.increaseConfirmed: "0",
+      this.confirmed: "0",
+      this.increaseDeaths: "0",
+      this.deaths: "0",
+      this.increaseRecovered: "0",
+      this.recovered: "0",
+      this.lastUpdate: "HH:mm, dd/MM/yyyy"});
 
   @override
   Widget build(BuildContext context) {
