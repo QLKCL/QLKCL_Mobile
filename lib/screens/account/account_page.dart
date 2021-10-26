@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
+import 'package:qlkcl/theme/app_theme.dart';
 
 class AccountPage extends StatefulWidget {
   AccountPage({Key? key}) : super(key: key);
@@ -21,6 +22,75 @@ class _AccountPageState extends State<AccountPage> {
           child: Column(
         children: <Widget>[
           GenerateQrCode(qrData: "Le Trung Son"),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(
+              "Hồ sơ sức khỏe",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          Card(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  onTap: () {},
+                  title: Text('Lịch sử khai báo y tế'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+                Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  onTap: () {},
+                  title: Text('Kết quả xét nghiệm'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            child: Text(
+              "Tài khoản và bảo mật",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          Card(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  onTap: () {},
+                  title: Text('Thông tin cá nhân'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+                Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  onTap: () {},
+                  title: Text('Đổi mật khẩu'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+              ],
+            ),
+          ),
+          Card(
+            child: ListTile(
+              onTap: () {},
+              title: Text('Đăng xuất',
+                  style: TextStyle(color: CustomColors.error)),
+              trailing: Icon(
+                Icons.logout_outlined,
+                color: CustomColors.error,
+              ),
+            ),
+          ),
         ],
       )),
     );

@@ -3,7 +3,7 @@ import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/components/tab_item.dart';
 import 'package:qlkcl/screens/account/account_page.dart';
 import 'package:qlkcl/screens/home/home_page.dart';
-import 'package:qlkcl/screens/qr_code/qr_scan.dart';
+import 'package:qlkcl/screens/qr_code/qr_scan_page.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 

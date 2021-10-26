@@ -15,41 +15,29 @@ class InfoManagerHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: InkWell(
-        onTap: onTap,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: icon,
+      child: ListTile(
+        onTap: () {},
+        title: Text(title),
+        subtitle: Text.rich(
+          TextSpan(
+            style: TextStyle(
+              fontSize: 17,
             ),
-            Expanded(
-              flex: 3,
-              child: ListTile(
-                  title: Text(title),
-                  subtitle: Text.rich(
-                    TextSpan(
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                      children: [
-                        WidgetSpan(
-                          child: Icon(
-                            Icons.groups_rounded,
-                            color: CustomColors.disableText,
-                          ),
-                        ),
-                        TextSpan(
-                          text: " " + subtitle,
-                        )
-                      ],
-                    ),
-                  )),
-            ),
-            Expanded(flex: 1, child: Icon(Icons.keyboard_arrow_right)),
-          ],
+            children: [
+              WidgetSpan(
+                child: Icon(
+                  Icons.groups_rounded,
+                  color: CustomColors.disableText,
+                ),
+              ),
+              TextSpan(
+                text: " " + subtitle,
+              )
+            ],
+          ),
         ),
+        leading: icon,
+        trailing: Icon(Icons.keyboard_arrow_right),
       ),
     );
   }
