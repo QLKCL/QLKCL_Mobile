@@ -70,6 +70,9 @@ class AppTheme with ChangeNotifier {
           shadowColor: CustomColors.shadow.withOpacity(0.1),
           elevation: 12,
           margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(),
         ));
   }
 
