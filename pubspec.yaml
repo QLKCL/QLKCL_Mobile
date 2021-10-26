@@ -32,7 +32,8 @@ dependencies:
   charts_flutter: ^0.11.0
   websafe_svg: ^2.0.0
   qr_flutter: ^4.0.0
-  barcode_scan2: ^4.1.4
+  # barcode_scan2: ^4.1.4
+  qr_code_scanner: ^0.5.2
 
 dev_dependencies:
   flutter_test:
