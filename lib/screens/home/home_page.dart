@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/charts.dart';
-import 'package:qlkcl/resources/covid_data.dart';
+import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
@@ -160,8 +160,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           DateTime.fromMillisecondsSinceEpoch(
                               snapshot.data!.lastUpdate * 1000)));
                 } else if (snapshot.hasError) {
-                  // return Text('${snapshot.error}');
-                  return Text("Lỗi!!!");
+                  return Text('${snapshot.error}');
                 }
 
                 // By default, show a loading spinner.

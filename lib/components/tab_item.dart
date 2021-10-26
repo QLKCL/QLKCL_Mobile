@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
+
 enum TabItem { homepage, quarantine_person, qr_code_scan, quarantine_ward, account }
 
 const Map<TabItem, String> tabName = {

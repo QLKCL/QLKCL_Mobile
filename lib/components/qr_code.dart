@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+//cre: https://pub.dev/packages/qr_flutter
+
 class GenerateQrCode extends StatelessWidget {
   final String qrData;
 

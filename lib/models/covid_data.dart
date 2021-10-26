@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:qlkcl/networking/api_provider.dart';
 
 class CovidData {
   final String increaseConfirmed;
@@ -36,12 +35,9 @@ class CovidData {
   }
 }
 
+ApiProvider _provider = ApiProvider(baseUrl: "https://ncovi.vnpt.vn/");
+
 Future<CovidData> fetchCovidList() async {
-  final response =
-      await http.get(Uri.parse('https://ncovi.vnpt.vn/thongtindichbenh_v2'));
-  if (response.statusCode == 200) {
-    return CovidData.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to fetch data');
-  }
+  final response = await _provider.get("thongtindichbenh_v2");
+  return CovidData.fromJson(response);
 }

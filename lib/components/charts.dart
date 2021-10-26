@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
+// cre: https://google.github.io/charts/flutter/example/bar_charts/grouped_fill_color.html
+
 /// Example of a grouped bar chart with three series, each rendered with
 /// different fill colors.
 class GroupedFillColorBarChart extends StatelessWidget {

@@ -5,6 +5,8 @@ import 'package:qlkcl/screens/account/account_page.dart';
 import 'package:qlkcl/screens/home/home_page.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan.dart';
 
+// cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
+
 class TabNavigator extends StatelessWidget {
   TabNavigator({required this.navigatorKey, required this.tabItem});
   final GlobalKey<NavigatorState>? navigatorKey;
