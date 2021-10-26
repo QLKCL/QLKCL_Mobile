@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/tab_item.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
+// cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
+
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({required this.currentTab, required this.onSelectTab});
   final TabItem currentTab;
