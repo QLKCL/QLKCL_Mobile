@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class AccountPage extends StatefulWidget {
-  AccountPage({Key? key}) : super(key: key);
+class Account extends StatefulWidget {
+  Account({Key? key}) : super(key: key);
 
   @override
-  _AccountPageState createState() => _AccountPageState();
+  _AccountState createState() => _AccountState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
