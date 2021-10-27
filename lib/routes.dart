@@ -8,6 +8,7 @@ import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
 import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/screens/sign_in/otp_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
+import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -21,5 +22,6 @@ final Map<String, WidgetBuilder> routes = {
   ForgetPassword.routeName: (context) => ForgetPassword(),
   Otp.routeName: (context) => Otp(),
   CreatePassword.routeName: (context) => CreatePassword(),
+  SignUp.routeName: (context) => SignUp(),
   Error.routeName: (context) => new Error(),
 };

@@ -77,12 +77,12 @@ class _CreatePasswordFormState extends State<CreatePasswordForm> {
           Input(
             label: "Mật khẩu mới",
             hint: "Mật khẩu mới",
-            type: TextInputType.number,
+            obscure: true,
           ),
           Input(
             label: "Xác nhận mật khẩu",
             hint: "Xác nhận mật khẩu",
-            type: TextInputType.number,
+            obscure: true,
           ),
           Container(
             margin: const EdgeInsets.all(16),
