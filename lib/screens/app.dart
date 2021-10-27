@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bottom_navigation.dart';
-import 'package:qlkcl/routes.dart';
-import 'package:qlkcl/components/tab_item.dart';
-import 'package:qlkcl/components/tab_navigator.dart';
+import 'package:qlkcl/screens/account/account_screen.dart';
+import 'package:qlkcl/screens/home/home_screen.dart';
+import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -29,23 +29,23 @@ class _AppState extends State<App> {
 
       switch (_currentTab) {
         case TabItem.homepage:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.homepage);
+          _navigatorKeys[tabItem]!.currentState!.pushNamed(ManagerHomePage.routeName);
           break;
         case TabItem.quarantine_person:
           _navigatorKeys[tabItem]!
               .currentState!
-              .pushNamed(Routes.quarantine_person);
+              .pushNamed("/");
           break;
         case TabItem.qr_code_scan:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.qr_code_scan);
+          _navigatorKeys[tabItem]!.currentState!.pushNamed(QrCodeScan.routeName);
           break;
         case TabItem.quarantine_ward:
           _navigatorKeys[tabItem]!
               .currentState!
-              .pushNamed(Routes.quarantine_ward);
+              .pushNamed("/");
           break;
         case TabItem.account:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.account);
+          _navigatorKeys[tabItem]!.currentState!.pushNamed(Account.routeName);
           break;
       }
     }

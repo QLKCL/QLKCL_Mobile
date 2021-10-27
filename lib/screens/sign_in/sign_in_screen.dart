@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/theme/app_theme.dart';
-import 'package:websafe_svg/websafe_svg.dart';
 
 class SignInScreen extends StatefulWidget {
+  static String routeName = "/sign_in";
   SignInScreen({Key? key}) : super(key: key);
 
   @override
