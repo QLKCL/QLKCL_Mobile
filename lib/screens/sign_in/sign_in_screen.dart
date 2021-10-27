@@ -3,7 +3,7 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class SignInScreen extends StatefulWidget {
-  static String routeName = "/sign_in";
+  static const String routeName = "/sign_in";
   SignInScreen({Key? key}) : super(key: key);
 
   @override

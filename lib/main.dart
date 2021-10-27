@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
+import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 
@@ -15,7 +16,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final bool logged = false;
+  final bool logged = true;
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -26,9 +27,9 @@ class MyApp extends StatelessWidget {
       builder: (context, AsyncSnapshot snapshot) {
         // Show splash screen while waiting for app resources to load:
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const MaterialApp(
+          return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: Splash(),
+            home: SplashScreen(),
           );
         } else {
           // Loading is done, return the app:
@@ -40,26 +41,6 @@ class MyApp extends StatelessWidget {
           );
         }
       },
-    );
-  }
-}
-
-class Splash extends StatelessWidget {
-  const Splash({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // bool lightMode =
-        // MediaQuery.of(context).platformBrightness == Brightness.light;
-    return Scaffold(
-      // backgroundColor:
-      // lightMode ? const Color(0xffe1f5fe) : const Color(0xff042a49),
-      body: Center(
-        // child: lightMode
-        //     ? Image.asset('assets/images/Logo.png')
-        //     : Image.asset('assets/images/Logo_dark.png')),
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }

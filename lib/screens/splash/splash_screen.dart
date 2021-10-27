@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/theme/app_theme.dart';
 
 class SplashScreen extends StatefulWidget {
-  static String routeName = "/splash";
+  static const String routeName = "/splash";
   SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -10,19 +9,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+    // bool lightMode =
+        // MediaQuery.of(context).platformBrightness == Brightness.light;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/Logo.png"),
-          ),
-        ],
+      // backgroundColor:
+      // lightMode ? const Color(0xffe1f5fe) : const Color(0xff042a49),
+      body: Center(
+        // child: lightMode
+        //     ? Image.asset('assets/images/Logo.png')
+        //     : Image.asset('assets/images/Logo_dark.png')),
+        child: CircularProgressIndicator(),
       ),
     );
   }

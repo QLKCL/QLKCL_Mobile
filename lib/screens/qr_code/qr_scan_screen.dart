@@ -8,7 +8,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 // cre: https://pub.dev/packages/qr_code_scanner/example
 
 class QrCodeScan extends StatefulWidget {
-  static String routeName = "/qr_scan";
+  static const String routeName = "/qr_scan";
   @override
   State<StatefulWidget> createState() => _QrCodeScanState();
 }
