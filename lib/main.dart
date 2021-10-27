@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         } else {
           // Loading is done, return the app:
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
             home: (logged == false) ? SignInScreen() : App(),

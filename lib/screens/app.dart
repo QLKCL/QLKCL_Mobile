@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bottom_navigation.dart';
-import 'package:qlkcl/screens/account/account_screen.dart';
-import 'package:qlkcl/screens/home/home_screen.dart';
-import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 
 class App extends StatefulWidget {
+  static const String routeName = "/app";
   const App({Key? key}) : super(key: key);
   @override
   _AppState createState() => _AppState();
@@ -26,28 +24,6 @@ class _AppState extends State<App> {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
       setState(() => _currentTab = tabItem);
-
-      switch (_currentTab) {
-        case TabItem.homepage:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(ManagerHomePage.routeName);
-          break;
-        case TabItem.quarantine_person:
-          _navigatorKeys[tabItem]!
-              .currentState!
-              .pushNamed("/");
-          break;
-        case TabItem.qr_code_scan:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(QrCodeScan.routeName);
-          break;
-        case TabItem.quarantine_ward:
-          _navigatorKeys[tabItem]!
-              .currentState!
-              .pushNamed("/");
-          break;
-        case TabItem.account:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Account.routeName);
-          break;
-      }
     }
   }
 
