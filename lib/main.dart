@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
+import 'package:qlkcl/screens/home/home_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
@@ -16,7 +18,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final bool logged = true;
+  final bool logged = false;
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: SplashScreen(),
+            home: Splash(),
           );
         } else {
           // Loading is done, return the app:
@@ -37,7 +39,10 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: (logged == false) ? SignInScreen() : App(),
+            home: (logged == false) ? SignIn() : App(),
+            routes: routes,
+            initialRoute:
+                (logged == false) ? ManagerHomePage.routeName : App.routeName,
           );
         }
       },

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatefulWidget {
+class Splash extends StatefulWidget {
   static const String routeName = "/splash";
-  SplashScreen({Key? key}) : super(key: key);
+  Splash({Key? key}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  _SplashState createState() => _SplashState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashState extends State<Splash> {
     // bool lightMode =
         // MediaQuery.of(context).platformBrightness == Brightness.light;
   @override

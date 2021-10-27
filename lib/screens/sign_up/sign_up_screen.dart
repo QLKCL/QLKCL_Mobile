@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
-import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class SignIn extends StatefulWidget {
-  static const String routeName = "/sign_in";
-  SignIn({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  static const String routeName = "/sign_un";
+  SignUp({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +22,7 @@ class _SignInState extends State<SignIn> {
         children: [
           Container(
             margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/sign_in.png"),
+            child: Image.asset("assets/images/sign_up.png"),
           ),
           SignForm(),
         ],
@@ -69,7 +68,7 @@ class _SignFormState extends State<SignForm> {
             margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
             child: Text(
-              "Đăng nhập",
+              "Đăng ký cách ly",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -83,46 +82,26 @@ class _SignFormState extends State<SignForm> {
             hint: "Nhập mật khẩu",
             obscure: true,
           ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-            child: Row(
-              children: [
-                Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, ForgetPassword.routeName);
-                  },
-                  child: Text(
-                    "Quên mật khẩu",
-                    style: TextStyle(
-                        color: CustomColors.primary,
-                        decoration: TextDecoration.underline),
-                  ),
-                )
-              ],
-            ),
+          Input(
+            label: "Xác nhận mật khẩu",
+            hint: "Xác nhận mật khẩu",
+            obscure: true,
+          ),
+          Input(
+            label: "Khu cách ly",
+            hint: "Chọn khu cách ly",
+            obscure: true,
           ),
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                'Đăng nhập',
+                'Đăng ký',
                 style: TextStyle(color: CustomColors.white),
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, SignUp.routeName);
-            },
-            child: Text(
-              "Đăng ký cách ly",
-              style: TextStyle(
-                  color: CustomColors.primary,
-                  decoration: TextDecoration.underline),
-            ),
-          )
         ],
       ),
     );

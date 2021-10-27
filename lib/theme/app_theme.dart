@@ -19,12 +19,12 @@ class AppTheme with ChangeNotifier {
         appBarTheme: AppBarTheme(
             color: CustomColors.primary,
             elevation: 0,
-            brightness: Brightness.dark,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
             centerTitle: true,
             iconTheme: IconThemeData(
               color: CustomColors.white,
             ),
-            textTheme: TextTheme(),
+            // textTheme: TextTheme(),
           ),
           bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: CustomColors.white,
           
