@@ -4,7 +4,7 @@ QLKCL Mobile
 
 
 ## Version info
-Flutter 2.2.3
+Flutter 2.5.3
 
 ## Check system
 ```

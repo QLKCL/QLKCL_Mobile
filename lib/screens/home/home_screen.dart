@@ -7,6 +7,7 @@ import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
 
 class ManagerHomePage extends StatefulWidget {
+  static const String routeName = "/manager_home";
   ManagerHomePage({Key? key}) : super(key: key);
 
   @override
@@ -100,6 +101,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
 }
 
 class MemberHomePage extends StatefulWidget {
+  static const String routeName = "/member_home";
   MemberHomePage({Key? key}) : super(key: key);
 
   @override

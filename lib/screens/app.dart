@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bottom_navigation.dart';
-import 'package:qlkcl/routes.dart';
-import 'package:qlkcl/components/tab_item.dart';
-import 'package:qlkcl/components/tab_navigator.dart';
 
 class App extends StatefulWidget {
+  static const String routeName = "/app";
   const App({Key? key}) : super(key: key);
   @override
   _AppState createState() => _AppState();
@@ -26,28 +24,6 @@ class _AppState extends State<App> {
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
     } else {
       setState(() => _currentTab = tabItem);
-
-      switch (_currentTab) {
-        case TabItem.homepage:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.homepage);
-          break;
-        case TabItem.quarantine_person:
-          _navigatorKeys[tabItem]!
-              .currentState!
-              .pushNamed(Routes.quarantine_person);
-          break;
-        case TabItem.qr_code_scan:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.qr_code_scan);
-          break;
-        case TabItem.quarantine_ward:
-          _navigatorKeys[tabItem]!
-              .currentState!
-              .pushNamed(Routes.quarantine_ward);
-          break;
-        case TabItem.account:
-          _navigatorKeys[tabItem]!.currentState!.pushNamed(Routes.account);
-          break;
-      }
     }
   }
 

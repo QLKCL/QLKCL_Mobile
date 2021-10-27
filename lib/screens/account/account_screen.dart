@@ -3,6 +3,7 @@ import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class Account extends StatefulWidget {
+  static const String routeName = "/account";
   Account({Key? key}) : super(key: key);
 
   @override
