@@ -1,46 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class SignIn extends StatefulWidget {
-  static const String routeName = "/sign_in";
-  SignIn({Key? key}) : super(key: key);
+class Otp extends StatefulWidget {
+  static const String routeName = "/otp";
+  Otp({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _OtpState createState() => _OtpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.background,
+        iconTheme: IconThemeData(
+          color: CustomColors.primaryText,
+        ),
       ),
       body: Column(
         children: [
           Container(
             margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/sign_in.png"),
+            child: Image.asset("assets/images/otp.png"),
           ),
-          SignForm(),
+          OtpForm(),
         ],
       ),
     );
   }
 }
 
-class SignForm extends StatefulWidget {
+class OtpForm extends StatefulWidget {
   @override
-  _SignFormState createState() => _SignFormState();
+  _OtpFormState createState() => _OtpFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _OtpFormState extends State<OtpForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
-  String? password;
-  bool? remember = false;
+  String? otp;
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -64,49 +65,34 @@ class _SignFormState extends State<SignForm> {
       child: Column(
         children: [
           Container(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
             child: Text(
-              "Đăng nhập",
+              "Nhập mã xác thực",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          Input(
-            label: "Số điện thoại",
-            hint: "Nhập số điện thoại",
-            type: TextInputType.number,
-          ),
-          Input(
-            label: "Mật khẩu",
-            hint: "Nhập mật khẩu",
-            obscure: true,
-          ),
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-            child: Row(
-              children: [
-                Spacer(),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, ForgetPassword.routeName);
-                  },
-                  child: Text(
-                    "Quên mật khẩu",
-                    style: TextStyle(
-                        color: CustomColors.primary,
-                        decoration: TextDecoration.underline),
-                  ),
-                )
-              ],
+            alignment: Alignment.center,
+            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            child: Text(
+              "Mã xác nhận đã được gửi qua email",
+              style: Theme.of(context).textTheme.subtitle1,
             ),
+          ),
+          Input(
+            label: "OTP",
+            hint: "Nhập OTP",
+            type: TextInputType.number,
           ),
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                'Đăng nhập',
+                'Xác nhận OTP',
                 style: TextStyle(color: CustomColors.white),
               ),
             ),
@@ -114,12 +100,12 @@ class _SignFormState extends State<SignForm> {
           GestureDetector(
             onTap: () {},
             child: Text(
-              "Đăng ký cách ly",
+              "Chưa nhận được mã? Gửi lại mã",
               style: TextStyle(
                   color: CustomColors.primary,
                   decoration: TextDecoration.underline),
             ),
-          )
+          ),
         ],
       ),
     );

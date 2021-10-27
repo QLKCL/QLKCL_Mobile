@@ -10,6 +10,8 @@ import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://github.com/NearHuscarl/flutter_login/
 
+// cre: https://medium.com/@theboringdeveloper/common-bottom-navigation-bar-flutter-e3693305d2d
+
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({required this.currentTab, required this.onSelectTab});
   final TabItem currentTab;
