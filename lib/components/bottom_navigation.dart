@@ -3,6 +3,7 @@ import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
+import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
@@ -71,7 +72,7 @@ const Map<TabItem, IconData> tabIcon = {
 
 const Map<TabItem, String> tabRouteName = {
   TabItem.homepage: ManagerHomePage.routeName,
-  TabItem.quarantine_person: ManagerHomePage.routeName,
+  TabItem.quarantine_person: ListAllMember.routeName,
   TabItem.qr_code_scan: QrCodeScan.routeName,
   TabItem.quarantine_ward: Account.routeName,
   TabItem.account: Account.routeName,

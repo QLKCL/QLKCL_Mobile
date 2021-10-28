@@ -6,6 +6,7 @@ import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
 import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
@@ -33,4 +34,5 @@ final Map<String, WidgetBuilder> routes = {
   ListMedicalDeclaration.routeName: (context) => ListMedicalDeclaration(),
   ListTest.routeName: (context) => ListTest(),
   ListTestNoResult.routeName: (context) => ListTestNoResult(),
+  ListAllMember.routeName: (context) => ListAllMember(),
 };
