@@ -68,8 +68,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Đổi mật khẩu",
               style: Theme.of(context).textTheme.headline6,

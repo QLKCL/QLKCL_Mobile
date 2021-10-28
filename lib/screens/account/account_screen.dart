@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class Account extends StatefulWidget {
@@ -26,8 +28,8 @@ class _AccountState extends State<Account> {
           GenerateQrCode(qrData: "Le Trung Son"),
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               "Hồ sơ sức khỏe",
               style: Theme.of(context).textTheme.headline6,
@@ -37,7 +39,10 @@ class _AccountState extends State<Account> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, ListMedicalDeclaration.routeName);
+                  },
                   title: Text('Lịch sử khai báo y tế'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
@@ -46,7 +51,9 @@ class _AccountState extends State<Account> {
                   endIndent: 16,
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, ListTest.routeName);
+                  },
                   title: Text('Kết quả xét nghiệm'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
@@ -55,8 +62,8 @@ class _AccountState extends State<Account> {
           ),
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               "Tài khoản và bảo mật",
               style: Theme.of(context).textTheme.headline6,

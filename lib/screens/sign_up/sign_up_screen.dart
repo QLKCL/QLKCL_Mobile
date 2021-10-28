@@ -67,8 +67,7 @@ class _SignFormState extends State<SignForm> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Đăng ký cách ly",
               style: Theme.of(context).textTheme.headline6,

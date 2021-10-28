@@ -66,8 +66,7 @@ class _ForgetFormState extends State<ForgetForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Quên mật khẩu",
               style: Theme.of(context).textTheme.headline6,
@@ -75,8 +74,7 @@ class _ForgetFormState extends State<ForgetForm> {
           ),
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Nhập email khôi phục để đặt lại mật khẩu hoặc liên hệ người quản lý để hỗ trợ thêm.",
               style: Theme.of(context).textTheme.subtitle1,

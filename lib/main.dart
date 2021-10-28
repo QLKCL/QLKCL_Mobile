@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
-import 'package:qlkcl/screens/home/home_screen.dart';
+import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';

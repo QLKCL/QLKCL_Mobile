@@ -17,18 +17,18 @@ class AppTheme with ChangeNotifier {
         scaffoldBackgroundColor: CustomColors.background,
         fontFamily: 'Roboto',
         appBarTheme: AppBarTheme(
-            color: CustomColors.primary,
-            elevation: 0,
-            systemOverlayStyle: SystemUiOverlayStyle.dark,
-            centerTitle: true,
-            iconTheme: IconThemeData(
-              color: CustomColors.white,
-            ),
-            // textTheme: TextTheme(),
+          color: CustomColors.primary,
+          elevation: 0,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+          centerTitle: true,
+          iconTheme: IconThemeData(
+            color: CustomColors.white,
           ),
-          bottomNavigationBarTheme: BottomNavigationBarThemeData(backgroundColor: CustomColors.white,
-          
-          ),
+          // textTheme: TextTheme(),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: CustomColors.white,
+        ),
         // textTheme: TextTheme(
         //   subtitle2: TextStyle(color: CustomColors.secondary),
         // bodyText1: TextStyle(

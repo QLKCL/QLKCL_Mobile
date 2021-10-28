@@ -67,8 +67,7 @@ class _CreatePasswordFormState extends State<CreatePasswordForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Tạo mật khẩu mới",
               style: Theme.of(context).textTheme.headline6,
