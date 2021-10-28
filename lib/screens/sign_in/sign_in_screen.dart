@@ -66,8 +66,7 @@ class _SignFormState extends State<SignForm> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Đăng nhập",
               style: Theme.of(context).textTheme.headline6,
@@ -84,7 +83,7 @@ class _SignFormState extends State<SignForm> {
             obscure: true,
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+            margin: const EdgeInsets.only(right: 16),
             child: Row(
               children: [
                 Spacer(),

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
@@ -67,8 +68,7 @@ class _OtpFormState extends State<OtpForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Nhập mã xác thực",
               style: Theme.of(context).textTheme.headline6,
@@ -76,8 +76,7 @@ class _OtpFormState extends State<OtpForm> {
           ),
           Container(
             alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
+            padding: EdgeInsets.all(16),
             child: Text(
               "Mã xác nhận đã được gửi qua email",
               style: Theme.of(context).textTheme.subtitle1,
@@ -101,13 +100,24 @@ class _OtpFormState extends State<OtpForm> {
               ),
             ),
           ),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              "Chưa nhận được mã? Gửi lại mã",
-              style: TextStyle(
-                  color: CustomColors.primary,
-                  decoration: TextDecoration.underline),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "Chưa nhận được mã? ",
+                ),
+                TextSpan(
+                  text: 'Gửi lại mã',
+                  style: TextStyle(
+                      color: CustomColors.primary,
+                      decoration: TextDecoration.underline),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                      // navigate to desired screen
+                      print("OTP resend tapped");
+                    },
+                )
+              ],
             ),
           ),
         ],

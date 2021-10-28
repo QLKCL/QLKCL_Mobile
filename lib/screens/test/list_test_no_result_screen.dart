@@ -27,6 +27,14 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
+          TestNoResult(
+            name: "Le Trung Son",
+            gender: "male",
+            birthday: "20/05/2000",
+            id: "PCR-123456789",
+            time: "22/09/2021",
+            onTap: () {},
+          ),
         ],
       )),
     );

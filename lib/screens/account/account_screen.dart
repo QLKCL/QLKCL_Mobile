@@ -28,8 +28,8 @@ class _AccountState extends State<Account> {
           GenerateQrCode(qrData: "Le Trung Son"),
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               "Hồ sơ sức khỏe",
               style: Theme.of(context).textTheme.headline6,
@@ -62,8 +62,8 @@ class _AccountState extends State<Account> {
           ),
           Container(
             alignment: Alignment.centerLeft,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               "Tài khoản và bảo mật",
               style: Theme.of(context).textTheme.headline6,

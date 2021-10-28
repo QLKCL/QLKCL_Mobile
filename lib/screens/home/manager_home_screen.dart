@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/charts.dart';
-import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
-import 'package:intl/intl.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
@@ -71,7 +68,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           ),
           Container(
             height: 400,
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -79,16 +76,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   children: <Widget>[
                     Container(
                       alignment: Alignment.centerLeft,
-                      // margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                       child: Text(
                         "Thống kê người cách ly",
-                        // textAlign: TextAlign.left,
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    // SizedBox(
-                    //   height: 200,
-                    // ),
                     Expanded(
                       child: GroupedFillColorBarChart.withSampleData(),
                     ),

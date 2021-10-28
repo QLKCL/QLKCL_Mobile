@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/theme/app_theme.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
   final VoidCallback onTap;
@@ -148,7 +149,7 @@ class InfoCovidHomePage extends StatelessWidget {
       ),
       Container(
         alignment: Alignment.centerLeft,
-        margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+        margin: const EdgeInsets.only(left: 16),
         child: Text(
           "Cập nhật: " + lastUpdate,
           textAlign: TextAlign.left,
@@ -302,20 +303,128 @@ class TestNoResult extends StatelessWidget {
   final VoidCallback onTap;
   final String name;
   final String gender;
-  final String birrthday;
+  final String birthday;
   final String id;
   final String time;
   const TestNoResult(
       {required this.onTap,
       required this.name,
       required this.gender,
-      required this.birrthday,
+      required this.birthday,
       required this.id,
       required this.time});
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      child: ListTile(
+        // contentPadding: EdgeInsets.all(16),
+        onTap: onTap,
+        title: Container(
+          padding: EdgeInsets.only(top: 8),
+          child: Text.rich(
+            TextSpan(
+              // style: TextStyle(
+              //   fontSize: 17,
+              // ),
+              children: [
+                TextSpan(
+                  text: name + " ",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                WidgetSpan(
+                  child: WebsafeSvg.asset("assets/svg/male.svg"),
+                ),
+              ],
+            ),
+          ),
+        ),
+        subtitle: Container(
+          padding: EdgeInsets.only(bottom: 8),
+          child: Wrap(
+            direction: Axis.vertical, // make sure to set this
+            spacing: 4, // set your spacing
+            children: [
+              Text(
+                birthday,
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.qr_code,
+                        color: CustomColors.disableText,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " " + id,
+                    )
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.history,
+                        color: CustomColors.disableText,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " Chưa có kết quả (" + time + ")",
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        isThreeLine: true,
+        leading: SizedBox(
+          height: 56,
+          width: 56,
+          child: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.expand,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage("assets/images/no-avatar.png"),
+              ),
+              Positioned(
+                bottom: -5,
+                right: -5,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      color: CustomColors.white,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                ),
+                // RawMaterialButton(
+                //           onPressed: () {},
+                //           elevation: 2.0,
+                //           fillColor: CustomColors.white,
+                //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                //           shape: CircleBorder(),
+                //         ),
+              ),
+            ],
+          ),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.more_vert,
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
