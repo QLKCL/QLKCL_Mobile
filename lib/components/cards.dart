@@ -16,7 +16,7 @@ class InfoManagerHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () {},
+        onTap: onTap,
         title: Text(title),
         subtitle: Text.rich(
           TextSpan(
@@ -173,7 +173,7 @@ class MedicalDeclaration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () {},
+        onTap: onTap,
         title: Text("Mã tờ khai: " + id),
         subtitle: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -243,7 +243,7 @@ class Test extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () {},
+        onTap: onTap,
         title: Text("Mã phiếu: " + id),
         subtitle: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -294,6 +294,28 @@ class Test extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TestNoResult extends StatelessWidget {
+  final VoidCallback onTap;
+  final String name;
+  final String gender;
+  final String birrthday;
+  final String id;
+  final String time;
+  const TestNoResult(
+      {required this.onTap,
+      required this.name,
+      required this.gender,
+      required this.birrthday,
+      required this.id,
+      required this.time});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
     );
   }
 }

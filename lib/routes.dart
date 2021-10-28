@@ -12,6 +12,7 @@ import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/screens/sign_in/otp_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
+import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 
 // We use name route
@@ -31,4 +32,5 @@ final Map<String, WidgetBuilder> routes = {
   Error.routeName: (context) => Error(),
   ListMedicalDeclaration.routeName: (context) => ListMedicalDeclaration(),
   ListTest.routeName: (context) => ListTest(),
+  ListTestNoResult.routeName: (context) => ListTestNoResult(),
 };

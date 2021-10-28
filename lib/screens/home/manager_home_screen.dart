@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/charts.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +41,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             title: "Xét nghiệm cần cập nhật",
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, ListTestNoResult.routeName);
+            },
           ),
           InfoManagerHomePage(
             title: "Chờ xét duyệt",

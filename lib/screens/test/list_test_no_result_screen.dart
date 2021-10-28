@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 
-class ListTest extends StatefulWidget {
-  static const String routeName = "/list_test";
-  ListTest({Key? key}) : super(key: key);
+class ListTestNoResult extends StatefulWidget {
+  static const String routeName = "/list_test_no_result";
+  ListTestNoResult({Key? key}) : super(key: key);
 
   @override
-  _ListTestState createState() => _ListTestState();
+  _ListTestNoResultState createState() => _ListTestNoResultState();
 }
 
-class _ListTestState extends State<ListTest> {
+class _ListTestNoResultState extends State<ListTestNoResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Lịch sử xét nghiệm"),
+        title: Text("Xét nghiệm cần cập nhật"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -27,12 +27,6 @@ class _ListTestState extends State<ListTest> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          Test(
-            id: "KB-123456789",
-            time: "22/09/2021 18:00",
-            status: "Âm tính",
-            onTap: () {},
-          ),
         ],
       )),
     );

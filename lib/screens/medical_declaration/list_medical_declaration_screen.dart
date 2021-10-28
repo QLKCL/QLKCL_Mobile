@@ -17,6 +17,12 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
       appBar: AppBar(
         title: Text("Lịch sử khai báo y tế"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
           child: Column(
