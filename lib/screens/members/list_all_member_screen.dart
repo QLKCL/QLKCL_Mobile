@@ -10,125 +10,144 @@ class ListAllMember extends StatefulWidget {
   _ListAllMemberState createState() => _ListAllMemberState();
 }
 
-class _ListAllMemberState extends State<ListAllMember> {
+class _ListAllMemberState extends State<ListAllMember>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 6, vsync: this, initialIndex: 0);
+    _tabController.addListener(_handleTabChange);
+  }
+
+  _handleTabChange() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          title: Text("Danh sách người cách ly"),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.search),
-            ),
-          ],
-          bottom: TabBar(
-            isScrollable: true,
-            labelStyle: TextStyle(fontSize: 16.0),
-            unselectedLabelStyle: TextStyle(fontSize: 16.0),
-            indicatorColor: CustomColors.white,
-            tabs: [
-              Tab(text: "Toàn bộ"),
-              Tab(text: "Chờ xét duyệt"),
-              Tab(text: "Nghi nhiễm"),
-              Tab(text: "Tới hạn xét nghiệm"),
-              Tab(text: "Sắp hoàn thành cách ly"),
-              Tab(text: "Từ chối"),
-            ],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text("Danh sách người cách ly"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
           ),
-        ),
-        body: TabBarView(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
-            SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TestNoResult(
-                    name: "Le Trung Son",
-                    gender: "male",
-                    birthday: "20/05/2000",
-                    id: "PCR-123456789",
-                    time: "22/09/2021",
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          labelStyle: TextStyle(fontSize: 16.0),
+          unselectedLabelStyle: TextStyle(fontSize: 16.0),
+          indicatorColor: CustomColors.white,
+          tabs: [
+            Tab(text: "Toàn bộ"),
+            Tab(text: "Chờ xét duyệt"),
+            Tab(text: "Nghi nhiễm"),
+            Tab(text: "Tới hạn xét nghiệm"),
+            Tab(text: "Sắp hoàn thành cách ly"),
+            Tab(text: "Từ chối"),
           ],
         ),
+      ),
+      floatingActionButton: _tabController.index == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                // Respond to button press
+              },
+              child: Icon(Icons.add),
+            )
+          : null,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Member(
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Member(
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Member(
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Member(
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Member(
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Text(
+              "Không có dữ liệu",
+              style: TextStyle(color: CustomColors.secondaryText, fontSize: 20),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
       ),
     );
   }

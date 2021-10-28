@@ -13,67 +13,76 @@ class AppTheme with ChangeNotifier {
 
   static ThemeData get lightTheme {
     return ThemeData(
-        primaryColor: CustomColors.primary,
-        scaffoldBackgroundColor: CustomColors.background,
-        fontFamily: 'Roboto',
-        appBarTheme: AppBarTheme(
-          color: CustomColors.primary,
-          elevation: 0,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          centerTitle: true,
-          iconTheme: IconThemeData(
-            color: CustomColors.white,
-          ),
-          // textTheme: TextTheme(),
-        ),
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: CustomColors.white,
-        ),
-        // textTheme: TextTheme(
-        //   subtitle2: TextStyle(color: CustomColors.secondary),
-        // bodyText1: TextStyle(
-        //     fontSize: 16.0,
-        //     fontWeight: FontWeight.normal,
-        //     color: CustomColors.primaryText),
-        // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-        // ),
-        // primaryTextTheme: TextTheme(
-        //     bodyText1: TextStyle(color: Colors.white, fontFamily: "Roboto")),
-        // primaryIconTheme: IconThemeData(color: CustomColors.primaryText),
-
-        // textButtonTheme: TextButtonThemeData(
-        //   style: TextButton.styleFrom(
-        //     primary: Colors.orange,
-        //   ),
-        // ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            // onPrimary: Colors.yellow,
-            primary: CustomColors.primary,
-            minimumSize: Size(double.infinity, 48),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-          ),
-        ),
-        // outlinedButtonTheme: OutlinedButtonThemeData(
-        //   style: OutlinedButton.styleFrom(
-        //     primary: Colors.purple,
-        //     backgroundColor: Colors.green,
-        //   ),
-        // ),
-        cardTheme: CardTheme(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          // borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      colorScheme: ColorScheme.fromSwatch(accentColor: CustomColors.primary),
+      primaryColor: CustomColors.primary,
+      scaffoldBackgroundColor: CustomColors.background,
+      fontFamily: 'Roboto',
+      appBarTheme: AppBarTheme(
+        color: CustomColors.primary,
+        elevation: 0,
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        centerTitle: true,
+        iconTheme: IconThemeData(
           color: CustomColors.white,
-          shadowColor: CustomColors.shadow.withOpacity(0.1),
-          elevation: 12,
-          margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
         ),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(),
-        ));
+        // textTheme: TextTheme(),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: CustomColors.white,
+      ),
+      // textTheme: TextTheme(
+      //   subtitle2: TextStyle(color: CustomColors.secondary),
+      // bodyText1: TextStyle(
+      //     fontSize: 16.0,
+      //     fontWeight: FontWeight.normal,
+      //     color: CustomColors.primaryText),
+      // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      // ),
+      // primaryTextTheme: TextTheme(
+      //     bodyText1: TextStyle(color: Colors.white, fontFamily: "Roboto")),
+      // primaryIconTheme: IconThemeData(color: CustomColors.primaryText),
+
+      // textButtonTheme: TextButtonThemeData(
+      //   style: TextButton.styleFrom(
+      //     primary: Colors.orange,
+      //   ),
+      // ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          // onPrimary: Colors.yellow,
+          primary: CustomColors.primary,
+          minimumSize: Size(double.infinity, 48),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        ),
+      ),
+      // outlinedButtonTheme: OutlinedButtonThemeData(
+      //   style: OutlinedButton.styleFrom(
+      //     primary: Colors.purple,
+      //     backgroundColor: Colors.green,
+      //   ),
+      // ),
+      cardTheme: CardTheme(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        // borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+        color: CustomColors.white,
+        shadowColor: CustomColors.shadow.withOpacity(0.1),
+        elevation: 12,
+        margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: CustomColors.secondary,
+        foregroundColor: CustomColors.white,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: CustomColors.secondary,
+      ),
+    );
   }
 
   static ThemeData get darkTheme {

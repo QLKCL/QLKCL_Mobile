@@ -428,3 +428,125 @@ class TestNoResult extends StatelessWidget {
     );
   }
 }
+
+class Member extends StatelessWidget {
+  final VoidCallback onTap;
+  final String name;
+  final String gender;
+  final String birthday;
+  final String room;
+  final String lastTestResult;
+  final String lastTestTime;
+  const Member(
+      {required this.onTap,
+      required this.name,
+      required this.gender,
+      required this.birthday,
+      required this.room,
+      required this.lastTestResult,
+      required this.lastTestTime});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        // contentPadding: EdgeInsets.all(16),
+        onTap: onTap,
+        title: Container(
+          padding: EdgeInsets.only(top: 8),
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: name + " ",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                WidgetSpan(
+                  child: WebsafeSvg.asset("assets/svg/male.svg"),
+                ),
+              ],
+            ),
+          ),
+        ),
+        subtitle: Container(
+          padding: EdgeInsets.only(bottom: 8),
+          child: Wrap(
+            direction: Axis.vertical, // make sure to set this
+            spacing: 4, // set your spacing
+            children: [
+              Text(
+                birthday,
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.place_outlined,
+                        color: CustomColors.disableText,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " " + room,
+                    )
+                  ],
+                ),
+              ),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.history,
+                        color: CustomColors.disableText,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " " + lastTestResult + " (" + lastTestTime + ")",
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        isThreeLine: true,
+        leading: SizedBox(
+          height: 56,
+          width: 56,
+          child: Stack(
+            clipBehavior: Clip.none,
+            fit: StackFit.expand,
+            children: [
+              CircleAvatar(
+                backgroundImage: AssetImage("assets/images/no-avatar.png"),
+              ),
+              Positioned(
+                bottom: -5,
+                right: -5,
+                child: Container(
+                  padding: EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                      color: CustomColors.white,
+                      borderRadius: BorderRadius.circular(100)),
+                  child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                ),
+              ),
+            ],
+          ),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.more_vert,
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
