@@ -157,3 +157,73 @@ class InfoCovidHomePage extends StatelessWidget {
     ]);
   }
 }
+
+class MedicalDeclaration extends StatelessWidget {
+  final VoidCallback onTap;
+  final String id;
+  final String time;
+  final String status;
+  const MedicalDeclaration(
+      {required this.onTap,
+      required this.id,
+      required this.time,
+      required this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        onTap: () {},
+        title: Text("Mã tờ khai: " + id),
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text.rich(
+              TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: Icon(
+                      Icons.history,
+                      color: CustomColors.disableText,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " Thời gian: " + time,
+                  )
+                ],
+              ),
+            ),
+            Text.rich(
+              TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: Icon(
+                      Icons.description_outlined,
+                      color: CustomColors.disableText,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " Tình trạng: " + status,
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        isThreeLine: true,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.more_vert,
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
-import 'package:qlkcl/screens/home/home_screen.dart';
+import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 

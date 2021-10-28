@@ -5,6 +5,8 @@ QLKCL Mobile
 
 ## Version info
 Flutter 2.5.3
+Dart 2.14.4
+minSdkVersion 20
 
 ## Check system
 ```

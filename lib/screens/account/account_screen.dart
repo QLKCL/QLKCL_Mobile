@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class Account extends StatefulWidget {
@@ -37,7 +38,10 @@ class _AccountState extends State<Account> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, ListMedicalDeclaration.routeName);
+                  },
                   title: Text('Lịch sử khai báo y tế'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
