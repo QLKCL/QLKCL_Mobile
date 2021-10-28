@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
+import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/home_screen.dart';
@@ -23,5 +24,6 @@ final Map<String, WidgetBuilder> routes = {
   Otp.routeName: (context) => Otp(),
   CreatePassword.routeName: (context) => CreatePassword(),
   SignUp.routeName: (context) => SignUp(),
+  ChangePassword.routeName: (context) => ChangePassword(),
   Error.routeName: (context) => new Error(),
 };
