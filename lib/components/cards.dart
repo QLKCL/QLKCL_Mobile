@@ -429,8 +429,12 @@ class TestNoResult extends StatelessWidget {
   }
 }
 
-class Member extends StatelessWidget {
+class Member extends StatefulWidget {
+  final bool longPressEnabled;
+
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
+  final String id;
   final String name;
   final String gender;
   final String birthday;
@@ -439,113 +443,162 @@ class Member extends StatelessWidget {
   final String lastTestTime;
   const Member(
       {required this.onTap,
+      required this.onLongPress,
+      required this.id,
       required this.name,
       required this.gender,
       required this.birthday,
       required this.room,
       required this.lastTestResult,
-      required this.lastTestTime});
+      required this.lastTestTime,
+      required this.longPressEnabled});
+
+  @override
+  _MemberState createState() => _MemberState();
+}
+
+class _MemberState extends State<Member> {
+  bool _selected = false;
+
+  action() {
+    if (widget.longPressEnabled) {
+      return Checkbox(
+        value: _selected,
+        onChanged: (newValue) {
+          setState(() {
+            _selected = newValue!;
+          });
+          widget.onLongPress();
+        },
+      );
+    } else {
+      return GestureDetector(
+        child: Icon(
+          Icons.more_vert,
+        ),
+        onTap: () {},
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        // contentPadding: EdgeInsets.all(16),
-        onTap: onTap,
-        title: Container(
-          padding: EdgeInsets.only(top: 8),
-          child: Text.rich(
-            TextSpan(
+      child: Container(
+        child: ListTile(
+          onTap: () {
+            if (widget.longPressEnabled) {
+              setState(() {
+                _selected = !_selected;
+              });
+              widget.onLongPress();
+            } else {
+              widget.onTap();
+            }
+          },
+          onLongPress: () {
+            setState(() {
+              _selected = !_selected;
+            });
+            widget.onLongPress();
+          },
+          title: Container(
+            padding: EdgeInsets.only(top: 8),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: widget.name + " ",
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  WidgetSpan(
+                    child: WebsafeSvg.asset("assets/svg/male.svg"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          subtitle: Container(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Wrap(
+              direction: Axis.vertical, // make sure to set this
+              spacing: 4, // set your spacing
               children: [
-                TextSpan(
-                  text: name + " ",
-                  style: Theme.of(context).textTheme.headline6,
+                Text(
+                  widget.birthday,
                 ),
-                WidgetSpan(
-                  child: WebsafeSvg.asset("assets/svg/male.svg"),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.place_outlined,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " " + widget.room,
+                      )
+                    ],
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.history,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " " +
+                            widget.lastTestResult +
+                            " (" +
+                            widget.lastTestTime +
+                            ")",
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-        ),
-        subtitle: Container(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Wrap(
-            direction: Axis.vertical, // make sure to set this
-            spacing: 4, // set your spacing
-            children: [
-              Text(
-                birthday,
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.place_outlined,
-                        color: CustomColors.disableText,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " + room,
-                    )
-                  ],
+          isThreeLine: true,
+          leading: SizedBox(
+            height: 56,
+            width: 56,
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/no-avatar.png"),
                 ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.history,
-                        color: CustomColors.disableText,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " + lastTestResult + " (" + lastTestTime + ")",
-                    )
-                  ],
+                Positioned(
+                  bottom: -5,
+                  right: -5,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                        color: CustomColors.white,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        isThreeLine: true,
-        leading: SizedBox(
-          height: 56,
-          width: 56,
-          child: Stack(
-            clipBehavior: Clip.none,
-            fit: StackFit.expand,
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage("assets/images/no-avatar.png"),
-              ),
-              Positioned(
-                bottom: -5,
-                right: -5,
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                      color: CustomColors.white,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
-                ),
-              ),
-            ],
-          ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
+              ],
             ),
-          ],
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[action()],
+          ),
         ),
+        // decoration: _selected
+        //     ? new BoxDecoration(
+        //         color: Colors.black38,
+        //         border: new Border.all(color: Colors.black))
+        //     : new BoxDecoration(),
       ),
     );
   }

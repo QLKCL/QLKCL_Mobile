@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
+// cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
+
 class ListAllMember extends StatefulWidget {
   static const String routeName = "/list_all_member";
   ListAllMember({Key? key}) : super(key: key);
@@ -25,17 +27,39 @@ class _ListAllMemberState extends State<ListAllMember>
     setState(() {});
   }
 
+  bool longPressFlag = false;
+  List<int> indexList = [];
+
+  void longPress() {
+    setState(() {
+      if (indexList.isEmpty) {
+        longPressFlag = false;
+      } else {
+        longPressFlag = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Danh sách người cách ly"),
+        title: longPressFlag
+            ? Text('${indexList.length} đã chọn')
+            : Text("Danh sách người cách ly"),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.search),
+            icon: longPressFlag
+                ? GestureDetector(
+                    child: Icon(
+                      Icons.more_vert,
+                    ),
+                    onTap: () {},
+                  )
+                : Icon(Icons.search),
           ),
         ],
         bottom: TabBar(
@@ -69,6 +93,8 @@ class _ListAllMemberState extends State<ListAllMember>
             child: Column(
               children: <Widget>[
                 Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
                   name: "Le Trung Son",
                   gender: "male",
                   birthday: "20/05/2000",
@@ -76,6 +102,33 @@ class _ListAllMemberState extends State<ListAllMember>
                   lastTestResult: "Âm tính",
                   lastTestTime: "22/09/2021",
                   onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(1)) {
+                      indexList.remove(1);
+                    } else {
+                      indexList.add(1);
+                    }
+                    longPress();
+                  },
+                ),
+                Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
+                  name: "Le Trung Son",
+                  gender: "male",
+                  birthday: "20/05/2000",
+                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                  lastTestResult: "Âm tính",
+                  lastTestTime: "22/09/2021",
+                  onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(2)) {
+                      indexList.remove(2);
+                    } else {
+                      indexList.add(2);
+                    }
+                    longPress();
+                  },
                 ),
               ],
             ),
@@ -84,6 +137,8 @@ class _ListAllMemberState extends State<ListAllMember>
             child: Column(
               children: <Widget>[
                 Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
                   name: "Le Trung Son",
                   gender: "male",
                   birthday: "20/05/2000",
@@ -91,6 +146,14 @@ class _ListAllMemberState extends State<ListAllMember>
                   lastTestResult: "Âm tính",
                   lastTestTime: "22/09/2021",
                   onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(1)) {
+                      indexList.remove(1);
+                    } else {
+                      indexList.add(1);
+                    }
+                    longPress();
+                  },
                 ),
               ],
             ),
@@ -99,6 +162,8 @@ class _ListAllMemberState extends State<ListAllMember>
             child: Column(
               children: <Widget>[
                 Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
                   name: "Le Trung Son",
                   gender: "male",
                   birthday: "20/05/2000",
@@ -106,6 +171,14 @@ class _ListAllMemberState extends State<ListAllMember>
                   lastTestResult: "Âm tính",
                   lastTestTime: "22/09/2021",
                   onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(1)) {
+                      indexList.remove(1);
+                    } else {
+                      indexList.add(1);
+                    }
+                    longPress();
+                  },
                 ),
               ],
             ),
@@ -114,6 +187,8 @@ class _ListAllMemberState extends State<ListAllMember>
             child: Column(
               children: <Widget>[
                 Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
                   name: "Le Trung Son",
                   gender: "male",
                   birthday: "20/05/2000",
@@ -121,6 +196,14 @@ class _ListAllMemberState extends State<ListAllMember>
                   lastTestResult: "Âm tính",
                   lastTestTime: "22/09/2021",
                   onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(1)) {
+                      indexList.remove(1);
+                    } else {
+                      indexList.add(1);
+                    }
+                    longPress();
+                  },
                 ),
               ],
             ),
@@ -129,6 +212,8 @@ class _ListAllMemberState extends State<ListAllMember>
             child: Column(
               children: <Widget>[
                 Member(
+                  id: "1",
+                  longPressEnabled: longPressFlag,
                   name: "Le Trung Son",
                   gender: "male",
                   birthday: "20/05/2000",
@@ -136,6 +221,14 @@ class _ListAllMemberState extends State<ListAllMember>
                   lastTestResult: "Âm tính",
                   lastTestTime: "22/09/2021",
                   onTap: () {},
+                  onLongPress: () {
+                    if (indexList.contains(1)) {
+                      indexList.remove(1);
+                    } else {
+                      indexList.add(1);
+                    }
+                    longPress();
+                  },
                 ),
               ],
             ),
