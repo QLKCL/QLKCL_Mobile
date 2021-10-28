@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
+import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class Account extends StatefulWidget {
@@ -74,7 +75,9 @@ class _AccountState extends State<Account> {
                   endIndent: 16,
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, ChangePassword.routeName);
+                  },
                   title: Text('Đổi mật khẩu'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),

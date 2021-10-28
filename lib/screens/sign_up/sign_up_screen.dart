@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class SignUp extends StatefulWidget {
@@ -17,6 +16,9 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: CustomColors.background,
+        iconTheme: IconThemeData(
+          color: CustomColors.primaryText,
+        ),
       ),
       body: Column(
         children: [

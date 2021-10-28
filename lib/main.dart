@@ -18,7 +18,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final bool logged = false;
+  final bool logged = true;
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.

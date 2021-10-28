@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class Otp extends StatefulWidget {
-  static const String routeName = "/otp";
-  Otp({Key? key}) : super(key: key);
+class ChangePassword extends StatefulWidget {
+  static const String routeName = "/change_password";
+  ChangePassword({Key? key}) : super(key: key);
 
   @override
-  _OtpState createState() => _OtpState();
+  _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _OtpState extends State<Otp> {
+class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,22 +26,24 @@ class _OtpState extends State<Otp> {
             margin: const EdgeInsets.all(16),
             child: Image.asset("assets/images/otp.png"),
           ),
-          OtpForm(),
+          ChangePasswordForm(),
         ],
       ),
     );
   }
 }
 
-class OtpForm extends StatefulWidget {
+class ChangePasswordForm extends StatefulWidget {
   @override
-  _OtpFormState createState() => _OtpFormState();
+  _ChangePasswordFormState createState() => _ChangePasswordFormState();
 }
 
-class _OtpFormState extends State<OtpForm> {
+class _ChangePasswordFormState extends State<ChangePasswordForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
-  String? otp;
+  String? oldPassword;
+  String? password;
+  String? confirmPasswod;
   final List<String?> errors = [];
 
   void addError({String? error}) {
@@ -70,44 +71,35 @@ class _OtpFormState extends State<OtpForm> {
             margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
             padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
             child: Text(
-              "Nhập mã xác thực",
+              "Đổi mật khẩu",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-            padding: EdgeInsets.fromLTRB(0, 16, 0, 16),
-            child: Text(
-              "Mã xác nhận đã được gửi qua email",
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
+          Input(
+            label: "Mật khẩu cũ",
+            hint: "Mật khẩu cũ",
+            obscure: true,
           ),
           Input(
-            label: "OTP",
-            hint: "Nhập OTP",
-            type: TextInputType.number,
+            label: "Mật khẩu mới",
+            hint: "Mật khẩu mới",
+            obscure: true,
+          ),
+          Input(
+            label: "Xác nhận mật khẩu",
+            hint: "Xác nhận mật khẩu",
+            obscure: true,
           ),
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, CreatePassword.routeName,
-                    arguments: email);
+                Navigator.popUntil(context, (route) => route.isFirst);
               },
               child: Text(
-                'Xác nhận OTP',
+                'Xác nhận',
                 style: TextStyle(color: CustomColors.white),
               ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              "Chưa nhận được mã? Gửi lại mã",
-              style: TextStyle(
-                  color: CustomColors.primary,
-                  decoration: TextDecoration.underline),
             ),
           ),
         ],
