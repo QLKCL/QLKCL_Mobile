@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'quarantine_list.dart';
+import './add_quarantine_screen.dart';
 
 class QuarantineListScreen extends StatefulWidget {
   static const String routeName = "/quarantine-list";
@@ -62,7 +63,17 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
   ];
 
   //add new quarantine ward
-  void _addNewQuarantine(String id, String full_name, int phone_number, String country_id, String city_id, String ward_id, String district_id, String type, int quarantine_time, String main_manager) {
+  void _addNewQuarantine(
+      String id,
+      String full_name,
+      int phone_number,
+      String country_id,
+      String city_id,
+      String ward_id,
+      String district_id,
+      String type,
+      int quarantine_time,
+      String main_manager) {
     final newTx = Quarantine(
       id: id,
       full_name: full_name,
@@ -71,7 +82,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       city_id: city_id,
       ward_id: ward_id,
       district_id: district_id,
-      type:  type,
+      type: type,
       quarantine_time: quarantine_time,
       main_manager: main_manager,
     );
@@ -80,10 +91,11 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
     });
   }
 
-  void _startAddNewQuanrantine(BuildContext ctx) {
-    
-  }
-
+  // void _startAddNewQuanrantine(BuildContext ctx) {
+  //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //     return NewQuarantine(_addNewQuarantine(String id, String full_name, int phone_number, String country_id, String city_id, String ward_id, String district_id, String type, int quarantine_time, String main_manager));
+  //     }),)
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +115,11 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       body: QuanrantineList(_quarantineList),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pushNamed(
+            context, NewQuarantine.routeName
+          );
+        },
       ),
     );
   }

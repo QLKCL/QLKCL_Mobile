@@ -595,7 +595,10 @@ class QuarantineItem extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.normal,
+                        color: CustomColors.primaryText),
                   ),
                   SizedBox(
                     height: 8,
