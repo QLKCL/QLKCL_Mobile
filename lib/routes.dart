@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/main.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -20,7 +19,6 @@ import 'package:qlkcl/screens/test/list_test_screen.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
-  MyApp.routeName: (context) => MyApp(isLoggedIn: false,),
   App.routeName: (context) => App(),
   ManagerHomePage.routeName: (context) => ManagerHomePage(),
   MemberHomePage.routeName: (context) => MemberHomePage(),

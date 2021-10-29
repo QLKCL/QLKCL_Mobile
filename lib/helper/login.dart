@@ -29,3 +29,14 @@ Future<void> setLoginState(bool state) async {
 
   loginInfoBox.put('isLoggedIn', state);
 }
+
+Future<String> getRole() async {
+  var roleBox = await Hive.openBox('role');
+
+  if (roleBox.containsKey('role')) {
+    return roleBox.get('role');
+  } else {
+    roleBox.put('role', "5"); // vi du 5 la member
+    return "5";
+  }
+}
