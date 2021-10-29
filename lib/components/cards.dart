@@ -550,3 +550,113 @@ class Member extends StatelessWidget {
     );
   }
 }
+
+class QuarantineItem extends StatelessWidget {
+  //final VoidCallback onTap;
+  final String name;
+  final int numberOfMem;
+  final String manager;
+
+  const QuarantineItem({
+    //required this.onTap,
+    required this.name,
+    required this.numberOfMem,
+    required this.manager,
+  });
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Padding(
+        padding: EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Image container
+            Container(
+              height: 96,
+              width: 105,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.asset(
+                  'assets/images/QuarantineWard.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            //text
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  //subtitle and icon
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Icon(
+                            Icons.groups_rounded,
+                            size: 18,
+                            color: CustomColors.disableText,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " Đang cách ly: " + numberOfMem.toString(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: Icon(
+                            Icons.account_box,
+                            size: 18,
+                            color: CustomColors.disableText,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " Quản lý: " + manager,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.more_vert,
+              size: 24.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
