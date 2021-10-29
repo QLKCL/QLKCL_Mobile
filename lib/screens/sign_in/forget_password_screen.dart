@@ -77,6 +77,7 @@ class _ForgetFormState extends State<ForgetForm> {
             padding: EdgeInsets.all(16),
             child: Text(
               "Nhập email khôi phục để đặt lại mật khẩu hoặc liên hệ người quản lý để hỗ trợ thêm.",
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),

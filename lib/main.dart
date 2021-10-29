@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:qlkcl/helper/login.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
@@ -8,18 +9,34 @@ import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() {
+void main() async {
   // Automatically show the notification bar when the app loads in IOS.
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-  runApp(MyApp());
+
+  await Hive.initFlutter();
+
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  var containsEncryptionKey = await secureStorage.containsKey(key: 'key');
+  if (!containsEncryptionKey) {
+    var key = Hive.generateSecureKey();
+    await secureStorage.write(key: 'key', value: base64UrlEncode(key));
+  }
+
+  bool isLoggedIn = await getLoginState();
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  final bool logged = true;
-  const MyApp({Key? key}) : super(key: key);
+  static const String routeName = "/init";
+  final bool isLoggedIn;
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -40,10 +57,11 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: (logged == false) ? SignIn() : App(),
+            home: (isLoggedIn == false) ? SignIn() : App(),
             routes: routes,
-            initialRoute:
-                (logged == false) ? ManagerHomePage.routeName : App.routeName,
+            initialRoute: (isLoggedIn == false)
+                ? ManagerHomePage.routeName
+                : App.routeName,
           );
         }
       },
