@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 
-
 class Input extends StatefulWidget {
   final String label;
-  final String hint;
+  final String? hint;
   final bool obscure;
   final bool required;
   final TextInputType type;
+  final bool enabled;
+  final String? initValue;
 
   Input(
       {Key? key,
       required this.label,
-      required this.hint,
+      this.hint,
       this.obscure: false,
       this.required: false,
-      this.type: TextInputType.text})
+      this.type: TextInputType.text,
+      this.enabled: true,
+      this.initValue})
       : super(key: key);
 
   @override
@@ -32,6 +35,7 @@ class _InputState extends State<Input> {
         obscureText: widget.obscure,
         keyboardType: widget.type,
         // onSaved: (newValue) => password = newValue,
+        initialValue: widget.initValue,
         onChanged: (value) {
           // if (value.isNotEmpty) {
           //   removeError(error: kPassNullError);
@@ -50,6 +54,7 @@ class _InputState extends State<Input> {
           // }
           return null;
         },
+        enabled: widget.enabled,
         decoration:
             InputDecoration(labelText: widget.label, hintText: widget.hint),
       ),

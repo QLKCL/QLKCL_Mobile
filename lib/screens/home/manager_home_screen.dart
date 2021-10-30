@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/charts.dart';
+import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
@@ -26,7 +27,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true)
+                  .pushNamed(AddTest.routeName);
+            },
             icon: Icon(Icons.add_box_outlined),
           ),
         ],
