@@ -80,6 +80,7 @@ class _ListAllMemberState extends State<ListAllMember>
       ),
       floatingActionButton: _tabController.index == 0
           ? FloatingActionButton(
+              heroTag: "member_fab",
               onPressed: () {
                 // Respond to button press
               },

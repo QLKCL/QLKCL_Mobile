@@ -85,7 +85,9 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushNamed(context, ChangePassword.routeName);
+                    Navigator.of(context, rootNavigator: true).pushNamed(
+                      ChangePassword.routeName
+                    );
                   },
                   title: Text('Đổi mật khẩu'),
                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -97,8 +99,9 @@ class _AccountState extends State<Account> {
             child: ListTile(
               onTap: () async {
                 setLoginState(false);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, SignIn.routeName, (Route<dynamic> route) => false);
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(
+                        SignIn.routeName, (route) => false);
               },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),
