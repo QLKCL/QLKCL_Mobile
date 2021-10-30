@@ -5,6 +5,7 @@ import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
@@ -82,7 +83,7 @@ const Map<TabItem, String> tabRouteName = {
   TabItem.homepage: ManagerHomePage.routeName,
   TabItem.quarantine_person: ListAllMember.routeName,
   TabItem.qr_code_scan: QrCodeScan.routeName,
-  TabItem.quarantine_ward: Account.routeName,
+  TabItem.quarantine_ward: QuarantineListScreen.routeName,
   TabItem.account: Account.routeName,
 };
 
