@@ -108,7 +108,8 @@ class _SignFormState extends State<SignForm> {
             child: ElevatedButton(
               onPressed: () async {
                 setLoginState(true);
-                Navigator.pushReplacementNamed(context, App.routeName);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, App.routeName, (Route<dynamic> route) => false);
               },
               child: Text(
                 'Đăng nhập',

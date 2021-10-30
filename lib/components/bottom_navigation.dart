@@ -9,9 +9,17 @@ import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 
-// cre: https://github.com/NearHuscarl/flutter_login/
+// cre: https://github.com/Kickbykick/Persistent-Bottom-Navigation-Bar
 
 // cre: https://medium.com/@theboringdeveloper/common-bottom-navigation-bar-flutter-e3693305d2d
+
+// cre: https://stackoverflow.com/questions/61414778/tabbarview-or-indexedstack-for-bottomnavigationbar-flutter
+
+// cre: https://flutterui.design/blog/persistent-tabs
+
+// cre: https://medium.com/flutter-community/bottom-navigation-which-state-is-saved-when-clicks-in-item-in-the-list-and-switches-between-bottom-bcf8ba3bc4a
+
+// cre: https://www.vojtech.net/posts/flutter-bottom-navigation/
 
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({required this.currentTab, required this.onSelectTab});

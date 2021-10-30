@@ -97,7 +97,8 @@ class _AccountState extends State<Account> {
             child: ListTile(
               onTap: () async {
                 setLoginState(false);
-                Navigator.pushReplacementNamed(context, SignIn.routeName);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, SignIn.routeName, (Route<dynamic> route) => false);
               },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),
