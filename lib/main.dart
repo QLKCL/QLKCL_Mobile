@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/login.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -45,13 +46,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Quản lý khu cách ly',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      routes: routes,
-      initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
-      home: isLoggedIn ? App() : SignIn(),
+    return DismissKeyboard(
+      child: MaterialApp(
+        title: 'Quản lý khu cách ly',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        routes: routes,
+        initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
+        home: isLoggedIn ? App() : SignIn(),
+      ),
     );
   }
 }

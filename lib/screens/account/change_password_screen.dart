@@ -20,14 +20,16 @@ class _ChangePasswordState extends State<ChangePassword> {
           color: CustomColors.primaryText,
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/otp.png"),
-          ),
-          ChangePasswordForm(),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
+              child: Image.asset("assets/images/otp.png"),
+            ),
+            ChangePasswordForm(),
+          ],
+        ),
       ),
     );
   }
