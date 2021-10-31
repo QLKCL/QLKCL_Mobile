@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/login.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
+import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
@@ -46,15 +46,40 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-      child: MaterialApp(
-        title: 'Quản lý khu cách ly',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        routes: routes,
-        initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
-        home: isLoggedIn ? App() : SignIn(),
-      ),
+    return FutureBuilder(
+      future: Init.instance.initialize(),
+      builder: (context, AsyncSnapshot snapshot) {
+        // Show splash screen while waiting for app resources to load:
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            home: Splash(),
+          );
+        } else {
+          // Loading is done, return the app:
+          return MaterialApp(
+            title: 'Quản lý khu cách ly',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            home: isLoggedIn ? App() : SignIn(),
+            routes: routes,
+            initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
+          );
+        }
+      },
     );
+  }
+}
+
+class Init {
+  Init._();
+  static final instance = Init._();
+
+  Future initialize() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.  Remove the following example because
+    // delaying the user experience is a bad design practice!
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 }
