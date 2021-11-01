@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../models/quarantine.dart';
-import '../../components/cards.dart';
+import '../../../models/quarantine.dart';
+import '../../../components/cards.dart';
 
 class QuanrantineList extends StatelessWidget {
   final List<Quarantine> quarantines;

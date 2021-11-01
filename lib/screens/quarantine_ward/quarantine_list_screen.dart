@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/models/quarantine.dart';
-import 'quarantine_list.dart';
+import 'component/quarantine_list.dart';
 import './add_quarantine_screen.dart';
 
 class QuarantineListScreen extends StatefulWidget {
