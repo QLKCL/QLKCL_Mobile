@@ -53,14 +53,17 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               context, AddTest.routeName);
                         },
                       ),
+                      Divider(),
                       ListTile(
                         leading: Icon(Icons.person_add_alt),
                         title: Text('Người cách ly'),
                       ),
+                      Divider(),
                       ListTile(
                         leading: Icon(Icons.manage_accounts_outlined),
                         title: Text('Quản lý'),
                       ),
+                      Divider(),
                       ListTile(
                         leading: Icon(Icons.business_outlined),
                         title: Text('Khu cách ly'),

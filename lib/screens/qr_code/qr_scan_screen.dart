@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:focus_detector/focus_detector.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 
@@ -33,72 +32,29 @@ class _QrCodeScanState extends State<QrCodeScan> {
 
   @override
   Widget build(BuildContext context) {
-    return FocusDetector(
-      onFocusLost: () {
-        controller!.pauseCamera();
-      },
-      onFocusGained: () {
-        controller!.resumeCamera();
-      },
-      onVisibilityLost: () {
-        print('Visibility Lost.');
-      },
-      onVisibilityGained: () {
-        print('Visibility Gained.');
-      },
-      onForegroundLost: () {
-        controller!.pauseCamera();
-      },
-      onForegroundGained: () {
-        print('Foreground Gained.');
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Quét mã QR'),
-          actions: [
-            IconButton(
-              icon: FutureBuilder(
-                future: controller?.getFlashStatus(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == false)
-                    return const Icon(Icons.flash_on);
-                  else
-                    return const Icon(Icons.flash_off);
-                },
-              ),
-              tooltip: 'Toggle Flash',
-              onPressed: () async {
-                await controller?.toggleFlash();
-                setState(() {});
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Quét mã QR'),
+        actions: [
+          IconButton(
+            icon: FutureBuilder(
+              future: controller?.getFlashStatus(),
+              builder: (context, snapshot) {
+                if (snapshot.data == false)
+                  return const Icon(Icons.flash_on);
+                else
+                  return const Icon(Icons.flash_off);
               },
-            )
-          ],
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(flex: 9, child: _buildQrView(context)),
-            Expanded(
-              flex: 1,
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        setState(() {
-                          controller!.resumeCamera();
-                        });
-                      },
-                      child: Text('Tiếp tục'),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+            ),
+            tooltip: 'Toggle Flash',
+            onPressed: () async {
+              await controller?.toggleFlash();
+              setState(() {});
+            },
+          )
+        ],
       ),
+      body:_buildQrView(context)
     );
   }
 
@@ -126,7 +82,6 @@ class _QrCodeScanState extends State<QrCodeScan> {
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
-      controller.pauseCamera();
     });
     controller.scannedDataStream.listen((scanData) async {
       setState(() {
@@ -155,11 +110,14 @@ class _QrCodeScanState extends State<QrCodeScan> {
   parseData(String qrResult) async {
     controller?.pauseCamera();
     if (qrResult.contains("...")) {
-      await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return Error();
-      }));
+      await Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return Error();
+        },
+      ));
     } else {
       await showDialog<String>(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Nội dung'),

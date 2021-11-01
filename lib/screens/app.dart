@@ -49,7 +49,6 @@ class _AppState extends State<App> {
         body: Stack(children: <Widget>[
           _buildOffstageNavigator(TabItem.homepage),
           _buildOffstageNavigator(TabItem.quarantine_person),
-          _buildOffstageNavigator(TabItem.qr_code_scan),
           _buildOffstageNavigator(TabItem.quarantine_ward),
           _buildOffstageNavigator(TabItem.account),
         ]),
