@@ -1,11 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qlkcl/screens/error/error_screen.dart';
 
 // cre: https://pub.dev/packages/qr_code_scanner/example
+
+// can use: https://pub.dev/packages/barcode_scan2/example
 
 class QrCodeScan extends StatefulWidget {
   static const String routeName = "/qr_scan";
@@ -53,35 +54,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(flex: 7, child: _buildQrView(context)),
-          Expanded(
-            flex: 3,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: <Widget>[
-                if (result != null)
-                  Card(
-                    child: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text('Type'),
-                          subtitle: Text(describeEnum(result!.format)),
-                        ),
-                        ListTile(
-                          title: const Text('Content'),
-                          subtitle: Text(result!.code),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          )
-        ],
-      ),
+      body:_buildQrView(context)
     );
   }
 
@@ -89,7 +62,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 150.0
+        ? 200.0
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
@@ -110,10 +83,12 @@ class _QrCodeScanState extends State<QrCodeScan> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async {
       setState(() {
         result = scanData;
       });
+
+      parseData(result!.code);
     });
   }
 
@@ -130,5 +105,31 @@ class _QrCodeScanState extends State<QrCodeScan> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  parseData(String qrResult) async {
+    controller?.pauseCamera();
+    if (qrResult.contains("...")) {
+      await Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) {
+          return Error();
+        },
+      ));
+    } else {
+      await showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Nội dung'),
+          content: Text(qrResult),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ).then((value) => controller!.resumeCamera());
+    }
   }
 }

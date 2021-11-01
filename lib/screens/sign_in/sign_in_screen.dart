@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/login.dart';
+import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
@@ -104,7 +106,11 @@ class _SignFormState extends State<SignForm> {
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                setLoginState(true);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, App.routeName, (Route<dynamic> route) => false);
+              },
               child: Text(
                 'Đăng nhập',
                 style: TextStyle(color: CustomColors.white),

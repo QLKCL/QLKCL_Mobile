@@ -1,25 +1,47 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:qlkcl/helper/login.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
-import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() {
+final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+void main() async {
   // Automatically show the notification bar when the app loads in IOS.
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
-  runApp(MyApp());
+
+  await Hive.initFlutter();
+
+  // Generate key to encrypt box to store secret informations (access token, refresh token,...)
+  var containsEncryptionKey = await secureStorage.containsKey(key: 'key');
+  if (!containsEncryptionKey) {
+    var key = Hive.generateSecureKey();
+    await secureStorage.write(key: 'key', value: base64UrlEncode(key));
+  }
+
+  bool existRole = await Hive.boxExists('role');
+  if (!existRole) {
+    // Fetch role from server and store in Hive
+  }
+
+  bool isLoggedIn = await getLoginState();
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  final bool logged = true;
-  const MyApp({Key? key}) : super(key: key);
+  static const String routeName = "/init";
+  final bool isLoggedIn;
+  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -40,10 +62,9 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: (logged == false) ? SignIn() : App(),
+            home: isLoggedIn ? App() : SignIn(),
             routes: routes,
-            initialRoute:
-                (logged == false) ? ManagerHomePage.routeName : App.routeName,
+            initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
           );
         }
       },
@@ -59,6 +80,6 @@ class Init {
     // This is where you can initialize the resources needed by your app while
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(milliseconds: 1000));
   }
 }

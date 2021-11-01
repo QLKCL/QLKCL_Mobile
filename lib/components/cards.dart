@@ -691,7 +691,7 @@ class QuarantineItem extends StatelessWidget {
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(
-                            Icons.account_box,
+                            Icons.account_box_outlined,
                             size: 16,
                             color: CustomColors.disableText,
                           ),

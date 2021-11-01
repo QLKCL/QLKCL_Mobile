@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
@@ -16,6 +14,7 @@ import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/screens/sign_in/otp_screen.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
+import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
@@ -42,4 +41,5 @@ final Map<String, WidgetBuilder> routes = {
   ListAllMember.routeName: (context) => ListAllMember(),
   QuarantineListScreen.routeName: (context) =>QuarantineListScreen(),
   NewQuarantine.routeName: (context) =>NewQuarantine(),
+  AddTest.routeName: (context) =>AddTest(),
 };

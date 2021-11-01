@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
+import 'package:qlkcl/helper/login.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
@@ -83,7 +85,10 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushNamed(context, ChangePassword.routeName);
+                    // cre: https://stackoverflow.com/questions/55192347/in-flutter-bottom-navigation-bar-should-disappear-when-we-navigate-to-new-screen
+                    Navigator.of(context, rootNavigator: true).pushNamed(
+                      ChangePassword.routeName
+                    );
                   },
                   title: Text('Đổi mật khẩu'),
                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -93,7 +98,12 @@ class _AccountState extends State<Account> {
           ),
           Card(
             child: ListTile(
-              onTap: () {},
+              onTap: () async {
+                setLoginState(false);
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamedAndRemoveUntil(
+                        SignIn.routeName, (route) => false);
+              },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),
               trailing: Icon(

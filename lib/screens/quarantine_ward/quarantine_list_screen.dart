@@ -114,6 +114,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       appBar: appBar,
       body: QuanrantineList(_quarantineList),
       floatingActionButton: FloatingActionButton(
+        heroTag: "quarantine_fab",
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.pushNamed(

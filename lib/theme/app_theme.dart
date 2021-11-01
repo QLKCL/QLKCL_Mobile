@@ -82,6 +82,11 @@ class AppTheme with ChangeNotifier {
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: CustomColors.secondary,
       ),
+      checkboxTheme: CheckboxThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
     );
   }
 
