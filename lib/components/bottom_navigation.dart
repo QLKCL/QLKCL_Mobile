@@ -33,9 +33,16 @@ class BottomNavigation extends StatelessWidget {
       currentIndex: currentTab.index,
       selectedItemColor: CustomColors.secondary,
       onTap: (index) => {
-        onSelectTab(
-          TabItem.values[index],
-        )
+        if (TabItem.values[index] == TabItem.qr_code_scan)
+          {
+            Navigator.pushNamed(context, QrCodeScan.routeName)
+          }
+        else
+          {
+            onSelectTab(
+              TabItem.values[index],
+            )
+          }
       },
       items: [
         _buildItem(TabItem.homepage),
