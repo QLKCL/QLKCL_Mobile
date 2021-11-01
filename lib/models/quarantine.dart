@@ -12,6 +12,7 @@ class Quarantine {
   //final String address;
   final int quarantine_time;
   final String main_manager;
+  final int numOfMem;
 
   const Quarantine({
     required this.id,
@@ -24,5 +25,6 @@ class Quarantine {
     required this.type,
     required this.quarantine_time,
     required this.main_manager,
+    this.numOfMem = 0,
   });
 }

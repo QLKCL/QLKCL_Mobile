@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
+import 'component/quarantine_item.dart';
 import 'component/quarantine_list.dart';
 import './add_quarantine_screen.dart';
 
@@ -11,56 +13,7 @@ class QuarantineListScreen extends StatefulWidget {
 }
 
 class _QuarantineListScreenState extends State<QuarantineListScreen> {
-  final List<Quarantine> _quarantineList = [
-    Quarantine(
-      id: 'q1',
-      full_name: 'Ký túc xá khu A ĐHQG TPHCM',
-      phone_number: '0938555421',
-      country_id: 'Việt Nam',
-      city_id: 'Bình Dương',
-      ward_id: 'Đông Hòa',
-      district_id: 'Dĩ An',
-      type: 'Tập trung',
-      quarantine_time: 14,
-      main_manager: 'Lê Trung Sơn',
-    ),
-    Quarantine(
-      id: 'q1',
-      full_name: 'Ký túc xá khu A ĐHQG TPHCM',
-      phone_number: '0938555421',
-      country_id: 'Việt Nam',
-      city_id: 'Bình Dương',
-      ward_id: 'Đông Hòa',
-      district_id: 'Dĩ An',
-      type: 'Tập trung',
-      quarantine_time: 14,
-      main_manager: 'Lê Trung Sơn',
-    ),
-    Quarantine(
-      id: 'q1',
-      full_name: 'Ký túc xá khu A ĐHQG TPHCM',
-      phone_number: '0938555421',
-      country_id: 'Việt Nam',
-      city_id: 'Bình Dương',
-      ward_id: 'Đông Hòa',
-      district_id: 'Dĩ An',
-      type: 'Tập trung',
-      quarantine_time: 14,
-      main_manager: 'Lê Trung Sơn',
-    ),
-    Quarantine(
-      id: 'q1',
-      full_name: 'Ký túc xá khu A ĐHQG TPHCM',
-      phone_number: '0938555421',
-      country_id: 'Việt Nam',
-      city_id: 'Bình Dương',
-      ward_id: 'Đông Hòa',
-      district_id: 'Dĩ An',
-      type: 'Tập trung',
-      quarantine_time: 14,
-      main_manager: 'Lê Trung Sơn',
-    ),
-  ];
+ 
 
   //add new quarantine ward
   void _addNewQuarantine(
@@ -87,7 +40,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       main_manager: main_manager,
     );
     setState(() {
-      _quarantineList.add(newTx);
+      DUMMY_QUARANTINE.add(newTx);
     });
   }
 
@@ -112,14 +65,25 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
 
     return Scaffold(
       appBar: appBar,
-      body: QuanrantineList(_quarantineList),
+      body: DUMMY_QUARANTINE.isEmpty
+          ? Center(
+              child: Text('Không có dữ liệu'),
+            )
+          : ListView.builder(
+              itemBuilder: (ctx, index) {
+                return QuarantineItem(
+                    id: DUMMY_QUARANTINE[index].id,
+                    name: DUMMY_QUARANTINE[index].full_name,
+                    numberOfMem: DUMMY_QUARANTINE[index].numOfMem,
+                    manager: DUMMY_QUARANTINE[index].main_manager);
+              },
+              itemCount: DUMMY_QUARANTINE.length,
+            ),
       floatingActionButton: FloatingActionButton(
         heroTag: "quarantine_fab",
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(
-            context, NewQuarantine.routeName
-          );
+          Navigator.pushNamed(context, NewQuarantine.routeName);
         },
       ),
     );

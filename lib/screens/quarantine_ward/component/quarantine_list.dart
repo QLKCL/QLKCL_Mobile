@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/quarantine.dart';
-import '../../../components/cards.dart';
+import './quarantine_item.dart';
 
 class QuanrantineList extends StatelessWidget {
   final List<Quarantine> quarantines;
@@ -16,6 +16,7 @@ class QuanrantineList extends StatelessWidget {
         : ListView.builder(
             itemBuilder: (ctx, index) {
               return QuarantineItem(
+                  id: quarantines[index].id,
                   name: quarantines[index].full_name,
                   numberOfMem: 0,
                   manager: quarantines[index].main_manager);
