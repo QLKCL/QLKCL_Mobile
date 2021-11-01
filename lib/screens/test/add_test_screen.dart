@@ -39,16 +39,12 @@ class _AddTestState extends State<StatefulWidget> {
               ),
               Container(
                 child: Input(
-                  label: 'Mã người xét nghiệm',
-                  required: true,
-                  enabled: true,
+                  label: 'Mã người xét nghiệm'
                 ),
               ),
               Container(
                 child: Input(
-                  label: 'Họ và tên',
-                  required: true,
-                  enabled: true,
+                  label: 'Họ và tên'
                 ),
               ),
               DropdownInput(
