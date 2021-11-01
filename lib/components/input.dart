@@ -55,8 +55,11 @@ class _InputState extends State<Input> {
           return null;
         },
         enabled: widget.enabled,
-        decoration:
-            InputDecoration(labelText: widget.label, hintText: widget.hint),
+        decoration: InputDecoration(
+          labelText: widget.required ? widget.label + " \*" : widget.label,
+          hintText: widget.hint,
+        ),
+        
       ),
     );
   }
