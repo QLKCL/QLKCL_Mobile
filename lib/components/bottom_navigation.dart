@@ -22,6 +22,8 @@ import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://www.vojtech.net/posts/flutter-bottom-navigation/
 
+// new: https://pub.dev/packages/persistent_bottom_nav_bar
+
 class BottomNavigation extends StatelessWidget {
   BottomNavigation({required this.currentTab, required this.onSelectTab});
   final TabItem currentTab;
@@ -34,9 +36,7 @@ class BottomNavigation extends StatelessWidget {
       selectedItemColor: CustomColors.secondary,
       onTap: (index) => {
         if (TabItem.values[index] == TabItem.qr_code_scan)
-          {
-            Navigator.pushNamed(context, QrCodeScan.routeName)
-          }
+          {Navigator.pushNamed(context, QrCodeScan.routeName)}
         else
           {
             onSelectTab(

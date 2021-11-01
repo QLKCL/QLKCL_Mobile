@@ -4,22 +4,21 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class AddTest extends StatefulWidget {
-  static const String routeName = "/add_test";
-  AddTest({Key? key}) : super(key: key);
+class UpdateTest extends StatefulWidget {
+  static const String routeName = "/update_test";
+  UpdateTest({Key? key}) : super(key: key);
 
   @override
-  _AddTestState createState() => _AddTestState();
+  _UpdateTestState createState() => _UpdateTestState();
 }
 
-class _AddTestState extends State<StatefulWidget> {
+class _UpdateTestState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
-        // resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: Text('Tạo phiếu xét nghiệm'),
+          title: Text('Cập nhật phiếu xét nghiệm'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -38,41 +37,39 @@ class _AddTestState extends State<StatefulWidget> {
                 ),
               ),
               Container(
-                child: Input(label: 'Mã người xét nghiệm'),
+                child: Input(
+                  label: 'Mã người xét nghiệm'
+                ),
               ),
               Container(
                 child: Input(
-                  label: 'Họ và tên',
-                  hint: 'Nhập họ và tên',
+                  label: 'Họ và tên'
                 ),
               ),
               DropdownInput(
                 label: 'Trạng thái',
-                hint: 'Chọn trạng thái',
+                hint: 'Đang chờ kết quả',
                 required: true,
                 itemValue: ['Đang chờ kết quả', 'Đã có kết quả'],
-                selectedItem: 'Đang chờ kết quả',
               ),
               DropdownInput(
                 label: 'Kỹ thuật xét nghiệm',
-                hint: 'Chọn kỹ thuật xét nghiệm',
+                hint: 'Test nhanh',
                 required: true,
                 itemValue: ['Test nhanh', 'Real time PCR'],
-                selectedItem: 'Test nhanh',
               ),
               DropdownInput(
                 label: 'Kết quả',
-                hint: 'Chọn kết quả',
+                hint: 'Chưa có kết quả',
                 required: true,
                 itemValue: ['Chưa có kết quả', 'Âm tính', 'Dương tính'],
-                selectedItem: 'Chưa có kết quả',
               ),
               Container(
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
-                    'Tạo',
+                    'Xác nhận',
                     style: TextStyle(color: CustomColors.white),
                   ),
                 ),
