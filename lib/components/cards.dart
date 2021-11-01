@@ -660,14 +660,15 @@ class QuarantineItem extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
+                        color: CustomColors.primaryText,
                       ),
                       children: [
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(
                             Icons.groups_rounded,
-                            size: 18,
+                            size: 16,
                             color: CustomColors.disableText,
                           ),
                         ),
@@ -678,19 +679,20 @@ class QuarantineItem extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 8,
+                    height: 4,
                   ),
                   RichText(
                     text: TextSpan(
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
+                        color: CustomColors.primaryText,
                       ),
                       children: [
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Icon(
                             Icons.account_box,
-                            size: 18,
+                            size: 16,
                             color: CustomColors.disableText,
                           ),
                         ),
