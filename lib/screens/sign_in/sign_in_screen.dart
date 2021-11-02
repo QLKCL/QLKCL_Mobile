@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/helper/login.dart';
+import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
 import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
@@ -18,6 +19,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: CustomColors.background,
       ),
@@ -41,6 +43,13 @@ class SignForm extends StatefulWidget {
 
 class _SignFormState extends State<SignForm> {
   final _formKey = GlobalKey<FormState>();
+  // Create a text controller and use it to retrieve the current value
+  // of the TextField.
+  final phoneController = TextEditingController();
+  final passController = TextEditingController();
+  String? phoneError;
+  String? passError;
+
   String? email;
   String? password;
   bool? remember = false;
@@ -78,11 +87,19 @@ class _SignFormState extends State<SignForm> {
             label: "Số điện thoại",
             hint: "Nhập số điện thoại",
             type: TextInputType.number,
+            required: true,
+            validatorFunction: phoneValidator,
+            controller: phoneController,
+            error: phoneError,
           ),
           Input(
             label: "Mật khẩu",
             hint: "Nhập mật khẩu",
             obscure: true,
+            required: true,
+            controller: passController,
+            error: passError,
+            helper: "123456",
           ),
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -107,9 +124,25 @@ class _SignFormState extends State<SignForm> {
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () async {
-                setLoginState(true);
-                Navigator.pushNamedAndRemoveUntil(
-                    context, App.routeName, (Route<dynamic> route) => false);
+                // Validate returns true if the form is valid, or false otherwise.
+                if (_formKey.currentState!.validate()) {
+                  if (passController.text != '123456') {
+                    setState(() {
+                      passError = "Mật khẩu không chính xác!";
+                    });
+                  } else {
+                    setState(() {
+                      phoneError = null;
+                      passError = null;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Đăng nhập thành công!')),
+                    );
+                    await setLoginState(true);
+                    Navigator.pushNamedAndRemoveUntil(context, App.routeName,
+                    (Route<dynamic> route) => false);
+                  }
+                }
               },
               child: Text(
                 'Đăng nhập',

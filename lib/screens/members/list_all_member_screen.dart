@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
@@ -28,6 +30,7 @@ class _ListAllMemberState extends State<ListAllMember>
   }
 
   bool longPressFlag = false;
+  bool searched = false;
   List<int> indexList = [];
 
   void longPress() {
@@ -42,25 +45,67 @@ class _ListAllMemberState extends State<ListAllMember>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DismissKeyboard(
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: longPressFlag
             ? Text('${indexList.length} đã chọn')
-            : Text("Danh sách người cách ly"),
+            : (searched
+                ? Container(
+                    width: double.infinity,
+                    height: 36,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: TextField(
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.clear),
+                              onPressed: () {
+                                /* Clear the search field */
+                              },
+                            ),
+                            hintText: 'Search...',
+                            border: InputBorder.none),
+                      ),
+                    ),
+                  )
+                : Text("Danh sách người cách ly")),
         centerTitle: true,
+        // leading: searched
+        //     ? IconButton(
+        //         onPressed: () {},
+        //         icon: Icon(Icons.arrow_back),
+        //       )
+        //     : null,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: longPressFlag
-                ? GestureDetector(
+          longPressFlag
+              ? IconButton(
+                  onPressed: () {},
+                  icon: GestureDetector(
                     child: Icon(
                       Icons.more_vert,
                     ),
                     onTap: () {},
-                  )
-                : Icon(Icons.search),
-          ),
+                  ))
+              : (searched
+                  ? IconButton(
+                      onPressed: () {
+                        memberFilter(context);
+                      },
+                      icon: Icon(Icons.filter_list_outlined),
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        setState(() {
+                          searched = true;
+                        });
+                      },
+                      icon: Icon(Icons.search),
+                    )),
         ],
         bottom: TabBar(
           controller: _tabController,
@@ -243,6 +288,6 @@ class _ListAllMemberState extends State<ListAllMember>
           ),
         ],
       ),
-    );
+    ));
   }
 }

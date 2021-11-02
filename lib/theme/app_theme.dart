@@ -49,19 +49,19 @@ class AppTheme with ChangeNotifier {
       // ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          // onPrimary: Colors.yellow,
           primary: CustomColors.primary,
-          minimumSize: Size(double.infinity, 48),
+          // minimumSize: Size(double.infinity, 48),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
       ),
-      // outlinedButtonTheme: OutlinedButtonThemeData(
-      //   style: OutlinedButton.styleFrom(
-      //     primary: Colors.purple,
-      //     backgroundColor: Colors.green,
-      //   ),
-      // ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          primary: CustomColors.primary,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        ),
+      ),
       cardTheme: CardTheme(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
