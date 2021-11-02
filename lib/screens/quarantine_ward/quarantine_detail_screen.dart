@@ -6,6 +6,7 @@ import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import './component/carousel.dart';
+import './component/carousel_building.dart';
 
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
@@ -128,11 +129,8 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
               ),
             ),
             //Building list
-
-            //title
-
             Container(
-              margin: EdgeInsets.only(left: 23, right: 23, top: 20, bottom: 8),
+              margin: EdgeInsets.only(left: 23, right: 23, top: 0, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -154,6 +152,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                 ],
               ),
             ),
+            CarouselBuilding(),
             //Information
             Container(
               width: MediaQuery.of(context).size.width * 1,

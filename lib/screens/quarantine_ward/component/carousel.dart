@@ -31,9 +31,10 @@ class _CarouselState extends State<Carousel> {
           margin: EdgeInsets.symmetric(vertical: 12),
           child: CarouselSlider(
             options: CarouselOptions(
+              // enableInfiniteScroll: false,
               onPageChanged: (index, reason) =>
                   setState(() => _counter = index),
-              aspectRatio: 2.0,
+              aspectRatio: 2,
             ),
             items: listImg.map((imgUrl) {
               return Builder(
