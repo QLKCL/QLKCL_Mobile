@@ -21,6 +21,7 @@ class DropdownInput<T> extends StatefulWidget {
   final void Function(T?)? onChangedFunction;
   final void Function(T?)? onSavedFunction;
   final Future<List<T>> Function(String?)? onFindFunction;
+  String? error;
 
   DropdownInput(
       {Key? key,
@@ -39,7 +40,8 @@ class DropdownInput<T> extends StatefulWidget {
       this.validatorFunction,
       this.onChangedFunction,
       this.onSavedFunction,
-      this.onFindFunction})
+      this.onFindFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -60,6 +62,11 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+          errorText: (widget.validatorFunction == null &&
+                  widget.error != null &&
+                  widget.error!.isNotEmpty)
+              ? widget.error
+              : null,
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
@@ -105,6 +112,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final void Function(List<T>?)? onChangedFunction;
   final void Function(List<T>?)? onSavedFunction;
   final Future<List<T>> Function(String?)? onFindFunction;
+  String? error;
 
   MultiDropdownInput(
       {Key? key,
@@ -123,7 +131,8 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.validatorFunction,
       this.onChangedFunction,
       this.onSavedFunction,
-      this.onFindFunction})
+      this.onFindFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -144,6 +153,11 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+          errorText: (widget.validatorFunction == null &&
+                  widget.error != null &&
+                  widget.error!.isNotEmpty)
+              ? widget.error
+              : null,
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,

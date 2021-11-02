@@ -6,6 +6,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
+// cre: https://pub.dev/packages/pin_code_fields
+
 class Otp extends StatefulWidget {
   static const String routeName = "/otp";
   Otp({Key? key}) : super(key: key);

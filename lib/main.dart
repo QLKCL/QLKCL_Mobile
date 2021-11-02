@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:qlkcl/helper/login.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';

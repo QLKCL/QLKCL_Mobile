@@ -15,6 +15,7 @@ class Input extends StatefulWidget {
   final String? Function(String?)? validatorFunction;
   final void Function(String)? onChangedFunction;
   final void Function(String?)? onSavedFunction;
+  String? error;
 
   Input(
       {Key? key,
@@ -31,7 +32,8 @@ class Input extends StatefulWidget {
       this.maxLength,
       this.validatorFunction,
       this.onChangedFunction,
-      this.onSavedFunction})
+      this.onSavedFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -39,8 +41,6 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
-  final List<String?> errors = [];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,7 +51,15 @@ class _InputState extends State<Input> {
         onSaved: widget.onSavedFunction,
         initialValue: widget.controller == null ? widget.initValue : null,
         onChanged: widget.onChangedFunction,
-        validator: widget.validatorFunction,
+        validator: (widget.validatorFunction != null
+            ? widget.validatorFunction
+            : (value) {
+                return (widget.required == true &&
+                        value != null &&
+                        value.isEmpty)
+                    ? "Trường này là bắt buộc"
+                    : null;
+              }),
         enabled: widget.enabled,
         controller: widget.controller,
         maxLength: widget.maxLength,
@@ -67,7 +75,11 @@ class _InputState extends State<Input> {
                   )
                 : null,
             helperText: widget.helper,
-            errorText: errors.isEmpty ? null : "error"),
+            errorText: (widget.validatorFunction == null &&
+                    widget.error != null &&
+                    widget.error!.isNotEmpty)
+                ? widget.error
+                : null),
       ),
     );
   }
