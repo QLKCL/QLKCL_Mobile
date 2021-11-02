@@ -19,12 +19,13 @@ class QuarantineItem extends StatelessWidget {
     required this.manager,
   });
   void selectQuarantine(BuildContext context) {
-    Navigator.of(context).pushNamed(
+    Navigator.of(context,rootNavigator: true).pushNamed(
       QuarantineDetailScreen.routeName,
       arguments: {
         'id': id,
         'full_name': name,
       },
+
     );
   }
 

@@ -13,8 +13,6 @@ class QuarantineListScreen extends StatefulWidget {
 }
 
 class _QuarantineListScreenState extends State<QuarantineListScreen> {
- 
-
   //add new quarantine ward
   void _addNewQuarantine(
       String id,
@@ -83,7 +81,9 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
         heroTag: "quarantine_fab",
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.pushNamed(context, NewQuarantine.routeName);
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            NewQuarantine.routeName,
+          );
         },
       ),
     );
