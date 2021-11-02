@@ -8,6 +8,14 @@ class Input extends StatefulWidget {
   final TextInputType type;
   final bool enabled;
   final String? initValue;
+  final String? helper;
+  final bool showClearButton;
+  final TextEditingController? controller;
+  final int? maxLength;
+  final String? Function(String?)? validatorFunction;
+  final void Function(String)? onChangedFunction;
+  final void Function(String?)? onSavedFunction;
+  String? error;
 
   Input(
       {Key? key,
@@ -17,7 +25,15 @@ class Input extends StatefulWidget {
       this.required: false,
       this.type: TextInputType.text,
       this.enabled: true,
-      this.initValue})
+      this.initValue,
+      this.helper,
+      this.showClearButton = true,
+      this.controller,
+      this.maxLength,
+      this.validatorFunction,
+      this.onChangedFunction,
+      this.onSavedFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -25,8 +41,6 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
-  final List<String?> errors = [];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,32 +48,38 @@ class _InputState extends State<Input> {
       child: TextFormField(
         obscureText: widget.obscure,
         keyboardType: widget.type,
-        // onSaved: (newValue) => password = newValue,
-        initialValue: widget.initValue,
-        onChanged: (value) {
-          // if (value.isNotEmpty) {
-          //   removeError(error: kPassNullError);
-          // } else if (value.length >= 8) {
-          //   removeError(error: kShortPassError);
-          // }
-          return null;
-        },
-        validator: (value) {
-          // if (value!.isEmpty) {
-          //   addError(error: kPassNullError);
-          //   return "";
-          // } else if (value.length < 8) {
-          //   addError(error: kShortPassError);
-          //   return "";
-          // }
-          return null;
-        },
+        onSaved: widget.onSavedFunction,
+        initialValue: widget.controller == null ? widget.initValue : null,
+        onChanged: widget.onChangedFunction,
+        validator: (widget.validatorFunction != null
+            ? widget.validatorFunction
+            : (value) {
+                return (widget.required == true &&
+                        value != null &&
+                        value.isEmpty)
+                    ? "Trường này là bắt buộc"
+                    : null;
+              }),
         enabled: widget.enabled,
+        controller: widget.controller,
+        maxLength: widget.maxLength,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
-          hintText: widget.hint,
-        ),
-        
+            labelText: widget.required ? widget.label + " \*" : widget.label,
+            hintText: widget.hint,
+            suffixIcon: (widget.showClearButton && widget.controller != null)
+                ? IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      widget.controller!.clear();
+                    },
+                  )
+                : null,
+            helperText: widget.helper,
+            errorText: (widget.validatorFunction == null &&
+                    widget.error != null &&
+                    widget.error!.isNotEmpty)
+                ? widget.error
+                : null),
       ),
     );
   }

@@ -6,7 +6,7 @@ import 'package:flutter/rendering.dart';
 
 class DropdownInput<T> extends StatefulWidget {
   final String label;
-  final String hint;
+  final String? hint;
   final bool required;
   final List<T> itemValue;
   final T? selectedItem;
@@ -16,11 +16,17 @@ class DropdownInput<T> extends StatefulWidget {
   final bool showClearButton;
   final double? maxHeight;
   final TextEditingController? controller;
+  final bool enabled;
+  final String? Function(T?)? validatorFunction;
+  final void Function(T?)? onChangedFunction;
+  final void Function(T?)? onSavedFunction;
+  final Future<List<T>> Function(String?)? onFindFunction;
+  String? error;
 
   DropdownInput(
       {Key? key,
       required this.label,
-      required this.hint,
+      this.hint,
       this.required: false,
       required this.itemValue,
       this.selectedItem,
@@ -29,7 +35,13 @@ class DropdownInput<T> extends StatefulWidget {
       this.showSearchBox = false,
       this.showClearButton = true,
       this.maxHeight,
-      this.controller})
+      this.controller,
+      this.enabled = true,
+      this.validatorFunction,
+      this.onChangedFunction,
+      this.onSavedFunction,
+      this.onFindFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -42,12 +54,19 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
     return Container(
       margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: DropdownSearch<T>(
-        // validator: (v) => v == null ? "required field" : null,
+        onSaved: widget.onSavedFunction,
+        onChanged: widget.onChangedFunction,
+        validator: widget.validatorFunction,
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+          errorText: (widget.validatorFunction == null &&
+                  widget.error != null &&
+                  widget.error!.isNotEmpty)
+              ? widget.error
+              : null,
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
@@ -56,8 +75,9 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
         selectedItem: widget.selectedItem,
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
-        // onFind: (filter) => getData(filter),
-        searchFieldProps: widget.controller != null
+        enabled: widget.enabled,
+        onFind: widget.onFindFunction,
+        searchFieldProps: (widget.showSearchBox && widget.controller != null)
             ? TextFieldProps(
                 controller: widget.controller,
                 decoration: InputDecoration(
@@ -77,7 +97,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
 
 class MultiDropdownInput<T> extends StatefulWidget {
   final String label;
-  final String hint;
+  final String? hint;
   final bool required;
   final List<T> itemValue;
   final List<T> selectedItem;
@@ -86,11 +106,18 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final bool showSearchBox;
   final bool showClearButton;
   final double? maxHeight;
+  final TextEditingController? controller;
+  final bool enabled;
+  final String? Function(List<T>?)? validatorFunction;
+  final void Function(List<T>?)? onChangedFunction;
+  final void Function(List<T>?)? onSavedFunction;
+  final Future<List<T>> Function(String?)? onFindFunction;
+  String? error;
 
   MultiDropdownInput(
       {Key? key,
       required this.label,
-      required this.hint,
+      this.hint,
       this.required: false,
       required this.itemValue,
       this.selectedItem = const [],
@@ -98,7 +125,14 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.helper,
       this.showSearchBox = false,
       this.showClearButton = false,
-      this.maxHeight})
+      this.maxHeight,
+      this.controller,
+      this.enabled = true,
+      this.validatorFunction,
+      this.onChangedFunction,
+      this.onSavedFunction,
+      this.onFindFunction,
+      this.error})
       : super(key: key);
 
   @override
@@ -111,14 +145,19 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
     return Container(
       margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: DropdownSearch<T>.multiSelection(
-        // validator: (List<String>? v) {
-        //   return v == null || v.isEmpty ? "required field" : null;
-        // },
+        onSaved: widget.onSavedFunction,
+        onChanged: widget.onChangedFunction,
+        validator: widget.validatorFunction,
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+          errorText: (widget.validatorFunction == null &&
+                  widget.error != null &&
+                  widget.error!.isNotEmpty)
+              ? widget.error
+              : null,
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
@@ -127,7 +166,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         selectedItems: widget.selectedItem,
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
-        // onFind: (filter) => getData(filter),
+        enabled: widget.enabled,
+        onFind: widget.onFindFunction,
         popupSelectionWidget: (cnt, T item, bool isSelected) {
           return isSelected
               ? Icon(
@@ -136,6 +176,19 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                 )
               : Container();
         },
+        searchFieldProps: (widget.showSearchBox && widget.controller != null)
+            ? TextFieldProps(
+                controller: widget.controller,
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      widget.controller!.clear();
+                    },
+                  ),
+                ),
+              )
+            : null,
       ),
     );
   }
