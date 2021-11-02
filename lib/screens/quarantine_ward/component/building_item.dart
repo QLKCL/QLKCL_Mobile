@@ -30,7 +30,6 @@ class BuildingItem extends StatelessWidget {
           children: [
             Container(
               height: 76,
-              width: 123,
               alignment: Alignment.center,
               child: SvgPicture.asset('../../../assets/svg/building.svg'),
               decoration: BoxDecoration(
@@ -71,7 +70,7 @@ class BuildingItem extends StatelessWidget {
                           Text(
                             '$currentMem' + '/$maxMem',
                             softWrap: true,
-                            overflow: TextOverflow.fade,
+                            //overflow: TextOverflow.fade,
                           ),
                         ],
                       )
