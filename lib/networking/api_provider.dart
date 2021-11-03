@@ -9,14 +9,16 @@ import 'package:qlkcl/utils/constant.dart';
 // cre: https://ichi.pro/vi/flutter-xu-ly-cac-lenh-goi-api-mang-cua-ban-nhu-mot-ong-chu-158964374994071
 
 class ApiProvider {
-  final String baseUrl;
+  final String? baseUrl;
+  String _baseUrl = Constant.baseUrl;
 
-  ApiProvider({this.baseUrl: Constant.baseUrl});
+  ApiProvider({this.baseUrl});
 
   Future<dynamic> get(String url) async {
+    _baseUrl = baseUrl ?? _baseUrl;
     var responseJson;
     try {
-      final response = await http.get(Uri.parse(baseUrl + url));
+      final response = await http.get(Uri.parse(_baseUrl + url));
       responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');

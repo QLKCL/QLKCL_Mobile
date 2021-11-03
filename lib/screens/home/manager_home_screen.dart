@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/charts.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
+import 'component/member_info.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";

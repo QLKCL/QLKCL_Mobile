@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
