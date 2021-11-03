@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/sign_in/otp_screen.dart';
+import 'package:qlkcl/screens/login/otp_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class ForgetPassword extends StatefulWidget {

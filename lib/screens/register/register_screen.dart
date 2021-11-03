@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class SignUp extends StatefulWidget {
+class Register extends StatefulWidget {
   static const String routeName = "/sign_un";
-  SignUp({Key? key}) : super(key: key);
+  Register({Key? key}) : super(key: key);
 
   @override
-  _SignUpState createState() => _SignUpState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

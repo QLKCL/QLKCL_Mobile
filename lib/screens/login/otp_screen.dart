@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
+import 'package:qlkcl/screens/login/create_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://pub.dev/packages/pin_code_fields

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/routes.dart';
 import 'package:qlkcl/screens/app.dart';
-import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
+import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
@@ -62,9 +62,9 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: isLoggedIn ? App() : SignIn(),
+            home: isLoggedIn ? App() : Login(),
             routes: routes,
-            initialRoute: isLoggedIn ? App.routeName : SignIn.routeName,
+            initialRoute: isLoggedIn ? App.routeName : Login.routeName,
           );
         }
       },

@@ -3,7 +3,7 @@ import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/sign_in/sign_in_screen.dart';
+import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
@@ -99,10 +99,10 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                setLoginState(false);
+                logout();
                 Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(
-                        SignIn.routeName, (route) => false);
+                        Login.routeName, (route) => false);
               },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),

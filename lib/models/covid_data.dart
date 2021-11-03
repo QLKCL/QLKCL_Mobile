@@ -40,9 +40,9 @@ class CovidData {
   }
 }
 
-ApiProvider _provider = ApiProvider(baseUrl: "https://ncovi.vnpt.vn/");
+ApiProvider _provider = ApiProvider(baseUrl: "https://ncovi.vnpt.vn");
 
 Future<CovidData> fetchCovidList() async {
-  final response = await _provider.get("thongtindichbenh_v2");
+  final response = await _provider.get("/thongtindichbenh_v2");
   return covidFromJson(response);
 }

@@ -3,19 +3,19 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
-import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
-import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
+import 'package:qlkcl/screens/login/forget_password_screen.dart';
+import 'package:qlkcl/screens/register/register_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
-class SignIn extends StatefulWidget {
+class Login extends StatefulWidget {
   static const String routeName = "/sign_in";
-  SignIn({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _LoginState createState() => _LoginState();
 }
 
-class _SignInState extends State<SignIn> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +99,6 @@ class _SignFormState extends State<SignForm> {
             required: true,
             controller: passController,
             error: passError,
-            helper: "123456",
           ),
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -126,21 +125,22 @@ class _SignFormState extends State<SignForm> {
               onPressed: () async {
                 // Validate returns true if the form is valid, or false otherwise.
                 if (_formKey.currentState!.validate()) {
-                  if (passController.text != '123456') {
-                    setState(() {
-                      passError = "Mật khẩu không chính xác!";
-                    });
-                  } else {
-                    setState(() {
-                      phoneError = null;
-                      passError = null;
-                    });
+                  if (await login(phoneController.text, passController.text) ==
+                      true) {
+                    // if (passController.text != '123456') {
+                    //   setState(() {
+                    //     passError = "Mật khẩu không chính xác!";
+                    //   });
+                    // } else {
+                    //   setState(() {
+                    //     phoneError = null;
+                    //     passError = null;
+                    //   });
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Đăng nhập thành công!')),
                     );
-                    await setLoginState(true);
                     Navigator.pushNamedAndRemoveUntil(context, App.routeName,
-                    (Route<dynamic> route) => false);
+                        (Route<dynamic> route) => false);
                   }
                 }
               },
@@ -152,7 +152,7 @@ class _SignFormState extends State<SignForm> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, SignUp.routeName);
+              Navigator.pushNamed(context, Register.routeName);
             },
             child: Text(
               "Đăng ký cách ly",
