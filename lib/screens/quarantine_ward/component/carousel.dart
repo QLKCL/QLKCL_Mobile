@@ -10,10 +10,10 @@ class _CarouselState extends State<Carousel> {
   int _counter = 0;
 
   final listImg = [
-    '../../../assets/images/carousel-demo/carousel1.jpg',
-    '../../../assets/images/carousel-demo/carousel2.jpg',
-    '../../../assets/images/carousel-demo/carousel3.jpeg',
-    '../../../assets/images/carousel-demo/carousel4.jpg',
+    'assets/images/carousel1.jpg',
+    'assets/images/carousel2.jpg',
+    'assets/images/carousel3.jpeg',
+    'assets/images/carousel4.jpg',
   ];
   // List<T> map<T>(List list, Function handler) {
   //   List<T> result = [];
@@ -82,4 +82,3 @@ class _CarouselState extends State<Carousel> {
     );
   }
 }
-//Widget buildIndicator() => AnimatedSmoothIndicator()

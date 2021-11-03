@@ -31,7 +31,7 @@ class BuildingItem extends StatelessWidget {
             Container(
               height: 76,
               alignment: Alignment.center,
-              child: SvgPicture.asset('../../../assets/svg/building.svg'),
+              child: SvgPicture.asset('assets/svg/building.svg'),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(5),

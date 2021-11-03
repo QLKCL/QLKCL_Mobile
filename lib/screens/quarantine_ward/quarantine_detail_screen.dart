@@ -1,5 +1,5 @@
 // ignore_for_file: unused_import
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
@@ -8,6 +8,7 @@ import 'package:websafe_svg/websafe_svg.dart';
 import './component/carousel.dart';
 import './component/carousel_building.dart';
 import './edit_quarantine_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
@@ -121,7 +122,9 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                     children: [
                       IconButton(
                         iconSize: 38,
-                        onPressed: () {},
+                        onPressed: () async {
+                          launch("tel://${thisQuarantine.phone_number}");
+                        },
                         icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                       ),
                       IconButton(
