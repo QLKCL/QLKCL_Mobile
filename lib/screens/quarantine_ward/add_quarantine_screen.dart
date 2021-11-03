@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import '../../components/input.dart';
 import '../../components/dropdown_field.dart';
@@ -15,6 +18,9 @@ class NewQuarantine extends StatefulWidget {
 }
 
 class _NewQuarantineState extends State<StatefulWidget> {
+  final ImagePicker _picker = ImagePicker();
+  List<XFile> _imageFileList = [];
+
   final appBar = AppBar(
     title: Text('Thêm khu cách ly'),
     centerTitle: true,
@@ -100,14 +106,14 @@ class _NewQuarantineState extends State<StatefulWidget> {
             //Add picture
             Container(
               height: 50,
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 15),
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
               child: DottedBorder(
                 padding: EdgeInsets.all(0),
                 color: CustomColors.primary,
                 strokeWidth: 1,
                 child: OutlinedButton(
                   style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size.infinite) ,
+                    minimumSize: MaterialStateProperty.all(Size.infinite),
                     shape: MaterialStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -121,7 +127,9 @@ class _NewQuarantineState extends State<StatefulWidget> {
                       ),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    selectImages();
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -137,9 +145,48 @@ class _NewQuarantineState extends State<StatefulWidget> {
                 ),
               ),
             ),
+
+            //Selected pictures display
+            _imageFileList.isEmpty
+                ? Center(
+                    heightFactor: 5,
+                    child: Text('Chưa có hình nào được chọn'),
+                  )
+                : Container(
+                    margin: EdgeInsets.fromLTRB(11, 15, 11, 15),
+                    
+                    height: 250,
+                    child: Padding(
+                      padding:  EdgeInsets.all(5),
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                        ),
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                            padding: EdgeInsets.all(2),
+                            
+                            child: Image.file(File(_imageFileList[index].path),
+                                fit: BoxFit.cover),
+                          );
+                        },
+                        itemCount: _imageFileList.length,
+                      ),
+                    ),
+                  )
           ],
         ),
       ),
     );
+  }
+
+  Future<void> selectImages() async {
+    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      _imageFileList.addAll(selectedImages);
+    }
+    setState(() {});
+    //print("image list length:" + _imageFileList.length.toString());
   }
 }
