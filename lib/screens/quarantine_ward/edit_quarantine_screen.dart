@@ -199,7 +199,7 @@ class _EditQuarantineState extends State<StatefulWidget> {
                 ),
                 onPressed: () {},
                 child: Text(
-                  'Tạo',
+                  'Xác nhận',
                   textAlign: TextAlign.center,
                 ),
               ),
