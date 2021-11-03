@@ -16,6 +16,7 @@ class Input extends StatefulWidget {
   final void Function(String)? onChangedFunction;
   final void Function(String?)? onSavedFunction;
   String? error;
+  final TextCapitalization textCapitalization;
 
   Input(
       {Key? key,
@@ -33,7 +34,8 @@ class Input extends StatefulWidget {
       this.validatorFunction,
       this.onChangedFunction,
       this.onSavedFunction,
-      this.error})
+      this.error,
+      this.textCapitalization = TextCapitalization.none})
       : super(key: key);
 
   @override
@@ -80,6 +82,7 @@ class _InputState extends State<Input> {
                     widget.error!.isNotEmpty)
                 ? widget.error
                 : null),
+        textCapitalization: widget.textCapitalization,
       ),
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
