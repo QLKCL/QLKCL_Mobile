@@ -7,6 +7,7 @@ import 'package:qlkcl/theme/app_theme.dart';
 import '../../components/input.dart';
 import '../../components/dropdown_field.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'component/circle_button.dart';
 
 class NewQuarantine extends StatefulWidget {
   static const String routeName = "/quarantine-list/add";
@@ -164,9 +165,26 @@ class _NewQuarantineState extends State<StatefulWidget> {
                         ),
                         itemBuilder: (BuildContext ctx, int index) {
                           return Container(
-                            padding: EdgeInsets.all(2),
-                            child: Image.file(File(_imageFileList[index].path),
-                                fit: BoxFit.cover),
+                            padding: const EdgeInsets.all(5),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.file(File(_imageFileList[index].path),
+                                    fit: BoxFit.cover),
+                                Positioned(
+                                  right: -0.05,
+                                  top: -0.05,
+                                  child: CircleButton(
+                                      onTap: () {
+                                        _imageFileList.removeAt(index);
+                                        setState(() {
+                                          
+                                        });
+                                      },
+                                      iconData: Icons.close),
+                                ),
+                              ],
+                            ),
                           );
                         },
                         itemCount: _imageFileList.length,
@@ -177,7 +195,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
               alignment: Alignment.center,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  
                   fixedSize: const Size(241, 36),
                 ),
                 onPressed: () {},
@@ -199,6 +216,5 @@ class _NewQuarantineState extends State<StatefulWidget> {
       _imageFileList.addAll(selectedImages);
     }
     setState(() {});
-    //print("image list length:" + _imageFileList.length.toString());
   }
 }

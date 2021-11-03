@@ -54,47 +54,27 @@ class BuildingItem extends StatelessWidget {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.groups_rounded,
-                            size: 14,
-                            color: CustomColors.secondaryText,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '$currentMem' + '/$maxMem',
-                            softWrap: true,
-                            //overflow: TextOverflow.fade,
-                          ),
-                        ],
-                      )
-
-                      // child: Text.rich(
-                      //   TextSpan(
-                      //     style: TextStyle(
-                      //       fontSize: 12,
-                      //     ),
-                      //     children: [
-                      //       WidgetSpan(
-                      //         child: Icon(
-                      //           Icons.groups_rounded,
-                      //           size: 14,
-                      //           color: CustomColors.secondaryText,
-                      //         ),
-                      //       ),
-                      //       TextSpan(
-                      //         text: ' $currentMem' + '/$maxMem',
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
-                      ),
+                    margin: EdgeInsets.only(top: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.groups_rounded,
+                          size: 14,
+                          color: CustomColors.secondaryText,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '$currentMem' + '/$maxMem',
+                          softWrap: true,
+                          //overflow: TextOverflow.fade,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
