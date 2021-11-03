@@ -604,4 +604,61 @@ class _MemberState extends State<Member> {
   }
 }
 
+// Building,room card
+class QuarantineRelatedCard extends StatelessWidget {
+  // final VoidCallback onTap;
+  final String id;
+  final String name;
+  final int numOfMem;
+  final int maxMem;
+  const QuarantineRelatedCard(
+      // {required this.onTap,
+      {required this.id,
+      required this.name,
+      required this.numOfMem,
+      required this.maxMem});
 
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        //onTap: onTap,
+        title: Text(name),
+        subtitle: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text.rich(
+              TextSpan(
+                children: [
+                  WidgetSpan(
+                    child: Icon(
+                      Icons.groups_rounded,
+                      color: CustomColors.disableText,
+                    ),
+                  ),
+                  TextSpan(
+                    text: " Đang cách ly " + '$numOfMem' + '/$maxMem',
+                  )
+                ],
+              ),
+            ),
+            
+          ],
+        ),
+        isThreeLine: true,
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+              child: Icon(
+                Icons.more_vert,
+              ),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
