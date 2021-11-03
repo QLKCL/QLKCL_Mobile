@@ -2,6 +2,9 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:http/http.dart' as http;
+import 'package:qlkcl/utils/constant.dart';
 
 final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
@@ -9,13 +12,13 @@ Future<bool> getLoginState() async {
   var encryptionKey =
       base64Url.decode((await _secureStorage.read(key: 'key'))!);
 
-  var loginInfoBox = await Hive.openBox('loginInfo',
+  var authBox = await Hive.openBox('auth',
       encryptionCipher: HiveAesCipher(encryptionKey));
 
-  if (loginInfoBox.containsKey('isLoggedIn')) {
-    return loginInfoBox.get('isLoggedIn');
+  if (authBox.containsKey('isLoggedIn')) {
+    return authBox.get('isLoggedIn');
   } else {
-    loginInfoBox.put('isLoggedIn', false);
+    authBox.put('isLoggedIn', false);
     return false;
   }
 }
@@ -24,10 +27,99 @@ Future<void> setLoginState(bool state) async {
   var encryptionKey =
       base64Url.decode((await _secureStorage.read(key: 'key'))!);
 
-  var loginInfoBox = await Hive.openBox('loginInfo',
+  var authBox = await Hive.openBox('auth',
       encryptionCipher: HiveAesCipher(encryptionKey));
 
-  loginInfoBox.put('isLoggedIn', state);
+  authBox.put('isLoggedIn', state);
+}
+
+Future<String?> getAccessToken() async {
+  var encryptionKey =
+      base64Url.decode((await _secureStorage.read(key: 'key'))!);
+
+  var authBox = await Hive.openBox('auth',
+      encryptionCipher: HiveAesCipher(encryptionKey));
+
+  if (authBox.containsKey('accessToken')) {
+    return authBox.get('accessToken');
+  } else {
+    return null;
+  }
+}
+
+Future<void> setAccessToken(String accessToken) async {
+  var encryptionKey =
+      base64Url.decode((await _secureStorage.read(key: 'key'))!);
+
+  var authBox = await Hive.openBox('auth',
+      encryptionCipher: HiveAesCipher(encryptionKey));
+
+  authBox.put('accessToken', accessToken);
+}
+
+Future<String?> getRefreshToken() async {
+  var encryptionKey =
+      base64Url.decode((await _secureStorage.read(key: 'key'))!);
+
+  var authBox = await Hive.openBox('auth',
+      encryptionCipher: HiveAesCipher(encryptionKey));
+
+  if (authBox.containsKey('refreshToken')) {
+    return authBox.get('refreshToken');
+  } else {
+    return null;
+  }
+}
+
+Future<void> setRefreshToken(String refreshToken) async {
+  var encryptionKey =
+      base64Url.decode((await _secureStorage.read(key: 'key'))!);
+
+  var authBox = await Hive.openBox('auth',
+      encryptionCipher: HiveAesCipher(encryptionKey));
+
+  authBox.put('refreshToken', refreshToken);
+}
+
+Future<bool> setToken(String accessToken, String refreshToken) async {
+  setLoginState(true);
+  setAccessToken(accessToken);
+  setRefreshToken(refreshToken);
+  return true;
+}
+
+Future<bool> login(String phoneNumber, String password) async {
+  var headers = {'Accept': 'application/json'};
+  var request =
+      http.MultipartRequest('POST', Uri.parse(Constant.baseUrl + '/token'));
+  request.fields.addAll({'phone_number': phoneNumber, 'password': password});
+  request.headers.addAll(headers);
+  http.StreamedResponse response = await request.send();
+
+  if (response.statusCode == 200) {
+    var resp = await response.stream.bytesToString();
+    final data = jsonDecode(resp);
+    var accessToken = data['access'];
+    var refreshToken = data['refresh'];
+    setToken(accessToken, refreshToken);
+    return true;
+  } else {
+    print("Response code: " + response.statusCode.toString());
+    return false;
+  }
+}
+
+Future<bool> logout() async {
+  Hive.box('auth').clear();
+  setLoginState(false);
+  return true;
+}
+
+bool isTokenExpired(String _token) {
+  bool isExpired = false;
+  DateTime? expiryDate = Jwt.getExpiryDate(_token);
+  isExpired = expiryDate!.compareTo(DateTime.now()) < 0;
+  return isExpired;
 }
 
 Future<String> getRole() async {
