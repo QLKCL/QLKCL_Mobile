@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/theme/app_theme.dart';
 import '../../components/input.dart';
 import '../../components/dropdown_field.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 class NewQuarantine extends StatefulWidget {
   static const String routeName = "/quarantine-list/add";
@@ -21,7 +24,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        
         // margin: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +50,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
               required: true,
               itemValue: ['Việt Nam', 'Lào', 'Trung Quốc', 'Campuchia'],
             ),
-          
             DropdownInput(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
@@ -67,7 +68,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
               required: true,
               itemValue: ['1', '2', '3', '4'],
             ),
-            
             DropdownInput(
               label: 'Cơ sở cách ly',
               hint: 'Cơ sở cách ly',
@@ -95,6 +95,46 @@ class _NewQuarantineState extends State<StatefulWidget> {
               child: Text(
                 'Thêm ảnh',
                 style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+            //Add picture
+            Container(
+              height: 50,
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 15),
+              child: DottedBorder(
+                padding: EdgeInsets.all(0),
+                color: CustomColors.primary,
+                strokeWidth: 1,
+                child: OutlinedButton(
+                  style: ButtonStyle(
+                    minimumSize: MaterialStateProperty.all(Size.infinite) ,
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                    ),
+                    side: MaterialStateProperty.all(
+                      BorderSide(
+                        color: CustomColors.primary,
+                        width: 1.0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.camera_alt,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text('Thêm ảnh'),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
