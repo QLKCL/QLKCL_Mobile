@@ -153,11 +153,10 @@ class _NewQuarantineState extends State<StatefulWidget> {
                     child: Text('Chưa có hình nào được chọn'),
                   )
                 : Container(
-                    margin: EdgeInsets.fromLTRB(11, 15, 11, 15),
-                    
+                    margin: EdgeInsets.fromLTRB(8, 12, 8, 12),
                     height: 250,
                     child: Padding(
-                      padding:  EdgeInsets.all(5),
+                      padding: EdgeInsets.all(8),
                       child: GridView.builder(
                         shrinkWrap: true,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -166,7 +165,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
                         itemBuilder: (BuildContext ctx, int index) {
                           return Container(
                             padding: EdgeInsets.all(2),
-                            
                             child: Image.file(File(_imageFileList[index].path),
                                 fit: BoxFit.cover),
                           );
@@ -174,7 +172,21 @@ class _NewQuarantineState extends State<StatefulWidget> {
                         itemCount: _imageFileList.length,
                       ),
                     ),
-                  )
+                  ),
+            Container(
+              alignment: Alignment.center,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  
+                  fixedSize: const Size(241, 36),
+                ),
+                onPressed: () {},
+                child: Text(
+                  'Tạo',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
           ],
         ),
       ),
