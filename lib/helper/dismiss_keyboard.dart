@@ -17,9 +17,9 @@ class DismissKeyboard extends StatelessWidget {
       },
       // scroll to unfocus current input
       behavior: HitTestBehavior.opaque,
-      onPanDown: (_) {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
+      // onPanDown: (_) {
+      //   FocusScope.of(context).requestFocus(FocusNode());
+      // },
       child: child,
     );
   }

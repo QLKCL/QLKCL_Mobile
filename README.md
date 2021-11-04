@@ -27,3 +27,16 @@ or
 ```
 flutter run --no-sound-null-safety
 ```
+
+# Default account
+Login as admin
+```
+phone: 0123456789
+password: 123456
+```
+
+Login as member
+```
+phone: 
+password: 
+```

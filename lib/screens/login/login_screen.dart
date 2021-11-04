@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';
 import 'package:qlkcl/screens/register/register_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/utils/data_form.dart';
 
 class Login extends StatefulWidget {
   static const String routeName = "/sign_in";
@@ -18,19 +20,21 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/sign_in.png"),
-          ),
-          SignForm(),
-        ],
+    return DismissKeyboard(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+        ),
+        body: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(16),
+              child: Image.asset("assets/images/sign_in.png"),
+            ),
+            SignForm(),
+          ],
+        ),
       ),
     );
   }
@@ -47,8 +51,6 @@ class _SignFormState extends State<SignForm> {
   // of the TextField.
   final phoneController = TextEditingController();
   final passController = TextEditingController();
-  String? phoneError;
-  String? passError;
 
   String? email;
   String? password;
@@ -90,7 +92,6 @@ class _SignFormState extends State<SignForm> {
             required: true,
             validatorFunction: phoneValidator,
             controller: phoneController,
-            error: phoneError,
           ),
           Input(
             label: "Mật khẩu",
@@ -98,7 +99,7 @@ class _SignFormState extends State<SignForm> {
             obscure: true,
             required: true,
             controller: passController,
-            error: passError,
+            validatorFunction: passValidator,
           ),
           Container(
             margin: const EdgeInsets.only(right: 16),
@@ -125,22 +126,16 @@ class _SignFormState extends State<SignForm> {
               onPressed: () async {
                 // Validate returns true if the form is valid, or false otherwise.
                 if (_formKey.currentState!.validate()) {
-                  if (await login(phoneController.text, passController.text) ==
-                      true) {
-                    // if (passController.text != '123456') {
-                    //   setState(() {
-                    //     passError = "Mật khẩu không chính xác!";
-                    //   });
-                    // } else {
-                    //   setState(() {
-                    //     phoneError = null;
-                    //     passError = null;
-                    //   });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Đăng nhập thành công!')),
-                    );
+                  if (await login(loginDataForm(
+                      phoneController.text, passController.text))) {
                     Navigator.pushNamedAndRemoveUntil(context, App.routeName,
                         (Route<dynamic> route) => false);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Số điện thoại hoặc mật khẩu không hợp lệ!')),
+                    );
                   }
                 }
               },

@@ -88,11 +88,11 @@ Future<bool> setToken(String accessToken, String refreshToken) async {
   return true;
 }
 
-Future<bool> login(String phoneNumber, String password) async {
+Future<bool> login(Map<String, String> loginDataForm) async {
   var headers = {'Accept': 'application/json'};
   var request =
       http.MultipartRequest('POST', Uri.parse(Constant.baseUrl + '/token'));
-  request.fields.addAll({'phone_number': phoneNumber, 'password': password});
+  request.fields.addAll(loginDataForm);
   request.headers.addAll(headers);
   http.StreamedResponse response = await request.send();
 
