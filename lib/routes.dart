@@ -19,6 +19,7 @@ import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/edit_quarantine_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -43,4 +44,5 @@ final Map<String, WidgetBuilder> routes = {
   NewQuarantine.routeName: (context) => NewQuarantine(),
   AddTest.routeName: (context) => AddTest(),
   QuarantineDetailScreen.routeName: (context) => QuarantineDetailScreen(),
+  EditQuarantine.routeName: (context) => EditQuarantine(),
 };

@@ -1,5 +1,5 @@
 // ignore_for_file: unused_import
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
@@ -7,6 +7,8 @@ import 'package:qlkcl/theme/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import './component/carousel.dart';
 import './component/carousel_building.dart';
+import './edit_quarantine_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
@@ -60,7 +62,11 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              EditQuarantine.routeName,
+          );
+          },
           icon: Icon(Icons.edit),
         ),
       ],
@@ -116,7 +122,9 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                     children: [
                       IconButton(
                         iconSize: 38,
-                        onPressed: () {},
+                        onPressed: () async {
+                          launch("tel://${thisQuarantine.phone_number}");
+                        },
                         icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                       ),
                       IconButton(
@@ -130,7 +138,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
             ),
             //Building list
             Container(
-              margin: EdgeInsets.only(left: 23, right: 23, top: 0, bottom: 8),
+              margin: EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -177,7 +185,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   buildInformation(context, Icons.history,
                       ' Thời gian cách ly: ${thisQuarantine.quarantine_time}'),
                   buildInformation(context, Icons.groups_rounded,
-                      ' Đang cách ly: ${thisQuarantine.quarantine_time}'),
+                      ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                   buildInformation(context, Icons.account_box_outlined,
                       ' Quản lý: ${thisQuarantine.main_manager}'),
                   buildInformation(context, Icons.place_outlined,
