@@ -50,7 +50,7 @@ class AppTheme with ChangeNotifier {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: CustomColors.primary,
-          // minimumSize: Size(double.infinity, 48),
+          fixedSize: const Size(241, 36),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
@@ -86,6 +86,10 @@ class AppTheme with ChangeNotifier {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
+      ),
+      tabBarTheme: TabBarTheme(
+        labelStyle: TextStyle(fontSize: 16.0),
+        unselectedLabelStyle: TextStyle(fontSize: 16.0),
       ),
     );
   }

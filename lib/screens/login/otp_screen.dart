@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:qlkcl/screens/sign_in/create_password_screen.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/screens/login/create_password_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://pub.dev/packages/pin_code_fields
@@ -19,22 +20,25 @@ class Otp extends StatefulWidget {
 class _OtpState extends State<Otp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-        iconTheme: IconThemeData(
-          color: CustomColors.primaryText,
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/otp.png"),
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+          iconTheme: IconThemeData(
+            color: CustomColors.primaryText,
           ),
-          OtpForm(),
-        ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/otp.png"),
+              ),
+              OtpForm(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -51,26 +55,8 @@ class _OtpFormState extends State<OtpForm> {
   String? otp;
   bool hasError = false;
   TextEditingController textEditingController = TextEditingController();
-  // ..text = "123456";
 
-  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
-
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +64,6 @@ class _OtpFormState extends State<OtpForm> {
       children: [
         Container(
           alignment: Alignment.center,
-          padding: EdgeInsets.all(16),
           child: Text(
             "Nhập mã xác thực",
             style: Theme.of(context).textTheme.headline6,

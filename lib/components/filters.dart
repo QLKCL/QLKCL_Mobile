@@ -5,15 +5,17 @@ import 'package:qlkcl/components/input.dart';
 
 Future memberFilter(BuildContext context) {
   return showBarModalBottomSheet(
+    barrierColor: Colors.black54,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
     useRootNavigator: true,
     context: context,
     builder: (context) {
       // Using Wrap makes the bottom sheet height the height of the content.
       // Otherwise, the height will be half the height of the screen.
       return Wrap(
-//  direction = Axis.horizontal,
-
-        children: [
+        children: <Widget>[
           ListTile(
             title: Center(
               child: Text(
@@ -24,7 +26,7 @@ Future memberFilter(BuildContext context) {
           ),
           DropdownInput(
             label: 'Khu cách ly',
-            hint: 'KTX Khu A',
+            hint: 'Chọn khu cách ly',
             itemValue: ['KTX Khu A'],
           ),
           DropdownInput(
@@ -42,15 +44,15 @@ Future memberFilter(BuildContext context) {
             hint: 'Chọn phòng',
             itemValue: ["1"],
           ),
-          Container(
-            child: Input(
-              label: 'Ngày bắt đầu cách ly (Từ ngày)',
-            ),
+          Input(
+            label: 'Ngày bắt đầu cách ly (Từ ngày)',
+          ),
+          Input(
+            label: 'Ngày bắt đầu cách ly (Đến ngày)',
           ),
           Container(
-            child: Input(
-              label: 'Ngày bắt đầu cách ly (Đến ngày)',
-            ),
+            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+            child: Text("Diện cách ly"),
           ),
           Container(
             margin: const EdgeInsets.only(right: 16),

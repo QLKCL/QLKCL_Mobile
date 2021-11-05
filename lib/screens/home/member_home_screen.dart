@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -24,7 +24,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Trang chủ"),
         centerTitle: true,
@@ -32,12 +31,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
           onPressed: () {},
           icon: Icon(Icons.help_outline),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.add_box_outlined),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(

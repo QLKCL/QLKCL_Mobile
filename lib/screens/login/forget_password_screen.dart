@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/sign_in/otp_screen.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/screens/login/otp_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -14,21 +15,25 @@ class ForgetPassword extends StatefulWidget {
 class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-        iconTheme: IconThemeData(
-          color: CustomColors.primaryText,
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/forget_password.png"),
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+          iconTheme: IconThemeData(
+            color: CustomColors.primaryText,
           ),
-          ForgetForm(),
-        ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/forget_password.png"),
+              ),
+              ForgetForm(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -42,21 +47,6 @@ class ForgetForm extends StatefulWidget {
 class _ForgetFormState extends State<ForgetForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +56,6 @@ class _ForgetFormState extends State<ForgetForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(16),
             child: Text(
               "Quên mật khẩu",
               style: Theme.of(context).textTheme.headline6,

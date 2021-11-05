@@ -64,9 +64,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushNamed(
-              EditQuarantine.routeName,
-            );
+            Navigator.pushNamed(context, EditQuarantine.routeName);
           },
           icon: Icon(Icons.edit),
         ),
@@ -153,9 +151,8 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        BuildingListScreen.routeName,
-                      );
+                      Navigator.pushNamed(
+                          context, BuildingListScreen.routeName);
                     },
                     child: Text('Xem tất cả'),
                     style: ButtonStyle(

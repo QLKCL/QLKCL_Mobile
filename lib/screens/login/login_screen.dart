@@ -1,73 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
-import 'package:qlkcl/screens/sign_in/forget_password_screen.dart';
-import 'package:qlkcl/screens/sign_up/sign_up_screen.dart';
+import 'package:qlkcl/screens/login/forget_password_screen.dart';
+import 'package:qlkcl/screens/register/register_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/utils/data_form.dart';
 
-class SignIn extends StatefulWidget {
+class Login extends StatefulWidget {
   static const String routeName = "/sign_in";
-  SignIn({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _LoginState createState() => _LoginState();
 }
 
-class _SignInState extends State<SignIn> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/sign_in.png"),
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/sign_in.png"),
+              ),
+              LoginForm(),
+            ],
           ),
-          SignForm(),
-        ],
+        ),
       ),
     );
   }
 }
 
-class SignForm extends StatefulWidget {
+class LoginForm extends StatefulWidget {
   @override
-  _SignFormState createState() => _SignFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final phoneController = TextEditingController();
   final passController = TextEditingController();
-  String? phoneError;
-  String? passError;
-
-  String? email;
-  String? password;
-  bool? remember = false;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +61,7 @@ class _SignFormState extends State<SignForm> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Đăng nhập",
               style: Theme.of(context).textTheme.headline6,
@@ -86,11 +70,10 @@ class _SignFormState extends State<SignForm> {
           Input(
             label: "Số điện thoại",
             hint: "Nhập số điện thoại",
-            type: TextInputType.number,
+            type: TextInputType.phone,
             required: true,
             validatorFunction: phoneValidator,
             controller: phoneController,
-            error: phoneError,
           ),
           Input(
             label: "Mật khẩu",
@@ -98,11 +81,10 @@ class _SignFormState extends State<SignForm> {
             obscure: true,
             required: true,
             controller: passController,
-            error: passError,
-            helper: "123456",
+            validatorFunction: passValidator,
           ),
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.fromLTRB(0, 16, 16, 0),
             child: Row(
               children: [
                 Spacer(),
@@ -126,21 +108,16 @@ class _SignFormState extends State<SignForm> {
               onPressed: () async {
                 // Validate returns true if the form is valid, or false otherwise.
                 if (_formKey.currentState!.validate()) {
-                  if (passController.text != '123456') {
-                    setState(() {
-                      passError = "Mật khẩu không chính xác!";
-                    });
-                  } else {
-                    setState(() {
-                      phoneError = null;
-                      passError = null;
-                    });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Đăng nhập thành công!')),
-                    );
-                    await setLoginState(true);
+                  if (await login(loginDataForm(
+                      phoneController.text, passController.text))) {
                     Navigator.pushNamedAndRemoveUntil(context, App.routeName,
-                    (Route<dynamic> route) => false);
+                        (Route<dynamic> route) => false);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Số điện thoại hoặc mật khẩu không hợp lệ!')),
+                    );
                   }
                 }
               },
@@ -152,7 +129,7 @@ class _SignFormState extends State<SignForm> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, SignUp.routeName);
+              Navigator.pushNamed(context, Register.routeName);
             },
             child: Text(
               "Đăng ký cách ly",

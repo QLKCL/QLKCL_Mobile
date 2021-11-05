@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/test/update_test_screen.dart';
 
 class ListTestNoResult extends StatefulWidget {
   static const String routeName = "/list_test_no_result";
@@ -13,7 +14,6 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Xét nghiệm cần cập nhật"),
         centerTitle: true,
@@ -33,7 +33,9 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
             birthday: "20/05/2000",
             id: "PCR-123456789",
             time: "22/09/2021",
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, UpdateTest.routeName);
+            },
           ),
         ],
       )),

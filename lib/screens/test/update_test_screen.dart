@@ -22,47 +22,42 @@ class _UpdateTestState extends State<StatefulWidget> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
             children: [
-              Container(
-                child: Input(
-                  label: 'Mã phiếu',
-                  required: true,
-                  enabled: false,
-                  initValue: "PCR-123456",
-                ),
+              Input(
+                label: 'Mã phiếu',
+                required: true,
+                enabled: false,
+                initValue: "PCR-123456",
               ),
-              Container(
-                child: Input(
-                  label: 'Mã người xét nghiệm'
-                ),
-              ),
-              Container(
-                child: Input(
-                  label: 'Họ và tên'
-                ),
+              Input(label: 'Mã người xét nghiệm'),
+              Input(
+                label: 'Họ và tên',
+                hint: 'Nhập họ và tên',
               ),
               DropdownInput(
                 label: 'Trạng thái',
-                hint: 'Đang chờ kết quả',
+                hint: 'Chọn trạng thái',
                 required: true,
                 itemValue: ['Đang chờ kết quả', 'Đã có kết quả'],
+                selectedItem: 'Đang chờ kết quả',
+                maxHeight: 112,
               ),
               DropdownInput(
                 label: 'Kỹ thuật xét nghiệm',
-                hint: 'Test nhanh',
+                hint: 'Chọn kỹ thuật xét nghiệm',
                 required: true,
                 itemValue: ['Test nhanh', 'Real time PCR'],
+                selectedItem: 'Test nhanh',
+                maxHeight: 112,
               ),
               DropdownInput(
                 label: 'Kết quả',
-                hint: 'Chưa có kết quả',
+                hint: 'Chọn kết quả',
                 required: true,
                 itemValue: ['Chưa có kết quả', 'Âm tính', 'Dương tính'],
+                selectedItem: 'Chưa có kết quả',
+                maxHeight: 168,
               ),
               Container(
                 margin: const EdgeInsets.all(16),
