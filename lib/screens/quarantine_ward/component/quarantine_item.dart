@@ -31,10 +31,9 @@ class QuarantineItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => selectQuarantine(context),
-      child: Card(
-        elevation: 5,
+    return Card(
+      child: InkWell(
+        onTap: () => selectQuarantine(context),
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Row(

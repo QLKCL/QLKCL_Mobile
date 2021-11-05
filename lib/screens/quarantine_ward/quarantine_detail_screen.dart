@@ -9,6 +9,7 @@ import './component/carousel.dart';
 import './component/carousel_building.dart';
 import './edit_quarantine_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import './building_list_screen.dart';
 
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
@@ -63,9 +64,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushNamed(
-              EditQuarantine.routeName,
-          );
+            Navigator.pushNamed(context, EditQuarantine.routeName);
           },
           icon: Icon(Icons.edit),
         ),
@@ -77,6 +76,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Carousel(),
             SizedBox(
@@ -150,7 +150,10 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, BuildingListScreen.routeName);
+                    },
                     child: Text('Xem tất cả'),
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(

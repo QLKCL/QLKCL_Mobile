@@ -42,6 +42,8 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
     });
   }
 
+  bool searched = false;
+
   // void _startAddNewQuanrantine(BuildContext ctx) {
   //   Navigator.push(context, MaterialPageRoute(builder: (context) {
   //     return NewQuarantine(_addNewQuarantine(String id, String full_name, int phone_number, String country_id, String city_id, String ward_id, String district_id, String type, int quarantine_time, String main_manager));
@@ -51,13 +53,45 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Các khu cách ly'),
+      title: searched
+          ? Container(
+              width: double.infinity,
+              height: 36,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(5)),
+              child: Center(
+                child: TextField(
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          /* Clear the search field */
+                        },
+                      ),
+                      hintText: 'Search...',
+                      border: InputBorder.none),
+                ),
+              ),
+            )
+          : Text('Các khu cách ly'),
       centerTitle: true,
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.search),
-        ),
+        searched
+            ? IconButton(
+                onPressed: () {
+                  //quarantine filter bottomsheet
+                },
+                icon: Icon(Icons.filter_list_outlined),
+              )
+            : IconButton(
+                onPressed: () {
+                  setState(() {
+                    searched = true;
+                  });
+                },
+                icon: Icon(Icons.search),
+              ),
       ],
     );
 

@@ -200,7 +200,7 @@ class _EditQuarantineState extends State<StatefulWidget> {
                 child: ElevatedButton(
                   onPressed: () {},
                   child: Text(
-                    'Tạo',
+                    'Xác nhận',
                     textAlign: TextAlign.center,
                   ),
                 ),
