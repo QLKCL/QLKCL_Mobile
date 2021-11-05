@@ -24,9 +24,6 @@ class _UpdateTestState extends State<StatefulWidget> {
         body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
             children: [
               Container(
                 child: Input(
@@ -37,32 +34,34 @@ class _UpdateTestState extends State<StatefulWidget> {
                 ),
               ),
               Container(
-                child: Input(
-                  label: 'Mã người xét nghiệm'
-                ),
+                child: Input(label: 'Mã người xét nghiệm'),
               ),
               Container(
                 child: Input(
-                  label: 'Họ và tên'
+                  label: 'Họ và tên',
+                  hint: 'Nhập họ và tên',
                 ),
               ),
               DropdownInput(
                 label: 'Trạng thái',
-                hint: 'Đang chờ kết quả',
+                hint: 'Chọn trạng thái',
                 required: true,
                 itemValue: ['Đang chờ kết quả', 'Đã có kết quả'],
+                selectedItem: 'Đang chờ kết quả',
               ),
               DropdownInput(
                 label: 'Kỹ thuật xét nghiệm',
-                hint: 'Test nhanh',
+                hint: 'Chọn kỹ thuật xét nghiệm',
                 required: true,
                 itemValue: ['Test nhanh', 'Real time PCR'],
+                selectedItem: 'Test nhanh',
               ),
               DropdownInput(
                 label: 'Kết quả',
-                hint: 'Chưa có kết quả',
+                hint: 'Chọn kết quả',
                 required: true,
                 itemValue: ['Chưa có kết quả', 'Âm tính', 'Dương tính'],
+                selectedItem: 'Chưa có kết quả',
               ),
               Container(
                 margin: const EdgeInsets.all(16),

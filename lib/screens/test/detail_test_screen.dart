@@ -2,25 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/screens/test/update_test_screen.dart';
 
-class AddTest extends StatefulWidget {
-  static const String routeName = "/add_test";
-  AddTest({Key? key}) : super(key: key);
+class DetailTest extends StatefulWidget {
+  static const String routeName = "/detail_test";
+  DetailTest({Key? key}) : super(key: key);
 
   @override
-  _AddTestState createState() => _AddTestState();
+  _DetailTestState createState() => _DetailTestState();
 }
 
-class _AddTestState extends State<StatefulWidget> {
+class _DetailTestState extends State<StatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
-        // resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: Text('Tạo phiếu xét nghiệm'),
+          title: Text('Thông tin phiếu xét nghiệm'),
           centerTitle: true,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, UpdateTest.routeName);
+              },
+              icon: Icon(Icons.edit),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(top: 16),
@@ -65,13 +72,21 @@ class _AddTestState extends State<StatefulWidget> {
                 selectedItem: 'Chưa có kết quả',
               ),
               Container(
-                margin: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Tạo',
-                    style: TextStyle(color: CustomColors.white),
-                  ),
+                child: Input(
+                  label: 'Thời gian tạo',
+                  initValue: "08/09/2021 21:00",
+                ),
+              ),
+              Container(
+                child: Input(
+                  label: 'Cập nhật lần cuối',
+                  initValue: "08/09/2021 21:00",
+                ),
+              ),
+              Container(
+                child: Input(
+                  label: 'Người cập nhật',
+                  initValue: "Nguyễn Văn A",
                 ),
               ),
             ],

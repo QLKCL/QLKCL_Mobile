@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
+import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
@@ -30,6 +31,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           IconButton(
             onPressed: () {
               showBarModalBottomSheet(
+                barrierColor: Colors.black54,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                ),
                 useRootNavigator: true,
                 context: context,
                 builder: (context) {
@@ -65,9 +70,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       Divider(),
                       ListTile(
-                        leading: Icon(Icons.business_outlined),
-                        title: Text('Khu cách ly'),
-                      ),
+                          leading: Icon(Icons.business_outlined),
+                          title: Text('Khu cách ly'),
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, NewQuarantine.routeName);
+                          }),
                     ],
                   );
                 },
@@ -85,7 +93,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
             onTap: () {
-              Navigator.pushNamed(context, ListTestNoResult.routeName);
+              Navigator.of(context, rootNavigator: true)
+                  .pushNamed(ListTestNoResult.routeName);
             },
           ),
           InfoManagerHomePage(

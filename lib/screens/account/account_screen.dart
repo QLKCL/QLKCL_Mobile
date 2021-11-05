@@ -42,8 +42,8 @@ class _AccountState extends State<Account> {
               children: <Widget>[
                 ListTile(
                   onTap: () {
-                    Navigator.pushNamed(
-                        context, ListMedicalDeclaration.routeName);
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListMedicalDeclaration.routeName);
                   },
                   title: Text('Lịch sử khai báo y tế'),
                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -54,7 +54,8 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.pushNamed(context, ListTest.routeName);
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListTest.routeName);
                   },
                   title: Text('Kết quả xét nghiệm'),
                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -86,9 +87,8 @@ class _AccountState extends State<Account> {
                 ListTile(
                   onTap: () {
                     // cre: https://stackoverflow.com/questions/55192347/in-flutter-bottom-navigation-bar-should-disappear-when-we-navigate-to-new-screen
-                    Navigator.of(context, rootNavigator: true).pushNamed(
-                      ChangePassword.routeName
-                    );
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ChangePassword.routeName);
                   },
                   title: Text('Đổi mật khẩu'),
                   trailing: Icon(Icons.keyboard_arrow_right),
@@ -101,8 +101,7 @@ class _AccountState extends State<Account> {
               onTap: () async {
                 logout();
                 Navigator.of(context, rootNavigator: true)
-                    .pushNamedAndRemoveUntil(
-                        Login.routeName, (route) => false);
+                    .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),
