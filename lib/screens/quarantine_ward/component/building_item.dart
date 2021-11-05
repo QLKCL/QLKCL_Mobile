@@ -19,17 +19,20 @@ class BuildingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => selectBuilding(context),
-      child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        //margin: EdgeInsets.only(right: 10),
-        child: Column(
+      // child: Card(
+      //   elevation: 5,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(5),
+      //   ),
+      //   //margin: EdgeInsets.only(right: 10),
+      //   child: Column(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               height: 76,
+              width: MediaQuery.of(context).size.width*0.3,
+              //margin: EdgeInsets.symmetric(horizontal: 10),
               alignment: Alignment.center,
               child: SvgPicture.asset('assets/svg/building.svg'),
               decoration: BoxDecoration(
@@ -80,7 +83,7 @@ class BuildingItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      
     );
   }
 }

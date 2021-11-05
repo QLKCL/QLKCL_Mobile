@@ -65,7 +65,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pushNamed(
               EditQuarantine.routeName,
-          );
+            );
           },
           icon: Icon(Icons.edit),
         ),
@@ -77,6 +77,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Carousel(),
             SizedBox(
