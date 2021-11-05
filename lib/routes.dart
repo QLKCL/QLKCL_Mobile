@@ -6,6 +6,7 @@ import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
@@ -49,4 +50,5 @@ final Map<String, WidgetBuilder> routes = {
   DetailTest.routeName: (context) => DetailTest(),
   QuarantineDetailScreen.routeName: (context) => QuarantineDetailScreen(),
   EditQuarantine.routeName: (context) => EditQuarantine(),
+  AddMember.routeName: (context) => AddMember(),
 };
