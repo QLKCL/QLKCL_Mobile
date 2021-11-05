@@ -19,7 +19,6 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Quản lý tài khoản"),
         centerTitle: true,

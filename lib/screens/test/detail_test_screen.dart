@@ -30,25 +30,18 @@ class _DetailTestState extends State<StatefulWidget> {
           ],
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 16),
           child: Column(
             children: [
-              Container(
-                child: Input(
-                  label: 'Mã phiếu',
-                  required: true,
-                  enabled: false,
-                  initValue: "PCR-123456",
-                ),
+              Input(
+                label: 'Mã phiếu',
+                required: true,
+                enabled: false,
+                initValue: "PCR-123456",
               ),
-              Container(
-                child: Input(label: 'Mã người xét nghiệm'),
-              ),
-              Container(
-                child: Input(
-                  label: 'Họ và tên',
-                  hint: 'Nhập họ và tên',
-                ),
+              Input(label: 'Mã người xét nghiệm'),
+              Input(
+                label: 'Họ và tên',
+                hint: 'Nhập họ và tên',
               ),
               DropdownInput(
                 label: 'Trạng thái',
@@ -71,23 +64,17 @@ class _DetailTestState extends State<StatefulWidget> {
                 itemValue: ['Chưa có kết quả', 'Âm tính', 'Dương tính'],
                 selectedItem: 'Chưa có kết quả',
               ),
-              Container(
-                child: Input(
-                  label: 'Thời gian tạo',
-                  initValue: "08/09/2021 21:00",
-                ),
+              Input(
+                label: 'Thời gian tạo',
+                initValue: "08/09/2021 21:00",
               ),
-              Container(
-                child: Input(
-                  label: 'Cập nhật lần cuối',
-                  initValue: "08/09/2021 21:00",
-                ),
+              Input(
+                label: 'Cập nhật lần cuối',
+                initValue: "08/09/2021 21:00",
               ),
-              Container(
-                child: Input(
-                  label: 'Người cập nhật',
-                  initValue: "Nguyễn Văn A",
-                ),
+              Input(
+                label: 'Người cập nhật',
+                initValue: "Nguyễn Văn A",
               ),
             ],
           ),

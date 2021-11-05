@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
+import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
@@ -19,7 +20,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Trang chủ"),
         centerTitle: true,
@@ -62,6 +62,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ListTile(
                         leading: Icon(Icons.person_add_alt),
                         title: Text('Người cách ly'),
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, AddMember.routeName);
+                        },
                       ),
                       Divider(),
                       ListTile(
@@ -70,12 +74,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       Divider(),
                       ListTile(
-                          leading: Icon(Icons.business_outlined),
-                          title: Text('Khu cách ly'),
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, NewQuarantine.routeName);
-                          }),
+                        leading: Icon(Icons.business_outlined),
+                        title: Text('Khu cách ly'),
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, NewQuarantine.routeName);
+                        },
+                      ),
                     ],
                   );
                 },

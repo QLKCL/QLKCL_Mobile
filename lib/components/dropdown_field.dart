@@ -17,10 +17,10 @@ class DropdownInput<T> extends StatefulWidget {
   final double? maxHeight;
   final TextEditingController? controller;
   final bool enabled;
-  final String? Function(T?)? validatorFunction;
-  final void Function(T?)? onChangedFunction;
-  final void Function(T?)? onSavedFunction;
-  final Future<List<T>> Function(String?)? onFindFunction;
+  final String? Function(T?)? validator;
+  final void Function(T?)? onChanged;
+  final void Function(T?)? onSaved;
+  final Future<List<T>> Function(String?)? onFind;
   String? error;
 
   DropdownInput(
@@ -37,10 +37,10 @@ class DropdownInput<T> extends StatefulWidget {
       this.maxHeight,
       this.controller,
       this.enabled = true,
-      this.validatorFunction,
-      this.onChangedFunction,
-      this.onSavedFunction,
-      this.onFindFunction,
+      this.validator,
+      this.onChanged,
+      this.onSaved,
+      this.onFind,
       this.error})
       : super(key: key);
 
@@ -52,17 +52,17 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
-        onSaved: widget.onSavedFunction,
-        onChanged: widget.onChangedFunction,
-        validator: widget.validatorFunction,
+        onSaved: widget.onSaved,
+        onChanged: widget.onChanged,
+        validator: widget.validator,
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-          errorText: (widget.validatorFunction == null &&
+          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
               ? widget.error
@@ -76,7 +76,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
         enabled: widget.enabled,
-        onFind: widget.onFindFunction,
+        onFind: widget.onFind,
         searchFieldProps: (widget.showSearchBox && widget.controller != null)
             ? TextFieldProps(
                 controller: widget.controller,
@@ -99,7 +99,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String label;
   final String? hint;
   final bool required;
-  final List<T> itemValue;
+  final List<T>? itemValue;
   final List<T> selectedItem;
   final Mode mode;
   final String? helper;
@@ -108,18 +108,20 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final double? maxHeight;
   final TextEditingController? controller;
   final bool enabled;
-  final String? Function(List<T>?)? validatorFunction;
-  final void Function(List<T>?)? onChangedFunction;
-  final void Function(List<T>?)? onSavedFunction;
-  final Future<List<T>> Function(String?)? onFindFunction;
+  final String? Function(List<T>?)? validator;
+  final void Function(List<T>?)? onChanged;
+  final void Function(List<T>?)? onSaved;
+  final Future<List<T>> Function(String?)? onFind;
+  bool Function(T?, T?)? compareFn;
   String? error;
+  final Widget Function(BuildContext, List<T>)? dropdownBuilder;
 
   MultiDropdownInput(
       {Key? key,
       required this.label,
       this.hint,
       this.required: false,
-      required this.itemValue,
+      this.itemValue,
       this.selectedItem = const [],
       this.mode = Mode.MENU,
       this.helper,
@@ -128,11 +130,13 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.maxHeight,
       this.controller,
       this.enabled = true,
-      this.validatorFunction,
-      this.onChangedFunction,
-      this.onSavedFunction,
-      this.onFindFunction,
-      this.error})
+      this.validator,
+      this.onChanged,
+      this.onSaved,
+      this.onFind,
+      this.error,
+      this.dropdownBuilder,
+      this.compareFn})
       : super(key: key);
 
   @override
@@ -143,17 +147,17 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
-        onSaved: widget.onSavedFunction,
-        onChanged: widget.onChangedFunction,
-        validator: widget.validatorFunction,
+        onSaved: widget.onSaved,
+        onChanged: widget.onChanged,
+        validator: widget.validator,
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
-          errorText: (widget.validatorFunction == null &&
+          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
               ? widget.error
@@ -167,12 +171,16 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
         enabled: widget.enabled,
-        onFind: widget.onFindFunction,
-        popupSelectionWidget: (cnt, T item, bool isSelected) {
+        onFind: widget.onFind,
+        compareFn: widget.compareFn,
+        popupSelectionWidget: (context, T item, bool isSelected) {
           return isSelected
-              ? Icon(
-                  Icons.check,
-                  color: Colors.blue,
+              ? Container(
+                  padding: EdgeInsets.only(right: 16),
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.blue,
+                  ),
                 )
               : Container();
         },
@@ -189,6 +197,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                 ),
               )
             : null,
+        dropdownBuilder: widget.dropdownBuilder,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class Register extends StatefulWidget {
@@ -13,51 +14,39 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-        iconTheme: IconThemeData(
-          color: CustomColors.primaryText,
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/sign_up.png"),
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+          iconTheme: IconThemeData(
+            color: CustomColors.primaryText,
           ),
-          SignForm(),
-        ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/sign_up.png"),
+              ),
+              RegisterForm(),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-class SignForm extends StatefulWidget {
+class RegisterForm extends StatefulWidget {
   @override
-  _SignFormState createState() => _SignFormState();
+  _RegisterFormState createState() => _RegisterFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
-  bool? remember = false;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +56,7 @@ class _SignFormState extends State<SignForm> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Đăng ký cách ly",
               style: Theme.of(context).textTheme.headline6,

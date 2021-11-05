@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
@@ -47,7 +48,6 @@ class _ListAllMemberState extends State<ListAllMember>
   Widget build(BuildContext context) {
     return DismissKeyboard(
         child: Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: longPressFlag
             ? Text('${indexList.length} đã chọn')
@@ -110,8 +110,6 @@ class _ListAllMemberState extends State<ListAllMember>
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
-          labelStyle: TextStyle(fontSize: 16.0),
-          unselectedLabelStyle: TextStyle(fontSize: 16.0),
           indicatorColor: CustomColors.white,
           tabs: [
             Tab(text: "Toàn bộ"),
@@ -127,7 +125,9 @@ class _ListAllMemberState extends State<ListAllMember>
           ? FloatingActionButton(
               heroTag: "member_fab",
               onPressed: () {
-                // Respond to button press
+                Navigator.of(context, rootNavigator: true).pushNamed(
+                  AddMember.routeName,
+                );
               },
               child: Icon(Icons.add),
             )

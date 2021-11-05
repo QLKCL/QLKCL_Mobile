@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class CreatePassword extends StatefulWidget {
@@ -13,21 +14,25 @@ class CreatePassword extends StatefulWidget {
 class _CreatePasswordState extends State<CreatePassword> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-        iconTheme: IconThemeData(
-          color: CustomColors.primaryText,
-        ),
-      ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Image.asset("assets/images/otp.png"),
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+          iconTheme: IconThemeData(
+            color: CustomColors.primaryText,
           ),
-          CreatePasswordForm(),
-        ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/otp.png"),
+              ),
+              CreatePasswordForm(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -43,21 +48,6 @@ class _CreatePasswordFormState extends State<CreatePasswordForm> {
   String? email;
   String? password;
   String? confirmPasswod;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +57,6 @@ class _CreatePasswordFormState extends State<CreatePasswordForm> {
         children: [
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(16),
             child: Text(
               "Tạo mật khẩu mới",
               style: Theme.of(context).textTheme.headline6,

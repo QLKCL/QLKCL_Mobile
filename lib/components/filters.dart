@@ -14,7 +14,7 @@ Future memberFilter(BuildContext context) {
     builder: (context) {
       // Using Wrap makes the bottom sheet height the height of the content.
       // Otherwise, the height will be half the height of the screen.
-      return ListView(
+      return Wrap(
         children: <Widget>[
           ListTile(
             title: Center(
@@ -26,7 +26,7 @@ Future memberFilter(BuildContext context) {
           ),
           DropdownInput(
             label: 'Khu cách ly',
-            hint: 'KTX Khu A',
+            hint: 'Chọn khu cách ly',
             itemValue: ['KTX Khu A'],
           ),
           DropdownInput(
@@ -44,18 +44,14 @@ Future memberFilter(BuildContext context) {
             hint: 'Chọn phòng',
             itemValue: ["1"],
           ),
-          Container(
-            child: Input(
-              label: 'Ngày bắt đầu cách ly (Từ ngày)',
-            ),
+          Input(
+            label: 'Ngày bắt đầu cách ly (Từ ngày)',
+          ),
+          Input(
+            label: 'Ngày bắt đầu cách ly (Đến ngày)',
           ),
           Container(
-            child: Input(
-              label: 'Ngày bắt đầu cách ly (Đến ngày)',
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 16),
+            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
             child: Text("Diện cách ly"),
           ),
           Container(

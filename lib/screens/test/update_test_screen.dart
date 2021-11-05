@@ -22,25 +22,18 @@ class _UpdateTestState extends State<StatefulWidget> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 16),
           child: Column(
             children: [
-              Container(
-                child: Input(
-                  label: 'Mã phiếu',
-                  required: true,
-                  enabled: false,
-                  initValue: "PCR-123456",
-                ),
+              Input(
+                label: 'Mã phiếu',
+                required: true,
+                enabled: false,
+                initValue: "PCR-123456",
               ),
-              Container(
-                child: Input(label: 'Mã người xét nghiệm'),
-              ),
-              Container(
-                child: Input(
-                  label: 'Họ và tên',
-                  hint: 'Nhập họ và tên',
-                ),
+              Input(label: 'Mã người xét nghiệm'),
+              Input(
+                label: 'Họ và tên',
+                hint: 'Nhập họ và tên',
               ),
               DropdownInput(
                 label: 'Trạng thái',
@@ -48,6 +41,7 @@ class _UpdateTestState extends State<StatefulWidget> {
                 required: true,
                 itemValue: ['Đang chờ kết quả', 'Đã có kết quả'],
                 selectedItem: 'Đang chờ kết quả',
+                maxHeight: 112,
               ),
               DropdownInput(
                 label: 'Kỹ thuật xét nghiệm',
@@ -55,6 +49,7 @@ class _UpdateTestState extends State<StatefulWidget> {
                 required: true,
                 itemValue: ['Test nhanh', 'Real time PCR'],
                 selectedItem: 'Test nhanh',
+                maxHeight: 112,
               ),
               DropdownInput(
                 label: 'Kết quả',
@@ -62,6 +57,7 @@ class _UpdateTestState extends State<StatefulWidget> {
                 required: true,
                 itemValue: ['Chưa có kết quả', 'Âm tính', 'Dương tính'],
                 selectedItem: 'Chưa có kết quả',
+                maxHeight: 168,
               ),
               Container(
                 margin: const EdgeInsets.all(16),

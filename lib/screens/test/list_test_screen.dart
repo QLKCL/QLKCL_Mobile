@@ -14,7 +14,6 @@ class _ListTestState extends State<ListTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Lịch sử xét nghiệm"),
         centerTitle: true,

@@ -87,6 +87,10 @@ class AppTheme with ChangeNotifier {
           borderRadius: BorderRadius.circular(4),
         ),
       ),
+      tabBarTheme: TabBarTheme(
+        labelStyle: TextStyle(fontSize: 16.0),
+        unselectedLabelStyle: TextStyle(fontSize: 16.0),
+      ),
     );
   }
 

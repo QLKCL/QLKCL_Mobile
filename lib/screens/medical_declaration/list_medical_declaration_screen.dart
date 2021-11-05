@@ -13,7 +13,6 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text("Lịch sử khai báo y tế"),
         centerTitle: true,

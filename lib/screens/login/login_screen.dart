@@ -22,54 +22,36 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: CustomColors.background,
         ),
-        body: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: Image.asset("assets/images/sign_in.png"),
-            ),
-            SignForm(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/sign_in.png"),
+              ),
+              LoginForm(),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class SignForm extends StatefulWidget {
+class LoginForm extends StatefulWidget {
   @override
-  _SignFormState createState() => _SignFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _SignFormState extends State<SignForm> {
+class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
   final phoneController = TextEditingController();
   final passController = TextEditingController();
-
-  String? email;
-  String? password;
-  bool? remember = false;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +61,7 @@ class _SignFormState extends State<SignForm> {
         children: [
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Đăng nhập",
               style: Theme.of(context).textTheme.headline6,
@@ -88,7 +70,7 @@ class _SignFormState extends State<SignForm> {
           Input(
             label: "Số điện thoại",
             hint: "Nhập số điện thoại",
-            type: TextInputType.number,
+            type: TextInputType.phone,
             required: true,
             validatorFunction: phoneValidator,
             controller: phoneController,
@@ -102,7 +84,7 @@ class _SignFormState extends State<SignForm> {
             validatorFunction: passValidator,
           ),
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.fromLTRB(0, 16, 16, 0),
             child: Row(
               children: [
                 Spacer(),

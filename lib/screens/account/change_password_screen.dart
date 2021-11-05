@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class ChangePassword extends StatefulWidget {
@@ -13,22 +14,24 @@ class ChangePassword extends StatefulWidget {
 class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: CustomColors.background,
-        iconTheme: IconThemeData(
-          color: CustomColors.primaryText,
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: CustomColors.background,
+          iconTheme: IconThemeData(
+            color: CustomColors.primaryText,
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: Image.asset("assets/images/otp.png"),
-            ),
-            ChangePasswordForm(),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Image.asset("assets/images/otp.png"),
+              ),
+              ChangePasswordForm(),
+            ],
+          ),
         ),
       ),
     );
@@ -46,21 +49,6 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
   String? oldPassword;
   String? password;
   String? confirmPasswod;
-  final List<String?> errors = [];
-
-  void addError({String? error}) {
-    if (!errors.contains(error))
-      setState(() {
-        errors.add(error);
-      });
-  }
-
-  void removeError({String? error}) {
-    if (errors.contains(error))
-      setState(() {
-        errors.remove(error);
-      });
-  }
 
   @override
   Widget build(BuildContext context) {

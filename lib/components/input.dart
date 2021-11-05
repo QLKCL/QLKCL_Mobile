@@ -17,6 +17,7 @@ class Input extends StatefulWidget {
   final void Function(String?)? onSavedFunction;
   String? error;
   final TextCapitalization textCapitalization;
+  final int maxLines;
 
   Input(
       {Key? key,
@@ -35,6 +36,7 @@ class Input extends StatefulWidget {
       this.onChangedFunction,
       this.onSavedFunction,
       this.error,
+      this.maxLines = 1,
       this.textCapitalization = TextCapitalization.none})
       : super(key: key);
 
@@ -47,7 +49,7 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      margin: EdgeInsets.fromLTRB(16, 16, 16, 00),
       child: TextFormField(
         onTap: () {
           focus = true;
@@ -55,7 +57,7 @@ class _InputState extends State<Input> {
         obscureText: widget.obscure,
         keyboardType: widget.type,
         onSaved: widget.onSavedFunction,
-        initialValue: widget.controller == null ? widget.initValue : null,
+        initialValue: widget.initValue,
         onChanged: (value) {
           if (widget.onChangedFunction != null)
             widget.onChangedFunction!(value);
@@ -74,6 +76,7 @@ class _InputState extends State<Input> {
         enabled: widget.enabled,
         controller: widget.controller,
         maxLength: widget.maxLength,
+        maxLines: widget.maxLines,
         decoration: InputDecoration(
             labelText: widget.required ? widget.label + " \*" : widget.label,
             hintText: widget.hint,
@@ -85,6 +88,7 @@ class _InputState extends State<Input> {
                     icon: Icon(Icons.clear),
                     onPressed: () {
                       widget.controller!.clear();
+                      setState(() {});
                     },
                   )
                 : null,
