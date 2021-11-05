@@ -194,9 +194,6 @@ class _NewQuarantineState extends State<StatefulWidget> {
             Container(
               alignment: Alignment.center,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(241, 36),
-                ),
                 onPressed: () {},
                 child: Text(
                   'Tạo',

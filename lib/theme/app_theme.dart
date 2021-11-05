@@ -50,7 +50,7 @@ class AppTheme with ChangeNotifier {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: CustomColors.primary,
-          // minimumSize: Size(double.infinity, 48),
+          fixedSize: const Size(241, 36),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
