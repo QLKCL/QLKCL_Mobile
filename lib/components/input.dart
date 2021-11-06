@@ -46,12 +46,12 @@ class Input extends StatefulWidget {
 
 class _InputState extends State<Input> {
   bool _focus = false;
-  bool? obscure;
+  bool? _obscure;
 
   @override
   void initState() {
     super.initState();
-    obscure = widget.obscure;
+    _obscure = widget.obscure;
   }
 
   @override
@@ -62,7 +62,7 @@ class _InputState extends State<Input> {
         onTap: () {
           _focus = true;
         },
-        obscureText: obscure != null ? obscure! : false,
+        obscureText: _obscure != null ? _obscure! : false,
         keyboardType: widget.type,
         onSaved: widget.onSavedFunction,
         initialValue: widget.initValue,
@@ -88,13 +88,13 @@ class _InputState extends State<Input> {
         decoration: InputDecoration(
             labelText: widget.required ? widget.label + " \*" : widget.label,
             hintText: widget.hint,
-            suffixIcon: obscure != null
+            suffixIcon: _obscure != null
                 ? (IconButton(
                     icon: Icon(
-                      obscure == true ? Icons.visibility : Icons.visibility_off,
+                      _obscure == true ? Icons.visibility : Icons.visibility_off,
                     ),
                     onPressed: () {
-                      obscure = !obscure!;
+                      _obscure = !_obscure!;
                       setState(() {});
                     },
                   ))

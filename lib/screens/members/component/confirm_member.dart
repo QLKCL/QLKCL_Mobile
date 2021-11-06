@@ -2,26 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 
 class ConfirmMember extends StatefulWidget {
-  ConfirmMember({Key? key}) : super(key: key);
+  ConfirmMember(
+      {Key? key,
+      required this.longPressFlag,
+      required this.indexList,
+      required this.longPress})
+      : super(key: key);
+  final bool longPressFlag;
+  final List<int> indexList;
+  final VoidCallback longPress;
 
   @override
   _ConfirmMemberState createState() => _ConfirmMemberState();
 }
 
 class _ConfirmMemberState extends State<ConfirmMember> {
-  bool longPressFlag = false;
-  List<int> indexList = [];
-
-  void longPress() {
-    setState(() {
-      if (indexList.isEmpty) {
-        longPressFlag = false;
-      } else {
-        longPressFlag = true;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -29,7 +24,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
         children: <Widget>[
           Member(
             id: "1",
-            longPressEnabled: longPressFlag,
+            longPressEnabled: widget.longPressFlag,
             name: "Le Trung Son",
             gender: "male",
             birthday: "20/05/2000",
@@ -38,17 +33,17 @@ class _ConfirmMemberState extends State<ConfirmMember> {
             lastTestTime: "22/09/2021",
             onTap: () {},
             onLongPress: () {
-              if (indexList.contains(1)) {
-                indexList.remove(1);
+              if (widget.indexList.contains(1)) {
+                widget.indexList.remove(1);
               } else {
-                indexList.add(1);
+                widget.indexList.add(1);
               }
-              longPress();
+              widget.longPress();
             },
           ),
           Member(
             id: "2",
-            longPressEnabled: longPressFlag,
+            longPressEnabled: widget.longPressFlag,
             name: "Le Trung Son",
             gender: "male",
             birthday: "20/05/2000",
@@ -57,12 +52,12 @@ class _ConfirmMemberState extends State<ConfirmMember> {
             lastTestTime: "22/09/2021",
             onTap: () {},
             onLongPress: () {
-              if (indexList.contains(2)) {
-                indexList.remove(2);
+              if (widget.indexList.contains(2)) {
+                widget.indexList.remove(2);
               } else {
-                indexList.add(2);
+                widget.indexList.add(2);
               }
-              longPress();
+              widget.longPress();
             },
           ),
         ],

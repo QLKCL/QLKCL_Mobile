@@ -14,7 +14,8 @@ import 'package:qlkcl/theme/app_theme.dart';
 
 class ListAllMember extends StatefulWidget {
   static const String routeName = "/list_all_member";
-  ListAllMember({Key? key}) : super(key: key);
+  final int tab;
+  ListAllMember({Key? key, this.tab = 0}) : super(key: key);
 
   @override
   _ListAllMemberState createState() => _ListAllMemberState();
@@ -27,7 +28,8 @@ class _ListAllMemberState extends State<ListAllMember>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this, initialIndex: 0);
+    _tabController =
+        TabController(length: 6, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -141,7 +143,11 @@ class _ListAllMemberState extends State<ListAllMember>
         controller: _tabController,
         children: [
           AllMember(),
-          ConfirmMember(),
+          ConfirmMember(
+            longPressFlag: longPressFlag,
+            indexList: indexList,
+            longPress: longPress,
+          ),
           SuspectMember(),
           TestMember(),
           CompleteMember(),

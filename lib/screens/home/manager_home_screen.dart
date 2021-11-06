@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
+import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
@@ -106,25 +107,37 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             title: "Chờ xét duyệt",
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/cho_xet_duyet.svg"),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 1)));
+            },
           ),
           InfoManagerHomePage(
             title: "Nghi nhiễm",
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 2)));
+            },
           ),
           InfoManagerHomePage(
             title: "Tới hạn xét nghiệm",
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 3)));
+            },
           ),
           InfoManagerHomePage(
             title: "Sắp hoàn thành cách ly",
             subtitle: "0",
             icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 4)));
+            },
           ),
           Container(
             height: 400,

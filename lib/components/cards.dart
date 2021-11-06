@@ -329,8 +329,7 @@ class _MemberState extends State<Member> {
       child: Container(
         child: ListTile(
           onTap: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
+            if (widget.longPressEnabled != null) {
               setState(() {
                 _selected = !_selected;
               });
@@ -340,8 +339,7 @@ class _MemberState extends State<Member> {
             }
           },
           onLongPress: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
+            if (widget.longPressEnabled != null) {
               setState(() {
                 _selected = !_selected;
               });
