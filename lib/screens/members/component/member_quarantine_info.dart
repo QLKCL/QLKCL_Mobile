@@ -84,7 +84,7 @@ class MemberQuarantineInfo extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () {},
               child: Text(
-                'Thêm',
+                'Xác nhận',
                 style: TextStyle(color: CustomColors.white),
               ),
             ),

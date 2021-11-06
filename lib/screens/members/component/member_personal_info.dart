@@ -5,8 +5,8 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 class MemberPersonalInfo extends StatelessWidget {
-  final TabController tabController;
-  const MemberPersonalInfo({Key? key, required this.tabController}) : super(key: key);
+  final TabController? tabController;
+  const MemberPersonalInfo({Key? key, this.tabController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -89,18 +89,19 @@ class MemberPersonalInfo extends StatelessWidget {
           Input(
             label: 'Số Hộ chiếu',
           ),
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                tabController.animateTo(1);
-              },
-              child: Text(
-                'Tiếp theo',
-                style: TextStyle(color: CustomColors.white),
+          if (tabController != null)
+            Container(
+              margin: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: () {
+                  tabController!.animateTo(1);
+                },
+                child: Text(
+                  'Tiếp theo',
+                  style: TextStyle(color: CustomColors.white),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

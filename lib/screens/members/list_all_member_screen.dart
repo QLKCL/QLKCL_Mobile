@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
+import 'package:qlkcl/screens/members/component/all_member.dart';
+import 'package:qlkcl/screens/members/component/complete_member.dart';
+import 'package:qlkcl/screens/members/component/confirm_member.dart';
+import 'package:qlkcl/screens/members/component/deny_member.dart';
+import 'package:qlkcl/screens/members/component/suspect_member.dart';
+import 'package:qlkcl/screens/members/component/test_member.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
@@ -135,157 +140,12 @@ class _ListAllMemberState extends State<ListAllMember>
       body: TabBarView(
         controller: _tabController,
         children: [
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(2)) {
-                      indexList.remove(2);
-                    } else {
-                      indexList.add(2);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          Center(
-            child: Text(
-              "Không có dữ liệu",
-              style: TextStyle(color: CustomColors.secondaryText, fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          AllMember(),
+          ConfirmMember(),
+          SuspectMember(),
+          TestMember(),
+          CompleteMember(),
+          DenyMember(),
         ],
       ),
     ));

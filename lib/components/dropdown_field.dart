@@ -21,7 +21,7 @@ class DropdownInput<T> extends StatefulWidget {
   final void Function(T?)? onChanged;
   final void Function(T?)? onSaved;
   final Future<List<T>> Function(String?)? onFind;
-  String? error;
+  final String? error;
 
   DropdownInput(
       {Key? key,
@@ -112,8 +112,8 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final void Function(List<T>?)? onChanged;
   final void Function(List<T>?)? onSaved;
   final Future<List<T>> Function(String?)? onFind;
-  bool Function(T?, T?)? compareFn;
-  String? error;
+  final bool Function(T?, T?)? compareFn;
+  final String? error;
   final Widget Function(BuildContext, List<T>)? dropdownBuilder;
 
   MultiDropdownInput(

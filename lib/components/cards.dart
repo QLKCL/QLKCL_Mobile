@@ -273,10 +273,9 @@ class TestNoResult extends StatelessWidget {
 }
 
 class Member extends StatefulWidget {
-  final bool longPressEnabled;
-
+  final bool? longPressEnabled;
   final VoidCallback onTap;
-  final VoidCallback onLongPress;
+  final VoidCallback? onLongPress;
   final String id;
   final String name;
   final String gender;
@@ -286,7 +285,7 @@ class Member extends StatefulWidget {
   final String lastTestTime;
   const Member(
       {required this.onTap,
-      required this.onLongPress,
+      this.onLongPress,
       required this.id,
       required this.name,
       required this.gender,
@@ -294,7 +293,7 @@ class Member extends StatefulWidget {
       required this.room,
       required this.lastTestResult,
       required this.lastTestTime,
-      required this.longPressEnabled});
+      this.longPressEnabled});
 
   @override
   _MemberState createState() => _MemberState();
@@ -304,14 +303,14 @@ class _MemberState extends State<Member> {
   bool _selected = false;
 
   action() {
-    if (widget.longPressEnabled) {
+    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
       return Checkbox(
         value: _selected,
         onChanged: (newValue) {
           setState(() {
             _selected = newValue!;
           });
-          widget.onLongPress();
+          widget.onLongPress!();
         },
       );
     } else {
@@ -330,20 +329,24 @@ class _MemberState extends State<Member> {
       child: Container(
         child: ListTile(
           onTap: () {
-            if (widget.longPressEnabled) {
+            if (widget.longPressEnabled != null &&
+                widget.longPressEnabled == true) {
               setState(() {
                 _selected = !_selected;
               });
-              widget.onLongPress();
+              widget.onLongPress!();
             } else {
               widget.onTap();
             }
           },
           onLongPress: () {
-            setState(() {
-              _selected = !_selected;
-            });
-            widget.onLongPress();
+            if (widget.longPressEnabled != null &&
+                widget.longPressEnabled == true) {
+              setState(() {
+                _selected = !_selected;
+              });
+              widget.onLongPress!();
+            }
           },
           title: Container(
             padding: EdgeInsets.only(top: 8),
@@ -486,7 +489,6 @@ class QuarantineRelatedCard extends StatelessWidget {
                 ],
               ),
             ),
-            
           ],
         ),
         isThreeLine: true,

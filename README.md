@@ -16,6 +16,7 @@ flutter doctor --android-licenses
 
 ## Sync library
 ```
+flutter clean
 flutter pub get
 ```
 
@@ -26,6 +27,11 @@ flutter run
 or
 ```
 flutter run --no-sound-null-safety
+```
+
+## Release app
+```
+flutter run --release
 ```
 
 # Default account
