@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
@@ -88,24 +89,36 @@ Future<bool> setToken(String accessToken, String refreshToken) async {
   return true;
 }
 
-Future<bool> login(Map<String, String> loginDataForm) async {
+Future<Map<String, dynamic>> login(Map<String, String> loginDataForm) async {
   var headers = {'Accept': 'application/json'};
   var request =
       http.MultipartRequest('POST', Uri.parse(Constant.baseUrl + '/token'));
   request.fields.addAll(loginDataForm);
   request.headers.addAll(headers);
-  http.StreamedResponse response = await request.send();
+  http.StreamedResponse? response;
+  try {
+    response = await request.send();
+  } catch (e) {
+    print('Error: $e');
+  }
 
-  if (response.statusCode == 200) {
+  if (response == null) {
+    return {'success': false, "message": "Lỗi kết nối!"};
+  } else if (response.statusCode == 200) {
     var resp = await response.stream.bytesToString();
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
     setToken(accessToken, refreshToken);
-    return true;
+    return {'success': true, "message": ""};
+  } else if (response.statusCode == 401) {
+    return {
+      'success': false,
+      "message": "Số điện thoại hoặc mật khẩu không hợp lệ!"
+    };
   } else {
     print("Response code: " + response.statusCode.toString());
-    return false;
+    return {'success': false, "message": "Có lỗi xảy ra!"};
   }
 }
 

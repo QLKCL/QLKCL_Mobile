@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -18,6 +19,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -105,22 +117,7 @@ class _LoginFormState extends State<LoginForm> {
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () async {
-                // Validate returns true if the form is valid, or false otherwise.
-                if (_formKey.currentState!.validate()) {
-                  if (await login(loginDataForm(
-                      phoneController.text, passController.text))) {
-                    Navigator.pushNamedAndRemoveUntil(context, App.routeName,
-                        (Route<dynamic> route) => false);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text(
-                              'Số điện thoại hoặc mật khẩu không hợp lệ!')),
-                    );
-                  }
-                }
-              },
+              onPressed: _submit,
               child: Text(
                 'Đăng nhập',
                 style: TextStyle(color: CustomColors.white),
@@ -141,5 +138,25 @@ class _LoginFormState extends State<LoginForm> {
         ],
       ),
     );
+  }
+
+  void _submit() async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (_formKey.currentState!.validate()) {
+      EasyLoading.show();
+      Map<String, dynamic> logged =
+          await login(loginDataForm(phoneController.text, passController.text));
+      EasyLoading.dismiss();
+      if (logged['success']) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => App()),
+            (Route<dynamic> route) => false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(logged['message'])),
+        );
+      }
+    }
   }
 }
