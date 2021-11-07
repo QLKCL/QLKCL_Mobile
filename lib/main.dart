@@ -12,10 +12,7 @@ import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 void main() async {
   // Automatically show the notification bar when the app loads in IOS.
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,13 +23,6 @@ void main() async {
       ConnectionStatusSingleton.getInstance();
   connectionStatus.initialize();
   await Hive.initFlutter();
-
-  // Generate key to encrypt box to store secret informations (access token, refresh token,...)
-  var containsEncryptionKey = await secureStorage.containsKey(key: 'key');
-  if (!containsEncryptionKey) {
-    var key = Hive.generateSecureKey();
-    await secureStorage.write(key: 'key', value: base64UrlEncode(key));
-  }
 
   bool existRole = await Hive.boxExists('role');
   if (!existRole) {
