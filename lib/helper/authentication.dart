@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
@@ -89,7 +90,7 @@ Future<bool> setToken(String accessToken, String refreshToken) async {
   return true;
 }
 
-Future<Map<String, dynamic>> login(Map<String, String> loginDataForm) async {
+Future<Response> login(Map<String, String> loginDataForm) async {
   var headers = {'Accept': 'application/json'};
   var request =
       http.MultipartRequest('POST', Uri.parse(Constant.baseUrl + '/token'));
@@ -103,22 +104,20 @@ Future<Map<String, dynamic>> login(Map<String, String> loginDataForm) async {
   }
 
   if (response == null) {
-    return {'success': false, "message": "Lỗi kết nối!"};
+    return Response(success: false, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = await response.stream.bytesToString();
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
     setToken(accessToken, refreshToken);
-    return {'success': true, "message": ""};
+    return Response(success: true);
   } else if (response.statusCode == 401) {
-    return {
-      'success': false,
-      "message": "Số điện thoại hoặc mật khẩu không hợp lệ!"
-    };
+    return Response(
+        success: false, message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
   } else {
     print("Response code: " + response.statusCode.toString());
-    return {'success': false, "message": "Có lỗi xảy ra!"};
+    return Response(success: false, message: "Có lỗi xảy ra!");
   }
 }
 

@@ -144,17 +144,17 @@ class _LoginFormState extends State<LoginForm> {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      Map<String, dynamic> logged =
+      final response =
           await login(loginDataForm(phoneController.text, passController.text));
       EasyLoading.dismiss();
-      if (logged['success']) {
+      if (response.success) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => App()),
             (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(logged['message'])),
+          SnackBar(content: Text(response.message)),
         );
       }
     }
