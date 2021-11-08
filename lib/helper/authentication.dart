@@ -26,28 +26,18 @@ Future<void> setLoginState(bool state) async {
 
 Future<String?> getAccessToken() async {
   var authBox = await Hive.openBox('auth');
-
-  if (authBox.containsKey('accessToken')) {
-    return authBox.get('accessToken');
-  } else {
-    return null;
-  }
+  return authBox.get('accessToken');
 }
 
 Future<void> setAccessToken(String accessToken) async {
   var authBox = await Hive.openBox('auth');
-
   authBox.put('accessToken', accessToken);
 }
 
 Future<String?> getRefreshToken() async {
   var authBox = await Hive.openBox('auth');
 
-  if (authBox.containsKey('refreshToken')) {
-    return authBox.get('refreshToken');
-  } else {
-    return null;
-  }
+  return authBox.get('refreshToken');
 }
 
 Future<void> setRefreshToken(String refreshToken) async {
@@ -57,15 +47,14 @@ Future<void> setRefreshToken(String refreshToken) async {
 }
 
 Future<bool> setToken(String accessToken, String refreshToken) async {
-  setLoginState(true);
-  setAccessToken(accessToken);
-  setRefreshToken(refreshToken);
+  await setLoginState(true);
+  await setAccessToken(accessToken);
+  await setRefreshToken(refreshToken);
   return true;
 }
 
 var headers = {
   'Accept': 'application/json',
-  'Content-Type': 'application/json; charset=UTF-8',
 };
 
 Future<Response> login(Map<String, String> loginDataForm) async {
@@ -84,7 +73,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
-    setToken(accessToken, refreshToken);
+    await setToken(accessToken, refreshToken);
     return Response(success: true);
   } else if (response.statusCode == 401) {
     return Response(
@@ -126,7 +115,7 @@ Future<Response> register(Map<String, String> loginDataForm) async {
 
 Future<bool> logout() async {
   Hive.box('auth').clear();
-  setLoginState(false);
+  await setLoginState(false);
   return true;
 }
 

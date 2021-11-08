@@ -101,7 +101,7 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                logout();
+                await logout();
                 Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },
