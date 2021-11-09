@@ -11,7 +11,7 @@ import 'package:qlkcl/theme/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class Login extends StatefulWidget {
-  static const String routeName = "/sign_in";
+  static const String routeName = "/login";
   Login({Key? key}) : super(key: key);
 
   @override

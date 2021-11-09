@@ -3,7 +3,7 @@ Map<String, String> loginDataForm(String phoneNumber, String password) {
 }
 
 Map<String, dynamic> registerDataForm(
-    String phoneNumber, String password, int quarantineWard) {
+    String phoneNumber, String password, String quarantineWard) {
   return {
     'phone_number': phoneNumber,
     'password': password,

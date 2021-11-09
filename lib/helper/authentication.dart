@@ -60,7 +60,7 @@ var headers = {
 Future<Response> login(Map<String, String> loginDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(Uri.parse(Constant.baseUrl + '/api/token'),
+    response = await http.post(Uri.parse(Constant.baseUrl + Constant.login),
         headers: headers, body: loginDataForm);
   } catch (e) {
     print('Error: $e');
@@ -84,13 +84,11 @@ Future<Response> login(Map<String, String> loginDataForm) async {
   }
 }
 
-Future<Response> register(Map<String, String> loginDataForm) async {
+Future<Response> register(Map<String, dynamic> loginDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(
-        Uri.parse(Constant.baseUrl + '/api/user/member/register'),
-        headers: headers,
-        body: loginDataForm);
+    response = await http.post(Uri.parse(Constant.baseUrl + Constant.register),
+        headers: headers, body: loginDataForm);
   } catch (e) {
     print('Error: $e');
   }
@@ -100,13 +98,14 @@ Future<Response> register(Map<String, String> loginDataForm) async {
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
-    var accessToken = data['access'];
-    var refreshToken = data['refresh'];
-    setToken(accessToken, refreshToken);
-    return Response(success: true);
-  } else if (response.statusCode == 401) {
-    return Response(
-        success: false, message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
+    if (data['error_code'] == 0) {
+      return Response(success: true);
+    } else if (data['message']['phone_number'] == "Exist") {
+      return Response(
+          success: false, message: "Số điện thoại đã được sử dụng!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
   } else {
     print("Response code: " + response.statusCode.toString());
     return Response(success: false, message: "Có lỗi xảy ra!");

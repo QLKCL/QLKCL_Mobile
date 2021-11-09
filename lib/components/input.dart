@@ -91,7 +91,9 @@ class _InputState extends State<Input> {
             suffixIcon: _obscure != null
                 ? (IconButton(
                     icon: Icon(
-                      _obscure == true ? Icons.visibility : Icons.visibility_off,
+                      _obscure == true
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () {
                       _obscure = !_obscure!;
@@ -111,9 +113,7 @@ class _InputState extends State<Input> {
                       )
                     : null),
             helperText: widget.helper,
-            errorText: (widget.validatorFunction == null &&
-                    widget.error != null &&
-                    widget.error!.isNotEmpty)
+            errorText: (widget.error != null && widget.error!.isNotEmpty)
                 ? widget.error
                 : null),
         textCapitalization: widget.textCapitalization,
