@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
@@ -24,6 +26,9 @@ import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/edit_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/building_list_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/building_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/floor_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/room_details_screen.dart';
 
 // We use name route
 // All our routes will be available here
@@ -53,4 +58,7 @@ final Map<String, WidgetBuilder> routes = {
   EditQuarantine.routeName: (context) => EditQuarantine(),
   AddMember.routeName: (context) => AddMember(),
   BuildingListScreen.routeName: (context) => BuildingListScreen(),
+  BuildingDetailsScreen.routeName: (context) => BuildingDetailsScreen(),
+  FloorDetailsScreen.routeName: (context) => FloorDetailsScreen(),
+  RoomDetailsScreen.routeName: (context) => RoomDetailsScreen()
 };

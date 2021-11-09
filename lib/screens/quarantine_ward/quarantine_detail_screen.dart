@@ -11,6 +11,7 @@ import './edit_quarantine_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import './building_list_screen.dart';
 
+
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
 
@@ -59,7 +60,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
 
     //define appBar
     final appBar = AppBar(
-      title: Text(quarantineName!),
+      title: Text('Thông tin khu cách ly'),
       centerTitle: true,
       actions: [
         IconButton(
@@ -96,7 +97,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          quarantineName,
+                          quarantineName!,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,

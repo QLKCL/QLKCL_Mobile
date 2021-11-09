@@ -1,26 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/screens/quarantine_ward/building_details_screen.dart';
-import './component/general_info.dart';
+import './component/general_info_building.dart';
+import 'package:qlkcl/screens/quarantine_ward/floor_details_screen.dart';
+
 import '../../components/cards.dart';
 
-class BuildingListScreen extends StatefulWidget {
-  const BuildingListScreen({Key? key}) : super(key: key);
-  static const routeName = '/quarantine-details/building-list';
+class BuildingDetailsScreen extends StatefulWidget {
+  const BuildingDetailsScreen({Key? key}) : super(key: key);
+  static const routeName = '/building-details';
   @override
-  _BuildingListScreenState createState() => _BuildingListScreenState();
+  _BuildingDetailsScreen createState() => _BuildingDetailsScreen();
 }
 
-class _BuildingListScreenState extends State<BuildingListScreen> {
+class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Danh sách tòa'),
+      title: const Text("Thông tin chi tiết tòa"),
+      centerTitle: true,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.edit),
+        ),
+      ],
     );
-
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               margin: const EdgeInsets.symmetric(
@@ -31,29 +40,32 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.25,
-              child: GeneralInfo('Ký túc xá khu A', 8, 15, 300),
+              child:
+                  GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
             ),
             Container(
+              width: MediaQuery.of(context).size.width,
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75,
+              margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (ctx, index) {
                   //last item
-                  if (index == 9) {
+                  if (index == 8) {
                     return Column(
                       children: [
                         QuarantineRelatedCard(
                           onTap: () {
                             Navigator.of(context, rootNavigator: true)
                                 .pushNamed(
-                              BuildingDetailsScreen.routeName,
+                              FloorDetailsScreen.routeName,
                             );
                           },
                           id: '1',
-                          name: 'Tòa AH',
+                          name: 'Tầng ' + (index + 1).toString(),
                           numOfMem: 15,
                           maxMem: 300,
                         ),
@@ -64,16 +76,16 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                     return QuarantineRelatedCard(
                       onTap: () {
                         Navigator.of(context, rootNavigator: true).pushNamed(
-                          BuildingDetailsScreen.routeName,
+                          FloorDetailsScreen.routeName,
                         );
                       },
                       id: '1',
-                      name: 'Tòa AH',
+                      name: 'Tầng ' + (index + 1).toString(),
                       numOfMem: 15,
                       maxMem: 300,
                     );
                 },
-                itemCount: 10,
+                itemCount: 9,
               ),
             ),
           ],
@@ -84,8 +96,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
         //tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
-
-      // body: ,
     );
   }
 }

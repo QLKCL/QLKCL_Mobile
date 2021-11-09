@@ -449,14 +449,14 @@ class _MemberState extends State<Member> {
 
 // Building,room card
 class QuarantineRelatedCard extends StatelessWidget {
-  // final VoidCallback onTap;
+  final VoidCallback onTap;
   final String id;
   final String name;
   final int numOfMem;
   final int maxMem;
   const QuarantineRelatedCard(
-      // {required this.onTap,
-      {required this.id,
+      {required this.onTap,
+      required this.id,
       required this.name,
       required this.numOfMem,
       required this.maxMem});
@@ -464,29 +464,35 @@ class QuarantineRelatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.symmetric(
+        vertical: 4,
+        horizontal: 16
+      ),
       child: ListTile(
-        //onTap: onTap,
+        onTap: onTap,
         title: Text(name),
         subtitle: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.groups_rounded,
-                      color: CustomColors.disableText,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " Đang cách ly " + '$numOfMem' + '/$maxMem',
-                  )
-                ],
-              ),
-            ),
-            
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.groups_rounded,
+                  size: 20,
+                  color: CustomColors.disableText,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  " Đang cách ly " + '$numOfMem' + '/$maxMem',
+                  style: TextStyle(fontSize: 12),
+                )
+              ],
+            )
           ],
         ),
         isThreeLine: true,
@@ -500,6 +506,115 @@ class QuarantineRelatedCard extends StatelessWidget {
               onTap: () {},
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class MemberInRoom extends StatelessWidget {
+  final VoidCallback onTap;
+  final String id;
+  final String name;
+  final String gender;
+  final String birthday;
+  final String lastTestResult;
+  final String lastTestTime;
+  const MemberInRoom({
+    required this.onTap,
+    required this.id,
+    required this.name,
+    required this.gender,
+    required this.birthday,
+    required this.lastTestResult,
+    required this.lastTestTime,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: ListTile(
+          onTap: () {},
+          title: Container(
+            padding: EdgeInsets.only(top: 8),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: name + " ",
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  WidgetSpan(
+                    child: WebsafeSvg.asset("assets/svg/male.svg"),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          subtitle: Container(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Wrap(
+              direction: Axis.vertical, // make sure to set this
+              spacing: 4, // set your spacing
+              children: [
+                Text(
+                  birthday,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.history,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      TextSpan(
+                        text: " " + lastTestResult + " (" + lastTestTime + ")",
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          isThreeLine: true,
+          leading: SizedBox(
+            height: 56,
+            width: 56,
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage("assets/images/no-avatar.png"),
+                ),
+                Positioned(
+                  bottom: -5,
+                  right: -5,
+                  child: Container(
+                    padding: EdgeInsets.all(2),
+                    decoration: BoxDecoration(
+                        color: CustomColors.white,
+                        borderRadius: BorderRadius.circular(100)),
+                    child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              GestureDetector(
+                child: Icon(
+                  Icons.more_vert,
+                ),
+                onTap: () {},
+              ),
+            ],
+          ),
         ),
       ),
     );
