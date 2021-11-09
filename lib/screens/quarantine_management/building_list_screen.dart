@@ -3,6 +3,8 @@ import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart
 import 'component/general_info.dart';
 import '../../components/cards.dart';
 
+import '../medical_declaration/medical_declaration_screen.dart';
+
 class BuildingListScreen extends StatefulWidget {
   const BuildingListScreen({Key? key}) : super(key: key);
   static const routeName = '/quarantine-details/building-list';
@@ -80,7 +82,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          
+        },
         //tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
