@@ -21,7 +21,7 @@ class _DetailMemberState extends State<DetailMember>
   late TabController _tabController;
   late Future<dynamic> futureMember;
   late CustomUser personalData;
-  late Member quarantineData;
+  late Member? quarantineData;
 
   @override
   void initState() {
@@ -71,7 +71,9 @@ class _DetailMemberState extends State<DetailMember>
             if (snapshot.hasData) {
               EasyLoading.dismiss();
               personalData = CustomUser.fromJson(snapshot.data["custom_user"]);
-              quarantineData = Member.fromJson(snapshot.data["member"]);
+              quarantineData = snapshot.data["member"] != null
+                  ? Member.fromJson(snapshot.data["member"])
+                  : null;
               return TabBarView(
                 controller: _tabController,
                 children: [
@@ -79,7 +81,9 @@ class _DetailMemberState extends State<DetailMember>
                     personalData: personalData,
                     tabController: _tabController,
                   ),
-                  MemberQuarantineInfo(),
+                  MemberQuarantineInfo(
+                    qurantineData: quarantineData,
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {
@@ -88,9 +92,6 @@ class _DetailMemberState extends State<DetailMember>
 
             EasyLoading.show();
             return Container();
-
-            // By default, show a loading spinner.
-            // return const CircularProgressIndicator();
           },
         ),
       ),

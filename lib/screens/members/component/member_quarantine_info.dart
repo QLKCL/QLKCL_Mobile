@@ -4,13 +4,13 @@ import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
-  final Member? personalData;
-  final String mode;
+  final Member? qurantineData;
+  final Permission mode;
   const MemberQuarantineInfo(
-      {Key? key, this.personalData, this.mode = "detail"})
+      {Key? key, this.qurantineData, this.mode = Permission.view})
       : super(key: key);
 
   @override
@@ -19,25 +19,28 @@ class MemberQuarantineInfo extends StatefulWidget {
 
 class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
+  bool _isPositiveTestedBefore = false;
 
   @override
   Widget build(BuildContext context) {
     final quarantineRoomController =
-        TextEditingController(text: widget.personalData?.quarantineRoom);
+        TextEditingController(text: widget.qurantineData?.quarantineRoom);
     final quarantineFloorController =
-        TextEditingController(text: widget.personalData?.quarantineFloor);
+        TextEditingController(text: widget.qurantineData?.quarantineFloor);
     final quarantineBuildingController =
-        TextEditingController(text: widget.personalData?.quarantineBuilding);
+        TextEditingController(text: widget.qurantineData?.quarantineBuilding);
     final quarantineWardController =
-        TextEditingController(text: widget.personalData?.quarantineWard);
+        TextEditingController(text: widget.qurantineData?.quarantineWard);
     final labelController =
-        TextEditingController(text: widget.personalData?.label);
+        TextEditingController(text: widget.qurantineData?.label);
     final quarantinedAtController =
-        TextEditingController(text: widget.personalData?.quarantinedAt);
+        TextEditingController(text: widget.qurantineData?.quarantinedAt);
     final backgroundDiseaseController =
-        TextEditingController(text: widget.personalData?.backgroundDisease);
+        TextEditingController(text: widget.qurantineData?.backgroundDisease);
     final otherBackgroundDiseaseController = TextEditingController(
-        text: widget.personalData?.otherBackgroundDisease);
+        text: widget.qurantineData?.otherBackgroundDisease);
+    _isPositiveTestedBefore =
+        widget.qurantineData?.positiveTestedBefore ?? _isPositiveTestedBefore;
 
     return SingleChildScrollView(
       child: Form(
@@ -48,47 +51,81 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
               itemValue: ['KTX Khu A'],
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               selectedItem: quarantineWardController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Tòa',
               hint: 'Chọn tòa',
               itemValue: ["1"],
               selectedItem: quarantineBuildingController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Tầng',
               hint: 'Chọn tầng',
               itemValue: ["1"],
               selectedItem: quarantineFloorController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Phòng',
               hint: 'Chọn phòng',
               itemValue: ["1"],
               selectedItem: quarantineRoomController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
               itemValue: ["F1", "F2", "F3", "Về từ vùng dịch", "Nhập cảnh"],
               selectedItem: labelController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Lịch sử di chuyển',
               maxLines: 4,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Row(
               children: [
                 Checkbox(
-                  value: widget.personalData?.positiveTestedBefore ?? false,
-                  onChanged: (value) {},
-                ),
+                    value: _isPositiveTestedBefore,
+                    onChanged: (value) => {
+                          (widget.mode == Permission.edit ||
+                                  widget.mode == Permission.add)
+                              ? setState(() {
+                                  _isPositiveTestedBefore = value!;
+                                })
+                              : null
+                        }),
                 Text("Đã từng nhiễm COVID-19"),
               ],
             ),
@@ -108,26 +145,33 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               mode: Mode.BOTTOM_SHEET,
               dropdownBuilder: _customDropDown,
               controller: backgroundDiseaseController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Bệnh nền khác',
               controller: otherBackgroundDiseaseController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-              child: Text("* Thông tin bắt buộc"),
-            ),
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  'Xác nhận',
-                  style: TextStyle(color: CustomColors.white),
+            if (widget.mode != Permission.view)
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                child: Text("* Thông tin bắt buộc"),
+              ),
+            if (widget.mode == Permission.edit || widget.mode == Permission.add)
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text("Lưu"),
                 ),
               ),
-            ),
           ],
         ),
       ),

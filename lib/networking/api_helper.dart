@@ -74,7 +74,7 @@ class ApiHelper {
   static refreshToken() async {
     Response response;
     var dio = Dio();
-    final Uri apiUrl = Uri.parse(Constant.baseUrl + "/token/refresh");
+    final Uri apiUrl = Uri.parse(Constant.baseUrl + "/api/token/refresh");
     var refreshToken = await getRefreshToken();
     dio.options.headers["Authorization"] = "Bearer " + refreshToken!;
     try {
@@ -108,7 +108,8 @@ class ApiHelper {
 
   Future<dynamic> postHTTP(String url, dynamic data) async {
     try {
-      Response response = await baseAPI.post(url, data: data);
+      Response response = await baseAPI.post(url,
+          data: data != null ? FormData.fromMap(data) : null);
       return response.data;
     } on DioError catch (e) {
       // Handle error
@@ -118,7 +119,8 @@ class ApiHelper {
 
   Future<dynamic> putHTTP(String url, dynamic data) async {
     try {
-      Response response = await baseAPI.put(url, data: data);
+      Response response = await baseAPI.put(url,
+          data: data != null ? FormData.fromMap(data) : null);
       return response.data;
     } on DioError catch (e) {
       // Handle error

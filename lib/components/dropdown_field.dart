@@ -10,6 +10,7 @@ class DropdownInput<T> extends StatefulWidget {
   final bool required;
   final List<T> itemValue;
   final T? selectedItem;
+  final String Function(T?)? itemAsString;
   final Mode mode;
   final String? helper;
   final bool showSearchBox;
@@ -22,6 +23,7 @@ class DropdownInput<T> extends StatefulWidget {
   final void Function(T?)? onSaved;
   final Future<List<T>> Function(String?)? onFind;
   final String? error;
+  final bool Function(T?, T?)? compareFn;
 
   DropdownInput(
       {Key? key,
@@ -30,10 +32,11 @@ class DropdownInput<T> extends StatefulWidget {
       this.required: false,
       required this.itemValue,
       this.selectedItem,
+      this.itemAsString,
       this.mode = Mode.MENU,
       this.helper,
       this.showSearchBox = false,
-      this.showClearButton = true,
+      this.showClearButton = false,
       this.maxHeight,
       this.controller,
       this.enabled = true,
@@ -41,7 +44,8 @@ class DropdownInput<T> extends StatefulWidget {
       this.onChanged,
       this.onSaved,
       this.onFind,
-      this.error})
+      this.error,
+      this.compareFn})
       : super(key: key);
 
   @override
@@ -49,6 +53,7 @@ class DropdownInput<T> extends StatefulWidget {
 }
 
 class _DropdownInputState<T> extends State<DropdownInput<T>> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,18 +78,20 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
         showClearButton: widget.showClearButton,
         items: widget.itemValue,
         selectedItem: widget.selectedItem,
+        itemAsString: widget.itemAsString,
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
         enabled: widget.enabled,
         onFind: widget.onFind,
-        searchFieldProps: (widget.showSearchBox && widget.controller != null)
+        compareFn: widget.compareFn,
+        searchFieldProps: widget.showSearchBox
             ? TextFieldProps(
-                controller: widget.controller,
+                controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                      widget.controller!.clear();
+                      searchController.clear();
                     },
                   ),
                 ),
@@ -115,6 +122,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final bool Function(T?, T?)? compareFn;
   final String? error;
   final Widget Function(BuildContext, List<T>)? dropdownBuilder;
+  final String Function(T?)? itemAsString;
 
   MultiDropdownInput(
       {Key? key,
@@ -136,7 +144,8 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.onFind,
       this.error,
       this.dropdownBuilder,
-      this.compareFn})
+      this.compareFn,
+      this.itemAsString})
       : super(key: key);
 
   @override
@@ -144,6 +153,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
 }
 
 class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -168,6 +178,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         showClearButton: widget.showClearButton,
         items: widget.itemValue,
         selectedItems: widget.selectedItem,
+        itemAsString: widget.itemAsString,
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,
         enabled: widget.enabled,
@@ -184,14 +195,14 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                 )
               : Container();
         },
-        searchFieldProps: (widget.showSearchBox && widget.controller != null)
+        searchFieldProps: widget.showSearchBox
             ? TextFieldProps(
-                controller: widget.controller,
+                controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     icon: Icon(Icons.clear),
                     onPressed: () {
-                      widget.controller!.clear();
+                      searchController.clear();
                     },
                   ),
                 ),

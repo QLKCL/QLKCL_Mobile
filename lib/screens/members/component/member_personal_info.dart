@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/custom_user.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
   final CustomUser? personalData;
-  final String mode;
+  final Permission mode;
   const MemberPersonalInfo(
-      {Key? key, this.tabController, this.personalData, this.mode = "detail"})
+      {Key? key,
+      this.tabController,
+      this.personalData,
+      this.mode = Permission.view})
       : super(key: key);
 
   @override
@@ -63,87 +68,143 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
             ),
             Input(
               label: 'Họ và tên',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               textCapitalization: TextCapitalization.words,
               controller: fullNameController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Số điện thoại',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               type: TextInputType.phone,
               controller: phoneNumberController,
+              enabled: widget.mode == Permission.add ? true : false,
             ),
             Input(
               label: 'Email',
               type: TextInputType.emailAddress,
               controller: emailController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Số CMND/CCCD',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               type: TextInputType.number,
               controller: identityNumberController,
+              enabled: widget.mode == Permission.add ? true : false,
             ),
             DropdownInput(
               label: 'Quốc tịch',
               hint: 'Quốc tịch',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               itemValue: ['Việt Nam', 'Lào', 'Trung Quốc', 'Campuchia'],
               selectedItem: nationalityController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Giới tính',
               hint: 'Chọn giới tính',
-              required: widget.mode == "detail" ? false : true,
-              itemValue: ['Nam', 'Nữ'],
+              required: widget.mode == Permission.view ? false : true,
+              itemValue: genderList,
+              itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
-              selectedItem: genderController.text,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              selectedItem: genderList.safeFirstWhere(
+                  (gender) => gender.id == genderController.text),
+              onChanged: (value) {
+                genderController.text = value!.id;
+              },
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DateInput(
               label: 'Ngày sinh',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               controller: birthdayController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Quốc gia',
               hint: 'Quốc gia',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               itemValue: ['Việt Nam', 'Lào', 'Trung Quốc', 'Campuchia'],
               selectedItem: countryController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               itemValue: ['TP. Hồ Chí Minh', 'Đà Nẵng', 'Hà Nội', 'Bình Dương'],
               selectedItem: cityController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               itemValue: ['Gò Vấp', 'Quận 1', 'Quận 2', 'Quận 3'],
               selectedItem: districtController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             DropdownInput(
               label: 'Phường/xã',
               hint: 'Phường/xã',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               itemValue: ['1', '2', '3', '4'],
               selectedItem: wardController.text,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
-              required: widget.mode == "detail" ? false : true,
+              required: widget.mode == Permission.view ? false : true,
               controller: detailAddressController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Mã số BHXH/Thẻ BHYT',
               controller: healthInsuranceNumberController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             Input(
               label: 'Số Hộ chiếu',
               controller: passportNumberController,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
             ),
             if (widget.tabController != null)
               Container(
@@ -152,10 +213,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                   onPressed: () {
                     widget.tabController!.animateTo(1);
                   },
-                  child: Text(
-                    'Tiếp theo',
-                    style: TextStyle(color: CustomColors.white),
-                  ),
+                  child: (widget.mode == Permission.add ||
+                          widget.mode == Permission.edit)
+                      ? Text("Lưu và tiếp tục")
+                      : Text('Tiếp theo'),
                 ),
               ),
           ],

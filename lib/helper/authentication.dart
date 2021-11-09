@@ -60,7 +60,7 @@ var headers = {
 Future<Response> login(Map<String, String> loginDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(Uri.parse(Constant.baseUrl + '/token'),
+    response = await http.post(Uri.parse(Constant.baseUrl + '/api/token'),
         headers: headers, body: loginDataForm);
   } catch (e) {
     print('Error: $e');
@@ -88,7 +88,7 @@ Future<Response> register(Map<String, String> loginDataForm) async {
   http.Response? response;
   try {
     response = await http.post(
-        Uri.parse(Constant.baseUrl + '/user/member/register'),
+        Uri.parse(Constant.baseUrl + '/api/user/member/register'),
         headers: headers,
         body: loginDataForm);
   } catch (e) {

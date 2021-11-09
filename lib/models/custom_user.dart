@@ -127,8 +127,8 @@ class CustomUser {
       };
 }
 
-Future<dynamic> fetchCustomUser() async {
+Future<dynamic> fetchCustomUser({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getMember, null);
+  final response = await api.postHTTP(Constant.getMember, data);
   return response["data"];
 }
