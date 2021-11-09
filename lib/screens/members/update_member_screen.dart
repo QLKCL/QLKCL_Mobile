@@ -74,9 +74,9 @@ class _UpdateMemberState extends State<UpdateMember>
           future: futureMember,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              EasyLoading.dismiss();
               personalData = CustomUser.fromJson(snapshot.data["custom_user"]);
               quarantineData = Member.fromJson(snapshot.data["member"]);
+              EasyLoading.dismiss();
               return TabBarView(
                 controller: _tabController,
                 children: [

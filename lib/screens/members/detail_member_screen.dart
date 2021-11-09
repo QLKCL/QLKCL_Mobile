@@ -79,11 +79,11 @@ class _DetailMemberState extends State<DetailMember>
           future: futureMember,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              EasyLoading.dismiss();
               personalData = CustomUser.fromJson(snapshot.data["custom_user"]);
               quarantineData = snapshot.data["member"] != null
                   ? Member.fromJson(snapshot.data["member"])
                   : null;
+              EasyLoading.dismiss();
               return TabBarView(
                 controller: _tabController,
                 children: [
