@@ -56,7 +56,12 @@ class _DetailMemberState extends State<DetailMember>
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, UpdateMember.routeName);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateMember(
+                              code: widget.code,
+                            )));
               },
               icon: Icon(Icons.edit),
             ),

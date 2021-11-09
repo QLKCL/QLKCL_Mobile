@@ -157,7 +157,7 @@ class _ListAllMemberState extends State<ListAllMember>
             return TabBarView(
               controller: _tabController,
               children: [
-                AllMember(),
+                AllMember(data: snapshot.data),
                 ConfirmMember(
                   longPressFlag: longPressFlag,
                   indexList: indexList,

@@ -283,6 +283,7 @@ class Member extends StatefulWidget {
   final String room;
   final String lastTestResult;
   final String lastTestTime;
+  final String healthStatus;
   const Member(
       {required this.onTap,
       this.onLongPress,
@@ -293,7 +294,8 @@ class Member extends StatefulWidget {
       required this.room,
       required this.lastTestResult,
       required this.lastTestTime,
-      this.longPressEnabled});
+      this.longPressEnabled,
+      required this.healthStatus});
 
   @override
   _MemberState createState() => _MemberState();
@@ -356,7 +358,10 @@ class _MemberState extends State<Member> {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   WidgetSpan(
-                    child: WebsafeSvg.asset("assets/svg/male.svg"),
+                    alignment: PlaceholderAlignment.top,
+                    child: widget.gender == "MALE"
+                        ? WebsafeSvg.asset("assets/svg/male.svg")
+                        : WebsafeSvg.asset("assets/svg/female.svg"),
                   ),
                 ],
               ),
@@ -370,6 +375,9 @@ class _MemberState extends State<Member> {
               children: [
                 Text(
                   widget.birthday,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
                 Text.rich(
                   TextSpan(
@@ -427,7 +435,11 @@ class _MemberState extends State<Member> {
                     decoration: BoxDecoration(
                         color: CustomColors.white,
                         borderRadius: BorderRadius.circular(100)),
-                    child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                    child: widget.healthStatus == "SERIOUS"
+                        ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                        : widget.healthStatus == "UNWELL"
+                            ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                            : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                   ),
                 ),
               ],

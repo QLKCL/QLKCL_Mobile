@@ -102,6 +102,5 @@ class Member {
 Future<dynamic> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
-  print(response);
-  return response["data"];
+  return response["data"]['content'];
 }

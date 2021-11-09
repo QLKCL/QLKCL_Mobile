@@ -3,41 +3,35 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
 
 class AllMember extends StatelessWidget {
-  const AllMember({Key? key}) : super(key: key);
+  final data;
+  const AllMember({Key? key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Member(
-            id: "1",
-            name: "Le Trung Son",
-            gender: "male",
-            birthday: "20/05/2000",
-            room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-            lastTestResult: "Âm tính",
-            lastTestTime: "22/09/2021",
-            onTap: () {
-              Navigator.of(context, rootNavigator: true)
-                  .pushNamed(DetailMember.routeName);
-            },
-          ),
-          Member(
-            id: "1",
-            name: "Le Trung Son",
-            gender: "male",
-            birthday: "20/05/2000",
-            room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-            lastTestResult: "Âm tính",
-            lastTestTime: "22/09/2021",
-            onTap: () {
-              Navigator.of(context, rootNavigator: true)
-                  .pushNamed(DetailMember.routeName);
-            },
-          ),
-        ],
-      ),
-    );
+    return (data == null || data.isEmpty)
+        ? Center(
+            child: Text('Không có dữ liệu'),
+          )
+        : ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (ctx, index) {
+              return Member(
+                id: "1",
+                name: data[index]['full_name'] ?? "",
+                gender: data[index]['gender'] ?? "",
+                birthday: data[index]['birthday'] ?? "",
+                room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
+                lastTestResult: "Âm tính",
+                lastTestTime: "22/09/2021",
+                healthStatus: data[index]['health_status'],
+                onTap: () {
+                  Navigator.of(context, rootNavigator: true)
+                      .push(MaterialPageRoute(
+                          builder: (context) => DetailMember(
+                                code: data[index]['code'],
+                              )));
+                },
+              );
+            });
   }
 }

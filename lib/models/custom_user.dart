@@ -75,7 +75,9 @@ class CustomUser {
         city: json["city"],
         district: json["district"],
         ward: json["ward"],
-        lastLogin: DateTime.parse(json["last_login"]),
+        lastLogin: json["last_login"] == null
+            ? null
+            : DateTime.parse(json["last_login"]),
         code: json["code"],
         email: json["email"],
         fullName: json["full_name"],

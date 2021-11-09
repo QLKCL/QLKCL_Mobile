@@ -20,25 +20,36 @@ class MemberQuarantineInfo extends StatefulWidget {
 class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
   bool _isPositiveTestedBefore = false;
+  final quarantineRoomController = TextEditingController();
+  final quarantineFloorController = TextEditingController();
+  final quarantineBuildingController = TextEditingController();
+  final quarantineWardController = TextEditingController();
+  final labelController = TextEditingController();
+  final quarantinedAtController = TextEditingController();
+  final backgroundDiseaseController = TextEditingController();
+  final otherBackgroundDiseaseController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final quarantineRoomController =
-        TextEditingController(text: widget.qurantineData?.quarantineRoom);
-    final quarantineFloorController =
-        TextEditingController(text: widget.qurantineData?.quarantineFloor);
-    final quarantineBuildingController =
-        TextEditingController(text: widget.qurantineData?.quarantineBuilding);
-    final quarantineWardController =
-        TextEditingController(text: widget.qurantineData?.quarantineWard);
-    final labelController =
-        TextEditingController(text: widget.qurantineData?.label);
-    final quarantinedAtController =
-        TextEditingController(text: widget.qurantineData?.quarantinedAt);
-    final backgroundDiseaseController =
-        TextEditingController(text: widget.qurantineData?.backgroundDisease);
-    final otherBackgroundDiseaseController = TextEditingController(
-        text: widget.qurantineData?.otherBackgroundDisease);
+    quarantineRoomController.text = widget.qurantineData?.quarantineRoom != null
+        ? widget.qurantineData?.quarantineRoom['name']
+        : "";
+    quarantineFloorController.text =
+        widget.qurantineData?.quarantineFloor != null
+            ? widget.qurantineData?.quarantineFloor['name']
+            : "";
+    quarantineBuildingController.text =
+        widget.qurantineData?.quarantineBuilding != null
+            ? widget.qurantineData?.quarantineBuilding['name']
+            : "";
+    quarantineWardController.text = widget.qurantineData?.quarantineWard != null
+        ? widget.qurantineData?.quarantineWard['full_name']
+        : "";
+    labelController.text = widget.qurantineData!.label;
+    quarantinedAtController.text = widget.qurantineData?.quarantinedAt;
+    backgroundDiseaseController.text = widget.qurantineData?.backgroundDisease;
+    otherBackgroundDiseaseController.text =
+        widget.qurantineData?.otherBackgroundDisease ?? "";
     _isPositiveTestedBefore =
         widget.qurantineData?.positiveTestedBefore ?? _isPositiveTestedBefore;
 

@@ -31,6 +31,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
             room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
             lastTestResult: "Âm tính",
             lastTestTime: "22/09/2021",
+            healthStatus: 'UNWELL',
             onTap: () {},
             onLongPress: () {
               if (widget.indexList.contains(1)) {
@@ -50,6 +51,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
             room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
             lastTestResult: "Âm tính",
             lastTestTime: "22/09/2021",
+            healthStatus: 'SERIOUS',
             onTap: () {},
             onLongPress: () {
               if (widget.indexList.contains(2)) {

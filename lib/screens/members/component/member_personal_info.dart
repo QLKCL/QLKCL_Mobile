@@ -56,11 +56,21 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
   @override
   Widget build(BuildContext context) {
     if (widget.personalData != null) {
-      nationalityController.text = widget.personalData?.nationality ?? "";
-      countryController.text = widget.personalData?.country ?? "";
-      cityController.text = widget.personalData?.city ?? "";
-      districtController.text = widget.personalData?.district ?? "";
-      wardController.text = widget.personalData?.ward ?? "";
+      nationalityController.text = widget.personalData?.nationality != null
+          ? widget.personalData?.nationality['name']
+          : "";
+      countryController.text = widget.personalData?.country != null
+          ? widget.personalData?.country['name']
+          : "";
+      cityController.text = widget.personalData?.city != null
+          ? widget.personalData?.city['name']
+          : "";
+      districtController.text = widget.personalData?.district != null
+          ? widget.personalData?.district['name']
+          : "";
+      wardController.text = widget.personalData?.ward != null
+          ? widget.personalData?.ward['name']
+          : "";
       detailAddressController.text = widget.personalData?.detailAddress ?? "";
       fullNameController.text = widget.personalData?.fullName ?? "";
       emailController.text = widget.personalData?.email ?? "";

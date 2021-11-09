@@ -10,10 +10,8 @@ import 'package:qlkcl/utils/constant.dart';
 
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
-  final CustomUser? personalData;
-  final Member? quarantineData;
-  UpdateMember({Key? key, this.personalData, this.quarantineData})
-      : super(key: key);
+  final String? code;
+  UpdateMember({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateMemberState createState() => _UpdateMemberState();
@@ -29,7 +27,11 @@ class _UpdateMemberState extends State<UpdateMember>
   @override
   void initState() {
     super.initState();
-    futureMember = fetchCustomUser();
+    if (widget.code != null) {
+      futureMember = fetchCustomUser(data: {'code': widget.code});
+    } else {
+      futureMember = fetchCustomUser();
+    }
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabChange);
   }
