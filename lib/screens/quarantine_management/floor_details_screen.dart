@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'component/general_info_floor.dart';
 import 'package:qlkcl/screens/quarantine_management/room_details_screen.dart';
+import 'edit_floor_screen.dart';
 
 import '../../components/cards.dart';
 
@@ -19,7 +20,11 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              EditFloorScreen.routeName,
+            );
+          },
           icon: Icon(Icons.edit),
         ),
       ],

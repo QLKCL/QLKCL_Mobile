@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'component/general_info_building.dart';
 import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
-
+import './edit_building_screen.dart';
 import '../../components/cards.dart';
 
 class BuildingDetailsScreen extends StatefulWidget {
@@ -19,7 +19,12 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(
+                              EditBuildingScreen.routeName,
+                            );
+          },
           icon: Icon(Icons.edit),
         ),
       ],

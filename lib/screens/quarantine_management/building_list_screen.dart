@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/component/add_building_screen.dart';
 import 'component/general_info.dart';
 import '../../components/cards.dart';
-
-import '../medical_declaration/medical_declaration_screen.dart';
+import 'add_building_screen.dart';
 
 class BuildingListScreen extends StatefulWidget {
   const BuildingListScreen({Key? key}) : super(key: key);
@@ -83,7 +83,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            AddBuildingScreen.routeName,
+          );
         },
         //tooltip: 'Increment',
         child: const Icon(Icons.add),

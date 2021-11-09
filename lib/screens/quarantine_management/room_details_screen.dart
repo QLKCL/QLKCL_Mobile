@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'component/general_info_room.dart';
 import '../../components/cards.dart';
+import './edit_room_screen.dart';
 
 class RoomDetailsScreen extends StatefulWidget {
   const RoomDetailsScreen({Key? key}) : super(key: key);
@@ -17,7 +18,11 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              EditRoomScreen.routeName,
+            );
+          },
           icon: Icon(Icons.edit),
         ),
       ],
