@@ -4,6 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/utils/constant.dart';
+
 Member memberFromJson(String str) => Member.fromJson(json.decode(str));
 
 String memberToJson(Member data) => json.encode(data.toJson());
@@ -94,4 +97,11 @@ class Member {
         "custom_user": customUser,
         "care_staff": careStaff,
       };
+}
+
+Future<dynamic> fetchMemberList({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getListMembers, data);
+  print(response);
+  return response["data"];
 }

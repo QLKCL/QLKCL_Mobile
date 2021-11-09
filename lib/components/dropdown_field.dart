@@ -61,7 +61,13 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
       child: DropdownSearch<T>(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: widget.validator,
+        validator: (widget.validator != null
+            ? widget.validator
+            : (value) {
+                return (widget.required == true && value == null)
+                    ? "Trường này là bắt buộc"
+                    : null;
+              }),
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,

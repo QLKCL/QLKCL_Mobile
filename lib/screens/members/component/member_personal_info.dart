@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
+import 'package:intl/intl.dart';
 
 class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
@@ -23,38 +26,52 @@ class MemberPersonalInfo extends StatefulWidget {
 }
 
 class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   final _formKey = GlobalKey<FormState>();
+  final nationalityController = TextEditingController();
+  final countryController = TextEditingController();
+  final cityController = TextEditingController();
+  final districtController = TextEditingController();
+  final wardController = TextEditingController();
+  final detailAddressController = TextEditingController();
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final birthdayController = TextEditingController();
+  final genderController = TextEditingController();
+  final identityNumberController = TextEditingController();
+  final healthInsuranceNumberController = TextEditingController();
+  final passportNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final nationalityController =
-        TextEditingController(text: widget.personalData?.nationality);
-    final countryController =
-        TextEditingController(text: widget.personalData?.country);
-    final cityController =
-        TextEditingController(text: widget.personalData?.city);
-    final districtController =
-        TextEditingController(text: widget.personalData?.district);
-    final wardController =
-        TextEditingController(text: widget.personalData?.ward);
-    final detailAddressController =
-        TextEditingController(text: widget.personalData?.detailAddress);
-    final fullNameController =
-        TextEditingController(text: widget.personalData?.fullName);
-    final emailController =
-        TextEditingController(text: widget.personalData?.email);
-    final phoneNumberController =
-        TextEditingController(text: widget.personalData?.phoneNumber);
-    final birthdayController =
-        TextEditingController(text: widget.personalData?.birthday);
-    final genderController =
-        TextEditingController(text: widget.personalData?.gender);
-    final identityNumberController =
-        TextEditingController(text: widget.personalData?.identityNumber);
-    final healthInsuranceNumberController =
-        TextEditingController(text: widget.personalData?.healthInsuranceNumber);
-    final passportNumberController =
-        TextEditingController(text: widget.personalData?.passportNumber);
+    if (widget.personalData != null) {
+      nationalityController.text = widget.personalData?.nationality ?? "";
+      countryController.text = widget.personalData?.country ?? "";
+      cityController.text = widget.personalData?.city ?? "";
+      districtController.text = widget.personalData?.district ?? "";
+      wardController.text = widget.personalData?.ward ?? "";
+      detailAddressController.text = widget.personalData?.detailAddress ?? "";
+      fullNameController.text = widget.personalData?.fullName ?? "";
+      emailController.text = widget.personalData?.email ?? "";
+      phoneNumberController.text = widget.personalData!.phoneNumber;
+      birthdayController.text = widget.personalData?.birthday ?? "";
+      genderController.text = widget.personalData?.gender ?? "";
+      identityNumberController.text = widget.personalData?.identityNumber ?? "";
+      healthInsuranceNumberController.text =
+          widget.personalData?.healthInsuranceNumber ?? "";
+      passportNumberController.text = widget.personalData?.passportNumber ?? "";
+    }
 
     return SingleChildScrollView(
       child: Form(
@@ -82,6 +99,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               type: TextInputType.phone,
               controller: phoneNumberController,
               enabled: widget.mode == Permission.add ? true : false,
+              validatorFunction: phoneValidator,
             ),
             Input(
               label: 'Email',
@@ -91,6 +109,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
+              validatorFunction: emailValidator,
             ),
             Input(
               label: 'Số CMND/CCCD',
@@ -136,6 +155,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
+              maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             ),
             DropdownInput(
               label: 'Quốc gia',
@@ -211,7 +231,8 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: () {
-                    widget.tabController!.animateTo(1);
+                    _submit();
+                    // widget.tabController!.animateTo(1);
                   },
                   child: (widget.mode == Permission.add ||
                           widget.mode == Permission.edit)
@@ -223,5 +244,25 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
         ),
       ),
     );
+  }
+
+  void _submit() async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (_formKey.currentState!.validate()) {
+      EasyLoading.show();
+      // final registerResponse = await register(loginDataForm(
+      //   phoneNumberController.text,
+      //   phoneNumberController.text,
+      // ));
+      // if (registerResponse.success) {
+      await Future.delayed(const Duration(milliseconds: 3000));
+      EasyLoading.dismiss();
+      // } else {
+      //   EasyLoading.dismiss();
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text(registerResponse.message)),
+      // );
+      // }
+    }
   }
 }

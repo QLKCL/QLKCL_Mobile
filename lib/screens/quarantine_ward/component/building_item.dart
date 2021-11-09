@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
 
 class BuildingItem extends StatelessWidget {

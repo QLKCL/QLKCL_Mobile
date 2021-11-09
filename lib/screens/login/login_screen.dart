@@ -7,7 +7,7 @@ import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';
 import 'package:qlkcl/screens/register/register_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class Login extends StatefulWidget {

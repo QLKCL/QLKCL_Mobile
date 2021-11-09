@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class UpdateTest extends StatefulWidget {
   static const String routeName = "/update_test";

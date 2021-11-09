@@ -6,11 +6,12 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class DetailMember extends StatefulWidget {
   static const String routeName = "/detail_member";
-  DetailMember({Key? key}) : super(key: key);
+  final String? code;
+  DetailMember({Key? key, this.code}) : super(key: key);
 
   @override
   _DetailMemberState createState() => _DetailMemberState();
@@ -26,7 +27,11 @@ class _DetailMemberState extends State<DetailMember>
   @override
   void initState() {
     super.initState();
-    futureMember = fetchCustomUser();
+    if (widget.code != null) {
+      futureMember = fetchCustomUser(data: {'code': widget.code});
+    } else {
+      futureMember = fetchCustomUser();
+    }
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
     _tabController.addListener(_handleTabChange);
   }

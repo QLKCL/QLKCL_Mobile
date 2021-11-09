@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class DenyMember extends StatelessWidget {
   const DenyMember({Key? key}) : super(key: key);

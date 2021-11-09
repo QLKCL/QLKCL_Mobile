@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class AddMember extends StatefulWidget {
   static const String routeName = "/add_member";
@@ -53,8 +54,13 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
         body: TabBarView(
           controller: _tabController,
           children: [
-            MemberPersonalInfo(tabController: _tabController),
-            MemberQuarantineInfo(),
+            MemberPersonalInfo(
+              tabController: _tabController,
+              mode: Permission.add,
+            ),
+            MemberQuarantineInfo(
+              mode: Permission.add,
+            ),
           ],
         ),
       ),

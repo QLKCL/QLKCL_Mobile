@@ -6,7 +6,7 @@ import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_scree
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class Account extends StatefulWidget {
   static const String routeName = "/account";

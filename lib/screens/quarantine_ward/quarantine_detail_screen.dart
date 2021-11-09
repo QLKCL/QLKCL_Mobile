@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import './component/carousel.dart';
 import './component/carousel_building.dart';

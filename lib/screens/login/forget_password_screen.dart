@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/screens/login/otp_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class ForgetPassword extends StatefulWidget {
   static const String routeName = "/forget_password";

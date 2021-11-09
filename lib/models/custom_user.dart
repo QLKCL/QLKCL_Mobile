@@ -22,7 +22,7 @@ class CustomUser {
     this.lastLogin,
     required this.code,
     this.email,
-    required this.fullName,
+    this.fullName,
     required this.phoneNumber,
     this.birthday,
     this.gender,
@@ -50,10 +50,10 @@ class CustomUser {
   final DateTime? lastLogin;
   final String code;
   final dynamic email;
-  final String fullName;
+  final dynamic fullName;
   final String phoneNumber;
   final dynamic birthday;
-  final String? gender;
+  final dynamic gender;
   final dynamic detailAddress;
   final dynamic healthInsuranceNumber;
   final dynamic identityNumber;

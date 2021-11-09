@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/all_member.dart';
 import 'package:qlkcl/screens/members/component/complete_member.dart';
@@ -8,7 +10,7 @@ import 'package:qlkcl/screens/members/component/confirm_member.dart';
 import 'package:qlkcl/screens/members/component/deny_member.dart';
 import 'package:qlkcl/screens/members/component/suspect_member.dart';
 import 'package:qlkcl/screens/members/component/test_member.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
 
@@ -24,13 +26,21 @@ class ListAllMember extends StatefulWidget {
 class _ListAllMemberState extends State<ListAllMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late Future<dynamic> futureMemberList;
 
   @override
   void initState() {
     super.initState();
+    futureMemberList = fetchMemberList();
     _tabController =
         TabController(length: 6, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
   }
 
   _handleTabChange() {
@@ -139,20 +149,33 @@ class _ListAllMemberState extends State<ListAllMember>
               child: Icon(Icons.add),
             )
           : null,
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          AllMember(),
-          ConfirmMember(
-            longPressFlag: longPressFlag,
-            indexList: indexList,
-            longPress: longPress,
-          ),
-          SuspectMember(),
-          TestMember(),
-          CompleteMember(),
-          DenyMember(),
-        ],
+      body: FutureBuilder<dynamic>(
+        future: futureMemberList,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            EasyLoading.dismiss();
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                AllMember(),
+                ConfirmMember(
+                  longPressFlag: longPressFlag,
+                  indexList: indexList,
+                  longPress: longPress,
+                ),
+                SuspectMember(),
+                TestMember(),
+                CompleteMember(),
+                DenyMember(),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+
+          EasyLoading.show();
+          return Container();
+        },
       ),
     ));
   }
