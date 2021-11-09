@@ -25,10 +25,10 @@ import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/edit_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
-import 'package:qlkcl/screens/quarantine_ward/building_list_screen.dart';
-import 'package:qlkcl/screens/quarantine_ward/building_details_screen.dart';
-import 'package:qlkcl/screens/quarantine_ward/floor_details_screen.dart';
-import 'package:qlkcl/screens/quarantine_ward/room_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/building_list_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/room_details_screen.dart';
 
 // We use name route
 // All our routes will be available here

@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart';
-import './component/general_info_floor.dart';
-import 'package:qlkcl/screens/quarantine_ward/room_details_screen.dart';
-
+import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
+import 'component/general_info.dart';
 import '../../components/cards.dart';
 
-class FloorDetailsScreen extends StatefulWidget {
-  const FloorDetailsScreen({Key? key}) : super(key: key);
-  static const routeName = '/floor-details';
+class BuildingListScreen extends StatefulWidget {
+  const BuildingListScreen({Key? key}) : super(key: key);
+  static const routeName = '/quarantine-details/building-list';
   @override
-  _FloorDetailsScreen createState() => _FloorDetailsScreen();
+  _BuildingListScreenState createState() => _BuildingListScreenState();
 }
 
-class _FloorDetailsScreen extends State<FloorDetailsScreen> {
+class _BuildingListScreenState extends State<BuildingListScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: const Text("Thông tin chi tiết tầng"),
-      centerTitle: true,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.edit),
-        ),
-      ],
+      title: Text('Danh sách tòa'),
     );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               margin: const EdgeInsets.symmetric(
@@ -40,31 +31,29 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.25,
-              child: GeneralInfoFloor(
-                  'Ký túc xá khu A', 'Tòa AH', 'Tầng 3', 8, 15, 300),
+              child: GeneralInfo('Ký túc xá khu A', 8, 15, 300),
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75,
-              margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
+                shrinkWrap: true,
                 itemBuilder: (ctx, index) {
                   //last item
-                  if (index == 8) {
+                  if (index == 9) {
                     return Column(
                       children: [
                         QuarantineRelatedCard(
                           onTap: () {
                             Navigator.of(context, rootNavigator: true)
                                 .pushNamed(
-                              RoomDetailsScreen.routeName,
+                              BuildingDetailsScreen.routeName,
                             );
                           },
                           id: '1',
-                          name: 'Phòng ' + '30' + (index + 1).toString(),
+                          name: 'Tòa AH',
                           numOfMem: 15,
                           maxMem: 300,
                         ),
@@ -75,16 +64,16 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                     return QuarantineRelatedCard(
                       onTap: () {
                         Navigator.of(context, rootNavigator: true).pushNamed(
-                          RoomDetailsScreen.routeName,
+                          BuildingDetailsScreen.routeName,
                         );
                       },
                       id: '1',
-                      name: 'Phòng ' + '30' + (index + 1).toString(),
+                      name: 'Tòa AH',
                       numOfMem: 15,
                       maxMem: 300,
                     );
                 },
-                itemCount: 9,
+                itemCount: 10,
               ),
             ),
           ],
@@ -95,6 +84,8 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         //tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+
+      // body: ,
     );
   }
 }

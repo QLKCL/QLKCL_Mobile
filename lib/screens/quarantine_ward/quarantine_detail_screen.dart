@@ -9,7 +9,7 @@ import './component/carousel.dart';
 import './component/carousel_building.dart';
 import './edit_quarantine_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
-import './building_list_screen.dart';
+import '../quarantine_management/building_list_screen.dart';
 
 
 class QuarantineDetailScreen extends StatefulWidget {

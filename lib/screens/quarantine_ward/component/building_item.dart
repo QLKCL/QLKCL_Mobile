@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/theme/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:qlkcl/screens/quarantine_ward/building_details_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
 
 class BuildingItem extends StatelessWidget {
   final String building_name;

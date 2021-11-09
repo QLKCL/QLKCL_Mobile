@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import './component/general_info_room.dart';
+import 'component/general_info_building.dart';
+import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
+
 import '../../components/cards.dart';
 
-class RoomDetailsScreen extends StatefulWidget {
-  const RoomDetailsScreen({Key? key}) : super(key: key);
-  static const routeName = '/room-details';
+class BuildingDetailsScreen extends StatefulWidget {
+  const BuildingDetailsScreen({Key? key}) : super(key: key);
+  static const routeName = '/building-details';
   @override
-  _RoomDetailsScreen createState() => _RoomDetailsScreen();
+  _BuildingDetailsScreen createState() => _BuildingDetailsScreen();
 }
 
-class _RoomDetailsScreen extends State<RoomDetailsScreen> {
+class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: const Text("Thông tin chi tiết phòng"),
+      title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
       actions: [
         IconButton(
@@ -38,8 +40,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.25,
-              child: GeneralInfoRoom(
-                  'Ký túc xá khu A', 'Tòa AH', 'Tầng 3', 'Phòng 307', 3, 4),
+              child:
+                  GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
             ),
             Container(
               width: MediaQuery.of(context).size.width,
@@ -47,34 +49,40 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75,
-              //margin: const EdgeInsets.symmetric(vertical: 8),
+              margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
+                shrinkWrap: true,
                 itemBuilder: (ctx, index) {
                   //last item
                   if (index == 8) {
                     return Column(
                       children: [
-                        MemberInRoom(
-                          onTap: () {},
+                        QuarantineRelatedCard(
+                          onTap: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pushNamed(
+                              FloorDetailsScreen.routeName,
+                            );
+                          },
                           id: '1',
-                          name: 'Nguyễn Văn Hải',
-                          gender: 'male',
-                          birthday: '18/04/1997',
-                          lastTestResult: 'Âm tính',
-                          lastTestTime: '22/10/2021',
+                          name: 'Tầng ' + (index + 1).toString(),
+                          numOfMem: 15,
+                          maxMem: 300,
                         ),
                         SizedBox(height: 70),
                       ],
                     );
                   } else
-                    return MemberInRoom(
-                      onTap: () {},
+                    return QuarantineRelatedCard(
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          FloorDetailsScreen.routeName,
+                        );
+                      },
                       id: '1',
-                      name: 'Nguyễn Văn Hải',
-                      gender: 'male',
-                      birthday: '18/04/1997',
-                      lastTestResult: 'Âm tính',
-                      lastTestTime: '22/10/2021',
+                      name: 'Tầng ' + (index + 1).toString(),
+                      numOfMem: 15,
+                      maxMem: 300,
                     );
                 },
                 itemCount: 9,
