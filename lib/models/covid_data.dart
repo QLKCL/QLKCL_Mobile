@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:qlkcl/networking/api_provider.dart';
-
-CovidData covidFromJson(str) => CovidData.fromJson(str);
+import 'package:qlkcl/networking/request_helper.dart';
 
 class CovidData {
   final String increaseConfirmed;
@@ -22,27 +20,30 @@ class CovidData {
     this.lastUpdate = 0,
   });
 
-  factory CovidData.fromJson(Map<String, dynamic> json) {
-    return json['data'] != null && json['data'] != {}
+  factory CovidData.fromJson(json) {
+    return json != null &&
+            json['data'] != null &&
+            json['data'] != {} &&
+            json['data']['VN'] != null
         ? CovidData(
             increaseConfirmed:
-                json['data']['VN'][62]["increase_confirmed"].toString(),
+                json['data']['VN'][63]["increase_confirmed"].toString(),
             increaseRecovered:
-                json['data']['VN'][62]["increase_recovered"].toString(),
+                json['data']['VN'][63]["increase_recovered"].toString(),
             increaseDeaths:
-                json['data']['VN'][62]["increase_deaths"].toString(),
-            confirmed: json['data']['VN'][62]["confirmed"].toString(),
-            recovered: json['data']['VN'][62]["recovered"].toString(),
-            deaths: json['data']['VN'][62]["deaths"].toString(),
-            lastUpdate: json['data']['VN'][62]["last_update"],
+                json['data']['VN'][63]["increase_deaths"].toString(),
+            confirmed: json['data']['VN'][63]["confirmed"].toString(),
+            recovered: json['data']['VN'][63]["recovered"].toString(),
+            deaths: json['data']['VN'][63]["deaths"].toString(),
+            lastUpdate: json['data']['VN'][63]["last_update"],
           )
         : CovidData();
   }
 }
 
-ApiProvider _provider = ApiProvider(baseUrl: "https://ncovi.vnpt.vn");
+RequestHelper _provider = RequestHelper(baseUrl: "https://ncovi.vnpt.vn");
 
 Future<CovidData> fetchCovidList() async {
   final response = await _provider.get("/thongtindichbenh_v2");
-  return covidFromJson(response);
+  return CovidData.fromJson(response.data);
 }

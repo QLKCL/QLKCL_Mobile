@@ -4,8 +4,9 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class Account extends StatefulWidget {
   static const String routeName = "/account";
@@ -75,7 +76,9 @@ class _AccountState extends State<Account> {
             child: Column(
               children: <Widget>[
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(DetailMember.routeName);},
                   title: Text('Thông tin cá nhân'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
@@ -98,7 +101,7 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                logout();
+                await logout();
                 Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },

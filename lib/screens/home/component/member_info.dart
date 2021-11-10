@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
   final VoidCallback onTap;

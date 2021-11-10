@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info_room.dart';
 import '../../components/input.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class EditRoomScreen extends StatefulWidget {
   const EditRoomScreen({Key? key}) : super(key: key);

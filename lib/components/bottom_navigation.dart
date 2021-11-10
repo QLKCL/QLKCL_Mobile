@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/routes.dart';
+import 'package:qlkcl/config/routes.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 

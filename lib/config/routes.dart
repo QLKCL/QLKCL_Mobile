@@ -7,7 +7,10 @@ import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
+import 'package:qlkcl/screens/members/confirm_member_screen.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/component/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
@@ -52,16 +55,19 @@ final Map<String, WidgetBuilder> routes = {
   ListMedicalDeclaration.routeName: (context) => ListMedicalDeclaration(),
   ListTest.routeName: (context) => ListTest(),
   ListTestNoResult.routeName: (context) => ListTestNoResult(),
-  ListAllMember.routeName: (context) => ListAllMember(),
-  QuarantineListScreen.routeName: (context) => QuarantineListScreen(),
-  NewQuarantine.routeName: (context) => NewQuarantine(),
   AddTest.routeName: (context) => AddTest(),
   UpdateTest.routeName: (context) => UpdateTest(),
   DetailTest.routeName: (context) => DetailTest(),
+  QuarantineListScreen.routeName: (context) => QuarantineListScreen(),
+  NewQuarantine.routeName: (context) => NewQuarantine(),
   QuarantineDetailScreen.routeName: (context) => QuarantineDetailScreen(),
   EditQuarantine.routeName: (context) => EditQuarantine(),
-  AddMember.routeName: (context) => AddMember(),
   BuildingListScreen.routeName: (context) => BuildingListScreen(),
+  ListAllMember.routeName: (context) => ListAllMember(),
+  AddMember.routeName: (context) => AddMember(),
+  UpdateMember.routeName: (context) => UpdateMember(),
+  DetailMember.routeName: (context) => DetailMember(),
+  ConfirmMember.routeName: (context) => ConfirmMember(),
   BuildingDetailsScreen.routeName: (context) => BuildingDetailsScreen(),
   FloorDetailsScreen.routeName: (context) => FloorDetailsScreen(),
   RoomDetailsScreen.routeName: (context) => RoomDetailsScreen(),

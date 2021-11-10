@@ -24,10 +24,6 @@ class ApiHelper {
     dio.interceptors.clear();
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        var accessToken = await getAccessToken();
-        var refreshToken = await getRefreshToken();
-        bool _token = isTokenExpired(accessToken!);
-        bool _refresh = isTokenExpired(refreshToken!);
         requestInterceptor(options);
         return handler.next(options); //modify your request
       },
@@ -71,14 +67,14 @@ class ApiHelper {
     // Get your JWT accessToken
     String? accessToken = await getAccessToken();
     if (accessToken != null && accessToken != '')
-      options.headers.addAll({"Authorization": "Bearer: $accessToken"});
+      options.headers.addAll({"Authorization": "Bearer $accessToken"});
     return options;
   }
 
   static refreshToken() async {
     Response response;
     var dio = Dio();
-    final Uri apiUrl = Uri.parse(Constant.baseUrl + "/token/refresh");
+    final Uri apiUrl = Uri.parse(Constant.baseUrl + "/api/token/refresh");
     var refreshToken = await getRefreshToken();
     dio.options.headers["Authorization"] = "Bearer " + refreshToken!;
     try {
@@ -86,21 +82,21 @@ class ApiHelper {
       if (response.statusCode == 200) {
         var refreshTokenResponse = jsonDecode(response.toString());
         var accessToken = refreshTokenResponse.data.access;
-        setAccessToken(accessToken);
+        await setAccessToken(accessToken);
       } else {
         print(response.toString());
-        logout();
+        await logout();
       }
     } catch (e) {
       print(e.toString());
-      logout();
+      // await logout();
     }
   }
 
   static final dio = createDio();
   static final baseAPI = addInterceptors(dio);
 
-  Future<Response?> getHTTP(String url) async {
+  Future<dynamic> getHTTP(String url) async {
     try {
       Response response = await baseAPI.get(url);
       return response.data;
@@ -110,9 +106,10 @@ class ApiHelper {
     }
   }
 
-  Future<Response?> postHTTP(String url, dynamic data) async {
+  Future<dynamic> postHTTP(String url, dynamic data) async {
     try {
-      Response response = await baseAPI.post(url, data: data);
+      Response response = await baseAPI.post(url,
+          data: data != null ? FormData.fromMap(data) : null);
       return response.data;
     } on DioError catch (e) {
       // Handle error
@@ -120,9 +117,10 @@ class ApiHelper {
     }
   }
 
-  Future<Response?> putHTTP(String url, dynamic data) async {
+  Future<dynamic> putHTTP(String url, dynamic data) async {
     try {
-      Response response = await baseAPI.put(url, data: data);
+      Response response = await baseAPI.put(url,
+          data: data != null ? FormData.fromMap(data) : null);
       return response.data;
     } on DioError catch (e) {
       // Handle error
@@ -130,7 +128,7 @@ class ApiHelper {
     }
   }
 
-  Future<Response?> deleteHTTP(String url) async {
+  Future<dynamic> deleteHTTP(String url) async {
     try {
       Response response = await baseAPI.delete(url);
       return response.data;

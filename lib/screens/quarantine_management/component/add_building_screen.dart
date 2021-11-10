@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class AddBuildingScreen extends StatefulWidget {
   const AddBuildingScreen({Key? key}) : super(key: key);

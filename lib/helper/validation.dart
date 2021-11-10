@@ -23,10 +23,11 @@ String? Function(String?) passValidator = (pass) {
 };
 
 String? Function(String?) emailValidator = (email) {
-  String patttern = r'^[a-zA-Z0-9](([.]{1}|[_]{1}|[-]{1}|[+]{1})?[a-zA-Z0-9])*[@]([a-z0-9]+([.]{1}|-)?)*[a-zA-Z0-9]+[.]{1}[a-z]{2,253}$';
+  String patttern =
+      r'^[a-zA-Z0-9](([.]{1}|[_]{1}|[-]{1}|[+]{1})?[a-zA-Z0-9])*[@]([a-z0-9]+([.]{1}|-)?)*[a-zA-Z0-9]+[.]{1}[a-z]{2,253}$';
   RegExp regExp = new RegExp(patttern);
   if (email == null || email.isEmpty) {
-    return 'Email không được để trống';
+    return null;
   } else if (!regExp.hasMatch(email)) {
     return 'Email không hợp lệ';
   }

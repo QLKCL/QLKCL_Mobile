@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import '../../components/input.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:qlkcl/components/dropdown_field.dart';

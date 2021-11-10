@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info_building.dart';
 import '../../components/input.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class EditBuildingScreen extends StatefulWidget {
   const EditBuildingScreen({Key? key}) : super(key: key);

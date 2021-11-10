@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/cards.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/theme/app_theme.dart';
+import 'package:qlkcl/screens/members/component/all_member.dart';
+import 'package:qlkcl/screens/members/component/complete_member.dart';
+import 'package:qlkcl/screens/members/component/confirm_member.dart';
+import 'package:qlkcl/screens/members/component/deny_member.dart';
+import 'package:qlkcl/screens/members/component/suspect_member.dart';
+import 'package:qlkcl/screens/members/component/test_member.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
 
 class ListAllMember extends StatefulWidget {
   static const String routeName = "/list_all_member";
-  ListAllMember({Key? key}) : super(key: key);
+  final int tab;
+  ListAllMember({Key? key, this.tab = 0}) : super(key: key);
 
   @override
   _ListAllMemberState createState() => _ListAllMemberState();
@@ -18,12 +26,21 @@ class ListAllMember extends StatefulWidget {
 class _ListAllMemberState extends State<ListAllMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late Future<dynamic> futureMemberList;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 6, vsync: this, initialIndex: 0);
+    futureMemberList = fetchMemberList();
+    _tabController =
+        TabController(length: 6, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
   }
 
   _handleTabChange() {
@@ -132,161 +149,33 @@ class _ListAllMemberState extends State<ListAllMember>
               child: Icon(Icons.add),
             )
           : null,
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
+      body: FutureBuilder<dynamic>(
+        future: futureMemberList,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            EasyLoading.dismiss();
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                AllMember(data: snapshot.data),
+                ConfirmMember(
+                  longPressFlag: longPressFlag,
+                  indexList: indexList,
+                  longPress: longPress,
                 ),
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(2)) {
-                      indexList.remove(2);
-                    } else {
-                      indexList.add(2);
-                    }
-                    longPress();
-                  },
-                ),
+                SuspectMember(),
+                TestMember(),
+                CompleteMember(),
+                DenyMember(),
               ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Member(
-                  id: "1",
-                  longPressEnabled: longPressFlag,
-                  name: "Le Trung Son",
-                  gender: "male",
-                  birthday: "20/05/2000",
-                  room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                  lastTestResult: "Âm tính",
-                  lastTestTime: "22/09/2021",
-                  onTap: () {},
-                  onLongPress: () {
-                    if (indexList.contains(1)) {
-                      indexList.remove(1);
-                    } else {
-                      indexList.add(1);
-                    }
-                    longPress();
-                  },
-                ),
-              ],
-            ),
-          ),
-          Center(
-            child: Text(
-              "Không có dữ liệu",
-              style: TextStyle(color: CustomColors.secondaryText, fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+
+          EasyLoading.show();
+          return Container();
+        },
       ),
     ));
   }

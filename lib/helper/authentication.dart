@@ -1,19 +1,14 @@
+import 'dart:async';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
-final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-
 Future<bool> getLoginState() async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
-
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
+  var authBox = await Hive.openBox('auth');
 
   if (authBox.containsKey('isLoggedIn')) {
     return authBox.get('isLoggedIn');
@@ -24,94 +19,102 @@ Future<bool> getLoginState() async {
 }
 
 Future<void> setLoginState(bool state) async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
-
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
+  var authBox = await Hive.openBox('auth');
 
   authBox.put('isLoggedIn', state);
 }
 
 Future<String?> getAccessToken() async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
-
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
-
-  if (authBox.containsKey('accessToken')) {
-    return authBox.get('accessToken');
-  } else {
-    return null;
-  }
+  var authBox = await Hive.openBox('auth');
+  return authBox.get('accessToken');
 }
 
 Future<void> setAccessToken(String accessToken) async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
-
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
-
+  var authBox = await Hive.openBox('auth');
   authBox.put('accessToken', accessToken);
 }
 
 Future<String?> getRefreshToken() async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
+  var authBox = await Hive.openBox('auth');
 
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
-
-  if (authBox.containsKey('refreshToken')) {
-    return authBox.get('refreshToken');
-  } else {
-    return null;
-  }
+  return authBox.get('refreshToken');
 }
 
 Future<void> setRefreshToken(String refreshToken) async {
-  var encryptionKey =
-      base64Url.decode((await _secureStorage.read(key: 'key'))!);
-
-  var authBox = await Hive.openBox('auth',
-      encryptionCipher: HiveAesCipher(encryptionKey));
+  var authBox = await Hive.openBox('auth');
 
   authBox.put('refreshToken', refreshToken);
 }
 
 Future<bool> setToken(String accessToken, String refreshToken) async {
-  setLoginState(true);
-  setAccessToken(accessToken);
-  setRefreshToken(refreshToken);
+  await setLoginState(true);
+  await setAccessToken(accessToken);
+  await setRefreshToken(refreshToken);
   return true;
 }
 
-Future<bool> login(Map<String, String> loginDataForm) async {
-  var headers = {'Accept': 'application/json'};
-  var request =
-      http.MultipartRequest('POST', Uri.parse(Constant.baseUrl + '/token'));
-  request.fields.addAll(loginDataForm);
-  request.headers.addAll(headers);
-  http.StreamedResponse response = await request.send();
+var headers = {
+  'Accept': 'application/json',
+};
 
-  if (response.statusCode == 200) {
-    var resp = await response.stream.bytesToString();
+Future<Response> login(Map<String, String> loginDataForm) async {
+  http.Response? response;
+  try {
+    response = await http.post(Uri.parse(Constant.baseUrl + Constant.login),
+        headers: headers, body: loginDataForm);
+  } catch (e) {
+    print('Error: $e');
+  }
+
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else if (response.statusCode == 200) {
+    var resp = response.body.toString();
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
-    setToken(accessToken, refreshToken);
-    return true;
+    await setToken(accessToken, refreshToken);
+    return Response(success: true);
+  } else if (response.statusCode == 401) {
+    return Response(
+        success: false, message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
   } else {
     print("Response code: " + response.statusCode.toString());
-    return false;
+    return Response(success: false, message: "Có lỗi xảy ra!");
+  }
+}
+
+Future<Response> register(Map<String, dynamic> loginDataForm) async {
+  http.Response? response;
+  try {
+    response = await http.post(Uri.parse(Constant.baseUrl + Constant.register),
+        headers: headers, body: loginDataForm);
+  } catch (e) {
+    print('Error: $e');
+  }
+
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else if (response.statusCode == 200) {
+    var resp = response.body.toString();
+    final data = jsonDecode(resp);
+    if (data['error_code'] == 0) {
+      return Response(success: true);
+    } else if (data['message']['phone_number'] == "Exist") {
+      return Response(
+          success: false, message: "Số điện thoại đã được sử dụng!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  } else {
+    print("Response code: " + response.statusCode.toString());
+    return Response(success: false, message: "Có lỗi xảy ra!");
   }
 }
 
 Future<bool> logout() async {
   Hive.box('auth').clear();
-  setLoginState(false);
+  await setLoginState(false);
   return true;
 }
 

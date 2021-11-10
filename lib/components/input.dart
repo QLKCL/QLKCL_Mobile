@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Input extends StatefulWidget {
   final String label;
   final String? hint;
-  final bool obscure;
+  final bool? obscure;
   final bool required;
   final TextInputType type;
   final bool enabled;
@@ -15,7 +15,7 @@ class Input extends StatefulWidget {
   final String? Function(String?)? validatorFunction;
   final void Function(String)? onChangedFunction;
   final void Function(String?)? onSavedFunction;
-  String? error;
+  final String? error;
   final TextCapitalization textCapitalization;
   final int maxLines;
 
@@ -23,7 +23,7 @@ class Input extends StatefulWidget {
       {Key? key,
       required this.label,
       this.hint,
-      this.obscure: false,
+      this.obscure,
       this.required: false,
       this.type: TextInputType.text,
       this.enabled: true,
@@ -45,16 +45,24 @@ class Input extends StatefulWidget {
 }
 
 class _InputState extends State<Input> {
-  bool focus = false;
+  bool _focus = false;
+  bool? _obscure;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscure = widget.obscure;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(16, 16, 16, 00),
       child: TextFormField(
         onTap: () {
-          focus = true;
+          _focus = true;
         },
-        obscureText: widget.obscure,
+        obscureText: _obscure != null ? _obscure! : false,
         keyboardType: widget.type,
         onSaved: widget.onSavedFunction,
         initialValue: widget.initValue,
@@ -80,22 +88,32 @@ class _InputState extends State<Input> {
         decoration: InputDecoration(
             labelText: widget.required ? widget.label + " \*" : widget.label,
             hintText: widget.hint,
-            suffixIcon: (widget.showClearButton &&
-                    widget.controller != null &&
-                    widget.controller!.text != "" &&
-                    focus == true)
-                ? IconButton(
-                    icon: Icon(Icons.clear),
+            suffixIcon: _obscure != null
+                ? (IconButton(
+                    icon: Icon(
+                      _obscure == true
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
                     onPressed: () {
-                      widget.controller!.clear();
+                      _obscure = !_obscure!;
                       setState(() {});
                     },
-                  )
-                : null,
+                  ))
+                : ((widget.showClearButton &&
+                        widget.controller != null &&
+                        widget.controller!.text != "" &&
+                        _focus == true)
+                    ? IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () {
+                          widget.controller!.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null),
             helperText: widget.helper,
-            errorText: (widget.validatorFunction == null &&
-                    widget.error != null &&
-                    widget.error!.isNotEmpty)
+            errorText: (widget.error != null && widget.error!.isNotEmpty)
                 ? widget.error
                 : null),
         textCapitalization: widget.textCapitalization,
