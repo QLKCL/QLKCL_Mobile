@@ -17,9 +17,9 @@ class QuanrantineList extends StatelessWidget {
             itemBuilder: (ctx, index) {
               return QuarantineItem(
                   id: quarantines[index].id,
-                  name: quarantines[index].full_name,
+                  name: quarantines[index].fullName,
                   numberOfMem: 0,
-                  manager: quarantines[index].main_manager);
+                  manager: quarantines[index].mainManager);
             },
             itemCount: quarantines.length,
           );

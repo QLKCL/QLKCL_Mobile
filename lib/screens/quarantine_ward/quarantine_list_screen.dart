@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/dummy_data.dart';
 import 'component/quarantine_item.dart';
-import 'component/quarantine_list.dart';
 import './add_quarantine_screen.dart';
 
 class QuarantineListScreen extends StatefulWidget {
@@ -14,28 +13,28 @@ class QuarantineListScreen extends StatefulWidget {
 
 class _QuarantineListScreenState extends State<QuarantineListScreen> {
   //add new quarantine ward
-  void _addNewQuarantine(
+  void addNewQuarantine(
       String id,
-      String full_name,
-      int phone_number,
-      String country_id,
-      String city_id,
-      String ward_id,
-      String district_id,
+      String fullName,
+      int phoneNumber,
+      String countryId,
+      String cityId,
+      String wardId,
+      String districtId,
       String type,
-      int quarantine_time,
-      String main_manager) {
+      int quarantineTime,
+      String mainManager) {
     final newTx = Quarantine(
       id: id,
-      full_name: full_name,
-      phone_number: phone_number.toString(),
-      country_id: country_id,
-      city_id: city_id,
-      ward_id: ward_id,
-      district_id: district_id,
+      fullName: fullName,
+      phoneNumber: phoneNumber.toString(),
+      countryId: countryId,
+      cityId: cityId,
+      wardId: wardId,
+      districtId: districtId,
       type: type,
-      quarantine_time: quarantine_time,
-      main_manager: main_manager,
+      quarantineTime: quarantineTime,
+      mainManager: mainManager,
     );
     setState(() {
       DUMMY_QUARANTINE.add(newTx);
@@ -46,7 +45,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
 
   // void _startAddNewQuanrantine(BuildContext ctx) {
   //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //     return NewQuarantine(_addNewQuarantine(String id, String full_name, int phone_number, String country_id, String city_id, String ward_id, String district_id, String type, int quarantine_time, String main_manager));
+  //     return NewQuarantine(addNewQuarantine(String id, String fullName, int phoneNumber, String countryId, String cityId, String wardId, String districtId, String type, int quarantineTime, String mainManager));
   //     }),)
   // }
 
@@ -105,9 +104,9 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
               itemBuilder: (ctx, index) {
                 return QuarantineItem(
                     id: DUMMY_QUARANTINE[index].id,
-                    name: DUMMY_QUARANTINE[index].full_name,
+                    name: DUMMY_QUARANTINE[index].fullName,
                     numberOfMem: DUMMY_QUARANTINE[index].numOfMem,
-                    manager: DUMMY_QUARANTINE[index].main_manager);
+                    manager: DUMMY_QUARANTINE[index].mainManager);
               },
               itemCount: DUMMY_QUARANTINE.length,
             ),

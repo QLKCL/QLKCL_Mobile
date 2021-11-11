@@ -97,6 +97,7 @@ class _DetailMemberState extends State<DetailMember>
                 ],
               );
             } else if (snapshot.hasError) {
+              EasyLoading.dismiss();
               return Text('${snapshot.error}');
             }
 

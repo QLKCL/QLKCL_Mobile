@@ -331,7 +331,8 @@ class _MemberState extends State<Member> {
       child: Container(
         child: ListTile(
           onTap: () {
-            if (widget.longPressEnabled != null) {
+            if (widget.longPressEnabled != null &&
+                widget.longPressEnabled == true) {
               setState(() {
                 _selected = !_selected;
               });
@@ -368,7 +369,7 @@ class _MemberState extends State<Member> {
             ),
           ),
           subtitle: Container(
-            padding: EdgeInsets.only(bottom: 8),
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
             child: Wrap(
               direction: Axis.vertical, // make sure to set this
               spacing: 4, // set your spacing
@@ -533,6 +534,7 @@ class MemberInRoom extends StatelessWidget {
   final String birthday;
   final String lastTestResult;
   final String lastTestTime;
+  final String healthStatus;
   const MemberInRoom({
     required this.onTap,
     required this.id,
@@ -541,6 +543,7 @@ class MemberInRoom extends StatelessWidget {
     required this.birthday,
     required this.lastTestResult,
     required this.lastTestTime,
+    this.healthStatus = "NORMAL",
   });
 
   @override
@@ -559,7 +562,10 @@ class MemberInRoom extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   WidgetSpan(
-                    child: WebsafeSvg.asset("assets/svg/male.svg"),
+                    alignment: PlaceholderAlignment.top,
+                    child: gender == "MALE"
+                        ? WebsafeSvg.asset("assets/svg/male.svg")
+                        : WebsafeSvg.asset("assets/svg/female.svg"),
                   ),
                 ],
               ),
@@ -573,6 +579,9 @@ class MemberInRoom extends StatelessWidget {
               children: [
                 Text(
                   birthday,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
                 Text.rich(
                   TextSpan(
@@ -611,7 +620,11 @@ class MemberInRoom extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: CustomColors.white,
                         borderRadius: BorderRadius.circular(100)),
-                    child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                    child: healthStatus == "SERIOUS"
+                        ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                        : healthStatus == "UNWELL"
+                            ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                            : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                   ),
                 ),
               ],

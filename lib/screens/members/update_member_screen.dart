@@ -92,6 +92,7 @@ class _UpdateMemberState extends State<UpdateMember>
                 ],
               );
             } else if (snapshot.hasError) {
+              EasyLoading.dismiss();
               return Text('${snapshot.error}');
             }
 

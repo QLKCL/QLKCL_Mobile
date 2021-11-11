@@ -1,30 +1,28 @@
-import 'package:flutter/foundation.dart';
-
 class Quarantine {
   final String id;
-  final String full_name;
-  final String phone_number;
-  final String country_id;
-  final String city_id;
-  final String district_id;
-  final String ward_id;
+  final String fullName;
+  final String phoneNumber;
+  final String countryId;
+  final String cityId;
+  final String districtId;
+  final String wardId;
   final String type;
   //final String address;
-  final int quarantine_time;
-  final String main_manager;
+  final int quarantineTime;
+  final String mainManager;
   final int numOfMem;
 
   const Quarantine({
     required this.id,
-    required this.full_name,
-    required this.phone_number,
-    required this.country_id,
-    required this.city_id,
-    required this.district_id,
-    required this.ward_id,
+    required this.fullName,
+    required this.phoneNumber,
+    required this.countryId,
+    required this.cityId,
+    required this.districtId,
+    required this.wardId,
     required this.type,
-    required this.quarantine_time,
-    required this.main_manager,
+    required this.quarantineTime,
+    required this.mainManager,
     this.numOfMem = 0,
   });
 }

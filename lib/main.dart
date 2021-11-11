@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/check_network.dart';
 import 'package:qlkcl/config/routes.dart';
@@ -32,20 +33,6 @@ void main() async {
   bool isLoggedIn = await getLoginState();
   runApp(MyApp(isLoggedIn: isLoggedIn));
   configLoading();
-}
-
-void configLoading() {
-  EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.ring
-    ..loadingStyle = EasyLoadingStyle.light
-    ..indicatorSize = 45.0
-    ..radius = 8.0
-    ..userInteractions = false
-    ..dismissOnTap = false
-    ..animationStyle = EasyLoadingAnimationStyle.scale
-    ..toastPosition = EasyLoadingToastPosition.bottom
-    ..maskType = EasyLoadingMaskType.black;
 }
 
 class MyApp extends StatelessWidget {

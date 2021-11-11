@@ -52,9 +52,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
     final quarantineId = routeArgs['id'];
     final quarantineName = routeArgs['full_name'];
-    final quarantineSelected = DUMMY_QUARANTINE.where((quarantine) {
-      return quarantine.id.contains(quarantineId!);
-    }).toList();
     final thisQuarantine = DUMMY_QUARANTINE
         .firstWhere((quarantine) => quarantine.id == quarantineId);
 
@@ -107,7 +104,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                           height: 6,
                         ),
                         Text(
-                          '${thisQuarantine.ward_id}, ${thisQuarantine.district_id}, ${thisQuarantine.city_id}',
+                          '${thisQuarantine.wardId}, ${thisQuarantine.districtId}, ${thisQuarantine.cityId}',
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                             fontSize: 15,
@@ -124,7 +121,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                       IconButton(
                         iconSize: 38,
                         onPressed: () async {
-                          launch("tel://${thisQuarantine.phone_number}");
+                          launch("tel://${thisQuarantine.phoneNumber}");
                         },
                         icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                       ),
@@ -187,15 +184,15 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                     ),
                   ),
                   buildInformation(context, Icons.history,
-                      ' Thời gian cách ly: ${thisQuarantine.quarantine_time}'),
+                      ' Thời gian cách ly: ${thisQuarantine.quarantineTime}'),
                   buildInformation(context, Icons.groups_rounded,
                       ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                   buildInformation(context, Icons.account_box_outlined,
-                      ' Quản lý: ${thisQuarantine.main_manager}'),
+                      ' Quản lý: ${thisQuarantine.mainManager}'),
                   buildInformation(context, Icons.place_outlined,
-                      ' Địa chỉ: ${thisQuarantine.ward_id}, ${thisQuarantine.district_id}, ${thisQuarantine.city_id}'),
+                      ' Địa chỉ: ${thisQuarantine.wardId}, ${thisQuarantine.districtId}, ${thisQuarantine.cityId}'),
                   buildInformation(context, Icons.phone,
-                      ' Số điện thoại: ${thisQuarantine.phone_number}'),
+                      ' Số điện thoại: ${thisQuarantine.phoneNumber}'),
                 ],
               ),
             ),
