@@ -16,6 +16,10 @@ class GeneralInfoRoom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(159, 217, 255, 1),
         borderRadius: BorderRadius.circular(24),

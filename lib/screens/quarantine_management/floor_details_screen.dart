@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'component/general_info_floor.dart';
 import 'package:qlkcl/screens/quarantine_management/room_details_screen.dart';
 import 'edit_floor_screen.dart';
+import './add_room_screen.dart';
 
 import '../../components/cards.dart';
 
@@ -37,10 +38,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -54,7 +51,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75,
-              margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
                 itemBuilder: (ctx, index) {
                   //last item
@@ -96,8 +92,11 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        //tooltip: 'Increment',
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            AddRoomScreen.routeName,
+          );
+        },
         child: const Icon(Icons.add),
       ),
     );

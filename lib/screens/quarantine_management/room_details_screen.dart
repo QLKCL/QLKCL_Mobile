@@ -3,6 +3,7 @@ import 'component/general_info_room.dart';
 import '../../components/cards.dart';
 import './edit_room_screen.dart';
 
+
 class RoomDetailsScreen extends StatefulWidget {
   const RoomDetailsScreen({Key? key}) : super(key: key);
   static const routeName = '/room-details';
@@ -35,10 +36,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
+
 class GeneralInfo extends StatelessWidget {
   final String QuarantineName;
   final int numOfBuilding;
@@ -14,9 +15,10 @@ class GeneralInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: MediaQuery.of(context).size.width * 1,
-      // height: MediaQuery.of(context).size.height * 0.2,
-      
+      margin: const EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 8,
+      ),
       decoration: BoxDecoration(
         color: const Color.fromRGBO(159, 217, 255, 1),
         borderRadius: BorderRadius.circular(24),

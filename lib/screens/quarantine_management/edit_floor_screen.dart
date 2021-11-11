@@ -27,10 +27,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
+              
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -42,8 +39,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
-                  0.55,
-              margin: const EdgeInsets.symmetric(vertical: 8),
+                  0.65,
               child: Input(label: 'Tên', hint: 'Tên tầng mới'),),
             Align(
               alignment: Alignment.bottomCenter,

@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
 
-import 'component/general_info_building.dart';
+import 'component/general_info_floor.dart';
 
-class AddFloorScreen extends StatefulWidget {
-  static const String routeName = "/add-floor";
+class AddRoomScreen extends StatefulWidget {
+  static const String routeName = "/add-room";
 
-  const AddFloorScreen({Key? key}) : super(key: key);
+  const AddRoomScreen({Key? key}) : super(key: key);
 
   @override
-  _AddFloorScreenState createState() => _AddFloorScreenState();
+  _AddRoomScreenState createState() => _AddRoomScreenState();
 }
 
-class _AddFloorScreenState extends State<AddFloorScreen> {
+class _AddRoomScreenState extends State<AddRoomScreen> {
   bool addMultiple = false;
-  int numOfAddedFloor = 1;
+  int numOfAddedRoom = 1;
 
   final myController = TextEditingController();
 
@@ -28,14 +28,14 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   void _updateLatestValue() {
     setState(() {
-      numOfAddedFloor = int.parse(myController.text);
+      numOfAddedRoom = int.parse(myController.text);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thêm tầng'),
+      title: Text('Thêm phòng'),
       centerTitle: true,
     );
 
@@ -52,14 +52,13 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                       MediaQuery.of(context).padding.top) *
                   0.25,
               child:
-                  GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
+                  GeneralInfoFloor('Ký túc xá khu A', 'Tòa AH','Tầng 3', 8, 15, 300),
             ),
             Container(
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.65,
-
               //Input fields
               child: SingleChildScrollView(
                 physics: ScrollPhysics(),
@@ -76,7 +75,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                             child: ListTileTheme(
                               contentPadding: EdgeInsets.all(0),
                               child: CheckboxListTile(
-                                title: Text("Thêm nhiều tầng"),
+                                title: Text("Thêm nhiều phòng"),
                                 controlAffinity:
                                     ListTileControlAffinity.leading,
                                 value: addMultiple,
@@ -93,11 +92,10 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                               ? Expanded(
                                   flex: 45,
                                   child: Input(
-                                    label: 'Số tầng',
-                                    hint: 'Số tầng',
+                                    label: 'Số phòng',
+                                    hint: 'Số phòng',
                                     type: TextInputType.number,
                                     required: true,
-                                    //initValue: '1',
                                     controller: myController,
                                   ),
                                 )
@@ -108,7 +106,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 16),
                       child: const Text(
-                        'Chỉnh sửa thông tin tầng',
+                        'Chỉnh sửa thông tin phòng',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -122,16 +120,16 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                   Expanded(
                                     flex: 55,
                                     child: Input(
-                                      label: 'Tên tầng',
-                                      hint: 'Tên tầng',
+                                      label: 'Tên phòng',
+                                      hint: 'Tên phòng',
                                       required: true,
                                     ),
                                   ),
                                   Expanded(
                                     flex: 45,
                                     child: Input(
-                                      label: 'Số phòng',
-                                      hint: 'Số phòng',
+                                      label: 'Người tối đa',
+                                      hint: 'Người tối đa',
                                       required: true,
                                       type: TextInputType.number,
                                     ),
@@ -139,24 +137,24 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                 ],
                               );
                             },
-                            itemCount: numOfAddedFloor,
+                            itemCount: numOfAddedRoom,
                           )
                         : Container(
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 55,
+                                  flex: 3,
                                   child: Input(
-                                    label: 'Tên tầng',
-                                    hint: 'Tên tầng',
+                                    label: 'Tên phòng',
+                                    hint: 'Tên phòng',
                                     required: true,
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 45,
+                                  flex: 2,
                                   child: Input(
-                                    label: 'Số phòng',
-                                    hint: 'Số phòng',
+                                    label: 'Số người tối đa',
+                                    hint: 'Số người tối đa',
                                     required: true,
                                     type: TextInputType.number,
                                   ),

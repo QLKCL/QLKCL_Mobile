@@ -37,10 +37,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -49,12 +45,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                   GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75,
-              margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (ctx, index) {

@@ -27,10 +27,6 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
@@ -42,8 +38,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
               height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
-                  0.55,
-              margin: const EdgeInsets.symmetric(vertical: 8),
+                  0.65,
               child: Input(label: 'Tên', hint: 'Tên tòa mới'),),
             Align(
               alignment: Alignment.bottomCenter,
