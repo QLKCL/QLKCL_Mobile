@@ -11,7 +11,6 @@ import './edit_quarantine_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../quarantine_management/building_list_screen.dart';
 
-
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
 
@@ -20,6 +19,8 @@ class QuarantineDetailScreen extends StatefulWidget {
 }
 
 class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
+
+
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
       margin: EdgeInsets.only(bottom: 6),
@@ -130,7 +131,15 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                       ),
                       IconButton(
                           iconSize: 38,
-                          onPressed: () {},
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Ứng dụng chưa hỗ trợ chức năng này.'),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          },
                           icon: WebsafeSvg.asset("assets/svg/Location.svg"))
                     ],
                   ),
