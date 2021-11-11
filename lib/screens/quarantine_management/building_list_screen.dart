@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
-import 'package:qlkcl/screens/quarantine_management/component/add_building_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'component/general_info.dart';
 import '../../components/cards.dart';
-import 'add_building_screen.dart';
 
 class BuildingListScreen extends StatefulWidget {
   const BuildingListScreen({Key? key}) : super(key: key);

@@ -3,6 +3,7 @@ import 'component/general_info_building.dart';
 import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
 import './edit_building_screen.dart';
 import '../../components/cards.dart';
+import './add_floor_screen.dart';
 
 class BuildingDetailsScreen extends StatefulWidget {
   const BuildingDetailsScreen({Key? key}) : super(key: key);
@@ -20,10 +21,9 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true)
-                                .pushNamed(
-                              EditBuildingScreen.routeName,
-                            );
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              EditBuildingScreen.routeName,
+            );
           },
           icon: Icon(Icons.edit),
         ),
@@ -97,7 +97,11 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            AddFloorScreen.routeName,
+          );
+        },
         //tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),

@@ -12,7 +12,7 @@ import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
-import 'package:qlkcl/screens/quarantine_management/component/add_building_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/login/create_password_screen.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';
@@ -33,7 +33,7 @@ import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/room_details_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/edit_building_screen.dart';
-import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
+import 'package:qlkcl/screens/quarantine_management/add_floor_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/edit_floor_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/edit_room_screen.dart';
 
@@ -76,4 +76,5 @@ final Map<String, WidgetBuilder> routes = {
   AddBuildingScreen.routeName: (context) => AddBuildingScreen(),
   EditFloorScreen.routeName: (context) => EditFloorScreen(),
   EditRoomScreen.routeName: (context) => EditRoomScreen(),
+  AddFloorScreen.routeName: (context) => AddFloorScreen(),
 };
