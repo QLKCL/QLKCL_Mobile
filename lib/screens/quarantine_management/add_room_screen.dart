@@ -143,7 +143,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 3,
+                                  flex: 55,
                                   child: Input(
                                     label: 'Tên phòng',
                                     hint: 'Tên phòng',
@@ -151,10 +151,10 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 2,
+                                  flex: 45,
                                   child: Input(
-                                    label: 'Số người tối đa',
-                                    hint: 'Số người tối đa',
+                                    label: 'Người tối đa',
+                                    hint: 'Người tối đa',
                                     required: true,
                                     type: TextInputType.number,
                                   ),
