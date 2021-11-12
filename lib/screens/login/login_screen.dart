@@ -148,9 +148,10 @@ class _LoginFormState extends State<LoginForm> {
           await login(loginDataForm(phoneController.text, passController.text));
       EasyLoading.dismiss();
       if (response.success) {
+        int role = await getRole();
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => App()),
+            MaterialPageRoute(builder: (context) => App(role: role)),
             (Route<dynamic> route) => false);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

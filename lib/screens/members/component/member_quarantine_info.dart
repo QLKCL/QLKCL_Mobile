@@ -45,7 +45,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
     quarantineWardController.text = widget.qurantineData?.quarantineWard != null
         ? widget.qurantineData?.quarantineWard['full_name']
         : "";
-    labelController.text = widget.qurantineData!.label;
+    labelController.text = widget.qurantineData?.label ?? "";
     quarantinedAtController.text = widget.qurantineData?.quarantinedAt ?? "";
     backgroundDiseaseController.text =
         widget.qurantineData?.backgroundDisease ?? "";

@@ -73,7 +73,9 @@ class AppTheme with ChangeNotifier {
         margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: CustomColors.secondary,

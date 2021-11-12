@@ -22,7 +22,7 @@ class _UpdateMemberState extends State<UpdateMember>
   late TabController _tabController;
   late Future<dynamic> futureMember;
   late CustomUser personalData;
-  late Member quarantineData;
+  late Member? quarantineData;
 
   @override
   void initState() {
@@ -78,7 +78,9 @@ class _UpdateMemberState extends State<UpdateMember>
               if (snapshot.hasData) {
                 personalData =
                     CustomUser.fromJson(snapshot.data["custom_user"]);
-                quarantineData = Member.fromJson(snapshot.data["member"]);
+                quarantineData = snapshot.data["member"] != null
+                    ? Member.fromJson(snapshot.data["member"])
+                    : null;
 
                 return TabBarView(
                   controller: _tabController,

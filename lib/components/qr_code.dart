@@ -25,7 +25,7 @@ class GenerateQrCode extends StatelessWidget {
               alignment: Alignment.center,
               padding: EdgeInsets.all(8),
               child: Text(
-                "Le Trung Son",
+                qrData,
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),

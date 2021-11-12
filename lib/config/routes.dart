@@ -41,7 +41,7 @@ import 'package:qlkcl/screens/quarantine_management/add_room_screen.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
-  App.routeName: (context) => App(),
+  App.routeName: (context) => App(role: -1),
   ManagerHomePage.routeName: (context) => ManagerHomePage(),
   MemberHomePage.routeName: (context) => MemberHomePage(),
   Account.routeName: (context) => Account(),

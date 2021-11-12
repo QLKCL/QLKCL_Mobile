@@ -25,20 +25,21 @@ void main() async {
   connectionStatus.initialize();
   await Hive.initFlutter();
 
-  bool existRole = await Hive.boxExists('role');
-  if (!existRole) {
-    // Fetch role from server and store in Hive
-  }
-
   bool isLoggedIn = await getLoginState();
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  int role = await getRole();
+  runApp(MyApp(
+    isLoggedIn: isLoggedIn,
+    role: role,
+  ));
   configLoading();
 }
 
 class MyApp extends StatelessWidget {
   static const String routeName = "/init";
   final bool isLoggedIn;
-  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  final int role;
+  const MyApp({Key? key, required this.isLoggedIn, required this.role})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -59,7 +60,7 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: isLoggedIn ? App() : Login(),
+            home: isLoggedIn ? App(role: role) : Login(),
             routes: routes,
             initialRoute: isLoggedIn ? App.routeName : Login.routeName,
             builder: EasyLoading.init(),

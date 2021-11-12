@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
@@ -21,18 +20,11 @@ class _AllMemberState extends State<AllMember> {
   }
 
   @override
-  void deactivate() {
-    EasyLoading.dismiss();
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
       future: futureMemberList,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          EasyLoading.dismiss();
           if (!snapshot.hasData) {
             return Center(
               child: Text('Không có dữ liệu'),
@@ -68,7 +60,6 @@ class _AllMemberState extends State<AllMember> {
           }
         }
 
-        EasyLoading.show();
         return Container();
       },
     );

@@ -19,3 +19,11 @@ List<KeyValue> genderList = [
   KeyValue(id: "MALE", name: "Nam"),
   KeyValue(id: "FEMALE", name: "Nữ")
 ];
+
+List<KeyValue> roleList = [
+  KeyValue(id: "1", name: "ADMINISTRATOR"),
+  KeyValue(id: "2", name: "SUPER_MANAGER"),
+  KeyValue(id: "3", name: "MANAGER"),
+  KeyValue(id: "4", name: "STAFF"),
+  KeyValue(id: "5", name: "MEMBER"),
+];

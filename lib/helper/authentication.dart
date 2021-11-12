@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
+import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -74,6 +75,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
     await setToken(accessToken, refreshToken);
+    await setInfo();
     return Response(success: true);
   } else if (response.statusCode == 401) {
     return Response(
@@ -114,6 +116,7 @@ Future<Response> register(Map<String, dynamic> loginDataForm) async {
 
 Future<bool> logout() async {
   Hive.box('auth').clear();
+  Hive.box('myInfo').clear();
   await setLoginState(false);
   return true;
 }
@@ -125,13 +128,31 @@ bool isTokenExpired(String _token) {
   return isExpired;
 }
 
-Future<String> getRole() async {
-  var roleBox = await Hive.openBox('role');
+Future<int> getRole() async {
+  var infoBox = await Hive.openBox('myInfo');
 
-  if (roleBox.containsKey('role')) {
-    return roleBox.get('role');
+  if (infoBox.containsKey('role')) {
+    return infoBox.get('role');
   } else {
-    roleBox.put('role', "5"); // vi du 5 la member
-    return "5";
+    return -1;
   }
+}
+Future<String> getName() async {
+  var infoBox = await Hive.openBox('myInfo');
+
+  if (infoBox.containsKey('name')) {
+    return infoBox.get('name');
+  } else {
+    return "";
+  }
+}
+
+Future<void> setInfo() async {
+  var infoBox = await Hive.openBox('myInfo');
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getMember, null);
+  int role = response['data']['custom_user']['role'];
+  infoBox.put('role', role);
+  String name = response['data']['custom_user']['full_name'];
+  infoBox.put('name', name);
 }

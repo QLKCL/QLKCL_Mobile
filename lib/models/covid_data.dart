@@ -27,15 +27,15 @@ class CovidData {
             json['data']['VN'] != null
         ? CovidData(
             increaseConfirmed:
-                json['data']['VN'][63]["increase_confirmed"].toString(),
+                json['data']['VN'].last["increase_confirmed"].toString(),
             increaseRecovered:
-                json['data']['VN'][63]["increase_recovered"].toString(),
+                json['data']['VN'].last["increase_recovered"].toString(),
             increaseDeaths:
-                json['data']['VN'][63]["increase_deaths"].toString(),
-            confirmed: json['data']['VN'][63]["confirmed"].toString(),
-            recovered: json['data']['VN'][63]["recovered"].toString(),
-            deaths: json['data']['VN'][63]["deaths"].toString(),
-            lastUpdate: json['data']['VN'][63]["last_update"],
+                json['data']['VN'].last["increase_deaths"].toString(),
+            confirmed: json['data']['VN'].last["confirmed"].toString(),
+            recovered: json['data']['VN'].last["recovered"].toString(),
+            deaths: json['data']['VN'].last["deaths"].toString(),
+            lastUpdate: json['data']['VN'].last["last_update"],
           )
         : CovidData();
   }
