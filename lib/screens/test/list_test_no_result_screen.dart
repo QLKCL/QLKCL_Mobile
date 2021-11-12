@@ -27,7 +27,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          TestNoResult(
+          TestNoResultCard(
             name: "Le Trung Son",
             gender: "male",
             birthday: "20/05/2000",

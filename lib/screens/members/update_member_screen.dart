@@ -73,27 +73,30 @@ class _UpdateMemberState extends State<UpdateMember>
         body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              personalData = CustomUser.fromJson(snapshot.data["custom_user"]);
-              quarantineData = Member.fromJson(snapshot.data["member"]);
+            if (snapshot.connectionState == ConnectionState.done) {
               EasyLoading.dismiss();
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  MemberPersonalInfo(
-                    personalData: personalData,
-                    tabController: _tabController,
-                    mode: Permission.edit,
-                  ),
-                  MemberQuarantineInfo(
-                    qurantineData: quarantineData,
-                    mode: Permission.edit,
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              EasyLoading.dismiss();
-              return Text('${snapshot.error}');
+              if (snapshot.hasData) {
+                personalData =
+                    CustomUser.fromJson(snapshot.data["custom_user"]);
+                quarantineData = Member.fromJson(snapshot.data["member"]);
+
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MemberPersonalInfo(
+                      personalData: personalData,
+                      tabController: _tabController,
+                      mode: Permission.edit,
+                    ),
+                    MemberQuarantineInfo(
+                      qurantineData: quarantineData,
+                      mode: Permission.edit,
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
             }
 
             EasyLoading.show();

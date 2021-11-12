@@ -22,8 +22,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Member(
-            id: "1",
+          MemberCard(
             longPressEnabled: widget.longPressFlag,
             name: "Le Trung Son",
             gender: "male",
@@ -42,8 +41,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
               widget.longPress();
             },
           ),
-          Member(
-            id: "2",
+          MemberCard(
             longPressEnabled: widget.longPressFlag,
             name: "Le Trung Son",
             gender: "male",

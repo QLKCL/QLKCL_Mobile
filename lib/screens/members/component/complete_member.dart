@@ -15,8 +15,7 @@ class CompleteMember extends StatelessWidget {
         : ListView.builder(
             itemCount: data.length,
             itemBuilder: (ctx, index) {
-              return Member(
-                id: "1",
+              return MemberCard(
                 name: data[index]['full_name'] ?? "",
                 gender: data[index]['gender'] ?? "",
                 birthday: data[index]['birthday'] ?? "",

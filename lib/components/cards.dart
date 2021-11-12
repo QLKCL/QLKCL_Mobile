@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
-class MedicalDeclaration extends StatelessWidget {
+class MedicalDeclarationCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String time;
   final String status;
-  const MedicalDeclaration(
+  const MedicalDeclarationCard(
       {required this.onTap,
       required this.id,
       required this.time,
@@ -72,12 +72,12 @@ class MedicalDeclaration extends StatelessWidget {
   }
 }
 
-class Test extends StatelessWidget {
+class TestCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String time;
   final String status;
-  const Test(
+  const TestCard(
       {required this.onTap,
       required this.id,
       required this.time,
@@ -142,14 +142,14 @@ class Test extends StatelessWidget {
   }
 }
 
-class TestNoResult extends StatelessWidget {
+class TestNoResultCard extends StatelessWidget {
   final VoidCallback onTap;
   final String name;
   final String gender;
   final String birthday;
   final String id;
   final String time;
-  const TestNoResult(
+  const TestNoResultCard(
       {required this.onTap,
       required this.name,
       required this.gender,
@@ -272,11 +272,10 @@ class TestNoResult extends StatelessWidget {
   }
 }
 
-class Member extends StatefulWidget {
+class MemberCard extends StatefulWidget {
   final bool? longPressEnabled;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
-  final String id;
   final String name;
   final String gender;
   final String birthday;
@@ -284,10 +283,9 @@ class Member extends StatefulWidget {
   final String lastTestResult;
   final String lastTestTime;
   final String healthStatus;
-  const Member(
+  const MemberCard(
       {required this.onTap,
       this.onLongPress,
-      required this.id,
       required this.name,
       required this.gender,
       required this.birthday,
@@ -298,10 +296,10 @@ class Member extends StatefulWidget {
       required this.healthStatus});
 
   @override
-  _MemberState createState() => _MemberState();
+  _MemberCardState createState() => _MemberCardState();
 }
 
-class _MemberState extends State<Member> {
+class _MemberCardState extends State<MemberCard> {
   bool _selected = false;
 
   action() {
@@ -526,7 +524,7 @@ class QuarantineRelatedCard extends StatelessWidget {
   }
 }
 
-class MemberInRoom extends StatelessWidget {
+class MemberInRoomCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String name;
@@ -535,7 +533,7 @@ class MemberInRoom extends StatelessWidget {
   final String lastTestResult;
   final String lastTestTime;
   final String healthStatus;
-  const MemberInRoom({
+  const MemberInRoomCard({
     required this.onTap,
     required this.id,
     required this.name,
