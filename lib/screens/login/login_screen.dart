@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';
@@ -144,8 +145,8 @@ class _LoginFormState extends State<LoginForm> {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      final response =
-          await login(loginDataForm(phoneController.text, passController.text));
+      final response = await login(loginDataForm(
+          phoneNumber: phoneController.text, password: passController.text));
       EasyLoading.dismiss();
       if (response.success) {
         int role = await getRole();

@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
-import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -126,33 +126,4 @@ bool isTokenExpired(String _token) {
   DateTime? expiryDate = Jwt.getExpiryDate(_token);
   isExpired = expiryDate!.compareTo(DateTime.now()) < 0;
   return isExpired;
-}
-
-Future<int> getRole() async {
-  var infoBox = await Hive.openBox('myInfo');
-
-  if (infoBox.containsKey('role')) {
-    return infoBox.get('role');
-  } else {
-    return -1;
-  }
-}
-Future<String> getName() async {
-  var infoBox = await Hive.openBox('myInfo');
-
-  if (infoBox.containsKey('name')) {
-    return infoBox.get('name');
-  } else {
-    return "";
-  }
-}
-
-Future<void> setInfo() async {
-  var infoBox = await Hive.openBox('myInfo');
-  ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getMember, null);
-  int role = response['data']['custom_user']['role'];
-  infoBox.put('role', role);
-  String name = response['data']['custom_user']['full_name'];
-  infoBox.put('name', name);
 }

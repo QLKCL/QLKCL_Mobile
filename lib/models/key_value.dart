@@ -1,5 +1,5 @@
 class KeyValue {
   String name;
-  String id;
+  var id;
   KeyValue({required this.name, required this.id});
 }
