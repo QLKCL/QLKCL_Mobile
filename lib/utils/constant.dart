@@ -6,6 +6,8 @@ class Constant {
   static const String register = '/api/user/member/register';
   static const String getMember = '/api/user/member/get';
   static const String getListMembers = '/api/user/member/filter';
+  static const String getQuarantine = '/api/quarantine_ward/ward/get';
+  static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
 }
 
 enum Permission {
