@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class ConfirmMember extends StatefulWidget {
   ConfirmMember(
@@ -9,7 +13,7 @@ class ConfirmMember extends StatefulWidget {
       required this.longPress})
       : super(key: key);
   final bool longPressFlag;
-  final List<int> indexList;
+  final List<String> indexList;
   final VoidCallback longPress;
 
   @override
@@ -17,50 +21,95 @@ class ConfirmMember extends StatefulWidget {
 }
 
 class _ConfirmMemberState extends State<ConfirmMember> {
+  late Future<dynamic> futureMemberList;
+  final PagingController<int, dynamic> _pagingController =
+      PagingController(firstPageKey: 1);
+
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _fetchPage(int pageKey) async {
+    try {
+      final newItems =
+          await fetchMemberList(data: {'page': pageKey, 'status': "WAITING"});
+
+      final isLastPage = newItems.length < PAGE_SIZE;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          MemberCard(
-            longPressEnabled: widget.longPressFlag,
-            name: "Le Trung Son",
-            gender: "male",
-            birthday: "20/05/2000",
-            room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                lastTestResult: false,
-            lastTestTime: "22/09/2021",
-            healthStatus: 'UNWELL',
-            onTap: () {},
-            onLongPress: () {
-              if (widget.indexList.contains(1)) {
-                widget.indexList.remove(1);
-              } else {
-                widget.indexList.add(1);
-              }
-              widget.longPress();
-            },
-          ),
-          MemberCard(
-            longPressEnabled: widget.longPressFlag,
-            name: "Le Trung Son",
-            gender: "male",
-            birthday: "20/05/2000",
-            room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                lastTestResult: false,
-            lastTestTime: "22/09/2021",
-            healthStatus: 'SERIOUS',
-            onTap: () {},
-            onLongPress: () {
-              if (widget.indexList.contains(2)) {
-                widget.indexList.remove(2);
-              } else {
-                widget.indexList.add(2);
-              }
-              widget.longPress();
-            },
-          ),
-        ],
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: RefreshIndicator(
+        onRefresh: () => Future.sync(
+          () => _pagingController.refresh(),
+        ),
+        child: PagedListView<int, dynamic>(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+              animateTransitions: true,
+              noItemsFoundIndicatorBuilder: (context) => Center(
+                    child: Text('Không có dữ liệu'),
+                  ),
+              itemBuilder: (context, item, index) => MemberCard(
+                    name: item['full_name'] ?? "",
+                    gender: item['gender'] ?? "",
+                    birthday: item['birthday'] ?? "",
+                    room:
+                        (item['quarantine_room'] != null
+                                ? "${item['quarantine_room']['name']} - "
+                                : "") +
+                            (item['quarantine_floor'] != null
+                                ? "${item['quarantine_floor']['name']} - "
+                                : "") +
+                            (item['quarantine_building'] != null
+                                ? "${item['quarantine_building']['name']} - "
+                                : "") +
+                            (item['quarantine_ward'] != null
+                                ? "${item['quarantine_ward']['full_name']}"
+                                : ""),
+                    lastTestResult: item['positive_test'],
+                    lastTestTime: item['last_tested'],
+                    healthStatus: item['health_status'],
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                              builder: (context) => DetailMember(
+                                    code: item['code'],
+                                  )));
+                    },
+                    longPressEnabled: widget.longPressFlag,
+                    onLongPress: () {
+                      if (widget.indexList.contains(item['code'])) {
+                        widget.indexList.remove(item['code']);
+                      } else {
+                        widget.indexList.add(item['code']);
+                      }
+                      widget.longPress();
+                    },
+                  )),
+        ),
       ),
     );
   }

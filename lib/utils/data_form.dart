@@ -33,7 +33,7 @@ Map<String, dynamic> createMemberDataForm({
   String? quarantineRoom,
   String? label,
   String? quarantinedAt,
-  required bool positiveBefore,
+  required bool? positiveBefore,
   String? backgroundDisease,
   String? otherBackgroundDisease,
 }) {

@@ -40,7 +40,7 @@ class _ListAllMemberState extends State<ListAllMember>
   bool longPressFlag = false;
   bool searched = false;
   TextEditingController keySearch = TextEditingController();
-  List<int> indexList = [];
+  List<String> indexList = [];
 
   void longPress() {
     setState(() {

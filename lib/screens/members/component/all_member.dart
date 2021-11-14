@@ -5,6 +5,8 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
+// cre: https://pub.dev/packages/infinite_scroll_pagination/example
+
 class AllMember extends StatefulWidget {
   AllMember({Key? key}) : super(key: key);
 
@@ -43,7 +45,6 @@ class _AllMemberState extends State<AllMember> {
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
-      print(error);
       _pagingController.error = error;
     }
   }
@@ -61,6 +62,9 @@ class _AllMemberState extends State<AllMember> {
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
+              noItemsFoundIndicatorBuilder: (context) => Center(
+                    child: Text('Không có dữ liệu'),
+                  ),
               itemBuilder: (context, item, index) => MemberCard(
                     name: item['full_name'] ?? "",
                     gender: item['gender'] ?? "",
