@@ -33,11 +33,11 @@ Map<String, dynamic> createMemberDataForm({
   String? quarantineRoom,
   String? label,
   String? quarantinedAt,
-  required bool? positiveBefore,
+  bool? positiveBefore,
   String? backgroundDisease,
   String? otherBackgroundDisease,
 }) {
-  return {
+  var data = {
     "phone_number": phoneNumber,
     "full_name": fullName,
     "email": email,
@@ -56,8 +56,10 @@ Map<String, dynamic> createMemberDataForm({
     "quarantine_room_id": quarantineRoom,
     "label": label,
     "quarantined_at": quarantinedAt,
-    "positive_tested_before": false,
-    "background_disease": "",
-    "other_background_disease": "",
+    "positive_tested_before": positiveBefore,
+    "background_disease": backgroundDisease,
+    "other_background_disease": otherBackgroundDisease,
   };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
 }

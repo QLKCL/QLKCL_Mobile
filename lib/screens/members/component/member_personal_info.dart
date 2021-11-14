@@ -282,7 +282,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
             identity: identityNumberController.text,
             passport: passportNumberController.text,
             quarantineWard: (await getQuarantineWard()).toString(),
-            positiveBefore: null,
+            positiveBefore: false,
           ));
           if (registerResponse.success) {
             EasyLoading.dismiss();
