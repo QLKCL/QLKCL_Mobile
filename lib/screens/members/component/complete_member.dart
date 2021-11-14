@@ -22,12 +22,27 @@ class _CompleteMemberState extends State<CompleteMember> {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Có lỗi xảy ra!',
+            ),
+            action: SnackBarAction(
+              label: 'Thử lại',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    // _pagingController.dispose();
     super.dispose();
   }
 

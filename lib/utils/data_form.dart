@@ -63,3 +63,30 @@ Map<String, dynamic> createMemberDataForm({
   data.removeWhere((key, value) => key == "" || value == "");
   return data;
 }
+
+Map<String, dynamic> filterMemberDataForm({
+  required String keySearch,
+  String? quarantineWard,
+  String? quarantineBuilding,
+  String? quarantineFloor,
+  String? quarantineRoom,
+  String? quarantineAtMin,
+  String? quarantineAtMax,
+  List<String>? label,
+  required int page,
+}) {
+  var data = {
+    "search": keySearch,
+    "quarantine_ward_id": quarantineWard,
+    "quarantine_building_id": quarantineBuilding,
+    "quarantine_floor_id": quarantineFloor,
+    "quarantine_room_id": quarantineRoom,
+    "created_at_min": quarantineAtMin,
+    "created_at_max": quarantineAtMax,
+    "label": label,
+    "page": page,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  data.removeWhere((key, value) => value == null);
+  return data;
+}

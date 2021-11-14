@@ -72,7 +72,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   .safeFirstWhere(
                       (gender) => gender.id == quarantineWardController.text),
               onChanged: (value) {
-                quarantineWardController.text = value!.id;
+                if (value == null) {
+                  quarantineWardController.text = "";
+                } else {
+                  quarantineWardController.text = value.id;
+                }
               },
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)

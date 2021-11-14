@@ -153,7 +153,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               selectedItem: genderList.safeFirstWhere(
                   (gender) => gender.id == genderController.text),
               onChanged: (value) {
-                genderController.text = value!.id;
+                if (value == null) {
+                  genderController.text = "";
+                } else {
+                  genderController.text = value.id;
+                }
               },
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
