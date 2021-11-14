@@ -20,7 +20,7 @@ class CompleteMember extends StatelessWidget {
                 gender: data[index]['gender'] ?? "",
                 birthday: data[index]['birthday'] ?? "",
                 room: "Phòng 3 - Tầng 2 - Tòa 1 - Khu A",
-                lastTestResult: "Âm tính",
+                lastTestResult: false,
                 lastTestTime: "22/09/2021",
                 healthStatus: data[index]['health_status'],
                 onTap: () {

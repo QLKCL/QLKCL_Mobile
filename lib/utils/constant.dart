@@ -28,3 +28,5 @@ List<KeyValue> roleList = [
   KeyValue(id: "4", name: "STAFF"),
   KeyValue(id: "5", name: "MEMBER"),
 ];
+
+const int PAGE_SIZE = 10;

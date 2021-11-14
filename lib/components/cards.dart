@@ -280,8 +280,8 @@ class MemberCard extends StatefulWidget {
   final String gender;
   final String birthday;
   final String room;
-  final String lastTestResult;
-  final String lastTestTime;
+  final bool? lastTestResult;
+  final String? lastTestTime;
   final String healthStatus;
   const MemberCard(
       {required this.onTap,
@@ -290,8 +290,8 @@ class MemberCard extends StatefulWidget {
       required this.gender,
       required this.birthday,
       required this.room,
-      required this.lastTestResult,
-      required this.lastTestTime,
+      this.lastTestResult,
+      this.lastTestTime,
       this.longPressEnabled,
       required this.healthStatus});
 
@@ -368,9 +368,11 @@ class _MemberCardState extends State<MemberCard> {
           ),
           subtitle: Container(
             padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-            child: Wrap(
-              direction: Axis.vertical, // make sure to set this
-              spacing: 4, // set your spacing
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // direction: Axis.vertical, // make sure to set this
+              // spacing: 4, // set your spacing
               children: [
                 Text(
                   widget.birthday,
@@ -392,6 +394,9 @@ class _MemberCardState extends State<MemberCard> {
                       )
                     ],
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                 ),
                 Text.rich(
                   TextSpan(
@@ -404,10 +409,14 @@ class _MemberCardState extends State<MemberCard> {
                       ),
                       TextSpan(
                         text: " " +
-                            widget.lastTestResult +
-                            " (" +
-                            widget.lastTestTime +
-                            ")",
+                            (widget.lastTestResult != null
+                                ? (widget.lastTestResult!
+                                    ? "Dương tính"
+                                    : "Âm tính")
+                                : "Chưa có kết quả xét nghiệm") +
+                            (widget.lastTestTime != null
+                                ? " (" + widget.lastTestTime! + ")"
+                                : ""),
                       )
                     ],
                   ),
@@ -476,10 +485,7 @@ class QuarantineRelatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 16
-      ),
+      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ListTile(
         onTap: onTap,
         title: Text(name),
