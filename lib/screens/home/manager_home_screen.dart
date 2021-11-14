@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
+import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
-import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
-import 'package:websafe_svg/websafe_svg.dart';
-import 'component/member_info.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
@@ -18,6 +18,22 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
+  late Future<dynamic> futureData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = fetch();
+  }
+
+  Future<dynamic> fetch() async {
+    ApiHelper api = ApiHelper();
+    final response = await api.postHTTP(Constant.homeManager, null);
+    return response != null && response['data'] != null
+        ? response['data']
+        : null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,79 +107,38 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        children: <Widget>[
-          InfoManagerHomePage(
-            title: "Xét nghiệm cần cập nhật",
-            subtitle: "0",
-            icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true)
-                  .pushNamed(ListTestNoResult.routeName);
-            },
-          ),
-          InfoManagerHomePage(
-            title: "Chờ xét duyệt",
-            subtitle: "0",
-            icon: WebsafeSvg.asset("assets/svg/cho_xet_duyet.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 1)));
-            },
-          ),
-          InfoManagerHomePage(
-            title: "Nghi nhiễm",
-            subtitle: "0",
-            icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 2)));
-            },
-          ),
-          InfoManagerHomePage(
-            title: "Tới hạn xét nghiệm",
-            subtitle: "0",
-            icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 3)));
-            },
-          ),
-          InfoManagerHomePage(
-            title: "Sắp hoàn thành cách ly",
-            subtitle: "0",
-            icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 4)));
-            },
-          ),
-          Container(
-            height: 400,
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Thống kê người cách ly",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    Expanded(
-                      child: GroupedFillColorBarChart.withSampleData(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      )),
+      body: FutureBuilder<dynamic>(
+        future: futureData,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return InfoManagerHomePage(
+              waitingUsers: snapshot.data['number_of_waiting_users'],
+              suspectedUsers: snapshot.data['number_of_suspected_users'],
+              needTestUsers: snapshot.data['number_of_need_test_users'],
+              canFinishUsers: snapshot.data['number_of_can_finish_users'],
+              waitingTests: snapshot.data['number_of_waiting_tests'],
+              numberIn: snapshot.data['in'].entries
+                  .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                  .toList()
+                  .cast<KeyValue>()
+                  .reversed
+                  .toList(),
+              numberOut: snapshot.data['out'].entries
+                  .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                  .toList()
+                  .cast<KeyValue>()
+                  .reversed
+                  .toList(),
+            );
+          } else if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+
+          // By default, show a loading spinner.
+          // return const CircularProgressIndicator();
+          return InfoManagerHomePage();
+        },
+      ),
     );
   }
 }
