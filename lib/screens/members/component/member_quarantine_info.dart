@@ -88,10 +88,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   quarantineWardController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -112,10 +109,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   quarantineBuildingController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -136,10 +130,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   quarantineFloorController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -160,10 +151,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   quarantineRoomController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput(
@@ -171,26 +159,17 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn diện cách ly',
               itemValue: ["F0", "F1", "F2", "F3"],
               selectedItem: labelController.text,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
             ),
             DateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
             ),
             Input(
               label: 'Lịch sử di chuyển',
               maxLines: 4,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
             ),
             Row(
               children: [
@@ -199,8 +178,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   return Checkbox(
                       value: _isPositiveTestedBefore,
                       onChanged: (value) => {
-                            (widget.mode == Permission.edit ||
-                                    widget.mode == Permission.add)
+                            widget.mode != Permission.view
                                 ? setState(() {
                                     _isPositiveTestedBefore = value!;
                                   })
@@ -226,18 +204,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                       value.map((e) => e.id).join(",");
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
             ),
             Input(
               label: 'Bệnh nền khác',
               controller: otherBackgroundDiseaseController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode != Permission.view ? true : false,
             ),
             if (widget.mode != Permission.view)
               Container(
@@ -245,18 +217,37 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                 child: Text("* Thông tin bắt buộc"),
               ),
-            if (widget.mode == Permission.edit ||
-                widget.mode == Permission.add &&
-                    widget.qurantineData?.customUser != null)
+            if (widget.mode != Permission.view &&
+                widget.qurantineData?.customUser != null)
               Container(
-                margin: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
-                  child: Text("Lưu"),
-                ),
-              ),
+                  margin: const EdgeInsets.all(16),
+                  child: Row(children: [
+                    Spacer(),
+                    OutlinedButton(
+                      onPressed: () async {
+                        EasyLoading.show();
+                        final response = await denyMember({
+                          'member_codes':
+                              widget.qurantineData!.customUserCode.toString()
+                        });
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
+                      },
+                      child: Text("Từ chối"),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        _submit();
+                      },
+                      child: widget.mode == Permission.change_status
+                          ? Text("Xét duyệt")
+                          : Text('Lưu'),
+                    ),
+                    Spacer(),
+                  ])),
           ],
         ),
       ),
@@ -280,10 +271,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
         otherBackgroundDisease: otherBackgroundDiseaseController.text,
       ));
       if (registerResponse.success) {
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
-        );
+        if (widget.mode == Permission.change_status) {
+          final response = await acceptMember({
+            'member_codes': widget.qurantineData!.customUserCode.toString()
+          });
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(response.message)));
+        } else {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(registerResponse.message)),
+          );
+        }
       } else {
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(

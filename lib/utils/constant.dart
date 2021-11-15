@@ -9,6 +9,7 @@ class Constant {
   static const String createMember = '/api/user/member/create';
   static const String updateMember = '/api/user/member/update';
   static const String denyMember = '/api/user/member/refuse';
+  static const String acceptMember = '/api/user/member/accept';
   static const String homeManager = '/api/user/home/manager';
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';
@@ -30,6 +31,7 @@ enum Permission {
   edit,
   view,
   delete,
+  change_status,
 }
 
 List<KeyValue> genderList = [
