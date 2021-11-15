@@ -92,14 +92,14 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
               ),
               itemBuilder: (context, item, index) => TestNoResultCard(
                 name: item['user'] != null ? item['user']['full_name'] : "",
-                gender: item['user'] != null ? item['user']['gender'] : "",
+                // gender: item['user'] != null ? item['user']['gender'] : "",
                 birthday:
                     item['user'] != null ? item['user']['birthday'] ?? "" : "",
                 id: item['code'],
                 time: item['created_at'],
-                healthStatus: item['user'] != null
-                    ? item['user']['health_status'] ?? ""
-                    : "",
+                // healthStatus: item['user'] != null
+                //     ? item['user']['health_status'] ?? ""
+                //     : "",
                 onTap: () {
                   Navigator.push(
                       context,
@@ -108,6 +108,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                                 code: item['code'],
                               )));
                 },
+                gender: '',
               ),
             ),
           ),

@@ -110,3 +110,9 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
     }
   }
 }
+
+Future<dynamic> fetchTest({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getTest, data);
+  return response["data"];
+}
