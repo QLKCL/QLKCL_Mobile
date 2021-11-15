@@ -17,7 +17,7 @@ class GroupedFillColorBarChart extends StatelessWidget {
     return new GroupedFillColorBarChart(
       _createChart(inData, outData),
       // Disable animations for image tests.
-      animate: false,
+      animate: true,
     );
   }
 

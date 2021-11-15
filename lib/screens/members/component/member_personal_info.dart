@@ -64,19 +64,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
       codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";
       nationalityController.text = widget.personalData?.nationality != null
-          ? widget.personalData?.nationality['name']
+          ? widget.personalData!.nationality['code']
           : "";
       countryController.text = widget.personalData?.country != null
-          ? widget.personalData?.country['name']
+          ? widget.personalData!.country['code']
           : "";
       cityController.text = widget.personalData?.city != null
-          ? widget.personalData?.city['name']
+          ? widget.personalData!.city['id'].toString()
           : "";
       districtController.text = widget.personalData?.district != null
-          ? widget.personalData?.district['name']
+          ? widget.personalData!.district['id'].toString()
           : "";
       wardController.text = widget.personalData?.ward != null
-          ? widget.personalData?.ward['name']
+          ? widget.personalData!.ward['id'].toString()
           : "";
       detailAddressController.text = widget.personalData?.detailAddress ?? "";
       fullNameController.text = widget.personalData?.fullName ?? "";
@@ -198,7 +198,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                 if (value == null) {
                   countryController.text = "";
                 } else {
-                  countryController.text = value.id.toString();
+                  countryController.text = value.id;
                 }
               },
               itemAsString: (KeyValue? u) => u!.name,

@@ -268,7 +268,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
       final registerResponse = await updateMember(updateMemberDataForm(
-        code: widget.qurantineData!.customUserCode.toString(),
+        code: widget.qurantineData != null
+            ? widget.qurantineData!.customUserCode.toString()
+            : "",
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
         label: labelController.text,

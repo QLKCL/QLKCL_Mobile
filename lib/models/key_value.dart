@@ -12,7 +12,7 @@ class KeyValue {
   var id;
   KeyValue({required this.name, required this.id});
   factory KeyValue.fromJson(Map<String, dynamic> json) => KeyValue(
-        id: json["id"],
+        id: json["code"] ?? json["id"],
         name: json["name"] ?? json["full_name"] ?? "",
       );
 
