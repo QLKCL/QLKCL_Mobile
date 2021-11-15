@@ -8,6 +8,8 @@ class Constant {
   static const String getListMembers = '/api/user/member/filter';
   static const String createMember = '/api/user/member/create';
   static const String homeManager = '/api/user/home/manager';
+  static const String getListTests = '/api/form/test/filter';
+  static const String createTest = '/api/form/test/create';
 }
 
 enum Permission {

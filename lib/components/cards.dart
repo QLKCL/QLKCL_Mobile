@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
+import 'package:intl/intl.dart';
 
 class MedicalDeclarationCard extends StatelessWidget {
   final VoidCallback onTap;
@@ -149,13 +150,15 @@ class TestNoResultCard extends StatelessWidget {
   final String birthday;
   final String id;
   final String time;
+  final String healthStatus;
   const TestNoResultCard(
       {required this.onTap,
       required this.name,
       required this.gender,
       required this.birthday,
       required this.id,
-      required this.time});
+      required this.time,
+      this.healthStatus = "NORMAL"});
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +179,10 @@ class TestNoResultCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 WidgetSpan(
-                  child: WebsafeSvg.asset("assets/svg/male.svg"),
+                  alignment: PlaceholderAlignment.top,
+                  child: gender == "MALE"
+                      ? WebsafeSvg.asset("assets/svg/male.svg")
+                      : WebsafeSvg.asset("assets/svg/female.svg"),
                 ),
               ],
             ),
@@ -216,7 +222,10 @@ class TestNoResultCard extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: " Chưa có kết quả (" + time + ")",
+                      text: " " +
+                          DateFormat("yyyy-MM-ddTHH:mm:ss")
+                              .parse(time, true)
+                              .toString(),
                     )
                   ],
                 ),
@@ -243,7 +252,11 @@ class TestNoResultCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: CustomColors.white,
                       borderRadius: BorderRadius.circular(100)),
-                  child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                  child: healthStatus == "SERIOUS"
+                      ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                      : healthStatus == "UNWELL"
+                          ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                          : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                 ),
                 // RawMaterialButton(
                 //           onPressed: () {},

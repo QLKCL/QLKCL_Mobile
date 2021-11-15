@@ -6,7 +6,8 @@ import 'package:qlkcl/config/app_theme.dart';
 
 class UpdateTest extends StatefulWidget {
   static const String routeName = "/update_test";
-  UpdateTest({Key? key}) : super(key: key);
+  final String? code;
+  UpdateTest({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateTestState createState() => _UpdateTestState();
