@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -77,9 +78,19 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         height: 6,
                       ),
                       Text(
-                        "Dĩ An, Bình Dương, Đông hòa",
-                        //snapshot.data["ward"].toString() + snapshot.data["district"].toString() + snapshot.data["city"].toString() ,
-                        //'${thisQuarantine.ward_id}, ${thisQuarantine.district_id}, ${thisQuarantine.city_id}',
+                        widget.quarantineInfo.address != null
+                            ? widget.quarantineInfo.address.toString() +
+                                ', ' +
+                                widget.quarantineInfo.ward.name +
+                                ', ' +
+                                widget.quarantineInfo.district.name +
+                                ', ' +
+                                widget.quarantineInfo.city.name
+                            : widget.quarantineInfo.ward.name +
+                                ', ' +
+                                widget.quarantineInfo.district.name +
+                                ', ' +
+                                widget.quarantineInfo.city.name,
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
@@ -95,19 +106,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   children: [
                     IconButton(
                       iconSize: 38,
-                      onPressed: widget.quarantineInfo.phoneNumber != null
-                          ? () async {
-                              launch(
-                                  "tel://" + widget.quarantineInfo.phoneNumber);
-                            }
-                          : () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Số điện thoại không tồn tại.'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
-                            },
+                      onPressed: () async {
+                        launch("tel://" + widget.quarantineInfo.phoneNumber);
+                      },
                       icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                     ),
                     IconButton(
@@ -184,20 +185,38 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context, Icons.groups_rounded, ' Đang cách ly: 15'),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
-                    context, Icons.account_box_outlined, ' Quản lý: '),
-                // +
-                //     snapshot.data["main_manager"]["full_name"]),
-                buildInformation(context, Icons.place_outlined, ' Địa chỉ:'),
-
-                //' Địa chỉ: ${thisQuarantine.ward_id}, ${thisQuarantine.district_id}, ${thisQuarantine.city_id}'),
+                    context, Icons.account_box_outlined, ' Quản lý: ' + widget.quarantineInfo.mainManager["full_name"]),
 
                 buildInformation(
-                    context,
-                    Icons.phone,
-                    widget.quarantineInfo.phoneNumber.toString() != "null"
-                        ? ' Số điện thoại: ' +
-                            widget.quarantineInfo.phoneNumber.toString()
-                        : ' Số điện thoại: Chưa có'),
+                  context,
+                  Icons.place_outlined,
+                  ' Địa chỉ: ' +
+                      (widget.quarantineInfo.address != null
+                          ? widget.quarantineInfo.address! +
+                              ', ' +
+                              widget.quarantineInfo.ward.name +
+                              ', ' +
+                              widget.quarantineInfo.district.name +
+                              ', ' +
+                              widget.quarantineInfo.city.name
+                          : widget.quarantineInfo.ward.name +
+                              ', ' +
+                              widget.quarantineInfo.district.name +
+                              ', ' +
+                              widget.quarantineInfo.city.name),
+                ),
+
+                buildInformation(context, Icons.phone,
+                    'Số điện thoại: ' + widget.quarantineInfo.phoneNumber),
+
+                buildInformation(
+                  context,
+                  Icons.email_outlined,
+                  'Email: ' +
+                      (widget.quarantineInfo.email != null
+                          ? widget.quarantineInfo.email!
+                          : 'Chưa có'),
+                ),
               ],
             ),
           ),

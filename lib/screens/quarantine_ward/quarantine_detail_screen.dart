@@ -23,10 +23,15 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
     super.initState();
     if (widget.id != null) {
       futureQuarantine = fetchQuarantine(id: widget.id);
-      // print(futureQuarantine);
     } else {
       futureQuarantine = fetchQuarantine();
     }
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
   }
 
   @override
@@ -51,11 +56,14 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       body: FutureBuilder<dynamic>(
         future: futureQuarantine,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            quarantineInfo = Quarantine.fromJson(snapshot.data);
-            return QuarantineInfo(quarantineInfo: quarantineInfo);
-          } else if (snapshot.hasError) {
-            return Text('Error');
+          if (snapshot.connectionState == ConnectionState.done) {
+            EasyLoading.dismiss();
+            if (snapshot.hasData) {
+              quarantineInfo = Quarantine.fromJson(snapshot.data);
+              return QuarantineInfo(quarantineInfo: quarantineInfo);
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
           }
           EasyLoading.show();
           return Container();
