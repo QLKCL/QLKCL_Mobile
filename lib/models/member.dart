@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 Member memberFromJson(String str) => Member.fromJson(json.decode(str));
@@ -102,5 +103,29 @@ class Member {
 Future<dynamic> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
-  return response["data"]['content'];
+  return response != null && response['data'] != null
+      ? response['data']['content']
+      : null;
+}
+
+Future<dynamic> createMember(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.createMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Tạo người cách ly thành công!");
+    } else if (response['message']['phone_number'] != null &&
+        response['message']['phone_number'] == "Exist") {
+      return Response(
+          success: false, message: "Số điện thoại đã được sử dụng!");
+    } else if (response['message']['email'] != null &&
+        response['message']['email'] == "Exist") {
+      return Response(success: false, message: "Email đã được sử dụng!");
+    } else {
+      // return Response(success: false, message: jsonEncode(response['message']));
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
 }

@@ -26,7 +26,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          MedicalDeclaration(
+          MedicalDeclarationCard(
             id: "KB-123456789",
             time: "22/09/2021 18:00",
             status: "Bình thường",

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/check_network.dart';
 import 'package:qlkcl/config/routes.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
@@ -24,34 +26,21 @@ void main() async {
   connectionStatus.initialize();
   await Hive.initFlutter();
 
-  bool existRole = await Hive.boxExists('role');
-  if (!existRole) {
-    // Fetch role from server and store in Hive
-  }
-
   bool isLoggedIn = await getLoginState();
-  runApp(MyApp(isLoggedIn: isLoggedIn));
+  int role = await getRole();
+  runApp(MyApp(
+    isLoggedIn: isLoggedIn,
+    role: role,
+  ));
   configLoading();
-}
-
-void configLoading() {
-  EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.ring
-    ..loadingStyle = EasyLoadingStyle.light
-    ..indicatorSize = 45.0
-    ..radius = 8.0
-    ..userInteractions = false
-    ..dismissOnTap = false
-    ..animationStyle = EasyLoadingAnimationStyle.scale
-    ..toastPosition = EasyLoadingToastPosition.bottom
-    ..maskType = EasyLoadingMaskType.black;
 }
 
 class MyApp extends StatelessWidget {
   static const String routeName = "/init";
   final bool isLoggedIn;
-  const MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
+  final int role;
+  const MyApp({Key? key, required this.isLoggedIn, required this.role})
+      : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -72,7 +61,7 @@ class MyApp extends StatelessWidget {
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,
-            home: isLoggedIn ? App() : Login(),
+            home: isLoggedIn ? App(role: role) : Login(),
             routes: routes,
             initialRoute: isLoggedIn ? App.routeName : Login.routeName,
             builder: EasyLoading.init(),

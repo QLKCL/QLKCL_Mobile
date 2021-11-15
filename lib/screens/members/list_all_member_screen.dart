@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:qlkcl/components/filters.dart';
-import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/all_member.dart';
 import 'package:qlkcl/screens/members/component/complete_member.dart';
@@ -26,21 +23,13 @@ class ListAllMember extends StatefulWidget {
 class _ListAllMemberState extends State<ListAllMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late Future<dynamic> futureMemberList;
 
   @override
   void initState() {
     super.initState();
-    futureMemberList = fetchMemberList();
     _tabController =
         TabController(length: 6, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
-  }
-
-  @override
-  void deactivate() {
-    EasyLoading.dismiss();
-    super.deactivate();
   }
 
   _handleTabChange() {
@@ -48,8 +37,7 @@ class _ListAllMemberState extends State<ListAllMember>
   }
 
   bool longPressFlag = false;
-  bool searched = false;
-  List<int> indexList = [];
+  List<String> indexList = [];
 
   void longPress() {
     setState(() {
@@ -63,81 +51,7 @@ class _ListAllMemberState extends State<ListAllMember>
 
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-        child: Scaffold(
-      appBar: AppBar(
-        title: longPressFlag
-            ? Text('${indexList.length} đã chọn')
-            : (searched
-                ? Container(
-                    width: double.infinity,
-                    height: 36,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Center(
-                      child: TextField(
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.search),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.clear),
-                              onPressed: () {
-                                /* Clear the search field */
-                              },
-                            ),
-                            hintText: 'Search...',
-                            border: InputBorder.none),
-                      ),
-                    ),
-                  )
-                : Text("Danh sách người cách ly")),
-        centerTitle: true,
-        // leading: searched
-        //     ? IconButton(
-        //         onPressed: () {},
-        //         icon: Icon(Icons.arrow_back),
-        //       )
-        //     : null,
-        actions: [
-          longPressFlag
-              ? IconButton(
-                  onPressed: () {},
-                  icon: GestureDetector(
-                    child: Icon(
-                      Icons.more_vert,
-                    ),
-                    onTap: () {},
-                  ))
-              : (searched
-                  ? IconButton(
-                      onPressed: () {
-                        memberFilter(context);
-                      },
-                      icon: Icon(Icons.filter_list_outlined),
-                    )
-                  : IconButton(
-                      onPressed: () {
-                        setState(() {
-                          searched = true;
-                        });
-                      },
-                      icon: Icon(Icons.search),
-                    )),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          indicatorColor: CustomColors.white,
-          tabs: [
-            Tab(text: "Toàn bộ"),
-            Tab(text: "Chờ xét duyệt"),
-            Tab(text: "Nghi nhiễm"),
-            Tab(text: "Tới hạn xét nghiệm"),
-            Tab(text: "Sắp hoàn thành cách ly"),
-            Tab(text: "Từ chối"),
-          ],
-        ),
-      ),
+    return Scaffold(
       floatingActionButton: _tabController.index == 0
           ? FloatingActionButton(
               heroTag: "member_fab",
@@ -149,34 +63,68 @@ class _ListAllMemberState extends State<ListAllMember>
               child: Icon(Icons.add),
             )
           : null,
-      body: FutureBuilder<dynamic>(
-        future: futureMemberList,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            EasyLoading.dismiss();
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                AllMember(data: snapshot.data),
-                ConfirmMember(
-                  longPressFlag: longPressFlag,
-                  indexList: indexList,
-                  longPress: longPress,
-                ),
-                SuspectMember(),
-                TestMember(),
-                CompleteMember(),
-                DenyMember(),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: longPressFlag
+                  ? Text('${indexList.length} đã chọn')
+                  : Text("Danh sách người cách ly"),
+              centerTitle: true,
+              actions: [
+                longPressFlag
+                    ? IconButton(
+                        onPressed: () {},
+                        icon: GestureDetector(
+                          child: Icon(
+                            Icons.more_vert,
+                          ),
+                          onTap: () {},
+                        ))
+                    : (IconButton(
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true).push(
+                              MaterialPageRoute(
+                                  builder: (context) => SearchBox()));
+                        },
+                        icon: Icon(Icons.search),
+                      )),
               ],
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
-
-          EasyLoading.show();
-          return Container();
+              pinned: true,
+              floating: true,
+              forceElevated: innerBoxIsScrolled,
+              bottom: TabBar(
+                controller: _tabController,
+                isScrollable: true,
+                indicatorColor: CustomColors.white,
+                tabs: [
+                  Tab(text: "Toàn bộ"),
+                  Tab(text: "Chờ xét duyệt"),
+                  Tab(text: "Nghi nhiễm"),
+                  Tab(text: "Tới hạn xét nghiệm"),
+                  Tab(text: "Sắp hoàn thành cách ly"),
+                  Tab(text: "Từ chối"),
+                ],
+              ),
+            ),
+          ];
         },
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            AllMember(),
+            ConfirmMember(
+              longPressFlag: longPressFlag,
+              indexList: indexList,
+              longPress: longPress,
+            ),
+            SuspectMember(),
+            TestMember(),
+            CompleteMember(),
+            DenyMember(),
+          ],
+        ),
       ),
-    ));
+    );
   }
 }

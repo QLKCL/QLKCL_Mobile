@@ -27,7 +27,7 @@ class _ListTestState extends State<ListTest> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          Test(
+          TestCard(
             id: "KB-123456789",
             time: "22/09/2021 18:00",
             status: "Âm tính",

@@ -5,7 +5,6 @@ import 'package:qlkcl/models/quarantine.dart';
 import './edit_quarantine_screen.dart';
 import './component/quarantine_info.dart';
 
-
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
   final String? id;
@@ -30,10 +29,14 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
     }
   }
 
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
-   
     //define appBar
     final appBar = AppBar(
       title: Text('Thông tin khu cách ly'),
@@ -54,11 +57,14 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       body: FutureBuilder<dynamic>(
         future: futureQuarantine,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            quarantineInfo = Quarantine.fromJson(snapshot.data);
-            return QuarantineInfo(quarantineInfo: quarantineInfo);
-          } else if (snapshot.hasError) {
-            return Text('Error');
+          if (snapshot.connectionState == ConnectionState.done) {
+            EasyLoading.dismiss();
+            if (snapshot.hasData) {
+              quarantineInfo = Quarantine.fromJson(snapshot.data);
+              return QuarantineInfo(quarantineInfo: quarantineInfo);
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
           }
           EasyLoading.show();
           return Container();

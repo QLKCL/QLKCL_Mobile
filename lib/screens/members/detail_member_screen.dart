@@ -78,26 +78,29 @@ class _DetailMemberState extends State<DetailMember>
         body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              personalData = CustomUser.fromJson(snapshot.data["custom_user"]);
-              quarantineData = snapshot.data["member"] != null
-                  ? Member.fromJson(snapshot.data["member"])
-                  : null;
+            if (snapshot.connectionState == ConnectionState.done) {
               EasyLoading.dismiss();
-              return TabBarView(
-                controller: _tabController,
-                children: [
-                  MemberPersonalInfo(
-                    personalData: personalData,
-                    tabController: _tabController,
-                  ),
-                  MemberQuarantineInfo(
-                    qurantineData: quarantineData,
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Text('${snapshot.error}');
+              if (snapshot.hasData) {
+                personalData =
+                    CustomUser.fromJson(snapshot.data["custom_user"]);
+                quarantineData = snapshot.data["member"] != null
+                    ? Member.fromJson(snapshot.data["member"])
+                    : null;
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MemberPersonalInfo(
+                      personalData: personalData,
+                      tabController: _tabController,
+                    ),
+                    MemberQuarantineInfo(
+                      qurantineData: quarantineData,
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
             }
 
             EasyLoading.show();

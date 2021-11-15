@@ -8,7 +8,7 @@ class QuanrantineList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(data);
+    //print(data);
     return (data == null || data.isEmpty)
         ? Center(
             child: Text('Không có dữ liệu'),

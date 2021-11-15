@@ -26,7 +26,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
         itemBuilder: (BuildContext context, int index) => Card(
           child: Container(
             child: BuildingItem(
-              building_name: listBuildingName[index],
+              buildingName: listBuildingName[index],
             ),
           ),
         ),

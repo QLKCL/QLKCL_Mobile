@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:qlkcl/models/key_value.dart';
 
 // cre: https://google.github.io/charts/flutter/example/bar_charts/grouped_fill_color.html
 
@@ -11,9 +12,10 @@ class GroupedFillColorBarChart extends StatelessWidget {
 
   GroupedFillColorBarChart(this.seriesList, {required this.animate});
 
-  factory GroupedFillColorBarChart.withSampleData() {
+  factory GroupedFillColorBarChart.withData(
+      List<KeyValue> inData, List<KeyValue> outData) {
     return new GroupedFillColorBarChart(
-      _createSampleData(),
+      _createChart(inData, outData),
       // Disable animations for image tests.
       animate: false,
     );
@@ -25,8 +27,8 @@ class GroupedFillColorBarChart extends StatelessWidget {
       seriesList,
       animate: animate,
       // Configure a stroke width to enable borders on the bars.
-      defaultRenderer: new charts.BarRendererConfig(
-          groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
+      // defaultRenderer: new charts.BarRendererConfig(
+      //     groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
       behaviors: [
         new charts.SeriesLegend(
           position: charts.BehaviorPosition.bottom,
@@ -36,36 +38,23 @@ class GroupedFillColorBarChart extends StatelessWidget {
   }
 
   /// Create series list with multiple series
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
-    final inData = [
-      new OrdinalSales('17/10', 5),
-      new OrdinalSales('18/10', 25),
-      new OrdinalSales('19/10', 80),
-      new OrdinalSales('20/10', 75),
-    ];
-
-    final outData = [
-      new OrdinalSales('17/10', 10),
-      new OrdinalSales('18/10', 40),
-      new OrdinalSales('19/10', 50),
-      new OrdinalSales('20/10', 45),
-    ];
-
+  static List<charts.Series<KeyValue, String>> _createChart(
+      List<KeyValue> inData, List<KeyValue> outData) {
     return [
       // Blue bars with a lighter center color.
-      new charts.Series<OrdinalSales, String>(
+      new charts.Series<KeyValue, String>(
         id: 'Mới cách ly',
-        domainFn: (OrdinalSales num, _) => num.day,
-        measureFn: (OrdinalSales num, _) => num.num,
+        domainFn: (KeyValue num, _) => num.id,
+        measureFn: (KeyValue num, _) => num.name,
         data: inData,
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
       ),
       // Hollow green bars.
-      new charts.Series<OrdinalSales, String>(
+      new charts.Series<KeyValue, String>(
         id: 'Hoàn thành cách ly',
-        domainFn: (OrdinalSales num, _) => num.day,
-        measureFn: (OrdinalSales num, _) => num.num,
+        domainFn: (KeyValue num, _) => num.id,
+        measureFn: (KeyValue num, _) => num.name,
         data: outData,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         fillColorFn: (_, __) =>
@@ -73,12 +62,4 @@ class GroupedFillColorBarChart extends StatelessWidget {
       ),
     ];
   }
-}
-
-/// Sample ordinal data type.
-class OrdinalSales {
-  final String day;
-  final int num;
-
-  OrdinalSales(this.day, this.num);
 }

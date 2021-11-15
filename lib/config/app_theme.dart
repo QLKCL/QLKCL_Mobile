@@ -73,7 +73,9 @@ class AppTheme with ChangeNotifier {
         margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+        ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: CustomColors.secondary,
@@ -91,6 +93,11 @@ class AppTheme with ChangeNotifier {
         labelStyle: TextStyle(fontSize: 16.0),
         unselectedLabelStyle: TextStyle(fontSize: 16.0),
       ),
+      // Add the line below to get horizontal sliding transitions for routes.
+      pageTransitionsTheme: PageTransitionsTheme(builders: {
+        TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+      }),
     );
   }
 

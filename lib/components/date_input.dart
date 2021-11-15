@@ -9,6 +9,7 @@ class DateInput extends StatefulWidget {
   final TextEditingController? controller;
   final String? helper;
   final String? maxDate;
+  final bool showClearButton;
 
   DateInput({
     Key? key,
@@ -19,6 +20,7 @@ class DateInput extends StatefulWidget {
     this.helper,
     this.controller,
     this.maxDate,
+    this.showClearButton = false,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class DateInput extends StatefulWidget {
 }
 
 class _DateInputState extends State<DateInput> {
+  bool _focus = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,7 +69,18 @@ class _DateInputState extends State<DateInput> {
         decoration: InputDecoration(
           labelText: widget.required ? widget.label + " \*" : widget.label,
           hintText: "dd/mm/yyyy",
-          suffixIcon: Icon(Icons.calendar_today),
+          suffixIcon: (widget.showClearButton &&
+                  widget.controller != null &&
+                  widget.controller!.text != "" &&
+                  _focus == true)
+              ? IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    widget.controller!.clear();
+                    setState(() {});
+                  },
+                )
+              : Icon(Icons.calendar_today),
           helperText: widget.helper,
         ),
       ),

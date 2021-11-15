@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -45,7 +47,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
     quarantineWardController.text = widget.qurantineData?.quarantineWard != null
         ? widget.qurantineData?.quarantineWard['full_name']
         : "";
-    labelController.text = widget.qurantineData!.label;
+    labelController.text = widget.qurantineData?.label ?? "";
     quarantinedAtController.text = widget.qurantineData?.quarantinedAt ?? "";
     backgroundDiseaseController.text =
         widget.qurantineData?.backgroundDisease ?? "";
@@ -59,12 +61,23 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
         key: _formKey,
         child: Column(
           children: <Widget>[
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
-              itemValue: ['KTX Khu A'],
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: quarantineWardController.text,
+              itemValue: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")],
+              itemAsString: (KeyValue? u) => u!.name,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              selectedItem: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")]
+                  .safeFirstWhere(
+                      (gender) => gender.id == quarantineWardController.text),
+              onChanged: (value) {
+                if (value == null) {
+                  quarantineWardController.text = "";
+                } else {
+                  quarantineWardController.text = value.id;
+                }
+              },
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true

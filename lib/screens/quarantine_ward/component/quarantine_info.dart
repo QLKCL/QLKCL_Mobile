@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -17,6 +18,7 @@ class QuarantineInfo extends StatefulWidget {
 }
 
 class _QuarantineInfoState extends State<QuarantineInfo> {
+  
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
       margin: EdgeInsets.only(bottom: 6),
@@ -184,9 +186,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context, Icons.groups_rounded, ' Đang cách ly: 15'),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
-                    context,
-                    Icons.account_box_outlined,
-                    ' Quản lý: '),
+                    context, Icons.account_box_outlined, ' Quản lý: '),
                 // +
                 //     snapshot.data["main_manager"]["full_name"]),
                 buildInformation(context, Icons.place_outlined, ' Địa chỉ:'),

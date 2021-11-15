@@ -4,12 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
 
 class GeneralInfoBuilding extends StatelessWidget {
-  final String QuarantineName;
+  final String quarantineName;
   final String buildingName;
   final int numOfFloor;
   final int numOfMem;
   final int maxMem;
-  GeneralInfoBuilding(this.QuarantineName, this.buildingName, this.numOfFloor,
+  GeneralInfoBuilding(this.quarantineName, this.buildingName, this.numOfFloor,
       this.numOfMem, this.maxMem);
 
   @override
@@ -44,7 +44,7 @@ class GeneralInfoBuilding extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        QuarantineName,
+                        quarantineName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,

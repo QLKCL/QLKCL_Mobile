@@ -4,12 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
 
 class BuildingItem extends StatelessWidget {
-  final String building_name;
+  final String buildingName;
   final int maxMem;
   final int currentMem;
 
   const BuildingItem({
-    required this.building_name,
+    required this.buildingName,
     this.maxMem = 300,
     this.currentMem = 0,
   });
@@ -48,7 +48,7 @@ class BuildingItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  building_name,
+                  buildingName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
