@@ -82,6 +82,7 @@ class _ListAllMemberState extends State<ListAllMember>
                           PopupMenuItem(
                             child: Text('Từ chối'),
                             onTap: () async {
+                              EasyLoading.show();
                               final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
                               if (response.success) {

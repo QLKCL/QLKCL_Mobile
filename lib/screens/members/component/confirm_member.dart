@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/confirm_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class ConfirmMember extends StatefulWidget {
@@ -110,7 +110,7 @@ class _ConfirmMemberState extends State<ConfirmMember> {
                     onTap: () {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(
-                              builder: (context) => DetailMember(
+                              builder: (context) => ConfirmDetailMember(
                                     code: item['code'],
                                   )));
                     },

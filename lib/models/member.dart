@@ -172,3 +172,17 @@ Future<dynamic> denyMember(data) async {
     }
   }
 }
+
+Future<dynamic> acceptMember(data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.acceptMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Xét duyệt thành công!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
