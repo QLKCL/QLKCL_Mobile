@@ -15,13 +15,6 @@ class _CarouselState extends State<Carousel> {
     'assets/images/carousel3.jpeg',
     'assets/images/carousel4.jpg',
   ];
-  // List<T> map<T>(List list, Function handler) {
-  //   List<T> result = [];
-  //   for (var i = 0; i < list.length; i++) {
-  //     result.add(handler(i, list[i]));
-  //   }
-  //   return result;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,29 +48,6 @@ class _CarouselState extends State<Carousel> {
             }).toList(),
           ),
         ),
-        
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-
-        //    children: listImg.map((image) {       //these two lines
-        //     int index=listImg.indexOf(image); //are changed
-        //     return Container(
-        //       width: 8.0,
-        //       height: 8.0,
-        //       margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-        //       decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           color: _counter == index
-        //               ? Color.fromRGBO(0, 0, 0, 0.9)
-        //               : Color.fromRGBO(0, 0, 0, 0.4)),
-        //     );
-        //   },
-        // ),
-        // map<Widget>{
-        //   listImg, (index, url){
-
-        //   }
-        // }
       ],
     );
   }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';

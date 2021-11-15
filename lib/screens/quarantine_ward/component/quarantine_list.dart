@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
-import '../../../models/quarantine.dart';
+
 import './quarantine_item.dart';
 
 class QuanrantineList extends StatelessWidget {
-  final List<Quarantine> quarantines;
-
-  QuanrantineList(this.quarantines);
+  final data;
+  const QuanrantineList({Key? key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return quarantines.isEmpty
+    return (data == null || data.isEmpty)
         ? Center(
             child: Text('Không có dữ liệu'),
           )
         : ListView.builder(
             itemBuilder: (ctx, index) {
               return QuarantineItem(
-                  id: quarantines[index].id,
-                  name: quarantines[index].fullName,
+                  id: data[index]['id'].toString(),
+                  name: data[index]['full_name'] ?? "",
+                  //HOW TO GET NUMBER OF MEMBER.
                   numberOfMem: 0,
-                  manager: quarantines[index].mainManager);
+                  manager: data[index]["main_manager"]["full_name"] ?? "");
             },
-            itemCount: quarantines.length,
+            itemCount: data.length,
           );
   }
 }
