@@ -33,13 +33,14 @@ class Member {
     this.backgroundDiseaseNote,
     required this.customUser,
     this.careStaff,
+    this.customUserCode,
   });
 
   final int id;
   final dynamic quarantineRoom;
   final dynamic quarantineFloor;
   final dynamic quarantineBuilding;
-  final dynamic quarantineWard;
+  dynamic quarantineWard;
   final String label;
   final bool? positiveTestedBefore;
   final bool? abroad;
@@ -54,6 +55,7 @@ class Member {
   final dynamic backgroundDiseaseNote;
   final int customUser;
   final dynamic careStaff;
+  String? customUserCode;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         id: json["id"],
@@ -115,7 +117,10 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Tạo người cách ly thành công!");
+      return Response(
+          success: true,
+          message: "Tạo người cách ly thành công!",
+          data: response['data']);
     } else if (response['message']['phone_number'] != null &&
         response['message']['phone_number'] == "Exist") {
       return Response(
@@ -125,6 +130,44 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
       return Response(success: false, message: "Email đã được sử dụng!");
     } else {
       // return Response(success: false, message: jsonEncode(response['message']));
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> updateMember(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.updateMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          success: true,
+          message: "Cập nhật thông tin thành công!",
+          data: response['data']);
+    } else if (response['message']['phone_number'] != null &&
+        response['message']['phone_number'] == "Exist") {
+      return Response(
+          success: false, message: "Số điện thoại đã được sử dụng!");
+    } else if (response['message']['email'] != null &&
+        response['message']['email'] == "Exist") {
+      return Response(success: false, message: "Email đã được sử dụng!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> denyMember(data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.denyMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Từ chối thành công!");
+    } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }

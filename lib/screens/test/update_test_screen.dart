@@ -53,7 +53,9 @@ class _UpdateTestState extends State<UpdateTest> {
             }
 
             EasyLoading.show();
-            return Container();
+            return TestForm(
+              mode: Permission.edit,
+            );
           },
         ),
       ),

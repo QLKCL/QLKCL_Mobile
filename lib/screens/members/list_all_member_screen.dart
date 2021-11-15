@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/all_member.dart';
@@ -73,14 +75,32 @@ class _ListAllMemberState extends State<ListAllMember>
               centerTitle: true,
               actions: [
                 longPressFlag
-                    ? IconButton(
-                        onPressed: () {},
-                        icon: GestureDetector(
-                          child: Icon(
-                            Icons.more_vert,
+                    ? PopupMenuButton(
+                        icon: Icon(Icons.more_vert),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          // PopupMenuItem(child: Text('Chấp nhận')),
+                          PopupMenuItem(
+                            child: Text('Từ chối'),
+                            onTap: () async {
+                              final response = await denyMember(
+                                  {'member_codes': indexList.join(",")});
+                              if (response.success) {
+                                indexList.clear();
+                                longPress();
+                                EasyLoading.dismiss();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(response.message)),
+                                );
+                              } else {
+                                EasyLoading.dismiss();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(response.message)),
+                                );
+                              }
+                            },
                           ),
-                          onTap: () {},
-                        ))
+                        ],
+                      )
                     : (IconButton(
                         onPressed: () {
                           Navigator.of(context, rootNavigator: true).push(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';

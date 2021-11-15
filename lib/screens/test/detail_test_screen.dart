@@ -67,7 +67,9 @@ class _DetailTestState extends State<DetailTest> {
             }
 
             EasyLoading.show();
-            return Container();
+            return TestForm(
+              mode: Permission.view,
+            );
           },
         ),
       ),

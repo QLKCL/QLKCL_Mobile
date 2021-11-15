@@ -43,6 +43,6 @@ password: 123456
 
 Login as member
 ```
-phone: 
-password: 
+phone: 0123456780
+password: 123456
 ```
