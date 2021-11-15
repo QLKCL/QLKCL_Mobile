@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/test.dart';
+import 'package:qlkcl/screens/test/search_test.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -49,7 +50,8 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchTestList(data: {'page': pageKey});
+      final newItems =
+          await fetchTestList(data: {'page': pageKey, 'status': 'WAITING'});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -71,7 +73,10 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true)
+                  .push(MaterialPageRoute(builder: (context) => SearchTest()));
+            },
             icon: Icon(Icons.search),
           ),
         ],
@@ -92,14 +97,14 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
               ),
               itemBuilder: (context, item, index) => TestNoResultCard(
                 name: item['user'] != null ? item['user']['full_name'] : "",
-                // gender: item['user'] != null ? item['user']['gender'] : "",
+                gender: item['user'] != null ? item['user']['gender'] : "",
                 birthday:
                     item['user'] != null ? item['user']['birthday'] ?? "" : "",
                 id: item['code'],
                 time: item['created_at'],
-                // healthStatus: item['user'] != null
-                //     ? item['user']['health_status'] ?? ""
-                //     : "",
+                healthStatus: item['user'] != null
+                    ? item['user']['health_status'] ?? ""
+                    : "",
                 onTap: () {
                   Navigator.push(
                       context,
@@ -108,7 +113,6 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                                 code: item['code'],
                               )));
                 },
-                gender: '',
               ),
             ),
           ),

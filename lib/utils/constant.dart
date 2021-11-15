@@ -10,6 +10,7 @@ class Constant {
   static const String homeManager = '/api/user/home/manager';
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';
+  static const String updateTest = '/api/form/test/update';
   static const String getTest = '/api/form/test/get';
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String getListQuarantine = '/api/quarantine_ward/ward/filter';

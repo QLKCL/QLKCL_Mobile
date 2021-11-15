@@ -91,7 +91,7 @@ Map<String, dynamic> filterMemberDataForm({
   return data;
 }
 
-Map<String, dynamic> testDataForm({
+Map<String, dynamic> createTestDataForm({
   required String userCode,
   String? status,
   String? type,
@@ -102,6 +102,42 @@ Map<String, dynamic> testDataForm({
     "status": status,
     "type": type,
     "result": result,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  data.removeWhere((key, value) => value == null);
+  return data;
+}
+
+Map<String, dynamic> updateTestDataForm({
+  required String code,
+  String? status,
+  String? type,
+  String? result,
+}) {
+  var data = {
+    "code": code,
+    "status": status,
+    "type": type,
+    "result": result,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  data.removeWhere((key, value) => value == null);
+  return data;
+}
+
+Map<String, dynamic> filterTestDataForm({
+  required String keySearch,
+  String? status,
+  String? createAtMin,
+  String? createAtMax,
+  required int page,
+}) {
+  var data = {
+    "search": keySearch,
+    "status": status,
+    "created_at_min": createAtMin,
+    "created_at_max": createAtMax,
+    "page": page,
   };
   data.removeWhere((key, value) => key == "" || value == "");
   data.removeWhere((key, value) => value == null);

@@ -73,12 +73,12 @@ class _ListTestState extends State<ListTest> {
       appBar: AppBar(
         title: Text("Lịch sử xét nghiệm"),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: Icon(Icons.search),
+        //   ),
+        // ],
       ),
       body: MediaQuery.removePadding(
         context: context,
@@ -96,8 +96,8 @@ class _ListTestState extends State<ListTest> {
               ),
               itemBuilder: (context, item, index) => TestCard(
                 id: item['code'],
-                time: DateFormat("dd/MM/yyyy hh:mm:ss")
-                    .format(DateTime.parse(item['created_at'])),
+                time: DateFormat("dd/MM/yyyy HH:mm:ss")
+                    .format(DateTime.parse(item['created_at']).toLocal()),
                 status: testValueList
                     .safeFirstWhere((result) => result.id == item['result'])!
                     .name,

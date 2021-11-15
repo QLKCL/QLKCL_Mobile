@@ -11,9 +11,11 @@ import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class TestForm extends StatefulWidget {
+  final CreatedBy? userCode;
   final Test? testData;
   final Permission mode;
-  TestForm({Key? key, this.testData, this.mode = Permission.view})
+  TestForm(
+      {Key? key, this.testData, this.mode = Permission.view, this.userCode})
       : super(key: key);
 
   @override
@@ -31,17 +33,24 @@ class _TestFormState extends State<TestForm> {
 
   @override
   Widget build(BuildContext context) {
-    userCodeController.text =
-        widget.testData?.user.code != null ? widget.testData!.user.code : "";
-    userNameController.text = widget.testData?.user.fullName != null
-        ? widget.testData!.user.fullName
-        : "";
-    stateController.text =
-        widget.testData?.status != null ? widget.testData!.status : "";
-    typeController.text =
-        widget.testData?.type != null ? widget.testData!.type : "";
-    resultController.text =
-        widget.testData?.result != null ? widget.testData!.result : "";
+    if (widget.mode == Permission.add) {
+      userCodeController.text =
+          widget.userCode != null ? widget.userCode!.code : "";
+      userNameController.text =
+          widget.userCode != null ? widget.userCode!.fullName : "";
+    } else {
+      userCodeController.text =
+          widget.testData?.user.code != null ? widget.testData!.user.code : "";
+      userNameController.text = widget.testData?.user.fullName != null
+          ? widget.testData!.user.fullName
+          : "";
+      stateController.text =
+          widget.testData?.status != null ? widget.testData!.status : "";
+      typeController.text =
+          widget.testData?.type != null ? widget.testData!.type : "";
+      resultController.text =
+          widget.testData?.result != null ? widget.testData!.result : "";
+    }
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -56,20 +65,20 @@ class _TestFormState extends State<TestForm> {
               label: 'Mã người xét nghiệm',
               controller: userCodeController,
               required: widget.mode == Permission.view ? false : true,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled:
+                  (widget.userCode == null && widget.mode == Permission.add)
+                      ? true
+                      : false,
               type: TextInputType.number,
             ),
             Input(
               label: 'Họ và tên',
               hint: 'Nhập họ và tên',
               controller: userNameController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled:
+                  (widget.userCode == null && widget.mode == Permission.add)
+                      ? true
+                      : false,
             ),
             DropdownInput<KeyValue>(
               label: 'Trạng thái',
@@ -142,35 +151,36 @@ class _TestFormState extends State<TestForm> {
             if (widget.mode == Permission.view)
               Input(
                 label: 'Thời gian tạo',
-                initValue: DateFormat("dd/MM/yyyy hh:mm:ss")
-                    .format(widget.testData!.createdAt),
+                initValue: DateFormat("dd/MM/yyyy HH:mm:ss")
+                    .format(widget.testData!.createdAt.toLocal()),
                 enabled: false,
               ),
             if (widget.mode == Permission.view)
               Input(
                 label: 'Cập nhật lần cuối',
-                initValue: DateFormat("dd/MM/yyyy hh:mm:ss")
-                    .format(widget.testData!.updatedAt),
+                initValue: DateFormat("dd/MM/yyyy HH:mm:ss")
+                    .format(widget.testData!.updatedAt.toLocal()),
                 enabled: false,
               ),
             if (widget.mode == Permission.view)
               Input(
                 label: 'Người cập nhật',
-                initValue: widget.testData?.updatedBy,
+                // initValue: widget.testData?.updatedBy,
                 enabled: false,
               ),
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () {
-                  _submit();
-                },
-                child: Text(
-                  'Xác nhận',
-                  style: TextStyle(color: CustomColors.white),
+            if (widget.mode == Permission.edit || widget.mode == Permission.add)
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _submit();
+                  },
+                  child: Text(
+                    'Xác nhận',
+                    style: TextStyle(color: CustomColors.white),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -182,7 +192,7 @@ class _TestFormState extends State<TestForm> {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
       if (widget.mode == Permission.add) {
-        final response = await createTest(testDataForm(
+        final response = await createTest(createTestDataForm(
             userCode: userCodeController.text,
             status: stateController.text,
             type: typeController.text,
@@ -201,8 +211,23 @@ class _TestFormState extends State<TestForm> {
         }
       }
       if (widget.mode == Permission.edit) {
-        await Future.delayed(const Duration(milliseconds: 3000));
-        EasyLoading.dismiss();
+        final response = await updateTest(updateTestDataForm(
+            code: widget.testData!.code,
+            status: stateController.text,
+            type: typeController.text,
+            result: resultController.text));
+        if (response.success) {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(response.message)),
+          );
+          Navigator.pop(context);
+        } else {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(response.message)),
+          );
+        }
       }
     }
   }

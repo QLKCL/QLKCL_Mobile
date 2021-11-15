@@ -88,16 +88,23 @@ class CreatedBy {
       };
 }
 
+Future<dynamic> fetchTest({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getTest, data);
+  return response["data"];
+}
+
 Future<dynamic> fetchTestList({data}) async {
+  print(data);
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListTests, data);
+  print(response);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
 }
 
 Future<dynamic> createTest(Map<String, dynamic> data) async {
-  print(data);
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createTest, data);
   print(response);
@@ -105,7 +112,8 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Tạo phiếu xét nghiệm thành công!");
+      return Response(
+          success: true, message: "Tạo phiếu xét nghiệm thành công!");
     } else {
       // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
@@ -113,8 +121,18 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
   }
 }
 
-Future<dynamic> fetchTest({data}) async {
+Future<dynamic> updateTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getTest, data);
-  return response["data"];
+  final response = await api.postHTTP(Constant.updateTest, data);
+  print(response);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          success: true, message: "Cập nhật phiếu xét nghiệm thành công!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
 }
