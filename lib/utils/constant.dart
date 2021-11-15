@@ -14,6 +14,7 @@ class Constant {
   static const String getTest = '/api/form/test/get';
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
+  static const String createQuarantine = '/api/quarantine_ward/ward/create';
 }
 
 enum Permission {

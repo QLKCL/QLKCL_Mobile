@@ -34,3 +34,29 @@ String? Function(String?) emailValidator = (email) {
 
   return null;
 };
+String? Function(String?) quarantineTimeValidator = (time) {
+  String patttern = r'^[0-9]+$';
+  RegExp regExp = new RegExp(patttern);
+  if (time == null || time.isEmpty) {
+    return "Trường này là bắt buộc";
+  } else if (!regExp.hasMatch(time)) {
+    return 'Ngày cách ly không hợp lệ';
+  }
+  return null;
+};
+
+String? Function(String?) phoneNullableValidator = (phone) {
+  String patttern = r'(^[0-9]{10}$)';
+  RegExp regExp = new RegExp(patttern);
+  if (phone == null || phone.isEmpty) {
+    return null;
+  } else if (phone.length != 10) {
+    return 'Số điện thoại phải là 10 số';
+  } else if (!regExp.hasMatch(phone)) {
+    return 'Số điện thoại không hợp lệ';
+  }
+  return null;
+};
+
+
+

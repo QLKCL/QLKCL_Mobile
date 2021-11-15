@@ -143,3 +143,38 @@ Map<String, dynamic> filterTestDataForm({
   data.removeWhere((key, value) => value == null);
   return data;
 }
+
+Map<String, dynamic> createQuarantineDataForm({
+  required String email,
+  required String fullName,
+  required String country,
+  required String city,
+  required String district,
+  required String ward,
+  String? address,
+  String? latitude,
+  String? longtitude,
+  required String status,
+  String? type,
+  required int quarantineTime,
+  required String mainManager,
+}) {
+  var data = {
+    "email": email,
+    "full_name": fullName,
+    "country": country,
+    "city": city,
+    "district": district,
+    "ward": ward,
+    "address": address,
+    "latitude": latitude,
+    "longtitude": longtitude,
+    "staus": (status =="Đang hoạt động"? "RUNNING":(status =="Khóa"? "LOCKED": "UNKNOWN")),
+    "type": type,
+    "quarantine_time": quarantineTime,
+    "main_manager": mainManager,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+

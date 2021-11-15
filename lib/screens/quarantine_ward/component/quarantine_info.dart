@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -106,9 +105,19 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   children: [
                     IconButton(
                       iconSize: 38,
-                      onPressed: () async {
-                        launch("tel://" + widget.quarantineInfo.phoneNumber);
-                      },
+                      onPressed: widget.quarantineInfo.phoneNumber != null
+                          ? () async {
+                              launch("tel://" +
+                                  widget.quarantineInfo.phoneNumber.toString());
+                            }
+                          : () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Số điện thoại không tồn tại.'),
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
+                            },
                       icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                     ),
                     IconButton(
@@ -185,7 +194,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context, Icons.groups_rounded, ' Đang cách ly: 15'),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
-                    context, Icons.account_box_outlined, ' Quản lý: ' + widget.quarantineInfo.mainManager["full_name"]),
+                    context,
+                    Icons.account_box_outlined,
+                    ' Quản lý: ' +
+                        widget.quarantineInfo.mainManager["full_name"]),
 
                 buildInformation(
                   context,
@@ -206,17 +218,16 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                               widget.quarantineInfo.city.name),
                 ),
 
-                buildInformation(context, Icons.phone,
-                    'Số điện thoại: ' + widget.quarantineInfo.phoneNumber),
-
                 buildInformation(
-                  context,
-                  Icons.email_outlined,
-                  'Email: ' +
-                      (widget.quarantineInfo.email != null
-                          ? widget.quarantineInfo.email!
-                          : 'Chưa có'),
-                ),
+                    context,
+                    Icons.phone,
+                    'Số điện thoại: ' +
+                        (widget.quarantineInfo.phoneNumber != null
+                            ? widget.quarantineInfo.phoneNumber!
+                            : 'Chưa có')),
+
+                buildInformation(context, Icons.email_outlined,
+                    'Email: ' + widget.quarantineInfo.email),
               ],
             ),
           ),
