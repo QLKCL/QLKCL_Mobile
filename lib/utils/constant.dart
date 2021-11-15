@@ -7,6 +7,7 @@ class Constant {
   static const String getMember = '/api/user/member/get';
   static const String getListMembers = '/api/user/member/filter';
   static const String createMember = '/api/user/member/create';
+  static const String updateMember = '/api/user/member/update';
   static const String denyMember = '/api/user/member/refuse';
   static const String homeManager = '/api/user/home/manager';
   static const String getListTests = '/api/form/test/filter';
@@ -15,6 +16,13 @@ class Constant {
   static const String getTest = '/api/form/test/get';
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
+  static const String getListCountry = '/api/address/country/filter';
+  static const String getListCity = '/api/address/city/filter';
+  static const String getListDistrict = '/api/address/district/filter';
+  static const String getListWard = '/api/address/ward/filter';
+  static const String getListBuilding = '/api/quarantine_ward/building/filter';
+  static const String getListFloor = '/api/quarantine_ward/floor/filter';
+  static const String getListRoom = '/api/quarantine_ward/room/filter';
 }
 
 enum Permission {
@@ -51,6 +59,21 @@ List<KeyValue> roleList = [
   KeyValue(id: "3", name: "MANAGER"),
   KeyValue(id: "4", name: "STAFF"),
   KeyValue(id: "5", name: "MEMBER"),
+];
+
+List<KeyValue> quarantineList = [
+  KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG"),
+];
+
+List<KeyValue> backgroundDiseaseList = [
+  KeyValue(id: 1, name: "Tiểu đường"),
+  KeyValue(id: 2, name: "Ung thư"),
+  KeyValue(id: 3, name: "Tăng huyết áp"),
+  KeyValue(id: 4, name: "Bệnh hen suyễn"),
+  KeyValue(id: 5, name: "Bệnh gan"),
+  KeyValue(id: 6, name: "Bệnh thận mãn tính"),
+  KeyValue(id: 7, name: "Tim mạch"),
+  KeyValue(id: 8, name: "Bệnh lý mạch máu não"),
 ];
 
 const int PAGE_SIZE = 10;

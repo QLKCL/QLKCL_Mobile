@@ -65,6 +65,55 @@ Map<String, dynamic> createMemberDataForm({
   return prepareDataForm(data);
 }
 
+Map<String, dynamic> updateMemberDataForm({
+  required String code,
+  String? fullName,
+  String? email,
+  String? birthday,
+  String? gender,
+  String? nationality,
+  String? country,
+  String? city,
+  String? district,
+  String? ward,
+  String? address,
+  String? identity,
+  String? healthInsurance,
+  String? passport,
+  String? quarantineWard,
+  String? quarantineRoom,
+  String? label,
+  String? quarantinedAt,
+  bool? positiveBefore,
+  String? backgroundDisease,
+  String? otherBackgroundDisease,
+}) {
+  var data = {
+    "code": code,
+    "full_name": fullName,
+    "email": email,
+    "birthday": birthday,
+    "gender": gender,
+    "nationality_code": nationality,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "health_insurance_number": healthInsurance,
+    "identity_number": identity,
+    "passport_number": passport,
+    "quarantine_ward_id": quarantineWard,
+    "quarantine_room_id": quarantineRoom,
+    "label": label,
+    "quarantined_at": quarantinedAt,
+    "positive_tested_before": positiveBefore,
+    "background_disease": backgroundDisease,
+    "other_background_disease": otherBackgroundDisease,
+  };
+  return prepareDataForm(data);
+}
+
 Map<String, dynamic> filterMemberDataForm({
   required String keySearch,
   String? quarantineWard,

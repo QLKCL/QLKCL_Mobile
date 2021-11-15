@@ -61,6 +61,8 @@ class _DetailMemberState extends State<DetailMember>
                     MaterialPageRoute(
                         builder: (context) => UpdateMember(
                               code: widget.code,
+                              personalData: personalData,
+                              quarantineData: quarantineData,
                             )));
               },
               icon: Icon(Icons.edit),
@@ -84,8 +86,12 @@ class _DetailMemberState extends State<DetailMember>
                 personalData =
                     CustomUser.fromJson(snapshot.data["custom_user"]);
                 quarantineData = snapshot.data["member"] != null
-                    ? Member.fromJson(snapshot.data["member"])
+                    ? (Member.fromJson(snapshot.data["member"]))
                     : null;
+                if (quarantineData != null) {
+                  quarantineData!.customUserCode = personalData.code;
+                  quarantineData!.quarantineWard = personalData.quarantineWard;
+                }
                 return TabBarView(
                   controller: _tabController,
                   children: [
@@ -104,7 +110,15 @@ class _DetailMemberState extends State<DetailMember>
             }
 
             EasyLoading.show();
-            return Container();
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                MemberPersonalInfo(
+                  tabController: _tabController,
+                ),
+                MemberQuarantineInfo(),
+              ],
+            );
           },
         ),
       ),

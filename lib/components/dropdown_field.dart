@@ -8,7 +8,7 @@ class DropdownInput<T> extends StatefulWidget {
   final String label;
   final String? hint;
   final bool required;
-  final List<T> itemValue;
+  final List<T>? itemValue;
   final T? selectedItem;
   final String Function(T?)? itemAsString;
   final Mode mode;
@@ -30,7 +30,7 @@ class DropdownInput<T> extends StatefulWidget {
       required this.label,
       this.hint,
       this.required: false,
-      required this.itemValue,
+      this.itemValue,
       this.selectedItem,
       this.itemAsString,
       this.mode = Mode.MENU,
@@ -113,7 +113,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String? hint;
   final bool required;
   final List<T>? itemValue;
-  final List<T> selectedItem;
+  final List<T> selectedItems;
   final Mode mode;
   final String? helper;
   final bool showSearchBox;
@@ -136,7 +136,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.hint,
       this.required: false,
       this.itemValue,
-      this.selectedItem = const [],
+      this.selectedItems = const [],
       this.mode = Mode.MENU,
       this.helper,
       this.showSearchBox = false,
@@ -183,7 +183,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         showSelectedItems: !widget.showSearchBox || T == String,
         showClearButton: widget.showClearButton,
         items: widget.itemValue,
-        selectedItems: widget.selectedItem,
+        selectedItems: widget.selectedItems,
         itemAsString: widget.itemAsString,
         showSearchBox: widget.showSearchBox,
         maxHeight: widget.maxHeight,

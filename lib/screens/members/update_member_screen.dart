@@ -11,7 +11,10 @@ import 'package:qlkcl/utils/constant.dart';
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
   final String? code;
-  UpdateMember({Key? key, this.code}) : super(key: key);
+  final CustomUser? personalData;
+  final Member? quarantineData;
+  UpdateMember({Key? key, this.code, this.personalData, this.quarantineData})
+      : super(key: key);
 
   @override
   _UpdateMemberState createState() => _UpdateMemberState();
@@ -70,41 +73,71 @@ class _UpdateMemberState extends State<UpdateMember>
             ],
           ),
         ),
-        body: FutureBuilder<dynamic>(
-          future: futureMember,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              EasyLoading.dismiss();
-              if (snapshot.hasData) {
-                personalData =
-                    CustomUser.fromJson(snapshot.data["custom_user"]);
-                quarantineData = snapshot.data["member"] != null
-                    ? Member.fromJson(snapshot.data["member"])
-                    : null;
+        body: (widget.personalData != null)
+            ? (TabBarView(
+                controller: _tabController,
+                children: [
+                  MemberPersonalInfo(
+                    personalData: widget.personalData,
+                    tabController: _tabController,
+                    mode: Permission.edit,
+                  ),
+                  MemberQuarantineInfo(
+                    qurantineData: widget.quarantineData,
+                    mode: Permission.edit,
+                  ),
+                ],
+              ))
+            : (FutureBuilder<dynamic>(
+                future: futureMember,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    EasyLoading.dismiss();
+                    if (snapshot.hasData) {
+                      personalData =
+                          CustomUser.fromJson(snapshot.data["custom_user"]);
+                      quarantineData = snapshot.data["member"] != null
+                          ? Member.fromJson(snapshot.data["member"])
+                          : null;
+                      if (quarantineData != null) {
+                        quarantineData!.customUserCode = personalData.code;
+                        quarantineData!.quarantineWard =
+                            personalData.quarantineWard['id'];
+                      }
+                      return TabBarView(
+                        controller: _tabController,
+                        children: [
+                          MemberPersonalInfo(
+                            personalData: personalData,
+                            tabController: _tabController,
+                            mode: Permission.edit,
+                          ),
+                          MemberQuarantineInfo(
+                            qurantineData: quarantineData,
+                            mode: Permission.edit,
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+                  }
 
-                return TabBarView(
-                  controller: _tabController,
-                  children: [
-                    MemberPersonalInfo(
-                      personalData: personalData,
-                      tabController: _tabController,
-                      mode: Permission.edit,
-                    ),
-                    MemberQuarantineInfo(
-                      qurantineData: quarantineData,
-                      mode: Permission.edit,
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              }
-            }
-
-            EasyLoading.show();
-            return Container();
-          },
-        ),
+                  EasyLoading.show();
+                  return TabBarView(
+                    controller: _tabController,
+                    children: [
+                      MemberPersonalInfo(
+                        tabController: _tabController,
+                        mode: Permission.edit,
+                      ),
+                      MemberQuarantineInfo(
+                        mode: Permission.edit,
+                      ),
+                    ],
+                  );
+                },
+              )),
       ),
     );
   }
