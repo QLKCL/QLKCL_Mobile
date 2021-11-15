@@ -3,6 +3,7 @@ import 'package:qlkcl/config/routes.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
+import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
@@ -25,16 +26,24 @@ import 'package:qlkcl/config/app_theme.dart';
 // new: https://pub.dev/packages/persistent_bottom_nav_bar
 
 class BottomNavigation extends StatelessWidget {
-  BottomNavigation({required this.currentTab, required this.onSelectTab});
+  BottomNavigation({
+    required this.currentTab,
+    required this.onSelectTab,
+    required this.role,
+  });
   final TabItem currentTab;
   final ValueChanged<TabItem> onSelectTab;
+  final int role;
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      currentIndex: currentTab.index,
+      currentIndex:
+          (role == 5) ? (currentTab.index ~/ 2).toInt() : currentTab.index,
       selectedItemColor: CustomColors.secondary,
       onTap: (index) => {
+        index = (role == 5) ? index * 2 : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
           {Navigator.pushNamed(context, QrCodeScan.routeName)}
         else
@@ -46,9 +55,9 @@ class BottomNavigation extends StatelessWidget {
       },
       items: [
         _buildItem(TabItem.homepage),
-        _buildItem(TabItem.quarantine_person),
+        if (role != 5) _buildItem(TabItem.quarantine_person),
         _buildItem(TabItem.qr_code_scan),
-        _buildItem(TabItem.quarantine_ward),
+        if (role != 5) _buildItem(TabItem.quarantine_ward),
         _buildItem(TabItem.account),
       ],
     );
@@ -94,21 +103,30 @@ const Map<TabItem, String> tabRouteName = {
   TabItem.account: Account.routeName,
 };
 
+const Map<TabItem, String> tabMemberRouteName = {
+  TabItem.homepage: MemberHomePage.routeName,
+  TabItem.qr_code_scan: QrCodeScan.routeName,
+  TabItem.account: Account.routeName,
+};
+
 class TabNavigator extends StatelessWidget {
   const TabNavigator({
     Key? key,
     required this.navigatorKey,
     required this.tabItem,
+    required this.role,
   }) : super(key: key);
 
   final GlobalKey<NavigatorState>? navigatorKey;
   final TabItem tabItem;
+  final int role;
 
   @override
   Widget build(BuildContext context) {
     return Navigator(
       key: navigatorKey,
-      initialRoute: tabRouteName[tabItem],
+      initialRoute:
+          role == 5 ? tabMemberRouteName[tabItem] : tabRouteName[tabItem],
       onGenerateRoute: (settings) {
         Widget child;
         if (routes.containsKey(settings.name)) {

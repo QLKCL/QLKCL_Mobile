@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
-// import 'package:websafe_svg/websafe_svg.dart';
 
 import '../quarantine_detail_screen.dart';
 
 class QuarantineItem extends StatelessWidget {
-  //final VoidCallback onTap;
   final String id;
   final String name;
   final int numberOfMem;
   final String manager;
 
   const QuarantineItem({
-    //required this.onTap,
     required this.id,
     required this.name,
     required this.numberOfMem,
     required this.manager,
   });
-  void selectQuarantine(BuildContext context) {
-    Navigator.of(context,rootNavigator: true).pushNamed(
-      QuarantineDetailScreen.routeName,
-      arguments: {
-        'id': id,
-        'full_name': name,
-      },
 
-    );
+  void selectQuarantine(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+      builder: (context) => QuarantineDetailScreen(
+        id: this.id,
+      ),
+    ));
   }
 
   @override

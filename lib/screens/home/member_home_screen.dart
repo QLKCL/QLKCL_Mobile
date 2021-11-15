@@ -3,6 +3,7 @@ import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
@@ -74,7 +75,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   minimumSize: Size(double.infinity, 48),
                   primary: CustomColors.secondary,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                          builder: (context) => MedicalDeclarationScreen()));
+                },
                 child: Text(
                   'Khai báo y tế',
                   style: TextStyle(color: CustomColors.white),

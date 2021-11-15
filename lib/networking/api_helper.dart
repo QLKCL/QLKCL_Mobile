@@ -11,8 +11,8 @@ class ApiHelper {
   static BaseOptions opts = BaseOptions(
     baseUrl: Constant.baseUrl,
     responseType: ResponseType.json,
-    connectTimeout: 10000,
-    receiveTimeout: 8000,
+    connectTimeout: 15000,
+    receiveTimeout: 12000,
   );
 
   static Dio createDio() {

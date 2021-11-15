@@ -4,11 +4,14 @@ import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
+import 'package:qlkcl/utils/data_form.dart';
 
 class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
@@ -150,7 +153,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               selectedItem: genderList.safeFirstWhere(
                   (gender) => gender.id == genderController.text),
               onChanged: (value) {
-                genderController.text = value!.id;
+                if (value == null) {
+                  genderController.text = "";
+                } else {
+                  genderController.text = value.id;
+                }
               },
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
@@ -242,7 +249,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                 child: ElevatedButton(
                   onPressed: () {
                     _submit();
-                    // widget.tabController!.animateTo(1);
                   },
                   child: (widget.mode == Permission.add ||
                           widget.mode == Permission.edit)
@@ -257,22 +263,49 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
   }
 
   void _submit() async {
-    // Validate returns true if the form is valid, or false otherwise.
-    if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
-      // final registerResponse = await register(loginDataForm(
-      //   phoneNumberController.text,
-      //   phoneNumberController.text,
-      // ));
-      // if (registerResponse.success) {
-      await Future.delayed(const Duration(milliseconds: 3000));
-      EasyLoading.dismiss();
-      // } else {
-      //   EasyLoading.dismiss();
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text(registerResponse.message)),
-      // );
-      // }
+    if (widget.mode == Permission.view) {
+      widget.tabController!.animateTo(1);
+    } else {
+      // Validate returns true if the form is valid, or false otherwise.
+      if (_formKey.currentState!.validate()) {
+        EasyLoading.show();
+        if (widget.mode == Permission.add) {
+          final registerResponse = await createMember(createMemberDataForm(
+            phoneNumber: phoneNumberController.text,
+            fullName: fullNameController.text,
+            email: emailController.text,
+            birthday: birthdayController.text,
+            gender: genderController.text,
+            nationality: "VNM",
+            country: "VNM",
+            city: "1",
+            district: "1",
+            ward: "1",
+            address: detailAddressController.text,
+            healthInsurance: healthInsuranceNumberController.text,
+            identity: identityNumberController.text,
+            passport: passportNumberController.text,
+            quarantineWard: (await getQuarantineWard()).toString(),
+            positiveBefore: false,
+          ));
+          if (registerResponse.success) {
+            EasyLoading.dismiss();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(registerResponse.message)),
+            );
+            widget.tabController!.animateTo(1);
+          } else {
+            EasyLoading.dismiss();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(registerResponse.message)),
+            );
+          }
+        }
+        if (widget.mode == Permission.edit) {
+          await Future.delayed(const Duration(milliseconds: 3000));
+          EasyLoading.dismiss();
+        }
+      }
     }
   }
 }

@@ -33,6 +33,8 @@ class _EditQuarantineState extends State<StatefulWidget> {
       child: Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
+          physics: ScrollPhysics(),
+
           // margin: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,10 +162,10 @@ class _EditQuarantineState extends State<StatefulWidget> {
                     )
                   : Container(
                       margin: EdgeInsets.fromLTRB(8, 12, 8, 12),
-                      height: 250,
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: GridView.builder(
+                          physics: ScrollPhysics(),
                           shrinkWrap: true,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(

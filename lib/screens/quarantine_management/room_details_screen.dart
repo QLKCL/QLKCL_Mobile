@@ -56,7 +56,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                   if (index == 8) {
                     return Column(
                       children: [
-                        MemberInRoom(
+                        MemberInRoomCard(
                           onTap: () {},
                           id: '1',
                           name: 'Nguyễn Văn Hải',
@@ -69,7 +69,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       ],
                     );
                   } else
-                    return MemberInRoom(
+                    return MemberInRoomCard(
                       onTap: () {},
                       id: '1',
                       name: 'Nguyễn Văn Hải',

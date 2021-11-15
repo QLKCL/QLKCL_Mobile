@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
@@ -27,7 +28,15 @@ class _AccountState extends State<Account> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          GenerateQrCode(qrData: "Le Trung Son"),
+          FutureBuilder(
+            future: getName(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return GenerateQrCode(qrData: snapshot.data);
+              }
+              return Container();
+            },
+          ),
           Container(
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.only(left: 16),
@@ -78,7 +87,8 @@ class _AccountState extends State<Account> {
                 ListTile(
                   onTap: () {
                     Navigator.of(context, rootNavigator: true)
-                        .pushNamed(DetailMember.routeName);},
+                        .pushNamed(DetailMember.routeName);
+                  },
                   title: Text('Thông tin cá nhân'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),

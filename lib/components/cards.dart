@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:websafe_svg/websafe_svg.dart';
+import 'package:intl/intl.dart';
 
-class MedicalDeclaration extends StatelessWidget {
+class MedicalDeclarationCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String time;
   final String status;
-  const MedicalDeclaration(
+  const MedicalDeclarationCard(
       {required this.onTap,
       required this.id,
       required this.time,
@@ -72,12 +73,12 @@ class MedicalDeclaration extends StatelessWidget {
   }
 }
 
-class Test extends StatelessWidget {
+class TestCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String time;
   final String status;
-  const Test(
+  const TestCard(
       {required this.onTap,
       required this.id,
       required this.time,
@@ -142,20 +143,22 @@ class Test extends StatelessWidget {
   }
 }
 
-class TestNoResult extends StatelessWidget {
+class TestNoResultCard extends StatelessWidget {
   final VoidCallback onTap;
   final String name;
   final String gender;
   final String birthday;
   final String id;
   final String time;
-  const TestNoResult(
+  final String healthStatus;
+  const TestNoResultCard(
       {required this.onTap,
       required this.name,
       required this.gender,
       required this.birthday,
       required this.id,
-      required this.time});
+      required this.time,
+      this.healthStatus = "NORMAL"});
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +179,10 @@ class TestNoResult extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 WidgetSpan(
-                  child: WebsafeSvg.asset("assets/svg/male.svg"),
+                  alignment: PlaceholderAlignment.top,
+                  child: gender == "MALE"
+                      ? WebsafeSvg.asset("assets/svg/male.svg")
+                      : WebsafeSvg.asset("assets/svg/female.svg"),
                 ),
               ],
             ),
@@ -216,7 +222,10 @@ class TestNoResult extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: " Chưa có kết quả (" + time + ")",
+                      text: " " +
+                          DateFormat("yyyy-MM-ddTHH:mm:ss")
+                              .parse(time, true)
+                              .toString(),
                     )
                   ],
                 ),
@@ -243,7 +252,11 @@ class TestNoResult extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: CustomColors.white,
                       borderRadius: BorderRadius.circular(100)),
-                  child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                  child: healthStatus == "SERIOUS"
+                      ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                      : healthStatus == "UNWELL"
+                          ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                          : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                 ),
                 // RawMaterialButton(
                 //           onPressed: () {},
@@ -272,36 +285,34 @@ class TestNoResult extends StatelessWidget {
   }
 }
 
-class Member extends StatefulWidget {
+class MemberCard extends StatefulWidget {
   final bool? longPressEnabled;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
-  final String id;
   final String name;
   final String gender;
   final String birthday;
   final String room;
-  final String lastTestResult;
-  final String lastTestTime;
+  final bool? lastTestResult;
+  final String? lastTestTime;
   final String healthStatus;
-  const Member(
+  const MemberCard(
       {required this.onTap,
       this.onLongPress,
-      required this.id,
       required this.name,
       required this.gender,
       required this.birthday,
       required this.room,
-      required this.lastTestResult,
-      required this.lastTestTime,
+      this.lastTestResult,
+      this.lastTestTime,
       this.longPressEnabled,
       required this.healthStatus});
 
   @override
-  _MemberState createState() => _MemberState();
+  _MemberCardState createState() => _MemberCardState();
 }
 
-class _MemberState extends State<Member> {
+class _MemberCardState extends State<MemberCard> {
   bool _selected = false;
 
   action() {
@@ -331,7 +342,8 @@ class _MemberState extends State<Member> {
       child: Container(
         child: ListTile(
           onTap: () {
-            if (widget.longPressEnabled != null) {
+            if (widget.longPressEnabled != null &&
+                widget.longPressEnabled == true) {
               setState(() {
                 _selected = !_selected;
               });
@@ -368,10 +380,12 @@ class _MemberState extends State<Member> {
             ),
           ),
           subtitle: Container(
-            padding: EdgeInsets.only(bottom: 8),
-            child: Wrap(
-              direction: Axis.vertical, // make sure to set this
-              spacing: 4, // set your spacing
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // direction: Axis.vertical, // make sure to set this
+              // spacing: 4, // set your spacing
               children: [
                 Text(
                   widget.birthday,
@@ -393,6 +407,9 @@ class _MemberState extends State<Member> {
                       )
                     ],
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                 ),
                 Text.rich(
                   TextSpan(
@@ -405,10 +422,14 @@ class _MemberState extends State<Member> {
                       ),
                       TextSpan(
                         text: " " +
-                            widget.lastTestResult +
-                            " (" +
-                            widget.lastTestTime +
-                            ")",
+                            (widget.lastTestResult != null
+                                ? (widget.lastTestResult!
+                                    ? "Dương tính"
+                                    : "Âm tính")
+                                : "Chưa có kết quả xét nghiệm") +
+                            (widget.lastTestTime != null
+                                ? " (" + widget.lastTestTime! + ")"
+                                : ""),
                       )
                     ],
                   ),
@@ -477,10 +498,7 @@ class QuarantineRelatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 16
-      ),
+      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ListTile(
         onTap: onTap,
         title: Text(name),
@@ -525,7 +543,7 @@ class QuarantineRelatedCard extends StatelessWidget {
   }
 }
 
-class MemberInRoom extends StatelessWidget {
+class MemberInRoomCard extends StatelessWidget {
   final VoidCallback onTap;
   final String id;
   final String name;
@@ -533,7 +551,8 @@ class MemberInRoom extends StatelessWidget {
   final String birthday;
   final String lastTestResult;
   final String lastTestTime;
-  const MemberInRoom({
+  final String healthStatus;
+  const MemberInRoomCard({
     required this.onTap,
     required this.id,
     required this.name,
@@ -541,6 +560,7 @@ class MemberInRoom extends StatelessWidget {
     required this.birthday,
     required this.lastTestResult,
     required this.lastTestTime,
+    this.healthStatus = "NORMAL",
   });
 
   @override
@@ -559,7 +579,10 @@ class MemberInRoom extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline6,
                   ),
                   WidgetSpan(
-                    child: WebsafeSvg.asset("assets/svg/male.svg"),
+                    alignment: PlaceholderAlignment.top,
+                    child: gender == "MALE"
+                        ? WebsafeSvg.asset("assets/svg/male.svg")
+                        : WebsafeSvg.asset("assets/svg/female.svg"),
                   ),
                 ],
               ),
@@ -573,6 +596,9 @@ class MemberInRoom extends StatelessWidget {
               children: [
                 Text(
                   birthday,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
                 ),
                 Text.rich(
                   TextSpan(
@@ -611,7 +637,11 @@ class MemberInRoom extends StatelessWidget {
                     decoration: BoxDecoration(
                         color: CustomColors.white,
                         borderRadius: BorderRadius.circular(100)),
-                    child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                    child: healthStatus == "SERIOUS"
+                        ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                        : healthStatus == "UNWELL"
+                            ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                            : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                   ),
                 ),
               ],

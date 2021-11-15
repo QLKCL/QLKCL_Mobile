@@ -6,6 +6,12 @@ class Constant {
   static const String register = '/api/user/member/register';
   static const String getMember = '/api/user/member/get';
   static const String getListMembers = '/api/user/member/filter';
+  static const String createMember = '/api/user/member/create';
+  static const String homeManager = '/api/user/home/manager';
+  static const String getListTests = '/api/form/test/filter';
+  static const String createTest = '/api/form/test/create';
+  static const String getQuarantine = '/api/quarantine_ward/ward/get';
+  static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
 }
 
 enum Permission {
@@ -19,3 +25,13 @@ List<KeyValue> genderList = [
   KeyValue(id: "MALE", name: "Nam"),
   KeyValue(id: "FEMALE", name: "Nữ")
 ];
+
+List<KeyValue> roleList = [
+  KeyValue(id: "1", name: "ADMINISTRATOR"),
+  KeyValue(id: "2", name: "SUPER_MANAGER"),
+  KeyValue(id: "3", name: "MANAGER"),
+  KeyValue(id: "4", name: "STAFF"),
+  KeyValue(id: "5", name: "MEMBER"),
+];
+
+const int PAGE_SIZE = 10;

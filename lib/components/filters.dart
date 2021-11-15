@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
-import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/key_value.dart';
+import 'package:intl/intl.dart';
 
-Future memberFilter(BuildContext context) {
+Future memberFilter(
+  BuildContext context, {
+  required TextEditingController quarantineWardController,
+  required TextEditingController quarantineBuildingController,
+  required TextEditingController quarantineFloorController,
+  required TextEditingController quarantineRoomController,
+  required TextEditingController quarantineAtMinController,
+  required TextEditingController quarantineAtMaxController,
+  required void Function()? setState,
+}) {
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
     shape: RoundedRectangleBorder(
@@ -24,31 +36,56 @@ Future memberFilter(BuildContext context) {
               ),
             ),
           ),
-          DropdownInput(
+          DropdownInput<KeyValue>(
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
-            itemValue: ['KTX Khu A'],
+            itemValue: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")],
+            itemAsString: (KeyValue? u) => u!.name,
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            selectedItem: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")]
+                .safeFirstWhere(
+                    (gender) => gender.id == quarantineWardController.text),
+            onChanged: (value) {
+              if (value == null) {
+                quarantineWardController.text = "";
+              } else {
+                quarantineWardController.text = value.id;
+              }
+            },
+            showClearButton: true,
           ),
           DropdownInput(
             label: 'Tòa',
             hint: 'Chọn tòa',
             itemValue: ["1"],
+            selectedItem: quarantineBuildingController.text,
+            showClearButton: true,
           ),
           DropdownInput(
             label: 'Tầng',
             hint: 'Chọn tầng',
             itemValue: ["1"],
+            selectedItem: quarantineFloorController.text,
+            showClearButton: true,
           ),
           DropdownInput(
             label: 'Phòng',
             hint: 'Chọn phòng',
             itemValue: ["1"],
+            selectedItem: quarantineRoomController.text,
+            showClearButton: true,
           ),
-          Input(
+          DateInput(
             label: 'Ngày bắt đầu cách ly (Từ ngày)',
+            controller: quarantineAtMinController,
+            maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            showClearButton: true,
           ),
-          Input(
+          DateInput(
             label: 'Ngày bắt đầu cách ly (Đến ngày)',
+            controller: quarantineAtMaxController,
+            maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+            showClearButton: true,
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
@@ -106,17 +143,27 @@ Future memberFilter(BuildContext context) {
             margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Row(
               children: [
-                Spacer(),
-                OutlinedButton(
-                  onPressed: () {
-                    // Respond to button press
-                  },
-                  child: Text("Đặt lại"),
-                ),
+                // Spacer(),
+                // OutlinedButton(
+                //   onPressed: () {
+                //     // Respond to button press
+                //     quarantineWardController.clear();
+                //     quarantineBuildingController.clear();
+                //     quarantineFloorController.clear();
+                //     quarantineRoomController.clear();
+                //     quarantineAtMinController.clear();
+                //     quarantineAtMaxController.clear();
+                //     setState!();
+                //   },
+                //   child: Text("Đặt lại"),
+                // ),
                 Spacer(),
                 ElevatedButton(
                   onPressed: () {
                     // Respond to button press
+                    print(quarantineWardController.text);
+                    setState!();
+                    Navigator.pop(context);
                   },
                   child: Text("Tìm kiếm"),
                 ),

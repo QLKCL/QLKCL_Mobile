@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -74,6 +75,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
     await setToken(accessToken, refreshToken);
+    await setInfo();
     return Response(success: true);
   } else if (response.statusCode == 401) {
     return Response(
@@ -114,6 +116,7 @@ Future<Response> register(Map<String, dynamic> loginDataForm) async {
 
 Future<bool> logout() async {
   Hive.box('auth').clear();
+  Hive.box('myInfo').clear();
   await setLoginState(false);
   return true;
 }
@@ -123,15 +126,4 @@ bool isTokenExpired(String _token) {
   DateTime? expiryDate = Jwt.getExpiryDate(_token);
   isExpired = expiryDate!.compareTo(DateTime.now()) < 0;
   return isExpired;
-}
-
-Future<String> getRole() async {
-  var roleBox = await Hive.openBox('role');
-
-  if (roleBox.containsKey('role')) {
-    return roleBox.get('role');
-  } else {
-    roleBox.put('role', "5"); // vi du 5 la member
-    return "5";
-  }
 }
