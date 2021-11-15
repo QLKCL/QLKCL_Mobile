@@ -23,7 +23,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
     super.initState();
     if (widget.id != null) {
       futureQuarantine = fetchQuarantine(id: widget.id);
-      // print(futureQuarantine);
     } else {
       futureQuarantine = fetchQuarantine();
     }
