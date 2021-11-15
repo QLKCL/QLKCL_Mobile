@@ -85,7 +85,7 @@ class _ListAllMemberState extends State<ListAllMember>
                         onPressed: () {
                           Navigator.of(context, rootNavigator: true).push(
                               MaterialPageRoute(
-                                  builder: (context) => SearchBox()));
+                                  builder: (context) => SearchMember()));
                         },
                         icon: Icon(Icons.search),
                       )),

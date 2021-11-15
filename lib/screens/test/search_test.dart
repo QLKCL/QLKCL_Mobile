@@ -4,29 +4,29 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/models/test.dart';
+import 'package:qlkcl/screens/test/update_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
-class SearchMember extends StatefulWidget {
-  SearchMember({Key? key}) : super(key: key);
+class SearchTest extends StatefulWidget {
+  SearchTest({Key? key}) : super(key: key);
 
   @override
-  _SearchMemberState createState() => _SearchMemberState();
+  _SearchTestState createState() => _SearchTestState();
 }
 
-class _SearchMemberState extends State<SearchMember> {
+class _SearchTestState extends State<SearchTest> {
   TextEditingController keySearch = TextEditingController();
-  TextEditingController quarantineWardController = TextEditingController();
-  TextEditingController quarantineBuildingController = TextEditingController();
-  TextEditingController quarantineFloorController = TextEditingController();
-  TextEditingController quarantineRoomController = TextEditingController();
-  TextEditingController quarantineAtMinController = TextEditingController();
-  TextEditingController quarantineAtMaxController = TextEditingController();
-  bool searched = false;
+  final userCodeController = TextEditingController();
+  final stateController = TextEditingController();
+  final typeController = TextEditingController();
+  final resultController = TextEditingController();
+  final createAtMinController = TextEditingController();
+  final createAtMaxController = TextEditingController();
 
-  late Future<dynamic> futureMemberList;
+  bool searched = false;
+  late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
 
@@ -50,7 +50,6 @@ class _SearchMemberState extends State<SearchMember> {
         );
       }
     });
-
     super.initState();
   }
 
@@ -62,18 +61,14 @@ class _SearchMemberState extends State<SearchMember> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-        data: filterMemberDataForm(
-          keySearch: keySearch.text,
-          page: pageKey,
-          quarantineWard: quarantineWardController.text,
-          quarantineBuilding: quarantineBuildingController.text,
-          quarantineFloor: quarantineFloorController.text,
-          quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin: quarantineAtMinController.text,
-          quarantineAtMax: quarantineAtMaxController.text,
-        ),
-      );
+      final newItems = await fetchTestList(
+          data: filterTestDataForm(
+        page: pageKey,
+        status: stateController.text,
+        keySearch: keySearch.text,
+        createAtMin: createAtMinController.text,
+        createAtMax: createAtMaxController.text,
+      ));
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -135,14 +130,14 @@ class _SearchMemberState extends State<SearchMember> {
           actions: [
             IconButton(
               onPressed: () {
-                memberFilter(
+                testFilter(
                   context,
-                  quarantineWardController: quarantineWardController,
-                  quarantineBuildingController: quarantineBuildingController,
-                  quarantineFloorController: quarantineFloorController,
-                  quarantineRoomController: quarantineRoomController,
-                  quarantineAtMinController: quarantineAtMinController,
-                  quarantineAtMaxController: quarantineAtMaxController,
+                  userCodeController: userCodeController,
+                  stateController: stateController,
+                  typeController: typeController,
+                  resultController: resultController,
+                  createAtMinController: createAtMinController,
+                  createAtMaxController: createAtMaxController,
                   setState: () {
                     setState(() {
                       searched = true;
@@ -159,45 +154,46 @@ class _SearchMemberState extends State<SearchMember> {
             ? MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
-                child: PagedListView<int, dynamic>(
-                  pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<dynamic>(
+                child: RefreshIndicator(
+                  onRefresh: () => Future.sync(
+                    () => _pagingController.refresh(),
+                  ),
+                  child: PagedListView<int, dynamic>(
+                    pagingController: _pagingController,
+                    builderDelegate: PagedChildBuilderDelegate<dynamic>(
                       animateTransitions: true,
                       noItemsFoundIndicatorBuilder: (context) => Center(
-                            child: Text('Không có kết quả tìm kiếm'),
-                          ),
-                      itemBuilder: (context, item, index) => MemberCard(
-                            name: item['full_name'] ?? "",
-                            gender: item['gender'] ?? "",
-                            birthday: item['birthday'] ?? "",
-                            room:
-                                (item['quarantine_room'] != null
-                                        ? "${item['quarantine_room']['name']} - "
-                                        : "") +
-                                    (item['quarantine_floor'] != null
-                                        ? "${item['quarantine_floor']['name']} - "
-                                        : "") +
-                                    (item['quarantine_building'] != null
-                                        ? "${item['quarantine_building']['name']} - "
-                                        : "") +
-                                    (item['quarantine_ward'] != null
-                                        ? "${item['quarantine_ward']['full_name']}"
-                                        : ""),
-                            lastTestResult: item['positive_test'],
-                            lastTestTime: item['last_tested'],
-                            healthStatus: item['health_status'],
-                            onTap: () {
-                              Navigator.of(context, rootNavigator: true)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) => DetailMember(
-                                            code: item['code'],
-                                          )));
-                            },
-                          )),
+                        child: Text('Không có dữ liệu'),
+                      ),
+                      itemBuilder: (context, item, index) => TestNoResultCard(
+                        name: item['user'] != null
+                            ? item['user']['full_name']
+                            : "",
+                        gender:
+                            item['user'] != null ? item['user']['gender'] : "",
+                        birthday: item['user'] != null
+                            ? item['user']['birthday'] ?? ""
+                            : "",
+                        id: item['code'],
+                        time: item['created_at'],
+                        healthStatus: item['user'] != null
+                            ? item['user']['health_status'] ?? ""
+                            : "",
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => UpdateTest(
+                                        code: item['code'],
+                                      )));
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               )
             : Center(
-                child: Text('Tìm kiếm người cách ly'),
+                child: Text('Tìm kiếm phiếu xét nghiệm'),
               ),
       ),
     );
