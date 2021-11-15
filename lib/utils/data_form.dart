@@ -90,3 +90,20 @@ Map<String, dynamic> filterMemberDataForm({
   data.removeWhere((key, value) => value == null);
   return data;
 }
+
+Map<String, dynamic> testDataForm({
+  required String userCode,
+  String? status,
+  String? type,
+  String? result,
+}) {
+  var data = {
+    "user_code": userCode,
+    "status": status,
+    "type": type,
+    "result": result,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  data.removeWhere((key, value) => value == null);
+  return data;
+}

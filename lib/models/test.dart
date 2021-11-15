@@ -97,8 +97,10 @@ Future<dynamic> fetchTestList({data}) async {
 }
 
 Future<dynamic> createTest(Map<String, dynamic> data) async {
+  print(data);
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createTest, data);
+  print(response);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

@@ -223,9 +223,8 @@ class TestNoResultCard extends StatelessWidget {
                     ),
                     TextSpan(
                       text: " " +
-                          DateFormat("yyyy-MM-ddTHH:mm:ss")
-                              .parse(time, true)
-                              .toString(),
+                          DateFormat("dd/MM/yyyy hh:mm:ss")
+                              .format(DateTime.parse(time)),
                     )
                   ],
                 ),

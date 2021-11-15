@@ -12,6 +12,16 @@ Future<int> getRole() async {
   }
 }
 
+Future<String> getCode() async {
+  var infoBox = await Hive.openBox('myInfo');
+
+  if (infoBox.containsKey('code')) {
+    return infoBox.get('code');
+  } else {
+    return "-1";
+  }
+}
+
 Future<String> getName() async {
   var infoBox = await Hive.openBox('myInfo');
 
@@ -40,4 +50,6 @@ Future<void> setInfo() async {
   //     id: response['data']['custom_user']['quarantine_ward']['id'],
   //     name: response['data']['custom_user']['quarantine_ward']['full_name']);
   infoBox.put('quarantineWard', quarantineWard);
+  String code = response['data']['custom_user']['code'];
+  infoBox.put('code', code);
 }
