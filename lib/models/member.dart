@@ -129,3 +129,19 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
     }
   }
 }
+
+Future<dynamic> denyMember(data) async {
+  print(data);
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.denyMember, data);
+  print(response);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Từ chối thành công!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}

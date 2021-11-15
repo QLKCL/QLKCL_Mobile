@@ -1,3 +1,5 @@
+import 'package:qlkcl/helper/function.dart';
+
 Map<String, String> loginDataForm(
     {required String phoneNumber, required String password}) {
   return {'phone_number': phoneNumber, 'password': password};
@@ -60,8 +62,7 @@ Map<String, dynamic> createMemberDataForm({
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> filterMemberDataForm({
@@ -86,9 +87,7 @@ Map<String, dynamic> filterMemberDataForm({
     "label": label,
     "page": page,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> createTestDataForm({
@@ -103,9 +102,7 @@ Map<String, dynamic> createTestDataForm({
     "type": type,
     "result": result,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> updateTestDataForm({
@@ -120,9 +117,7 @@ Map<String, dynamic> updateTestDataForm({
     "type": type,
     "result": result,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> filterTestDataForm({
@@ -139,7 +134,5 @@ Map<String, dynamic> filterTestDataForm({
     "created_at_max": createAtMax,
     "page": page,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
-  return data;
+  return prepareDataForm(data);
 }

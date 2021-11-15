@@ -7,6 +7,7 @@ class Constant {
   static const String getMember = '/api/user/member/get';
   static const String getListMembers = '/api/user/member/filter';
   static const String createMember = '/api/user/member/create';
+  static const String denyMember = '/api/user/member/refuse';
   static const String homeManager = '/api/user/home/manager';
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';

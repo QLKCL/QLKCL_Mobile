@@ -95,10 +95,8 @@ Future<dynamic> fetchTest({data}) async {
 }
 
 Future<dynamic> fetchTestList({data}) async {
-  print(data);
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListTests, data);
-  print(response);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -107,7 +105,6 @@ Future<dynamic> fetchTestList({data}) async {
 Future<dynamic> createTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createTest, data);
-  print(response);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -124,7 +121,6 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
 Future<dynamic> updateTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateTest, data);
-  print(response);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
