@@ -76,7 +76,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn khu cách ly',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineWard(),
+              onFind: (String? filter) => fetchQuarantineWardNoToken(),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.qurantineData?.quarantineWard != null)
                   ? KeyValue.fromJson(widget.qurantineData!.quarantineWard)
@@ -87,6 +87,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 } else {
                   quarantineWardController.text = value.id.toString();
                 }
+                quarantineBuildingController.clear();
+                quarantineFloorController.clear();
+                quarantineRoomController.clear();
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -96,8 +99,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn tòa',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineBuilding(
-                  {'quarantine_ward': quarantineWardController.text}),
+              onFind: (String? filter) => fetchQuarantineBuilding({
+                'quarantine_ward': quarantineWardController.text,
+                'page_size': PAGE_SIZE_MAX,
+                'search': filter
+              }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.qurantineData?.quarantineBuilding != null)
                   ? KeyValue.fromJson(widget.qurantineData!.quarantineBuilding)
@@ -108,6 +114,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 } else {
                   quarantineBuildingController.text = value.id.toString();
                 }
+                quarantineFloorController.clear();
+                quarantineRoomController.clear();
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -117,8 +125,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn tầng',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineFloor(
-                  {'quarantine_building': quarantineBuildingController.text}),
+              onFind: (String? filter) => fetchQuarantineFloor({
+                'quarantine_building': quarantineBuildingController.text,
+                'page_size': PAGE_SIZE_MAX,
+                'search': filter
+              }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.qurantineData?.quarantineFloor != null)
                   ? KeyValue.fromJson(widget.qurantineData!.quarantineFloor)
@@ -129,6 +140,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 } else {
                   quarantineFloorController.text = value.id.toString();
                 }
+                quarantineRoomController.clear();
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -138,8 +150,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn phòng',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineRoom(
-                  {'quarantine_floor': quarantineFloorController.text}),
+              onFind: (String? filter) => fetchQuarantineRoom({
+                'quarantine_floor': quarantineFloorController.text,
+                'page_size': PAGE_SIZE_MAX,
+                'search': filter
+              }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.qurantineData?.quarantineFloor != null)
                   ? KeyValue.fromJson(widget.qurantineData!.quarantineFloor)

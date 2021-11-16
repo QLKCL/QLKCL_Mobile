@@ -81,3 +81,4 @@ List<KeyValue> backgroundDiseaseList = [
 ];
 
 const int PAGE_SIZE = 10;
+const int PAGE_SIZE_MAX = 20;

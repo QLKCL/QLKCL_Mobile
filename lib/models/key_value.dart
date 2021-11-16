@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
@@ -67,12 +66,15 @@ Future<List<KeyValue>> fetchWard(data) async {
   return [];
 }
 
-Future<List<KeyValue>> fetchQuarantineWard() async {
+Future<List<KeyValue>> fetchQuarantineWard(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListQuarantine, null);
-  final dataResponse = response['data']['content'];
-  if (dataResponse != null) {
-    return KeyValue.fromJsonList(dataResponse);
+  final response = await api.postHTTP(Constant.getListQuarantine, data);
+
+  if (response['data'] != null) {
+    final dataResponse = response['data']['content'];
+    if (dataResponse != null) {
+      return KeyValue.fromJsonList(dataResponse);
+    }
   }
   return [];
 }
@@ -80,9 +82,12 @@ Future<List<KeyValue>> fetchQuarantineWard() async {
 Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListBuilding, data);
-  final dataResponse = response['data']['content'];
-  if (dataResponse != null) {
-    return KeyValue.fromJsonList(dataResponse);
+
+  if (response['data'] != null) {
+    final dataResponse = response['data']['content'];
+    if (dataResponse != null) {
+      return KeyValue.fromJsonList(dataResponse);
+    }
   }
   return [];
 }
@@ -90,9 +95,12 @@ Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
 Future<List<KeyValue>> fetchQuarantineFloor(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListFloor, data);
-  final dataResponse = response['data']['content'];
-  if (dataResponse != null) {
-    return KeyValue.fromJsonList(dataResponse);
+
+  if (response['data'] != null) {
+    final dataResponse = response['data']['content'];
+    if (dataResponse != null) {
+      return KeyValue.fromJsonList(dataResponse);
+    }
   }
   return [];
 }
@@ -100,9 +108,12 @@ Future<List<KeyValue>> fetchQuarantineFloor(data) async {
 Future<List<KeyValue>> fetchQuarantineRoom(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListRoom, data);
-  final dataResponse = response['data']['content'];
-  if (dataResponse != null) {
-    return KeyValue.fromJsonList(dataResponse);
+
+  if (response['data'] != null) {
+    final dataResponse = response['data']['content'];
+    if (dataResponse != null) {
+      return KeyValue.fromJsonList(dataResponse);
+    }
   }
   return [];
 }
