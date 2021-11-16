@@ -178,3 +178,20 @@ Map<String, dynamic> createQuarantineDataForm({
   return data;
 }
 
+Map<String, dynamic> filterQuarantineDataForm({
+  required String keySearch,
+  String? createAtMin,
+  String? createAtMax,
+  required int page,
+}) {
+  var data = {
+    "search": keySearch,
+    "created_at_min": createAtMin,
+    "created_at_max": createAtMax,
+    "page": page,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  data.removeWhere((key, value) => value == null);
+  return data;
+}
+

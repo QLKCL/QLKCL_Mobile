@@ -154,7 +154,11 @@ Future<dynamic> fetchQuarantine({id}) async {
 Future<dynamic> fetchQuarantineList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListQuarantine, data);
-  return response["data"]['content'];
+  print('Data content');
+  print(response['data']['content']);
+  return response != null && response['data'] != null
+      ? response['data']['content']
+      : null;
 }
 
 Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
