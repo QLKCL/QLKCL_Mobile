@@ -130,3 +130,97 @@ bool isTokenExpired(String _token) {
   isExpired = expiryDate!.compareTo(DateTime.now()) < 0;
   return isExpired;
 }
+
+Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
+  http.Response? response;
+  try {
+    response =
+        await http.post(Uri.parse(Constant.baseUrl + Constant.requestOtp),
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: requestOtpDataForm);
+  } catch (e) {
+    print('Error: $e');
+  }
+
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else if (response.statusCode == 200) {
+    var resp = response.body.toString();
+    final data = jsonDecode(resp);
+    if (data['error_code'] == 0) {
+      return Response(success: true, message: "Gửi OTP thành công!");
+    } else if (data['error_code'] == 400) {
+      return Response(success: false, message: "Email không hợp lệ!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  } else {
+    print("Response code: " + response.statusCode.toString());
+    return Response(success: false, message: "Có lỗi xảy ra!");
+  }
+}
+
+Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
+  http.Response? response;
+  try {
+    response = await http.post(Uri.parse(Constant.baseUrl + Constant.sendOtp),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: sendOtpDataForm);
+  } catch (e) {
+    print('Error: $e');
+  }
+
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else if (response.statusCode == 200) {
+    var resp = response.body.toString();
+    final data = jsonDecode(resp);
+    if (data['error_code'] == 0) {
+      return Response(success: true, data: data["data"]['new_otp']);
+    } else if (data['error_code'] == 400) {
+      return Response(success: false, message: "OTP không hợp lệ!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  } else {
+    print("Response code: " + response.statusCode.toString());
+    return Response(success: false, message: "Có lỗi xảy ra!");
+  }
+}
+
+Future<Response> createPass(Map<String, String> createPassDataForm) async {
+  http.Response? response;
+  print(createPassDataForm);
+  try {
+    response =
+        await http.post(Uri.parse(Constant.baseUrl + Constant.createPass),
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: createPassDataForm);
+  } catch (e) {
+    print('Error: $e');
+  }
+
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else if (response.statusCode == 200) {
+    var resp = response.body.toString();
+    final data = jsonDecode(resp);
+    print(data);
+    if (data['error_code'] == 0) {
+      return Response(
+          success: true,
+          message: "Tạo mật khẩu thành công. Vui lòng đăng nhập lại");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  } else {
+    print("Response code: " + response.statusCode.toString());
+    return Response(success: false, message: "Có lỗi xảy ra!");
+  }
+}

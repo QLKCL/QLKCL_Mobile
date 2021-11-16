@@ -72,15 +72,26 @@ class _InputState extends State<Input> {
           if (widget.controller != null && widget.controller!.text != "")
             setState(() {});
         },
-        validator: (widget.validatorFunction != null
-            ? widget.validatorFunction
-            : (value) {
-                return (widget.required == true &&
-                        value != null &&
-                        value.isEmpty)
-                    ? "Trường này là bắt buộc"
-                    : null;
-              }),
+        validator: (value) {
+          String? Function(String?)? valid = widget.validatorFunction;
+          if (valid == null || valid(value) == null || valid(value) == "") {
+            valid = (value) {
+              return (widget.required == true && value != null && value.isEmpty)
+                  ? "Trường này là bắt buộc"
+                  : null;
+            };
+          }
+          return valid(value);
+        },
+        //  (widget.validatorFunction != null
+        //     ? widget.validatorFunction
+        //     : (value) {
+        //         return (widget.required == true &&
+        //                 value != null &&
+        //                 value.isEmpty)
+        //             ? "Trường này là bắt buộc"
+        //             : null;
+        //       }),
         enabled: widget.enabled,
         controller: widget.controller,
         maxLength: widget.maxLength,
