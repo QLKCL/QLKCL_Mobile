@@ -17,6 +17,8 @@ class Constant {
   static const String getTest = '/api/form/test/get';
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
+  static const String getListQuarantineNoToekn =
+      '/api/quarantine_ward/ward/filter_register';
   static const String getListCountry = '/api/address/country/filter';
   static const String getListCity = '/api/address/city/filter';
   static const String getListDistrict = '/api/address/district/filter';

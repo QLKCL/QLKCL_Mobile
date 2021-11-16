@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
@@ -6,8 +7,10 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/helper/validation.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class Register extends StatefulWidget {
@@ -66,7 +69,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final phoneController = TextEditingController();
   final passController = TextEditingController();
   final secondPassController = TextEditingController();
-  final quarantineWardController = TextEditingController(text: "1");
+  final quarantineWardController = TextEditingController();
   String? error;
 
   @override
@@ -108,12 +111,23 @@ class _RegisterFormState extends State<RegisterForm> {
             validatorFunction: passValidator,
             error: error,
           ),
-          DropdownInput(
+          DropdownInput<KeyValue>(
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
-            itemValue: ['KTX Khu A'],
+            itemAsString: (KeyValue? u) => u!.name,
+            onFind: (String? filter) => fetchQuarantineWardNoToken(),
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            onChanged: (value) {
+              if (value == null) {
+                quarantineWardController.text = "";
+              } else {
+                quarantineWardController.text = value.id.toString();
+              }
+            },
+            mode: Mode.BOTTOM_SHEET,
+            maxHeight: 700,
+            showSearchBox: true,
             required: true,
-            selectedItem: 'KTX Khu A',
           ),
           Container(
             margin: const EdgeInsets.all(16),
@@ -157,6 +171,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 context,
                 MaterialPageRoute(builder: (context) => App(role: role)),
                 (Route<dynamic> route) => false);
+            Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => UpdateMember()),
+            );
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(loginResponse.message)),

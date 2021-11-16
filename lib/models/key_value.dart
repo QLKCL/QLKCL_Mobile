@@ -1,6 +1,7 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
@@ -102,6 +103,28 @@ Future<List<KeyValue>> fetchQuarantineRoom(data) async {
   final dataResponse = response['data']['content'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
+  }
+  return [];
+}
+
+Future<List<KeyValue>> fetchQuarantineWardNoToken() async {
+  http.Response? response;
+  try {
+    response = await http.post(
+      Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToekn),
+      headers: {
+        'Accept': 'application/json',
+      },
+    );
+  } catch (e) {
+    print('Error: $e');
+  }
+  if (response != null) {
+    var resp = response.body.toString();
+    final dataResponse = jsonDecode(resp);
+    if (dataResponse != null) {
+      return KeyValue.fromJsonList(dataResponse['data']);
+    }
   }
   return [];
 }

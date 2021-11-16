@@ -102,7 +102,7 @@ class _UpdateMemberState extends State<UpdateMember>
                       if (quarantineData != null) {
                         quarantineData!.customUserCode = personalData.code;
                         quarantineData!.quarantineWard =
-                            personalData.quarantineWard['id'];
+                            personalData.quarantineWard;
                       }
                       return TabBarView(
                         controller: _tabController,

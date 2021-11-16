@@ -222,21 +222,22 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               Container(
                   margin: const EdgeInsets.all(16),
                   child: Row(children: [
-                    Spacer(),
-                    OutlinedButton(
-                      onPressed: () async {
-                        EasyLoading.show();
-                        final response = await denyMember({
-                          'member_codes':
-                              widget.qurantineData!.customUserCode.toString()
-                        });
-                        EasyLoading.dismiss();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
-                        );
-                      },
-                      child: Text("Từ chối"),
-                    ),
+                    if (widget.mode == Permission.change_status) Spacer(),
+                    if (widget.mode == Permission.change_status)
+                      OutlinedButton(
+                        onPressed: () async {
+                          EasyLoading.show();
+                          final response = await denyMember({
+                            'member_codes':
+                                widget.qurantineData!.customUserCode.toString()
+                          });
+                          EasyLoading.dismiss();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(response.message)),
+                          );
+                        },
+                        child: Text("Từ chối"),
+                      ),
                     Spacer(),
                     ElevatedButton(
                       onPressed: () {

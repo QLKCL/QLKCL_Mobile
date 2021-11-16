@@ -54,15 +54,14 @@ Future<bool> setToken(String accessToken, String refreshToken) async {
   return true;
 }
 
-var headers = {
-  'Accept': 'application/json',
-};
-
 Future<Response> login(Map<String, String> loginDataForm) async {
   http.Response? response;
   try {
     response = await http.post(Uri.parse(Constant.baseUrl + Constant.login),
-        headers: headers, body: loginDataForm);
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: loginDataForm);
   } catch (e) {
     print('Error: $e');
   }
@@ -90,7 +89,10 @@ Future<Response> register(Map<String, dynamic> loginDataForm) async {
   http.Response? response;
   try {
     response = await http.post(Uri.parse(Constant.baseUrl + Constant.register),
-        headers: headers, body: loginDataForm);
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: loginDataForm);
   } catch (e) {
     print('Error: $e');
   }
@@ -100,6 +102,7 @@ Future<Response> register(Map<String, dynamic> loginDataForm) async {
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
+    print(data);
     if (data['error_code'] == 0) {
       return Response(success: true);
     } else if (data['message']['phone_number'] == "Exist") {

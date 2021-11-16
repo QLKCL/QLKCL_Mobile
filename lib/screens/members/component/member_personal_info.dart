@@ -152,8 +152,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 66,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: nationalityList.safeFirstWhere((nationality) =>
-                  nationality.id == nationalityController.text),
+              selectedItem: (widget.personalData?.nationality != null)
+                  ? KeyValue.fromJson(widget.personalData!.nationality)
+                  : KeyValue(id: 1, name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
                   nationalityController.text = "";
@@ -174,9 +175,8 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.personalData?.nationality != null)
-                  ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : KeyValue(id: 1, name: 'Việt Nam'),
+              selectedItem: genderList.safeFirstWhere(
+                  (gender) => gender.id == genderController.text),
               onChanged: (value) {
                 if (value == null) {
                   genderController.text = "";
