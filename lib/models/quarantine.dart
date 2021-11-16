@@ -34,10 +34,10 @@ class Quarantine {
   });
 
   final int id;
-  final Country country;
-  final City city;
-  final City district;
-  final City ward;
+  final dynamic country;
+  final dynamic city;
+  final dynamic district;
+  final dynamic ward;
   final String email;
   final String fullName;
   final String? phoneNumber;
@@ -56,10 +56,10 @@ class Quarantine {
 
   factory Quarantine.fromJson(Map<String, dynamic> json) => Quarantine(
         id: json["id"],
-        country: Country.fromJson(json["country"]),
-        city: City.fromJson(json["city"]),
-        district: City.fromJson(json["district"]),
-        ward: City.fromJson(json["ward"]),
+        country: json["country"],
+        city: json["city"],
+        district: json["district"],
+        ward: json["ward"],
         email: json["email"],
         fullName: json["full_name"],
         phoneNumber: json["phone_number"],
@@ -101,50 +101,6 @@ class Quarantine {
       };
 }
 
-class City {
-  City({
-    required this.id,
-    required this.name,
-  });
-
-  final int id;
-  final String name;
-
-  factory City.fromJson(Map<String, dynamic> json) => City(
-        id: json["id"],
-        name: json["name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-      };
-}
-
-class Country {
-  Country({
-    required this.id,
-    required this.code,
-    required this.name,
-  });
-
-  final int id;
-  final String code;
-  final String name;
-
-  factory Country.fromJson(Map<String, dynamic> json) => Country(
-        id: json["id"],
-        code: json["code"],
-        name: json["name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "code": code,
-        "name": name,
-      };
-}
-
 Future<dynamic> fetchQuarantine({id}) async {
   ApiHelper api = ApiHelper();
   final response = await api.getHTTP(Constant.getQuarantine + '?id=' + id);
@@ -166,7 +122,10 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Tạo khu cách ly thành công!");
+      return Response(
+          success: true,
+          message: "Tạo khu cách ly thành công!",
+          data: response['data']);
     } else if (response['message']['full_name'] != null &&
         response['message']['full_name'] == "Exist") {
       return Response(
@@ -187,4 +146,25 @@ Future<int> fetchMemberInQuarantine({data}) async {
       : null;
 }
 
-
+Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.updateQuarantine, data);
+  print('data');
+  print(response['data']);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          success: true,
+          message: "Cập nhật thông tin thành công!",
+          data: response['data']);
+    } else if (response['message']['full_name'] != null &&
+        response['message']['full_name'] == "Exist") {
+      return Response(
+          success: false, message: "Tên khu cách ly đã được sử dụng!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}

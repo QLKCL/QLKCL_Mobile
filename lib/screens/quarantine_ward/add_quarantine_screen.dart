@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -7,9 +6,6 @@ import './component/quarantine_form.dart';
 
 class NewQuarantine extends StatefulWidget {
   static const String routeName = "/quarantine-list/add";
-  //final VoidCallback addNewQuarantine;
-  //NewQuarantine(this.addNewQuarantine);
-
   @override
   _NewQuarantineState createState() => _NewQuarantineState();
 }

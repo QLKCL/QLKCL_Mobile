@@ -31,6 +31,7 @@ class Constant {
   static const String createPass = '/api/oauth/reset_password/confirm';
   static const String changePass = '/api/oauth/change_password/confirm';
   static const String createQuarantine = '/api/quarantine_ward/ward/create';
+  static const String updateQuarantine = '/api/quarantine_ward/ward/update';
 }
 
 enum Permission {
@@ -83,6 +84,17 @@ List<KeyValue> backgroundDiseaseList = [
   KeyValue(id: 6, name: "Bệnh thận mãn tính"),
   KeyValue(id: 7, name: "Tim mạch"),
   KeyValue(id: 8, name: "Bệnh lý mạch máu não"),
+];
+
+List<KeyValue> quarantineStatusList = [
+  KeyValue(id: "RUNNING", name: "Đang hoạt động"),
+  KeyValue(id: "LOCKED", name: "Khóa"),
+  KeyValue(id: "UNKNOWN", name: "Chưa rõ"),
+];
+
+List<KeyValue> quarantineTypeList = [
+  KeyValue(id: "CONCENTRATE", name: "Tập trung"),
+  KeyValue(id: "PRIVATE", name: "Tư nhân"),
 ];
 
 const int PAGE_SIZE = 10;

@@ -9,7 +9,8 @@ import '../../quarantine_management/building_list_screen.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
-  const QuarantineInfo({Key? key, required this.quarantineInfo})
+  final int? numOfMem;
+  const QuarantineInfo({Key? key, required this.quarantineInfo, this.numOfMem})
       : super(key: key);
 
   @override
@@ -80,16 +81,16 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         widget.quarantineInfo.address != null
                             ? widget.quarantineInfo.address.toString() +
                                 ', ' +
-                                widget.quarantineInfo.ward.name +
+                                widget.quarantineInfo.ward['name'] +
                                 ', ' +
-                                widget.quarantineInfo.district.name +
+                                widget.quarantineInfo.district['name'] +
                                 ', ' +
-                                widget.quarantineInfo.city.name
-                            : widget.quarantineInfo.ward.name +
+                                widget.quarantineInfo.city['name']
+                            : widget.quarantineInfo.ward['name'] +
                                 ', ' +
-                                widget.quarantineInfo.district.name +
+                                widget.quarantineInfo.district['name'] +
                                 ', ' +
-                                widget.quarantineInfo.city.name,
+                                widget.quarantineInfo.city['name'],
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
@@ -191,7 +192,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     ' Thời gian cách ly: ' +
                         widget.quarantineInfo.quarantineTime.toString()),
                 buildInformation(
-                    context, Icons.groups_rounded, ' Đang cách ly: 15'),
+                    context, Icons.groups_rounded, ' Đang cách ly: ' + widget.numOfMem.toString()),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
                     context,
@@ -206,16 +207,16 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       (widget.quarantineInfo.address != null
                           ? widget.quarantineInfo.address! +
                               ', ' +
-                              widget.quarantineInfo.ward.name +
+                              widget.quarantineInfo.ward['name'] +
                               ', ' +
-                              widget.quarantineInfo.district.name +
+                              widget.quarantineInfo.district['name'] +
                               ', ' +
-                              widget.quarantineInfo.city.name
-                          : widget.quarantineInfo.ward.name +
+                              widget.quarantineInfo.city['name']
+                          : widget.quarantineInfo.ward['name'] +
                               ', ' +
-                              widget.quarantineInfo.district.name +
+                              widget.quarantineInfo.district['name'] +
                               ', ' +
-                              widget.quarantineInfo.city.name),
+                              widget.quarantineInfo.city['name']),
                 ),
 
                 buildInformation(

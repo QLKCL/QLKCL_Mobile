@@ -20,28 +20,18 @@ class QuarantineItem extends StatefulWidget {
 
 class _QuarantineItemState extends State<QuarantineItem> {
   late Future<int> numOfMem;
-  void selectQuarantine(BuildContext context) {
+  void selectQuarantine(BuildContext context, int numOfMem) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => QuarantineDetailScreen(
           id: this.widget.id,
+          numOfMem: numOfMem,
+
         ),
       ),
     );
   }
-  // Future<void> getMember() async {
-  //   member =
-  //       (await fetchMemberInQuarantine(data: {'quarantine_ward_id': widget.id}))
-  //           .toString();
-  //   print(member);
-  //   setState(() {});
-  // }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getMember();
-  // }
 
    @override
   void initState() {
@@ -62,7 +52,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
         if (snapshot.hasData)
           return Card(
             child: InkWell(
-              onTap: () => selectQuarantine(context),
+              onTap: () => selectQuarantine(context, snapshot.data),
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
