@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/login/otp_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/data_form.dart';
 
 class ForgetPassword extends StatefulWidget {
   static const String routeName = "/forget_password";
@@ -46,7 +50,7 @@ class ForgetForm extends StatefulWidget {
 
 class _ForgetFormState extends State<ForgetForm> {
   final _formKey = GlobalKey<FormState>();
-  String? email;
+  final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,14 +77,15 @@ class _ForgetFormState extends State<ForgetForm> {
           Input(
             label: "Email",
             hint: "Nhập email",
+            required: true,
             type: TextInputType.emailAddress,
+            controller: emailController,
+            validatorFunction: emailValidator,
           ),
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, Otp.routeName, arguments: email);
-              },
+              onPressed: _submit,
               child: Text(
                 'Tiếp theo',
                 style: TextStyle(color: CustomColors.white),
@@ -90,5 +95,28 @@ class _ForgetFormState extends State<ForgetForm> {
         ],
       ),
     );
+  }
+
+  void _submit() async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (_formKey.currentState!.validate()) {
+      EasyLoading.show();
+      final response =
+          await requestOtp(requestOtpDataForm(email: emailController.text));
+      EasyLoading.dismiss();
+      if (response.success) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Otp(email: emailController.text)));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.message)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.message)),
+        );
+      }
+    }
   }
 }
