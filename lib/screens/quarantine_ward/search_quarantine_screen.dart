@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -18,6 +19,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   TextEditingController keySearch = TextEditingController();
   TextEditingController createAtMinController = TextEditingController();
   TextEditingController createAtMaxController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController districtController = TextEditingController();
 
   bool searched = false;
 
@@ -126,6 +129,17 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
           actions: [
             IconButton(
               onPressed: () {
+                quarantineFilter(
+                  context,
+                  cityController: cityController,
+                  districtController: districtController,
+                  setState: () {
+                    setState(() {
+                      //searched = true;
+                    });
+                    _pagingController.refresh();
+                  },
+                );
               },
               icon: Icon(Icons.filter_list_outlined),
             )
