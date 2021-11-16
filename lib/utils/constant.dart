@@ -29,6 +29,7 @@ class Constant {
   static const String requestOtp = '/api/oauth/reset_password/set';
   static const String sendOtp = '/api/oauth/reset_password/otp';
   static const String createPass = '/api/oauth/reset_password/confirm';
+  static const String changePass = '/api/oauth/change_password/confirm';
 }
 
 enum Permission {

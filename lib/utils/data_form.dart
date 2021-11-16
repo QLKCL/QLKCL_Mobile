@@ -220,3 +220,16 @@ Map<String, String> createPassDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, String> changePassDataForm({
+  required String oldPassword,
+  required String newPassword,
+  required String confirmPassword,
+}) {
+  var data = {
+    'old_password': oldPassword,
+    'new_password': newPassword,
+    'confirm_password': confirmPassword,
+  };
+  return prepareDataForm(data);
+}

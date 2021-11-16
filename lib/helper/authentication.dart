@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
 import 'package:qlkcl/helper/infomation.dart';
+import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -102,7 +103,6 @@ Future<Response> register(Map<String, dynamic> loginDataForm) async {
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
-    print(data);
     if (data['error_code'] == 0) {
       return Response(success: true);
     } else if (data['message']['phone_number'] == "Exist") {
@@ -194,7 +194,6 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
 
 Future<Response> createPass(Map<String, String> createPassDataForm) async {
   http.Response? response;
-  print(createPassDataForm);
   try {
     response =
         await http.post(Uri.parse(Constant.baseUrl + Constant.createPass),
@@ -211,16 +210,40 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
-    print(data);
     if (data['error_code'] == 0) {
       return Response(
           success: true,
-          message: "Tạo mật khẩu thành công. Vui lòng đăng nhập lại");
+          message: "Tạo mật khẩu thành công. Vui lòng đăng nhập lại!");
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   } else {
     print("Response code: " + response.statusCode.toString());
     return Response(success: false, message: "Có lỗi xảy ra!");
+  }
+}
+
+Future<Response> changePass(Map<String, String> changePassDataForm) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.changePass, changePassDataForm);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Đổi mật khẩu thành công!");
+    } else if (response['error_code'] == 400) {
+      if (response['message'] == "Wrong password") {
+        return Response(
+            success: false, message: "Mật khẩu cũ không chính xác!");
+      } else if (response['message'] ==
+          "New password is the same with old password") {
+        return Response(
+            success: false, message: "Mật khẩu mới trùng mật khẩu cũ!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
   }
 }
