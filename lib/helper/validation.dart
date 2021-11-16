@@ -34,3 +34,17 @@ String? Function(String?) emailValidator = (email) {
 
   return null;
 };
+
+String? Function(String?) identityValidator = (number) {
+  String patttern = r'(^[0-9]{9,12}$)';
+  RegExp regExp = new RegExp(patttern);
+  if (number == null || number.isEmpty) {
+    return 'Số CMND/CCCD không được để trống';
+  } else if (number.length < 9 || number.length > 12) {
+    return 'Số CMND/CCCD phải từ 9 - 12 số';
+  } else if (!regExp.hasMatch(number)) {
+    return 'Số CMND/CCCD không hợp lệ';
+  }
+
+  return null;
+};

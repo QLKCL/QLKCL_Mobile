@@ -40,40 +40,79 @@ Future memberFilter(
           DropdownInput<KeyValue>(
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
-            itemValue: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")],
             itemAsString: (KeyValue? u) => u!.name,
+            onFind: (String? filter) => fetchQuarantineWardNoToken(),
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-            selectedItem: [KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG")]
-                .safeFirstWhere(
-                    (gender) => gender.id == quarantineWardController.text),
             onChanged: (value) {
               if (value == null) {
                 quarantineWardController.text = "";
               } else {
-                quarantineWardController.text = value.id;
+                quarantineWardController.text = value.id.toString();
               }
+              quarantineBuildingController.clear();
+              quarantineFloorController.clear();
+              quarantineRoomController.clear();
             },
             showClearButton: true,
           ),
-          DropdownInput(
+          DropdownInput<KeyValue>(
             label: 'Tòa',
             hint: 'Chọn tòa',
-            itemValue: ["1"],
-            selectedItem: quarantineBuildingController.text,
+            itemAsString: (KeyValue? u) => u!.name,
+            onFind: (String? filter) => fetchQuarantineBuilding({
+              'quarantine_ward': quarantineWardController.text,
+              'page_size': PAGE_SIZE_MAX,
+              'search': filter
+            }),
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            onChanged: (value) {
+              if (value == null) {
+                quarantineBuildingController.text = "";
+              } else {
+                quarantineBuildingController.text = value.id.toString();
+              }
+              quarantineFloorController.clear();
+              quarantineRoomController.clear();
+            },
             showClearButton: true,
           ),
-          DropdownInput(
+          DropdownInput<KeyValue>(
             label: 'Tầng',
             hint: 'Chọn tầng',
-            itemValue: ["1"],
-            selectedItem: quarantineFloorController.text,
+            itemAsString: (KeyValue? u) => u!.name,
+            onFind: (String? filter) => fetchQuarantineFloor({
+              'quarantine_building': quarantineBuildingController.text,
+              'page_size': PAGE_SIZE_MAX,
+              'search': filter
+            }),
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            onChanged: (value) {
+              if (value == null) {
+                quarantineFloorController.text = "";
+              } else {
+                quarantineFloorController.text = value.id.toString();
+              }
+              quarantineRoomController.clear();
+            },
             showClearButton: true,
           ),
-          DropdownInput(
+          DropdownInput<KeyValue>(
             label: 'Phòng',
             hint: 'Chọn phòng',
-            itemValue: ["1"],
-            selectedItem: quarantineRoomController.text,
+            itemAsString: (KeyValue? u) => u!.name,
+            onFind: (String? filter) => fetchQuarantineRoom({
+              'quarantine_floor': quarantineFloorController.text,
+              'page_size': PAGE_SIZE_MAX,
+              'search': filter
+            }),
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            onChanged: (value) {
+              if (value == null) {
+                quarantineRoomController.text = "";
+              } else {
+                quarantineRoomController.text = value.id.toString();
+              }
+            },
             showClearButton: true,
           ),
           DateInput(
@@ -122,24 +161,24 @@ Future memberFilter(
               ],
             ),
           ),
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: Row(
-              children: [
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("Về từ vùng dịch"),
-                Spacer(),
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("Nhập cảnh"),
-              ],
-            ),
-          ),
+          // Container(
+          //   margin: const EdgeInsets.only(right: 16),
+          //   child: Row(
+          //     children: [
+          //       Checkbox(
+          //         value: false,
+          //         onChanged: (value) {},
+          //       ),
+          //       Text("Về từ vùng dịch"),
+          //       Spacer(),
+          //       Checkbox(
+          //         value: false,
+          //         onChanged: (value) {},
+          //       ),
+          //       Text("Nhập cảnh"),
+          //     ],
+          //   ),
+          // ),
           Container(
             margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: Row(

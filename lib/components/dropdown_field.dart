@@ -103,6 +103,9 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 ),
               )
             : null,
+        emptyBuilder: (BuildContext context, t) => (Center(
+          child: Text('Không có dữ liệu'),
+        )),
       ),
     );
   }
@@ -215,6 +218,9 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
               )
             : null,
         dropdownBuilder: widget.dropdownBuilder,
+        emptyBuilder: (BuildContext context, t) => (Center(
+          child: Text('Không có dữ liệu'),
+        )),
       ),
     );
   }

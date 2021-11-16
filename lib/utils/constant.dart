@@ -17,6 +17,8 @@ class Constant {
   static const String getTest = '/api/form/test/get';
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String getListQuarantine = '/api/quarantine_ward/ward/filter';
+  static const String getListQuarantineNoToekn =
+      '/api/quarantine_ward/ward/filter_register';
   static const String getListCountry = '/api/address/country/filter';
   static const String getListCity = '/api/address/city/filter';
   static const String getListDistrict = '/api/address/district/filter';
@@ -63,8 +65,8 @@ List<KeyValue> roleList = [
   KeyValue(id: "5", name: "MEMBER"),
 ];
 
-List<KeyValue> quarantineList = [
-  KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG"),
+List<KeyValue> nationalityList = [
+  KeyValue(id: 1, name: 'Việt Nam'),
 ];
 
 List<KeyValue> backgroundDiseaseList = [
@@ -79,3 +81,4 @@ List<KeyValue> backgroundDiseaseList = [
 ];
 
 const int PAGE_SIZE = 10;
+const int PAGE_SIZE_MAX = 20;

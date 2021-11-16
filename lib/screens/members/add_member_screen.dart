@@ -34,14 +34,14 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
         appBar: AppBar(
           title: Text("Thêm người cách ly"),
           centerTitle: true,
-          actions: [
-            if (_tabController.index == 0)
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.qr_code_scanner),
-                tooltip: "Nhập dữ liệu từ CCCD",
-              ),
-          ],
+          // actions: [
+          //   if (_tabController.index == 0)
+          //     IconButton(
+          //       onPressed: () {},
+          //       icon: Icon(Icons.qr_code_scanner),
+          //       tooltip: "Nhập dữ liệu từ CCCD",
+          //     ),
+          // ],
           bottom: TabBar(
             controller: _tabController,
             indicatorColor: CustomColors.white,

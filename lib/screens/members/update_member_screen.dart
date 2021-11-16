@@ -56,14 +56,14 @@ class _UpdateMemberState extends State<UpdateMember>
         appBar: AppBar(
           title: Text("Cập nhật thông tin"),
           centerTitle: true,
-          actions: [
-            if (_tabController.index == 0)
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.qr_code_scanner),
-                tooltip: "Nhập dữ liệu từ CCCD",
-              ),
-          ],
+          // actions: [
+          //   if (_tabController.index == 0)
+          //     IconButton(
+          //       onPressed: () {},
+          //       icon: Icon(Icons.qr_code_scanner),
+          //       tooltip: "Nhập dữ liệu từ CCCD",
+          //     ),
+          // ],
           bottom: TabBar(
             controller: _tabController,
             indicatorColor: CustomColors.white,
@@ -102,7 +102,7 @@ class _UpdateMemberState extends State<UpdateMember>
                       if (quarantineData != null) {
                         quarantineData!.customUserCode = personalData.code;
                         quarantineData!.quarantineWard =
-                            personalData.quarantineWard['id'];
+                            personalData.quarantineWard;
                       }
                       return TabBarView(
                         controller: _tabController,
