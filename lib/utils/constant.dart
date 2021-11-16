@@ -26,6 +26,10 @@ class Constant {
   static const String getListBuilding = '/api/quarantine_ward/building/filter';
   static const String getListFloor = '/api/quarantine_ward/floor/filter';
   static const String getListRoom = '/api/quarantine_ward/room/filter';
+  static const String requestOtp = '/api/oauth/reset_password/set';
+  static const String sendOtp = '/api/oauth/reset_password/otp';
+  static const String createPass = '/api/oauth/reset_password/confirm';
+  static const String changePass = '/api/oauth/change_password/confirm';
   static const String createQuarantine = '/api/quarantine_ward/ward/create';
 }
 

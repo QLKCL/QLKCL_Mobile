@@ -186,6 +186,53 @@ Map<String, dynamic> filterTestDataForm({
   return prepareDataForm(data);
 }
 
+Map<String, String> requestOtpDataForm({
+  required String email,
+}) {
+  var data = {
+    "email": email,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, String> sendOtpDataForm({
+  required String email,
+  required String otp,
+}) {
+  var data = {
+    "email": email,
+    'otp': otp,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, String> createPassDataForm({
+  required String email,
+  required String otp,
+  required String newPassword,
+  required String confirmPassword,
+}) {
+  var data = {
+    "email": email,
+    'confirm_otp': otp,
+    'new_password': newPassword,
+    'confirm_password': confirmPassword,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, String> changePassDataForm({
+  required String oldPassword,
+  required String newPassword,
+  required String confirmPassword,
+}) {
+  var data = {
+    'old_password': oldPassword,
+    'new_password': newPassword,
+    'confirm_password': confirmPassword,
+  };
+  return prepareDataForm(data);
+}
 Map<String, dynamic> createQuarantineDataForm({
   required String email,
   required String fullName,
