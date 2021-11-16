@@ -336,3 +336,102 @@ Future testFilter(
     },
   );
 }
+
+
+Future quarantineFilter(
+  BuildContext context, {
+  required TextEditingController cityController,
+  required TextEditingController districtController,
+  //required bool myQuarantine,
+  required void Function()? setState,
+}) {
+  return showBarModalBottomSheet(
+    barrierColor: Colors.black54,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    ),
+    useRootNavigator: true,
+    context: context,
+    builder: (context) {
+      // Using Wrap makes the bottom sheet height the height of the content.
+      // Otherwise, the height will be half the height of the screen.
+      return Wrap(
+        children: <Widget>[
+          ListTile(
+            title: Center(
+              child: Text(
+                'Lọc dữ liệu',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+          ),
+          DropdownInput<KeyValue>(
+            label: 'Tỉnh/thành',
+            hint: 'Chọn tỉnh/thành',
+            itemValue: [KeyValue(id: "1", name: "Thành phố Hà Nội")],
+            itemAsString: (KeyValue? u) => u!.name,
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            selectedItem: [KeyValue(id: "1", name: "Thành phố Hà Nội")]
+                .safeFirstWhere((city) => city.id == cityController.text),
+            onChanged: (value) {
+              if (value == null) {
+                cityController.text = "";
+              } else {
+                cityController.text = value.id;
+              }
+            },
+             showClearButton: true,
+          ),
+          DropdownInput<KeyValue>(
+            label: 'Quận/huyện',
+            hint: 'Chọn quận/huyện',
+            itemValue: [KeyValue(id: "1", name: "Quận Ba Đình")],
+            itemAsString: (KeyValue? u) => u!.name,
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            selectedItem: [KeyValue(id: "1", name: "Quận Ba Đình")]
+                .safeFirstWhere((district) => district.id == districtController.text),
+            onChanged: (value) {
+              if (value == null) {
+                districtController.text = "";
+              } else {
+                districtController.text = value.id;
+              }
+            },
+             showClearButton: true,
+          ),
+          // ListTileTheme(
+          //     contentPadding: EdgeInsets.all(0),
+          //     child: CheckboxListTile(
+          //       title: Text("Khai hộ"),
+          //       controlAffinity: ListTileControlAffinity.leading,
+          //       value: myQuarantine,
+          //       onChanged: (bool? value) {
+          //         setState!(() {
+          //           myQuarantine = value!;
+          //         });
+          //       },
+          //     ),
+          //   ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            child: Row(
+              children: [
+                Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    // Respond to button press
+                    setState!();
+                    Navigator.pop(context);
+                  },
+                  child: Text("Tìm kiếm"),
+                ),
+                Spacer(),
+              ],
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+

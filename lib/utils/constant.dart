@@ -26,6 +26,7 @@ class Constant {
   static const String getListBuilding = '/api/quarantine_ward/building/filter';
   static const String getListFloor = '/api/quarantine_ward/floor/filter';
   static const String getListRoom = '/api/quarantine_ward/room/filter';
+  static const String createQuarantine = '/api/quarantine_ward/ward/create';
 }
 
 enum Permission {
