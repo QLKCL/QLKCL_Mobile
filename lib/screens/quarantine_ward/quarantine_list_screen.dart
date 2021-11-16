@@ -11,12 +11,12 @@ class QuarantineListScreen extends StatefulWidget {
 }
 
 class _QuarantineListScreenState extends State<QuarantineListScreen> {
-  late Future<dynamic> futureQuarantineList;
+  //late Future<dynamic> futureQuarantineList;
 
   @override
   void initState() {
     super.initState();
-    futureQuarantineList = fetchQuarantineList();
+    //futureQuarantineList = fetchQuarantineList();
   }
 
   @override
@@ -74,18 +74,19 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
 
     return Scaffold(
       appBar: appBar,
-      body: FutureBuilder<dynamic>(
-        future: futureQuarantineList,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return QuanrantineList(data: snapshot.data);
-          } else if (snapshot.hasError) {
-            return Text('Snap shot has error');
-          }
+      body: QuanrantineList(),
+      // FutureBuilder<dynamic>(
+      //   future: futureQuarantineList,
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData) {
+      //       return QuanrantineList(data: snapshot.data);
+      //     } else if (snapshot.hasError) {
+      //       return Text('Snap shot has error');
+      //     }
 
-          return Container();
-        },
-      ),
+      //     return Container();
+      //   },
+      // ),
       floatingActionButton: FloatingActionButton(
         heroTag: "quarantine_fab",
         child: Icon(Icons.add),
