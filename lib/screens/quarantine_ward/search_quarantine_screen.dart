@@ -159,7 +159,6 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item['id'].toString(),
                       name: item['full_name'] ?? "",
-                      numberOfMem: 0,
                       manager: item['main_manager']['full_name'] ?? "",
                     ),
                   ),

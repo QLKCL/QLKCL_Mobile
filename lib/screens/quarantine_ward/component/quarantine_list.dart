@@ -77,30 +77,40 @@ class _QuanrantineListState extends State<QuanrantineList> {
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Text('Không có dữ liệu'),
           ),
-          itemBuilder: (context, item, index) => QuarantineItem(
+          itemBuilder: (context, item, index)  =>  QuarantineItem(
             id: item['id'].toString(),
             name: item['full_name'] ?? "",
-            numberOfMem: 0,
+            // numberOfMem: fetchMemberInQuarantine(data: {'quarantine_ward_id': item['id'].toString()}),
             manager: item['main_manager']['full_name'] ?? "",
           ),
         ),
       ),
     );
-    // (widget.data == null || widget.data.isEmpty)
-    //     ? Center(
-    //         child: Text('Không có dữ liệu'),
-    //       )
-    //     : ListView.builder(
-    //         itemBuilder: (ctx, index) {
-    //           return QuarantineItem(
-    //               id: widget.data[index]['id'].toString(),
-    //               name: widget.data[index]['full_name'] ?? "",
-    //               //HOW TO GET NUMBER OF MEMBER.
-    //               numberOfMem: 0,
-    //               manager:
-    //                   widget.data[index]["main_manager"]["full_name"] ?? "");
-    //         },
-    //         itemCount: widget.data.length,
-    //       );
   }
 }
+
+// import 'package:flutter/material.dart';
+// import 'quarantine_item.dart';
+
+// class QuarantineList extends StatelessWidget {
+//   final data;
+
+//   const QuarantineList({Key? key, this.data}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return (data == null || data.isEmpty)
+//         ? Center(
+//             child: Text('Không có dữ liệu'),
+//           )
+//         : ListView.builder(
+//             itemCount: data.length,
+//             itemBuilder: (ctx, index) {
+//               return QuarantineItem(
+//                   id: data[index]['id'].toString(),
+//                   name: data[index]['full_name'] ?? "",
+//                   manager: data[index]['main_manager']["full_name"] ?? "");
+//             },
+//           );
+//   }
+// }
