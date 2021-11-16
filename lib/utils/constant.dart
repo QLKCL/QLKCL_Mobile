@@ -63,8 +63,8 @@ List<KeyValue> roleList = [
   KeyValue(id: "5", name: "MEMBER"),
 ];
 
-List<KeyValue> quarantineList = [
-  KeyValue(id: "1", name: "Ký túc xá khu A ĐHQG"),
+List<KeyValue> nationalityList = [
+  KeyValue(id: 1, name: 'Việt Nam'),
 ];
 
 List<KeyValue> backgroundDiseaseList = [

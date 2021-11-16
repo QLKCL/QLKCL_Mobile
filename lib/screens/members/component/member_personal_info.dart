@@ -88,6 +88,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
       healthInsuranceNumberController.text =
           widget.personalData?.healthInsuranceNumber ?? "";
       passportNumberController.text = widget.personalData?.passportNumber ?? "";
+    } else {
+      nationalityController.text = "VNM";
+      countryController.text = "VNM";
+      genderController.text = "MALE";
     }
 
     return SingleChildScrollView(
@@ -138,13 +142,25 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
                           identityNumberController.text == ""))
                   ? true
                   : false,
+              validatorFunction: identityValidator,
             ),
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Quốc tịch',
               hint: 'Quốc tịch',
               required: widget.mode == Permission.view ? false : true,
-              itemValue: ['Việt Nam', 'Lào', 'Trung Quốc', 'Campuchia'],
-              selectedItem: nationalityController.text,
+              itemValue: nationalityList,
+              itemAsString: (KeyValue? u) => u!.name,
+              maxHeight: 66,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              selectedItem: nationalityList.safeFirstWhere((nationality) =>
+                  nationality.id == nationalityController.text),
+              onChanged: (value) {
+                if (value == null) {
+                  nationalityController.text = "";
+                } else {
+                  nationalityController.text = value.id.toString();
+                }
+              },
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -158,8 +174,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: genderList.safeFirstWhere(
-                  (gender) => gender.id == genderController.text),
+              selectedItem: (widget.personalData?.nationality != null)
+                  ? KeyValue.fromJson(widget.personalData!.nationality)
+                  : KeyValue(id: 1, name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
                   genderController.text = "";
@@ -188,7 +205,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               required: widget.mode == Permission.view ? false : true,
               selectedItem: (widget.personalData?.country != null)
                   ? KeyValue.fromJson(widget.personalData!.country)
-                  : null,
+                  : KeyValue(id: 1, name: 'Việt Nam'),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -204,6 +221,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
             DropdownInput<KeyValue>(
               label: 'Tỉnh/thành',
@@ -227,6 +245,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
             DropdownInput<KeyValue>(
               label: 'Quận/huyện',
@@ -251,6 +270,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
             DropdownInput<KeyValue>(
               label: 'Phường/xã',
@@ -275,6 +295,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
