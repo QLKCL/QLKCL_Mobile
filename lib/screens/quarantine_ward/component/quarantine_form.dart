@@ -9,7 +9,6 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/quarantine.dart';
-import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -220,6 +219,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               hint: 'Email liên lạc',
               required: true,
               controller: emailController,
+              type: TextInputType.emailAddress,
               validatorFunction: emailValidator,
             ),
             Container(
