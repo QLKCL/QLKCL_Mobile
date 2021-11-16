@@ -11,10 +11,10 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
-  final Member? qurantineData;
+  final Member? quarantineData;
   final Permission mode;
   const MemberQuarantineInfo(
-      {Key? key, this.qurantineData, this.mode = Permission.view})
+      {Key? key, this.quarantineData, this.mode = Permission.view})
       : super(key: key);
 
   @override
@@ -41,29 +41,29 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
       });
     } else {
       quarantineRoomController.text =
-          widget.qurantineData?.quarantineRoom != null
-              ? widget.qurantineData!.quarantineRoom['id'].toString()
+          widget.quarantineData?.quarantineRoom != null
+              ? widget.quarantineData!.quarantineRoom['id'].toString()
               : "";
       quarantineFloorController.text =
-          widget.qurantineData?.quarantineFloor != null
-              ? widget.qurantineData!.quarantineFloor['id'].toString()
+          widget.quarantineData?.quarantineFloor != null
+              ? widget.quarantineData!.quarantineFloor['id'].toString()
               : "";
       quarantineBuildingController.text =
-          widget.qurantineData?.quarantineBuilding != null
-              ? widget.qurantineData!.quarantineBuilding['id'].toString()
+          widget.quarantineData?.quarantineBuilding != null
+              ? widget.quarantineData!.quarantineBuilding['id'].toString()
               : "";
       quarantineWardController.text =
-          widget.qurantineData?.quarantineWard != null
-              ? widget.qurantineData!.quarantineWard['id'].toString()
+          widget.quarantineData?.quarantineWard != null
+              ? widget.quarantineData!.quarantineWard['id'].toString()
               : "";
-      labelController.text = widget.qurantineData?.label ?? "";
-      quarantinedAtController.text = widget.qurantineData?.quarantinedAt ?? "";
+      labelController.text = widget.quarantineData?.label ?? "";
+      quarantinedAtController.text = widget.quarantineData?.quarantinedAt ?? "";
       backgroundDiseaseController.text =
-          widget.qurantineData?.backgroundDisease ?? "";
+          widget.quarantineData?.backgroundDisease ?? "";
       otherBackgroundDiseaseController.text =
-          widget.qurantineData?.otherBackgroundDisease ?? "";
-      _isPositiveTestedBefore =
-          widget.qurantineData?.positiveTestedBefore ?? _isPositiveTestedBefore;
+          widget.quarantineData?.otherBackgroundDisease ?? "";
+      _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
+          _isPositiveTestedBefore;
     }
 
     return SingleChildScrollView(
@@ -78,8 +78,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               onFind: (String? filter) => fetchQuarantineWardNoToken(),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.qurantineData?.quarantineWard != null)
-                  ? KeyValue.fromJson(widget.qurantineData!.quarantineWard)
+              selectedItem: (widget.quarantineData?.quarantineWard != null)
+                  ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
                   : null,
               onChanged: (value) {
                 if (value == null) {
@@ -105,8 +105,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'search': filter
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.qurantineData?.quarantineBuilding != null)
-                  ? KeyValue.fromJson(widget.qurantineData!.quarantineBuilding)
+              selectedItem: (widget.quarantineData?.quarantineBuilding != null)
+                  ? KeyValue.fromJson(widget.quarantineData!.quarantineBuilding)
                   : null,
               onChanged: (value) {
                 if (value == null) {
@@ -131,8 +131,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'search': filter
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.qurantineData?.quarantineFloor != null)
-                  ? KeyValue.fromJson(widget.qurantineData!.quarantineFloor)
+              selectedItem: (widget.quarantineData?.quarantineFloor != null)
+                  ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
                   : null,
               onChanged: (value) {
                 if (value == null) {
@@ -156,8 +156,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'search': filter
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.qurantineData?.quarantineFloor != null)
-                  ? KeyValue.fromJson(widget.qurantineData!.quarantineFloor)
+              selectedItem: (widget.quarantineData?.quarantineFloor != null)
+                  ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
                   : null,
               onChanged: (value) {
                 if (value == null) {
@@ -220,6 +220,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,
+              maxHeight: 700,
+              popupTitle: 'Bệnh nền',
             ),
             Input(
               label: 'Bệnh nền khác',
@@ -232,19 +234,21 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                 child: Text("* Thông tin bắt buộc"),
               ),
-            if (widget.mode != Permission.view &&
-                widget.qurantineData?.customUser != null)
+            if (widget.mode != Permission.view)
               Container(
                   margin: const EdgeInsets.all(16),
                   child: Row(children: [
-                    if (widget.mode == Permission.change_status) Spacer(),
-                    if (widget.mode == Permission.change_status)
+                    if (widget.mode == Permission.change_status &&
+                        widget.quarantineData?.customUser != null)
+                      Spacer(),
+                    if (widget.mode == Permission.change_status &&
+                        widget.quarantineData?.customUser != null)
                       OutlinedButton(
                         onPressed: () async {
                           EasyLoading.show();
                           final response = await denyMember({
                             'member_codes':
-                                widget.qurantineData!.customUserCode.toString()
+                                widget.quarantineData!.customUserCode.toString()
                           });
                           EasyLoading.dismiss();
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -275,8 +279,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
       final registerResponse = await updateMember(updateMemberDataForm(
-        code: widget.qurantineData != null
-            ? widget.qurantineData!.customUserCode.toString()
+        code: (widget.quarantineData != null &&
+                widget.quarantineData?.customUser != null)
+            ? widget.quarantineData!.customUserCode.toString()
             : "",
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
@@ -289,7 +294,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
       if (registerResponse.success) {
         if (widget.mode == Permission.change_status) {
           final response = await acceptMember({
-            'member_codes': widget.qurantineData!.customUserCode.toString()
+            'member_codes': widget.quarantineData!.customUserCode.toString()
           });
           EasyLoading.dismiss();
           ScaffoldMessenger.of(context)

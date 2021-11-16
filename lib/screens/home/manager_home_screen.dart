@@ -49,7 +49,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               showBarModalBottomSheet(
                 barrierColor: Colors.black54,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 ),
                 useRootNavigator: true,
                 context: context,
