@@ -24,6 +24,7 @@ class DropdownInput<T> extends StatefulWidget {
   final Future<List<T>> Function(String?)? onFind;
   final String? error;
   final bool Function(T?, T?)? compareFn;
+  final String? popupTitle;
 
   DropdownInput(
       {Key? key,
@@ -45,7 +46,8 @@ class DropdownInput<T> extends StatefulWidget {
       this.onSaved,
       this.onFind,
       this.error,
-      this.compareFn})
+      this.compareFn,
+      this.popupTitle})
       : super(key: key);
 
   @override
@@ -106,6 +108,25 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
         emptyBuilder: (BuildContext context, t) => (Center(
           child: Text('Không có dữ liệu'),
         )),
+        popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
+            ? Container(
+                height: 48,
+                child: Center(
+                  child: Text(
+                    widget.popupTitle!,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              )
+            : null,
+        popupShape: (widget.popupTitle != null && widget.popupTitle != "")
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              )
+            : null,
       ),
     );
   }
@@ -132,6 +153,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String? error;
   final Widget Function(BuildContext, List<T>)? dropdownBuilder;
   final String Function(T?)? itemAsString;
+  final String? popupTitle;
 
   MultiDropdownInput(
       {Key? key,
@@ -154,7 +176,8 @@ class MultiDropdownInput<T> extends StatefulWidget {
       this.error,
       this.dropdownBuilder,
       this.compareFn,
-      this.itemAsString})
+      this.itemAsString,
+      this.popupTitle})
       : super(key: key);
 
   @override
@@ -221,6 +244,25 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         emptyBuilder: (BuildContext context, t) => (Center(
           child: Text('Không có dữ liệu'),
         )),
+        popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
+            ? Container(
+                height: 48,
+                child: Center(
+                  child: Text(
+                    widget.popupTitle!,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              )
+            : null,
+        popupShape: (widget.popupTitle != null && widget.popupTitle != "")
+            ? RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+              )
+            : null,
       ),
     );
   }

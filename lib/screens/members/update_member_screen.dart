@@ -83,7 +83,7 @@ class _UpdateMemberState extends State<UpdateMember>
                     mode: Permission.edit,
                   ),
                   MemberQuarantineInfo(
-                    qurantineData: widget.quarantineData,
+                    quarantineData: widget.quarantineData,
                     mode: Permission.edit,
                   ),
                 ],
@@ -113,7 +113,7 @@ class _UpdateMemberState extends State<UpdateMember>
                             mode: Permission.edit,
                           ),
                           MemberQuarantineInfo(
-                            qurantineData: quarantineData,
+                            quarantineData: quarantineData,
                             mode: Permission.edit,
                           ),
                         ],

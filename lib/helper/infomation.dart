@@ -37,6 +37,11 @@ Future<int> getQuarantineWard() async {
   return infoBox.get('quarantineWard');
 }
 
+Future<String> getQuarantineStatus() async {
+  var infoBox = await Hive.openBox('myInfo');
+  return infoBox.get('status');
+}
+
 Future<void> setInfo() async {
   var infoBox = await Hive.openBox('myInfo');
   ApiHelper api = ApiHelper();
@@ -46,10 +51,9 @@ Future<void> setInfo() async {
   String name = response['data']['custom_user']['full_name'];
   infoBox.put('name', name);
   int quarantineWard = response['data']['custom_user']['quarantine_ward']['id'];
-  // KeyValue quarantineWard = KeyValue(
-  //     id: response['data']['custom_user']['quarantine_ward']['id'],
-  //     name: response['data']['custom_user']['quarantine_ward']['full_name']);
   infoBox.put('quarantineWard', quarantineWard);
   String code = response['data']['custom_user']['code'];
   infoBox.put('code', code);
+  String status = response['data']['custom_user']['status'];
+  infoBox.put('status', status);
 }

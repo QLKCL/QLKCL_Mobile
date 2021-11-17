@@ -100,7 +100,7 @@ class _DetailMemberState extends State<DetailMember>
                       tabController: _tabController,
                     ),
                     MemberQuarantineInfo(
-                      qurantineData: quarantineData,
+                      quarantineData: quarantineData,
                     ),
                   ],
                 );

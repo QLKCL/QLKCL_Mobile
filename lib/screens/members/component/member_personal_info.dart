@@ -222,6 +222,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
               label: 'Tỉnh/thành',
@@ -246,6 +247,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Tỉnh/thành',
             ),
             DropdownInput<KeyValue>(
               label: 'Quận/huyện',
@@ -271,6 +273,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Quận/huyện',
             ),
             DropdownInput<KeyValue>(
               label: 'Phường/xã',
@@ -296,6 +299,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Phường/xã',
             ),
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',

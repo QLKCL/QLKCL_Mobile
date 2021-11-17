@@ -40,7 +40,31 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         title: Text("Trang chủ"),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Giới thiệu'),
+              content: Container(
+                height: 100,
+                child: Wrap(
+                  direction: Axis.vertical, // make sure to set this
+                  spacing: 4, // set your spacing
+                  children: <Widget>[
+                    const Text('Ứng dụng quản lý khu cách ly'),
+                    const Text('Nhóm sinh viên thực hiện: Nhóm TT'),
+                    const Text('Version: 1.0'),
+                    const Text('Email: son.le.lhld@gmail.com'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ),
           icon: Icon(Icons.help_outline),
         ),
         actions: [
@@ -49,7 +73,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               showBarModalBottomSheet(
                 barrierColor: Colors.black54,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 ),
                 useRootNavigator: true,
                 context: context,
