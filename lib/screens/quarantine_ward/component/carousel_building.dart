@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/building_list_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/component/quarantine_list.dart';
 import './building_item.dart';
 
 class CarouselBuilding extends StatelessWidget {
+  final Quarantine? currentQuarantine;
   final data;
-  const CarouselBuilding({Key? key, this.data}) : super(key: key);
+  const CarouselBuilding({Key? key, this.data, this.currentQuarantine}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +62,11 @@ class CarouselBuilding extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context, BuildingListScreen.routeName);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    BuildingListScreen(currentQuarrantine: currentQuarantine)));
                       },
                       child: Text('Xem tất cả'),
                       style: ButtonStyle(
@@ -81,10 +87,10 @@ class CarouselBuilding extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) => Card(
                     child: Container(
                       child: BuildingItem(
-                        buildingName: 'Tòa ' + data[index]['name'],
+                        buildingName:  data[index]['name'],
                         maxMem: data[index]['total_capacity'] != null
                             ? data[index]['total_capacity']
-                            : null,
+                            : 0,
                         currentMem: data[index]['num_current_member'],
                       ),
                     ),

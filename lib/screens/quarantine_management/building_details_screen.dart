@@ -6,7 +6,8 @@ import '../../components/cards.dart';
 import './add_floor_screen.dart';
 
 class BuildingDetailsScreen extends StatefulWidget {
-  const BuildingDetailsScreen({Key? key}) : super(key: key);
+  final int? id;
+  const BuildingDetailsScreen({Key? key, this.id}) : super(key: key);
   static const routeName = '/building-details';
   @override
   _BuildingDetailsScreen createState() => _BuildingDetailsScreen();
@@ -15,6 +16,8 @@ class BuildingDetailsScreen extends StatefulWidget {
 class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    print(widget.id);
+
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
@@ -63,7 +66,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                               FloorDetailsScreen.routeName,
                             );
                           },
-                          id: '1',
+                          id: 1,
                           name: 'Tầng ' + (index + 1).toString(),
                           numOfMem: 15,
                           maxMem: 300,
@@ -78,7 +81,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                           FloorDetailsScreen.routeName,
                         );
                       },
-                      id: '1',
+                      id: 1,
                       name: 'Tầng ' + (index + 1).toString(),
                       numOfMem: 15,
                       maxMem: 300,

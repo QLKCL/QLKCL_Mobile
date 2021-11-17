@@ -483,7 +483,7 @@ class _MemberCardState extends State<MemberCard> {
 // Building,room card
 class QuarantineRelatedCard extends StatelessWidget {
   final VoidCallback onTap;
-  final String id;
+  final int id;
   final String name;
   final int numOfMem;
   final int maxMem;

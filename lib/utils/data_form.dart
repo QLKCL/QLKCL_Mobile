@@ -320,3 +320,15 @@ Map<String, dynamic> filterQuarantineDataForm({
   data.removeWhere((key, value) => value == null);
   return data;
 }
+
+Map<String, dynamic> createBuildingDataForm({
+  required String name,
+  required int quarantineWard,
+}) {
+  var data = {
+    "name": name,
+    "quarantine_ward": quarantineWard,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}

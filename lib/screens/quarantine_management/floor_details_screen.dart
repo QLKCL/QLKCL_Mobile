@@ -64,7 +64,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                               RoomDetailsScreen.routeName,
                             );
                           },
-                          id: '1',
+                          id: 1,
                           name: 'Phòng ' + '30' + (index + 1).toString(),
                           numOfMem: 15,
                           maxMem: 300,
@@ -79,7 +79,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                           RoomDetailsScreen.routeName,
                         );
                       },
-                      id: '1',
+                      id: 1,
                       name: 'Phòng ' + '30' + (index + 1).toString(),
                       numOfMem: 15,
                       maxMem: 300,

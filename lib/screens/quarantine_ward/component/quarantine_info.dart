@@ -6,7 +6,6 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'carousel.dart';
 import 'carousel_building.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../quarantine_management/building_list_screen.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
@@ -163,7 +162,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
-                return CarouselBuilding(data: snapshot.data);
+                return CarouselBuilding(data: snapshot.data, currentQuarantine: widget.quarantineInfo,);
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }

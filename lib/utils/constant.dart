@@ -32,6 +32,10 @@ class Constant {
   static const String changePass = '/api/oauth/change_password/confirm';
   static const String createQuarantine = '/api/quarantine_ward/ward/create';
   static const String updateQuarantine = '/api/quarantine_ward/ward/update';
+  static const String getBuilding = '/api/quarantine_ward/building/get';
+  static const String createBuilding = '/api/quarantine_ward/building/create';
+  static const String updateBuilding = '/api/quarantine_ward/building/update';
+  static const String deleteBuilding = '/api/quarantine_ward/building/delete';
 }
 
 enum Permission {
