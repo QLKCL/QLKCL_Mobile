@@ -36,6 +36,10 @@ class Constant {
   static const String createBuilding = '/api/quarantine_ward/building/create';
   static const String updateBuilding = '/api/quarantine_ward/building/update';
   static const String deleteBuilding = '/api/quarantine_ward/building/delete';
+  static const String getFloor = '/api/quarantine_ward/floor/get';
+  static const String createFloor = '/api/quarantine_ward/floor/create';
+  static const String updateFloor = '/api/quarantine_ward/floor/update';
+  static const String deleteFloor = '/api/quarantine_ward/floor/delete';
 }
 
 enum Permission {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
-import 'package:qlkcl/screens/quarantine_management/component/quarantine_related_list.dart';
+import 'package:qlkcl/screens/quarantine_management/component/bulding_list.dart';
 import 'component/general_info.dart';
 
 class BuildingListScreen extends StatefulWidget {
@@ -63,7 +63,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                               appBar.preferredSize.height -
                               MediaQuery.of(context).padding.top) *
                           0.75,
-                      child: QuarantineRelatedList(data: snapshot.data),
+                      child: BuildingList(data: snapshot.data, currentQuarantine: widget.currentQuarrantine!),
                     ),
                   ],
                 );

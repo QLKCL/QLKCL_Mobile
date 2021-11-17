@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/building_list_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/quarantine_list.dart';
@@ -12,7 +13,6 @@ class CarouselBuilding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(data);
     return (data == null || data.isEmpty)
         ? Column(
             children: [
@@ -87,6 +87,8 @@ class CarouselBuilding extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) => Card(
                     child: Container(
                       child: BuildingItem(
+                        currentQuarantine: currentQuarantine!,
+                        currentBuilding: Building.fromJson(data[index]),
                         buildingName:  data[index]['name'],
                         maxMem: data[index]['total_capacity'] != null
                             ? data[index]['total_capacity']

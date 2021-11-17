@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
-
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/quarantine.dart';
 import 'component/general_info_building.dart';
 
 class AddFloorScreen extends StatefulWidget {
   static const String routeName = "/add-floor";
+  final Building? currentBuilding;
+  final Quarantine? currentQuarantine;
 
-  const AddFloorScreen({Key? key}) : super(key: key);
+  const AddFloorScreen({
+    Key? key,
+    this.currentBuilding,
+    this.currentQuarantine,
+  }) : super(key: key);
 
   @override
   _AddFloorScreenState createState() => _AddFloorScreenState();
@@ -51,8 +58,11 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.25,
-              child:
-                  GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
+              child: GeneralInfoBuilding(
+                currentQuarantine: widget.currentQuarantine!,
+                currentBuilding: widget.currentBuilding!,
+                numberOfFloor: 0,
+              ),
             ),
             Container(
               height: (MediaQuery.of(context).size.height -

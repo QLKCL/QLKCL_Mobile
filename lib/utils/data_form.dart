@@ -332,3 +332,17 @@ Map<String, dynamic> createBuildingDataForm({
   data.removeWhere((key, value) => key == "" || value == "");
   return data;
 }
+
+Map<String, dynamic> updateBuildingDataForm({
+  String? name,
+  int? quarantineWard,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_ward": quarantineWard,
+    "name": name,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}

@@ -17,30 +17,30 @@ class Building {
         required this.id,
         required this.name,
         required this.quarantineWard,
-        required this.numCurrentMember,
-        this.totalCapacity,
+        required this.currentMem,
+        this.capacity,
     });
 
     final int id;
     final String name;
-    final int quarantineWard;
-    final int numCurrentMember;
-    final int? totalCapacity;
+    final dynamic quarantineWard;
+    final int currentMem;
+    final int? capacity;
 
     factory Building.fromJson(Map<String, dynamic> json) => Building(
         id: json["id"],
         name: json["name"],
         quarantineWard: json["quarantine_ward"],
-        numCurrentMember: json["num_current_member"],
-        totalCapacity: json["total_capacity"],
+        currentMem: json["num_current_member"],
+        capacity: json["total_capacity"],
     );
 
     Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "quarantine_ward": quarantineWard,
-        "num_current_member": numCurrentMember,
-        "total_capacity": totalCapacity,
+        "num_current_member": currentMem,
+        "total_capacity": capacity,
     };
 }
 
@@ -51,7 +51,6 @@ Future<dynamic> fetchBuilding({id}) async {
 }
 
 //fetchBuildingList is in quarantine.dart
-
 Future<dynamic> createBuilding(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createBuilding, data);
@@ -66,6 +65,23 @@ Future<dynamic> createBuilding(Map<String, dynamic> data) async {
     } else {
        print(response['message']);
       // return Response(success: false, message: jsonEncode(response['message']));
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> updateBuilding(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.updateBuilding, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          success: true,
+          message: "Cập nhật thông tin thành công!",
+          data: response['data']);
+    } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }

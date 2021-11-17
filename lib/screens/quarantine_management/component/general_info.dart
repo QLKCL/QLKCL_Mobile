@@ -7,7 +7,6 @@ import 'package:qlkcl/models/quarantine.dart';
 
 class GeneralInfo extends StatelessWidget {
   final Quarantine currentQuarantine;
-
   final int numOfBuilding;
 
   const GeneralInfo({
@@ -91,7 +90,7 @@ class GeneralInfo extends StatelessWidget {
                             '${currentQuarantine.currentMem}' +
                                 (currentQuarantine.capacity != null
                                     ? '/${currentQuarantine.capacity}'
-                                    : '0'),
+                                    : '/0'),
                             style: const TextStyle(
                               fontSize: 16,
                             ),

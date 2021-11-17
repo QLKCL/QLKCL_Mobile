@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
 
-class QuarantineRelatedList extends StatelessWidget {
+class BuildingList extends StatelessWidget {
+  final Quarantine currentQuarantine;
   final data;
-  const QuarantineRelatedList({Key? key, this.data}) : super(key: key);
+  const BuildingList({Key? key, this.data, required this.currentQuarantine})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('data ở bulding_list');
     print(data);
     return (data == null || data.isEmpty)
         ? Center(
@@ -23,10 +28,14 @@ class QuarantineRelatedList extends StatelessWidget {
                     QuarantineRelatedCard(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BuildingDetailsScreen(
-                                    id: data[index]['id'])));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BuildingDetailsScreen(
+                              currentQuarantine: currentQuarantine,
+                              currentBuilding: Building.fromJson(data[index]),
+                            ),
+                          ),
+                        );
                       },
                       id: data[index]['id'],
                       name: data[index]['name'],
@@ -41,8 +50,14 @@ class QuarantineRelatedList extends StatelessWidget {
               } else
                 return QuarantineRelatedCard(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true).pushNamed(
-                      BuildingDetailsScreen.routeName,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BuildingDetailsScreen(
+                          currentQuarantine: currentQuarantine,
+                          currentBuilding: Building.fromJson(data[index]),
+                        ),
+                      ),
                     );
                   },
                   id: data[index]['id'],

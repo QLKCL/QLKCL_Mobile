@@ -1,31 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/floor.dart';
+import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/screens/quarantine_management/component/floor_list.dart';
 import 'component/general_info_building.dart';
-import 'package:qlkcl/screens/quarantine_management/floor_details_screen.dart';
 import './edit_building_screen.dart';
-import '../../components/cards.dart';
 import './add_floor_screen.dart';
 
 class BuildingDetailsScreen extends StatefulWidget {
-  final int? id;
-  const BuildingDetailsScreen({Key? key, this.id}) : super(key: key);
+  final Building? currentBuilding;
+  final Quarantine? currentQuarantine;
+
+  // final int? id;
+
+  const BuildingDetailsScreen({
+    Key? key,
+    this.currentBuilding,
+    this.currentQuarantine,
+  }) : super(key: key);
   static const routeName = '/building-details';
   @override
   _BuildingDetailsScreen createState() => _BuildingDetailsScreen();
 }
 
 class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
+  late Future<dynamic> futureFloorList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFloorList =
+        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.id);
-
+    print('currentBuilding id ở building_details');
+    print(widget.currentBuilding!.id);
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushNamed(
-              EditBuildingScreen.routeName,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditBuildingScreen(
+                  currentBuilding: widget.currentBuilding,
+                  currentQuarantine: widget.currentQuarantine,
+                ),
+              ),
             );
           },
           icon: Icon(Icons.edit),
@@ -35,68 +67,52 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.25,
-              child:
-                  GeneralInfoBuilding('Ký túc xá khu A', 'Tòa AH', 8, 15, 300),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.75,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemBuilder: (ctx, index) {
-                  //last item
-                  if (index == 8) {
-                    return Column(
-                      children: [
-                        QuarantineRelatedCard(
-                          onTap: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed(
-                              FloorDetailsScreen.routeName,
-                            );
-                          },
-                          id: 1,
-                          name: 'Tầng ' + (index + 1).toString(),
-                          numOfMem: 15,
-                          maxMem: 300,
-                        ),
-                        SizedBox(height: 70),
-                      ],
-                    );
-                  } else
-                    return QuarantineRelatedCard(
-                      onTap: () {
-                        Navigator.of(context, rootNavigator: true).pushNamed(
-                          FloorDetailsScreen.routeName,
-                        );
-                      },
-                      id: 1,
-                      name: 'Tầng ' + (index + 1).toString(),
-                      numOfMem: 15,
-                      maxMem: 300,
-                    );
-                },
-                itemCount: 9,
-              ),
-            ),
-          ],
-        ),
+        child: FutureBuilder<dynamic>(
+            future: futureFloorList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                EasyLoading.dismiss();
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.25,
+                      child: GeneralInfoBuilding(
+                        currentQuarantine: widget.currentQuarantine!,
+                        currentBuilding: widget.currentBuilding!,
+                        numberOfFloor: snapshot.data.length,
+                      ),
+                    ),
+                    Container(
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.75,
+                      child: FloorList(data: snapshot.data,),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('Snapshot has error');
+              }
+              EasyLoading.show();
+              return Container();
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context, rootNavigator: true).pushNamed(
-            AddFloorScreen.routeName,
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddFloorScreen(
+                currentBuilding: widget.currentBuilding,
+                currentQuarantine: widget.currentQuarantine,
+              ),
+            ),
           );
         },
         //tooltip: 'Increment',

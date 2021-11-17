@@ -5,17 +5,14 @@ import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
-import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class AddBuildingScreen extends StatefulWidget {
   final Quarantine? currentQuarrantine;
-  final Permission mode;
 
   const AddBuildingScreen({
     Key? key,
     this.currentQuarrantine,
-    this.mode = Permission.add,
   }) : super(key: key);
 
   static const routeName = '/add-building';
@@ -48,16 +45,14 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      if (widget.mode == Permission.add) {
-        final registerResponse = await createBuilding(createBuildingDataForm(
-          name: nameController.text,
-          quarantineWard: widget.currentQuarrantine!.id,
-        ));
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
-        );
-      }
+      final registerResponse = await createBuilding(createBuildingDataForm(
+        name: nameController.text,
+        quarantineWard: widget.currentQuarrantine!.id,
+      ));
+      EasyLoading.dismiss();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(registerResponse.message)),
+      );
     }
   }
 
