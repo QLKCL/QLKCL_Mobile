@@ -346,3 +346,48 @@ Map<String, dynamic> updateBuildingDataForm({
   data.removeWhere((key, value) => key == "" || value == "");
   return data;
 }
+
+Map<String, dynamic> updateFloorDataForm({
+  String? name,
+  int? quarantineBuilding,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_building": quarantineBuilding,
+    "name": name,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> updateRoomDataForm({
+  String? name,
+  int? quarantineFloor,
+  int? capacity,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_floor": quarantineFloor,
+    "name": name,
+    "capacity": capacity,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> filterMemberByRoomDataForm({
+  int? quarantineWard,
+  int? quarantineBuilding,
+  int? quarantineFloor,
+  int? quarantineRoom,
+}) {
+  var data = {
+    "quarantine_ward_id": quarantineWard,
+    "quarantine_building_id": quarantineBuilding,
+    "quarantine_floor_id": quarantineFloor,
+    "quarantine_room_id": quarantineRoom,
+  };
+  return prepareDataForm(data);
+}

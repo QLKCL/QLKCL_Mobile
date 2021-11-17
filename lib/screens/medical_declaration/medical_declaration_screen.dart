@@ -193,10 +193,6 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
 }
 
 Widget _customDropDown(BuildContext context, List<String?> selectedItems) {
-  // if (selectedItems.isEmpty) {
-  //   return Container();
-  // }
-
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(

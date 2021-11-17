@@ -40,6 +40,10 @@ class Constant {
   static const String createFloor = '/api/quarantine_ward/floor/create';
   static const String updateFloor = '/api/quarantine_ward/floor/update';
   static const String deleteFloor = '/api/quarantine_ward/floor/delete';
+  static const String getRoom = '/api/quarantine_ward/room/get';
+  static const String createRoom = '/api/quarantine_ward/room/create';
+  static const String updateRoom = '/api/quarantine_ward/room/update';
+  static const String deleteRoom = '/api/quarantine_ward/room/delete';
 }
 
 enum Permission {

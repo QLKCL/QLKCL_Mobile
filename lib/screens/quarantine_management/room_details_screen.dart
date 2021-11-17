@@ -1,17 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/floor.dart';
+import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/models/room.dart';
+import 'package:qlkcl/screens/quarantine_management/component/member_in_room.dart';
+import 'package:qlkcl/utils/data_form.dart';
 import 'component/general_info_room.dart';
 import '../../components/cards.dart';
 import './edit_room_screen.dart';
 
-
 class RoomDetailsScreen extends StatefulWidget {
-  const RoomDetailsScreen({Key? key}) : super(key: key);
+  final Building? currentBuilding;
+  final Quarantine? currentQuarantine;
+  final Floor? currentFloor;
+  final Room? currentRoom;
+
+  const RoomDetailsScreen(
+      {Key? key,
+      this.currentBuilding,
+      this.currentFloor,
+      this.currentQuarantine,
+      this.currentRoom})
+      : super(key: key);
   static const routeName = '/room-details';
   @override
   _RoomDetailsScreen createState() => _RoomDetailsScreen();
 }
 
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
+  late Future<dynamic> futureMemberList;
+
+  @override
+  void initState() {
+    super.initState();
+    futureMemberList = fetchMemberList(
+      data: filterMemberByRoomDataForm(
+        quarantineWard: widget.currentQuarantine!.id,
+        quarantineBuilding: widget.currentBuilding!.id,
+        quarantineFloor: widget.currentFloor!.id,
+        quarantineRoom: widget.currentFloor!.id,
+      ),
+    );
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
@@ -20,9 +59,17 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).pushNamed(
-              EditRoomScreen.routeName,
-            );
+             Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditRoomScreen(
+                    currentBuilding: widget.currentBuilding,
+                    currentQuarantine: widget.currentQuarantine,
+                    currentFloor: widget.currentFloor,
+                    currentRoom: widget.currentRoom,
+                  ),
+                ),
+              );
           },
           icon: Icon(Icons.edit),
         ),
@@ -31,59 +78,43 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.25,
-              child: GeneralInfoRoom(
-                  'Ký túc xá khu A', 'Tòa AH', 'Tầng 3', 'Phòng 307', 3, 4),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.75,
-              //margin: const EdgeInsets.symmetric(vertical: 8),
-              child: ListView.builder(
-                itemBuilder: (ctx, index) {
-                  //last item
-                  if (index == 8) {
-                    return Column(
-                      children: [
-                        MemberInRoomCard(
-                          onTap: () {},
-                          id: '1',
-                          name: 'Nguyễn Văn Hải',
-                          gender: 'male',
-                          birthday: '18/04/1997',
-                          lastTestResult: 'Âm tính',
-                          lastTestTime: '22/10/2021',
-                        ),
-                        SizedBox(height: 70),
-                      ],
-                    );
-                  } else
-                    return MemberInRoomCard(
-                      onTap: () {},
-                      id: '1',
-                      name: 'Nguyễn Văn Hải',
-                      gender: 'male',
-                      birthday: '18/04/1997',
-                      lastTestResult: 'Âm tính',
-                      lastTestTime: '22/10/2021',
-                    );
-                },
-                itemCount: 9,
-              ),
-            ),
-          ],
-        ),
+        child: FutureBuilder<dynamic>(
+            future: futureMemberList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                EasyLoading.dismiss();
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: GeneralInfoRoom(
+                          currentBuilding: widget.currentBuilding!,
+                          currentFloor: widget.currentFloor!,
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentRoom: widget.currentRoom!,
+                        )),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: (MediaQuery.of(context).size.height -
+                              appBar.preferredSize.height -
+                              MediaQuery.of(context).padding.top) *
+                          0.75,
+                      //margin: const EdgeInsets.symmetric(vertical: 8),
+                      child: MemberRoom(data: snapshot.data),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('Snapshot has error');
+              }
+              EasyLoading.show();
+              return Container();
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},

@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/floor.dart';
+import 'package:qlkcl/models/quarantine.dart';
 
 class GeneralInfoFloor extends StatelessWidget {
-  final String quarantineName;
-  final String buildingName;
-  final String floorName;
+  final Quarantine currentQuarantine;
+  final Building currentBuilding;
+  final Floor currentFloor;
+
   final int numOfRoom;
-  final int numOfMem;
-  final int maxMem;
-  GeneralInfoFloor(this.quarantineName, this.buildingName, this.floorName,
-      this.numOfRoom, this.numOfMem, this.maxMem);
+
+  GeneralInfoFloor({
+    required this.numOfRoom,
+    required this.currentQuarantine,
+    required this.currentBuilding,
+        required this.currentFloor,
+
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class GeneralInfoFloor extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        quarantineName,
+                        currentQuarantine.fullName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -55,7 +63,7 @@ class GeneralInfoFloor extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        buildingName + ' - ' + floorName,
+                        currentBuilding.name + ' - ' + currentFloor.name ,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -95,7 +103,7 @@ class GeneralInfoFloor extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$numOfMem' '/$maxMem',
+                            '${currentFloor.numCurrentMember}/${currentFloor.totalCapacity}',
                             style: const TextStyle(
                               fontSize: 16,
                             ),

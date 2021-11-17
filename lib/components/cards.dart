@@ -544,30 +544,29 @@ class QuarantineRelatedCard extends StatelessWidget {
 
 class MemberInRoomCard extends StatelessWidget {
   final VoidCallback onTap;
-  final String id;
   final String name;
   final String gender;
   final String birthday;
-  final String lastTestResult;
-  final String lastTestTime;
+  final bool? lastTestResult;
+  final String? lastTestTime;
   final String healthStatus;
-  const MemberInRoomCard({
-    required this.onTap,
-    required this.id,
-    required this.name,
-    required this.gender,
-    required this.birthday,
-    required this.lastTestResult,
-    required this.lastTestTime,
-    this.healthStatus = "NORMAL",
-  });
+  const MemberInRoomCard(
+      {required this.onTap,
+      required this.name,
+      required this.gender,
+      required this.birthday,
+      this.lastTestResult,
+      this.lastTestTime,
+      required this.healthStatus});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Container(
         child: ListTile(
-          onTap: () {},
+          onTap: () {
+            onTap();
+          },
           title: Container(
             padding: EdgeInsets.only(top: 8),
             child: Text.rich(
@@ -588,10 +587,12 @@ class MemberInRoomCard extends StatelessWidget {
             ),
           ),
           subtitle: Container(
-            padding: EdgeInsets.only(bottom: 8),
-            child: Wrap(
-              direction: Axis.vertical, // make sure to set this
-              spacing: 4, // set your spacing
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              // direction: Axis.vertical, // make sure to set this
+              // spacing: 4, // set your spacing
               children: [
                 Text(
                   birthday,
@@ -609,7 +610,13 @@ class MemberInRoomCard extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: " " + lastTestResult + " (" + lastTestTime + ")",
+                        text: " " +
+                            (lastTestResult != null
+                                ? (lastTestResult! ? "Dương tính" : "Âm tính")
+                                : "Chưa có kết quả xét nghiệm") +
+                            (lastTestTime != null
+                                ? " (" + lastTestTime! + ")"
+                                : ""),
                       )
                     ],
                   ),
@@ -648,16 +655,21 @@ class MemberInRoomCard extends StatelessWidget {
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+            children: [
               GestureDetector(
                 child: Icon(
                   Icons.more_vert,
                 ),
                 onTap: () {},
-              ),
+              )
             ],
           ),
         ),
+        // decoration: _selected
+        //     ? new BoxDecoration(
+        //         color: Colors.black38,
+        //         border: new Border.all(color: Colors.black))
+        //     : new BoxDecoration(),
       ),
     );
   }

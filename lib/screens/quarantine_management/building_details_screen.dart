@@ -92,7 +92,11 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                               appBar.preferredSize.height -
                               MediaQuery.of(context).padding.top) *
                           0.75,
-                      child: FloorList(data: snapshot.data,),
+                      child: FloorList(
+                        data: snapshot.data,
+                        currentBuilding: widget.currentBuilding!,
+                        currentQuarantine: widget.currentQuarantine!,
+                      ),
                     ),
                   ],
                 );

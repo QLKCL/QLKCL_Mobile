@@ -27,7 +27,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     numOfFloor =
         fetchNumOfFloor({'quarantine_building': widget.currentBuilding!.id});
@@ -96,7 +95,8 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                                 MediaQuery.of(context).padding.top) *
                             0.6,
                         child: Input(
-                          label: 'Tên tòa',
+                          label: 'Tên tòa mới',
+                          hint: 'Tên tòa mới',
                           controller: nameController,
                         ),
                       ),
