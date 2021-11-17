@@ -9,8 +9,7 @@ import '../../quarantine_management/building_list_screen.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
-  final int? numOfMem;
-  const QuarantineInfo({Key? key, required this.quarantineInfo, this.numOfMem})
+  const QuarantineInfo({Key? key, required this.quarantineInfo})
       : super(key: key);
 
   @override
@@ -192,7 +191,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     ' Thời gian cách ly: ' +
                         widget.quarantineInfo.quarantineTime.toString()),
                 buildInformation(
-                    context, Icons.groups_rounded, ' Đang cách ly: ' + widget.numOfMem.toString()),
+                    context,
+                    Icons.groups_rounded,
+                    ' Đang cách ly: ' +
+                        widget.quarantineInfo.currentMem.toString()),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
                     context,

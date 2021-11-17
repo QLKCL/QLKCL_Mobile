@@ -65,7 +65,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   Widget build(BuildContext context) {
-    //print(data);
+    print('1');
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
@@ -80,7 +80,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
           itemBuilder: (context, item, index)  =>  QuarantineItem(
             id: item['id'].toString(),
             name: item['full_name'] ?? "",
-            // numberOfMem: fetchMemberInQuarantine(data: {'quarantine_ward_id': item['id'].toString()}),
+            currentMem: item['num_current_member'],
             manager: item['main_manager']['full_name'] ?? "",
           ),
         ),

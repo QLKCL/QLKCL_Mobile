@@ -7,11 +7,13 @@ class QuarantineItem extends StatefulWidget {
   final String id;
   final String name;
   final String manager;
+  final int currentMem;
 
   const QuarantineItem({
     required this.id,
     required this.name,
     required this.manager,
+    required this. currentMem,
   });
 
   @override
@@ -20,39 +22,22 @@ class QuarantineItem extends StatefulWidget {
 
 class _QuarantineItemState extends State<QuarantineItem> {
   late Future<int> numOfMem;
-  void selectQuarantine(BuildContext context, int numOfMem) {
+  void selectQuarantine(BuildContext context) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
         builder: (context) => QuarantineDetailScreen(
           id: this.widget.id,
-          numOfMem: numOfMem,
-
         ),
       ),
     );
   }
 
 
-   @override
-  void initState() {
-    super.initState();
-    numOfMem = fetchMemberInQuarantine(data: {'quarantine_ward_id': widget.id});
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-      future: numOfMem,
-      builder: (context, snapshot) {
-        if (snapshot.hasData)
-          return Card(
+    return Card(
             child: InkWell(
-              onTap: () => selectQuarantine(context, snapshot.data),
+              onTap: () => selectQuarantine(context),
               child: Padding(
                 padding: EdgeInsets.all(16),
                 child: Row(
@@ -106,7 +91,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " Đang cách ly: " + snapshot.data.toString(),
+                                  text: " Đang cách ly: " +
+                                     widget.currentMem.toString() ,
                                 ),
                               ],
                             ),
@@ -150,11 +136,6 @@ class _QuarantineItemState extends State<QuarantineItem> {
               ),
             ),
           );
-        else if (snapshot.hasError) {
-          return Text('Snapshot has error');
-        }
-        return Container();
-      },
-    );
+  
   }
 }

@@ -160,6 +160,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       id: item['id'].toString(),
                       name: item['full_name'] ?? "",
                       manager: item['main_manager']['full_name'] ?? "",
+                      currentMem: item['num_current_member'],
                     ),
                   ),
                 ),
