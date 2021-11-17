@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -9,14 +10,33 @@ import '../../quarantine_management/building_list_screen.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
-  const QuarantineInfo({Key? key, required this.quarantineInfo})
-      : super(key: key);
+  //final String? id;
+  const QuarantineInfo({
+    Key? key,
+    required this.quarantineInfo,
+  }) : super(key: key);
 
   @override
   _QuarantineInfoState createState() => _QuarantineInfoState();
 }
 
 class _QuarantineInfoState extends State<QuarantineInfo> {
+  late Future<dynamic> futureBuildingList;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.quarantineInfo.id.toString());
+    futureBuildingList =
+        fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
       margin: EdgeInsets.only(bottom: 6),
@@ -163,7 +183,22 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               ],
             ),
           ),
-          CarouselBuilding(),
+          //CarouselBuilding(),
+
+          FutureBuilder<dynamic>(
+            future: futureBuildingList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                EasyLoading.dismiss();
+                return CarouselBuilding(data: snapshot.data);
+              } else if (snapshot.hasError) {
+                return Text('Snapshot has error');
+              }
+              EasyLoading.show();
+              return Container();
+            },
+          ),
+
           //Information
           Container(
             width: MediaQuery.of(context).size.width * 1,

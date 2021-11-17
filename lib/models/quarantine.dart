@@ -56,7 +56,7 @@ class Quarantine {
   final dynamic createdBy;
   final dynamic updatedBy;
   final int currentMem;
-  final int capacity;
+  final int? capacity;
 
   factory Quarantine.fromJson(Map<String, dynamic> json) => Quarantine(
         id: json["id"],
@@ -146,14 +146,6 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
   }
 }
 
-Future<int> fetchMemberInQuarantine({data}) async {
-  ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListMembers, data);
-  return response != null && response['data'] != null
-      ? response['data']['totalRows']
-      : null;
-}
-
 Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateQuarantine, data);
@@ -175,4 +167,12 @@ Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
+}
+
+Future<dynamic> fetchBuildingList(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getListBuilding, data);
+  return response != null && response['data'] != null
+      ? response['data']['content']
+      : null;
 }

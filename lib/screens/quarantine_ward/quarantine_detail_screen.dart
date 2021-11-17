@@ -73,7 +73,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
             EasyLoading.dismiss();
             if (snapshot.hasData) {
               quarantineInfo = Quarantine.fromJson(snapshot.data);
-              return QuarantineInfo(quarantineInfo: quarantineInfo);
+              return QuarantineInfo(quarantineInfo: quarantineInfo, );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }
