@@ -30,7 +30,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
         title: Text("Trang chủ"),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Giới thiệu'),
+              content: Container(
+                height: 100,
+                child: Wrap(
+                  direction: Axis.vertical, // make sure to set this
+                  spacing: 4, // set your spacing
+                  children: <Widget>[
+                    const Text('Ứng dụng quản lý khu cách ly'),
+                    const Text('Nhóm sinh viên thực hiện: Nhóm TT'),
+                    const Text('Version: 1.0'),
+                    const Text('Email: son.le.lhld@gmail.com'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'OK'),
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          ),
           icon: Icon(Icons.help_outline),
         ),
       ),
@@ -50,7 +74,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         ),
                         leading: CircleAvatar(
                             backgroundColor: CustomColors.error,
-                            child: Icon(Icons.notification_important_outlined,color: CustomColors.white,)),
+                            child: Icon(
+                              Icons.notification_important_outlined,
+                              color: CustomColors.white,
+                            )),
                       ),
                     );
                   } else if (snapshot.data == "REFUSED") {
@@ -62,7 +89,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         ),
                         leading: CircleAvatar(
                             backgroundColor: CustomColors.error,
-                            child: Icon(Icons.notification_important_outlined,color: CustomColors.white,)),
+                            child: Icon(
+                              Icons.notification_important_outlined,
+                              color: CustomColors.white,
+                            )),
                       ),
                     );
                   } else if (snapshot.data == "LOCKED") {
@@ -74,7 +104,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         ),
                         leading: CircleAvatar(
                             backgroundColor: CustomColors.error,
-                            child: Icon(Icons.notification_important_outlined,color: CustomColors.white,)),
+                            child: Icon(
+                              Icons.notification_important_outlined,
+                              color: CustomColors.white,
+                            )),
                       ),
                     );
                   }

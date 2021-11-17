@@ -29,7 +29,7 @@ class _AccountState extends State<Account> {
           child: Column(
         children: <Widget>[
           FutureBuilder(
-            future: getName(),
+            future: getCode(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return GenerateQrCode(qrData: snapshot.data);

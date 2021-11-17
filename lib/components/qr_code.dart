@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 //cre: https://pub.dev/packages/qr_flutter
@@ -21,13 +22,21 @@ class GenerateQrCode extends StatelessWidget {
               data: qrData,
               size: 100,
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(8),
-              child: Text(
-                qrData,
-                style: Theme.of(context).textTheme.headline6,
-              ),
+            FutureBuilder(
+              future: getName(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      snapshot.data,
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  );
+                }
+                return Container();
+              },
             ),
           ],
         ),
