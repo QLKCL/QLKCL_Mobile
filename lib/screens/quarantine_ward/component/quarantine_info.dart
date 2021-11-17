@@ -157,33 +157,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               ],
             ),
           ),
-          //Building list
-          Container(
-            margin: EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Danh sách tòa',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, BuildingListScreen.routeName);
-                  },
-                  child: Text('Xem tất cả'),
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(CustomColors.primary),
-                  ),
-                )
-              ],
-            ),
-          ),
-          //CarouselBuilding(),
 
           FutureBuilder<dynamic>(
             future: futureBuildingList,
