@@ -17,8 +17,7 @@ class GeneralInfoFloor extends StatelessWidget {
     required this.numOfRoom,
     required this.currentQuarantine,
     required this.currentBuilding,
-        required this.currentFloor,
-
+    required this.currentFloor,
   });
 
   @override
@@ -63,7 +62,7 @@ class GeneralInfoFloor extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        currentBuilding.name + ' - ' + currentFloor.name ,
+                        currentBuilding.name + ' - ' + currentFloor.name,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -103,7 +102,10 @@ class GeneralInfoFloor extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '${currentFloor.numCurrentMember}/${currentFloor.totalCapacity}',
+                            '${currentFloor.numCurrentMember}/' +
+                                (currentFloor.totalCapacity == null
+                                    ? '0'
+                                    : currentFloor.totalCapacity.toString()),
                             style: const TextStyle(
                               fontSize: 16,
                             ),
