@@ -12,10 +12,21 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
   final Member? quarantineData;
+  final KeyValue? quarantineWard;
+  final KeyValue? quarantineBuilding;
+  final KeyValue? quarantineFloor;
+  final KeyValue? quarantineRoom;
+
   final Permission mode;
-  const MemberQuarantineInfo(
-      {Key? key, this.quarantineData, this.mode = Permission.view})
-      : super(key: key);
+  const MemberQuarantineInfo({
+    Key? key,
+    this.quarantineData,
+    this.mode = Permission.view,
+    this.quarantineWard,
+    this.quarantineBuilding,
+    this.quarantineFloor,
+    this.quarantineRoom,
+  }) : super(key: key);
 
   @override
   _MemberQuarantineInfoState createState() => _MemberQuarantineInfoState();
@@ -36,6 +47,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
   @override
   Widget build(BuildContext context) {
     if (widget.mode == Permission.add) {
+      quarantineRoomController.text = widget.quarantineRoom != null
+          ? widget.quarantineRoom!.id.toString()
+          : "";
+      quarantineFloorController.text = widget.quarantineFloor != null
+          ? widget.quarantineRoom!.id.toString()
+          : "";
+      quarantineBuildingController.text = widget.quarantineBuilding != null
+          ? widget.quarantineRoom!.id.toString()
+          : "";
+      quarantineWardController.text = widget.quarantineWard != null
+          ? widget.quarantineRoom!.id.toString()
+          : "";
+
       getQuarantineWard().then((val) {
         quarantineWardController.text = "$val";
       });
@@ -81,9 +105,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.quarantineData?.quarantineWard != null)
+              selectedItem: widget.quarantineWard ??
+              ((widget.quarantineData?.quarantineWard != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
-                  : null,
+                  : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineWardController.text = "";
@@ -109,9 +134,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.quarantineData?.quarantineBuilding != null)
+              selectedItem: widget.quarantineBuilding ??
+              ((widget.quarantineData?.quarantineBuilding != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineBuilding)
-                  : null,
+                  : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineBuildingController.text = "";
@@ -136,9 +162,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.quarantineData?.quarantineFloor != null)
+              selectedItem: widget.quarantineFloor ??
+              ((widget.quarantineData?.quarantineFloor != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
-                  : null,
+                  : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineFloorController.text = "";
@@ -162,9 +189,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.quarantineData?.quarantineFloor != null)
+              selectedItem: widget.quarantineRoom ??
+              ((widget.quarantineData?.quarantineFloor != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
-                  : null,
+                  : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineRoomController.text = "";

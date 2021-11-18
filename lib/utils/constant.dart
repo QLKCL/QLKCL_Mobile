@@ -47,6 +47,7 @@ class Constant {
   static const String filterMedDecl = '/api/form/medical-declaration/filter';
   static const String getMedDecl = '/api/form/medical-declaration/get';
   static const String createMedDecl = '/api/form/medical-declaration/create';
+  static const String getListNotMem = '/api/user/member/not_member_filter';
 }
 
 enum Permission {

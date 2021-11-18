@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -7,7 +8,18 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddMember extends StatefulWidget {
   static const String routeName = "/add_member";
-  AddMember({Key? key}) : super(key: key);
+  AddMember({
+    Key? key,
+    this.quarantineWard,
+    this.quarantineBuilding,
+    this.quarantineRoom,
+    this.quarantineFloor,
+  }) : super(key: key);
+
+  final KeyValue? quarantineWard;
+  final KeyValue? quarantineBuilding;
+  final KeyValue? quarantineFloor;
+  final KeyValue? quarantineRoom;
 
   @override
   _AddMemberState createState() => _AddMemberState();
@@ -59,6 +71,10 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
               mode: Permission.add,
             ),
             MemberQuarantineInfo(
+              quarantineWard: widget.quarantineWard,
+              quarantineBuilding: widget.quarantineBuilding,
+              quarantineFloor: widget.quarantineFloor,
+              quarantineRoom: widget.quarantineRoom,
               mode: Permission.add,
             ),
           ],
