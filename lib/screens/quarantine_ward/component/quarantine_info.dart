@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'carousel.dart';
 import 'carousel_building.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../quarantine_management/building_list_screen.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
-  const QuarantineInfo({Key? key, required this.quarantineInfo})
-      : super(key: key);
+  //final String? id;
+  const QuarantineInfo({
+    Key? key,
+    required this.quarantineInfo,
+  }) : super(key: key);
 
   @override
   _QuarantineInfoState createState() => _QuarantineInfoState();
 }
 
 class _QuarantineInfoState extends State<QuarantineInfo> {
+  late Future<dynamic> futureBuildingList;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.quarantineInfo.id.toString());
+    futureBuildingList =
+        fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
       margin: EdgeInsets.only(bottom: 6),
@@ -80,16 +99,16 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         widget.quarantineInfo.address != null
                             ? widget.quarantineInfo.address.toString() +
                                 ', ' +
-                                widget.quarantineInfo.ward.name +
+                                widget.quarantineInfo.ward['name'] +
                                 ', ' +
-                                widget.quarantineInfo.district.name +
+                                widget.quarantineInfo.district['name'] +
                                 ', ' +
-                                widget.quarantineInfo.city.name
-                            : widget.quarantineInfo.ward.name +
+                                widget.quarantineInfo.city['name']
+                            : widget.quarantineInfo.ward['name'] +
                                 ', ' +
-                                widget.quarantineInfo.district.name +
+                                widget.quarantineInfo.district['name'] +
                                 ', ' +
-                                widget.quarantineInfo.city.name,
+                                widget.quarantineInfo.city['name'],
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
@@ -137,33 +156,21 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               ],
             ),
           ),
-          //Building list
-          Container(
-            margin: EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Danh sách tòa',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, BuildingListScreen.routeName);
-                  },
-                  child: Text('Xem tất cả'),
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(CustomColors.primary),
-                  ),
-                )
-              ],
-            ),
+
+          FutureBuilder<dynamic>(
+            future: futureBuildingList,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                EasyLoading.dismiss();
+                return CarouselBuilding(data: snapshot.data, currentQuarantine: widget.quarantineInfo,);
+              } else if (snapshot.hasError) {
+                return Text('Snapshot has error');
+              }
+              EasyLoading.show();
+              return Container();
+            },
           ),
-          CarouselBuilding(),
+
           //Information
           Container(
             width: MediaQuery.of(context).size.width * 1,
@@ -191,7 +198,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     ' Thời gian cách ly: ' +
                         widget.quarantineInfo.quarantineTime.toString()),
                 buildInformation(
-                    context, Icons.groups_rounded, ' Đang cách ly: 15'),
+                    context,
+                    Icons.groups_rounded,
+                    ' Đang cách ly: ' +
+                        widget.quarantineInfo.currentMem.toString()),
                 // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
                     context,
@@ -206,16 +216,16 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       (widget.quarantineInfo.address != null
                           ? widget.quarantineInfo.address! +
                               ', ' +
-                              widget.quarantineInfo.ward.name +
+                              widget.quarantineInfo.ward['name'] +
                               ', ' +
-                              widget.quarantineInfo.district.name +
+                              widget.quarantineInfo.district['name'] +
                               ', ' +
-                              widget.quarantineInfo.city.name
-                          : widget.quarantineInfo.ward.name +
+                              widget.quarantineInfo.city['name']
+                          : widget.quarantineInfo.ward['name'] +
                               ', ' +
-                              widget.quarantineInfo.district.name +
+                              widget.quarantineInfo.district['name'] +
                               ', ' +
-                              widget.quarantineInfo.city.name),
+                              widget.quarantineInfo.city['name']),
                 ),
 
                 buildInformation(

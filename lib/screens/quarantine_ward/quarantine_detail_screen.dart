@@ -8,6 +8,7 @@ import './component/quarantine_info.dart';
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
   final String? id;
+  
   QuarantineDetailScreen({Key? key, this.id}) : super(key: key);
 
   @override
@@ -43,7 +44,19 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(context, EditQuarantine.routeName);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditQuarantineScreen(
+                  id: widget.id,
+                  quarantineInfo: quarantineInfo,
+
+                  // code: widget.code,
+                  // personalData: personalData,
+                  // quarantineData: quarantineData,
+                ),
+              ),
+            );
           },
           icon: Icon(Icons.edit),
         ),
@@ -60,7 +73,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
             EasyLoading.dismiss();
             if (snapshot.hasData) {
               quarantineInfo = Quarantine.fromJson(snapshot.data);
-              return QuarantineInfo(quarantineInfo: quarantineInfo);
+              return QuarantineInfo(quarantineInfo: quarantineInfo, );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
             }

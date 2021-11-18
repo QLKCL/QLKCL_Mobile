@@ -59,6 +59,17 @@ String? Function(String?) quarantineTimeValidator = (time) {
   return null;
 };
 
+String? Function(String?) numberOfMemberValidator = (time) {
+  String patttern = r'^[0-9]+$';
+  RegExp regExp = new RegExp(patttern);
+  if (time == null || time.isEmpty) {
+    return "Trường này là bắt buộc";
+  } else if (!regExp.hasMatch(time)) {
+    return 'Số người không hợp lệ';
+  }
+  return null;
+};
+
 String? Function(String?) phoneNullableValidator = (phone) {
   String patttern = r'(^[0-9]{10}$)';
   RegExp regExp = new RegExp(patttern);

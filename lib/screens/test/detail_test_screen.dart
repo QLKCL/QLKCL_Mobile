@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/component/test_form.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
@@ -38,16 +39,26 @@ class _DetailTestState extends State<DetailTest> {
           title: Text('Thông tin phiếu xét nghiệm'),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UpdateTest(
-                              code: widget.code,
-                            )));
+            FutureBuilder(
+              future: getRole(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data != 5
+                      ? IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => UpdateTest(
+                                          code: widget.code,
+                                        )));
+                          },
+                          icon: Icon(Icons.edit),
+                        )
+                      : Container();
+                }
+                return Container();
               },
-              icon: Icon(Icons.edit),
             ),
           ],
         ),

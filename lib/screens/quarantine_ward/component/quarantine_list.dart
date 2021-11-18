@@ -65,7 +65,6 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   Widget build(BuildContext context) {
-    //print(data);
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
@@ -80,7 +79,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
           itemBuilder: (context, item, index)  =>  QuarantineItem(
             id: item['id'].toString(),
             name: item['full_name'] ?? "",
-            // numberOfMem: fetchMemberInQuarantine(data: {'quarantine_ward_id': item['id'].toString()}),
+            currentMem: item['num_current_member'],
             manager: item['main_manager']['full_name'] ?? "",
           ),
         ),
@@ -89,28 +88,3 @@ class _QuanrantineListState extends State<QuanrantineList> {
   }
 }
 
-// import 'package:flutter/material.dart';
-// import 'quarantine_item.dart';
-
-// class QuarantineList extends StatelessWidget {
-//   final data;
-
-//   const QuarantineList({Key? key, this.data}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return (data == null || data.isEmpty)
-//         ? Center(
-//             child: Text('Không có dữ liệu'),
-//           )
-//         : ListView.builder(
-//             itemCount: data.length,
-//             itemBuilder: (ctx, index) {
-//               return QuarantineItem(
-//                   id: data[index]['id'].toString(),
-//                   name: data[index]['full_name'] ?? "",
-//                   manager: data[index]['main_manager']["full_name"] ?? "");
-//             },
-//           );
-//   }
-// }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 
@@ -33,29 +34,28 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Quét mã QR'),
-        actions: [
-          IconButton(
-            icon: FutureBuilder(
-              future: controller?.getFlashStatus(),
-              builder: (context, snapshot) {
-                if (snapshot.data == false)
-                  return const Icon(Icons.flash_on);
-                else
-                  return const Icon(Icons.flash_off);
+        appBar: AppBar(
+          title: const Text('Quét mã QR'),
+          actions: [
+            IconButton(
+              icon: FutureBuilder(
+                future: controller?.getFlashStatus(),
+                builder: (context, snapshot) {
+                  if (snapshot.data == false)
+                    return const Icon(Icons.flash_on);
+                  else
+                    return const Icon(Icons.flash_off);
+                },
+              ),
+              tooltip: 'Toggle Flash',
+              onPressed: () async {
+                await controller?.toggleFlash();
+                setState(() {});
               },
-            ),
-            tooltip: 'Toggle Flash',
-            onPressed: () async {
-              await controller?.toggleFlash();
-              setState(() {});
-            },
-          )
-        ],
-      ),
-      body:_buildQrView(context)
-    );
+            )
+          ],
+        ),
+        body: _buildQrView(context));
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -116,20 +116,26 @@ class _QrCodeScanState extends State<QrCodeScan> {
         },
       ));
     } else {
-      await showDialog<String>(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Nội dung'),
-          content: Text(qrResult),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      ).then((value) => controller!.resumeCamera());
+      //   await showDialog<String>(
+      //     barrierDismissible: false,
+      //     context: context,
+      //     builder: (BuildContext context) => AlertDialog(
+      //       title: const Text('Nội dung'),
+      //       content: Text(qrResult),
+      //       actions: <Widget>[
+      //         TextButton(
+      //           onPressed: () => Navigator.pop(context, 'OK'),
+      //           child: const Text('OK'),
+      //         ),
+      //       ],
+      //     ),
+      //   ).then((value) => controller!.resumeCamera());
+
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(MaterialPageRoute(
+              builder: (context) => DetailMember(
+                    code: qrResult,
+                  )));
     }
   }
 }

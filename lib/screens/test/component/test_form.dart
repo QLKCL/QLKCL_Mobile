@@ -30,6 +30,8 @@ class _TestFormState extends State<TestForm> {
   final stateController = TextEditingController();
   final typeController = TextEditingController();
   final resultController = TextEditingController();
+  final createAtController = TextEditingController();
+  final updateAtController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,12 @@ class _TestFormState extends State<TestForm> {
           widget.userCode != null ? widget.userCode!.code : "";
       userNameController.text =
           widget.userCode != null ? widget.userCode!.fullName : "";
+      stateController.text = "WAITING";
+      typeController.text = "QUICK";
+      resultController.text = "NONE";
     } else {
+      testCodeController.text =
+          widget.testData?.code != null ? widget.testData!.code : "";
       userCodeController.text =
           widget.testData?.user.code != null ? widget.testData!.user.code : "";
       userNameController.text = widget.testData?.user.fullName != null
@@ -50,6 +57,14 @@ class _TestFormState extends State<TestForm> {
           widget.testData?.type != null ? widget.testData!.type : "";
       resultController.text =
           widget.testData?.result != null ? widget.testData!.result : "";
+      createAtController.text = widget.testData?.createdAt != null
+          ? DateFormat("dd/MM/yyyy HH:mm:ss")
+              .format(widget.testData!.createdAt.toLocal())
+          : "";
+      updateAtController.text = widget.testData?.updatedAt != null
+          ? DateFormat("dd/MM/yyyy HH:mm:ss")
+              .format(widget.testData!.updatedAt.toLocal())
+          : "";
     }
     return SingleChildScrollView(
       child: Form(
@@ -59,7 +74,7 @@ class _TestFormState extends State<TestForm> {
             Input(
               label: 'Mã phiếu',
               enabled: false,
-              initValue: widget.testData?.code,
+              controller: testCodeController,
             ),
             Input(
               label: 'Mã người xét nghiệm',
@@ -151,15 +166,13 @@ class _TestFormState extends State<TestForm> {
             if (widget.mode == Permission.view)
               Input(
                 label: 'Thời gian tạo',
-                initValue: DateFormat("dd/MM/yyyy HH:mm:ss")
-                    .format(widget.testData!.createdAt.toLocal()),
+                controller: createAtController,
                 enabled: false,
               ),
             if (widget.mode == Permission.view)
               Input(
                 label: 'Cập nhật lần cuối',
-                initValue: DateFormat("dd/MM/yyyy HH:mm:ss")
-                    .format(widget.testData!.updatedAt.toLocal()),
+                controller: updateAtController,
                 enabled: false,
               ),
             if (widget.mode == Permission.view)

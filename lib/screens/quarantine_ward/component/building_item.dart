@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart';
 
 class BuildingItem extends StatelessWidget {
+  final Quarantine currentQuarantine;
+  final Building currentBuilding;
   final String buildingName;
-  final int maxMem;
+  final int? maxMem;
   final int currentMem;
 
   const BuildingItem({
+    required this.currentQuarantine,
+    required this.currentBuilding,
     required this.buildingName,
-    this.maxMem = 300,
-    this.currentMem = 0,
+    this.maxMem = 0,
+    required this.currentMem,
+
   });
 
   void selectBuilding(BuildContext context) {}
@@ -20,8 +27,14 @@ class BuildingItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).pushNamed(
-          BuildingDetailsScreen.routeName,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BuildingDetailsScreen(
+              currentQuarantine: currentQuarantine,
+              currentBuilding: currentBuilding,
+            ),
+          ),
         );
       },
       child: Column(
@@ -84,3 +97,4 @@ class BuildingItem extends StatelessWidget {
     );
   }
 }
+

@@ -31,6 +31,22 @@ class Constant {
   static const String createPass = '/api/oauth/reset_password/confirm';
   static const String changePass = '/api/oauth/change_password/confirm';
   static const String createQuarantine = '/api/quarantine_ward/ward/create';
+  static const String updateQuarantine = '/api/quarantine_ward/ward/update';
+  static const String getBuilding = '/api/quarantine_ward/building/get';
+  static const String createBuilding = '/api/quarantine_ward/building/create';
+  static const String updateBuilding = '/api/quarantine_ward/building/update';
+  static const String deleteBuilding = '/api/quarantine_ward/building/delete';
+  static const String getFloor = '/api/quarantine_ward/floor/get';
+  static const String createFloor = '/api/quarantine_ward/floor/create';
+  static const String updateFloor = '/api/quarantine_ward/floor/update';
+  static const String deleteFloor = '/api/quarantine_ward/floor/delete';
+  static const String getRoom = '/api/quarantine_ward/room/get';
+  static const String createRoom = '/api/quarantine_ward/room/create';
+  static const String updateRoom = '/api/quarantine_ward/room/update';
+  static const String deleteRoom = '/api/quarantine_ward/room/delete';
+  static const String filterMedDecl = '/api/form/medical-declaration/filter';
+  static const String getMedDecl = '/api/form/medical-declaration/get';
+  static const String createMedDecl = '/api/form/medical-declaration/create';
 }
 
 enum Permission {
@@ -62,6 +78,12 @@ List<KeyValue> testValueList = [
   KeyValue(id: "POSITIVE", name: "Dương tính")
 ];
 
+List<KeyValue> medDeclValueList = [
+  KeyValue(id: "NORMAL", name: "Bình thường"),
+  KeyValue(id: "UNWELL", name: "Có dấu hiệu nghi nhiễm"),
+  KeyValue(id: "SERIOUS", name: "Nghi nhiễm")
+];
+
 List<KeyValue> roleList = [
   KeyValue(id: "1", name: "ADMINISTRATOR"),
   KeyValue(id: "2", name: "SUPER_MANAGER"),
@@ -83,6 +105,17 @@ List<KeyValue> backgroundDiseaseList = [
   KeyValue(id: 6, name: "Bệnh thận mãn tính"),
   KeyValue(id: 7, name: "Tim mạch"),
   KeyValue(id: 8, name: "Bệnh lý mạch máu não"),
+];
+
+List<KeyValue> quarantineStatusList = [
+  KeyValue(id: "RUNNING", name: "Đang hoạt động"),
+  KeyValue(id: "LOCKED", name: "Khóa"),
+  KeyValue(id: "UNKNOWN", name: "Chưa rõ"),
+];
+
+List<KeyValue> quarantineTypeList = [
+  KeyValue(id: "CONCENTRATE", name: "Tập trung"),
+  KeyValue(id: "PRIVATE", name: "Tư nhân"),
 ];
 
 const int PAGE_SIZE = 10;

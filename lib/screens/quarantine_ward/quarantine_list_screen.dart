@@ -21,46 +21,21 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
     super.deactivate();
   }
 
-
   //bool searched = false;
 
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: 
-      // searched
-      //     ? Container(
-      //         width: double.infinity,
-      //         height: 36,
-      //         decoration: BoxDecoration(
-      //             color: Colors.white, borderRadius: BorderRadius.circular(5)),
-      //         child: Center(
-      //           child: TextField(
-      //             decoration: InputDecoration(
-      //                 prefixIcon: Icon(Icons.search),
-      //                 suffixIcon: IconButton(
-      //                   icon: Icon(Icons.clear),
-      //                   onPressed: () {
-      //                     /* Clear the search field */
-      //                   },
-      //                 ),
-      //                 hintText: 'Search...',
-      //                 border: InputBorder.none),
-      //           ),
-      //         ),
-      //       )
-       //   : 
-          Text('Các khu cách ly'),
+      title: Text('Các khu cách ly'),
       centerTitle: true,
-      actions: [ IconButton(
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(
-                                  builder: (context) => SearchQuarantine()));
-                        },
- 
-                icon: Icon(Icons.search),
-              ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(builder: (context) => SearchQuarantine()));
+          },
+          icon: Icon(Icons.search),
+        ),
       ],
     );
 

@@ -4,6 +4,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/test.dart';
+import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/detail_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,8 @@ class _ListTestState extends State<ListTest> {
   late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
+  late String code;
+  late String name;
 
   @override
   void initState() {
@@ -51,9 +54,11 @@ class _ListTestState extends State<ListTest> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
+    code = await getCode();
+    name = await getName();
     try {
-      final newItems = await fetchTestList(
-          data: {'page': pageKey, 'user_code': await getCode()});
+      final newItems =
+          await fetchTestList(data: {'page': pageKey, 'user_code': code});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -70,6 +75,25 @@ class _ListTestState extends State<ListTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FutureBuilder(
+        future: getRole(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return snapshot.data != 5
+                ? FloatingActionButton(
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AddTest(code: code, name: name)));
+                    },
+                    child: Icon(Icons.add),
+                  )
+                : Container();
+          }
+          return Container();
+        },
+      ),
       appBar: AppBar(
         title: Text("Lịch sử xét nghiệm"),
         centerTitle: true,

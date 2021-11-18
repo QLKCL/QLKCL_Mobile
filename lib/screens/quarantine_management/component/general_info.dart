@@ -3,14 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/quarantine.dart';
 
 class GeneralInfo extends StatelessWidget {
-  final String quarantineName;
+  final Quarantine currentQuarantine;
   final int numOfBuilding;
-  final int numOfMem;
-  final int maxMem;
-  const GeneralInfo(
-      this.quarantineName, this.numOfBuilding, this.numOfMem, this.maxMem);
+
+  const GeneralInfo({
+    required this.currentQuarantine,
+    required this.numOfBuilding,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class GeneralInfo extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        quarantineName,
+                        currentQuarantine.fullName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -85,7 +87,10 @@ class GeneralInfo extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$numOfMem' '/$maxMem',
+                            '${currentQuarantine.currentMem}' +
+                                (currentQuarantine.capacity != null
+                                    ? '/${currentQuarantine.capacity}'
+                                    : '/0'),
                             style: const TextStyle(
                               fontSize: 16,
                             ),

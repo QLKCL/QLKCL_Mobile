@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/floor.dart';
+import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/models/room.dart';
 
 class GeneralInfoRoom extends StatelessWidget {
-  final String quarantineName;
-  final String buildingName;
-  final String floorName;
-  final String roomName;
-  final int numOfMem;
-  final int maxMem;
-  GeneralInfoRoom(this.quarantineName, this.buildingName, this.floorName,
-      this.roomName, this.numOfMem, this.maxMem);
+  final Quarantine currentQuarantine;
+  final Building currentBuilding;
+  final Floor currentFloor;
+  final Room currentRoom;
 
+  GeneralInfoRoom({
+    required this.currentRoom,
+    required this.currentQuarantine,
+    required this.currentBuilding,
+    required this.currentFloor,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,7 +51,7 @@ class GeneralInfoRoom extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        quarantineName,
+                        currentQuarantine.fullName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -55,7 +61,7 @@ class GeneralInfoRoom extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        buildingName + ' - ' + floorName,
+                        currentBuilding.name + ' - ' + currentFloor.name,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -63,7 +69,7 @@ class GeneralInfoRoom extends StatelessWidget {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text(roomName,
+                      Text(currentRoom.name,
                           style: const TextStyle(
                             fontSize: 16,
                           )),
@@ -95,7 +101,8 @@ class GeneralInfoRoom extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$numOfMem' '/$maxMem',
+                            '${currentRoom.numCurrentMember}'
+                            '/${currentRoom.capacity}',
                             style: const TextStyle(
                               fontSize: 16,
                             ),
