@@ -54,7 +54,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMedList(
-          data: {'page': pageKey, 'user_code': await getCode()});
+          data: {'page': pageKey, 'user_code': '004048259078364'});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -104,11 +104,11 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
                 child: Text('Không có dữ liệu'),
               ),
               itemBuilder: (context, item, index) => MedicalDeclarationCard(
-                id: item['code'],
+                id: item['id'].toString(),
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")
                     .format(DateTime.parse(item['created_at']).toLocal()),
-                status: testValueList
-                    .safeFirstWhere((result) => result.id == item['result'])!
+                status: medDeclValueList
+                    .safeFirstWhere((result) => result.id == item['conclude'])!
                     .name,
                 onTap: () {
                   // Navigator.push(

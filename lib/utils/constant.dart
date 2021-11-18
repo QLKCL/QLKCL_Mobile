@@ -78,6 +78,12 @@ List<KeyValue> testValueList = [
   KeyValue(id: "POSITIVE", name: "Dương tính")
 ];
 
+List<KeyValue> medDeclValueList = [
+  KeyValue(id: "NORMAL", name: "Bình thường"),
+  KeyValue(id: "UNWELL", name: "Có dấu hiệu nghi nhiễm"),
+  KeyValue(id: "SERIOUS", name: "Nghi nhiễm")
+];
+
 List<KeyValue> roleList = [
   KeyValue(id: "1", name: "ADMINISTRATOR"),
   KeyValue(id: "2", name: "SUPER_MANAGER"),

@@ -8,42 +8,44 @@ import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
-MedicalDecl medicalDeclFromJson(String str) => MedicalDecl.fromJson(json.decode(str));
+MedicalDecl medicalDeclFromJson(String str) =>
+    MedicalDecl.fromJson(json.decode(str));
 
 String medicalDeclToJson(MedicalDecl data) => json.encode(data.toJson());
 
 class MedicalDecl {
-    MedicalDecl({
-        required this.id,
-        this.user,
-        required this.heartbeat,
-        required this.temperature,
-        required this.breathing,
-        required this.spo2,
-        required this.bloodPressure,
-        this.mainSymptoms,
-        this.extraSymptoms,
-        this.otherSymptoms,
-        required this.conclude,
-        required this.createdAt,
-        required this.createdBy,
-    });
+  MedicalDecl({
+    required this.id,
+    this.user,
+    this.heartbeat,
+    this.temperature,
+    this.breathing,
+    this.spo2,
+    this.bloodPressure,
+    this.mainSymptoms,
+    this.extraSymptoms,
+    this.otherSymptoms,
+    required this.conclude,
+    required this.createdAt,
+    required this.createdBy,
+  });
 
-    final int id;
-    final dynamic user;
-    final int heartbeat;
-    final int temperature;
-    final int breathing;
-    final int spo2;
-    final int bloodPressure;
-    final String? mainSymptoms;
-    final String? extraSymptoms;
-    final String? otherSymptoms;
-    final String conclude;
-    final DateTime createdAt;
-    final int createdBy;
+  final int id;
+  final dynamic user;
+  final int? heartbeat;
+  final int? temperature;
+  final int? breathing;
+  final int? spo2;
+  final int? bloodPressure;
+  final String? mainSymptoms;
+  final String? extraSymptoms;
+  final String? otherSymptoms;
 
-    factory MedicalDecl.fromJson(Map<String, dynamic> json) => MedicalDecl(
+  final String conclude;
+  final DateTime createdAt;
+  final int createdBy;
+
+  factory MedicalDecl.fromJson(Map<String, dynamic> json) => MedicalDecl(
         id: json["id"],
         user: json["user"],
         heartbeat: json["heartbeat"],
@@ -57,9 +59,9 @@ class MedicalDecl {
         conclude: json["conclude"],
         createdAt: DateTime.parse(json["created_at"]),
         createdBy: json["created_by"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "user": user.toJson(),
         "heartbeat": heartbeat,
@@ -73,7 +75,7 @@ class MedicalDecl {
         "conclude": conclude,
         "created_at": createdAt.toIso8601String(),
         "created_by": createdBy,
-    };
+      };
 }
 
 Future<dynamic> fetchMedDecl({data}) async {
@@ -85,6 +87,7 @@ Future<dynamic> fetchMedDecl({data}) async {
 Future<dynamic> fetchMedList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.filterMedDecl, data);
+  print(response['data']['content']);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -97,8 +100,7 @@ Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(
-          success: true, message: "Khai báo thành công!");
+      return Response(success: true, message: "Khai báo thành công!");
     } else {
       // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
@@ -120,11 +122,3 @@ Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
     }
   }
 }
-
-
-
-
-
-
-
-
