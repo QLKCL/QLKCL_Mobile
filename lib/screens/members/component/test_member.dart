@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class TestMember extends StatefulWidget {
@@ -75,38 +78,73 @@ class _TestMemberState extends State<TestMember> {
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
-              animateTransitions: true,
-              noItemsFoundIndicatorBuilder: (context) => Center(
-                    child: Text('Không có dữ liệu'),
-                  ),
-              itemBuilder: (context, item, index) => MemberCard(
-                    name: item['full_name'] ?? "",
-                    gender: item['gender'] ?? "",
-                    birthday: item['birthday'] ?? "",
-                    room:
-                        (item['quarantine_room'] != null
-                                ? "${item['quarantine_room']['name']} - "
-                                : "") +
-                            (item['quarantine_floor'] != null
-                                ? "${item['quarantine_floor']['name']} - "
-                                : "") +
-                            (item['quarantine_building'] != null
-                                ? "${item['quarantine_building']['name']} - "
-                                : "") +
-                            (item['quarantine_ward'] != null
-                                ? "${item['quarantine_ward']['full_name']}"
-                                : ""),
-                    lastTestResult: item['positive_test'],
-                    lastTestTime: item['last_tested'],
-                    healthStatus: item['health_status'],
+            animateTransitions: true,
+            noItemsFoundIndicatorBuilder: (context) => Center(
+              child: Text('Không có dữ liệu'),
+            ),
+            itemBuilder: (context, item, index) => MemberCard(
+              name: item['full_name'] ?? "",
+              gender: item['gender'] ?? "",
+              birthday: item['birthday'] ?? "",
+              room:
+                  (item['quarantine_room'] != null
+                          ? "${item['quarantine_room']['name']} - "
+                          : "") +
+                      (item['quarantine_floor'] != null
+                          ? "${item['quarantine_floor']['name']} - "
+                          : "") +
+                      (item['quarantine_building'] != null
+                          ? "${item['quarantine_building']['name']} - "
+                          : "") +
+                      (item['quarantine_ward'] != null
+                          ? "${item['quarantine_ward']['full_name']}"
+                          : ""),
+              lastTestResult: item['positive_test'],
+              lastTestTime: item['last_tested'],
+              healthStatus: item['health_status'],
+              onTap: () {
+                Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(
+                        builder: (context) => DetailMember(
+                              code: item['code'],
+                            )));
+              },
+              menus: PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  PopupMenuItem(
+                    child: Text('Cập nhật thông tin'),
                     onTap: () {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(
-                              builder: (context) => DetailMember(
+                              builder: (context) => UpdateMember(
                                     code: item['code'],
                                   )));
                     },
-                  )),
+                  ),
+                  PopupMenuItem(
+                    child: Text('Lịch sử khai báo y tế'),
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true).push(
+                          MaterialPageRoute(
+                              builder: (context) => ListMedicalDeclaration()));
+                    },
+                  ),
+                  PopupMenuItem(
+                    child: Text('Tạo phiếu xét nghiệm'),
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                              builder: (context) => AddTest(
+                                    code: item["code"],
+                                    name: item['full_name'],
+                                  )));
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

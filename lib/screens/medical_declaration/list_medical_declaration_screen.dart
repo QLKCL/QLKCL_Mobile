@@ -3,6 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
+import 'package:qlkcl/screens/medical_declaration/detail_md_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -21,8 +22,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
 
-  
-   @override
+  @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -54,7 +54,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMedList(
-          data: {'page': pageKey, 'user_code': '004048259078364'});
+          data: {'page': pageKey, 'user_code': '514359910994237'});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -111,12 +111,12 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
                     .safeFirstWhere((result) => result.id == item['conclude'])!
                     .name,
                 onTap: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => DetailTest(
-                  //               code: item['code'],
-                  //             )));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewMD(
+                                id: item['id'].toString(),
+                              )));
                 },
               ),
             ),

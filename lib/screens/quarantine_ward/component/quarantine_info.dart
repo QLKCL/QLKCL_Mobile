@@ -96,19 +96,18 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         height: 6,
                       ),
                       Text(
-                        widget.quarantineInfo.address != null
-                            ? widget.quarantineInfo.address.toString() +
-                                ', ' +
-                                widget.quarantineInfo.ward['name'] +
-                                ', ' +
-                                widget.quarantineInfo.district['name'] +
-                                ', ' +
-                                widget.quarantineInfo.city['name']
-                            : widget.quarantineInfo.ward['name'] +
-                                ', ' +
-                                widget.quarantineInfo.district['name'] +
-                                ', ' +
-                                widget.quarantineInfo.city['name'],
+                        (widget.quarantineInfo.address != null
+                                ? "${widget.quarantineInfo.address}, "
+                                : "") +
+                            (widget.quarantineInfo.ward != null
+                                ? "${widget.quarantineInfo.ward['name']}, "
+                                : "") +
+                            (widget.quarantineInfo.district != null
+                                ? "${widget.quarantineInfo.district['name']}, "
+                                : "") +
+                            (widget.quarantineInfo.city != null
+                                ? "${widget.quarantineInfo.city['name']}, "
+                                : ""),
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
@@ -162,7 +161,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
-                return CarouselBuilding(data: snapshot.data, currentQuarantine: widget.quarantineInfo,);
+                return CarouselBuilding(
+                  data: snapshot.data,
+                  currentQuarantine: widget.quarantineInfo,
+                );
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }
@@ -175,9 +177,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           Container(
             width: MediaQuery.of(context).size.width * 1,
             margin: EdgeInsets.only(left: 23, right: 23, top: 20, bottom: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Wrap(
+              direction: Axis.vertical, // make sure to set this
+              spacing: 4, // set
               children: [
                 Container(
                   margin: EdgeInsets.only(
@@ -214,30 +216,29 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   Icons.place_outlined,
                   ' Địa chỉ: ' +
                       (widget.quarantineInfo.address != null
-                          ? widget.quarantineInfo.address! +
-                              ', ' +
-                              widget.quarantineInfo.ward['name'] +
-                              ', ' +
-                              widget.quarantineInfo.district['name'] +
-                              ', ' +
-                              widget.quarantineInfo.city['name']
-                          : widget.quarantineInfo.ward['name'] +
-                              ', ' +
-                              widget.quarantineInfo.district['name'] +
-                              ', ' +
-                              widget.quarantineInfo.city['name']),
+                          ? "${widget.quarantineInfo.address}, "
+                          : "") +
+                      (widget.quarantineInfo.ward != null
+                          ? "${widget.quarantineInfo.ward['name']}, "
+                          : "") +
+                      (widget.quarantineInfo.district != null
+                          ? "${widget.quarantineInfo.district['name']}, "
+                          : "") +
+                      (widget.quarantineInfo.city != null
+                          ? "${widget.quarantineInfo.city['name']}, "
+                          : ""),
                 ),
 
                 buildInformation(
                     context,
                     Icons.phone,
-                    'Số điện thoại: ' +
+                    ' Số điện thoại: ' +
                         (widget.quarantineInfo.phoneNumber != null
                             ? widget.quarantineInfo.phoneNumber!
                             : 'Chưa có')),
 
                 buildInformation(context, Icons.email_outlined,
-                    'Email: ' + widget.quarantineInfo.email),
+                    ' Email: ' + widget.quarantineInfo.email),
               ],
             ),
           ),

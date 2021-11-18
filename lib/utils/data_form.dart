@@ -395,9 +395,9 @@ Map<String, dynamic> filterMemberByRoomDataForm({
 Map<String, dynamic> createMedDeclDataForm({
   String? phoneNumber,
   int? heartBeat,
-  int? temperature,
+  double? temperature,
   int? breathing,
-  int? spo2,
+  double? spo2,
   double? bloodPressure,
   String? mainSymtoms,
   String? extraSymtoms,

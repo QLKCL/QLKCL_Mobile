@@ -16,7 +16,7 @@ String medicalDeclToJson(MedicalDecl data) => json.encode(data.toJson());
 class MedicalDecl {
   MedicalDecl({
     required this.id,
-    this.user,
+    required this.user,
     this.heartbeat,
     this.temperature,
     this.breathing,
@@ -31,12 +31,12 @@ class MedicalDecl {
   });
 
   final int id;
-  final dynamic user;
+  final User user;
   final int? heartbeat;
-  final int? temperature;
+  final double? temperature;
   final int? breathing;
-  final int? spo2;
-  final int? bloodPressure;
+  final double? spo2;
+  final double? bloodPressure;
   final String? mainSymptoms;
   final String? extraSymptoms;
   final String? otherSymptoms;
@@ -47,7 +47,7 @@ class MedicalDecl {
 
   factory MedicalDecl.fromJson(Map<String, dynamic> json) => MedicalDecl(
         id: json["id"],
-        user: json["user"],
+        user: User.fromJson(json["user"]),
         heartbeat: json["heartbeat"],
         temperature: json["temperature"],
         breathing: json["breathing"],
@@ -75,6 +75,30 @@ class MedicalDecl {
         "conclude": conclude,
         "created_at": createdAt.toIso8601String(),
         "created_by": createdBy,
+      };
+}
+
+class User {
+  User({
+    required this.code,
+    required this.fullName,
+    this.birthday,
+  });
+
+  final String code;
+  final String fullName;
+  final dynamic birthday;
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        code: json["code"],
+        fullName: json["full_name"],
+        birthday: json["birthday"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "full_name": fullName,
+        "birthday": birthday,
       };
 }
 
@@ -111,6 +135,8 @@ Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
 Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateTest, data);
+  print('update response data');
+  print(response['data']);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

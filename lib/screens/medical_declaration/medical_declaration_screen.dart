@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
 import '../../components/input.dart';
@@ -63,6 +64,7 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
                         required: true,
                         type: TextInputType.number,
                         enabled: true,
+                        validatorFunction: phoneValidator,
                       )
                     : Input(
                         label: 'Số điện thoại',

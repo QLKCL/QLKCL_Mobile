@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/member.dart';
@@ -83,47 +84,74 @@ class _ConfirmMemberState extends State<ConfirmMember> {
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
-              animateTransitions: true,
-              noItemsFoundIndicatorBuilder: (context) => Center(
-                    child: Text('Không có dữ liệu'),
-                  ),
-              itemBuilder: (context, item, index) => MemberCard(
-                    name: item['full_name'] ?? "",
-                    gender: item['gender'] ?? "",
-                    birthday: item['birthday'] ?? "",
-                    room:
-                        (item['quarantine_room'] != null
-                                ? "${item['quarantine_room']['name']} - "
-                                : "") +
-                            (item['quarantine_floor'] != null
-                                ? "${item['quarantine_floor']['name']} - "
-                                : "") +
-                            (item['quarantine_building'] != null
-                                ? "${item['quarantine_building']['name']} - "
-                                : "") +
-                            (item['quarantine_ward'] != null
-                                ? "${item['quarantine_ward']['full_name']}"
-                                : ""),
-                    lastTestResult: item['positive_test'],
-                    lastTestTime: item['last_tested'],
-                    healthStatus: item['health_status'],
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => ConfirmDetailMember(
-                                    code: item['code'],
-                                  )));
-                    },
-                    longPressEnabled: widget.longPressFlag,
-                    onLongPress: () {
-                      if (widget.indexList.contains(item['code'])) {
-                        widget.indexList.remove(item['code']);
+            animateTransitions: true,
+            noItemsFoundIndicatorBuilder: (context) => Center(
+              child: Text('Không có dữ liệu'),
+            ),
+            itemBuilder: (context, item, index) => MemberCard(
+              name: item['full_name'] ?? "",
+              gender: item['gender'] ?? "",
+              birthday: item['birthday'] ?? "",
+              room:
+                  (item['quarantine_room'] != null
+                          ? "${item['quarantine_room']['name']} - "
+                          : "") +
+                      (item['quarantine_floor'] != null
+                          ? "${item['quarantine_floor']['name']} - "
+                          : "") +
+                      (item['quarantine_building'] != null
+                          ? "${item['quarantine_building']['name']} - "
+                          : "") +
+                      (item['quarantine_ward'] != null
+                          ? "${item['quarantine_ward']['full_name']}"
+                          : ""),
+              lastTestResult: item['positive_test'],
+              lastTestTime: item['last_tested'],
+              healthStatus: item['health_status'],
+              onTap: () {
+                Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(
+                        builder: (context) => ConfirmDetailMember(
+                              code: item['code'],
+                            )));
+              },
+              longPressEnabled: widget.longPressFlag,
+              onLongPress: () {
+                if (widget.indexList.contains(item['code'])) {
+                  widget.indexList.remove(item['code']);
+                } else {
+                  widget.indexList.add(item['code']);
+                }
+                widget.longPress();
+              },
+              menus: PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                  // PopupMenuItem(child: Text('Chấp nhận')),
+                  PopupMenuItem(
+                    child: Text('Từ chối'),
+                    onTap: () async {
+                      EasyLoading.show();
+                      final response =
+                          await denyMember({'member_codes': item['code']});
+                      if (response.success) {
+                        _pagingController.refresh();
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
                       } else {
-                        widget.indexList.add(item['code']);
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
                       }
-                      widget.longPress();
                     },
-                  )),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
