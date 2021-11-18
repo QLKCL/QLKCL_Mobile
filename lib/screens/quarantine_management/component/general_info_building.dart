@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/building.dart';
+import 'package:qlkcl/models/quarantine.dart';
 
 class GeneralInfoBuilding extends StatelessWidget {
-  final String quarantineName;
-  final String buildingName;
-  final int numOfFloor;
-  final int numOfMem;
-  final int maxMem;
-  GeneralInfoBuilding(this.quarantineName, this.buildingName, this.numOfFloor,
-      this.numOfMem, this.maxMem);
+  final Quarantine currentQuarantine;
+  final Building currentBuilding;
+  final int numberOfFloor;
+  
+  GeneralInfoBuilding({
+    required this.currentQuarantine,
+    required this.currentBuilding,
+    required this.numberOfFloor,
+    
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,7 @@ class GeneralInfoBuilding extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        quarantineName,
+                        currentQuarantine.fullName,
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -54,7 +59,7 @@ class GeneralInfoBuilding extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        buildingName,
+                        currentBuilding.name,
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -62,7 +67,7 @@ class GeneralInfoBuilding extends StatelessWidget {
                       const SizedBox(
                         height: 5,
                       ),
-                      Text('Tổng số tầng: $numOfFloor',
+                      Text('Tổng số tầng: $numberOfFloor',
                           style: const TextStyle(
                             fontSize: 16,
                           )),
@@ -94,7 +99,10 @@ class GeneralInfoBuilding extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '$numOfMem' '/$maxMem',
+                            '${currentBuilding.currentMem}' +
+                                (currentBuilding.capacity != null
+                                    ? '/${currentBuilding.capacity}'
+                                    : '/0'),
                             style: const TextStyle(
                               fontSize: 16,
                             ),

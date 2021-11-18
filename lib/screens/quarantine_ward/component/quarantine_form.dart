@@ -1,20 +1,23 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class QuarantineForm extends StatefulWidget {
-  final Permission? mode;
+  final Permission mode;
   final Quarantine? quarantineInfo;
 
   const QuarantineForm(
@@ -39,6 +42,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
 
   //Input Controller
   final _formKey = GlobalKey<FormState>();
+  final idController = TextEditingController();
   final nameController = TextEditingController();
   final countryController = TextEditingController();
   final cityController = TextEditingController();
@@ -61,14 +65,14 @@ class _QuarantineFormState extends State<QuarantineForm> {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
       if (widget.mode == Permission.add) {
-        final newQuarantineResponse =
+        final registerResponse =
             await createQuarantine(createQuarantineDataForm(
           email: emailController.text,
           fullName: nameController.text,
-          country: "VNM",
-          city: "1",
-          district: "1",
-          ward: "1",
+          country: countryController.text,
+          city: cityController.text,
+          district: districtController.text,
+          ward: wardController.text,
           status: statusController.text,
           quarantineTime: int.parse(quarantineTimeController.text),
           mainManager: "1",
@@ -77,8 +81,37 @@ class _QuarantineFormState extends State<QuarantineForm> {
         ));
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(newQuarantineResponse.message)),
+          SnackBar(content: Text(registerResponse.message)),
         );
+      } 
+      if (widget.mode == Permission.edit) {
+        print('edit');
+        final registerResponse =
+            await updateQuarantine(updateQuarantineDataForm(
+          id: widget.quarantineInfo!.id.toInt(),
+          email: emailController.text,
+          fullName: nameController.text,
+          country: countryController.text,
+          city: cityController.text,
+          district: districtController.text,
+          ward: wardController.text,
+          status: statusController.text,
+          quarantineTime: int.parse(quarantineTimeController.text),
+          mainManager: "1",
+          address: addressController.text,
+          type: typeController.text,
+        ));
+        if (registerResponse.success) {
+            EasyLoading.dismiss();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(registerResponse.message)),
+            );
+          } else {
+            EasyLoading.dismiss();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(registerResponse.message)),
+            );
+          }
       }
     }
   }
@@ -86,31 +119,38 @@ class _QuarantineFormState extends State<QuarantineForm> {
   @override
   Widget build(BuildContext context) {
     if (widget.quarantineInfo != null) {
+      idController.text =
+          widget.quarantineInfo?.id != null ? widget.quarantineInfo!.id.toString() : "";
       nameController.text = widget.quarantineInfo?.fullName ?? "";
-      countryController.text = (widget.quarantineInfo?.country != null
-          ? widget.quarantineInfo?.country.name
-          : "")!;
-      cityController.text = (widget.quarantineInfo?.city != null
-          ? widget.quarantineInfo?.city.name
-          : "")!;
+      countryController.text = widget.quarantineInfo!.country != null
+          ? widget.quarantineInfo?.country['code']
+          : "";
+      cityController.text = widget.quarantineInfo?.city != null
+          ? widget.quarantineInfo!.city['id'].toString()
+          : "";
 
-      districtController.text = (widget.quarantineInfo?.city != null
-          ? widget.quarantineInfo?.district.name
-          : "")!;
+      districtController.text = widget.quarantineInfo?.district != null
+          ? widget.quarantineInfo!.district['id'].toString()
+          : "";
 
-      wardController.text = (widget.quarantineInfo?.ward != null
-          ? widget.quarantineInfo?.ward.name
-          : "")!;
+      wardController.text = widget.quarantineInfo?.ward != null
+          ? widget.quarantineInfo!.ward['id'].toString()
+          : "";
+
       addressController.text = widget.quarantineInfo?.address ?? "";
       typeController.text = widget.quarantineInfo?.type ?? "";
-      statusController.text = widget.quarantineInfo?.status ?? "Đang hoạt động";
+      statusController.text = widget.quarantineInfo?.status ?? "";
       emailController.text = widget.quarantineInfo?.email ?? "";
       quarantineTimeController.text =
           widget.quarantineInfo?.quarantineTime.toString() ?? "";
       managerController.text = widget.quarantineInfo?.mainManager != null
-          ? widget.quarantineInfo?.mainManager['full_name']
+          ? widget.quarantineInfo!.mainManager['full_name']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
+    } else {
+      countryController.text = "VNM";
+      statusController.text = "RUNNING";
+      typeController.text = "CONCENTRATE";
     }
 
     return SingleChildScrollView(
@@ -129,65 +169,151 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
+
             Input(
               label: 'Tên đầy đủ',
               required: true,
               controller: nameController,
             ),
-            DropdownInput(
+
+            DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
-              required: true,
-              itemValue: ['Việt Nam', 'Lào', 'Trung Quốc', 'Campuchia'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : countryController.text,
-              //countryController.text,
+              required: widget.mode == Permission.view ? false : true,
+              selectedItem: (widget.quarantineInfo?.country != null)
+                  ? KeyValue.fromJson(widget.quarantineInfo!.country)
+                  : KeyValue(id: 1, name: 'Việt Nam'),
+              onFind: (String? filter) => fetchCountry(),
+              onChanged: (value) {
+                if (value == null) {
+                  countryController.text = "";
+                } else {
+                  countryController.text = value.id;
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
-            DropdownInput(
+
+            DropdownInput<KeyValue>(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
-              required: true,
-              itemValue: ['TP. Hồ Chí Minh', 'Đà Nẵng', 'Hà Nội', 'Bình Dương'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : cityController.text,
+              required: widget.mode == Permission.view ? false : true,
+              selectedItem: (widget.quarantineInfo?.city != null)
+                  ? KeyValue.fromJson(widget.quarantineInfo!.city)
+                  : null,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
+              onFind: (String? filter) => fetchCity({'country_code': 'VNM'}),
+              onChanged: (value) {
+                if (value == null) {
+                  cityController.text = "";
+                } else {
+                  cityController.text = value.id.toString();
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
-            DropdownInput(
+
+            DropdownInput<KeyValue>(
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
-              required: true,
-              itemValue: ['Gò Vấp', 'Quận 1', 'Quận 2', 'Quận 3'],
-              selectedItem: widget.mode == Permission.add
-                  ? null
-                  : districtController.text,
+              required: widget.mode == Permission.view ? false : true,
+              selectedItem: (widget.quarantineInfo?.district != null)
+                  ? KeyValue.fromJson(widget.quarantineInfo!.district)
+                  : null,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
+              onFind: (String? filter) =>
+                  fetchDistrict({'city_id': cityController.text}),
+              onChanged: (value) {
+                if (value == null) {
+                  districtController.text = "";
+                } else {
+                  districtController.text = value.id.toString();
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
-            DropdownInput(
+
+            DropdownInput<KeyValue>(
               label: 'Phường/xã',
               hint: 'Phường/xã',
-              required: true,
-              itemValue: ['1', '2', '3', '4'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : wardController.text,
+              selectedItem: (widget.quarantineInfo?.ward != null)
+                  ? KeyValue.fromJson(widget.quarantineInfo!.ward)
+                  : null,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
+              onFind: (String? filter) =>
+                  fetchWard({'district_id': districtController.text}),
+              onChanged: (value) {
+                if (value == null) {
+                  wardController.text = "";
+                } else {
+                  wardController.text = value.id.toString();
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
             ),
+
             Input(
               label: 'Địa chỉ',
               controller: addressController,
             ),
 
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Cơ sở cách ly',
               hint: 'Cơ sở cách ly',
-              itemValue: ['Tập trung', 'Tư nhân'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : typeController.text,
+              required: true,
+              itemValue: quarantineTypeList,
+              itemAsString: (KeyValue? u) => u!.name,
+              maxHeight: 150,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              selectedItem: quarantineTypeList
+                  .safeFirstWhere((type) => type.id == typeController.text),
+              onChanged: (value) {
+                if (value == null) {
+                  typeController.text = "";
+                } else {
+                  typeController.text = value.id;
+                }
+              },
             ),
 
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Trạng thái',
               hint: 'Trạng thái',
               required: true,
-              itemValue: ['Đang hoạt động', 'Khóa', 'Không rõ'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : statusController.text,
+              itemValue: quarantineStatusList,
+              itemAsString: (KeyValue? u) => u!.name,
+              maxHeight: 150,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              selectedItem: quarantineStatusList.safeFirstWhere(
+                  (status) => status.id == statusController.text),
+              onChanged: (value) {
+                if (value == null) {
+                  statusController.text = "";
+                } else {
+                  statusController.text = value.id;
+                }
+              },
             ),
 
             Input(
@@ -199,14 +325,15 @@ class _QuarantineFormState extends State<QuarantineForm> {
               controller: quarantineTimeController,
             ),
 
-            DropdownInput(
-              label: 'Người quản lý',
-              hint: 'Người quản lý',
-              required: true,
-              itemValue: ['1', '2'],
-              selectedItem:
-                  widget.mode == Permission.add ? null : managerController.text,
-            ),
+            // DropdownInput(
+            //   label: 'Người quản lý',
+            //   hint: 'Người quản lý',
+            //   required: true,
+            //   itemValue: ['1', '2'],
+            //   selectedItem:
+            //       widget.mode == Permission.add ? null : managerController.text,
+            // ),
+
             Input(
               label: 'Điện thoại liên lạc',
               hint: 'Điện thoại liên lạc',
@@ -214,6 +341,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: phoneNullableValidator,
               controller: phoneNumberController,
             ),
+
             Input(
               label: 'Email',
               hint: 'Email liên lạc',
@@ -222,10 +350,11 @@ class _QuarantineFormState extends State<QuarantineForm> {
               type: TextInputType.emailAddress,
               validatorFunction: emailValidator,
             ),
+
             Container(
               margin: EdgeInsets.all(16),
               child: Text(
-                'Thêm ảnh',
+                (widget.mode == Permission.add) ? 'Thêm ảnh' : 'Sửa bộ ảnh',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
@@ -318,7 +447,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               child: ElevatedButton(
                 onPressed: _submit,
                 child: Text(
-                  'Tạo',
+                  (widget.mode == Permission.add) ? 'Tạo' : 'Xác nhận',
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -7,11 +7,13 @@ class QuarantineItem extends StatefulWidget {
   final String id;
   final String name;
   final String manager;
+  final int currentMem;
 
   const QuarantineItem({
     required this.id,
     required this.name,
     required this.manager,
+    required this. currentMem,
   });
 
   @override
@@ -29,38 +31,11 @@ class _QuarantineItemState extends State<QuarantineItem> {
       ),
     );
   }
-  // Future<void> getMember() async {
-  //   member =
-  //       (await fetchMemberInQuarantine(data: {'quarantine_ward_id': widget.id}))
-  //           .toString();
-  //   print(member);
-  //   setState(() {});
-  // }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getMember();
-  // }
-
-   @override
-  void initState() {
-    super.initState();
-    numOfMem = fetchMemberInQuarantine(data: {'quarantine_ward_id': widget.id});
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<dynamic>(
-      future: numOfMem,
-      builder: (context, snapshot) {
-        if (snapshot.hasData)
-          return Card(
+    return Card(
             child: InkWell(
               onTap: () => selectQuarantine(context),
               child: Padding(
@@ -116,7 +91,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " Đang cách ly: " + snapshot.data.toString(),
+                                  text: " Đang cách ly: " +
+                                     widget.currentMem.toString() ,
                                 ),
                               ],
                             ),
@@ -160,11 +136,6 @@ class _QuarantineItemState extends State<QuarantineItem> {
               ),
             ),
           );
-        else if (snapshot.hasError) {
-          return Text('Snapshot has error');
-        }
-        return Container();
-      },
-    );
+  
   }
 }

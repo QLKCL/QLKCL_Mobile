@@ -233,6 +233,7 @@ Map<String, String> changePassDataForm({
   };
   return prepareDataForm(data);
 }
+
 Map<String, dynamic> createQuarantineDataForm({
   required String email,
   required String fullName,
@@ -258,7 +259,43 @@ Map<String, dynamic> createQuarantineDataForm({
     "address": address,
     "latitude": latitude,
     "longtitude": longtitude,
-    "staus": (status =="Đang hoạt động"? "RUNNING":(status =="Khóa"? "LOCKED": "UNKNOWN")),
+    "staus": status,
+    "type": type,
+    "quarantine_time": quarantineTime,
+    "main_manager": mainManager,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> updateQuarantineDataForm({
+  required int id,
+  String? email,
+  String? fullName,
+  String? country,
+  String? city,
+  String? district,
+  String? ward,
+  String? address,
+  String? latitude,
+  String? longtitude,
+  String? status,
+  String? type,
+  int? quarantineTime,
+  String? mainManager,
+}) {
+  var data = {
+    "id": id,
+    "email": email,
+    "full_name": fullName,
+    "country": country,
+    "city": city,
+    "district": district,
+    "ward": ward,
+    "address": address,
+    "latitude": latitude,
+    "longtitude": longtitude,
+    "staus": status,
     "type": type,
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
@@ -283,4 +320,120 @@ Map<String, dynamic> filterQuarantineDataForm({
   data.removeWhere((key, value) => value == null);
   return data;
 }
+
+Map<String, dynamic> createBuildingDataForm({
+  required String name,
+  required int quarantineWard,
+}) {
+  var data = {
+    "name": name,
+    "quarantine_ward": quarantineWard,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> updateBuildingDataForm({
+  String? name,
+  int? quarantineWard,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_ward": quarantineWard,
+    "name": name,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> updateFloorDataForm({
+  String? name,
+  int? quarantineBuilding,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_building": quarantineBuilding,
+    "name": name,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> updateRoomDataForm({
+  String? name,
+  int? quarantineFloor,
+  int? capacity,
+  required int id,
+}) {
+  var data = {
+    "id": id,
+    "quarantine_floor": quarantineFloor,
+    "name": name,
+    "capacity": capacity,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
+Map<String, dynamic> filterMemberByRoomDataForm({
+  int? quarantineWard,
+  int? quarantineBuilding,
+  int? quarantineFloor,
+  int? quarantineRoom,
+}) {
+  var data = {
+    "quarantine_ward_id": quarantineWard,
+    "quarantine_building_id": quarantineBuilding,
+    "quarantine_floor_id": quarantineFloor,
+    "quarantine_room_id": quarantineRoom,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> createMedDeclDataForm({
+  String? phoneNumber,
+  int? heartBeat,
+  int? temperature,
+  int? breathing,
+  int? spo2,
+  double? bloodPressure,
+  String? mainSymtoms,
+  String? extraSymtoms,
+  String? otherSymtoms,
+}) {
+  var data = {
+    "phone_number": phoneNumber,
+    "heartbeat": heartBeat,
+    "temperature": temperature,
+    "breathing": breathing,
+    "spo2": spo2,
+    "blood_pressure": bloodPressure,
+    "main_symptoms": mainSymtoms,
+    "extra_symptoms": extraSymtoms,
+    "other_symptoms": otherSymtoms,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> filterMedDeclDataForm({
+  String? userCode,
+  String? createAtMax,
+  String? createAtMin,
+  int? page,
+  int? pageSize,
+  String? search,
+}) {
+  var data = {
+    "user_code": userCode,
+    "created_at_max": createAtMax,
+    "created_at_min": createAtMin,
+    "page": page,
+    "page_size": pageSize,
+    "search": search,
+  };
+  return prepareDataForm(data);
+}
+
 
