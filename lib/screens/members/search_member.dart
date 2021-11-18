@@ -99,7 +99,7 @@ class _SearchMemberState extends State<SearchMember> {
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: Center(
               child: TextField(
-                maxLines: 1,
+                // maxLines: 1,
                 autofocus: true,
                 style: TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,

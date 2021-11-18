@@ -127,9 +127,11 @@ class _CompleteMemberState extends State<CompleteMember> {
                   PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                              builder: (context) => ListMedicalDeclaration()));
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                              builder: (context) => ListMedicalDeclaration(
+                                    code: item['code'],
+                                  )));
                     },
                   ),
                   PopupMenuItem(

@@ -124,20 +124,13 @@ class _SuspectMemberState extends State<SuspectMember> {
                     },
                   ),
                   PopupMenuItem(
-                    child: Text('Khai báo y tế'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  MedicalDeclarationScreen()));
-                    },
-                  ),
-                  PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                              builder: (context) => ListMedicalDeclaration()));
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                              builder: (context) => ListMedicalDeclaration(
+                                    code: item['code'],
+                                  )));
                     },
                   ),
                   PopupMenuItem(
