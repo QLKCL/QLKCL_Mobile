@@ -120,6 +120,8 @@ Future<dynamic> fetchMedList({data}) async {
 Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createMedDecl, data);
+  print('create MD');
+  print(response['data']);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

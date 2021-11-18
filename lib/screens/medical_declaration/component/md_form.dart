@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/data_form.dart';
 
 class MedDeclForm extends StatefulWidget {
   const MedDeclForm({
@@ -20,21 +26,30 @@ class MedDeclForm extends StatefulWidget {
 }
 
 class _MedDeclFormState extends State<MedDeclForm> {
+  //Add medical declaration
+  bool isChecked = false;
+  bool agree = false;
+
   //Input Controller
   final _formKey = GlobalKey<FormState>();
   final phoneNumberController = TextEditingController();
-
   final userNameController = TextEditingController();
   final heartBeatController = TextEditingController();
-  final tempuratureController = TextEditingController();
+  final temperatureController = TextEditingController();
   final breathingController = TextEditingController();
   final bloodPressureController = TextEditingController();
   final otherController = TextEditingController();
   final extraSymptomController = TextEditingController();
   final mainSymptomController = TextEditingController();
+  final spo2Controller = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('medical decl init');
+    print(widget.medicalDeclData.toString());
+
     //Data contained
     userNameController.text = widget.medicalDeclData?.user.fullName != null
         ? widget.medicalDeclData!.user.fullName
@@ -44,7 +59,11 @@ class _MedDeclFormState extends State<MedDeclForm> {
         ? widget.medicalDeclData!.heartbeat.toString()
         : "";
 
-    tempuratureController.text = widget.medicalDeclData?.temperature != null
+    print('input');
+    print(heartBeatController.text);
+    print('heartbeat in data');
+    print(widget.medicalDeclData?.heartbeat);
+    temperatureController.text = widget.medicalDeclData?.temperature != null
         ? widget.medicalDeclData!.temperature.toString()
         : "";
 
@@ -55,6 +74,60 @@ class _MedDeclFormState extends State<MedDeclForm> {
     bloodPressureController.text = widget.medicalDeclData?.breathing != null
         ? widget.medicalDeclData!.bloodPressure.toString()
         : "";
+    spo2Controller.text = widget.medicalDeclData?.spo2 != null
+        ? widget.medicalDeclData!.spo2.toString()
+        : "";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // //Data contained
+    // userNameController.text = widget.medicalDeclData?.user.fullName != null
+    //     ? widget.medicalDeclData!.user.fullName
+    //     : "";
+
+    // heartBeatController.text = widget.medicalDeclData?.heartbeat != null
+    //     ? widget.medicalDeclData!.heartbeat.toString()
+    //     : "";
+
+    // temperatureController.text = widget.medicalDeclData?.temperature != null
+    //     ? widget.medicalDeclData!.temperature.toString()
+    //     : "";
+
+    // breathingController.text = widget.medicalDeclData?.breathing != null
+    //     ? widget.medicalDeclData!.breathing.toString()
+    //     : "";
+
+    // bloodPressureController.text = widget.medicalDeclData?.breathing != null
+    //     ? widget.medicalDeclData!.bloodPressure.toString()
+    //     : "";
+    // spo2Controller.text = widget.medicalDeclData?.spo2 != null
+    //     ? widget.medicalDeclData!.spo2.toString()
+    //     : "";
+    //submit
+    void _submit() async {
+      // Validate returns true if the form is valid, or false otherwise.
+      if (_formKey.currentState!.validate()) {
+        print(temperatureController.text);
+        EasyLoading.show();
+        final registerResponse = await createMedDecl(createMedDeclDataForm(
+          phoneNumber: phoneNumberController.text,
+          heartBeat: int.parse(heartBeatController.text),
+          temperature: double.parse(temperatureController.text),
+          breathing: int.parse(breathingController.text),
+          bloodPressure: double.parse(bloodPressureController.text),
+          mainSymtoms: mainSymptomController.text,
+          extraSymtoms: extraSymptomController.text,
+          otherSymtoms: otherController.text,
+          spo2: double.parse(spo2Controller.text),
+        ));
+
+        EasyLoading.dismiss();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(registerResponse.message)),
+        );
+      }
+    }
 
     return SingleChildScrollView(
       child: Form(
@@ -65,14 +138,54 @@ class _MedDeclFormState extends State<MedDeclForm> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Tên người khai hộ
-                Input(
-                  label: 'Họ và tên',
-                  controller: userNameController,
-                  required: true,
-                  type: TextInputType.number,
-                  enabled: false,
-                ),
 
+                (widget.mode == Permission.add)
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListTileTheme(
+                            contentPadding: EdgeInsets.all(0),
+                            child: CheckboxListTile(
+                              title: Text("Khai hộ"),
+                              controlAffinity: ListTileControlAffinity.leading,
+                              value: isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isChecked = value!;
+                                });
+                              },
+                            ),
+                          ),
+
+                          // SĐT người khai hộ
+                          isChecked
+                              ? Input(
+                                  label: 'Số điện thoại',
+                                  hint: 'SĐT người được khai báo',
+                                  required: true,
+                                  type: TextInputType.number,
+                                  enabled: true,
+                                  controller: phoneNumberController,
+                                  validatorFunction: phoneValidator,
+                                )
+                              : Input(
+                                  label: 'Số điện thoại',
+                                  hint: 'SĐT người được khai báo',
+                                  // required: true,
+                                  type: TextInputType.number,
+                                  enabled: false,
+                                ),
+                        ],
+                      )
+                    : Input(
+                        label: 'Họ và tên',
+                        controller: userNameController,
+                        required: true,
+                        type: TextInputType.number,
+                        enabled: false,
+                      ),
+
+                //Medical Declaration Info
                 Container(
                   margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: const Text(
@@ -85,20 +198,29 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp tim (lần/phút)',
                   type: TextInputType.number,
                   controller: heartBeatController,
+                  validatorFunction: intValidator,
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
                 Input(
                   label: 'Nhiệt độ cơ thể (độ C)',
                   hint: 'Nhiệt độ cơ thể (độ C)',
                   type: TextInputType.number,
-                  controller: tempuratureController,
+                  controller: temperatureController,
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
                 Input(
                   label: 'Nồng độ Oxi trong máu (%)',
                   hint: 'Nồng độ Oxi trong máu (%)',
                   type: TextInputType.number,
+                  controller: spo2Controller,
+                  enabled: (widget.mode == Permission.add) ? true : false,
+                ),
+                Input(
+                  label: 'Nhịp thở (lần/phút)',
+                  hint: 'Nhịp thở (lần/phút)',
+                  type: TextInputType.number,
                   controller: breathingController,
+                  validatorFunction: intValidator,
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
                 Input(
@@ -127,7 +249,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                       ? (widget.medicalDeclData!.mainSymptoms
                           .toString()
                           .split(',')
-                          .map((e) => symptomMainList[int.parse(e)])
+                          .map((e) => symptomMainList[int.parse(e) - 1])
                           .toList())
                       : null,
                   onChanged: (value) {
@@ -144,7 +266,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                 ),
 
                 MultiDropdownInput<KeyValue>(
-                  label: 'Triệu chứng nghi nhiễm',
+                  label: 'Triệu chứng nghi nhiễm khác',
                   hint: 'Chọn triệu chứng',
                   itemValue: symptomExtraList,
                   mode: Mode.BOTTOM_SHEET,
@@ -156,7 +278,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                       ? (widget.medicalDeclData!.extraSymptoms
                           .toString()
                           .split(',')
-                          .map((e) => symptomExtraList[int.parse(e)])
+                          .map((e) => symptomExtraList[int.parse(e) - 5])
                           .toList())
                       : null,
                   onChanged: (value) {
@@ -179,6 +301,72 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
                 SizedBox(height: 20),
+
+                //Button add medical declaration
+                if (widget.mode == Permission.add)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTileTheme(
+                        contentPadding: EdgeInsets.all(0),
+                        child: CheckboxListTile(
+                          title: Container(
+                              padding: const EdgeInsets.only(right: 16.0),
+                              child: Text(
+                                "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
+                                style: TextStyle(fontSize: 13),
+                              )),
+                          value: agree,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              agree = value!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '(*)',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: CustomColors.error,
+                              ),
+                            ),
+                            Text(
+                              'Thông tin bắt buộc',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.all(16),
+                        child: ElevatedButton(
+                          onPressed: agree
+                              ? _submit
+                              : () {
+                                  final snackBar = SnackBar(
+                                    content: const Text(
+                                        'Vui lòng cam kết trước khi khai báo.'),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                },
+                          child: Text(
+                            "Khai báo",
+                            style: TextStyle(color: CustomColors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
               ],
             )
           ],
