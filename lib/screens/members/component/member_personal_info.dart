@@ -18,6 +18,7 @@ class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
   final CustomUser? personalData;
   final Permission mode;
+  static var userCode;
   const MemberPersonalInfo(
       {Key? key,
       this.tabController,

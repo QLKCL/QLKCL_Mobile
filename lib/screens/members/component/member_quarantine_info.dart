@@ -7,6 +7,7 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
@@ -299,10 +300,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
       final registerResponse = await updateMember(updateMemberDataForm(
-        code: (widget.quarantineData != null &&
-                widget.quarantineData?.customUser != null)
-            ? widget.quarantineData!.customUserCode.toString()
-            : "",
+        code: (widget.mode == Permission.add &&
+                MemberPersonalInfo.userCode != null)
+            ? MemberPersonalInfo.userCode
+            : ((widget.quarantineData != null &&
+                    widget.quarantineData?.customUser != null)
+                ? widget.quarantineData!.customUserCode.toString()
+                : ""),
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
         label: labelController.text,

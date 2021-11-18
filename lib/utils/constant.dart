@@ -10,6 +10,7 @@ class Constant {
   static const String updateMember = '/api/user/member/update';
   static const String denyMember = '/api/user/member/refuse';
   static const String acceptMember = '/api/user/member/accept';
+  static const String finishMember = '/api/user/member/finish_quarantine';
   static const String homeManager = '/api/user/home/manager';
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';
