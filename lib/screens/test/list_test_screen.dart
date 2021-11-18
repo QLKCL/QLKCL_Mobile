@@ -11,7 +11,9 @@ import 'package:intl/intl.dart';
 
 class ListTest extends StatefulWidget {
   static const String routeName = "/list_test";
-  ListTest({Key? key}) : super(key: key);
+  ListTest({Key? key, this.code, this.name}) : super(key: key);
+  final String? code;
+  final String? name;
 
   @override
   _ListTestState createState() => _ListTestState();
@@ -54,8 +56,8 @@ class _ListTestState extends State<ListTest> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
-    code = await getCode();
-    name = await getName();
+    code = widget.code ?? await getCode();
+    name = widget.name ?? await getName();
     try {
       final newItems =
           await fetchTestList(data: {'page': pageKey, 'user_code': code});

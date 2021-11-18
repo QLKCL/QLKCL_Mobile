@@ -8,11 +8,13 @@ class MedicalDeclarationCard extends StatelessWidget {
   final String id;
   final String time;
   final String status;
+  final Widget? menus;
   const MedicalDeclarationCard(
       {required this.onTap,
       required this.id,
       required this.time,
-      required this.status});
+      required this.status,
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -59,14 +61,7 @@ class MedicalDeclarationCard extends StatelessWidget {
         isThreeLine: true,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
-            ),
-          ],
+          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -78,11 +73,13 @@ class TestCard extends StatelessWidget {
   final String id;
   final String time;
   final String status;
+  final Widget? menus;
   const TestCard(
       {required this.onTap,
       required this.id,
       required this.time,
-      required this.status});
+      required this.status,
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -129,14 +126,7 @@ class TestCard extends StatelessWidget {
         isThreeLine: true,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
-            ),
-          ],
+          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -151,6 +141,7 @@ class TestNoResultCard extends StatelessWidget {
   final String id;
   final String time;
   final String healthStatus;
+  final Widget? menus;
   const TestNoResultCard(
       {required this.onTap,
       required this.name,
@@ -158,7 +149,8 @@ class TestNoResultCard extends StatelessWidget {
       required this.birthday,
       required this.id,
       required this.time,
-      this.healthStatus = "NORMAL"});
+      this.healthStatus = "NORMAL",
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -270,14 +262,7 @@ class TestNoResultCard extends StatelessWidget {
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
-            ),
-          ],
+          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -295,6 +280,7 @@ class MemberCard extends StatefulWidget {
   final bool? lastTestResult;
   final String? lastTestTime;
   final String healthStatus;
+  final Widget? menus;
   const MemberCard(
       {required this.onTap,
       this.onLongPress,
@@ -305,7 +291,8 @@ class MemberCard extends StatefulWidget {
       this.lastTestResult,
       this.lastTestTime,
       this.longPressEnabled,
-      required this.healthStatus});
+      required this.healthStatus,
+      this.menus});
 
   @override
   _MemberCardState createState() => _MemberCardState();
@@ -326,12 +313,7 @@ class _MemberCardState extends State<MemberCard> {
         },
       );
     } else {
-      return GestureDetector(
-        child: Icon(
-          Icons.more_vert,
-        ),
-        onTap: () {},
-      );
+      return widget.menus ?? Container();
     }
   }
 
