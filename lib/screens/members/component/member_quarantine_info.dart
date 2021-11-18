@@ -76,7 +76,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn khu cách ly',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineWardNoToken(),
+              onFind: (String? filter) => fetchQuarantineWard({
+                'page_size': PAGE_SIZE_MAX,
+                'is_full': false,
+              }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineWard != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
@@ -102,7 +105,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineBuilding({
                 'quarantine_ward': quarantineWardController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineBuilding != null)
@@ -128,7 +132,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineFloor({
                 'quarantine_building': quarantineBuildingController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineFloor != null)
@@ -153,7 +158,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineRoom({
                 'quarantine_floor': quarantineFloorController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineFloor != null)

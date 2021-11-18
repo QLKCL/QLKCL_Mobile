@@ -132,5 +132,15 @@ class CustomUser {
 Future<dynamic> fetchCustomUser({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getMember, data);
-  return response["data"];
+  if (response == null) {
+    return null;
+  } else {
+    if (response['error_code'] == 0) {
+      return response["data"];
+    } else if (response['error_code'] == 400) {
+      return null;
+    } else {
+      return null;
+    }
+  }
 }
