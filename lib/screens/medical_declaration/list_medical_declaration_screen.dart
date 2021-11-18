@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  ListMedicalDeclaration({Key? key}) : super(key: key);
+  ListMedicalDeclaration({Key? key, this.code}) : super(key: key);
+  final String? code;
 
   @override
   _ListMedicalDeclarationState createState() => _ListMedicalDeclarationState();
@@ -21,6 +22,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   late Future<dynamic> futureMedDeclList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
+  late String code;
 
   @override
   void initState() {
@@ -52,9 +54,10 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   }
 
   Future<void> _fetchPage(int pageKey) async {
+    code = widget.code ?? await getCode();
     try {
-      final newItems = await fetchMedList(
-          data: {'page': pageKey, 'user_code': await getCode()});
+      final newItems =
+          await fetchMedList(data: {'page': pageKey, 'user_code': code});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {

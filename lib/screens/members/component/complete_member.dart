@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/member.dart';
@@ -126,9 +127,11 @@ class _CompleteMemberState extends State<CompleteMember> {
                   PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
-                              builder: (context) => ListMedicalDeclaration()));
+                      Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                              builder: (context) => ListMedicalDeclaration(
+                                    code: item['code'],
+                                  )));
                     },
                   ),
                   PopupMenuItem(
@@ -144,7 +147,23 @@ class _CompleteMemberState extends State<CompleteMember> {
                   ),
                   PopupMenuItem(
                     child: Text('Hoàn thành cách ly'),
-                    onTap: () {},
+                    onTap: () async {
+                      EasyLoading.show();
+                      final response =
+                          await finishMember({'member_codes': item['code']});
+                      if (response.success) {
+                        _pagingController.refresh();
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
+                      } else {
+                        EasyLoading.dismiss();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(response.message)),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
