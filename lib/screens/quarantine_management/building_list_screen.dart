@@ -16,12 +16,15 @@ class BuildingListScreen extends StatefulWidget {
 
 class _BuildingListScreenState extends State<BuildingListScreen> {
   late Future<dynamic> futureBuildingList;
+  onRefresh() {
+    //print('On refresh');
+    setState(() {});
+  }
 
   @override
   void initState() {
     super.initState();
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
+    //print('init building screen');
   }
 
   @override
@@ -32,6 +35,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    futureBuildingList =
+        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
+
+    print('Build building list screen');
     final appBar = AppBar(
       title: Text('Danh sách tòa'),
     );
@@ -42,6 +49,8 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
         child: FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
+              print('building list');
+              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(
@@ -63,7 +72,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                               appBar.preferredSize.height -
                               MediaQuery.of(context).padding.top) *
                           0.75,
-                      child: BuildingList(data: snapshot.data, currentQuarantine: widget.currentQuarrantine!),
+                      child: BuildingList(
+                          data: snapshot.data,
+                          currentQuarantine: widget.currentQuarrantine!),
                     ),
                   ],
                 );
@@ -80,7 +91,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) => AddBuildingScreen(
-                      currentQuarrantine: widget.currentQuarrantine)));
+                        currentQuarrantine: widget.currentQuarrantine,
+                        onGoBackBuildingList: onRefresh,
+                      )));
         },
         //tooltip: 'Increment',
         child: const Icon(Icons.add),

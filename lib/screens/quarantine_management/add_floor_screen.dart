@@ -12,9 +12,11 @@ class AddFloorScreen extends StatefulWidget {
   static const String routeName = "/add-floor";
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
+  final VoidCallback onGoBackFloorList;
 
   const AddFloorScreen({
     Key? key,
+    required this.onGoBackFloorList,
     this.currentBuilding,
     this.currentQuarantine,
   }) : super(key: key);
@@ -29,8 +31,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   void initState() {
     super.initState();
-    futureFloorList =
-        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
+
 //   myController.addListener(_updateLatestValue);
   }
 
@@ -57,6 +58,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         SnackBar(content: Text(registerResponse.message)),
       );
     }
+    widget.onGoBackFloorList();
+    Navigator.pop(context);
   }
 
 //  bool addMultiple = false;
@@ -72,6 +75,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    futureFloorList =
+        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
     final appBar = AppBar(
       title: Text('Thêm tầng'),
       centerTitle: true,

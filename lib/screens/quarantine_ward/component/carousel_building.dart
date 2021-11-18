@@ -4,18 +4,25 @@ import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/building_list_screen.dart';
-import 'package:qlkcl/screens/quarantine_ward/component/quarantine_list.dart';
 import './building_item.dart';
 
-class CarouselBuilding extends StatelessWidget {
+class CarouselBuilding extends StatefulWidget {
+  final VoidCallback onGoBack;
   final Quarantine? currentQuarantine;
   final data;
-  const CarouselBuilding({Key? key, this.data, this.currentQuarantine})
+  const CarouselBuilding({Key? key, this.data, this.currentQuarantine, required this.onGoBack})
       : super(key: key);
 
   @override
+  State<CarouselBuilding> createState() => _CarouselBuildingState();
+}
+
+class _CarouselBuildingState extends State<CarouselBuilding> {
+  @override
   Widget build(BuildContext context) {
-    return (data == null || data.isEmpty)
+    //print('Carousel building');
+
+    return (widget.data == null || widget.data.isEmpty)
         ? Column(
             children: [
               Container(
@@ -38,7 +45,8 @@ class CarouselBuilding extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => AddBuildingScreen(
-                              currentQuarrantine: currentQuarantine,
+                              currentQuarrantine: widget.currentQuarantine,
+                              onGoBackBuildingList: widget.onGoBack,
                             ),
                           ),
                         );
@@ -73,10 +81,13 @@ class CarouselBuilding extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BuildingListScreen(
-                                    currentQuarrantine: currentQuarantine)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BuildingListScreen(
+                              currentQuarrantine: widget.currentQuarantine,
+                            ),
+                          ),
+                        );
                       },
                       child: Text('Xem tất cả'),
                       style: ButtonStyle(
@@ -93,17 +104,17 @@ class CarouselBuilding extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  itemCount: data.length,
+                  itemCount: widget.data.length,
                   itemBuilder: (BuildContext context, int index) => Card(
                     child: Container(
                       child: BuildingItem(
-                        currentQuarantine: currentQuarantine!,
-                        currentBuilding: Building.fromJson(data[index]),
-                        buildingName: data[index]['name'],
-                        maxMem: data[index]['total_capacity'] != null
-                            ? data[index]['total_capacity']
+                        currentQuarantine: widget.currentQuarantine!,
+                        currentBuilding: Building.fromJson(widget.data[index]),
+                        buildingName: widget.data[index]['name'],
+                        maxMem: widget.data[index]['total_capacity'] != null
+                            ? widget.data[index]['total_capacity']
                             : 0,
-                        currentMem: data[index]['num_current_member'],
+                        currentMem: widget.data[index]['num_current_member'],
                       ),
                     ),
                   ),

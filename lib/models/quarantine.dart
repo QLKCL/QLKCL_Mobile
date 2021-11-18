@@ -139,7 +139,6 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
       return Response(
           success: false, message: "Tên khu cách ly đã được sử dụng!");
     } else {
-      print(response['message']);
       // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
@@ -149,8 +148,7 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
 Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateQuarantine, data);
-  print('data');
-  print(response['data']);
+
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

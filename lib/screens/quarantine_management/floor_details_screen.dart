@@ -5,7 +5,6 @@ import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/room.dart';
 import 'component/general_info_floor.dart';
-import 'package:qlkcl/screens/quarantine_management/room_details_screen.dart';
 import 'component/room_list.dart';
 import 'edit_floor_screen.dart';
 import './add_room_screen.dart';
@@ -29,13 +28,16 @@ class FloorDetailsScreen extends StatefulWidget {
 class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   late Future<dynamic> futureRoomList;
 
+  onRefresh() {
+    //print('On refresh');
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    futureRoomList =
-        fetchRoomList({'quarantine_floor': widget.currentFloor!.id});
+
     print('future room list');
-    
   }
 
   @override
@@ -46,6 +48,8 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    futureRoomList =
+        fetchRoomList({'quarantine_floor': widget.currentFloor!.id});
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tầng"),
       centerTitle: true,
@@ -59,6 +63,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   currentBuilding: widget.currentBuilding,
                   currentQuarantine: widget.currentQuarantine,
                   currentFloor: widget.currentFloor,
+                  onGoBackRoomList: onRefresh,
                 ),
               ),
             );
@@ -123,6 +128,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 currentBuilding: widget.currentBuilding,
                 currentQuarantine: widget.currentQuarantine,
                 currentFloor: widget.currentFloor,
+                onGoBackRoomList: onRefresh,
               ),
             ),
           );

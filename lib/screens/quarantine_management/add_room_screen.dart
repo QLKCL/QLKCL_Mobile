@@ -15,12 +15,14 @@ class AddRoomScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
   final Floor? currentFloor;
+  final VoidCallback onGoBackRoomList;
 
   const AddRoomScreen({
     Key? key,
     this.currentBuilding,
     this.currentQuarantine,
     this.currentFloor,
+    required this.onGoBackRoomList,
   }) : super(key: key);
 
   @override
@@ -33,8 +35,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   @override
   void initState() {
     super.initState();
-    futureRoomList =
-        fetchNumOfRoom({'quarantine_floor': widget.currentFloor!.id});
+
     // myController.addListener(_updateLatestValue);
   }
 
@@ -44,12 +45,12 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
     super.deactivate();
   }
 
-    //Input Controller
+  //Input Controller
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final capacityController = TextEditingController();
 
-    //Submit
+  //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
@@ -63,6 +64,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         SnackBar(content: Text(registerResponse.message)),
       );
     }
+    widget.onGoBackRoomList();
+    Navigator.pop(context);
   }
 
   // bool addMultiple = false;
@@ -78,6 +81,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    futureRoomList =
+        fetchNumOfRoom({'quarantine_floor': widget.currentFloor!.id});
     final appBar = AppBar(
       title: Text('Thêm phòng'),
       centerTitle: true,
@@ -123,40 +128,40 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                               //Add multiple floors
                               // Container(
                               //   margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
-                                // child: Row(
-                                //   children: [
-                                //     Expanded(
-                                //       flex: 55,
-                                //       child: ListTileTheme(
-                                //         contentPadding: EdgeInsets.all(0),
-                                //         child: CheckboxListTile(
-                                //           title: Text("Thêm nhiều phòng"),
-                                //           controlAffinity:
-                                //               ListTileControlAffinity.leading,
-                                //           value: addMultiple,
-                                //           onChanged: (bool? value) {
-                                //             setState(() {
-                                //               addMultiple = value!;
-                                //             });
-                                //           },
-                                //         ),
-                                //       ),
-                                //     ),
-                                //     // insert number of floor
-                                //     addMultiple
-                                //         ? Expanded(
-                                //             flex: 45,
-                                //             child: Input(
-                                //               label: 'Số phòng',
-                                //               hint: 'Số phòng',
-                                //               type: TextInputType.number,
-                                //               required: true,
-                                //               controller: myController,
-                                //             ),
-                                //           )
-                                //         : Container(),
-                                //   ],
-                                // ),
+                              // child: Row(
+                              //   children: [
+                              //     Expanded(
+                              //       flex: 55,
+                              //       child: ListTileTheme(
+                              //         contentPadding: EdgeInsets.all(0),
+                              //         child: CheckboxListTile(
+                              //           title: Text("Thêm nhiều phòng"),
+                              //           controlAffinity:
+                              //               ListTileControlAffinity.leading,
+                              //           value: addMultiple,
+                              //           onChanged: (bool? value) {
+                              //             setState(() {
+                              //               addMultiple = value!;
+                              //             });
+                              //           },
+                              //         ),
+                              //       ),
+                              //     ),
+                              //     // insert number of floor
+                              //     addMultiple
+                              //         ? Expanded(
+                              //             flex: 45,
+                              //             child: Input(
+                              //               label: 'Số phòng',
+                              //               hint: 'Số phòng',
+                              //               type: TextInputType.number,
+                              //               required: true,
+                              //               controller: myController,
+                              //             ),
+                              //           )
+                              //         : Container(),
+                              //   ],
+                              // ),
                               // ),
                               // Container(
                               //   margin: EdgeInsets.symmetric(horizontal: 16),
@@ -166,61 +171,61 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                               //   ),
                               // ),
                               //addMultiple
-                              //    ? 
-                                  // ListView.builder(
-                                  //     physics: NeverScrollableScrollPhysics(),
-                                  //     shrinkWrap: true,
-                                  //     itemBuilder: (ctx, index) {
-                                  //       return Row(
-                                  //         children: [
-                                  //           Expanded(
-                                  //             flex: 55,
-                                  //             child: Input(
-                                  //               label: 'Tên phòng',
-                                  //               hint: 'Tên phòng',
-                                  //               required: true,
-                                  //             ),
-                                  //           ),
-                                  //           Expanded(
-                                  //             flex: 45,
-                                  //             child: Input(
-                                  //               label: 'Người tối đa',
-                                  //               hint: 'Người tối đa',
-                                  //               required: true,
-                                  //               type: TextInputType.number,
-                                  //             ),
-                                  //           ),
-                                  //         ],
-                                  //       );
-                                  //     },
-                                  //     itemCount: numOfAddedRoom,
-                                  //   )
-                                  //: 
-                                  Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 55,
-                                            child: Input(
-                                              label: 'Tên phòng',
-                                              hint: 'Tên phòng',
-                                              required: true,
-                                              controller: nameController,
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 45,
-                                            child: Input(
-                                              label: 'Người tối đa',
-                                              hint: 'Người tối đa',
-                                              required: true,
-                                              type: TextInputType.number,
-                                              controller: capacityController,
-                                            ),
-                                          ),
-                                        ],
+                              //    ?
+                              // ListView.builder(
+                              //     physics: NeverScrollableScrollPhysics(),
+                              //     shrinkWrap: true,
+                              //     itemBuilder: (ctx, index) {
+                              //       return Row(
+                              //         children: [
+                              //           Expanded(
+                              //             flex: 55,
+                              //             child: Input(
+                              //               label: 'Tên phòng',
+                              //               hint: 'Tên phòng',
+                              //               required: true,
+                              //             ),
+                              //           ),
+                              //           Expanded(
+                              //             flex: 45,
+                              //             child: Input(
+                              //               label: 'Người tối đa',
+                              //               hint: 'Người tối đa',
+                              //               required: true,
+                              //               type: TextInputType.number,
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       );
+                              //     },
+                              //     itemCount: numOfAddedRoom,
+                              //   )
+                              //:
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 55,
+                                      child: Input(
+                                        label: 'Tên phòng',
+                                        hint: 'Tên phòng',
+                                        required: true,
+                                        controller: nameController,
                                       ),
                                     ),
+                                    Expanded(
+                                      flex: 45,
+                                      child: Input(
+                                        label: 'Người tối đa',
+                                        hint: 'Người tối đa',
+                                        required: true,
+                                        type: TextInputType.number,
+                                        controller: capacityController,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
