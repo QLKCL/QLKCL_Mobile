@@ -41,7 +41,10 @@ Future memberFilter(
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineWardNoToken(),
+            onFind: (String? filter) => fetchQuarantineWard({
+              'page_size': PAGE_SIZE_MAX,
+              'is_full': false,
+            }),
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {
@@ -337,7 +340,6 @@ Future testFilter(
   );
 }
 
-
 Future quarantineFilter(
   BuildContext context, {
   required TextEditingController cityController,
@@ -380,7 +382,7 @@ Future quarantineFilter(
                 cityController.text = value.id;
               }
             },
-             showClearButton: true,
+            showClearButton: true,
           ),
           DropdownInput<KeyValue>(
             label: 'Quận/huyện',
@@ -389,7 +391,8 @@ Future quarantineFilter(
             itemAsString: (KeyValue? u) => u!.name,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             selectedItem: [KeyValue(id: "1", name: "Quận Ba Đình")]
-                .safeFirstWhere((district) => district.id == districtController.text),
+                .safeFirstWhere(
+                    (district) => district.id == districtController.text),
             onChanged: (value) {
               if (value == null) {
                 districtController.text = "";
@@ -397,7 +400,7 @@ Future quarantineFilter(
                 districtController.text = value.id;
               }
             },
-             showClearButton: true,
+            showClearButton: true,
           ),
           // ListTileTheme(
           //     contentPadding: EdgeInsets.all(0),
@@ -434,4 +437,3 @@ Future quarantineFilter(
     },
   );
 }
-

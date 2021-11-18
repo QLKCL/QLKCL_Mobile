@@ -152,6 +152,18 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
         response['message']['phone_number'] == "Exist") {
       return Response(
           success: false, message: "Số điện thoại đã được sử dụng!");
+    } else if (response['message']['health_insurance_number'] != null &&
+        response['message']['health_insurance_number'] == "Invalid") {
+      return Response(
+          success: false, message: "Số bảo hiểm y tế không hợp lệ!");
+    } else if (response['message']['identity_number'] != null &&
+        response['message']['identity_number'] == "Exist") {
+      return Response(
+          success: false, message: "Số CMND/CCCD đã tồn tại!");
+    } else if (response['message']['quarantine_room_id'] != null &&
+        response['message']['quarantine_room_id'] == "Full") {
+      return Response(
+          success: false, message: "Phòng đã hết chỗ trống!");
     } else if (response['message']['email'] != null &&
         response['message']['email'] == "Exist") {
       return Response(success: false, message: "Email đã được sử dụng!");

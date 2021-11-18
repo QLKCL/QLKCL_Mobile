@@ -106,6 +106,10 @@ class _DetailMemberState extends State<DetailMember>
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
+              } else if (!snapshot.hasData) {
+                return Center(
+                  child: Text('Không có dữ liệu'),
+                );
               }
             }
 

@@ -189,10 +189,10 @@ class TestNoResultCard extends StatelessWidget {
           ),
         ),
         subtitle: Container(
-          padding: EdgeInsets.only(bottom: 8),
-          child: Wrap(
-            direction: Axis.vertical, // make sure to set this
-            spacing: 4, // set your spacing
+          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 birthday,
@@ -427,7 +427,11 @@ class _MemberCardState extends State<MemberCard> {
                                     : "Âm tính")
                                 : "Chưa có kết quả xét nghiệm") +
                             (widget.lastTestTime != null
-                                ? " (" + widget.lastTestTime! + ")"
+                                ? " (" +
+                                    DateFormat("dd/MM/yyyy HH:mm:ss").format(
+                                        DateTime.parse(widget.lastTestTime!)
+                                            .toLocal()) +
+                                    ")"
                                 : ""),
                       )
                     ],

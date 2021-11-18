@@ -76,7 +76,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               hint: 'Chọn khu cách ly',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineWardNoToken(),
+              onFind: (String? filter) => fetchQuarantineWard({
+                'page_size': PAGE_SIZE_MAX,
+                'is_full': false,
+              }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineWard != null)
                   ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
@@ -102,7 +105,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineBuilding({
                 'quarantine_ward': quarantineWardController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineBuilding != null)
@@ -128,7 +132,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineFloor({
                 'quarantine_building': quarantineBuildingController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineFloor != null)
@@ -153,7 +158,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               onFind: (String? filter) => fetchQuarantineRoom({
                 'quarantine_floor': quarantineFloorController.text,
                 'page_size': PAGE_SIZE_MAX,
-                'search': filter
+                'search': filter,
+                'is_full': false,
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.quarantineData?.quarantineFloor != null)
@@ -173,6 +179,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
               itemValue: ["F0", "F1", "F2", "F3"],
+              onChanged: (value) {
+                if (value == null) {
+                  labelController.text = "";
+                } else {
+                  labelController.text = value.toString();
+                }
+              },
               selectedItem: labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
@@ -211,6 +224,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               dropdownBuilder: _customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
+              selectedItems: (widget.quarantineData?.backgroundDisease != null)
+                  ? (widget.quarantineData!.backgroundDisease
+                      .toString()
+                      .split(',')
+                      .map((e) => backgroundDiseaseList[int.parse(e)])
+                      .toList())
+                  : null,
               onChanged: (value) {
                 if (value == null) {
                   backgroundDiseaseController.text = "";

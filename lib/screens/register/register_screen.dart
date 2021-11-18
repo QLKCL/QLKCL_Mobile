@@ -115,7 +115,9 @@ class _RegisterFormState extends State<RegisterForm> {
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineWardNoToken(),
+            onFind: (String? filter) => fetchQuarantineWardNoToken({
+              'is_full': "false",
+            }),
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {

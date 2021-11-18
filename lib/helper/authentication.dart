@@ -86,14 +86,14 @@ Future<Response> login(Map<String, String> loginDataForm) async {
   }
 }
 
-Future<Response> register(Map<String, dynamic> loginDataForm) async {
+Future<Response> register(Map<String, dynamic> registerDataForm) async {
   http.Response? response;
   try {
     response = await http.post(Uri.parse(Constant.baseUrl + Constant.register),
         headers: {
           'Accept': 'application/json',
         },
-        body: loginDataForm);
+        body: registerDataForm);
   } catch (e) {
     print('Error: $e');
   }

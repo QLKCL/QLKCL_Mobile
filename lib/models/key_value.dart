@@ -118,15 +118,15 @@ Future<List<KeyValue>> fetchQuarantineRoom(data) async {
   return [];
 }
 
-Future<List<KeyValue>> fetchQuarantineWardNoToken() async {
+Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   http.Response? response;
   try {
     response = await http.post(
-      Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToekn),
-      headers: {
-        'Accept': 'application/json',
-      },
-    );
+        Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToekn),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: data);
   } catch (e) {
     print('Error: $e');
   }
