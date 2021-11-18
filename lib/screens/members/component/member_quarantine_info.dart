@@ -179,6 +179,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
               itemValue: ["F0", "F1", "F2", "F3"],
+              onChanged: (value) {
+                if (value == null) {
+                  labelController.text = "";
+                } else {
+                  labelController.text = value.toString();
+                }
+              },
               selectedItem: labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
@@ -217,6 +224,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               dropdownBuilder: _customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
+              selectedItems: (widget.quarantineData?.backgroundDisease != null)
+                  ? (widget.quarantineData!.backgroundDisease
+                      .toString()
+                      .split(',')
+                      .map((e) => backgroundDiseaseList[int.parse(e)])
+                      .toList())
+                  : null,
               onChanged: (value) {
                 if (value == null) {
                   backgroundDiseaseController.text = "";
