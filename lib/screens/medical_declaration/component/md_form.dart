@@ -112,14 +112,14 @@ class _MedDeclFormState extends State<MedDeclForm> {
         EasyLoading.show();
         final registerResponse = await createMedDecl(createMedDeclDataForm(
           phoneNumber: phoneNumberController.text,
-          heartBeat: int.parse(heartBeatController.text),
-          temperature: double.parse(temperatureController.text),
-          breathing: int.parse(breathingController.text),
-          bloodPressure: double.parse(bloodPressureController.text),
+          heartBeat:  int.tryParse(heartBeatController.text),
+          temperature: double.tryParse(temperatureController.text),
+          breathing: int.tryParse(breathingController.text),
+          bloodPressure: double.tryParse(bloodPressureController.text),
           mainSymtoms: mainSymptomController.text,
           extraSymtoms: extraSymptomController.text,
           otherSymtoms: otherController.text,
-          spo2: double.parse(spo2Controller.text),
+          spo2: double.tryParse(spo2Controller.text),
         ));
 
         EasyLoading.dismiss();

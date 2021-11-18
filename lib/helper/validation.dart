@@ -74,7 +74,7 @@ String? Function(String?) intValidator = (time) {
   String patttern = r'^[0-9]+$';
   RegExp regExp = new RegExp(patttern);
   if (time == null || time.isEmpty) {
-    return "Trường này là bắt buộc";
+    return null;
   } else if (!regExp.hasMatch(time)) {
     return 'Số không hợp lệ';
   }
