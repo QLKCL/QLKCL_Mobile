@@ -94,7 +94,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
                       mode: Permission.view,
                     ),
                     MemberQuarantineInfo(
-                      qurantineData: quarantineData,
+                      quarantineData: quarantineData,
                       mode: Permission.change_status,
                     ),
                   ],
