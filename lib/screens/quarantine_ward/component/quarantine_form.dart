@@ -11,6 +11,7 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -83,7 +84,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(registerResponse.message)),
         );
-      } 
+      }
       if (widget.mode == Permission.edit) {
         print('edit');
         final registerResponse =
@@ -102,16 +103,16 @@ class _QuarantineFormState extends State<QuarantineForm> {
           type: typeController.text,
         ));
         if (registerResponse.success) {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
-          } else {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
-          }
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(registerResponse.message)),
+          );
+        } else {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(registerResponse.message)),
+          );
+        }
       }
     }
   }
@@ -119,8 +120,9 @@ class _QuarantineFormState extends State<QuarantineForm> {
   @override
   Widget build(BuildContext context) {
     if (widget.quarantineInfo != null) {
-      idController.text =
-          widget.quarantineInfo?.id != null ? widget.quarantineInfo!.id.toString() : "";
+      idController.text = widget.quarantineInfo?.id != null
+          ? widget.quarantineInfo!.id.toString()
+          : "";
       nameController.text = widget.quarantineInfo?.fullName ?? "";
       countryController.text = widget.quarantineInfo!.country != null
           ? widget.quarantineInfo?.country['code']
@@ -276,6 +278,33 @@ class _QuarantineFormState extends State<QuarantineForm> {
             Input(
               label: 'Địa chỉ',
               controller: addressController,
+            ),
+
+            DropdownInput<KeyValue>(
+              label: 'Người quản lý',
+              hint: 'Người quản lý',
+              required: widget.mode == Permission.view ? false : true,
+              selectedItem: (widget.quarantineInfo?.mainManager != null)
+                  ? KeyValue.fromJson(widget.quarantineInfo!.mainManager)
+                  : null,
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
+              onFind: (String? filter) =>
+                  fetchNotMemberList({'role_name_list': 'MANAGER'}),
+              onChanged: (value) {
+                if (value == null) {
+                  managerController.text = "";
+                } else {
+                  managerController.text = value.id.toString();
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: 700,
+              popupTitle: 'Quản lý'
             ),
 
             DropdownInput<KeyValue>(

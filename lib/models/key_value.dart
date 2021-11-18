@@ -141,3 +141,14 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   }
   return [];
 }
+
+Future<List<KeyValue>> fetchNotMemberList(data, {String }) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.getListNotMem, data);
+  final dataResponse = response['data'];
+
+  if (dataResponse != null) {
+    return KeyValue.fromJsonList(dataResponse);
+  }
+  return [];
+}

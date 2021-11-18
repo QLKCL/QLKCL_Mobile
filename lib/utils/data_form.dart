@@ -376,6 +376,19 @@ Map<String, dynamic> updateFloorDataForm({
   return data;
 }
 
+Map<String, dynamic> createFloorDataForm({
+  required int quarantineBuilding,
+  required String name,
+  
+}) {
+  var data = {
+    "name": name,
+    "quarantine_building": quarantineBuilding,
+  };
+  data.removeWhere((key, value) => key == "" || value == "");
+  return data;
+}
+
 Map<String, dynamic> updateRoomDataForm({
   String? name,
   int? quarantineFloor,

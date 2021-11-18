@@ -127,22 +127,22 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
           ),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                quarantineFilter(
-                  context,
-                  cityController: cityController,
-                  districtController: districtController,
-                  setState: () {
-                    setState(() {
-                      //searched = true;
-                    });
-                    _pagingController.refresh();
-                  },
-                );
-              },
-              icon: Icon(Icons.filter_list_outlined),
-            )
+            // IconButton(
+            //   onPressed: () {
+            //     quarantineFilter(
+            //       context,
+            //       cityController: cityController,
+            //       districtController: districtController,
+            //       setState: () {
+            //         setState(() {
+            //           //searched = true;
+            //         });
+            //         _pagingController.refresh();
+            //       },
+            //     );
+            //   },
+            //   icon: Icon(Icons.filter_list_outlined),
+            // )
           ],
         ),
         body: searched
