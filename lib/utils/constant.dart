@@ -118,5 +118,30 @@ List<KeyValue> quarantineTypeList = [
   KeyValue(id: "PRIVATE", name: "Tư nhân"),
 ];
 
+List<KeyValue> symptomMainList = [
+  KeyValue(id: 1, name: "Ho ra máu"),
+  KeyValue(id: 2, name: "Thở dốc, khó thở"),
+  KeyValue(id: 3, name: "Đau tức ngực kéo dài"),
+  KeyValue(id: 4, name: "Lơ mơ, không tỉnh táo"),
+];
+
+List<KeyValue> symptomExtraList = [
+  KeyValue(id: 5, name: "Mệt mỏi"),
+  KeyValue(id: 6, name: "Ho"),
+  KeyValue(id: 7, name: "Ho có đờm"),
+  KeyValue(id: 8, name: "Đau họng"),
+  KeyValue(id: 9, name: "Đau đầu"),
+  KeyValue(id: 10, name: "Chóng mặt"),
+  KeyValue(id: 11, name: "Chán ăn"),
+  KeyValue(id: 12, name: "Nôn / Buồn nôn"),
+  KeyValue(id: 13, name: "Tiêu chảy"),
+  KeyValue(id: 14, name: "Xuất huyết ngoài da"),
+  KeyValue(id: 15, name: "Nổi ban ngoài da"),
+  KeyValue(id: 16, name: "Ớn lạnh / gai rét"),
+  KeyValue(id: 17, name: "Viêm kết mạc (mắt đỏ)"),
+  KeyValue(id: 18, name: "Mất vị giác, khứu giác"),
+  KeyValue(id: 19, name: "Đau nhức cơ"),
+];
+
 const int PAGE_SIZE = 10;
 const int PAGE_SIZE_MAX = 0;
