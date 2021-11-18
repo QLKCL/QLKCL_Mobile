@@ -2,6 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -29,6 +30,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
   final breathingController = TextEditingController();
   final bloodPressureController = TextEditingController();
   final otherController = TextEditingController();
+  final extraSymptomController = TextEditingController();
+  final mainSymptomController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -110,46 +113,65 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   child: const Text('B/ Triệu chứng nghi nhiễm:',
                       style: TextStyle(fontSize: 16)),
                 ),
-                MultiDropdownInput(
+
+                MultiDropdownInput<KeyValue>(
                   label: 'Triệu chứng nghi nhiễm',
                   hint: 'Chọn triệu chứng',
-                  itemValue: [
-                    "Ho ra máu",
-                    "Thở dốc, khó thở",
-                    "Đau tức ngực kéo dài",
-                    "Lơ mơ, không tỉnh táo",
-                  ],
+                  itemValue: symptomMainList,
                   mode: Mode.BOTTOM_SHEET,
                   dropdownBuilder: _customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: (widget.medicalDeclData?.mainSymptoms != null)
+                      ? (widget.medicalDeclData!.mainSymptoms
+                          .toString()
+                          .split(',')
+                          .map((e) => symptomMainList[int.parse(e)])
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      mainSymptomController.text = "";
+                    } else {
+                      mainSymptomController.text =
+                          value.map((e) => e.id).join(",");
+                    }
+                  },
+                  enabled: widget.mode != Permission.view ? true : false,
+                  maxHeight: 700,
+                  popupTitle: 'Triệu chứng nghi nhiễm',
                 ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  child: const Text('C/ Triệu chứng khác:',
-                      style: TextStyle(fontSize: 16)),
-                ),
-                MultiDropdownInput(
+
+                MultiDropdownInput<KeyValue>(
                   label: 'Triệu chứng nghi nhiễm',
                   hint: 'Chọn triệu chứng',
-                  itemValue: [
-                    "Mệt mỏi",
-                    "Ho",
-                    "Ho có đờm",
-                    "Đau họng",
-                    "Đau đầu",
-                    "Chóng mặt",
-                    "Chán ăn",
-                    "Buồn nôn",
-                    "Tiêu chảy",
-                    "Xuất huyết ngoài da",
-                    "Ớn lạnh, rét",
-                    "Nổi ban ngoài da",
-                    "Viêm kết mạc",
-                    "Mất vị giác, khứu giác",
-                    "Đau nhức cơ",
-                  ],
+                  itemValue: symptomExtraList,
                   mode: Mode.BOTTOM_SHEET,
                   dropdownBuilder: _customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: (widget.medicalDeclData?.extraSymptoms != null)
+                      ? (widget.medicalDeclData!.extraSymptoms
+                          .toString()
+                          .split(',')
+                          .map((e) => symptomExtraList[int.parse(e)])
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      extraSymptomController.text = "";
+                    } else {
+                      extraSymptomController.text =
+                          value.map((e) => e.id).join(",");
+                    }
+                  },
+                  enabled: widget.mode != Permission.view ? true : false,
+                  maxHeight: 700,
+                  popupTitle: 'Triệu chứng khác',
                 ),
+
                 Input(
                   label: 'Khác',
                   hint: 'Khác',
@@ -166,19 +188,23 @@ class _MedDeclFormState extends State<MedDeclForm> {
   }
 }
 
-Widget _customDropDown(BuildContext context, List<String?> selectedItems) {
+Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
+  // if (selectedItems.isEmpty) {
+  //   return Container();
+  // }
+
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-          margin: EdgeInsets.symmetric(horizontal: 2),
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          // margin: EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Theme.of(context).primaryColorLight),
           child: Text(
-            e!,
+            e!.name,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.subtitle2,
           ),
