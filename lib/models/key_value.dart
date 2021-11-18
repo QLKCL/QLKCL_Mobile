@@ -24,6 +24,8 @@ class KeyValue {
   static List<KeyValue> fromJsonList(List list) {
     return list.map((item) => KeyValue.fromJson(item)).toList();
   }
+
+  toList() {}
 }
 
 Future<List<KeyValue>> fetchCountry() async {
