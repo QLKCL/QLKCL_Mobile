@@ -40,7 +40,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
         quarantineWard: widget.currentQuarantine!.id,
         quarantineBuilding: widget.currentBuilding!.id,
         quarantineFloor: widget.currentFloor!.id,
-        quarantineRoom: widget.currentFloor!.id,
+        quarantineRoom: widget.currentRoom!.id,
       ),
     );
   }
@@ -59,17 +59,17 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       actions: [
         IconButton(
           onPressed: () {
-             Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditRoomScreen(
-                    currentBuilding: widget.currentBuilding,
-                    currentQuarantine: widget.currentQuarantine,
-                    currentFloor: widget.currentFloor,
-                    currentRoom: widget.currentRoom,
-                  ),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditRoomScreen(
+                  currentBuilding: widget.currentBuilding,
+                  currentQuarantine: widget.currentQuarantine,
+                  currentFloor: widget.currentFloor,
+                  currentRoom: widget.currentRoom,
                 ),
-              );
+              ),
+            );
           },
           icon: Icon(Icons.edit),
         ),
@@ -82,6 +82,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             future: futureMemberList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                print('snapshot data in room detail');
+                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
