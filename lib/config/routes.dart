@@ -73,10 +73,10 @@ final Map<String, WidgetBuilder> routes = {
   FloorDetailsScreen.routeName: (context) => FloorDetailsScreen(),
   RoomDetailsScreen.routeName: (context) => RoomDetailsScreen(),
   MedicalDeclarationScreen.routeName: (context) => MedicalDeclarationScreen(),
-  EditBuildingScreen.routeName: (context) => EditBuildingScreen(),
-  AddBuildingScreen.routeName: (context) => AddBuildingScreen(),
-  EditFloorScreen.routeName: (context) => EditFloorScreen(),
+  EditBuildingScreen.routeName: (context) => EditBuildingScreen(onGoBackFloorList: (){}),
+  AddBuildingScreen.routeName: (context) => AddBuildingScreen(onGoBackBuildingList: (){}, ),
+  EditFloorScreen.routeName: (context) => EditFloorScreen(onGoBackRoomList: (){}),
   EditRoomScreen.routeName: (context) => EditRoomScreen(),
-  AddFloorScreen.routeName: (context) => AddFloorScreen(),
-  AddRoomScreen.routeName: (context) => AddRoomScreen()
+  AddFloorScreen.routeName: (context) => AddFloorScreen(onGoBackFloorList: (){},),
+  AddRoomScreen.routeName: (context) => AddRoomScreen(onGoBackRoomList: (){})
 };

@@ -88,8 +88,6 @@ Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
 Future<dynamic> updateFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateFloor, data);
-  print('response data');
-  print(response['data']);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

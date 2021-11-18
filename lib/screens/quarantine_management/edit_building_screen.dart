@@ -11,10 +11,12 @@ import 'package:qlkcl/config/app_theme.dart';
 class EditBuildingScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
+  final VoidCallback onGoBackFloorList;
   const EditBuildingScreen({
     Key? key,
     this.currentBuilding,
     this.currentQuarantine,
+    required this.onGoBackFloorList,
   }) : super(key: key);
   static const routeName = '/editing-building';
 
@@ -50,10 +52,13 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
         name: nameController.text,
         id: widget.currentBuilding!.id,
       ));
+      
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),
       );
+      widget.onGoBackFloorList();
+      Navigator.pop(context);
     }
   }
 

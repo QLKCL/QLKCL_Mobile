@@ -11,7 +11,6 @@ import './add_floor_screen.dart';
 class BuildingDetailsScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
-
   // final int? id;
 
   const BuildingDetailsScreen({
@@ -27,11 +26,14 @@ class BuildingDetailsScreen extends StatefulWidget {
 class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   late Future<dynamic> futureFloorList;
 
+  onRefresh() {
+    //print('On refresh');
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    futureFloorList =
-        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
   }
 
   @override
@@ -42,8 +44,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('currentBuilding id ở building_details');
+    futureFloorList =
+        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
     print(widget.currentBuilding!.id);
+
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
@@ -56,6 +60,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                 builder: (context) => EditBuildingScreen(
                   currentBuilding: widget.currentBuilding,
                   currentQuarantine: widget.currentQuarantine,
+                  onGoBackFloorList: onRefresh,
                 ),
               ),
             );
@@ -71,6 +76,8 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
             future: futureFloorList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                print('Snap shot data');
+                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -115,6 +122,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
               builder: (context) => AddFloorScreen(
                 currentBuilding: widget.currentBuilding,
                 currentQuarantine: widget.currentQuarantine,
+                onGoBackFloorList: onRefresh,
               ),
             ),
           );

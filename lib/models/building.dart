@@ -22,7 +22,7 @@ class Building {
     });
 
     final int id;
-    final String name;
+    late final String name;
     final dynamic quarantineWard;
     final int currentMem;
     final int? capacity;
@@ -63,7 +63,6 @@ Future<dynamic> createBuilding(Map<String, dynamic> data) async {
           message: "Tạo tòa thành công!",
           data: response['data']);
     } else {
-       print(response['message']);
       // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

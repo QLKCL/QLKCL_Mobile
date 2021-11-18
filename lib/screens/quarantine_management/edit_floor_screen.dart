@@ -13,12 +13,14 @@ class EditFloorScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
   final Floor? currentFloor;
-  const EditFloorScreen(
-      {Key? key,
-      this.currentBuilding,
-      this.currentQuarantine,
-      this.currentFloor})
-      : super(key: key);
+  final VoidCallback onGoBackRoomList;
+  const EditFloorScreen({
+    Key? key,
+    this.currentBuilding,
+    this.currentQuarantine,
+    this.currentFloor,
+    required this.onGoBackRoomList,
+  }) : super(key: key);
   static const routeName = '/editing-floor';
 
   @override
@@ -56,6 +58,8 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),
       );
+      widget.onGoBackRoomList();
+      Navigator.pop(context);
     }
   }
 

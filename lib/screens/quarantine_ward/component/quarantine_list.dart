@@ -65,6 +65,11 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   Widget build(BuildContext context) {
+
+    
+
+
+
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),

@@ -111,7 +111,7 @@ Future<dynamic> fetchMedDecl({data}) async {
 Future<dynamic> fetchMedList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.filterMedDecl, data);
-  print(response['data']['content']);
+ 
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -120,8 +120,7 @@ Future<dynamic> fetchMedList({data}) async {
 Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.createMedDecl, data);
-  print('create MD');
-  print(response['data']);
+  
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -137,8 +136,7 @@ Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
 Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateTest, data);
-  print('update response data');
-  print(response['data']);
+ 
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

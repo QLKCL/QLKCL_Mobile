@@ -57,15 +57,11 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      print('response data');
-      print(response['data']);
       return Response(
           success: true,
           message: "Tạo phòng thành công!",
           data: response['data']);
     } else {
-      print('response mes');
-      print(response['message']);
       // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
@@ -75,7 +71,7 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
 Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListRoom, data);
-  print(response['data']['content']);
+ 
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -92,8 +88,7 @@ Future<int> fetchNumOfRoom(Map<String, dynamic> data) async {
 Future<dynamic> updateRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateRoom, data);
-  print('Sửa phòng');
-  print(response['data']);
+
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

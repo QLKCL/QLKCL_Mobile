@@ -222,6 +222,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Tỉnh thành',
             ),
 
             DropdownInput<KeyValue>(
@@ -248,6 +249,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Quận huyện',
             ),
 
             DropdownInput<KeyValue>(
@@ -273,6 +275,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: 700,
+              popupTitle: 'Phường xã',
             ),
 
             Input(
@@ -281,31 +284,30 @@ class _QuarantineFormState extends State<QuarantineForm> {
             ),
 
             DropdownInput<KeyValue>(
-              label: 'Người quản lý',
-              hint: 'Người quản lý',
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.quarantineInfo?.mainManager != null)
-                  ? KeyValue.fromJson(widget.quarantineInfo!.mainManager)
-                  : null,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: (String? filter) =>
-                  fetchNotMemberList({'role_name_list': 'MANAGER'}),
-              onChanged: (value) {
-                if (value == null) {
-                  managerController.text = "";
-                } else {
-                  managerController.text = value.id.toString();
-                }
-              },
-              itemAsString: (KeyValue? u) => u!.name,
-              showSearchBox: true,
-              mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
-              popupTitle: 'Quản lý'
-            ),
+                label: 'Người quản lý',
+                hint: 'Người quản lý',
+                required: widget.mode == Permission.view ? false : true,
+                selectedItem: (widget.quarantineInfo?.mainManager != null)
+                    ? KeyValue.fromJson(widget.quarantineInfo!.mainManager)
+                    : null,
+                enabled: (widget.mode == Permission.edit ||
+                        widget.mode == Permission.add)
+                    ? true
+                    : false,
+                onFind: (String? filter) =>
+                    fetchNotMemberList({'role_name_list': 'MANAGER'}),
+                onChanged: (value) {
+                  if (value == null) {
+                    managerController.text = "";
+                  } else {
+                    managerController.text = value.id.toString();
+                  }
+                },
+                itemAsString: (KeyValue? u) => u!.name,
+                showSearchBox: true,
+                mode: Mode.BOTTOM_SHEET,
+                maxHeight: 700,
+                popupTitle: 'Quản lý'),
 
             DropdownInput<KeyValue>(
               label: 'Cơ sở cách ly',
