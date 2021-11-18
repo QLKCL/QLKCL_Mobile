@@ -40,9 +40,11 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       EasyLoading.show();
       final registerResponse = await updateRoom(updateRoomDataForm(
         name: nameController.text,
-        id: widget.currentFloor!.id,
+        id: widget.currentRoom!.id,
+        quarantineFloor: widget.currentFloor!.id,
         capacity: int.parse(capacityController.text),
       ));
+      
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),

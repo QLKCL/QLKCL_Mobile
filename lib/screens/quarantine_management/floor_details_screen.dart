@@ -34,6 +34,8 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
     super.initState();
     futureRoomList =
         fetchRoomList({'quarantine_floor': widget.currentFloor!.id});
+    print('future room list');
+    
   }
 
   @override
@@ -71,6 +73,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         child: FutureBuilder<dynamic>(
             future: futureRoomList,
             builder: (context, snapshot) {
+              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(
