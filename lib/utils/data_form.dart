@@ -391,3 +391,49 @@ Map<String, dynamic> filterMemberByRoomDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> createMedDeclDataForm({
+  String? phoneNumber,
+  int? heartBeat,
+  int? temperature,
+  int? breathing,
+  int? spo2,
+  double? bloodPressure,
+  String? mainSymtoms,
+  String? extraSymtoms,
+  String? otherSymtoms,
+}) {
+  var data = {
+    "phone_number": phoneNumber,
+    "heartbeat": heartBeat,
+    "temperature": temperature,
+    "breathing": breathing,
+    "spo2": spo2,
+    "blood_pressure": bloodPressure,
+    "main_symptoms": mainSymtoms,
+    "extra_symptoms": extraSymtoms,
+    "other_symptoms": otherSymtoms,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> filterMedDeclDataForm({
+  String? userCode,
+  String? createAtMax,
+  String? createAtMin,
+  int? page,
+  int? pageSize,
+  String? search,
+}) {
+  var data = {
+    "user_code": userCode,
+    "created_at_max": createAtMax,
+    "created_at_min": createAtMin,
+    "page": page,
+    "page_size": pageSize,
+    "search": search,
+  };
+  return prepareDataForm(data);
+}
+
+

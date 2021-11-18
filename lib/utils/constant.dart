@@ -44,6 +44,9 @@ class Constant {
   static const String createRoom = '/api/quarantine_ward/room/create';
   static const String updateRoom = '/api/quarantine_ward/room/update';
   static const String deleteRoom = '/api/quarantine_ward/room/delete';
+  static const String filterMedDecl = '/api/form/medical-declaration/filter';
+  static const String getMedDecl = '/api/form/medical-declaration/get';
+  static const String createMedDecl = '/api/form/medical-declaration/create';
 }
 
 enum Permission {
