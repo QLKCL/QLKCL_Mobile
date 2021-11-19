@@ -108,7 +108,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                                 ? "${widget.quarantineInfo.district['name']}, "
                                 : "") +
                             (widget.quarantineInfo.city != null
-                                ? "${widget.quarantineInfo.city['name']}, "
+                                ? "${widget.quarantineInfo.city['name']}"
                                 : ""),
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
@@ -228,7 +228,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           ? "${widget.quarantineInfo.district['name']}, "
                           : "") +
                       (widget.quarantineInfo.city != null
-                          ? "${widget.quarantineInfo.city['name']}, "
+                          ? "${widget.quarantineInfo.city['name']}"
                           : ""),
                 ),
 
