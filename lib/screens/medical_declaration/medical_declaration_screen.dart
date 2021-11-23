@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
-import '../../components/input.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:qlkcl/components/dropdown_field.dart';
 
 import 'component/md_form.dart';
 

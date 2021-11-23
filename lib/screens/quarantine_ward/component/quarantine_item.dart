@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
-import 'package:qlkcl/models/quarantine.dart';
 import '../quarantine_detail_screen.dart';
 
 class QuarantineItem extends StatefulWidget {

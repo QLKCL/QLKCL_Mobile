@@ -11,7 +11,6 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
-import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/constant.dart';
