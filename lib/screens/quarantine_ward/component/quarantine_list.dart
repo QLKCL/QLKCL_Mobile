@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
-
-import './quarantine_item.dart';
 
 class QuanrantineList extends StatefulWidget {
   // final data;

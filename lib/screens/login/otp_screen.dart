@@ -27,6 +27,7 @@ class _OtpState extends State<Otp> {
   bool hasError = false;
   TextEditingController textEditingController = TextEditingController();
 
+  // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   @override

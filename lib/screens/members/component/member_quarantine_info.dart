@@ -191,8 +191,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: widget.quarantineRoom ??
-              ((widget.quarantineData?.quarantineFloor != null)
-                  ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
+              ((widget.quarantineData?.quarantineRoom != null)
+                  ? KeyValue.fromJson(widget.quarantineData!.quarantineRoom)
                   : null),
               onChanged: (value) {
                 if (value == null) {
@@ -288,10 +288,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                   margin: const EdgeInsets.all(16),
                   child: Row(children: [
                     if (widget.mode == Permission.change_status &&
-                        widget.quarantineData?.customUser != null)
+                        widget.quarantineData?.customUserCode != null)
                       Spacer(),
                     if (widget.mode == Permission.change_status &&
-                        widget.quarantineData?.customUser != null)
+                        widget.quarantineData?.customUserCode != null)
                       OutlinedButton(
                         onPressed: () async {
                           EasyLoading.show();
@@ -332,7 +332,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
                 MemberPersonalInfo.userCode != null)
             ? MemberPersonalInfo.userCode
             : ((widget.quarantineData != null &&
-                    widget.quarantineData?.customUser != null)
+                    widget.quarantineData?.customUserCode != null)
                 ? widget.quarantineData!.customUserCode.toString()
                 : ""),
         quarantineWard: quarantineWardController.text,

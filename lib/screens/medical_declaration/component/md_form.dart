@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,7 +43,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print('medical decl init');
     print(widget.medicalDeclData.toString());
@@ -108,7 +105,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
     void _submit() async {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        print(temperatureController.text);
         EasyLoading.show();
         final registerResponse = await createMedDecl(createMedDeclDataForm(
           phoneNumber: phoneNumberController.text,

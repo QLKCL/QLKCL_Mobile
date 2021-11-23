@@ -7,6 +7,7 @@ class Carousel extends StatefulWidget {
 }
 
 class _CarouselState extends State<Carousel> {
+  // ignore: unused_field
   int _counter = 0;
 
   final listImg = [

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/utils/constant.dart';
+import 'package:websafe_svg/websafe_svg.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
@@ -16,11 +20,21 @@ class MemberHomePage extends StatefulWidget {
 
 class _MemberHomePageState extends State<MemberHomePage> {
   late Future<CovidData> futureCovid;
+  late Future<dynamic> futureData;
 
   @override
   void initState() {
     super.initState();
     futureCovid = fetchCovidList();
+    futureData = fetch();
+  }
+
+  Future<dynamic> fetch() async {
+    ApiHelper api = ApiHelper();
+    final response = await api.postHTTP(Constant.homeMember, null);
+    return response != null && response['data'] != null
+        ? response['data']
+        : null;
   }
 
   @override
@@ -65,49 +79,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
               future: getQuarantineStatus(),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.hasData) {
+                  var msg = "";
                   if (snapshot.data == "WAITING") {
-                    return Card(
-                      child: ListTile(
-                        title: Text(
-                          "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!",
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        leading: CircleAvatar(
-                            backgroundColor: CustomColors.error,
-                            child: Icon(
-                              Icons.notification_important_outlined,
-                              color: CustomColors.white,
-                            )),
-                      ),
-                    );
+                    msg =
+                        "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!";
                   } else if (snapshot.data == "REFUSED") {
-                    return Card(
-                      child: ListTile(
-                        title: Text(
-                          "Tài khoản của bạn đã bị từ chối. Vui lòng liên hệ người quản lý!",
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                        leading: CircleAvatar(
-                            backgroundColor: CustomColors.error,
-                            child: Icon(
-                              Icons.notification_important_outlined,
-                              color: CustomColors.white,
-                            )),
-                      ),
-                    );
+                    msg =
+                        "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!";
                   } else if (snapshot.data == "LOCKED") {
+                    msg =
+                        "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!";
+                  }
+                  if (msg != "") {
                     return Card(
                       child: ListTile(
                         title: Text(
-                          "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ người quản lý!",
+                          msg,
                           style: Theme.of(context).textTheme.headline6,
                         ),
                         leading: CircleAvatar(
-                            backgroundColor: CustomColors.error,
-                            child: Icon(
-                              Icons.notification_important_outlined,
-                              color: CustomColors.white,
-                            )),
+                          backgroundColor: CustomColors.error,
+                          child: Icon(
+                            Icons.notification_important_outlined,
+                            color: CustomColors.white,
+                          ),
+                        ),
                       ),
                     );
                   }
@@ -147,6 +143,180 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 return InfoCovidHomePage();
               },
             ),
+            FutureBuilder<dynamic>(
+              future: futureData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        child: Text(
+                          "Thông tin sức khỏe của bạn",
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          // contentPadding: EdgeInsets.all(16),
+                          title: Container(
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 2),
+                            child: Text.rich(
+                              TextSpan(
+                                // style: TextStyle(
+                                //   fontSize: 17,
+                                // ),
+                                children: [
+                                  TextSpan(
+                                    text: snapshot.data['custom_user']
+                                            ['full_name'] +
+                                        " ",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  WidgetSpan(
+                                    alignment: PlaceholderAlignment.top,
+                                    child: snapshot.data['custom_user']
+                                                ['gender'] ==
+                                            "MALE"
+                                        ? WebsafeSvg.asset(
+                                            "assets/svg/male.svg")
+                                        : WebsafeSvg.asset(
+                                            "assets/svg/female.svg"),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          subtitle: Container(
+                            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
+                            child: Wrap(
+                              direction: Axis.vertical, // make sure to set this
+                              spacing: 8, // s
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: CustomColors.primaryText,
+                                    ),
+                                    children: [
+                                      WidgetSpan(
+                                        child: Icon(
+                                          Icons.history,
+                                          size: 16,
+                                          color: CustomColors.disableText,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: " Sức khỏe: " +
+                                            (snapshot.data['health_status'] ==
+                                                    "SERIOUS"
+                                                ? "Nguy hiểm"
+                                                : (snapshot.data[
+                                                            'health_status'] ==
+                                                        "UNWELL"
+                                                    ? "Nghi nhiễm"
+                                                    : "Bình thường")),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: CustomColors.primaryText,
+                                    ),
+                                    children: [
+                                      WidgetSpan(
+                                        child: Icon(
+                                          Icons.description_outlined,
+                                          size: 16,
+                                          color: CustomColors.disableText,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: " Xét nghiệm: " +
+                                            (snapshot.data['positive_test'] !=
+                                                    null
+                                                ? (snapshot.data[
+                                                            'positive_test'] ==
+                                                        false
+                                                    ? "Âm tính"
+                                                    : "Dương tính")
+                                                : "Chưa có kết quả xét nghiệm") +
+                                            " (" +
+                                            DateFormat("dd/MM/yyyy HH:mm:ss")
+                                                .format(DateTime.parse(snapshot
+                                                        .data['last_tested'])
+                                                    .toLocal()) +
+                                            ")",
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          isThreeLine: true,
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        child: Text(
+                          "Thông tin cách ly",
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ),
+                      QuarantineHome(
+                        name: snapshot.data['quarantine_ward']['full_name'],
+                        manager: snapshot.data['quarantine_ward']
+                            ['main_manager']['full_name'],
+                        address: (snapshot.data['quarantine_ward']['address'] !=
+                                    null
+                                ? "${snapshot.data['quarantine_ward']['address']}, "
+                                : "") +
+                            (snapshot.data['quarantine_ward']['ward'] != null
+                                ? "${snapshot.data['quarantine_ward']['ward']['name']}, "
+                                : "") +
+                            (snapshot.data['quarantine_ward']['district'] !=
+                                    null
+                                ? "${snapshot.data['quarantine_ward']['district']['name']}, "
+                                : "") +
+                            (snapshot.data['quarantine_ward']['city'] != null
+                                ? "${snapshot.data['quarantine_ward']['city']['name']}"
+                                : ""),
+                        room: (snapshot.data['quarantine_room'] != null
+                                ? "${snapshot.data['quarantine_room']['name']} - "
+                                : "") +
+                            (snapshot.data['quarantine_floor'] != null
+                                ? "${snapshot.data['quarantine_floor']['name']} - "
+                                : "") +
+                            (snapshot.data['quarantine_building'] != null
+                                ? "${snapshot.data['quarantine_building']['name']} - "
+                                : "") +
+                            (snapshot.data['quarantine_ward'] != null
+                                ? "${snapshot.data['quarantine_ward']['full_name']}"
+                                : ""),
+                        phone: snapshot.data['quarantine_ward']['phone_number'],
+                        quarantineAt: snapshot.data['quarantined_at'],
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+
+                // By default, show a loading spinner.
+                // return const CircularProgressIndicator();
+                return Container();
+              },
+            ),
             Container(
               margin: const EdgeInsets.all(16),
               child: ElevatedButton(
@@ -165,11 +335,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 ),
               ),
             ),
-            Container(
-                margin: const EdgeInsets.all(16),
-                child: Image.asset(
-                  "assets/images/member_home_image.png",
-                )),
           ],
         ),
       ),

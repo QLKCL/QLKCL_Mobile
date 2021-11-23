@@ -32,7 +32,6 @@ class Member {
     this.backgroundDisease,
     this.otherBackgroundDisease,
     this.backgroundDiseaseNote,
-    required this.customUser,
     this.careStaff,
     this.customUserCode,
   });
@@ -54,7 +53,6 @@ class Member {
   final dynamic backgroundDisease;
   final dynamic otherBackgroundDisease;
   final dynamic backgroundDiseaseNote;
-  final int customUser;
   final dynamic careStaff;
   String? customUserCode;
 
@@ -76,7 +74,6 @@ class Member {
         backgroundDisease: json["background_disease"],
         otherBackgroundDisease: json["other_background_disease"],
         backgroundDiseaseNote: json["background_disease_note"],
-        customUser: json["custom_user"],
         careStaff: json["care_staff"],
       );
 
@@ -98,7 +95,6 @@ class Member {
         "background_disease": backgroundDisease,
         "other_background_disease": otherBackgroundDisease,
         "background_disease_note": backgroundDiseaseNote,
-        "custom_user": customUser,
         "care_staff": careStaff,
       };
 }
