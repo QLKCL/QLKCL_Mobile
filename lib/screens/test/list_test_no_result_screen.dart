@@ -111,7 +111,9 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                       MaterialPageRoute(
                           builder: (context) => UpdateTest(
                                 code: item['code'],
-                              )));
+                              ))).then(
+                    (value) => _pagingController.refresh(),
+                  );
                 },
               ),
             ),

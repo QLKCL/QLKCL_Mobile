@@ -157,26 +157,6 @@ class _AllMemberState extends State<AllMember> {
                                   )));
                     },
                   ),
-                  PopupMenuItem(
-                    child: Text('Hoàn thành cách ly'),
-                    onTap: () async {
-                      EasyLoading.show();
-                      final response =
-                          await finishMember({'member_codes': item['code']});
-                      if (response.success) {
-                        _pagingController.refresh();
-                        EasyLoading.dismiss();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
-                        );
-                      } else {
-                        EasyLoading.dismiss();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
-                        );
-                      }
-                    },
-                  ),
                 ],
               ),
             ),

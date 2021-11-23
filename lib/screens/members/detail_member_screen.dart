@@ -57,13 +57,26 @@ class _DetailMemberState extends State<DetailMember>
             IconButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => UpdateMember(
-                              code: widget.code,
-                              personalData: personalData,
-                              quarantineData: quarantineData,
-                            )));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UpdateMember(
+                      code: widget.code,
+                      personalData: personalData,
+                      quarantineData: quarantineData,
+                    ),
+                  ),
+                ).then(
+                  (_) => setState(
+                    () {
+                      if (widget.code != null) {
+                        futureMember =
+                            fetchCustomUser(data: {'code': widget.code});
+                      } else {
+                        futureMember = fetchCustomUser();
+                      }
+                    },
+                  ),
+                );
               },
               icon: Icon(Icons.edit),
             ),
