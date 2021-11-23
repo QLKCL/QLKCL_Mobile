@@ -130,37 +130,44 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           ),
         ],
       ),
-      body: FutureBuilder<dynamic>(
-        future: futureData,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return InfoManagerHomePage(
-              waitingUsers: snapshot.data['number_of_waiting_users'],
-              suspectedUsers: snapshot.data['number_of_suspected_users'],
-              needTestUsers: snapshot.data['number_of_need_test_users'],
-              canFinishUsers: snapshot.data['number_of_can_finish_users'],
-              waitingTests: snapshot.data['number_of_waiting_tests'],
-              numberIn: snapshot.data['in'].entries
-                  .map((entry) => KeyValue(id: entry.key, name: entry.value))
-                  .toList()
-                  .cast<KeyValue>()
-                  .reversed
-                  .toList(),
-              numberOut: snapshot.data['out'].entries
-                  .map((entry) => KeyValue(id: entry.key, name: entry.value))
-                  .toList()
-                  .cast<KeyValue>()
-                  .reversed
-                  .toList(),
-            );
-          } else if (snapshot.hasError) {
-            return Text('${snapshot.error}');
-          }
+      body: RefreshIndicator(
+        onRefresh: () => Future.sync(() {
+          setState(() {
+            futureData = fetch();
+          });
+        }),
+        child: FutureBuilder<dynamic>(
+          future: futureData,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return InfoManagerHomePage(
+                waitingUsers: snapshot.data['number_of_waiting_users'],
+                suspectedUsers: snapshot.data['number_of_suspected_users'],
+                needTestUsers: snapshot.data['number_of_need_test_users'],
+                canFinishUsers: snapshot.data['number_of_can_finish_users'],
+                waitingTests: snapshot.data['number_of_waiting_tests'],
+                numberIn: snapshot.data['in'].entries
+                    .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                    .toList()
+                    .cast<KeyValue>()
+                    .reversed
+                    .toList(),
+                numberOut: snapshot.data['out'].entries
+                    .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                    .toList()
+                    .cast<KeyValue>()
+                    .reversed
+                    .toList(),
+              );
+            } else if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            }
 
-          // By default, show a loading spinner.
-          // return const CircularProgressIndicator();
-          return InfoManagerHomePage();
-        },
+            // By default, show a loading spinner.
+            // return const CircularProgressIndicator();
+            return InfoManagerHomePage();
+          },
+        ),
       ),
     );
   }
