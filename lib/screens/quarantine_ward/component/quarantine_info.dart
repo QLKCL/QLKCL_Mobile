@@ -40,7 +40,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
 
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
-      margin: EdgeInsets.only(bottom: 6),
+      margin: EdgeInsets.only(bottom: 8),
       child: Text.rich(
         TextSpan(
           style: TextStyle(
@@ -180,9 +180,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           Container(
             width: MediaQuery.of(context).size.width * 1,
             margin: EdgeInsets.only(left: 23, right: 23, top: 20, bottom: 8),
-            child: Wrap(
-              direction: Axis.vertical, // make sure to set this
-              spacing: 4, // set
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   margin: EdgeInsets.only(

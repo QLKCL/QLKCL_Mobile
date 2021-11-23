@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/models/quarantine.dart';
-import 'package:qlkcl/screens/quarantine_ward/component/quarantine_item.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
