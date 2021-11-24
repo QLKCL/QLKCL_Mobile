@@ -384,7 +384,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   },
                   child: Text(
                     'Khai báo y tế',
-                    style: TextStyle(color: CustomColors.white),
+                    style: TextStyle(
+                      color: CustomColors.white,
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),

@@ -214,6 +214,13 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
       return Response(
           success: true,
           message: "Tạo mật khẩu thành công. Vui lòng đăng nhập lại!");
+    } else if (data['error_code'] == 400) {
+      if (data['message'] == "New password is the same with old password") {
+        return Response(
+            success: false, message: "Mật khẩu đã từng được sử dụng!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

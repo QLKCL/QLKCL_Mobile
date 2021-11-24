@@ -47,31 +47,31 @@ class _AccountState extends State<Account> {
             ),
           ),
           Card(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushNamed(ListMedicalDeclaration.routeName);
-                  },
-                  title: Text('Lịch sử khai báo y tế'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                ),
-                Divider(
-                  indent: 16,
-                  endIndent: 16,
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushNamed(ListTest.routeName);
-                  },
-                  title: Text('Kết quả xét nghiệm'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                ),
-              ],
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushNamed(ListMedicalDeclaration.routeName);
+                    },
+                    title: Text('Lịch sử khai báo y tế'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                  ),
+                  Divider(
+                    indent: 16,
+                    endIndent: 16,
+                  ),
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushNamed(ListTest.routeName);
+                    },
+                    title: Text('Kết quả xét nghiệm'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                  ),
+                ],
+              ),
             ),
-          ),
           Container(
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.only(left: 16),
