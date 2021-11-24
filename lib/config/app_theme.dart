@@ -68,7 +68,7 @@ class AppTheme with ChangeNotifier {
         ),
         // borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         color: CustomColors.white,
-        shadowColor: CustomColors.shadow.withOpacity(0.1),
+        shadowColor: CustomColors.shadow.withOpacity(0.2),
         elevation: 12,
         margin: EdgeInsets.fromLTRB(16, 8, 16, 0),
       ),
