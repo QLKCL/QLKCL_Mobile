@@ -111,37 +111,40 @@ class _SuspectMemberState extends State<SuspectMember> {
               },
               menus: PopupMenuButton(
                 icon: Icon(Icons.more_vert),
+                onSelected: (result) async {
+                  if (result == 'update_info') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => UpdateMember(
+                                  code: item['code'],
+                                )));
+                  } else if (result == 'medical_declare_history') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListMedicalDeclaration(
+                                  code: item['code'],
+                                )));
+                  } else if (result == 'create_test') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => AddTest(
+                                  code: item["code"],
+                                  name: item['full_name'],
+                                )));
+                  }
+                },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     child: Text('Cập nhật thông tin'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => UpdateMember(
-                                    code: item['code'],
-                                  )));
-                    },
+                    value: "update_info",
                   ),
                   PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => ListMedicalDeclaration(
-                                    code: item['code'],
-                                  )));
-                    },
+                    value: "medical_declare_history",
                   ),
                   PopupMenuItem(
                     child: Text('Tạo phiếu xét nghiệm'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => AddTest(
-                                    code: item["code"],
-                                    name: item['full_name'],
-                                  )));
-                    },
+                    value: "create_test",
                   ),
                 ],
               ),
