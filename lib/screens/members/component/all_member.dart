@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
@@ -114,48 +113,51 @@ class _AllMemberState extends State<AllMember> {
               },
               menus: PopupMenuButton(
                 icon: Icon(Icons.more_vert),
+                onSelected: (result) {
+                  if (result == 'update_info') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => UpdateMember(
+                                  code: item['code'],
+                                )));
+                  } else if (result == 'medical_declare_history') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListMedicalDeclaration(
+                                  code: item['code'],
+                                )));
+                  } else if (result == 'create_test') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => AddTest(
+                                  code: item["code"],
+                                  name: item['full_name'],
+                                )));
+                  } else if (result == 'test_history') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListTest(
+                                  code: item["code"],
+                                  name: item['full_name'],
+                                )));
+                  }
+                },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   PopupMenuItem(
                     child: Text('Cập nhật thông tin'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => UpdateMember(
-                                    code: item['code'],
-                                  )));
-                    },
+                    value: "update_info",
                   ),
                   PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => ListMedicalDeclaration(
-                                    code: item['code'],
-                                  )));
-                    },
+                    value: "medical_declare_history",
                   ),
                   PopupMenuItem(
                     child: Text('Tạo phiếu xét nghiệm'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => AddTest(
-                                    code: item["code"],
-                                    name: item['full_name'],
-                                  )));
-                    },
+                    value: "create_test",
                   ),
                   PopupMenuItem(
                     child: Text('Lịch sử xét nghiệm'),
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .push(MaterialPageRoute(
-                              builder: (context) => ListTest(
-                                    code: item["code"],
-                                    name: item['full_name'],
-                                  )));
-                    },
+                    value: "test_history",
                   ),
                 ],
               ),
