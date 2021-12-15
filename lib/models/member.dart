@@ -127,6 +127,11 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
         return Response(success: false, message: "Email đã được sử dụng!");
+      } else if (response['message']['identity_number'] != null &&
+          response['message']['identity_number'] == "Exist") {
+        return Response(success: false, message: "Số CMND/CCCD đã tồn tại!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
       }
     } else {
       // return Response(success: false, message: jsonEncode(response['message']));
