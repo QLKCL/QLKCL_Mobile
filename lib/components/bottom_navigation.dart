@@ -66,7 +66,9 @@ class BottomNavigation extends StatelessWidget {
   BottomNavigationBarItem _buildItem(TabItem tabItem) {
     return BottomNavigationBarItem(
       label: tabName[tabItem],
-      icon: Icon(tabIcon[tabItem]),
+      icon: tabItem == currentTab
+          ? Icon(selectTabIcon[tabItem])
+          : Icon(tabIcon[tabItem]),
     );
   }
 }
@@ -93,6 +95,14 @@ const Map<TabItem, IconData> tabIcon = {
   TabItem.qr_code_scan: Icons.qr_code_scanner,
   TabItem.quarantine_ward: Icons.apartment_outlined,
   TabItem.account: Icons.person_outline,
+};
+
+const Map<TabItem, IconData> selectTabIcon = {
+  TabItem.homepage: Icons.home,
+  TabItem.quarantine_person: Icons.groups,
+  TabItem.qr_code_scan: Icons.qr_code_scanner,
+  TabItem.quarantine_ward: Icons.apartment,
+  TabItem.account: Icons.person,
 };
 
 const Map<TabItem, String> tabRouteName = {
