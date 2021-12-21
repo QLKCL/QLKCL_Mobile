@@ -215,7 +215,7 @@ Future<dynamic> finishMember(data) async {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Đã hoàn thành cách ly!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(success: false, message: "Không thể hoàn thành cách ly!");
     }
   }
 }
