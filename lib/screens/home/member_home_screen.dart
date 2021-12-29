@@ -40,6 +40,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.phone),
+        tooltip: "Liên hệ khẩn cấp!",
+      ),
       appBar: AppBar(
         title: Text("Trang chủ"),
         centerTitle: true,
