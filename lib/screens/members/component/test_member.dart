@@ -123,6 +123,7 @@ class _TestMemberState extends State<TestMember> {
                         .push(MaterialPageRoute(
                             builder: (context) => ListMedicalDeclaration(
                                   code: item['code'],
+                                  phone: item["phone_number"],
                                 )));
                   } else if (result == 'create_test') {
                     Navigator.of(context, rootNavigator: true)
