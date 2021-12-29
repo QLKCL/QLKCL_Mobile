@@ -375,12 +375,16 @@ class _MemberCardState extends State<MemberCard> {
                     fontSize: 12,
                   ),
                 ),
+                SizedBox(
+                  height: 4,
+                ),
                 Text.rich(
                   TextSpan(
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.place_outlined,
+                          size: 16,
                           color: CustomColors.disableText,
                         ),
                       ),
@@ -393,12 +397,16 @@ class _MemberCardState extends State<MemberCard> {
                   maxLines: 1,
                   softWrap: false,
                 ),
+                SizedBox(
+                  height: 4,
+                ),
                 Text.rich(
                   TextSpan(
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.history,
+                          size: 16,
                           color: CustomColors.disableText,
                         ),
                       ),
@@ -803,7 +811,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                               ),
                             ),
                             TextSpan(
-                              text: " " + widget.address!,
+                              text: " Địa chỉ: " + widget.address!,
                             ),
                           ],
                         ),

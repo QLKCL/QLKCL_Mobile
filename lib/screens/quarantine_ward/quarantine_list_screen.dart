@@ -50,6 +50,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
             NewQuarantine.routeName,
           );
         },
+        tooltip: "Thêm khu cách ly mới",
       ),
     );
   }
