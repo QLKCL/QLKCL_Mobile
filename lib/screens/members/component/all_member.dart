@@ -3,6 +3,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
@@ -120,11 +121,18 @@ class _AllMemberState extends State<AllMember> {
                             builder: (context) => UpdateMember(
                                   code: item['code'],
                                 )));
+                  } else if (result == 'create_medical_declaration') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => MedicalDeclarationScreen(
+                                  phone: item["phone_number"],
+                                )));
                   } else if (result == 'medical_declare_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => ListMedicalDeclaration(
                                   code: item['code'],
+                                  phone: item["phone_number"],
                                 )));
                   } else if (result == 'create_test') {
                     Navigator.of(context, rootNavigator: true)
@@ -146,6 +154,10 @@ class _AllMemberState extends State<AllMember> {
                   PopupMenuItem(
                     child: Text('Cập nhật thông tin'),
                     value: "update_info",
+                  ),
+                  PopupMenuItem(
+                    child: Text('Khai báo y tế'),
+                    value: "create_medical_declaration",
                   ),
                   PopupMenuItem(
                     child: Text('Lịch sử khai báo y tế'),

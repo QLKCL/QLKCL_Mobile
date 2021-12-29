@@ -40,6 +40,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.phone),
+        tooltip: "Liên hệ khẩn cấp!",
+      ),
       appBar: AppBar(
         title: Text("Trang chủ"),
         centerTitle: true,
@@ -358,6 +363,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 snapshot.data['quarantined_at'] != null
                                     ? snapshot.data['quarantined_at']
                                     : "",
+                            quarantineTime:
+                                snapshot.data['quarantine_ward'] != null
+                                    ? snapshot.data['quarantine_ward']['quarantine_time']
+                                    : 14,
                           ),
                       ],
                     );

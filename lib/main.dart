@@ -21,9 +21,6 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
 
-  ConnectionStatusSingleton connectionStatus =
-      ConnectionStatusSingleton.getInstance();
-  connectionStatus.initialize();
   await Hive.initFlutter();
 
   bool isLoggedIn = await getLoginState();

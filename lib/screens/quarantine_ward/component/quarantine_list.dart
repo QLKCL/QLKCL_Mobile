@@ -85,6 +85,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
             name: item['full_name'] ?? "",
             currentMem: item['num_current_member'],
             manager: item['main_manager']['full_name'] ?? "",
+            address: "Đang cập nhật...",
           ),
         ),
       ),

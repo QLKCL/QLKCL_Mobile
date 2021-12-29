@@ -125,6 +125,7 @@ class _CompleteMemberState extends State<CompleteMember> {
                         .push(MaterialPageRoute(
                             builder: (context) => ListMedicalDeclaration(
                                   code: item['code'],
+                                  phone: item["phone_number"],
                                 )));
                   } else if (result == 'test_history') {
                     Navigator.of(context, rootNavigator: true)

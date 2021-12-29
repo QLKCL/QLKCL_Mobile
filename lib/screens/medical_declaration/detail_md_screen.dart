@@ -44,8 +44,6 @@ class _ViewMDState extends State<ViewMD> {
             if (snapshot.connectionState == ConnectionState.done) {
               EasyLoading.dismiss();
               if (snapshot.hasData) {
-                print('snapshot');
-                print(snapshot.data);
                 return MedDeclForm(
                   medicalDeclData: MedicalDecl.fromJson(snapshot.data),
                   mode: Permission.view,

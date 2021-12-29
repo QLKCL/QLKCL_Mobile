@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  ListMedicalDeclaration({Key? key, this.code}) : super(key: key);
+  ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
   final String? code;
+  final String? phone;
 
   @override
   _ListMedicalDeclarationState createState() => _ListMedicalDeclarationState();
@@ -76,9 +77,14 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context, rootNavigator: true).pushNamed(
-            MedicalDeclarationScreen.routeName,
-          );
+          Navigator.of(context)
+              .push(MaterialPageRoute(
+                  builder: (context) => MedicalDeclarationScreen(
+                        phone: widget.phone,
+                      )))
+              .then(
+                (value) => _pagingController.refresh(),
+              );
         },
         child: Icon(Icons.add),
       ),

@@ -15,9 +15,11 @@ class MedDeclForm extends StatefulWidget {
     Key? key,
     this.mode = Permission.view,
     this.medicalDeclData,
+    this.phone,
   }) : super(key: key);
   final Permission mode;
   final MedicalDecl? medicalDeclData;
+  final String? phone;
 
   @override
   _MedDeclFormState createState() => _MedDeclFormState();
@@ -44,9 +46,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
   @override
   void initState() {
     super.initState();
-    print('medical decl init');
-    print(widget.medicalDeclData.toString());
-
     //Data contained
     userNameController.text = widget.medicalDeclData?.user.fullName != null
         ? widget.medicalDeclData!.user.fullName
@@ -56,10 +55,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
         ? widget.medicalDeclData!.heartbeat.toString()
         : "";
 
-    print('input');
-    print(heartBeatController.text);
-    print('heartbeat in data');
-    print(widget.medicalDeclData?.heartbeat);
     temperatureController.text = widget.medicalDeclData?.temperature != null
         ? widget.medicalDeclData!.temperature.toString()
         : "";
@@ -71,36 +66,17 @@ class _MedDeclFormState extends State<MedDeclForm> {
     bloodPressureController.text = widget.medicalDeclData?.breathing != null
         ? widget.medicalDeclData!.bloodPressure.toString()
         : "";
+
     spo2Controller.text = widget.medicalDeclData?.spo2 != null
         ? widget.medicalDeclData!.spo2.toString()
         : "";
+
+    isChecked = widget.phone != null;
+    phoneNumberController.text = widget.phone ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
-    // //Data contained
-    // userNameController.text = widget.medicalDeclData?.user.fullName != null
-    //     ? widget.medicalDeclData!.user.fullName
-    //     : "";
-
-    // heartBeatController.text = widget.medicalDeclData?.heartbeat != null
-    //     ? widget.medicalDeclData!.heartbeat.toString()
-    //     : "";
-
-    // temperatureController.text = widget.medicalDeclData?.temperature != null
-    //     ? widget.medicalDeclData!.temperature.toString()
-    //     : "";
-
-    // breathingController.text = widget.medicalDeclData?.breathing != null
-    //     ? widget.medicalDeclData!.breathing.toString()
-    //     : "";
-
-    // bloodPressureController.text = widget.medicalDeclData?.breathing != null
-    //     ? widget.medicalDeclData!.bloodPressure.toString()
-    //     : "";
-    // spo2Controller.text = widget.medicalDeclData?.spo2 != null
-    //     ? widget.medicalDeclData!.spo2.toString()
-    //     : "";
     //submit
     void _submit() async {
       // Validate returns true if the form is valid, or false otherwise.
@@ -108,7 +84,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
         EasyLoading.show();
         final registerResponse = await createMedDecl(createMedDeclDataForm(
           phoneNumber: phoneNumberController.text,
-          heartBeat:  int.tryParse(heartBeatController.text),
+          heartBeat: int.tryParse(heartBeatController.text),
           temperature: double.tryParse(temperatureController.text),
           breathing: int.tryParse(breathingController.text),
           bloodPressure: double.tryParse(bloodPressureController.text),
@@ -159,7 +135,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                                   label: 'Số điện thoại',
                                   hint: 'SĐT người được khai báo',
                                   required: true,
-                                  type: TextInputType.number,
+                                  type: TextInputType.phone,
                                   enabled: true,
                                   controller: phoneNumberController,
                                   validatorFunction: phoneValidator,
@@ -167,8 +143,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                               : Input(
                                   label: 'Số điện thoại',
                                   hint: 'SĐT người được khai báo',
-                                  // required: true,
-                                  type: TextInputType.number,
+                                  type: TextInputType.phone,
                                   enabled: false,
                                 ),
                         ],
@@ -177,7 +152,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         label: 'Họ và tên',
                         controller: userNameController,
                         required: true,
-                        type: TextInputType.number,
                         enabled: false,
                       ),
 
