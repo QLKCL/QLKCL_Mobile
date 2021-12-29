@@ -835,6 +835,7 @@ class QuarantineHome extends StatelessWidget {
   final String room;
   final String phone;
   final String quarantineAt;
+  final int quarantineTime;
 
   const QuarantineHome({
     required this.name,
@@ -843,6 +844,7 @@ class QuarantineHome extends StatelessWidget {
     required this.room,
     required this.phone,
     required this.quarantineAt,
+    required this.quarantineTime,
   });
 
   @override
@@ -925,14 +927,41 @@ class QuarantineHome extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Icon(
-                              Icons.date_range_rounded,
+                              Icons.date_range_outlined,
                               size: 16,
                               color: CustomColors.disableText,
                             ),
                           ),
                           TextSpan(
-                            text: " Ngày cách ly: " + quarantineAt,
+                            text: " Bắt đầu cách ly: " + quarantineAt,
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: CustomColors.primaryText,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Icon(
+                              Icons.event_available_outlined,
+                              size: 16,
+                              color: CustomColors.disableText,
+                            ),
+                          ),
+                          TextSpan(
+                              text: " Dự kiến hoàn thành cách ly: " +
+                                  DateFormat("dd/MM/yyyy").format(DateFormat(
+                                          "dd/MM/yyyy")
+                                      .parse(quarantineAt)
+                                      .add(Duration(days: quarantineTime)))),
                         ],
                       ),
                     ),
