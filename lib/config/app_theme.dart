@@ -15,6 +15,7 @@ class AppTheme with ChangeNotifier {
     return ThemeData(
       colorScheme: ColorScheme.fromSwatch(accentColor: CustomColors.primary),
       primaryColor: CustomColors.primary,
+      disabledColor: CustomColors.disableText,
       scaffoldBackgroundColor: CustomColors.background,
       fontFamily: 'Roboto',
       appBarTheme: AppBarTheme(

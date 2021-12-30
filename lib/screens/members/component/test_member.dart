@@ -3,7 +3,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -105,7 +104,7 @@ class _TestMemberState extends State<TestMember> {
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
-                        builder: (context) => DetailMember(
+                        builder: (context) => UpdateMember(
                               code: item['code'],
                             )));
               },

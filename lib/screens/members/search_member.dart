@@ -5,7 +5,7 @@ import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
@@ -189,7 +189,7 @@ class _SearchMemberState extends State<SearchMember> {
                             onTap: () {
                               Navigator.of(context, rootNavigator: true)
                                   .push(MaterialPageRoute(
-                                      builder: (context) => DetailMember(
+                                      builder: (context) => UpdateMember(
                                             code: item['code'],
                                           )));
                             },

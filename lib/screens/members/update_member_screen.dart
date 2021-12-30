@@ -11,10 +11,7 @@ import 'package:qlkcl/utils/constant.dart';
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
   final String? code;
-  final CustomUser? personalData;
-  final Member? quarantineData;
-  UpdateMember({Key? key, this.code, this.personalData, this.quarantineData})
-      : super(key: key);
+  UpdateMember({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateMemberState createState() => _UpdateMemberState();
@@ -54,7 +51,7 @@ class _UpdateMemberState extends State<UpdateMember>
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Cập nhật thông tin"),
+          title: Text("Thông tin chi tiết"),
           centerTitle: true,
           // actions: [
           //   if (_tabController.index == 0)
@@ -73,71 +70,55 @@ class _UpdateMemberState extends State<UpdateMember>
             ],
           ),
         ),
-        body: (widget.personalData != null)
-            ? (TabBarView(
-                controller: _tabController,
-                children: [
-                  MemberPersonalInfo(
-                    personalData: widget.personalData,
-                    tabController: _tabController,
-                    mode: Permission.edit,
-                  ),
-                  MemberQuarantineInfo(
-                    quarantineData: widget.quarantineData,
-                    mode: Permission.edit,
-                  ),
-                ],
-              ))
-            : (FutureBuilder<dynamic>(
-                future: futureMember,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    EasyLoading.dismiss();
-                    if (snapshot.hasData) {
-                      personalData =
-                          CustomUser.fromJson(snapshot.data["custom_user"]);
-                      quarantineData = snapshot.data["member"] != null
-                          ? Member.fromJson(snapshot.data["member"])
-                          : null;
-                      if (quarantineData != null) {
-                        quarantineData!.customUserCode = personalData.code;
-                        quarantineData!.quarantineWard =
-                            personalData.quarantineWard;
-                      }
-                      return TabBarView(
-                        controller: _tabController,
-                        children: [
-                          MemberPersonalInfo(
-                            personalData: personalData,
-                            tabController: _tabController,
-                            mode: Permission.edit,
-                          ),
-                          MemberQuarantineInfo(
-                            quarantineData: quarantineData,
-                            mode: Permission.edit,
-                          ),
-                        ],
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-                  }
+        body: (FutureBuilder<dynamic>(
+          future: futureMember,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              EasyLoading.dismiss();
+              if (snapshot.hasData) {
+                personalData =
+                    CustomUser.fromJson(snapshot.data["custom_user"]);
+                quarantineData = snapshot.data["member"] != null
+                    ? Member.fromJson(snapshot.data["member"])
+                    : null;
+                if (quarantineData != null) {
+                  quarantineData!.customUserCode = personalData.code;
+                  quarantineData!.quarantineWard = personalData.quarantineWard;
+                }
+                return TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MemberPersonalInfo(
+                      personalData: personalData,
+                      tabController: _tabController,
+                      mode: Permission.edit,
+                    ),
+                    MemberQuarantineInfo(
+                      quarantineData: quarantineData,
+                      mode: Permission.edit,
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+            }
 
-                  EasyLoading.show();
-                  return TabBarView(
-                    controller: _tabController,
-                    children: [
-                      MemberPersonalInfo(
-                        tabController: _tabController,
-                        mode: Permission.edit,
-                      ),
-                      MemberQuarantineInfo(
-                        mode: Permission.edit,
-                      ),
-                    ],
-                  );
-                },
-              )),
+            EasyLoading.show();
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                MemberPersonalInfo(
+                  tabController: _tabController,
+                  mode: Permission.edit,
+                ),
+                MemberQuarantineInfo(
+                  mode: Permission.edit,
+                ),
+              ],
+            );
+          },
+        )),
       ),
     );
   }

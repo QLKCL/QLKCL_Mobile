@@ -4,7 +4,6 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
@@ -108,7 +107,7 @@ class _AllMemberState extends State<AllMember> {
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
-                        builder: (context) => DetailMember(
+                        builder: (context) => UpdateMember(
                               code: item['code'],
                             )));
               },
