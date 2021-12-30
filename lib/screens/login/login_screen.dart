@@ -108,8 +108,9 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     "Quên mật khẩu",
                     style: TextStyle(
-                        color: CustomColors.primary,
-                        decoration: TextDecoration.underline),
+                      color: CustomColors.primary,
+                      // decoration: TextDecoration.underline,
+                    ),
                   ),
                 )
               ],
@@ -132,8 +133,9 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               "Đăng ký cách ly",
               style: TextStyle(
-                  color: CustomColors.primary,
-                  decoration: TextDecoration.underline),
+                color: CustomColors.primary,
+                // decoration: TextDecoration.underline,
+              ),
             ),
           )
         ],
