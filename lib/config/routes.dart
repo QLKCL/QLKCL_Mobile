@@ -8,7 +8,6 @@ import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
@@ -67,7 +66,6 @@ final Map<String, WidgetBuilder> routes = {
   ListAllMember.routeName: (context) => ListAllMember(),
   AddMember.routeName: (context) => AddMember(),
   UpdateMember.routeName: (context) => UpdateMember(),
-  DetailMember.routeName: (context) => DetailMember(),
   ConfirmDetailMember.routeName: (context) => ConfirmDetailMember(),
   BuildingDetailsScreen.routeName: (context) => BuildingDetailsScreen(),
   FloorDetailsScreen.routeName: (context) => FloorDetailsScreen(),

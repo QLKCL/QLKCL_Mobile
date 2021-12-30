@@ -5,7 +5,7 @@ import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 
@@ -87,7 +87,7 @@ class _AccountState extends State<Account> {
                 ListTile(
                   onTap: () {
                     Navigator.of(context, rootNavigator: true)
-                        .pushNamed(DetailMember.routeName);
+                        .pushNamed(UpdateMember.routeName);
                   },
                   title: Text('Thông tin cá nhân'),
                   trailing: Icon(Icons.keyboard_arrow_right),

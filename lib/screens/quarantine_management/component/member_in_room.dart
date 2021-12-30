@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 
 class MemberRoom extends StatelessWidget {
   final data;
@@ -30,7 +30,7 @@ class MemberRoom extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context, rootNavigator: true)
                             .push(MaterialPageRoute(
-                                builder: (context) => DetailMember(
+                                builder: (context) => UpdateMember(
                                       code: data[index]['code'],
                                     )));
                       },
@@ -49,7 +49,7 @@ class MemberRoom extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
-                            builder: (context) => DetailMember(
+                            builder: (context) => UpdateMember(
                                   code: data[index]['code'],
                                 )));
                   },

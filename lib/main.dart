@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
-import 'package:qlkcl/helper/check_network.dart';
 import 'package:qlkcl/config/routes.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -12,7 +9,6 @@ import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {

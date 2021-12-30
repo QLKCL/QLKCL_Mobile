@@ -15,6 +15,7 @@ class AppTheme with ChangeNotifier {
     return ThemeData(
       colorScheme: ColorScheme.fromSwatch(accentColor: CustomColors.primary),
       primaryColor: CustomColors.primary,
+      disabledColor: CustomColors.disableText,
       scaffoldBackgroundColor: CustomColors.background,
       fontFamily: 'Roboto',
       appBarTheme: AppBarTheme(
@@ -50,7 +51,7 @@ class AppTheme with ChangeNotifier {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           primary: CustomColors.primary,
-          fixedSize: const Size(241, 36),
+          fixedSize: const Size(241, 48),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),

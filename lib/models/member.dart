@@ -160,6 +160,9 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
           response['message']['health_insurance_number'] == "Invalid") {
         return Response(
             success: false, message: "Số bảo hiểm y tế không hợp lệ!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Invalid") {
+        return Response(success: false, message: "Số hộ chiếu không hợp lệ!");
       } else if (response['message']['identity_number'] != null &&
           response['message']['identity_number'] == "Exist") {
         return Response(success: false, message: "Số CMND/CCCD đã tồn tại!");

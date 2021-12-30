@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:qlkcl/screens/members/detail_member_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 
@@ -133,7 +133,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
 
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(MaterialPageRoute(
-              builder: (context) => DetailMember(
+              builder: (context) => UpdateMember(
                     code: qrResult,
                   )));
     }
