@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
@@ -10,6 +12,7 @@ import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/notification/notification_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
@@ -76,5 +79,6 @@ final Map<String, WidgetBuilder> routes = {
   EditFloorScreen.routeName: (context) => EditFloorScreen(onGoBackRoomList: (){}),
   EditRoomScreen.routeName: (context) => EditRoomScreen(),
   AddFloorScreen.routeName: (context) => AddFloorScreen(onGoBackFloorList: (){},),
-  AddRoomScreen.routeName: (context) => AddRoomScreen(onGoBackRoomList: (){})
+  AddRoomScreen.routeName: (context) => AddRoomScreen(onGoBackRoomList: (){}),
+  ListNotification.routeName: (context) => ListNotification(),
 };
