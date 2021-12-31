@@ -44,7 +44,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
         onPressed: () {},
         child: Icon(Icons.phone),
         tooltip: "Liên hệ khẩn cấp!",
-        backgroundColor: CustomColors.error,        
+        backgroundColor: Colors.red,
       ),
       appBar: AppBar(
         title: Text("Trang chủ"),

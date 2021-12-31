@@ -307,7 +307,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                               ),
                             ),
                             Text(
-                              'Thông tin bắt buộc',
+                              ' Thông tin bắt buộc',
                               style: TextStyle(
                                 fontSize: 16,
                               ),

@@ -142,7 +142,7 @@ Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true, message: "Cập nhật phiếu khai báo nghiệm thành công!");
+          success: true, message: "Cập nhật khai báo thành công!");
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
