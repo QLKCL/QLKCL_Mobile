@@ -48,7 +48,7 @@ class GroupedFillColorBarChart extends StatelessWidget {
         measureFn: (KeyValue num, _) => num.name,
         data: inData,
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault.lighter,
+        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
       ),
       // Hollow green bars.
       new charts.Series<KeyValue, String>(
@@ -57,8 +57,7 @@ class GroupedFillColorBarChart extends StatelessWidget {
         measureFn: (KeyValue num, _) => num.name,
         data: outData,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        fillColorFn: (_, __) =>
-            charts.MaterialPalette.blue.shadeDefault.lighter,
+        fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       ),
     ];
   }
