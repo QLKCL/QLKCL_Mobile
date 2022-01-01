@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
@@ -22,7 +23,7 @@ class MemberQuarantineInfo extends StatefulWidget {
   const MemberQuarantineInfo({
     Key? key,
     this.quarantineData,
-    this.mode = Permission.view,
+    this.mode = Permission.edit,
     this.quarantineWard,
     this.quarantineBuilding,
     this.quarantineFloor,
@@ -46,7 +47,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
   final otherBackgroundDiseaseController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (widget.mode == Permission.add) {
       quarantineRoomController.text = widget.quarantineRoom != null
           ? widget.quarantineRoom!.id.toString()
@@ -90,7 +92,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -107,9 +112,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: widget.quarantineWard ??
-              ((widget.quarantineData?.quarantineWard != null)
-                  ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
-                  : null),
+                  ((widget.quarantineData?.quarantineWard != null)
+                      ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
+                      : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineWardController.text = "";
@@ -136,9 +141,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: widget.quarantineBuilding ??
-              ((widget.quarantineData?.quarantineBuilding != null)
-                  ? KeyValue.fromJson(widget.quarantineData!.quarantineBuilding)
-                  : null),
+                  ((widget.quarantineData?.quarantineBuilding != null)
+                      ? KeyValue.fromJson(
+                          widget.quarantineData!.quarantineBuilding)
+                      : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineBuildingController.text = "";
@@ -164,9 +170,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: widget.quarantineFloor ??
-              ((widget.quarantineData?.quarantineFloor != null)
-                  ? KeyValue.fromJson(widget.quarantineData!.quarantineFloor)
-                  : null),
+                  ((widget.quarantineData?.quarantineFloor != null)
+                      ? KeyValue.fromJson(
+                          widget.quarantineData!.quarantineFloor)
+                      : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineFloorController.text = "";
@@ -191,9 +198,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               }),
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: widget.quarantineRoom ??
-              ((widget.quarantineData?.quarantineRoom != null)
-                  ? KeyValue.fromJson(widget.quarantineData!.quarantineRoom)
-                  : null),
+                  ((widget.quarantineData?.quarantineRoom != null)
+                      ? KeyValue.fromJson(widget.quarantineData!.quarantineRoom)
+                      : null),
               onChanged: (value) {
                 if (value == null) {
                   quarantineRoomController.text = "";
@@ -228,21 +235,22 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               maxLines: 4,
               enabled: widget.mode != Permission.view ? true : false,
             ),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                StatefulBuilder(
-                    builder: (BuildContext context, StateSetter setState) {
-                  return Checkbox(
-                      value: _isPositiveTestedBefore,
-                      onChanged: (value) => {
-                            widget.mode != Permission.view
-                                ? setState(() {
-                                    _isPositiveTestedBefore = value!;
-                                  })
-                                : null
-                          });
-                }),
-                Text("Đã từng nhiễm COVID-19"),
+                ListTileTheme(
+                  contentPadding: EdgeInsets.only(left: 8),
+                  child: CheckboxListTile(
+                    title: Text("Đã từng nhiễm COVID-19"),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: _isPositiveTestedBefore,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _isPositiveTestedBefore = value!;
+                      });
+                    },
+                  ),
+                ),
               ],
             ),
             MultiDropdownInput<KeyValue>(
@@ -281,7 +289,23 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
               Container(
                 alignment: Alignment.centerLeft,
                 margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                child: Text("* Thông tin bắt buộc"),
+                child: Row(
+                  children: [
+                    Text(
+                      '(*)',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: CustomColors.error,
+                      ),
+                    ),
+                    Text(
+                      ' Thông tin bắt buộc',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             if (widget.mode != Permission.view)
               Container(

@@ -23,7 +23,7 @@ class MemberPersonalInfo extends StatefulWidget {
       {Key? key,
       this.tabController,
       this.personalData,
-      this.mode = Permission.view})
+      this.mode = Permission.edit})
       : super(key: key);
 
   @override
