@@ -50,7 +50,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    // _pagingController.dispose();
     super.dispose();
   }
 

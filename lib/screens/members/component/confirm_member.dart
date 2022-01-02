@@ -21,10 +21,14 @@ class ConfirmMember extends StatefulWidget {
   _ConfirmMemberState createState() => _ConfirmMemberState();
 }
 
-class _ConfirmMemberState extends State<ConfirmMember> {
+class _ConfirmMemberState extends State<ConfirmMember>
+    with AutomaticKeepAliveClientMixin<ConfirmMember> {
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -79,7 +83,11 @@ class _ConfirmMemberState extends State<ConfirmMember> {
       removeTop: true,
       child: RefreshIndicator(
         onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
+          () => {
+            _pagingController.refresh(),
+            widget.indexList.clear(),
+            widget.longPress(),
+          },
         ),
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
