@@ -811,7 +811,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                               ),
                             ),
                             TextSpan(
-                              text: " Địa chỉ: " + widget.address!,
+                              text: " " + widget.address!,
                             ),
                           ],
                         ),
