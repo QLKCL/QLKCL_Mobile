@@ -35,7 +35,10 @@ class _ListAllMemberState extends State<ListAllMember>
   }
 
   _handleTabChange() {
-    setState(() {});
+    setState(() {
+      indexList.clear();
+      longPress();
+    });
   }
 
   bool longPressFlag = false;

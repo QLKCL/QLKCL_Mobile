@@ -116,7 +116,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTileTheme(
-                            contentPadding: EdgeInsets.all(0),
+                            contentPadding: EdgeInsets.only(left: 8),
                             child: CheckboxListTile(
                               title: Text("Khai hộ"),
                               controlAffinity: ListTileControlAffinity.leading,
@@ -278,7 +278,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTileTheme(
-                        contentPadding: EdgeInsets.all(0),
+                        contentPadding: EdgeInsets.only(left: 8),
                         child: CheckboxListTile(
                           title: Container(
                               padding: const EdgeInsets.only(right: 16.0),

@@ -12,10 +12,14 @@ class DenyMember extends StatefulWidget {
   _DenyMemberState createState() => _DenyMemberState();
 }
 
-class _DenyMemberState extends State<DenyMember> {
+class _DenyMemberState extends State<DenyMember>
+    with AutomaticKeepAliveClientMixin<DenyMember> {
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

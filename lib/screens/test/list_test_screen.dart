@@ -51,7 +51,7 @@ class _ListTestState extends State<ListTest> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    // _pagingController.dispose();
     super.dispose();
   }
 

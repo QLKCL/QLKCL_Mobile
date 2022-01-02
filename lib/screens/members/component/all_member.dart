@@ -18,10 +18,14 @@ class AllMember extends StatefulWidget {
   _AllMemberState createState() => _AllMemberState();
 }
 
-class _AllMemberState extends State<AllMember> {
+class _AllMemberState extends State<AllMember>
+    with AutomaticKeepAliveClientMixin<AllMember> {
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
