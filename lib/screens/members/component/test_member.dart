@@ -134,7 +134,10 @@ class _TestMemberState extends State<TestMember>
                             builder: (context) => AddTest(
                                   code: item["code"],
                                   name: item['full_name'],
-                                )));
+                                )))
+                        .then(
+                          (value) => _pagingController.refresh(),
+                        );
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[

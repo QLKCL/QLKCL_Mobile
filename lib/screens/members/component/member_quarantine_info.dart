@@ -34,7 +34,8 @@ class MemberQuarantineInfo extends StatefulWidget {
   _MemberQuarantineInfoState createState() => _MemberQuarantineInfoState();
 }
 
-class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
+class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
+    with AutomaticKeepAliveClientMixin<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
   bool _isPositiveTestedBefore = false;
   final quarantineRoomController = TextEditingController();
@@ -45,6 +46,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo> {
   final quarantinedAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

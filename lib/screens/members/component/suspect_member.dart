@@ -127,7 +127,10 @@ class _SuspectMemberState extends State<SuspectMember>
                         .push(MaterialPageRoute(
                             builder: (context) => MedicalDeclarationScreen(
                                   phone: item["phone_number"],
-                                )));
+                                )))
+                        .then(
+                          (value) => _pagingController.refresh(),
+                        );
                   } else if (result == 'medical_declare_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(

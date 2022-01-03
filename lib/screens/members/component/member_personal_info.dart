@@ -30,7 +30,11 @@ class MemberPersonalInfo extends StatefulWidget {
   _MemberPersonalInfoState createState() => _MemberPersonalInfoState();
 }
 
-class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
+class _MemberPersonalInfoState extends State<MemberPersonalInfo>
+    with AutomaticKeepAliveClientMixin<MemberPersonalInfo> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
