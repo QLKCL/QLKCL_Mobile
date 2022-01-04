@@ -40,93 +40,71 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         title: Text("Trang chủ"),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => showDialog<String>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              title: const Text('Giới thiệu'),
-              content: Container(
-                height: 100,
-                child: Wrap(
-                  direction: Axis.vertical, // make sure to set this
-                  spacing: 4, // set your spacing
-                  children: <Widget>[
-                    const Text('Ứng dụng quản lý khu cách ly'),
-                    const Text('Nhóm sinh viên thực hiện: Nhóm TT'),
-                    const Text('Version: 1.0'),
-                    const Text('Email: son.le.lhld@gmail.com'),
-                  ],
-                ),
+          onPressed: () {
+            showBarModalBottomSheet(
+              barrierColor: Colors.black54,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0)),
               ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () => Navigator.pop(context, 'OK'),
-                  child: const Text('OK'),
-                ),
-              ],
-            ),
-          ),
-          icon: Icon(Icons.help_outline),
+              useRootNavigator: true,
+              context: context,
+              builder: (context) {
+                // Using Wrap makes the bottom sheet height the height of the content.
+                // Otherwise, the height will be half the height of the screen.
+                return Wrap(
+                  children: [
+                    ListTile(
+                      title: Center(
+                        child: Text(
+                          'Tạo mới',
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.description_outlined),
+                      title: Text('Phiếu xét nghiệm'),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, AddTest.routeName);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Icon(Icons.person_add_alt),
+                      title: Text('Người cách ly'),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, AddMember.routeName);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Icon(Icons.manage_accounts_outlined),
+                      title: Text('Quản lý'),
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Icon(Icons.business_outlined),
+                      title: Text('Khu cách ly'),
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                            context, NewQuarantine.routeName);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          icon: Icon(Icons.add_box_outlined),
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              showBarModalBottomSheet(
-                barrierColor: Colors.black54,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                ),
-                useRootNavigator: true,
-                context: context,
-                builder: (context) {
-                  // Using Wrap makes the bottom sheet height the height of the content.
-                  // Otherwise, the height will be half the height of the screen.
-                  return Wrap(
-                    children: [
-                      ListTile(
-                        title: Center(
-                          child: Text(
-                            'Tạo mới',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.description_outlined),
-                        title: Text('Phiếu xét nghiệm'),
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, AddTest.routeName);
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        leading: Icon(Icons.person_add_alt),
-                        title: Text('Người cách ly'),
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, AddMember.routeName);
-                        },
-                      ),
-                      Divider(),
-                      ListTile(
-                        leading: Icon(Icons.manage_accounts_outlined),
-                        title: Text('Quản lý'),
-                      ),
-                      Divider(),
-                      ListTile(
-                        leading: Icon(Icons.business_outlined),
-                        title: Text('Khu cách ly'),
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, NewQuarantine.routeName);
-                        },
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.add_box_outlined),
+            onPressed: () {},
+            icon: Icon(Icons.notifications_none_outlined),
           ),
         ],
       ),

@@ -96,6 +96,7 @@ class _SearchMemberState extends State<SearchMember> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
+          titleSpacing: 0.0,
           title: Container(
             width: double.infinity,
             height: 36,

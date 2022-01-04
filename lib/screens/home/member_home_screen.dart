@@ -78,14 +78,18 @@ class _MemberHomePageState extends State<MemberHomePage> {
           icon: Icon(Icons.help_outline),
         ),
         actions: [
+          // IconButton(
+          //   onPressed: () {
+          //     setState(() {
+          //       futureCovid = fetchCovidList();
+          //       futureData = fetch();
+          //     });
+          //   },
+          //   icon: Icon(Icons.refresh),
+          // ),
           IconButton(
-            onPressed: () {
-              setState(() {
-                futureCovid = fetchCovidList();
-                futureData = fetch();
-              });
-            },
-            icon: Icon(Icons.refresh),
+            onPressed: () {},
+            icon: Icon(Icons.notifications_none_outlined),
           )
         ],
       ),
@@ -366,7 +370,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     : "",
                             quarantineTime:
                                 snapshot.data['quarantine_ward'] != null
-                                    ? snapshot.data['quarantine_ward']['quarantine_time']
+                                    ? snapshot.data['quarantine_ward']
+                                        ['quarantine_time']
                                     : 14,
                           ),
                       ],

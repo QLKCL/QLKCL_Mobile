@@ -40,10 +40,10 @@ class BottomNavigation extends StatelessWidget {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       currentIndex:
-          (role == 5) ? (currentTab.index ~/ 2).toInt() : currentTab.index,
+          (role == 5) ? (currentTab.index ~/ 4).toInt() : currentTab.index,
       selectedItemColor: CustomColors.secondary,
       onTap: (index) => {
-        index = (role == 5) ? index * 2 : index,
+        index = (role == 5) ? index * 4 : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
           {Navigator.pushNamed(context, QrCodeScan.routeName)}
         else
@@ -56,7 +56,7 @@ class BottomNavigation extends StatelessWidget {
       items: [
         _buildItem(TabItem.homepage),
         if (role != 5) _buildItem(TabItem.quarantine_person),
-        _buildItem(TabItem.qr_code_scan),
+        if (role != 5) _buildItem(TabItem.qr_code_scan),
         if (role != 5) _buildItem(TabItem.quarantine_ward),
         _buildItem(TabItem.account),
       ],
@@ -115,7 +115,6 @@ const Map<TabItem, String> tabRouteName = {
 
 const Map<TabItem, String> tabMemberRouteName = {
   TabItem.homepage: MemberHomePage.routeName,
-  TabItem.qr_code_scan: QrCodeScan.routeName,
   TabItem.account: Account.routeName,
 };
 
