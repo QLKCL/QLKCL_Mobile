@@ -66,7 +66,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       quarantineWardController.text = widget.quarantineWard != null
           ? widget.quarantineRoom!.id.toString()
           : "";
-
+      labelController.text = "F1";
+      backgroundDiseaseController.text = "";
       getQuarantineWard().then((val) {
         quarantineWardController.text = "$val";
       });
@@ -226,7 +227,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text = value.toString();
                 }
               },
-              selectedItem: labelController.text,
+              selectedItem:
+                  labelController.text == "" ? null : labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
             DateInput(
@@ -396,9 +398,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 }
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  // if (selectedItems.isEmpty) {
-  //   return Container();
-  // }
+  if (selectedItems.isEmpty) {
+    return Text("Chọn bệnh nền");
+  }
 
   return Wrap(
     children: selectedItems.map((e) {

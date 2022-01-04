@@ -287,7 +287,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                                   "dd/MM/yyyy HH:mm:ss")
                                                               .format(DateTime.parse(
                                                                       snapshot.data[
-                                                                          'last_tested'])
+                                                                          'last_tested_had_result'])
                                                                   .toLocal())
                                                           : "") +
                                                       ")")
