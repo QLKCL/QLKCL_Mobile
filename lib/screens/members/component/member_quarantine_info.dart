@@ -11,6 +11,7 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:intl/intl.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
   final Member? quarantineData;
@@ -357,6 +358,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
+      // DateTime parseDate =new DateFormat("dd/MM/yyyy").parse(quarantinedAtController.text);
+      // var inputDate = DateTime.parse(parseDate.toString());
+      // var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+      // var outputDate = outputFormat.format(inputDate);
+      // print(outputDate);
       final registerResponse = await updateMember(updateMemberDataForm(
         code: (widget.mode == Permission.add &&
                 MemberPersonalInfo.userCode != null)
