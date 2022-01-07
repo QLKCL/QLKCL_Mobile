@@ -7,6 +7,7 @@ import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
+import 'package:intl/intl.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
@@ -125,13 +126,19 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 canFinishUsers: snapshot.data['number_of_can_finish_users'],
                 waitingTests: snapshot.data['number_of_waiting_tests'],
                 numberIn: snapshot.data['in'].entries
-                    .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                    .map((entry) => KeyValue(
+                        id: DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(entry.key)),
+                        name: entry.value))
                     .toList()
                     .cast<KeyValue>()
                     .reversed
                     .toList(),
                 numberOut: snapshot.data['out'].entries
-                    .map((entry) => KeyValue(id: entry.key, name: entry.value))
+                    .map((entry) => KeyValue(
+                        id: DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(entry.key)),
+                        name: entry.value))
                     .toList()
                     .cast<KeyValue>()
                     .reversed
