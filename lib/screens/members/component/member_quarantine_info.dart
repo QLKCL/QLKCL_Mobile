@@ -90,7 +90,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               ? widget.quarantineData!.quarantineWard['id'].toString()
               : "";
       labelController.text = widget.quarantineData?.label ?? "";
-      quarantinedAtController.text = widget.quarantineData?.quarantinedAt ?? "";
+      quarantinedAtController.text = DateFormat("dd/MM/yyyy")
+          .format(DateTime.parse(widget.quarantineData?.quarantinedAt));
       backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       otherBackgroundDiseaseController.text =
@@ -358,12 +359,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      // DateTime parseDate =new DateFormat("dd/MM/yyyy").parse(quarantinedAtController.text);
-      // var inputDate = DateTime.parse(parseDate.toString());
-      // var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      // var outputDate = outputFormat.format(inputDate);
-      // print(outputDate);
-      final registerResponse = await updateMember(updateMemberDataForm(
+      DateTime parseDate =
+          new DateFormat("dd/MM/yyyy").parse(quarantinedAtController.text);
+      var inputDate = DateTime.parse(parseDate.toString());
+      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+      var outputDate = outputFormat.format(inputDate);
+      final updateResponse = await updateMember(updateMemberDataForm(
         code: (widget.mode == Permission.add &&
                 MemberPersonalInfo.userCode != null)
             ? MemberPersonalInfo.userCode
@@ -374,12 +375,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
         label: labelController.text,
-        quarantinedAt: quarantinedAtController.text,
+        quarantinedAt: outputDate,
         positiveBefore: _isPositiveTestedBefore,
         backgroundDisease: backgroundDiseaseController.text,
         otherBackgroundDisease: otherBackgroundDiseaseController.text,
       ));
-      if (registerResponse.success) {
+      if (updateResponse.success) {
         if (widget.mode == Permission.change_status) {
           final response = await acceptMember({
             'member_codes': widget.quarantineData!.customUserCode.toString()
@@ -390,13 +391,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         } else {
           EasyLoading.dismiss();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
+            SnackBar(content: Text(updateResponse.message)),
           );
         }
       } else {
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
+          SnackBar(content: Text(updateResponse.message)),
         );
       }
     }
