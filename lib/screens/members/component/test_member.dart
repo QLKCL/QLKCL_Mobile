@@ -102,7 +102,7 @@ class _TestMemberState extends State<TestMember>
                       (item['quarantine_ward'] != null
                           ? "${item['quarantine_ward']['full_name']}"
                           : ""),
-              lastTestResult: item['positive_test'],
+              lastTestResult: item['positive_test_now'],
               lastTestTime: item['last_tested'],
               healthStatus: item['health_status'],
               onTap: () {

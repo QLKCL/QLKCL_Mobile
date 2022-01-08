@@ -24,7 +24,7 @@ class MemberRoom extends StatelessWidget {
                       name: data[index]['full_name'] ?? "",
                       gender: data[index]['gender'] ?? "",
                       birthday: data[index]['birthday'] ?? "",
-                      lastTestResult: data[index]['positive_test'],
+                      lastTestResult: data[index]['positive_test_now'],
                       lastTestTime: data[index]['last_tested'],
                       healthStatus: data[index]['health_status'],
                       onTap: () {
@@ -43,7 +43,7 @@ class MemberRoom extends StatelessWidget {
                   name: data[index]['full_name'] ?? "",
                   gender: data[index]['gender'] ?? "",
                   birthday: data[index]['birthday'] ?? "",
-                  lastTestResult: data[index]['positive_test'],
+                  lastTestResult: data[index]['positive_test_now'],
                   lastTestTime: data[index]['last_tested'],
                   healthStatus: data[index]['health_status'],
                   onTap: () {

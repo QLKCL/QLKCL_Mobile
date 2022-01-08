@@ -90,8 +90,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               ? widget.quarantineData!.quarantineWard['id'].toString()
               : "";
       labelController.text = widget.quarantineData?.label ?? "";
-      quarantinedAtController.text = DateFormat("dd/MM/yyyy")
-          .format(DateTime.parse(widget.quarantineData?.quarantinedAt));
+      quarantinedAtController.text =
+          widget.quarantineData?.quarantinedAt != null
+              ? DateFormat("dd/MM/yyyy")
+                  .format(DateTime.parse(widget.quarantineData?.quarantinedAt))
+              : "";
       backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       otherBackgroundDiseaseController.text =

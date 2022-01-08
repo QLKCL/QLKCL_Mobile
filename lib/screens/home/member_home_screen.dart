@@ -276,16 +276,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                         ),
                                         TextSpan(
                                           text: " Xét nghiệm: " +
-                                              (snapshot.data['positive_test'] !=
+                                              (snapshot.data['positive_test_now'] !=
                                                       null
                                                   ? ((snapshot.data[
-                                                                  'positive_test'] ==
+                                                                  'positive_test_now'] ==
                                                               false
                                                           ? "Âm tính"
                                                           : "Dương tính") +
                                                       " (" +
                                                       (snapshot.data[
-                                                                  'positive_test'] !=
+                                                                  'positive_test_now'] !=
                                                               null
                                                           ? DateFormat(
                                                                   "dd/MM/yyyy HH:mm:ss")
