@@ -101,6 +101,10 @@ class _UpdateMemberState extends State<UpdateMember>
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
+              } else {
+                return Center(
+                  child: Text('Có lỗi xảy ra!'),
+                );
               }
             }
 
@@ -110,10 +114,10 @@ class _UpdateMemberState extends State<UpdateMember>
               children: [
                 MemberPersonalInfo(
                   tabController: _tabController,
-                  mode: Permission.edit,
+                  mode: Permission.add,
                 ),
                 MemberQuarantineInfo(
-                  mode: Permission.edit,
+                  mode: Permission.add,
                 ),
               ],
             );
