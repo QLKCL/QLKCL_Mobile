@@ -39,6 +39,7 @@ class _CreatePasswordState extends State<CreatePassword> {
           child: Column(
             children: [
               Container(
+                width: MediaQuery.of(context).size.width * 0.5,
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/otp.png"),
               ),
