@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
@@ -39,13 +40,43 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Container(
-          child: FloatingActionButton(
-            onPressed: () => _getPhotoByGallery,
-            child: Icon(Icons.photo_library_outlined),
-            tooltip: "Chọn hình ảnh",
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: SizedBox(
+            height: 100,
+            width: 80,
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              onPressed: () => _getPhotoByGallery(),
+              child: Column(
+                children: [
+                  Container(
+                    height: 64,
+                    width: 64,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.photo_library_outlined, size: 30),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "Chọn QR từ thư viện",
+                    style: TextStyle(
+                      color: CustomColors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              tooltip: "Chọn hình ảnh",
+            ),
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
           title: const Text('Quét mã QR'),
           actions: [
@@ -148,6 +179,20 @@ class _QrCodeScanState extends State<QrCodeScan> {
                     code: data,
                   )));
     }).onError((error, stackTrace) {
+      showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Lỗi'),
+          content: Text("Không tìm thấy dữ liệu từ mã QR"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ).then((value) => controller!.resumeCamera());
       print('${error.toString()}');
     });
   }
