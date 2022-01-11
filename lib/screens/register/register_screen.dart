@@ -128,7 +128,7 @@ class _RegisterFormState extends State<RegisterForm> {
               }
             },
             mode: Mode.BOTTOM_SHEET,
-            maxHeight: 700,
+            maxHeight: MediaQuery.of(context).size.height - 100,
             showSearchBox: true,
             required: true,
           ),

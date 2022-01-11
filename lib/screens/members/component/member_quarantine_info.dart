@@ -288,7 +288,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Bệnh nền',
             ),
             Input(

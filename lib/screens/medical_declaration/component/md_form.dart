@@ -231,7 +231,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: 700,
+                  maxHeight: MediaQuery.of(context).size.height - 100,
                   popupTitle: 'Triệu chứng nghi nhiễm',
                 ),
 
@@ -260,7 +260,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: 700,
+                  maxHeight: MediaQuery.of(context).size.height - 100,
                   popupTitle: 'Triệu chứng khác',
                 ),
 

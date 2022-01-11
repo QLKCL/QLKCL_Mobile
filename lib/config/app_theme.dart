@@ -77,6 +77,8 @@ class AppTheme with ChangeNotifier {
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
+        fillColor: CustomColors.white,
+        filled: true, // dont forget this line
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: CustomColors.secondary,
@@ -125,7 +127,7 @@ class CustomColors {
       HexColor("#8792F2"); // For button and active navigation
   static Color nonactive = HexColor("#ABAFD1"); // For non active tab layout
   static Color white = HexColor("#FFFFFF");
-  static Color background = HexColor("#EEF1F8");
+  static Color background = HexColor("#F9FAFC");
   static Color shadow = HexColor("#22313F");
 }
 

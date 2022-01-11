@@ -71,7 +71,7 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
 
                   EasyLoading.show();
                   return QuarantineForm(
-                    mode: Permission.edit,
+                    mode: Permission.add,
                   );
                 },
               )),

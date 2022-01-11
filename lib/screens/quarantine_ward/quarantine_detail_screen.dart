@@ -22,7 +22,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
   late Quarantine quarantineInfo;
 
   onRefresh() {
-    //print('On refresh');
     setState(() {});
   }
 

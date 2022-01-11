@@ -155,8 +155,7 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
       if (response['message'] != null &&
           response['message'] == "Invalid argument") {
         return Response(success: false, message: "Có lỗi xảy ra!");
-      }
-      if (response['message']['phone_number'] != null &&
+      } else if (response['message']['phone_number'] != null &&
           response['message']['phone_number'] == "Exist") {
         return Response(
             success: false, message: "Số điện thoại đã được sử dụng!");

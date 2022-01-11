@@ -27,7 +27,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
   @override
   void initState() {
     super.initState();
-    print(widget.quarantineInfo.id.toString());
     futureBuildingList =
         fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
   }

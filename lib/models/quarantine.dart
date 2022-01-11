@@ -148,7 +148,6 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
 Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.updateQuarantine, data);
-
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -157,10 +156,15 @@ Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
           success: true,
           message: "Cập nhật thông tin thành công!",
           data: response['data']);
-    } else if (response['message']['full_name'] != null &&
-        response['message']['full_name'] == "Exist") {
-      return Response(
-          success: false, message: "Tên khu cách ly đã được sử dụng!");
+    } else if (response['error_code'] == 400) {
+      if (response['message'] != null &&
+          response['message'] == "User is not exist") {
+        return Response(success: false, message: "Quản lý không hợp lệ!");
+      } else if (response['message']['full_name'] != null &&
+          response['message']['full_name'] == "Exist") {
+        return Response(
+            success: false, message: "Tên khu cách ly đã được sử dụng!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

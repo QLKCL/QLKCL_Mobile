@@ -10,7 +10,8 @@ class CarouselBuilding extends StatefulWidget {
   final VoidCallback onGoBack;
   final Quarantine? currentQuarantine;
   final data;
-  const CarouselBuilding({Key? key, this.data, this.currentQuarantine, required this.onGoBack})
+  const CarouselBuilding(
+      {Key? key, this.data, this.currentQuarantine, required this.onGoBack})
       : super(key: key);
 
   @override
@@ -20,8 +21,6 @@ class CarouselBuilding extends StatefulWidget {
 class _CarouselBuildingState extends State<CarouselBuilding> {
   @override
   Widget build(BuildContext context) {
-    //print('Carousel building');
-
     return (widget.data == null || widget.data.isEmpty)
         ? Column(
             children: [
