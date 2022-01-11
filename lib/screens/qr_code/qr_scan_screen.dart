@@ -1,9 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:qr_code_tools/qr_code_tools.dart';
+import 'package:rxdart/rxdart.dart';
 
 // cre: https://pub.dev/packages/qr_code_scanner/example
 
@@ -19,6 +23,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final picker = ImagePicker();
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -34,6 +39,13 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: Container(
+          child: FloatingActionButton(
+            onPressed: () => _getPhotoByGallery,
+            child: Icon(Icons.photo_library_outlined),
+            tooltip: "Chọn hình ảnh",
+          ),
+        ),
         appBar: AppBar(
           title: const Text('Quét mã QR'),
           actions: [
@@ -116,26 +128,27 @@ class _QrCodeScanState extends State<QrCodeScan> {
         },
       ));
     } else {
-      //   await showDialog<String>(
-      //     barrierDismissible: false,
-      //     context: context,
-      //     builder: (BuildContext context) => AlertDialog(
-      //       title: const Text('Nội dung'),
-      //       content: Text(qrResult),
-      //       actions: <Widget>[
-      //         TextButton(
-      //           onPressed: () => Navigator.pop(context, 'OK'),
-      //           child: const Text('OK'),
-      //         ),
-      //       ],
-      //     ),
-      //   ).then((value) => controller!.resumeCamera());
-
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(MaterialPageRoute(
               builder: (context) => UpdateMember(
                     code: qrResult,
                   )));
     }
+  }
+
+  void _getPhotoByGallery() {
+    controller?.pauseCamera();
+    Stream.fromFuture(picker.pickImage(source: ImageSource.gallery))
+        .flatMap((file) {
+      return Stream.fromFuture(QrCodeToolsPlugin.decodeFrom(file!.path));
+    }).listen((data) {
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(MaterialPageRoute(
+              builder: (context) => UpdateMember(
+                    code: data,
+                  )));
+    }).onError((error, stackTrace) {
+      print('${error.toString()}');
+    });
   }
 }
