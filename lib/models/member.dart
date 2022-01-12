@@ -70,7 +70,7 @@ class Member {
         lastTested: json["last_tested"],
         healthStatus: json["health_status"],
         healthNote: json["health_note"],
-        positiveTest: json["positive_test"],
+        positiveTest: json["positive_test_now"],
         backgroundDisease: json["background_disease"],
         otherBackgroundDisease: json["other_background_disease"],
         backgroundDiseaseNote: json["background_disease_note"],
@@ -91,7 +91,7 @@ class Member {
         "last_tested": lastTested,
         "health_status": healthStatus,
         "health_note": healthNote,
-        "positive_test": positiveTest,
+        "positive_test_now": positiveTest,
         "background_disease": backgroundDisease,
         "other_background_disease": otherBackgroundDisease,
         "background_disease_note": backgroundDiseaseNote,
@@ -152,7 +152,10 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
           message: "Cập nhật thông tin thành công!",
           data: response['data']);
     } else if (response['error_code'] == 400) {
-      if (response['message']['phone_number'] != null &&
+      if (response['message'] != null &&
+          response['message'] == "Invalid argument") {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      } else if (response['message']['phone_number'] != null &&
           response['message']['phone_number'] == "Exist") {
         return Response(
             success: false, message: "Số điện thoại đã được sử dụng!");

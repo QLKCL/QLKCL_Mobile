@@ -77,6 +77,8 @@ class AppTheme with ChangeNotifier {
         border: OutlineInputBorder(
           borderRadius: const BorderRadius.all(Radius.circular(8.0)),
         ),
+        fillColor: CustomColors.white,
+        filled: true, // dont forget this line
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: CustomColors.secondary,

@@ -811,7 +811,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                               ),
                             ),
                             TextSpan(
-                              text: " Địa chỉ: " + widget.address!,
+                              text: " " + widget.address!,
                             ),
                           ],
                         ),
@@ -933,8 +933,9 @@ class QuarantineHome extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " Bắt đầu cách ly: " + quarantineAt,
-                          ),
+                              text: " Bắt đầu cách ly: " +
+                                  DateFormat("dd/MM/yyyy")
+                                      .format(DateTime.parse(quarantineAt))),
                         ],
                       ),
                     ),
@@ -958,10 +959,9 @@ class QuarantineHome extends StatelessWidget {
                           ),
                           TextSpan(
                               text: " Dự kiến hoàn thành cách ly: " +
-                                  DateFormat("dd/MM/yyyy").format(DateFormat(
-                                          "dd/MM/yyyy")
-                                      .parse(quarantineAt)
-                                      .add(Duration(days: quarantineTime)))),
+                                  DateFormat("dd/MM/yyyy").format(
+                                      DateTime.parse(quarantineAt).add(
+                                          Duration(days: quarantineTime)))),
                         ],
                       ),
                     ),

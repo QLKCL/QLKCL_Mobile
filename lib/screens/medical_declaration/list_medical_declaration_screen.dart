@@ -113,7 +113,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
                 child: Text('Không có dữ liệu'),
               ),
               itemBuilder: (context, item, index) => MedicalDeclarationCard(
-                id: item['id'].toString(),
+                id: item['code'].toString(),
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")
                     .format(DateTime.parse(item['created_at']).toLocal()),
                 status: medDeclValueList

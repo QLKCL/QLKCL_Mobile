@@ -47,6 +47,7 @@ class _RegisterState extends State<Register> {
           child: Column(
             children: [
               Container(
+                width: MediaQuery.of(context).size.width * 0.6,
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/sign_up.png"),
               ),
@@ -127,7 +128,7 @@ class _RegisterFormState extends State<RegisterForm> {
               }
             },
             mode: Mode.BOTTOM_SHEET,
-            maxHeight: 700,
+            maxHeight: MediaQuery.of(context).size.height - 100,
             showSearchBox: true,
             required: true,
           ),

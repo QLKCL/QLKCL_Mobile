@@ -75,17 +75,16 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ward: wardController.text,
           status: statusController.text,
           quarantineTime: int.parse(quarantineTimeController.text),
-          mainManager: "1",
+          mainManager: managerController.text,
           address: addressController.text,
           type: typeController.text,
+          phoneNumber: phoneNumberController.text,
         ));
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(registerResponse.message)),
         );
-      }
-      if (widget.mode == Permission.edit) {
-        print('edit');
+      } else if (widget.mode == Permission.edit) {
         final registerResponse =
             await updateQuarantine(updateQuarantineDataForm(
           id: widget.quarantineInfo!.id.toInt(),
@@ -97,9 +96,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ward: wardController.text,
           status: statusController.text,
           quarantineTime: int.parse(quarantineTimeController.text),
-          mainManager: "1",
+          mainManager: managerController.text,
           address: addressController.text,
           type: typeController.text,
+          phoneNumber: phoneNumberController.text,
         ));
         if (registerResponse.success) {
           EasyLoading.dismiss();
@@ -195,7 +195,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
             ),
 
             DropdownInput<KeyValue>(
@@ -220,7 +220,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Tỉnh thành',
             ),
 
@@ -247,7 +247,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quận huyện',
             ),
 
@@ -273,7 +273,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Phường xã',
             ),
 
@@ -284,7 +284,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
 
             DropdownInput<KeyValue>(
                 label: 'Người quản lý',
-                hint: 'Người quản lý',
+                hint: 'Chọn người quản lý',
                 required: widget.mode == Permission.view ? false : true,
                 selectedItem: (widget.quarantineInfo?.mainManager != null)
                     ? KeyValue.fromJson(widget.quarantineInfo!.mainManager)
@@ -305,7 +305,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 itemAsString: (KeyValue? u) => u!.name,
                 showSearchBox: true,
                 mode: Mode.BOTTOM_SHEET,
-                maxHeight: 700,
+                maxHeight: MediaQuery.of(context).size.height - 100,
                 popupTitle: 'Quản lý'),
 
             DropdownInput<KeyValue>(
@@ -354,15 +354,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: quarantineTimeValidator,
               controller: quarantineTimeController,
             ),
-
-            // DropdownInput(
-            //   label: 'Người quản lý',
-            //   hint: 'Người quản lý',
-            //   required: true,
-            //   itemValue: ['1', '2'],
-            //   selectedItem:
-            //       widget.mode == Permission.add ? null : managerController.text,
-            // ),
 
             Input(
               label: 'Điện thoại liên lạc',
@@ -474,6 +465,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   ),
             Container(
               alignment: Alignment.center,
+              margin: const EdgeInsets.all(16),
               child: ElevatedButton(
                 onPressed: _submit,
                 child: Text(

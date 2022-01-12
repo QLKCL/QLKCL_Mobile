@@ -78,14 +78,18 @@ class _MemberHomePageState extends State<MemberHomePage> {
           icon: Icon(Icons.help_outline),
         ),
         actions: [
+          // IconButton(
+          //   onPressed: () {
+          //     setState(() {
+          //       futureCovid = fetchCovidList();
+          //       futureData = fetch();
+          //     });
+          //   },
+          //   icon: Icon(Icons.refresh),
+          // ),
           IconButton(
-            onPressed: () {
-              setState(() {
-                futureCovid = fetchCovidList();
-                futureData = fetch();
-              });
-            },
-            icon: Icon(Icons.refresh),
+            onPressed: () {},
+            icon: Icon(Icons.notifications_none_outlined),
           )
         ],
       ),
@@ -272,22 +276,22 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                         ),
                                         TextSpan(
                                           text: " Xét nghiệm: " +
-                                              (snapshot.data['positive_test'] !=
+                                              (snapshot.data['positive_test_now'] !=
                                                       null
                                                   ? ((snapshot.data[
-                                                                  'positive_test'] ==
+                                                                  'positive_test_now'] ==
                                                               false
                                                           ? "Âm tính"
                                                           : "Dương tính") +
                                                       " (" +
                                                       (snapshot.data[
-                                                                  'positive_test'] !=
+                                                                  'positive_test_now'] !=
                                                               null
                                                           ? DateFormat(
                                                                   "dd/MM/yyyy HH:mm:ss")
                                                               .format(DateTime.parse(
                                                                       snapshot.data[
-                                                                          'last_tested'])
+                                                                          'last_tested_had_result'])
                                                                   .toLocal())
                                                           : "") +
                                                       ")")
@@ -366,7 +370,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     : "",
                             quarantineTime:
                                 snapshot.data['quarantine_ward'] != null
-                                    ? snapshot.data['quarantine_ward']['quarantine_time']
+                                    ? snapshot.data['quarantine_ward']
+                                        ['quarantine_time']
                                     : 14,
                           ),
                       ],

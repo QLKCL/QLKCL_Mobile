@@ -102,7 +102,7 @@ class _TestMemberState extends State<TestMember>
                       (item['quarantine_ward'] != null
                           ? "${item['quarantine_ward']['full_name']}"
                           : ""),
-              lastTestResult: item['positive_test'],
+              lastTestResult: item['positive_test_now'],
               lastTestTime: item['last_tested'],
               healthStatus: item['health_status'],
               onTap: () {
@@ -134,7 +134,10 @@ class _TestMemberState extends State<TestMember>
                             builder: (context) => AddTest(
                                   code: item["code"],
                                   name: item['full_name'],
-                                )));
+                                )))
+                        .then(
+                          (value) => _pagingController.refresh(),
+                        );
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[

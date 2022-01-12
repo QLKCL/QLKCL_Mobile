@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "811581917040",
+    "project_id": "qlkcl-app",
+    "storage_bucket": "qlkcl-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:811581917040:android:9a8a0e6257c17eefe3f1b5",
+        "android_client_info": {
+          "package_name": "com.letrungson.qlkcl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "811581917040-33a050ggjvj3g70b6qj2gs0k42cn68at.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLsqNMKaeVdrF-IuDJVaSFJXmiv8TNFSI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "811581917040-33a050ggjvj3g70b6qj2gs0k42cn68at.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

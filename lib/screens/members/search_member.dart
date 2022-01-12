@@ -5,7 +5,11 @@ import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/test/add_test_screen.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
@@ -92,6 +96,7 @@ class _SearchMemberState extends State<SearchMember> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
+          titleSpacing: 0.0,
           title: Container(
             width: double.infinity,
             height: 36,
@@ -183,7 +188,7 @@ class _SearchMemberState extends State<SearchMember> {
                                     (item['quarantine_ward'] != null
                                         ? "${item['quarantine_ward']['full_name']}"
                                         : ""),
-                            lastTestResult: item['positive_test'],
+                            lastTestResult: item['positive_test_now'],
                             lastTestTime: item['last_tested'],
                             healthStatus: item['health_status'],
                             onTap: () {
@@ -193,6 +198,72 @@ class _SearchMemberState extends State<SearchMember> {
                                             code: item['code'],
                                           )));
                             },
+                            menus: PopupMenuButton(
+                              icon: Icon(Icons.more_vert),
+                              onSelected: (result) {
+                                if (result == 'update_info') {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => UpdateMember(
+                                                code: item['code'],
+                                              )));
+                                } else if (result ==
+                                    'create_medical_declaration') {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              MedicalDeclarationScreen(
+                                                phone: item["phone_number"],
+                                              )));
+                                } else if (result ==
+                                    'medical_declare_history') {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              ListMedicalDeclaration(
+                                                code: item['code'],
+                                                phone: item["phone_number"],
+                                              )));
+                                } else if (result == 'create_test') {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => AddTest(
+                                                code: item["code"],
+                                                name: item['full_name'],
+                                              )));
+                                } else if (result == 'test_history') {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => ListTest(
+                                                code: item["code"],
+                                                name: item['full_name'],
+                                              )));
+                                }
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry>[
+                                PopupMenuItem(
+                                  child: Text('Cập nhật thông tin'),
+                                  value: "update_info",
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Khai báo y tế'),
+                                  value: "create_medical_declaration",
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Lịch sử khai báo y tế'),
+                                  value: "medical_declare_history",
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Tạo phiếu xét nghiệm'),
+                                  value: "create_test",
+                                ),
+                                PopupMenuItem(
+                                  child: Text('Lịch sử xét nghiệm'),
+                                  value: "test_history",
+                                ),
+                              ],
+                            ),
                           )),
                 ),
               )

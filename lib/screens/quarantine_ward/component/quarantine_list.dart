@@ -64,11 +64,6 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   Widget build(BuildContext context) {
-
-    
-
-
-
     return RefreshIndicator(
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
@@ -80,16 +75,20 @@ class _QuanrantineListState extends State<QuanrantineList> {
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Text('Không có dữ liệu'),
           ),
-          itemBuilder: (context, item, index)  =>  QuarantineItem(
+          itemBuilder: (context, item, index) => QuarantineItem(
             id: item['id'].toString(),
             name: item['full_name'] ?? "",
             currentMem: item['num_current_member'],
             manager: item['main_manager']['full_name'] ?? "",
-            address: "Đang cập nhật...",
+            address: (item['address'] != null ? "${item['address']}, " : "") +
+                (item['ward'] != null ? "${item['ward']['name']}, " : "") +
+                (item['district'] != null
+                    ? "${item['district']['name']}, "
+                    : "") +
+                (item['city'] != null ? "${item['city']['name']}" : ""),
           ),
         ),
       ),
     );
   }
 }
-

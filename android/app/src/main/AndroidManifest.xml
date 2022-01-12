@@ -31,6 +31,13 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               /> -->
+            <meta-data
+                android:name="com.onesignal.messaging.default_notification_icon"
+                android:resource="@drawable/ic_stat_onesignal_default" />
+
+            <meta-data
+                android:name="com.onesignal.NotificationAccentColor.DEFAULT"
+                android:value="FFFFFF" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

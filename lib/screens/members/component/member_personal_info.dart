@@ -30,7 +30,11 @@ class MemberPersonalInfo extends StatefulWidget {
   _MemberPersonalInfoState createState() => _MemberPersonalInfoState();
 }
 
-class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
+class _MemberPersonalInfoState extends State<MemberPersonalInfo>
+    with AutomaticKeepAliveClientMixin<MemberPersonalInfo> {
+  @override
+  bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
@@ -222,7 +226,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
@@ -247,7 +251,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Tỉnh/thành',
             ),
             DropdownInput<KeyValue>(
@@ -273,7 +277,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quận/huyện',
             ),
             DropdownInput<KeyValue>(
@@ -299,7 +303,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo> {
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
-              maxHeight: 700,
+              maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Phường/xã',
             ),
             Input(

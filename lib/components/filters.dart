@@ -20,7 +20,8 @@ Future memberFilter(
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
     useRootNavigator: true,
     context: context,
@@ -232,7 +233,8 @@ Future testFilter(
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
     useRootNavigator: true,
     context: context,
@@ -350,7 +352,8 @@ Future quarantineFilter(
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
     useRootNavigator: true,
     context: context,

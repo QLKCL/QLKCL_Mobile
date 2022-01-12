@@ -32,6 +32,8 @@ class _TestFormState extends State<TestForm> {
   final resultController = TextEditingController();
   final createAtController = TextEditingController();
   final updateAtController = TextEditingController();
+  final createByController = TextEditingController();
+  final updateByController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +63,15 @@ class _TestFormState extends State<TestForm> {
           ? DateFormat("dd/MM/yyyy HH:mm:ss")
               .format(widget.testData!.createdAt.toLocal())
           : "";
+      createByController.text = widget.testData?.createdBy.fullName != null
+          ? widget.testData!.createdBy.fullName
+          : "";
       updateAtController.text = widget.testData?.updatedAt != null
           ? DateFormat("dd/MM/yyyy HH:mm:ss")
               .format(widget.testData!.updatedAt.toLocal())
+          : "";
+      updateByController.text = widget.testData?.updatedBy.fullName != null
+          ? widget.testData!.updatedBy.fullName
           : "";
     }
     return SingleChildScrollView(
@@ -171,6 +179,12 @@ class _TestFormState extends State<TestForm> {
               ),
             if (widget.mode == Permission.view)
               Input(
+                label: 'Người tạo',
+                initValue: widget.testData?.createdBy.fullName,
+                enabled: false,
+              ),
+            if (widget.mode == Permission.view)
+              Input(
                 label: 'Cập nhật lần cuối',
                 controller: updateAtController,
                 enabled: false,
@@ -178,7 +192,7 @@ class _TestFormState extends State<TestForm> {
             if (widget.mode == Permission.view)
               Input(
                 label: 'Người cập nhật',
-                // initValue: widget.testData?.updatedBy,
+                initValue: widget.testData?.updatedBy.fullName,
                 enabled: false,
               ),
             if (widget.mode == Permission.edit || widget.mode == Permission.add)

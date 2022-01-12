@@ -151,7 +151,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     : Input(
                         label: 'Họ và tên',
                         controller: userNameController,
-                        required: true,
+                        required: false,
                         enabled: false,
                       ),
 
@@ -231,12 +231,12 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: 700,
+                  maxHeight: MediaQuery.of(context).size.height - 100,
                   popupTitle: 'Triệu chứng nghi nhiễm',
                 ),
 
                 MultiDropdownInput<KeyValue>(
-                  label: 'Triệu chứng nghi nhiễm khác',
+                  label: 'Triệu chứng khác',
                   hint: 'Chọn triệu chứng',
                   itemValue: symptomExtraList,
                   mode: Mode.BOTTOM_SHEET,
@@ -260,7 +260,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: 700,
+                  maxHeight: MediaQuery.of(context).size.height - 100,
                   popupTitle: 'Triệu chứng khác',
                 ),
 
@@ -347,9 +347,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
 }
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  // if (selectedItems.isEmpty) {
-  //   return Container();
-  // }
+  if (selectedItems.isEmpty) {
+    return Text("Chọn triệu chứng");
+  }
 
   return Wrap(
     children: selectedItems.map((e) {

@@ -246,6 +246,7 @@ Map<String, dynamic> createQuarantineDataForm({
   String? longtitude,
   required String status,
   String? type,
+  String? phoneNumber,
   required int quarantineTime,
   required String mainManager,
 }) {
@@ -263,6 +264,7 @@ Map<String, dynamic> createQuarantineDataForm({
     "type": type,
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
+    "phone_number": phoneNumber,
   };
   data.removeWhere((key, value) => key == "" || value == "");
   return data;
@@ -272,7 +274,6 @@ Map<String, dynamic> createRoomDataForm({
   required int capacity,
   required int quarantineFloor,
   required String name,
-  
 }) {
   var data = {
     "name": name,
@@ -298,6 +299,7 @@ Map<String, dynamic> updateQuarantineDataForm({
   String? type,
   int? quarantineTime,
   String? mainManager,
+  String? phoneNumber,
 }) {
   var data = {
     "id": id,
@@ -310,8 +312,9 @@ Map<String, dynamic> updateQuarantineDataForm({
     "address": address,
     "latitude": latitude,
     "longtitude": longtitude,
-    "staus": status,
+    "status": status,
     "type": type,
+    "phone_number": phoneNumber,
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
   };
@@ -379,7 +382,6 @@ Map<String, dynamic> updateFloorDataForm({
 Map<String, dynamic> createFloorDataForm({
   required int quarantineBuilding,
   required String name,
-  
 }) {
   var data = {
     "name": name,
@@ -463,5 +465,3 @@ Map<String, dynamic> filterMedDeclDataForm({
   };
   return prepareDataForm(data);
 }
-
-

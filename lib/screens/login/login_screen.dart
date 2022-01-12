@@ -42,6 +42,7 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               Container(
+                width: MediaQuery.of(context).size.width * 0.6,
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/sign_in.png"),
               ),

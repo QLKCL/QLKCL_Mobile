@@ -103,7 +103,7 @@ class _SuspectMemberState extends State<SuspectMember>
                       (item['quarantine_ward'] != null
                           ? "${item['quarantine_ward']['full_name']}"
                           : ""),
-              lastTestResult: item['positive_test'],
+              lastTestResult: item['positive_test_now'],
               lastTestTime: item['last_tested'],
               healthStatus: item['health_status'],
               onTap: () {
@@ -127,7 +127,10 @@ class _SuspectMemberState extends State<SuspectMember>
                         .push(MaterialPageRoute(
                             builder: (context) => MedicalDeclarationScreen(
                                   phone: item["phone_number"],
-                                )));
+                                )))
+                        .then(
+                          (value) => _pagingController.refresh(),
+                        );
                   } else if (result == 'medical_declare_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(

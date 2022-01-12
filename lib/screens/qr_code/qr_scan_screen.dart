@@ -1,9 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:qr_code_tools/qr_code_tools.dart';
+import 'package:rxdart/rxdart.dart';
 
 // cre: https://pub.dev/packages/qr_code_scanner/example
 
@@ -19,6 +24,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  final picker = ImagePicker();
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -34,6 +40,43 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: SizedBox(
+            height: 100,
+            width: 80,
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              onPressed: () => _getPhotoByGallery(),
+              child: Column(
+                children: [
+                  Container(
+                    height: 64,
+                    width: 64,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.photo_library_outlined, size: 30),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    "Chọn QR từ thư viện",
+                    style: TextStyle(
+                      color: CustomColors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              tooltip: "Chọn hình ảnh",
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
           title: const Text('Quét mã QR'),
           actions: [
@@ -116,26 +159,41 @@ class _QrCodeScanState extends State<QrCodeScan> {
         },
       ));
     } else {
-      //   await showDialog<String>(
-      //     barrierDismissible: false,
-      //     context: context,
-      //     builder: (BuildContext context) => AlertDialog(
-      //       title: const Text('Nội dung'),
-      //       content: Text(qrResult),
-      //       actions: <Widget>[
-      //         TextButton(
-      //           onPressed: () => Navigator.pop(context, 'OK'),
-      //           child: const Text('OK'),
-      //         ),
-      //       ],
-      //     ),
-      //   ).then((value) => controller!.resumeCamera());
-
       Navigator.of(context, rootNavigator: true)
           .pushReplacement(MaterialPageRoute(
               builder: (context) => UpdateMember(
                     code: qrResult,
                   )));
     }
+  }
+
+  void _getPhotoByGallery() {
+    controller?.pauseCamera();
+    Stream.fromFuture(picker.pickImage(source: ImageSource.gallery))
+        .flatMap((file) {
+      return Stream.fromFuture(QrCodeToolsPlugin.decodeFrom(file!.path));
+    }).listen((data) {
+      Navigator.of(context, rootNavigator: true)
+          .pushReplacement(MaterialPageRoute(
+              builder: (context) => UpdateMember(
+                    code: data,
+                  )));
+    }).onError((error, stackTrace) {
+      showDialog<String>(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Lỗi'),
+          content: Text("Không tìm thấy dữ liệu từ mã QR"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ).then((value) => controller!.resumeCamera());
+      print('${error.toString()}');
+    });
   }
 }
