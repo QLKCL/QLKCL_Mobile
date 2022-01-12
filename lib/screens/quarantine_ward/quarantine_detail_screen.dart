@@ -16,14 +16,8 @@ class QuarantineDetailScreen extends StatefulWidget {
 }
 
 class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
-  
-
   late Future<dynamic> futureQuarantine;
   late Quarantine quarantineInfo;
-
-  onRefresh() {
-    setState(() {});
-  }
 
   @override
   void initState() {
@@ -38,7 +32,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     if (widget.id != null) {
       futureQuarantine = fetchQuarantine(id: widget.id);
     } else {
@@ -60,7 +53,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   quarantineInfo: quarantineInfo,
                 ),
               ),
-            );
+            ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
         ),
@@ -79,7 +72,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
               quarantineInfo = Quarantine.fromJson(snapshot.data);
               return QuarantineInfo(
                 quarantineInfo: quarantineInfo,
-                onGoBack: onRefresh,
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');

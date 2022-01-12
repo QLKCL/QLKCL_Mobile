@@ -134,12 +134,7 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
           success: true,
           message: "Tạo khu cách ly thành công!",
           data: response['data']);
-    } else if (response['message']['full_name'] != null &&
-        response['message']['full_name'] == "Exist") {
-      return Response(
-          success: false, message: "Tên khu cách ly đã được sử dụng!");
     } else {
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }

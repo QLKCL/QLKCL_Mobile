@@ -145,7 +145,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
       quarantineTimeController.text =
           widget.quarantineInfo?.quarantineTime.toString() ?? "";
       managerController.text = widget.quarantineInfo?.mainManager != null
-          ? widget.quarantineInfo!.mainManager['full_name']
+          ? widget.quarantineInfo!.mainManager['code']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
     } else {

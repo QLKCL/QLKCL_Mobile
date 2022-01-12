@@ -28,11 +28,6 @@ class FloorDetailsScreen extends StatefulWidget {
 class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   late Future<dynamic> futureRoomList;
 
-  onRefresh() {
-    //print('On refresh');
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
@@ -63,10 +58,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   currentBuilding: widget.currentBuilding,
                   currentQuarantine: widget.currentQuarantine,
                   currentFloor: widget.currentFloor,
-                  onGoBackRoomList: onRefresh,
                 ),
               ),
-            );
+            ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
         ),
@@ -128,12 +122,12 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 currentBuilding: widget.currentBuilding,
                 currentQuarantine: widget.currentQuarantine,
                 currentFloor: widget.currentFloor,
-                onGoBackRoomList: onRefresh,
               ),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
         child: const Icon(Icons.add),
+        tooltip: 'Thêm phòng',
       ),
     );
   }

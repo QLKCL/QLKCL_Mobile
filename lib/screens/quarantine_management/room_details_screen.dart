@@ -133,7 +133,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             ),
           );
         },
-        //tooltip: 'Increment',
+        tooltip: 'Thêm người cách ly',
         child: const Icon(Icons.add),
       ),
     );

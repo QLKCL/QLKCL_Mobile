@@ -9,11 +9,9 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class AddBuildingScreen extends StatefulWidget {
   final Quarantine? currentQuarrantine;
-  final VoidCallback onGoBackBuildingList;
   const AddBuildingScreen({
     Key? key,
     this.currentQuarrantine,
-    required this.onGoBackBuildingList,
   }) : super(key: key);
 
   static const routeName = '/add-building';
@@ -55,20 +53,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),
       );
-      widget.onGoBackBuildingList();
       Navigator.pop(context);
-
-        
     }
-
-    // Navigator.pushAndRemoveUntil<void>(
-    //   context,
-    //   MaterialPageRoute<void>(
-    //     builder: (BuildContext context) => QuarantineDetailScreen(
-    //         id: widget.currentQuarrantine!.id.toString()),
-    //   ),
-    //   (Route<dynamic> route) => false,
-    // );
   }
 
   @override

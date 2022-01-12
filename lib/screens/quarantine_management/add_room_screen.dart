@@ -15,14 +15,12 @@ class AddRoomScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
   final Floor? currentFloor;
-  final VoidCallback onGoBackRoomList;
 
   const AddRoomScreen({
     Key? key,
     this.currentBuilding,
     this.currentQuarantine,
     this.currentFloor,
-    required this.onGoBackRoomList,
   }) : super(key: key);
 
   @override
@@ -64,7 +62,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         SnackBar(content: Text(registerResponse.message)),
       );
     }
-    widget.onGoBackRoomList();
     Navigator.pop(context);
   }
 
