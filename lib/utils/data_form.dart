@@ -266,12 +266,11 @@ Map<String, dynamic> createQuarantineDataForm({
     "main_manager": mainManager,
     "phone_number": phoneNumber,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> createRoomDataForm({
-  required int capacity,
+  required String capacity,
   required int quarantineFloor,
   required String name,
 }) {
@@ -280,8 +279,7 @@ Map<String, dynamic> createRoomDataForm({
     "quarantine_floor": quarantineFloor,
     "capacity": capacity,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> updateQuarantineDataForm({
@@ -318,8 +316,7 @@ Map<String, dynamic> updateQuarantineDataForm({
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> filterQuarantineDataForm({
@@ -334,9 +331,7 @@ Map<String, dynamic> filterQuarantineDataForm({
     "created_at_max": createAtMax,
     "page": page,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> createBuildingDataForm({
@@ -347,8 +342,7 @@ Map<String, dynamic> createBuildingDataForm({
     "name": name,
     "quarantine_ward": quarantineWard,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> updateBuildingDataForm({
@@ -361,8 +355,7 @@ Map<String, dynamic> updateBuildingDataForm({
     "quarantine_ward": quarantineWard,
     "name": name,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> updateFloorDataForm({
@@ -375,8 +368,7 @@ Map<String, dynamic> updateFloorDataForm({
     "quarantine_building": quarantineBuilding,
     "name": name,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> createFloorDataForm({
@@ -387,8 +379,7 @@ Map<String, dynamic> createFloorDataForm({
     "name": name,
     "quarantine_building": quarantineBuilding,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> updateRoomDataForm({
@@ -403,8 +394,7 @@ Map<String, dynamic> updateRoomDataForm({
     "name": name,
     "capacity": capacity,
   };
-  data.removeWhere((key, value) => key == "" || value == "");
-  return data;
+  return prepareDataForm(data);
 }
 
 Map<String, dynamic> filterMemberByRoomDataForm({

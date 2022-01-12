@@ -35,6 +35,14 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   }
 
   @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
   void deactivate() {
     EasyLoading.dismiss();
     super.deactivate();

@@ -39,6 +39,14 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   }
 
   @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    // This also removes the _printLatestValue listener.
+    myController.dispose();
+    super.dispose();
+  }
+
+  @override
   void deactivate() {
     EasyLoading.dismiss();
     super.deactivate();
@@ -52,11 +60,15 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
+      if (addMultiple == true) {
+        nameController.text = nameList.join(",");
+        capacityController.text = capacityList.join(",");
+      }
       EasyLoading.show();
       final registerResponse = await createRoom(createRoomDataForm(
         name: nameController.text,
         quarantineFloor: widget.currentFloor!.id,
-        capacity: int.parse(capacityController.text),
+        capacity: capacityController.text,
       ));
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -68,12 +80,15 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   bool addMultiple = false;
   int numOfAddedRoom = 1;
+  List<String> nameList = [];
+  List<String> capacityList = [];
 
   final myController = TextEditingController();
 
   void _updateLatestValue() {
     setState(() {
       numOfAddedRoom = int.tryParse(myController.text) ?? 1;
+      nameList = capacityList = []..length = numOfAddedRoom;
     });
   }
 
@@ -141,6 +156,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                             onChanged: (bool? value) {
                                               setState(() {
                                                 addMultiple = value!;
+                                                nameController.text = "";
+                                                capacityController.text = "";
                                               });
                                             },
                                           ),
@@ -182,6 +199,9 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                                   label: 'Tên phòng',
                                                   hint: 'Tên phòng',
                                                   required: true,
+                                                  onChangedFunction: (text) {
+                                                    nameList[index] = text;
+                                                  },
                                                 ),
                                               ),
                                               Expanded(
@@ -191,6 +211,9 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                                   hint: 'Người tối đa',
                                                   required: true,
                                                   type: TextInputType.number,
+                                                  onChangedFunction: (text) {
+                                                    capacityList[index] = text;
+                                                  },
                                                 ),
                                               ),
                                             ],
@@ -228,15 +251,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   margin: const EdgeInsets.all(16),
-                      //   child: ElevatedButton(
-                      //     onPressed: () {
-                      //       _submit();
-                      //     },
-                      //     child: Text("Lưu"),
-                      //   ),
-                      // ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: ElevatedButton(
