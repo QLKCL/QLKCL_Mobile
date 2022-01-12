@@ -41,7 +41,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   Widget build(BuildContext context) {
     futureFloorList =
         fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
-    print(widget.currentBuilding!.id);
 
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
@@ -70,8 +69,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
             future: futureFloorList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('Snap shot data');
-                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,

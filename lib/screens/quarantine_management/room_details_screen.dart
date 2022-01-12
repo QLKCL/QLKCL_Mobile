@@ -83,8 +83,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             future: futureMemberList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('snapshot data in room detail');
-                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -65,62 +66,64 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
       title: Text('Sửa thông tin tòa'),
       centerTitle: true,
     );
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: numOfFloor,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                EasyLoading.dismiss();
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.25,
-                      child: GeneralInfoBuilding(
-                        currentQuarantine: widget.currentQuarantine!,
-                        currentBuilding: widget.currentBuilding!,
-                        numberOfFloor: snapshot.data,
-                      ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: FutureBuilder<dynamic>(
+              future: numOfFloor,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  EasyLoading.dismiss();
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
-                            0.6,
-                        child: Input(
-                          label: 'Tên tòa mới',
-                          hint: 'Tên tòa mới',
-                          controller: nameController,
+                            0.25,
+                        child: GeneralInfoBuilding(
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentBuilding: widget.currentBuilding!,
+                          numberOfFloor: snapshot.data,
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        onPressed: _submit,
-                        child: Text(
-                          "Xác nhận",
-                          style: TextStyle(color: CustomColors.white),
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.6,
+                          child: Input(
+                            label: 'Tên tòa mới',
+                            hint: 'Tên tòa mới',
+                            controller: nameController,
+                          ),
                         ),
                       ),
-                    )
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
-              }
-              EasyLoading.show();
-              return Container();
-            }),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          onPressed: _submit,
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: CustomColors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                }
+                EasyLoading.show();
+                return Container();
+              }),
+        ),
       ),
     );
   }

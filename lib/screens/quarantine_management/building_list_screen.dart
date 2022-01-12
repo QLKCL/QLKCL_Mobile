@@ -33,19 +33,15 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
     futureBuildingList =
         fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
 
-    print('Build building list screen');
     final appBar = AppBar(
       title: Text('Danh sách tòa'),
     );
-    //print(widget.currentQuarrantine!.fullName);
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
-              print('building list');
-              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(

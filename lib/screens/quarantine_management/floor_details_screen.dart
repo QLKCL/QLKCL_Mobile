@@ -31,8 +31,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   @override
   void initState() {
     super.initState();
-
-    print('future room list');
   }
 
   @override
@@ -72,7 +70,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         child: FutureBuilder<dynamic>(
             future: futureRoomList,
             builder: (context, snapshot) {
-              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(
