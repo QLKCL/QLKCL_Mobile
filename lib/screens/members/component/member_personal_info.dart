@@ -65,6 +65,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (widget.personalData != null) {
       codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";

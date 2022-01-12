@@ -107,6 +107,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
