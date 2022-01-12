@@ -5,6 +5,7 @@ import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
@@ -276,7 +277,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   ? (widget.quarantineData!.backgroundDisease
                       .toString()
                       .split(',')
-                      .map((e) => backgroundDiseaseList[int.parse(e)])
+                      .map((e) => backgroundDiseaseList.safeFirstWhere(
+                          (result) => result.id == int.parse(e))!)
                       .toList())
                   : null,
               onChanged: (value) {

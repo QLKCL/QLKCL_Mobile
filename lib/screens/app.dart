@@ -152,6 +152,9 @@ class _AppState extends State<App> {
 
     handleSendTags("role", _role.toString());
 
+    int quarantineWardId = await getQuarantineWard();
+    handleSendTags("quarantine_ward_id", quarantineWardId.toString());
+
     String code = await getCode();
     handleSetExternalUserId(code);
   }

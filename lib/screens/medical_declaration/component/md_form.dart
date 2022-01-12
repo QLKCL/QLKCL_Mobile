@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
@@ -219,7 +220,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                       ? (widget.medicalDeclData!.mainSymptoms
                           .toString()
                           .split(',')
-                          .map((e) => symptomMainList[int.parse(e) - 1])
+                          .map((e) => symptomMainList.safeFirstWhere(
+                              (result) => result.id == int.parse(e))!)
                           .toList())
                       : null,
                   onChanged: (value) {
@@ -248,7 +250,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                       ? (widget.medicalDeclData!.extraSymptoms
                           .toString()
                           .split(',')
-                          .map((e) => symptomExtraList[int.parse(e) - 5])
+                          .map((e) => symptomExtraList.safeFirstWhere(
+                              (result) => result.id == int.parse(e))!)
                           .toList())
                       : null,
                   onChanged: (value) {
