@@ -88,7 +88,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   void _updateLatestValue() {
     setState(() {
       numOfAddedRoom = int.tryParse(myController.text) ?? 1;
-      nameList = capacityList = []..length = numOfAddedRoom;
+      nameList = []..length = numOfAddedRoom;
+      capacityList = []..length = numOfAddedRoom;
     });
   }
 
@@ -207,8 +208,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                               Expanded(
                                                 flex: 45,
                                                 child: Input(
-                                                  label: 'Người tối đa',
-                                                  hint: 'Người tối đa',
+                                                  label: 'Số người tối đa',
+                                                  hint: 'Số người tối đa',
                                                   required: true,
                                                   type: TextInputType.number,
                                                   onChangedFunction: (text) {
@@ -236,8 +237,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                             Expanded(
                                               flex: 45,
                                               child: Input(
-                                                label: 'Người tối đa',
-                                                hint: 'Người tối đa',
+                                                label: 'Số người tối đa',
+                                                hint: 'Số người tối đa',
                                                 required: true,
                                                 type: TextInputType.number,
                                                 controller: capacityController,
