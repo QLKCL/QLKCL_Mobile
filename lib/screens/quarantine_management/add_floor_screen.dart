@@ -50,15 +50,24 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
+  final capacityController = TextEditingController();
 
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
+      if (addMultiple == true) {
+        nameController.text = nameList.join(",");
+        capacityController.text = capacityList.join(",");
+      } else {
+        capacityController.text = "0";
+      }
       EasyLoading.show();
       final registerResponse = await createFloor(
         createFloorDataForm(
-            name: nameController.text,
-            quarantineBuilding: widget.currentBuilding!.id),
+          name: nameController.text,
+          quarantineBuilding: widget.currentBuilding!.id,
+          roomQuantity: capacityController.text,
+        ),
       );
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,12 +79,16 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   bool addMultiple = false;
   int numOfAddedFloor = 1;
+  List<String> nameList = [];
+  List<String> capacityList = [];
 
   final myController = TextEditingController();
 
   void _updateLatestValue() {
     setState(() {
       numOfAddedFloor = int.tryParse(myController.text) ?? 1;
+      nameList = []..length = numOfAddedFloor;
+      capacityList = List<String>.filled(numOfAddedFloor, "0");
     });
   }
 
@@ -142,6 +155,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                           onChanged: (bool? value) {
                                             setState(() {
                                               addMultiple = value!;
+                                              nameController.text = "";
+                                              capacityController.text = "";
                                             });
                                           },
                                         ),
@@ -156,7 +171,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                               hint: 'Số tầng',
                                               type: TextInputType.number,
                                               required: true,
-                                              //initValue: '1',
                                               controller: myController,
                                             ),
                                           )
@@ -183,6 +197,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                                 label: 'Tên tầng',
                                                 hint: 'Tên tầng',
                                                 required: true,
+                                                onChangedFunction: (text) {
+                                                  nameList[index] = text;
+                                                },
                                               ),
                                             ),
                                           ],

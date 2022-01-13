@@ -374,10 +374,12 @@ Map<String, dynamic> updateFloorDataForm({
 Map<String, dynamic> createFloorDataForm({
   required int quarantineBuilding,
   required String name,
+  required String roomQuantity,
 }) {
   var data = {
     "name": name,
     "quarantine_building": quarantineBuilding,
+    "room_quantity": roomQuantity,
   };
   return prepareDataForm(data);
 }
