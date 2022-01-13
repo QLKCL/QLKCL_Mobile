@@ -65,17 +65,17 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         capacityController.text = capacityList.join(",");
       }
       EasyLoading.show();
-      final registerResponse = await createRoom(createRoomDataForm(
+      final response = await createRoom(createRoomDataForm(
         name: nameController.text,
         quarantineFloor: widget.currentFloor!.id,
         capacity: capacityController.text,
       ));
       EasyLoading.dismiss();
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(registerResponse.message)),
+        SnackBar(content: Text(response.message)),
       );
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
   }
 
   bool addMultiple = false;
