@@ -20,6 +20,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   TextEditingController createAtMaxController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController districtController = TextEditingController();
+  TextEditingController wardController = TextEditingController();
 
   bool searched = false;
 
@@ -100,22 +101,24 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: CustomColors.secondaryText,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        /* Clear the search field */
-                        keySearch.clear();
-                        setState(() {
-                          searched = false;
-                        });
-                      },
-                    ),
-                    hintText: 'Tìm kiếm...',
-                    border: InputBorder.none),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: CustomColors.secondaryText,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      /* Clear the search field */
+                      keySearch.clear();
+                      setState(() {
+                        searched = false;
+                      });
+                    },
+                  ),
+                  hintText: 'Tìm kiếm...',
+                  border: InputBorder.none,
+                  filled: false,
+                ),
                 onSubmitted: (v) {
                   setState(() {
                     searched = true;
@@ -133,6 +136,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             //       context,
             //       cityController: cityController,
             //       districtController: districtController,
+            //       wardController: wardController,
             //       setState: () {
             //         setState(() {
             //           //searched = true;
@@ -166,7 +170,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 ),
               )
             : Center(
-                child: Text('Tìm kiếm người cách ly'),
+                child: Text('Tìm kiếm khu cách ly'),
               ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -74,8 +75,10 @@ class _SearchMemberState extends State<SearchMember> {
           quarantineBuilding: quarantineBuildingController.text,
           quarantineFloor: quarantineFloorController.text,
           quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin: quarantineAtMinController.text,
-          quarantineAtMax: quarantineAtMaxController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
         ),
       );
 
@@ -111,22 +114,24 @@ class _SearchMemberState extends State<SearchMember> {
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: CustomColors.secondaryText,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        /* Clear the search field */
-                        keySearch.clear();
-                        setState(() {
-                          searched = false;
-                        });
-                      },
-                    ),
-                    hintText: 'Tìm kiếm...',
-                    border: InputBorder.none),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: CustomColors.secondaryText,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      /* Clear the search field */
+                      keySearch.clear();
+                      setState(() {
+                        searched = false;
+                      });
+                    },
+                  ),
+                  hintText: 'Tìm kiếm...',
+                  border: InputBorder.none,
+                  filled: false,
+                ),
                 onSubmitted: (v) {
                   setState(() {
                     searched = true;

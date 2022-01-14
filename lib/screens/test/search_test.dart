@@ -4,6 +4,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -66,8 +67,10 @@ class _SearchTestState extends State<SearchTest> {
         page: pageKey,
         status: stateController.text,
         keySearch: keySearch.text,
-        createAtMin: createAtMinController.text,
-        createAtMax: createAtMaxController.text,
+        createAtMin:
+            parseDateToDateTimeWithTimeZone(createAtMinController.text),
+        createAtMax:
+            parseDateToDateTimeWithTimeZone(createAtMaxController.text),
       ));
 
       final isLastPage = newItems.length < PAGE_SIZE;
@@ -87,6 +90,7 @@ class _SearchTestState extends State<SearchTest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
+          titleSpacing: 0.0,
           title: Container(
             width: double.infinity,
             height: 36,
@@ -101,22 +105,24 @@ class _SearchTestState extends State<SearchTest> {
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.search,
-                      color: CustomColors.secondaryText,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        /* Clear the search field */
-                        keySearch.clear();
-                        setState(() {
-                          searched = false;
-                        });
-                      },
-                    ),
-                    hintText: 'Tìm kiếm...',
-                    border: InputBorder.none),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: CustomColors.secondaryText,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: () {
+                      /* Clear the search field */
+                      keySearch.clear();
+                      setState(() {
+                        searched = false;
+                      });
+                    },
+                  ),
+                  hintText: 'Tìm kiếm...',
+                  border: InputBorder.none,
+                  filled: false,
+                ),
                 onSubmitted: (v) {
                   setState(() {
                     searched = true;

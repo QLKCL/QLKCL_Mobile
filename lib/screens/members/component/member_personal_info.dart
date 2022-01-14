@@ -195,7 +195,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   ? true
                   : false,
             ),
-            DateInput(
+            NewDateInput(
               label: 'Ngày sinh',
               required: widget.mode == Permission.view ? false : true,
               controller: birthdayController,

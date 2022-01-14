@@ -238,7 +238,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text == "" ? null : labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
-            DateInput(
+            NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
               enabled: widget.mode != Permission.view ? true : false,
@@ -365,11 +365,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      DateTime parseDate =
-          new DateFormat("dd/MM/yyyy").parse(quarantinedAtController.text);
-      var inputDate = DateTime.parse(parseDate.toString());
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      var outputDate = outputFormat.format(inputDate);
       final updateResponse = await updateMember(updateMemberDataForm(
         code: (widget.mode == Permission.add &&
                 MemberPersonalInfo.userCode != null)
@@ -381,7 +376,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
         label: labelController.text,
-        quarantinedAt: outputDate,
+        quarantinedAt:
+            parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
         positiveBefore: _isPositiveTestedBefore,
         backgroundDisease: backgroundDiseaseController.text,
         otherBackgroundDisease: otherBackgroundDiseaseController.text,
