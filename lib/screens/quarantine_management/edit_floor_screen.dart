@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -13,13 +14,11 @@ class EditFloorScreen extends StatefulWidget {
   final Building? currentBuilding;
   final Quarantine? currentQuarantine;
   final Floor? currentFloor;
-  final VoidCallback onGoBackRoomList;
   const EditFloorScreen({
     Key? key,
     this.currentBuilding,
     this.currentQuarantine,
     this.currentFloor,
-    required this.onGoBackRoomList,
   }) : super(key: key);
   static const routeName = '/editing-floor';
 
@@ -58,7 +57,6 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),
       );
-      widget.onGoBackRoomList();
       Navigator.pop(context);
     }
   }
@@ -69,63 +67,65 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       title: Text('Sửa thông tin tầng'),
       centerTitle: true,
     );
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: numOfRoom,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                EasyLoading.dismiss();
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.25,
-                      child: GeneralInfoFloor(
-                        currentBuilding: widget.currentBuilding!,
-                        currentQuarantine: widget.currentQuarantine!,
-                        currentFloor: widget.currentFloor!,
-                        numOfRoom: snapshot.data,
-                      ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: FutureBuilder<dynamic>(
+              future: numOfRoom,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  EasyLoading.dismiss();
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
-                            0.6,
-                        child: Input(
-                          label: 'Tên tầng mới',
-                          hint: 'Tên tầng mới',
-                          controller: nameController,
+                            0.25,
+                        child: GeneralInfoFloor(
+                          currentBuilding: widget.currentBuilding!,
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentFloor: widget.currentFloor!,
+                          numOfRoom: snapshot.data,
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        onPressed: _submit,
-                        child: Text(
-                          "Xác nhận",
-                          style: TextStyle(color: CustomColors.white),
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.6,
+                          child: Input(
+                            label: 'Tên tầng mới',
+                            hint: 'Tên tầng mới',
+                            controller: nameController,
+                          ),
                         ),
                       ),
-                    )
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
-              }
-              EasyLoading.show();
-              return Container();
-            }),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          onPressed: _submit,
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: CustomColors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                }
+                EasyLoading.show();
+                return Container();
+              }),
+        ),
       ),
     );
   }

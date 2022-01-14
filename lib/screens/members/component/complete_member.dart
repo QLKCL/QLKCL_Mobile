@@ -72,6 +72,7 @@ class _CompleteMemberState extends State<CompleteMember>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,

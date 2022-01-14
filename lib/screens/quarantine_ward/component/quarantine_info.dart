@@ -9,12 +9,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class QuarantineInfo extends StatefulWidget {
   final Quarantine quarantineInfo;
-  final VoidCallback onGoBack;
-  //final String? id;
   const QuarantineInfo({
     Key? key,
     required this.quarantineInfo,
-    required this.onGoBack,
   }) : super(key: key);
 
   @override
@@ -163,7 +160,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return CarouselBuilding(
-                  onGoBack: widget.onGoBack,
                   data: snapshot.data,
                   currentQuarantine: widget.quarantineInfo,
                 );

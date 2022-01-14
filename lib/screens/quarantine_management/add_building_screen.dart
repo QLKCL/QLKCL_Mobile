@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info.dart';
@@ -9,11 +10,9 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class AddBuildingScreen extends StatefulWidget {
   final Quarantine? currentQuarrantine;
-  final VoidCallback onGoBackBuildingList;
   const AddBuildingScreen({
     Key? key,
     this.currentQuarrantine,
-    required this.onGoBackBuildingList,
   }) : super(key: key);
 
   static const routeName = '/add-building';
@@ -28,7 +27,6 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   @override
   void initState() {
     super.initState();
-    //print('InitState add building');
     futureBuildingList =
         fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
   }
@@ -55,20 +53,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(registerResponse.message)),
       );
-      widget.onGoBackBuildingList();
       Navigator.pop(context);
-
-        
     }
-
-    // Navigator.pushAndRemoveUntil<void>(
-    //   context,
-    //   MaterialPageRoute<void>(
-    //     builder: (BuildContext context) => QuarantineDetailScreen(
-    //         id: widget.currentQuarrantine!.id.toString()),
-    //   ),
-    //   (Route<dynamic> route) => false,
-    // );
   }
 
   @override
@@ -77,61 +63,63 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
       title: Text('Thêm tòa'),
       centerTitle: true,
     );
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: futureBuildingList,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                EasyLoading.dismiss();
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.25,
-                      child: GeneralInfo(
-                        currentQuarantine: widget.currentQuarrantine!,
-                        numOfBuilding: snapshot.data.length,
-                      ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
+    return DismissKeyboard(
+      child: Scaffold(
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: FutureBuilder<dynamic>(
+              future: futureBuildingList,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  EasyLoading.dismiss();
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
-                            0.6,
-                        child: Input(
-                          label: 'Tên tòa',
-                          required: true,
-                          controller: nameController,
+                            0.25,
+                        child: GeneralInfo(
+                          currentQuarantine: widget.currentQuarrantine!,
+                          numOfBuilding: snapshot.data.length,
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: ElevatedButton(
-                        onPressed: _submit,
-                        child: Text(
-                          "Xác nhận",
-                          style: TextStyle(color: CustomColors.white),
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.6,
+                          child: Input(
+                            label: 'Tên tòa',
+                            required: true,
+                            controller: nameController,
+                          ),
                         ),
                       ),
-                    )
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
-              }
-              EasyLoading.show();
-              return Container();
-            }),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          onPressed: _submit,
+                          child: Text(
+                            "Xác nhận",
+                            style: TextStyle(color: CustomColors.white),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                }
+                EasyLoading.show();
+                return Container();
+              }),
+        ),
       ),
     );
   }

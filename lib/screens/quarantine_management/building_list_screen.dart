@@ -16,15 +16,10 @@ class BuildingListScreen extends StatefulWidget {
 
 class _BuildingListScreenState extends State<BuildingListScreen> {
   late Future<dynamic> futureBuildingList;
-  onRefresh() {
-    //print('On refresh');
-    setState(() {});
-  }
 
   @override
   void initState() {
     super.initState();
-    //print('init building screen');
   }
 
   @override
@@ -38,19 +33,15 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
     futureBuildingList =
         fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
 
-    print('Build building list screen');
     final appBar = AppBar(
       title: Text('Danh sách tòa'),
     );
-    //print(widget.currentQuarrantine!.fullName);
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
         child: FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
-              print('building list');
-              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(
@@ -92,14 +83,11 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
               MaterialPageRoute(
                   builder: (context) => AddBuildingScreen(
                         currentQuarrantine: widget.currentQuarrantine,
-                        onGoBackBuildingList: onRefresh,
                       )));
         },
-        //tooltip: 'Increment',
+        tooltip: 'Thêm tòa',
         child: const Icon(Icons.add),
       ),
-
-      // body: ,
     );
   }
 }

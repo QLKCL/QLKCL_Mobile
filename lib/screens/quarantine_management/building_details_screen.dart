@@ -26,11 +26,6 @@ class BuildingDetailsScreen extends StatefulWidget {
 class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   late Future<dynamic> futureFloorList;
 
-  onRefresh() {
-    //print('On refresh');
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
@@ -46,7 +41,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   Widget build(BuildContext context) {
     futureFloorList =
         fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
-    print(widget.currentBuilding!.id);
 
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
@@ -60,10 +54,9 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                 builder: (context) => EditBuildingScreen(
                   currentBuilding: widget.currentBuilding,
                   currentQuarantine: widget.currentQuarantine,
-                  onGoBackFloorList: onRefresh,
                 ),
               ),
-            );
+            ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
         ),
@@ -76,8 +69,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
             future: futureFloorList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('Snap shot data');
-                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -122,12 +113,11 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
               builder: (context) => AddFloorScreen(
                 currentBuilding: widget.currentBuilding,
                 currentQuarantine: widget.currentQuarantine,
-                onGoBackFloorList: onRefresh,
               ),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
-        //tooltip: 'Increment',
+        tooltip: 'Thêm tầng',
         child: const Icon(Icons.add),
       ),
     );

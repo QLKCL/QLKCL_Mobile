@@ -83,8 +83,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             future: futureMemberList,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('snapshot data in room detail');
-                print(snapshot.data);
                 EasyLoading.dismiss();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -133,7 +131,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             ),
           );
         },
-        //tooltip: 'Increment',
+        tooltip: 'Thêm người cách ly',
         child: const Icon(Icons.add),
       ),
     );

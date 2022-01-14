@@ -21,8 +21,6 @@ class RoomList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('room list');
-    print(data);
     return (data == null || data.isEmpty)
         ? Center(
             child: Text('Không có dữ liệu'),

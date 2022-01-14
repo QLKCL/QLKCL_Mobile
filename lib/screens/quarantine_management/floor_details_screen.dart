@@ -28,16 +28,9 @@ class FloorDetailsScreen extends StatefulWidget {
 class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   late Future<dynamic> futureRoomList;
 
-  onRefresh() {
-    //print('On refresh');
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-
-    print('future room list');
   }
 
   @override
@@ -63,10 +56,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   currentBuilding: widget.currentBuilding,
                   currentQuarantine: widget.currentQuarantine,
                   currentFloor: widget.currentFloor,
-                  onGoBackRoomList: onRefresh,
                 ),
               ),
-            );
+            ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
         ),
@@ -78,7 +70,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         child: FutureBuilder<dynamic>(
             future: futureRoomList,
             builder: (context, snapshot) {
-              print(snapshot.data);
               if (snapshot.hasData) {
                 EasyLoading.dismiss();
                 return Column(
@@ -128,12 +119,12 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 currentBuilding: widget.currentBuilding,
                 currentQuarantine: widget.currentQuarantine,
                 currentFloor: widget.currentFloor,
-                onGoBackRoomList: onRefresh,
               ),
             ),
-          );
+          ).then((value) => setState(() {}));
         },
         child: const Icon(Icons.add),
+        tooltip: 'Thêm phòng',
       ),
     );
   }

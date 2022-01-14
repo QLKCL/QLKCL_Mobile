@@ -69,6 +69,7 @@ class _DenyMemberState extends State<DenyMember>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,

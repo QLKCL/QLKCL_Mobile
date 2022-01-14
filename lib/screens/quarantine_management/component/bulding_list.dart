@@ -12,8 +12,6 @@ class BuildingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('data ở bulding_list');
-    print(data);
     return (data == null || data.isEmpty)
         ? Center(
             child: Text('Không có dữ liệu'),

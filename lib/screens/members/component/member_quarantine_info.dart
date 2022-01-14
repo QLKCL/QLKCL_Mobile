@@ -5,6 +5,7 @@ import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
@@ -106,6 +107,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -236,7 +238,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text == "" ? null : labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
-            DateInput(
+            NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
               enabled: widget.mode != Permission.view ? true : false,
@@ -276,7 +278,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   ? (widget.quarantineData!.backgroundDisease
                       .toString()
                       .split(',')
-                      .map((e) => backgroundDiseaseList[int.parse(e)])
+                      .map((e) => backgroundDiseaseList.safeFirstWhere(
+                          (result) => result.id == int.parse(e))!)
                       .toList())
                   : null,
               onChanged: (value) {
@@ -362,11 +365,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       EasyLoading.show();
-      DateTime parseDate =
-          new DateFormat("dd/MM/yyyy").parse(quarantinedAtController.text);
-      var inputDate = DateTime.parse(parseDate.toString());
-      var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-      var outputDate = outputFormat.format(inputDate);
       final updateResponse = await updateMember(updateMemberDataForm(
         code: (widget.mode == Permission.add &&
                 MemberPersonalInfo.userCode != null)
@@ -378,7 +376,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         quarantineWard: quarantineWardController.text,
         quarantineRoom: quarantineRoomController.text,
         label: labelController.text,
-        quarantinedAt: outputDate,
+        quarantinedAt:
+            parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
         positiveBefore: _isPositiveTestedBefore,
         backgroundDisease: backgroundDiseaseController.text,
         otherBackgroundDisease: otherBackgroundDiseaseController.text,

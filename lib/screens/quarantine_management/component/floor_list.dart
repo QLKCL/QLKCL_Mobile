@@ -20,8 +20,6 @@ class FloorList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('floor list');
-    print(data);
     return (data == null || data.isEmpty)
         ? Center(
             child: Text('Không có dữ liệu'),
@@ -58,7 +56,6 @@ class FloorList extends StatelessWidget {
               } else
                 return QuarantineRelatedCard(
                   onTap: () {
-                    print(data[index]);
                     Navigator.of(context, rootNavigator: true).push(
                       MaterialPageRoute(
                         builder: (context) => FloorDetailsScreen(

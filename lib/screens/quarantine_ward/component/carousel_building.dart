@@ -7,12 +7,13 @@ import 'package:qlkcl/screens/quarantine_management/building_list_screen.dart';
 import './building_item.dart';
 
 class CarouselBuilding extends StatefulWidget {
-  final VoidCallback onGoBack;
   final Quarantine? currentQuarantine;
   final data;
-  const CarouselBuilding(
-      {Key? key, this.data, this.currentQuarantine, required this.onGoBack})
-      : super(key: key);
+  const CarouselBuilding({
+    Key? key,
+    this.data,
+    this.currentQuarantine,
+  }) : super(key: key);
 
   @override
   State<CarouselBuilding> createState() => _CarouselBuildingState();
@@ -45,10 +46,9 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                           MaterialPageRoute(
                             builder: (context) => AddBuildingScreen(
                               currentQuarrantine: widget.currentQuarantine,
-                              onGoBackBuildingList: widget.onGoBack,
                             ),
                           ),
-                        );
+                        ).then((value) => setState(() {}));
                       },
                       child: Text('Tạo tòa'),
                       style: ButtonStyle(
