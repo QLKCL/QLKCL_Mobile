@@ -122,7 +122,7 @@ Map<String, dynamic> filterMemberDataForm({
   String? quarantineRoom,
   String? quarantineAtMin,
   String? quarantineAtMax,
-  List<String>? label,
+  String? label,
   required int page,
 }) {
   var data = {

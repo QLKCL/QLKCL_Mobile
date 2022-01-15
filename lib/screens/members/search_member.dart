@@ -5,6 +5,7 @@ import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -29,6 +30,10 @@ class _SearchMemberState extends State<SearchMember> {
   TextEditingController quarantineRoomController = TextEditingController();
   TextEditingController quarantineAtMinController = TextEditingController();
   TextEditingController quarantineAtMaxController = TextEditingController();
+  TextEditingController labelController = TextEditingController();
+
+  List<KeyValue> quarantineWardList = [];
+
   bool searched = false;
 
   late Future<dynamic> futureMemberList;
@@ -37,6 +42,10 @@ class _SearchMemberState extends State<SearchMember> {
 
   @override
   void initState() {
+    fetchQuarantineWard({
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => quarantineWardList = value);
+
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -69,17 +78,17 @@ class _SearchMemberState extends State<SearchMember> {
     try {
       final newItems = await fetchMemberList(
         data: filterMemberDataForm(
-          keySearch: keySearch.text,
-          page: pageKey,
-          quarantineWard: quarantineWardController.text,
-          quarantineBuilding: quarantineBuildingController.text,
-          quarantineFloor: quarantineFloorController.text,
-          quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin:
-              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-          quarantineAtMax:
-              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-        ),
+            keySearch: keySearch.text,
+            page: pageKey,
+            quarantineWard: quarantineWardController.text,
+            quarantineBuilding: quarantineBuildingController.text,
+            quarantineFloor: quarantineFloorController.text,
+            quarantineRoom: quarantineRoomController.text,
+            quarantineAtMin:
+                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+            quarantineAtMax:
+                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+            label: labelController.text),
       );
 
       final isLastPage = newItems.length < PAGE_SIZE;
@@ -153,6 +162,8 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineRoomController: quarantineRoomController,
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
+                  quarantineWardList: quarantineWardList,
+                  labelController: labelController,
                   setState: () {
                     setState(() {
                       searched = true;

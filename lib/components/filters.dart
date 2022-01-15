@@ -16,6 +16,11 @@ Future memberFilter(
   required TextEditingController quarantineRoomController,
   required TextEditingController quarantineAtMinController,
   required TextEditingController quarantineAtMaxController,
+  required TextEditingController labelController,
+  required List<KeyValue> quarantineWardList,
+  List<KeyValue> quarantineBuildingList = const [],
+  List<KeyValue> quarantineFloorList = const [],
+  List<KeyValue> quarantineRoomList = const [],
   required void Function()? setState,
 }) {
   return showBarModalBottomSheet(
@@ -43,10 +48,14 @@ Future memberFilter(
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineWard({
-              'page_size': PAGE_SIZE_MAX,
-              'is_full': false,
-            }),
+            itemValue: quarantineWardList,
+            selectedItem: quarantineWardList.safeFirstWhere(
+                (type) => type.id == quarantineWardController.text),
+            onFind: quarantineWardList.length == 0
+                ? (String? filter) => fetchQuarantineWard({
+                      'page_size': PAGE_SIZE_MAX,
+                    })
+                : null,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {
@@ -64,11 +73,16 @@ Future memberFilter(
             label: 'Tòa',
             hint: 'Chọn tòa',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineBuilding({
-              'quarantine_ward': quarantineWardController.text,
-              'page_size': PAGE_SIZE_MAX,
-              'search': filter
-            }),
+            itemValue: quarantineBuildingList,
+            selectedItem: quarantineBuildingList.safeFirstWhere(
+                (type) => type.id == quarantineBuildingController.text),
+            onFind: quarantineBuildingList.length == 0
+                ? (String? filter) => fetchQuarantineBuilding({
+                      'quarantine_ward': quarantineWardController.text,
+                      'page_size': PAGE_SIZE_MAX,
+                      'search': filter
+                    })
+                : null,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {
@@ -85,11 +99,16 @@ Future memberFilter(
             label: 'Tầng',
             hint: 'Chọn tầng',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineFloor({
-              'quarantine_building': quarantineBuildingController.text,
-              'page_size': PAGE_SIZE_MAX,
-              'search': filter
-            }),
+            itemValue: quarantineFloorList,
+            selectedItem: quarantineFloorList.safeFirstWhere(
+                (type) => type.id == quarantineFloorController.text),
+            onFind: quarantineFloorList.length == 0
+                ? (String? filter) => fetchQuarantineFloor({
+                      'quarantine_building': quarantineBuildingController.text,
+                      'page_size': PAGE_SIZE_MAX,
+                      'search': filter
+                    })
+                : null,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {
@@ -105,11 +124,16 @@ Future memberFilter(
             label: 'Phòng',
             hint: 'Chọn phòng',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineRoom({
-              'quarantine_floor': quarantineFloorController.text,
-              'page_size': PAGE_SIZE_MAX,
-              'search': filter
-            }),
+            itemValue: quarantineRoomList,
+            selectedItem: quarantineRoomList.safeFirstWhere(
+                (type) => type.id == quarantineRoomController.text),
+            onFind: quarantineRoomList.length == 0
+                ? (String? filter) => fetchQuarantineRoom({
+                      'quarantine_floor': quarantineFloorController.text,
+                      'page_size': PAGE_SIZE_MAX,
+                      'search': filter
+                    })
+                : null,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             onChanged: (value) {
               if (value == null) {
@@ -120,72 +144,38 @@ Future memberFilter(
             },
             showClearButton: true,
           ),
-          DateInput(
-            label: 'Ngày bắt đầu cách ly (Từ ngày)',
-            controller: quarantineAtMinController,
+          NewDateRangeInput(
+            label: 'Ngày bắt đầu cách ly',
+            controllerStart: quarantineAtMinController,
+            controllerEnd: quarantineAtMaxController,
             maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             showClearButton: true,
           ),
-          DateInput(
-            label: 'Ngày bắt đầu cách ly (Đến ngày)',
-            controller: quarantineAtMaxController,
-            maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-            showClearButton: true,
+          MultiDropdownInput<KeyValue>(
+            label: 'Diện cách ly',
+            hint: 'Chọn diện cách ly',
+            itemValue: labelList,
+            mode: Mode.MENU,
+            dropdownBuilder: _customDropDown,
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            itemAsString: (KeyValue? u) => u!.name,
+            selectedItems: labelController.text != ""
+                ? (labelController.text
+                    .split(',')
+                    .map((e) =>
+                        labelList.safeFirstWhere((result) => result.id == e)!)
+                    .toList())
+                : null,
+            onChanged: (value) {
+              if (value == null) {
+                labelController.text = "";
+              } else {
+                labelController.text = value.map((e) => e.id).join(",");
+              }
+            },
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-            child: Text("Diện cách ly"),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 16),
-            child: Row(
-              children: [
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("F0"),
-                Spacer(),
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("F1"),
-                Spacer(),
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("F2"),
-                Spacer(),
-                Checkbox(
-                  value: false,
-                  onChanged: (value) {},
-                ),
-                Text("F3"),
-              ],
-            ),
-          ),
-          // Container(
-          //   margin: const EdgeInsets.only(right: 16),
-          //   child: Row(
-          //     children: [
-          //       Checkbox(
-          //         value: false,
-          //         onChanged: (value) {},
-          //       ),
-          //       Text("Về từ vùng dịch"),
-          //       Spacer(),
-          //       Checkbox(
-          //         value: false,
-          //         onChanged: (value) {},
-          //       ),
-          //       Text("Nhập cảnh"),
-          //     ],
-          //   ),
-          // ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            margin: const EdgeInsets.all(16),
             child: Row(
               children: [
                 // Spacer(),
@@ -218,6 +208,32 @@ Future memberFilter(
         ],
       );
     },
+  );
+}
+
+Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
+  if (selectedItems.isEmpty) {
+    return Text("Chọn bệnh nền");
+  }
+
+  return Wrap(
+    children: selectedItems.map((e) {
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          // margin: EdgeInsets.symmetric(horizontal: 2),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Theme.of(context).primaryColorLight),
+          child: Text(
+            e!.name,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
+        ),
+      );
+    }).toList(),
   );
 }
 
