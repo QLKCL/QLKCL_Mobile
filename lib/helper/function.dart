@@ -14,9 +14,12 @@ dynamic prepareDataForm(dynamic data) {
 }
 
 String parseDateToDateTimeWithTimeZone(String date) {
-  DateTime parseDate = new DateFormat("dd/MM/yyyy").parse(date);
-  var inputDate = DateTime.parse(parseDate.toString());
-  var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-  var outputDate = outputFormat.format(inputDate);
+  String outputDate = "";
+  if (date != "") {
+    DateTime parseDate = new DateFormat("dd/MM/yyyy").parse(date);
+    var inputDate = DateTime.parse(parseDate.toString());
+    var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    outputDate = outputFormat.format(inputDate);
+  }
   return outputDate;
 }

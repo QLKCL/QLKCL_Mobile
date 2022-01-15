@@ -122,7 +122,7 @@ Map<String, dynamic> filterMemberDataForm({
   String? quarantineRoom,
   String? quarantineAtMin,
   String? quarantineAtMax,
-  List<String>? label,
+  String? label,
   required int page,
 }) {
   var data = {
@@ -172,6 +172,8 @@ Map<String, dynamic> updateTestDataForm({
 Map<String, dynamic> filterTestDataForm({
   required String keySearch,
   String? status,
+  String? type,
+  String? result,
   String? createAtMin,
   String? createAtMax,
   required int page,
@@ -179,6 +181,8 @@ Map<String, dynamic> filterTestDataForm({
   var data = {
     "search": keySearch,
     "status": status,
+    "type": type,
+    "result": result,
     "created_at_min": createAtMin,
     "created_at_max": createAtMax,
     "page": page,
@@ -324,11 +328,20 @@ Map<String, dynamic> filterQuarantineDataForm({
   String? createAtMin,
   String? createAtMax,
   required int page,
+  String? city,
+  String? district,
+  String? ward,
+  String? mainManager,
 }) {
   var data = {
     "search": keySearch,
     "created_at_min": createAtMin,
     "created_at_max": createAtMax,
+    "country": "VNM",
+    "city": city,
+    "district": district,
+    "ward": ward,
+    "main_manager": mainManager,
     "page": page,
   };
   return prepareDataForm(data);

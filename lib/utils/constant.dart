@@ -146,6 +146,15 @@ List<KeyValue> symptomExtraList = [
   KeyValue(id: 19, name: "Đau nhức cơ"),
 ];
 
+List<KeyValue> labelList = [
+  KeyValue(id: "F0", name: "F0"),
+  KeyValue(id: "F1", name: "F1"),
+  KeyValue(id: "F2", name: "F2"),
+  KeyValue(id: "F3", name: "F3"),
+  KeyValue(id: "ABROAD", name: "Nhập cảnh"),
+  KeyValue(id: "FROM_EPIDEMIC_AREA", name: "Về từ vùng dịch"),
+];
+
 const int PAGE_SIZE = 10;
 const int PAGE_SIZE_MAX = 0;
 

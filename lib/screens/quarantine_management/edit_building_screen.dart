@@ -7,7 +7,6 @@ import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info_building.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import '../../components/input.dart';
-import 'package:qlkcl/config/app_theme.dart';
 
 class EditBuildingScreen extends StatefulWidget {
   final Building? currentBuilding;
@@ -105,16 +104,19 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          onPressed: _submit,
-                          child: Text(
-                            "Xác nhận",
-                            style: TextStyle(color: CustomColors.white),
-                          ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: Text("Xác nhận"),
+                            ),
+                            Spacer(),
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   );
                 } else if (snapshot.hasError) {
