@@ -68,7 +68,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       quarantineWardController.text = widget.quarantineWard != null
           ? widget.quarantineRoom!.id.toString()
           : "";
-      labelController.text = "F1";
       backgroundDiseaseController.text = "";
       getQuarantineWard().then((val) {
         quarantineWardController.text = "$val";
@@ -223,10 +222,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
             ),
-            DropdownInput(
+            DropdownInput<KeyValue>(
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
-              itemValue: ["F0", "F1", "F2", "F3"],
+              itemValue: labelList,
+              mode: Mode.MENU,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              selectedItem: labelList
+                  .safeFirstWhere((label) => label.id == labelController.text),
               onChanged: (value) {
                 if (value == null) {
                   labelController.text = "";
@@ -234,8 +238,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text = value.toString();
                 }
               },
-              selectedItem:
-                  labelController.text == "" ? null : labelController.text,
               enabled: widget.mode != Permission.view ? true : false,
             ),
             NewDateInput(

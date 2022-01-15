@@ -328,11 +328,20 @@ Map<String, dynamic> filterQuarantineDataForm({
   String? createAtMin,
   String? createAtMax,
   required int page,
+  String? city,
+  String? district,
+  String? ward,
+  String? mainManager,
 }) {
   var data = {
     "search": keySearch,
     "created_at_min": createAtMin,
     "created_at_max": createAtMax,
+    "country": "VNM",
+    "city": city,
+    "district": district,
+    "ward": ward,
+    "main_manager": mainManager,
     "page": page,
   };
   return prepareDataForm(data);

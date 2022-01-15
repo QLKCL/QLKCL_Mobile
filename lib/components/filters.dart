@@ -213,7 +213,7 @@ Future memberFilter(
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
   if (selectedItems.isEmpty) {
-    return Text("Chọn bệnh nền");
+    return Text("Chọn diện cách ly");
   }
 
   return Wrap(
@@ -361,8 +361,14 @@ Future quarantineFilter(
   BuildContext context, {
   required TextEditingController cityController,
   required TextEditingController districtController,
-  //required bool myQuarantine,
+  required TextEditingController wardController,
+  required TextEditingController mainManagerController,
+  bool myQuarantine = false,
   required void Function()? setState,
+  required List<KeyValue> cityList,
+  required List<KeyValue> managerList,
+  List<KeyValue> districtList = const [],
+  List<KeyValue> wardList = const [],
 }) {
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
@@ -387,54 +393,122 @@ Future quarantineFilter(
           ),
           DropdownInput<KeyValue>(
             label: 'Tỉnh/thành',
-            hint: 'Chọn tỉnh/thành',
-            itemValue: [KeyValue(id: "1", name: "Thành phố Hà Nội")],
-            itemAsString: (KeyValue? u) => u!.name,
-            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-            selectedItem: [KeyValue(id: "1", name: "Thành phố Hà Nội")]
-                .safeFirstWhere((city) => city.id == cityController.text),
+            hint: 'Tỉnh/thành',
+            itemValue: cityList,
+            selectedItem: cityList
+                .safeFirstWhere((type) => type.id == cityController.text),
+            onFind: cityList.length == 0
+                ? (String? filter) => fetchCity({'country_code': 'VNM'})
+                : null,
             onChanged: (value) {
               if (value == null) {
                 cityController.text = "";
               } else {
-                cityController.text = value.id;
+                cityController.text = value.id.toString();
               }
+              districtController.clear();
+              wardController.clear();
             },
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            itemAsString: (KeyValue? u) => u!.name,
+            showSearchBox: true,
+            mode: Mode.BOTTOM_SHEET,
+            maxHeight: MediaQuery.of(context).size.height - 100,
+            popupTitle: 'Tỉnh/thành',
             showClearButton: true,
           ),
           DropdownInput<KeyValue>(
             label: 'Quận/huyện',
-            hint: 'Chọn quận/huyện',
-            itemValue: [KeyValue(id: "1", name: "Quận Ba Đình")],
-            itemAsString: (KeyValue? u) => u!.name,
-            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-            selectedItem: [KeyValue(id: "1", name: "Quận Ba Đình")]
-                .safeFirstWhere(
-                    (district) => district.id == districtController.text),
+            hint: 'Quận/huyện',
+            itemValue: districtList,
+            selectedItem: districtList
+                .safeFirstWhere((type) => type.id == districtController.text),
+            onFind: districtList.length == 0
+                ? (String? filter) =>
+                    fetchDistrict({'city_id': cityController.text})
+                : null,
             onChanged: (value) {
               if (value == null) {
                 districtController.text = "";
               } else {
-                districtController.text = value.id;
+                districtController.text = value.id.toString();
               }
+              wardController.clear();
             },
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            itemAsString: (KeyValue? u) => u!.name,
+            showSearchBox: true,
+            mode: Mode.BOTTOM_SHEET,
+            maxHeight: MediaQuery.of(context).size.height - 100,
+            popupTitle: 'Quận/huyện',
             showClearButton: true,
           ),
-          // ListTileTheme(
-          //     contentPadding: EdgeInsets.all(0),
-          //     child: CheckboxListTile(
-          //       title: Text("Khai hộ"),
-          //       controlAffinity: ListTileControlAffinity.leading,
-          //       value: myQuarantine,
-          //       onChanged: (bool? value) {
-          //         setState!(() {
+          DropdownInput<KeyValue>(
+            label: 'Phường/xã',
+            hint: 'Phường/xã',
+            itemValue: wardList,
+            selectedItem: wardList
+                .safeFirstWhere((type) => type.id == wardController.text),
+            onFind: wardList.length == 0
+                ? (String? filter) =>
+                    fetchWard({'district_id': districtController.text})
+                : null,
+            onChanged: (value) {
+              if (value == null) {
+                wardController.text = "";
+              } else {
+                wardController.text = value.id.toString();
+              }
+            },
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            itemAsString: (KeyValue? u) => u!.name,
+            showSearchBox: true,
+            mode: Mode.BOTTOM_SHEET,
+            maxHeight: MediaQuery.of(context).size.height - 100,
+            popupTitle: 'Phường/xã',
+            showClearButton: true,
+          ),
+          DropdownInput<KeyValue>(
+              label: 'Người quản lý',
+              hint: 'Chọn người quản lý',
+              itemValue: managerList,
+              selectedItem: managerList.safeFirstWhere(
+                  (type) => type.id == mainManagerController.text),
+              onFind: managerList.length == 0
+                  ? (String? filter) =>
+                      fetchNotMemberList({'role_name_list': 'MANAGER'})
+                  : null,
+              onChanged: (value) {
+                if (value == null) {
+                  mainManagerController.text = "";
+                } else {
+                  mainManagerController.text = value.id.toString();
+                }
+              },
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height - 100,
+              popupTitle: 'Quản lý'),
+
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     ListTileTheme(
+          //       contentPadding: EdgeInsets.only(left: 8),
+          //       child: CheckboxListTile(
+          //         title: Text("Quản lý bởi tôi"),
+          //         controlAffinity: ListTileControlAffinity.leading,
+          //         value: myQuarantine,
+          //         onChanged: (bool? value) {
           //           myQuarantine = value!;
-          //         });
-          //       },
+          //         },
+          //       ),
           //     ),
-          //   ),
+          //   ],
+          // ),
           Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            margin: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Spacer(),

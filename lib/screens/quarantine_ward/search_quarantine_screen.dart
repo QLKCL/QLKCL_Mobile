@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -21,6 +24,10 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   TextEditingController cityController = TextEditingController();
   TextEditingController districtController = TextEditingController();
   TextEditingController wardController = TextEditingController();
+  TextEditingController mainManagerController = TextEditingController();
+
+  List<KeyValue> cityList = [];
+  List<KeyValue> managerList = [];
 
   bool searched = false;
 
@@ -30,6 +37,10 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   @override
   void initState() {
+    fetchCity({'country_code': 'VNM'}).then((value) => cityList = value);
+    fetchNotMemberList({'role_name_list': 'MANAGER'})
+        .then((value) => managerList = value);
+
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -64,8 +75,14 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         data: filterQuarantineDataForm(
           keySearch: keySearch.text,
           page: pageKey,
-          createAtMin: createAtMinController.text,
-          createAtMax: createAtMaxController.text,
+          createAtMin:
+              parseDateToDateTimeWithTimeZone(createAtMinController.text),
+          createAtMax:
+              parseDateToDateTimeWithTimeZone(createAtMaxController.text),
+          city: cityController.text,
+          district: districtController.text,
+          ward: wardController.text,
+          mainManager: mainManagerController.text,
         ),
       );
 
@@ -130,23 +147,26 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
           ),
           centerTitle: true,
           actions: [
-            // IconButton(
-            //   onPressed: () {
-            //     quarantineFilter(
-            //       context,
-            //       cityController: cityController,
-            //       districtController: districtController,
-            //       wardController: wardController,
-            //       setState: () {
-            //         setState(() {
-            //           //searched = true;
-            //         });
-            //         _pagingController.refresh();
-            //       },
-            //     );
-            //   },
-            //   icon: Icon(Icons.filter_list_outlined),
-            // )
+            IconButton(
+              onPressed: () {
+                quarantineFilter(
+                  context,
+                  cityController: cityController,
+                  districtController: districtController,
+                  wardController: wardController,
+                  mainManagerController: mainManagerController,
+                  cityList: cityList,
+                  managerList: managerList,
+                  setState: () {
+                    setState(() {
+                      searched = true;
+                    });
+                    _pagingController.refresh();
+                  },
+                );
+              },
+              icon: Icon(Icons.filter_list_outlined),
+            )
           ],
         ),
         body: searched
@@ -163,8 +183,20 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item['id'].toString(),
                       name: item['full_name'] ?? "",
-                      manager: item['main_manager']['full_name'] ?? "",
                       currentMem: item['num_current_member'],
+                      manager: item['main_manager']['full_name'] ?? "",
+                      address: (item['address'] != null
+                              ? "${item['address']}, "
+                              : "") +
+                          (item['ward'] != null
+                              ? "${item['ward']['name']}, "
+                              : "") +
+                          (item['district'] != null
+                              ? "${item['district']['name']}, "
+                              : "") +
+                          (item['city'] != null
+                              ? "${item['city']['name']}"
+                              : ""),
                     ),
                   ),
                 ),
