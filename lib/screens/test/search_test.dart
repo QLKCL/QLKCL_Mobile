@@ -145,7 +145,7 @@ class _SearchTestState extends State<SearchTest> {
                   resultController: resultController,
                   createAtMinController: createAtMinController,
                   createAtMaxController: createAtMaxController,
-                  setState: () {
+                  onSubmit: () {
                     setState(() {
                       searched = true;
                     });

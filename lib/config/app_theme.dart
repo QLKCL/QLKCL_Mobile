@@ -59,6 +59,7 @@ class AppTheme with ChangeNotifier {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           primary: CustomColors.primary,
+          minimumSize: Size(32, 48),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),

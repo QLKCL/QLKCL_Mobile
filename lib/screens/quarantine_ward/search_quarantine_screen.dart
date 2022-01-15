@@ -157,7 +157,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   mainManagerController: mainManagerController,
                   cityList: cityList,
                   managerList: managerList,
-                  setState: () {
+                  onSubmit: () {
                     setState(() {
                       searched = true;
                     });

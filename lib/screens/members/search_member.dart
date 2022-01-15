@@ -44,7 +44,13 @@ class _SearchMemberState extends State<SearchMember> {
   void initState() {
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => quarantineWardList = value);
+    }).then((value) => setState(() {
+          quarantineWardController.clear();
+          quarantineBuildingController.clear();
+          quarantineFloorController.clear();
+          quarantineRoomController.clear();
+          quarantineWardList = value;
+        }));
 
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -164,7 +170,7 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineAtMaxController: quarantineAtMaxController,
                   quarantineWardList: quarantineWardList,
                   labelController: labelController,
-                  setState: () {
+                  onSubmit: () {
                     setState(() {
                       searched = true;
                     });

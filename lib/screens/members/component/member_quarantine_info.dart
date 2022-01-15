@@ -49,12 +49,45 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
 
+  List<KeyValue> quarantineWardList = [];
+  List<KeyValue> quarantineBuildingList = [];
+  List<KeyValue> quarantineFloorList = [];
+  List<KeyValue> quarantineRoomList = [];
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
+    fetchQuarantineWard({
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineWardList = value;
+        }));
+    fetchQuarantineBuilding({
+      'quarantine_ward': quarantineWardController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineBuildingList = value;
+        }));
+    fetchQuarantineFloor({
+      'quarantine_building': quarantineBuildingController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineFloorList = value;
+        }));
+    fetchQuarantineRoom({
+      'quarantine_floor': quarantineFloorController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineRoomList = value;
+        }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     if (widget.mode == Permission.add) {
       quarantineRoomController.text = widget.quarantineRoom != null
           ? widget.quarantineRoom!.id.toString()
@@ -102,11 +135,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -117,24 +145,36 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               hint: 'Chọn khu cách ly',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineWard({
-                'page_size': PAGE_SIZE_MAX,
-                'is_full': false,
-              }),
+              onFind: quarantineWardList.length == 0
+                  ? (String? filter) => fetchQuarantineWard({
+                        'page_size': PAGE_SIZE_MAX,
+                        'is_full': false,
+                      })
+                  : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemValue: quarantineWardList,
               selectedItem: widget.quarantineWard ??
                   ((widget.quarantineData?.quarantineWard != null)
                       ? KeyValue.fromJson(widget.quarantineData!.quarantineWard)
-                      : null),
+                      : quarantineWardList.safeFirstWhere(
+                          (type) => type.id == quarantineWardController.text)),
               onChanged: (value) {
                 if (value == null) {
                   quarantineWardController.text = "";
                 } else {
                   quarantineWardController.text = value.id.toString();
                 }
-                quarantineBuildingController.clear();
-                quarantineFloorController.clear();
-                quarantineRoomController.clear();
+                fetchQuarantineBuilding({
+                  'quarantine_ward': quarantineWardController.text,
+                  'page_size': PAGE_SIZE_MAX,
+                }).then((value) => setState(() {
+                      quarantineBuildingController.clear();
+                      quarantineFloorController.clear();
+                      quarantineRoomController.clear();
+                      quarantineBuildingList = value;
+                      quarantineFloorList = [];
+                      quarantineRoomList = [];
+                    }));
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -144,26 +184,37 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               hint: 'Chọn tòa',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineBuilding({
-                'quarantine_ward': quarantineWardController.text,
-                'page_size': PAGE_SIZE_MAX,
-                'search': filter,
-                'is_full': false,
-              }),
+              onFind: quarantineBuildingList.length == 0
+                  ? (String? filter) => fetchQuarantineBuilding({
+                        'quarantine_ward': quarantineWardController.text,
+                        'page_size': PAGE_SIZE_MAX,
+                        'search': filter,
+                        'is_full': false,
+                      })
+                  : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemValue: quarantineBuildingList,
               selectedItem: widget.quarantineBuilding ??
                   ((widget.quarantineData?.quarantineBuilding != null)
                       ? KeyValue.fromJson(
                           widget.quarantineData!.quarantineBuilding)
-                      : null),
+                      : quarantineBuildingList.safeFirstWhere((type) =>
+                          type.id == quarantineBuildingController.text)),
               onChanged: (value) {
                 if (value == null) {
                   quarantineBuildingController.text = "";
                 } else {
                   quarantineBuildingController.text = value.id.toString();
                 }
-                quarantineFloorController.clear();
-                quarantineRoomController.clear();
+                fetchQuarantineFloor({
+                  'quarantine_building': quarantineBuildingController.text,
+                  'page_size': PAGE_SIZE_MAX,
+                }).then((value) => setState(() {
+                      quarantineFloorController.clear();
+                      quarantineRoomController.clear();
+                      quarantineFloorList = value;
+                      quarantineRoomList = [];
+                    }));
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -173,25 +224,36 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               hint: 'Chọn tầng',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineFloor({
-                'quarantine_building': quarantineBuildingController.text,
-                'page_size': PAGE_SIZE_MAX,
-                'search': filter,
-                'is_full': false,
-              }),
+              onFind: quarantineFloorList.length == 0
+                  ? (String? filter) => fetchQuarantineFloor({
+                        'quarantine_building':
+                            quarantineBuildingController.text,
+                        'page_size': PAGE_SIZE_MAX,
+                        'search': filter,
+                        'is_full': false,
+                      })
+                  : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemValue: quarantineFloorList,
               selectedItem: widget.quarantineFloor ??
                   ((widget.quarantineData?.quarantineFloor != null)
                       ? KeyValue.fromJson(
                           widget.quarantineData!.quarantineFloor)
-                      : null),
+                      : quarantineFloorList.safeFirstWhere(
+                          (type) => type.id == quarantineFloorController.text)),
               onChanged: (value) {
                 if (value == null) {
                   quarantineFloorController.text = "";
                 } else {
                   quarantineFloorController.text = value.id.toString();
                 }
-                quarantineRoomController.clear();
+                fetchQuarantineRoom({
+                  'quarantine_floor': quarantineFloorController.text,
+                  'page_size': PAGE_SIZE_MAX,
+                }).then((value) => setState(() {
+                      quarantineRoomController.clear();
+                      quarantineRoomList = value;
+                    }));
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,
@@ -201,17 +263,21 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               hint: 'Chọn phòng',
               required: widget.mode == Permission.view ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: (String? filter) => fetchQuarantineRoom({
-                'quarantine_floor': quarantineFloorController.text,
-                'page_size': PAGE_SIZE_MAX,
-                'search': filter,
-                'is_full': false,
-              }),
+              onFind: quarantineRoomList.length == 0
+                  ? (String? filter) => fetchQuarantineRoom({
+                        'quarantine_floor': quarantineFloorController.text,
+                        'page_size': PAGE_SIZE_MAX,
+                        'search': filter,
+                        'is_full': false,
+                      })
+                  : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemValue: quarantineRoomList,
               selectedItem: widget.quarantineRoom ??
                   ((widget.quarantineData?.quarantineRoom != null)
                       ? KeyValue.fromJson(widget.quarantineData!.quarantineRoom)
-                      : null),
+                      : quarantineRoomList.safeFirstWhere(
+                          (type) => type.id == quarantineRoomController.text)),
               onChanged: (value) {
                 if (value == null) {
                   quarantineRoomController.text = "";
