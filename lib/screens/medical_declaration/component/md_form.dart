@@ -351,7 +351,10 @@ class _MedDeclFormState extends State<MedDeclForm> {
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
   if (selectedItems.isEmpty) {
-    return Text("Chọn triệu chứng");
+    return Text(
+      "Chọn triệu chứng",
+      style: TextStyle(fontSize: 16),
+    );
   }
 
   return Wrap(

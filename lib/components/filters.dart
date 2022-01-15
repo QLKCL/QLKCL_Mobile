@@ -210,6 +210,7 @@ Future memberFilter(
                       quarantineRoomController.clear();
                       quarantineAtMinController.clear();
                       quarantineAtMaxController.clear();
+                      labelController.clear();
                       onSubmit!();
                       Navigator.pop(context);
                     },
@@ -237,7 +238,10 @@ Future memberFilter(
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
   if (selectedItems.isEmpty) {
-    return Text("Chọn diện cách ly");
+    return Text(
+      "Chọn diện cách ly",
+      style: TextStyle(fontSize: 16),
+    );
   }
 
   return Wrap(
