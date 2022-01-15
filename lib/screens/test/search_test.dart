@@ -67,12 +67,13 @@ class _SearchTestState extends State<SearchTest> {
         page: pageKey,
         status: stateController.text,
         keySearch: keySearch.text,
+        type: typeController.text,
+        result: resultController.text,
         createAtMin:
             parseDateToDateTimeWithTimeZone(createAtMinController.text),
         createAtMax:
             parseDateToDateTimeWithTimeZone(createAtMaxController.text),
       ));
-
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);

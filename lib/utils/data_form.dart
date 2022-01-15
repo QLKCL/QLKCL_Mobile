@@ -172,6 +172,8 @@ Map<String, dynamic> updateTestDataForm({
 Map<String, dynamic> filterTestDataForm({
   required String keySearch,
   String? status,
+  String? type,
+  String? result,
   String? createAtMin,
   String? createAtMax,
   required int page,
@@ -179,6 +181,8 @@ Map<String, dynamic> filterTestDataForm({
   var data = {
     "search": keySearch,
     "status": status,
+    "type": type,
+    "result": result,
     "created_at_min": createAtMin,
     "created_at_max": createAtMax,
     "page": page,

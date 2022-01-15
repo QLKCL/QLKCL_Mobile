@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/components/date_input.dart';
@@ -267,6 +268,7 @@ Future testFilter(
                 typeController.text = value.id;
               }
             },
+            showClearButton: true,
           ),
           DropdownInput<KeyValue>(
             label: 'Trạng thái',
@@ -284,6 +286,7 @@ Future testFilter(
                 stateController.text = value.id;
               }
             },
+            showClearButton: true,
           ),
           DropdownInput<KeyValue>(
             label: 'Kết quả',
@@ -306,21 +309,17 @@ Future testFilter(
                 resultController.text = value.id;
               }
             },
-          ),
-          DateInput(
-            label: 'Ngày xét nghiệm (Từ ngày)',
-            controller: createAtMinController,
-            maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             showClearButton: true,
           ),
-          DateInput(
-            label: 'Ngày xét nghiệm (Đến ngày)',
-            controller: createAtMaxController,
+          NewDateRangeInput(
+            label: 'Ngày xét nghiệm',
+            controllerStart: createAtMinController,
+            controllerEnd: createAtMaxController,
             maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             showClearButton: true,
           ),
           Container(
-            margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            margin: const EdgeInsets.all(16),
             child: Row(
               children: [
                 Spacer(),
