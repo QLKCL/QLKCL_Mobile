@@ -133,7 +133,7 @@ Map<String, dynamic> filterMemberDataForm({
     "quarantine_room_id": quarantineRoom,
     "created_at_min": quarantineAtMin,
     "created_at_max": quarantineAtMax,
-    "label": label,
+    "label_list": label,
     "page": page,
   };
   return prepareDataForm(data);
