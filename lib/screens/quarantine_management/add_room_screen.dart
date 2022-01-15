@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
@@ -252,16 +251,19 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          onPressed: _submit,
-                          child: Text(
-                            "Xác nhận",
-                            style: TextStyle(color: CustomColors.white),
-                          ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: Text("Xác nhận"),
+                            ),
+                            Spacer(),
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   );
                 } else if (snapshot.hasError) {

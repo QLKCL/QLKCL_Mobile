@@ -5,7 +5,6 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info.dart';
-import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class AddBuildingScreen extends StatefulWidget {
@@ -101,16 +100,19 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                           ),
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ElevatedButton(
-                          onPressed: _submit,
-                          child: Text(
-                            "Xác nhận",
-                            style: TextStyle(color: CustomColors.white),
-                          ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: Text("Xác nhận"),
+                            ),
+                            Spacer(),
+                          ],
                         ),
-                      )
+                      ),
                     ],
                   );
                 } else if (snapshot.hasError) {

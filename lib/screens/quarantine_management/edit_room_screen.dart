@@ -9,7 +9,6 @@ import 'package:qlkcl/models/room.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info_room.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import '../../components/input.dart';
-import 'package:qlkcl/config/app_theme.dart';
 
 class EditRoomScreen extends StatefulWidget {
   final Building? currentBuilding;
@@ -107,16 +106,19 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  child: Text(
-                    "Xác nhận",
-                    style: TextStyle(color: CustomColors.white),
-                  ),
+              Container(
+                margin: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Spacer(),
+                    ElevatedButton(
+                      onPressed: _submit,
+                      child: Text("Xác nhận"),
+                    ),
+                    Spacer(),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),
