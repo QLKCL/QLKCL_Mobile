@@ -105,15 +105,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
             }
 
             EasyLoading.show();
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                MemberPersonalInfo(
-                  tabController: _tabController,
-                ),
-                MemberQuarantineInfo(),
-              ],
-            );
+            return Container();
           },
         ),
       ),

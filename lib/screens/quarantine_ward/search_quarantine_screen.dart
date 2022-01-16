@@ -27,6 +27,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   TextEditingController mainManagerController = TextEditingController();
 
   List<KeyValue> cityList = [];
+  List<KeyValue> districtList = [];
+  List<KeyValue> wardList = [];
   List<KeyValue> managerList = [];
 
   bool searched = false;
@@ -37,7 +39,17 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   @override
   void initState() {
-    fetchCity({'country_code': 'VNM'}).then((value) => cityList = value);
+    fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
+          cityList = value;
+        }));
+    fetchDistrict({'city_id': cityController.text})
+        .then((value) => setState(() {
+              districtList = value;
+            }));
+    fetchWard({'district_id': districtController.text})
+        .then((value) => setState(() {
+              wardList = value;
+            }));
     fetchNotMemberList({'role_name_list': 'MANAGER'})
         .then((value) => managerList = value);
 
@@ -156,6 +168,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   wardController: wardController,
                   mainManagerController: mainManagerController,
                   cityList: cityList,
+                  districtList: districtList,
+                  wardList: wardList,
                   managerList: managerList,
                   onSubmit: () {
                     setState(() {

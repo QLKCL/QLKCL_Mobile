@@ -59,32 +59,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
 
   @override
   void initState() {
-    super.initState();
-    fetchCountry().then((value) => setState(() {
-          countryList = value;
-        }));
-    fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-          cityList = value;
-        }));
-    fetchDistrict({'city_id': cityController.text})
-        .then((value) => setState(() {
-              districtList = value;
-            }));
-    fetchWard({'district_id': districtController.text})
-        .then((value) => setState(() {
-              wardList = value;
-            }));
-  }
-
-  @override
-  void deactivate() {
-    EasyLoading.dismiss();
-    super.deactivate();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
     if (widget.personalData != null) {
       codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";
@@ -93,7 +67,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           : "";
       countryController.text = widget.personalData?.country != null
           ? widget.personalData!.country['code']
-          : "";
+          : "VNM";
       cityController.text = widget.personalData?.city != null
           ? widget.personalData!.city['id'].toString()
           : "";
@@ -118,6 +92,33 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
       countryController.text = "VNM";
       genderController.text = "MALE";
     }
+    super.initState();
+    fetchCountry().then((value) => setState(() {
+          countryList = value;
+        }));
+    fetchCity({'country_code': countryController.text})
+        .then((value) => setState(() {
+              cityList = value;
+            }));
+    fetchDistrict({'city_id': cityController.text})
+        .then((value) => setState(() {
+              districtList = value;
+            }));
+    fetchWard({'district_id': districtController.text})
+        .then((value) => setState(() {
+              wardList = value;
+            }));
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -228,10 +229,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               hint: 'Quốc gia',
               required: widget.mode == Permission.view ? false : true,
               itemValue: countryList,
-              selectedItem: (widget.personalData?.country != null)
-                  ? KeyValue.fromJson(widget.personalData!.country)
+              selectedItem: countryList.length == 0
+                  ? ((widget.personalData?.country != null)
+                      ? KeyValue.fromJson(widget.personalData!.country)
+                      : null)
                   : countryList.safeFirstWhere(
-                      (type) => type.id == countryController.text),
+                      (type) => type.id.toString() == countryController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -240,19 +243,23 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   ? (String? filter) => fetchCountry()
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  countryController.text = "";
-                } else {
-                  countryController.text = value.id;
-                }
-                fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-                      cityController.clear();
-                      districtController.clear();
-                      wardController.clear();
-                      cityList = value;
-                      districtList = [];
-                      wardList = [];
-                    }));
+                setState(() {
+                  if (value == null) {
+                    countryController.text = "";
+                  } else {
+                    countryController.text = value.id;
+                  }
+                  cityController.clear();
+                  districtController.clear();
+                  wardController.clear();
+                  cityList = [];
+                  districtList = [];
+                  wardList = [];
+                });
+                fetchCity({'country_code': countryController.text})
+                    .then((data) => setState(() {
+                          cityList = data;
+                        }));
               },
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
@@ -265,29 +272,35 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               hint: 'Tỉnh/thành',
               itemValue: cityList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.personalData?.city != null)
-                  ? KeyValue.fromJson(widget.personalData!.city)
-                  : cityList
-                      .safeFirstWhere((type) => type.id == cityController.text),
+              selectedItem: cityList.length == 0
+                  ? ((widget.personalData?.city != null)
+                      ? KeyValue.fromJson(widget.personalData!.city)
+                      : null)
+                  : cityList.safeFirstWhere(
+                      (type) => type.id.toString() == cityController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
                   : false,
               onFind: cityList.length == 0
-                  ? (String? filter) => fetchCity({'country_code': 'VNM'})
+                  ? (String? filter) =>
+                      fetchCity({'country_code': countryController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  cityController.text = "";
-                } else {
-                  cityController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    cityController.text = "";
+                  } else {
+                    cityController.text = value.id.toString();
+                  }
+                  districtController.clear();
+                  wardController.clear();
+                  districtList = [];
+                  wardList = [];
+                });
                 fetchDistrict({'city_id': cityController.text})
-                    .then((value) => setState(() {
-                          districtController.clear();
-                          wardController.clear();
-                          districtList = value;
-                          wardList = [];
+                    .then((data) => setState(() {
+                          districtList = data;
                         }));
               },
               itemAsString: (KeyValue? u) => u!.name,
@@ -301,10 +314,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               hint: 'Quận/huyện',
               itemValue: districtList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.personalData?.district != null)
-                  ? KeyValue.fromJson(widget.personalData!.district)
+              selectedItem: districtList.length == 0
+                  ? ((widget.personalData?.district != null)
+                      ? KeyValue.fromJson(widget.personalData!.district)
+                      : null)
                   : districtList.safeFirstWhere(
-                      (type) => type.id == districtController.text),
+                      (type) => type.id.toString() == districtController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -314,15 +329,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                       fetchDistrict({'city_id': cityController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  districtController.text = "";
-                } else {
-                  districtController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    districtController.text = "";
+                  } else {
+                    districtController.text = value.id.toString();
+                  }
+                  wardController.clear();
+                  wardList = [];
+                });
                 fetchWard({'district_id': districtController.text})
-                    .then((value) => setState(() {
+                    .then((data) => setState(() {
                           wardController.clear();
-                          wardList = value;
+                          wardList = data;
                         }));
               },
               itemAsString: (KeyValue? u) => u!.name,
@@ -336,10 +355,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               hint: 'Phường/xã',
               itemValue: wardList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.personalData?.ward != null)
-                  ? KeyValue.fromJson(widget.personalData!.ward)
-                  : wardList
-                      .safeFirstWhere((type) => type.id == wardController.text),
+              selectedItem: wardList.length == 0
+                  ? ((widget.personalData?.ward != null)
+                      ? KeyValue.fromJson(widget.personalData!.ward)
+                      : null)
+                  : wardList.safeFirstWhere(
+                      (type) => type.id.toString() == wardController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -349,11 +370,13 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                       fetchWard({'district_id': districtController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  wardController.text = "";
-                } else {
-                  wardController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    wardController.text = "";
+                  } else {
+                    wardController.text = value.id.toString();
+                  }
+                });
               },
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,

@@ -18,9 +18,9 @@ Future memberFilter(
   required TextEditingController quarantineAtMaxController,
   required TextEditingController labelController,
   required List<KeyValue> quarantineWardList,
-  List<KeyValue> quarantineBuildingList = const [],
-  List<KeyValue> quarantineFloorList = const [],
-  List<KeyValue> quarantineRoomList = const [],
+  required List<KeyValue> quarantineBuildingList,
+  required List<KeyValue> quarantineFloorList,
+  required List<KeyValue> quarantineRoomList,
   required void Function()? onSubmit,
 }) {
   return showBarModalBottomSheet(
@@ -49,8 +49,8 @@ Future memberFilter(
               hint: 'Chọn khu cách ly',
               itemAsString: (KeyValue? u) => u!.name,
               itemValue: quarantineWardList,
-              selectedItem: quarantineWardList.safeFirstWhere(
-                  (type) => type.id == quarantineWardController.text),
+              selectedItem: quarantineWardList.safeFirstWhere((type) =>
+                  type.id.toString() == quarantineWardController.text),
               onFind: quarantineWardList.length == 0
                   ? (String? filter) => fetchQuarantineWard({
                         'page_size': PAGE_SIZE_MAX,
@@ -58,21 +58,24 @@ Future memberFilter(
                   : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               onChanged: (value) {
-                if (value == null) {
-                  quarantineWardController.text = "";
-                } else {
-                  quarantineWardController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    quarantineWardController.text = "";
+                  } else {
+                    quarantineWardController.text = value.id.toString();
+                  }
+                  quarantineBuildingController.clear();
+                  quarantineFloorController.clear();
+                  quarantineRoomController.clear();
+                  quarantineBuildingList = [];
+                  quarantineFloorList = [];
+                  quarantineRoomList = [];
+                });
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
                   'page_size': PAGE_SIZE_MAX,
-                }).then((value) => setState(() {
-                      quarantineBuildingController.clear();
-                      quarantineFloorController.clear();
-                      quarantineRoomController.clear();
-                      quarantineBuildingList = value;
-                      quarantineFloorList = [];
-                      quarantineRoomList = [];
+                }).then((data) => setState(() {
+                      quarantineBuildingList = data;
                     }));
               },
               showClearButton: true,
@@ -82,8 +85,8 @@ Future memberFilter(
               hint: 'Chọn tòa',
               itemAsString: (KeyValue? u) => u!.name,
               itemValue: quarantineBuildingList,
-              selectedItem: quarantineBuildingList.safeFirstWhere(
-                  (type) => type.id == quarantineBuildingController.text),
+              selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
+                  type.id.toString() == quarantineBuildingController.text),
               onFind: quarantineBuildingList.length == 0
                   ? (String? filter) => fetchQuarantineBuilding({
                         'quarantine_ward': quarantineWardController.text,
@@ -93,19 +96,22 @@ Future memberFilter(
                   : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               onChanged: (value) {
-                if (value == null) {
-                  quarantineBuildingController.text = "";
-                } else {
-                  quarantineBuildingController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    quarantineBuildingController.text = "";
+                  } else {
+                    quarantineBuildingController.text = value.id.toString();
+                  }
+                  quarantineFloorController.clear();
+                  quarantineRoomController.clear();
+                  quarantineFloorList = [];
+                  quarantineRoomList = [];
+                });
                 fetchQuarantineFloor({
                   'quarantine_building': quarantineBuildingController.text,
                   'page_size': PAGE_SIZE_MAX,
-                }).then((value) => setState(() {
-                      quarantineFloorController.clear();
-                      quarantineRoomController.clear();
-                      quarantineFloorList = value;
-                      quarantineRoomList = [];
+                }).then((data) => setState(() {
+                      quarantineFloorList = data;
                     }));
               },
               showClearButton: true,
@@ -115,8 +121,8 @@ Future memberFilter(
               hint: 'Chọn tầng',
               itemAsString: (KeyValue? u) => u!.name,
               itemValue: quarantineFloorList,
-              selectedItem: quarantineFloorList.safeFirstWhere(
-                  (type) => type.id == quarantineFloorController.text),
+              selectedItem: quarantineFloorList.safeFirstWhere((type) =>
+                  type.id.toString() == quarantineFloorController.text),
               onFind: quarantineFloorList.length == 0
                   ? (String? filter) => fetchQuarantineFloor({
                         'quarantine_building':
@@ -127,17 +133,20 @@ Future memberFilter(
                   : null,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               onChanged: (value) {
-                if (value == null) {
-                  quarantineFloorController.text = "";
-                } else {
-                  quarantineFloorController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    quarantineFloorController.text = "";
+                  } else {
+                    quarantineFloorController.text = value.id.toString();
+                  }
+                  quarantineRoomController.clear();
+                  quarantineRoomList = [];
+                });
                 fetchQuarantineRoom({
                   'quarantine_floor': quarantineFloorController.text,
                   'page_size': PAGE_SIZE_MAX,
-                }).then((value) => setState(() {
-                      quarantineRoomController.clear();
-                      quarantineRoomList = value;
+                }).then((data) => setState(() {
+                      quarantineRoomList = data;
                     }));
               },
               showClearButton: true,
@@ -147,8 +156,8 @@ Future memberFilter(
               hint: 'Chọn phòng',
               itemAsString: (KeyValue? u) => u!.name,
               itemValue: quarantineRoomList,
-              selectedItem: quarantineRoomList.safeFirstWhere(
-                  (type) => type.id == quarantineRoomController.text),
+              selectedItem: quarantineRoomList.safeFirstWhere((type) =>
+                  type.id.toString() == quarantineRoomController.text),
               onFind: quarantineRoomList.length == 0
                   ? (String? filter) => fetchQuarantineRoom({
                         'quarantine_floor': quarantineFloorController.text,
@@ -412,10 +421,10 @@ Future quarantineFilter(
   required TextEditingController mainManagerController,
   bool myQuarantine = false,
   required void Function()? onSubmit,
-  required List<KeyValue> cityList,
   required List<KeyValue> managerList,
-  List<KeyValue> districtList = const [],
-  List<KeyValue> wardList = const [],
+  required List<KeyValue> cityList,
+  required List<KeyValue> districtList,
+  required List<KeyValue> wardList,
 }) {
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
@@ -444,23 +453,26 @@ Future quarantineFilter(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
-              selectedItem: cityList
-                  .safeFirstWhere((type) => type.id == cityController.text),
+              selectedItem: cityList.safeFirstWhere(
+                  (type) => type.id.toString() == cityController.text),
               onFind: cityList.length == 0
                   ? (String? filter) => fetchCity({'country_code': 'VNM'})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  cityController.text = "";
-                } else {
-                  cityController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    cityController.text = "";
+                  } else {
+                    cityController.text = value.id.toString();
+                  }
+                  districtController.clear();
+                  wardController.clear();
+                  districtList = [];
+                  wardList = [];
+                });
                 fetchDistrict({'city_id': cityController.text})
-                    .then((value) => setState(() {
-                          districtController.clear();
-                          wardController.clear();
-                          districtList = value;
-                          wardList = [];
+                    .then((data) => setState(() {
+                          districtList = data;
                         }));
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
@@ -475,22 +487,26 @@ Future quarantineFilter(
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
-              selectedItem: districtList
-                  .safeFirstWhere((type) => type.id == districtController.text),
+              selectedItem: districtList.safeFirstWhere(
+                  (type) => type.id.toString() == districtController.text),
               onFind: districtList.length == 0
                   ? (String? filter) =>
                       fetchDistrict({'city_id': cityController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  districtController.text = "";
-                } else {
-                  districtController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    districtController.text = "";
+                  } else {
+                    districtController.text = value.id.toString();
+                  }
+                  wardController.clear();
+                  wardList = [];
+                });
                 fetchWard({'district_id': districtController.text})
-                    .then((value) => setState(() {
+                    .then((data) => setState(() {
                           wardController.clear();
-                          wardList = value;
+                          wardList = data;
                         }));
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
@@ -505,18 +521,20 @@ Future quarantineFilter(
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
-              selectedItem: wardList
-                  .safeFirstWhere((type) => type.id == wardController.text),
+              selectedItem: wardList.safeFirstWhere(
+                  (type) => type.id.toString() == wardController.text),
               onFind: wardList.length == 0
                   ? (String? filter) =>
                       fetchWard({'district_id': districtController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  wardController.text = "";
-                } else {
-                  wardController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    wardController.text = "";
+                  } else {
+                    wardController.text = value.id.toString();
+                  }
+                });
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,

@@ -33,6 +33,9 @@ class _SearchMemberState extends State<SearchMember> {
   TextEditingController labelController = TextEditingController();
 
   List<KeyValue> quarantineWardList = [];
+  List<KeyValue> quarantineBuildingList = [];
+  List<KeyValue> quarantineFloorList = [];
+  List<KeyValue> quarantineRoomList = [];
 
   bool searched = false;
 
@@ -45,11 +48,25 @@ class _SearchMemberState extends State<SearchMember> {
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
     }).then((value) => setState(() {
-          quarantineWardController.clear();
-          quarantineBuildingController.clear();
-          quarantineFloorController.clear();
-          quarantineRoomController.clear();
           quarantineWardList = value;
+        }));
+    fetchQuarantineBuilding({
+      'quarantine_ward': quarantineWardController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineBuildingList = value;
+        }));
+    fetchQuarantineFloor({
+      'quarantine_building': quarantineBuildingController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineFloorList = value;
+        }));
+    fetchQuarantineRoom({
+      'quarantine_floor': quarantineFloorController.text,
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineRoomList = value;
         }));
 
     _pagingController.addPageRequestListener((pageKey) {
@@ -169,6 +186,9 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
                   quarantineWardList: quarantineWardList,
+                  quarantineBuildingList: quarantineBuildingList,
+                  quarantineFloorList: quarantineFloorList,
+                  quarantineRoomList: quarantineRoomList,
                   labelController: labelController,
                   onSubmit: () {
                     setState(() {

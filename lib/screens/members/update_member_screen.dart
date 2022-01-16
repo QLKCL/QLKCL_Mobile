@@ -109,18 +109,7 @@ class _UpdateMemberState extends State<UpdateMember>
             }
 
             EasyLoading.show();
-            return TabBarView(
-              controller: _tabController,
-              children: [
-                MemberPersonalInfo(
-                  tabController: _tabController,
-                  mode: Permission.add,
-                ),
-                MemberQuarantineInfo(
-                  mode: Permission.add,
-                ),
-              ],
-            );
+            return Container();
           },
         )),
       ),
