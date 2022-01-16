@@ -27,52 +27,30 @@ class RoomList extends StatelessWidget {
           )
         : ListView.builder(
             itemBuilder: (ctx, index) {
-              //last item
-              if (index == data.length - 1) {
-                return Column(
-                  children: [
-                    QuarantineRelatedCard(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RoomDetailsScreen(
-                              currentBuilding: currentBuilding,
-                              currentQuarantine: currentQuarantine,
-                              currentFloor: currentFloor,
-                              currentRoom: Room.fromJson(data[index]),
-                            ),
+              return Column(
+                children: [
+                  QuarantineRelatedCard(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RoomDetailsScreen(
+                            currentBuilding: currentBuilding,
+                            currentQuarantine: currentQuarantine,
+                            currentFloor: currentFloor,
+                            currentRoom: Room.fromJson(data[index]),
                           ),
-                        );
-                      },
-                      id: data[index]['id'],
-                      name: data[index]['name'],
-                      numOfMem: data[index]['num_current_member'],
-                      maxMem: data[index]['capacity'],
-                    ),
-                    SizedBox(height: 70),
-                  ],
-                );
-              } else
-                return QuarantineRelatedCard(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RoomDetailsScreen(
-                          currentBuilding: currentBuilding,
-                          currentQuarantine: currentQuarantine,
-                          currentFloor: currentFloor,
-                          currentRoom: Room.fromJson(data[index]),
                         ),
-                      ),
-                    );
-                  },
-                  id: data[index]['id'],
-                  name: data[index]['name'],
-                  numOfMem: data[index]['num_current_member'],
-                  maxMem: data[index]['capacity'],
-                );
+                      );
+                    },
+                    id: data[index]['id'],
+                    name: data[index]['name'],
+                    numOfMem: data[index]['num_current_member'],
+                    maxMem: data[index]['capacity'],
+                  ),
+                  index == data.length - 1 ? SizedBox(height: 70) : Container(),
+                ],
+              );
             },
             itemCount: data.length,
           );

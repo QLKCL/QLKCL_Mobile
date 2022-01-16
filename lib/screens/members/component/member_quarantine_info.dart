@@ -109,24 +109,28 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     super.initState();
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
+      'is_full': false,
     }).then((value) => setState(() {
           quarantineWardList = value;
         }));
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
       'page_size': PAGE_SIZE_MAX,
+      'is_full': false,
     }).then((value) => setState(() {
           quarantineBuildingList = value;
         }));
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
       'page_size': PAGE_SIZE_MAX,
+      'is_full': false,
     }).then((value) => setState(() {
           quarantineFloorList = value;
         }));
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
       'page_size': PAGE_SIZE_MAX,
+      'is_full': false,
     }).then((value) => setState(() {
           quarantineRoomList = value;
         }));
@@ -178,6 +182,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
                   'page_size': PAGE_SIZE_MAX,
+                  'is_full': false,
                 }).then((data) => setState(() {
                       quarantineBuildingList = data;
                     }));
@@ -224,6 +229,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 fetchQuarantineFloor({
                   'quarantine_building': quarantineBuildingController.text,
                   'page_size': PAGE_SIZE_MAX,
+                  'is_full': false,
                 }).then((data) => setState(() {
                       quarantineFloorList = data;
                     }));
@@ -269,6 +275,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 fetchQuarantineRoom({
                   'quarantine_floor': quarantineFloorController.text,
                   'page_size': PAGE_SIZE_MAX,
+                  'is_full': false,
                 }).then((data) => setState(() {
                       quarantineRoomList = data;
                     }));

@@ -19,52 +19,30 @@ class BuildingList extends StatelessWidget {
         : ListView.builder(
             shrinkWrap: true,
             itemBuilder: (ctx, index) {
-              //last item
-              if (index == data.length - 1) {
-                return Column(
-                  children: [
-                    QuarantineRelatedCard(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BuildingDetailsScreen(
-                              currentQuarantine: currentQuarantine,
-                              currentBuilding: Building.fromJson(data[index]),
-                            ),
+              return Column(
+                children: [
+                  QuarantineRelatedCard(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BuildingDetailsScreen(
+                            currentQuarantine: currentQuarantine,
+                            currentBuilding: Building.fromJson(data[index]),
                           ),
-                        );
-                      },
-                      id: data[index]['id'],
-                      name: data[index]['name'],
-                      numOfMem: data[index]['num_current_member'],
-                      maxMem: data[index]['total_capacity'] == null
-                          ? 0
-                          : data[index]['total_capacity'],
-                    ),
-                    SizedBox(height: 70),
-                  ],
-                );
-              } else
-                return QuarantineRelatedCard(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BuildingDetailsScreen(
-                          currentQuarantine: currentQuarantine,
-                          currentBuilding: Building.fromJson(data[index]),
                         ),
-                      ),
-                    );
-                  },
-                  id: data[index]['id'],
-                  name: data[index]['name'],
-                  numOfMem: data[index]['num_current_member'],
-                  maxMem: data[index]['total_capacity'] == null
-                      ? 0
-                      : data[index]['total_capacity'],
-                );
+                      );
+                    },
+                    id: data[index]['id'],
+                    name: data[index]['name'],
+                    numOfMem: data[index]['num_current_member'],
+                    maxMem: data[index]['total_capacity'] == null
+                        ? 0
+                        : data[index]['total_capacity'],
+                  ),
+                  index == data.length - 1 ? SizedBox(height: 70) : Container(),
+                ],
+              );
             },
             itemCount: data.length,
           );

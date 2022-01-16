@@ -465,11 +465,6 @@ class _MemberCardState extends State<MemberCard> {
             children: <Widget>[action()],
           ),
         ),
-        // decoration: _selected
-        //     ? new BoxDecoration(
-        //         color: Colors.black38,
-        //         border: new Border.all(color: Colors.black))
-        //     : new BoxDecoration(),
       ),
     );
   }
@@ -482,12 +477,14 @@ class QuarantineRelatedCard extends StatelessWidget {
   final String name;
   final int numOfMem;
   final int maxMem;
+  final Widget? menus;
   const QuarantineRelatedCard(
       {required this.onTap,
       required this.id,
       required this.name,
       required this.numOfMem,
-      required this.maxMem});
+      required this.maxMem,
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -520,17 +517,10 @@ class QuarantineRelatedCard extends StatelessWidget {
             )
           ],
         ),
-        isThreeLine: true,
+        isThreeLine: false,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
-            ),
-          ],
+          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -545,6 +535,7 @@ class MemberInRoomCard extends StatelessWidget {
   final bool? lastTestResult;
   final String? lastTestTime;
   final String healthStatus;
+  final Widget? menus;
   const MemberInRoomCard(
       {required this.onTap,
       required this.name,
@@ -552,7 +543,8 @@ class MemberInRoomCard extends StatelessWidget {
       required this.birthday,
       this.lastTestResult,
       this.lastTestTime,
-      required this.healthStatus});
+      required this.healthStatus,
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -650,21 +642,9 @@ class MemberInRoomCard extends StatelessWidget {
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                child: Icon(
-                  Icons.more_vert,
-                ),
-                onTap: () {},
-              )
-            ],
+            children: <Widget>[menus ?? Container()],
           ),
         ),
-        // decoration: _selected
-        //     ? new BoxDecoration(
-        //         color: Colors.black38,
-        //         border: new Border.all(color: Colors.black))
-        //     : new BoxDecoration(),
       ),
     );
   }
