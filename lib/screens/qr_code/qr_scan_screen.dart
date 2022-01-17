@@ -43,8 +43,8 @@ class _QrCodeScanState extends State<QrCodeScan> {
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: 20),
           child: SizedBox(
-            height: 100,
-            width: 80,
+            height: 120,
+            width: 100,
             child: FloatingActionButton(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -113,11 +113,11 @@ class _QrCodeScanState extends State<QrCodeScan> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
+        borderRadius: 10,
+        borderWidth: 10,
+        cutOutBottomOffset: 100,
+        cutOutSize: scanArea,
+      ),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
@@ -184,7 +184,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('Lỗi'),
-          content: Text("Không tìm thấy dữ liệu từ mã QR"),
+          content: Text("Không tìm thấy dữ liệu từ hình ảnh"),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, 'OK'),

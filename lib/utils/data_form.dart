@@ -253,6 +253,7 @@ Map<String, dynamic> createQuarantineDataForm({
   String? phoneNumber,
   required int quarantineTime,
   required String mainManager,
+  String? image,
 }) {
   var data = {
     "email": email,
@@ -269,6 +270,7 @@ Map<String, dynamic> createQuarantineDataForm({
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
     "phone_number": phoneNumber,
+    "image": image,
   };
   return prepareDataForm(data);
 }
@@ -302,6 +304,7 @@ Map<String, dynamic> updateQuarantineDataForm({
   int? quarantineTime,
   String? mainManager,
   String? phoneNumber,
+  String? image,
 }) {
   var data = {
     "id": id,
@@ -319,6 +322,7 @@ Map<String, dynamic> updateQuarantineDataForm({
     "phone_number": phoneNumber,
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
+    "image": image,
   };
   return prepareDataForm(data);
 }

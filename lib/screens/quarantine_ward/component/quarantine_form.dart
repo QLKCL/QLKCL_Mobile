@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -44,14 +45,14 @@ class _QuarantineFormState extends State<QuarantineForm> {
   final managerController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final statusController = TextEditingController();
+  final imageController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
+  List<String> imageList = [];
 
-  //Image Picker
-  final ImagePicker _picker = ImagePicker();
   List<XFile> _imageFileList = [];
 
   @override
@@ -86,10 +87,12 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ? widget.quarantineInfo!.mainManager['code']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
+      imageController.text = widget.quarantineInfo?.image ?? "";
     } else {
       countryController.text = "VNM";
       statusController.text = "RUNNING";
       typeController.text = "CONCENTRATE";
+      imageController.text = "";
     }
     super.initState();
     fetchCountry().then((value) => setState(() {
@@ -107,6 +110,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
         .then((value) => setState(() {
               wardList = value;
             }));
+    imageList = imageController.text.split(',').toList();
+    print(imageList);
   }
 
   @override
@@ -134,6 +139,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
+          image: imageController.text,
         ));
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -155,6 +161,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
+          image: imageController.text,
         ));
         if (registerResponse.success) {
           EasyLoading.dismiss();
@@ -189,13 +196,11 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
-
             Input(
               label: 'Tên đầy đủ',
               required: true,
               controller: nameController,
             ),
-
             DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
@@ -235,7 +240,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quốc gia',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
@@ -278,7 +282,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Tỉnh thành',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
@@ -320,7 +323,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quận huyện',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Phường/xã',
               hint: 'Phường/xã',
@@ -354,12 +356,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Phường xã',
             ),
-
             Input(
               label: 'Địa chỉ',
               controller: addressController,
             ),
-
             DropdownInput<KeyValue>(
                 label: 'Người quản lý',
                 hint: 'Chọn người quản lý',
@@ -385,7 +385,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 mode: Mode.BOTTOM_SHEET,
                 maxHeight: MediaQuery.of(context).size.height - 100,
                 popupTitle: 'Quản lý'),
-
             DropdownInput<KeyValue>(
               label: 'Cơ sở cách ly',
               hint: 'Cơ sở cách ly',
@@ -404,7 +403,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 }
               },
             ),
-
             DropdownInput<KeyValue>(
               label: 'Trạng thái',
               hint: 'Trạng thái',
@@ -423,7 +421,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 }
               },
             ),
-
             Input(
               label: 'Thời gian cách ly (ngày)',
               hint: 'Thời gian cách ly',
@@ -432,7 +429,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: quarantineTimeValidator,
               controller: quarantineTimeController,
             ),
-
             Input(
               label: 'Điện thoại liên lạc',
               hint: 'Điện thoại liên lạc',
@@ -440,7 +436,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: phoneNullableValidator,
               controller: phoneNumberController,
             ),
-
             Input(
               label: 'Email',
               hint: 'Email liên lạc',
@@ -449,98 +444,112 @@ class _QuarantineFormState extends State<QuarantineForm> {
               type: TextInputType.emailAddress,
               validatorFunction: emailValidator,
             ),
-
             Container(
               margin: EdgeInsets.all(16),
               child: Text(
-                (widget.mode == Permission.add) ? 'Thêm ảnh' : 'Sửa bộ ảnh',
+                'Hình ảnh',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             Container(
-              height: 50,
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: DottedBorder(
-                padding: EdgeInsets.all(0),
-                color: CustomColors.primary,
-                strokeWidth: 1,
-                child: OutlinedButton(
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size.infinite),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    side: MaterialStateProperty.all(
-                      BorderSide(
-                        color: CustomColors.primary,
-                        width: 1.0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    selectImages();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('Thêm ảnh'),
-                    ],
-                  ),
+              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
                 ),
-              ),
-            ),
-
-            //Selected pictures display
-            _imageFileList.isEmpty
-                ? Center(
-                    heightFactor: 5,
-                    child: Text('Chưa có hình nào được chọn'),
-                  )
-                : Container(
-                    margin: EdgeInsets.fromLTRB(8, 12, 8, 12),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                        ),
-                        itemBuilder: (BuildContext ctx, int index) {
-                          return Container(
-                            padding: const EdgeInsets.all(5),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Image.file(File(_imageFileList[index].path),
-                                    fit: BoxFit.cover),
-                                Positioned(
-                                  right: -0.05,
-                                  top: -0.05,
-                                  child: CircleButton(
-                                      onTap: () {
-                                        _imageFileList.removeAt(index);
-                                        setState(() {});
-                                      },
-                                      iconData: Icons.close),
+                itemBuilder: (BuildContext ctx, int index) {
+                  return index == imageList.length
+                      ? Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Container(
+                            child: DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: Radius.circular(8),
+                              color: CustomColors.primary,
+                              strokeWidth: 1,
+                              child: OutlinedButton(
+                                style: ButtonStyle(
+                                  minimumSize:
+                                      MaterialStateProperty.all(Size.infinite),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+                                  side: MaterialStateProperty.all(
+                                    BorderSide(
+                                      color: CustomColors.primary,
+                                      width: 1.0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
                                 ),
-                              ],
+                                onPressed: () {
+                                  upLoadImages(
+                                    _imageFileList,
+                                    multi: true,
+                                    type: "Quarantine_Ward",
+                                  ).then((value) => setState(() {
+                                        imageList.addAll(value);
+                                        imageController.text =
+                                            imageList.join(',');
+                                      }));
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.camera_alt_outlined,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'Thêm ảnh',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                        itemCount: _imageFileList.length,
-                      ),
-                    ),
-                  ),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.network(
+                                    cloudinary
+                                        .getImage(imageList[index])
+                                        .toString(),
+                                    fit: BoxFit.cover),
+                              ),
+                              Positioned(
+                                right: -0.05,
+                                top: -0.05,
+                                child: CircleButton(
+                                    onTap: () {
+                                      imageList.removeAt(index);
+                                      setState(() {
+                                        imageController.text =
+                                            imageList.join(',');
+                                      });
+                                    },
+                                    iconData: Icons.close),
+                              ),
+                            ],
+                          ),
+                        );
+                },
+                itemCount: imageList.length + 1,
+              ),
+              // ),
+            ),
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(16),
@@ -556,13 +565,5 @@ class _QuarantineFormState extends State<QuarantineForm> {
         ),
       ),
     );
-  }
-
-  Future<void> selectImages() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      _imageFileList.addAll(selectedImages);
-    }
-    setState(() {});
   }
 }
