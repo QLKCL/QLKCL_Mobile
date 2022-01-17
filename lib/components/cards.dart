@@ -587,12 +587,16 @@ class MemberInRoomCard extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
+                SizedBox(
+                  height: 4,
+                ),
                 Text.rich(
                   TextSpan(
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.history,
+                          size: 16,
                           color: CustomColors.disableText,
                         ),
                       ),
@@ -602,7 +606,11 @@ class MemberInRoomCard extends StatelessWidget {
                                 ? (lastTestResult! ? "Dương tính" : "Âm tính")
                                 : "Chưa có kết quả xét nghiệm") +
                             (lastTestTime != null
-                                ? " (" + lastTestTime! + ")"
+                                ? " (" +
+                                    DateFormat("dd/MM/yyyy HH:mm:ss").format(
+                                        DateTime.parse(lastTestTime!)
+                                            .toLocal()) +
+                                    ")"
                                 : ""),
                       )
                     ],
@@ -611,7 +619,7 @@ class MemberInRoomCard extends StatelessWidget {
               ],
             ),
           ),
-          isThreeLine: true,
+          isThreeLine: false,
           leading: SizedBox(
             height: 56,
             width: 56,
