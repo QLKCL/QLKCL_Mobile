@@ -86,6 +86,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
                     ? "${item['district']['name']}, "
                     : "") +
                 (item['city'] != null ? "${item['city']['name']}" : ""),
+            image: item['image'],
           ),
         ),
       ),

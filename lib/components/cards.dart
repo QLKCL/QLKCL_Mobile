@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
@@ -665,6 +666,7 @@ class QuarantineItem extends StatefulWidget {
   final int currentMem;
   final String? address;
   final Widget? menus;
+  final String? image;
 
   const QuarantineItem({
     required this.id,
@@ -673,6 +675,7 @@ class QuarantineItem extends StatefulWidget {
     required this.currentMem,
     this.menus,
     this.address,
+    this.image,
   });
 
   @override
@@ -681,6 +684,19 @@ class QuarantineItem extends StatefulWidget {
 
 class _QuarantineItemState extends State<QuarantineItem> {
   late Future<int> numOfMem;
+  List<String> imageList = [
+    'Default/null_cqepao',
+    'Default/quarantine_qayrie',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.image != null && widget.image != "") {
+      imageList = widget.image!.split(',');
+    }
+  }
+
   void selectQuarantine(BuildContext context) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
@@ -707,10 +723,9 @@ class _QuarantineItemState extends State<QuarantineItem> {
                 width: 105,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/QuarantineWard.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(
+                      cloudinary.getImage(imageList[0]).toString(),
+                      fit: BoxFit.cover),
                 ),
               ),
               SizedBox(
