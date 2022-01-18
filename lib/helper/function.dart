@@ -7,9 +7,12 @@ extension IterableX<T> on Iterable<T> {
   }
 }
 
-dynamic prepareDataForm(dynamic data) {
-  data.removeWhere((key, value) => key == "" || value == "");
-  data.removeWhere((key, value) => value == null);
+dynamic prepareDataForm(dynamic data,
+    {List<String> exceptionField = const []}) {
+  data.removeWhere((key, value) =>
+      ((key == "" || value == "") && (!exceptionField.contains(key))));
+  data.removeWhere(
+      (key, value) => (value == null) && (!exceptionField.contains(key)));
   return data;
 }
 

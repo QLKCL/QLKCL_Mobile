@@ -324,7 +324,7 @@ Map<String, dynamic> updateQuarantineDataForm({
     "main_manager": mainManager,
     "image": image,
   };
-  return prepareDataForm(data);
+  return prepareDataForm(data, exceptionField: ["image"]);
 }
 
 Map<String, dynamic> filterQuarantineDataForm({
