@@ -14,6 +14,7 @@ Future upLoadImages(
   String folder = "",
   Map<String, dynamic>? context,
 }) async {
+  _imageFileList = [];
   _imageFileList = await selectImages(_imageFileList, multi: multi);
   return upload(_imageFileList, type: type, folder: folder, context: context);
 }
@@ -22,7 +23,7 @@ Future<List<XFile>> selectImages(
   List<XFile> _imageFileList, {
   bool multi = false,
 }) async {
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = new ImagePicker();
   List<XFile>? selectedImages = [];
   if (multi == true) {
     selectedImages = await _picker.pickMultiImage();

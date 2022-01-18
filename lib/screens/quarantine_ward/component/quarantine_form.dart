@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -45,13 +43,12 @@ class _QuarantineFormState extends State<QuarantineForm> {
   final managerController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final statusController = TextEditingController();
-  final imageController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
-  List<String> imageList = [];
+  List<String> imageList = ["init"];
 
   List<XFile> _imageFileList = [];
 
@@ -87,12 +84,13 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ? widget.quarantineInfo!.mainManager['code']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
-      imageController.text = widget.quarantineInfo?.image ?? "";
+      if (widget.quarantineInfo?.image != null &&
+          widget.quarantineInfo?.image != "")
+        imageList.addAll(widget.quarantineInfo!.image!.split(','));
     } else {
       countryController.text = "VNM";
       statusController.text = "RUNNING";
       typeController.text = "CONCENTRATE";
-      imageController.text = "";
     }
     super.initState();
     fetchCountry().then((value) => setState(() {
@@ -110,8 +108,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
         .then((value) => setState(() {
               wardList = value;
             }));
-    imageList = imageController.text.split(',').toList();
-    print(imageList);
   }
 
   @override
@@ -139,7 +135,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
-          image: imageController.text,
+          image: imageList.sublist(1).join(','),
         ));
         EasyLoading.dismiss();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -161,7 +157,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
-          image: imageController.text,
+          image: imageList.sublist(1).join(','),
         ));
         if (registerResponse.success) {
           EasyLoading.dismiss();
@@ -460,7 +456,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   crossAxisCount: 4,
                 ),
                 itemBuilder: (BuildContext ctx, int index) {
-                  return index == imageList.length
+                  return index == 0
                       ? Container(
                           padding: const EdgeInsets.all(5),
                           child: Container(
@@ -487,14 +483,14 @@ class _QuarantineFormState extends State<QuarantineForm> {
                                   ),
                                 ),
                                 onPressed: () {
+                                  EasyLoading.show();
                                   upLoadImages(
                                     _imageFileList,
                                     multi: true,
                                     type: "Quarantine_Ward",
                                   ).then((value) => setState(() {
+                                        EasyLoading.dismiss();
                                         imageList.addAll(value);
-                                        imageController.text =
-                                            imageList.join(',');
                                       }));
                                 },
                                 child: Column(
@@ -535,10 +531,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                                 child: CircleButton(
                                     onTap: () {
                                       imageList.removeAt(index);
-                                      setState(() {
-                                        imageController.text =
-                                            imageList.join(',');
-                                      });
+                                      setState(() {});
                                     },
                                     iconData: Icons.close),
                               ),
@@ -546,9 +539,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
                           ),
                         );
                 },
-                itemCount: imageList.length + 1,
+                itemCount: imageList.length,
               ),
-              // ),
             ),
             Container(
               alignment: Alignment.center,
