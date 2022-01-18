@@ -64,7 +64,7 @@ class CustomUser {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final dynamic quarantineWard;
-  final int? role;
+  final dynamic role;
   final dynamic createdBy;
   final dynamic updatedBy;
 
