@@ -70,6 +70,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
       ),
       child: PagedListView<int, dynamic>(
         pagingController: _pagingController,
+        padding: EdgeInsets.only(bottom: 70),
         builderDelegate: PagedChildBuilderDelegate<dynamic>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
