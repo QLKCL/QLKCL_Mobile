@@ -48,7 +48,9 @@ class _QuarantineFormState extends State<QuarantineForm> {
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
-  List<String> imageList = ["init"];
+  List<String> imageList = [
+    'Default/no_image_available',
+  ];
 
   List<XFile> _imageFileList = [];
 

@@ -17,7 +17,7 @@ class _CarouselState extends State<Carousel> {
   // ignore: unused_field
   int _counter = 0;
   List<String> imageList = [
-    'Default/null_cqepao',
+    'Default/no_image_available',
   ];
 
   @override
