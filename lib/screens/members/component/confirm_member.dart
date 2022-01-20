@@ -91,6 +91,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
           },
         ),
         child: PagedListView<int, dynamic>(
+          padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
             animateTransitions: true,

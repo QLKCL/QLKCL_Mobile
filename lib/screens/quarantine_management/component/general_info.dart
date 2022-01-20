@@ -40,64 +40,75 @@ class GeneralInfo extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    //mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        currentQuarantine.fullName,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text('Tổng số tòa: $numOfBuilding',
-                          style: const TextStyle(
-                            fontSize: 16,
-                          )),
-                    ],
-                  ),
-                  Column(
-                    //mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'Đang cách ly',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.groups_rounded,
-                            size: 20,
-                            color: CustomColors.primaryText,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '${currentQuarantine.currentMem}' +
-                                (currentQuarantine.capacity != null
-                                    ? '/${currentQuarantine.capacity}'
-                                    : '/0'),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      //mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text.rich(
+                          TextSpan(
                             style: const TextStyle(
+                              fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
-                          )
-                        ],
-                      )
-                    ],
+                            text: currentQuarantine.fullName,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text('Tổng số tòa: $numOfBuilding',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            )),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      //mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text(
+                          'Đang cách ly',
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(
+                              Icons.groups_rounded,
+                              size: 20,
+                              color: CustomColors.primaryText,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '${currentQuarantine.currentMem}' +
+                                  (currentQuarantine.capacity != null
+                                      ? '/${currentQuarantine.capacity}'
+                                      : '/0'),
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   )
                 ],
               ),

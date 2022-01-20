@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -29,31 +28,6 @@ class QuarantineForm extends StatefulWidget {
 }
 
 class _QuarantineFormState extends State<QuarantineForm> {
-  @override
-  void initState() {
-    super.initState();
-    fetchCountry().then((value) => setState(() {
-          countryList = value;
-        }));
-    fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-          cityList = value;
-        }));
-    fetchDistrict({'city_id': cityController.text})
-        .then((value) => setState(() {
-              districtList = value;
-            }));
-    fetchWard({'district_id': districtController.text})
-        .then((value) => setState(() {
-              wardList = value;
-            }));
-  }
-
-  @override
-  void deactivate() {
-    EasyLoading.dismiss();
-    super.deactivate();
-  }
-
   //Input Controller
   final _formKey = GlobalKey<FormState>();
   final idController = TextEditingController();
@@ -74,69 +48,14 @@ class _QuarantineFormState extends State<QuarantineForm> {
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
+  List<String> imageList = [
+    'Default/no_image_available',
+  ];
 
-  //Image Picker
-  final ImagePicker _picker = ImagePicker();
   List<XFile> _imageFileList = [];
 
-  //Submit
-  Future<void> _submit() async {
-    if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
-      if (widget.mode == Permission.add) {
-        final registerResponse =
-            await createQuarantine(createQuarantineDataForm(
-          email: emailController.text,
-          fullName: nameController.text,
-          country: countryController.text,
-          city: cityController.text,
-          district: districtController.text,
-          ward: wardController.text,
-          status: statusController.text,
-          quarantineTime: int.parse(quarantineTimeController.text),
-          mainManager: managerController.text,
-          address: addressController.text,
-          type: typeController.text,
-          phoneNumber: phoneNumberController.text,
-        ));
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
-        );
-      } else if (widget.mode == Permission.edit) {
-        final registerResponse =
-            await updateQuarantine(updateQuarantineDataForm(
-          id: widget.quarantineInfo!.id.toInt(),
-          email: emailController.text,
-          fullName: nameController.text,
-          country: countryController.text,
-          city: cityController.text,
-          district: districtController.text,
-          ward: wardController.text,
-          status: statusController.text,
-          quarantineTime: int.parse(quarantineTimeController.text),
-          mainManager: managerController.text,
-          address: addressController.text,
-          type: typeController.text,
-          phoneNumber: phoneNumberController.text,
-        ));
-        if (registerResponse.success) {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
-          );
-        } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
-          );
-        }
-      }
-    }
-  }
-
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     if (widget.quarantineInfo != null) {
       idController.text = widget.quarantineInfo?.id != null
           ? widget.quarantineInfo!.id.toString()
@@ -144,7 +63,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
       nameController.text = widget.quarantineInfo?.fullName ?? "";
       countryController.text = widget.quarantineInfo!.country != null
           ? widget.quarantineInfo?.country['code']
-          : "";
+          : "VNM";
       cityController.text = widget.quarantineInfo?.city != null
           ? widget.quarantineInfo!.city['id'].toString()
           : "";
@@ -167,11 +86,98 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ? widget.quarantineInfo!.mainManager['code']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
+      if (widget.quarantineInfo?.image != null &&
+          widget.quarantineInfo?.image != "")
+        imageList.addAll(widget.quarantineInfo!.image!.split(','));
     } else {
       countryController.text = "VNM";
       statusController.text = "RUNNING";
       typeController.text = "CONCENTRATE";
     }
+    super.initState();
+    fetchCountry().then((value) => setState(() {
+          countryList = value;
+        }));
+    fetchCity({'country_code': countryController.text})
+        .then((value) => setState(() {
+              cityList = value;
+            }));
+    fetchDistrict({'city_id': cityController.text})
+        .then((value) => setState(() {
+              districtList = value;
+            }));
+    fetchWard({'district_id': districtController.text})
+        .then((value) => setState(() {
+              wardList = value;
+            }));
+  }
+
+  @override
+  void deactivate() {
+    EasyLoading.dismiss();
+    super.deactivate();
+  }
+
+  //Submit
+  Future<void> _submit() async {
+    if (_formKey.currentState!.validate()) {
+      EasyLoading.show();
+      if (widget.mode == Permission.add) {
+        final registerResponse =
+            await createQuarantine(createQuarantineDataForm(
+          email: emailController.text,
+          fullName: nameController.text,
+          country: countryController.text,
+          city: cityController.text,
+          district: districtController.text,
+          ward: wardController.text,
+          status: statusController.text,
+          quarantineTime: int.parse(quarantineTimeController.text),
+          mainManager: managerController.text,
+          address: addressController.text,
+          type: typeController.text,
+          phoneNumber: phoneNumberController.text,
+          image: imageList.sublist(1).join(','),
+        ));
+        EasyLoading.dismiss();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(registerResponse.message)),
+        );
+      } else if (widget.mode == Permission.edit) {
+        final registerResponse =
+            await updateQuarantine(updateQuarantineDataForm(
+          id: widget.quarantineInfo!.id.toInt(),
+          email: emailController.text,
+          fullName: nameController.text,
+          country: countryController.text,
+          city: cityController.text,
+          district: districtController.text,
+          ward: wardController.text,
+          status: statusController.text,
+          quarantineTime: int.parse(quarantineTimeController.text),
+          mainManager: managerController.text,
+          address: addressController.text,
+          type: typeController.text,
+          phoneNumber: phoneNumberController.text,
+          image: imageList.sublist(1).join(','),
+        ));
+        if (registerResponse.success) {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(registerResponse.message)),
+          );
+        } else {
+          EasyLoading.dismiss();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(registerResponse.message)),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       physics: ScrollPhysics(),
       child: Form(
@@ -188,74 +194,84 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
-
             Input(
               label: 'Tên đầy đủ',
               required: true,
               controller: nameController,
             ),
-
             DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
               required: widget.mode == Permission.view ? false : true,
               itemValue: countryList,
-              selectedItem: (widget.quarantineInfo?.country != null)
-                  ? KeyValue.fromJson(widget.quarantineInfo!.country)
+              selectedItem: countryList.length == 0
+                  ? ((widget.quarantineInfo?.country != null)
+                      ? KeyValue.fromJson(widget.quarantineInfo!.country)
+                      : null)
                   : countryList.safeFirstWhere(
-                      (type) => type.id == countryController.text),
+                      (type) => type.id.toString() == countryController.text),
               onFind: countryList.length == 0
                   ? (String? filter) => fetchCountry()
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  countryController.text = "";
-                } else {
-                  countryController.text = value.id;
-                }
-                fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-                      cityController.clear();
-                      districtController.clear();
-                      wardController.clear();
-                      cityList = value;
-                      districtList = [];
-                      wardList = [];
-                    }));
+                setState(() {
+                  if (value == null) {
+                    countryController.text = "";
+                  } else {
+                    countryController.text = value.id;
+                  }
+                  cityController.clear();
+                  districtController.clear();
+                  wardController.clear();
+                  cityList = [];
+                  districtList = [];
+                  wardList = [];
+                });
+                fetchCity({'country_code': countryController.text})
+                    .then((data) => setState(() {
+                          cityList = data;
+                        }));
               },
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
               maxHeight: MediaQuery.of(context).size.height - 100,
+              popupTitle: 'Quốc gia',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.quarantineInfo?.city != null)
-                  ? KeyValue.fromJson(widget.quarantineInfo!.city)
-                  : cityList
-                      .safeFirstWhere((type) => type.id == cityController.text),
+              selectedItem: cityList.length == 0
+                  ? ((widget.quarantineInfo?.city != null)
+                      ? KeyValue.fromJson(widget.quarantineInfo!.city)
+                      : null)
+                  : cityList.safeFirstWhere(
+                      (type) => type.id.toString() == cityController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
                   : false,
               onFind: cityList.length == 0
-                  ? (String? filter) => fetchCity({'country_code': 'VNM'})
+                  ? (String? filter) =>
+                      fetchCity({'country_code': countryController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  cityController.text = "";
-                } else {
-                  cityController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    cityController.text = "";
+                  } else {
+                    cityController.text = value.id.toString();
+                  }
+                  districtController.clear();
+                  wardController.clear();
+                  districtList = [];
+                  wardList = [];
+                });
                 fetchDistrict({'city_id': cityController.text})
-                    .then((value) => setState(() {
-                          districtController.clear();
-                          wardController.clear();
-                          districtList = value;
-                          wardList = [];
+                    .then((data) => setState(() {
+                          districtList = data;
                         }));
               },
               itemAsString: (KeyValue? u) => u!.name,
@@ -264,16 +280,17 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Tỉnh thành',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: (widget.quarantineInfo?.district != null)
-                  ? KeyValue.fromJson(widget.quarantineInfo!.district)
+              selectedItem: districtList.length == 0
+                  ? ((widget.quarantineInfo?.district != null)
+                      ? KeyValue.fromJson(widget.quarantineInfo!.district)
+                      : null)
                   : districtList.safeFirstWhere(
-                      (type) => type.id == districtController.text),
+                      (type) => type.id.toString() == districtController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -283,15 +300,19 @@ class _QuarantineFormState extends State<QuarantineForm> {
                       fetchDistrict({'city_id': cityController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  districtController.text = "";
-                } else {
-                  districtController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    districtController.text = "";
+                  } else {
+                    districtController.text = value.id.toString();
+                  }
+                  wardController.clear();
+                  wardList = [];
+                });
                 fetchWard({'district_id': districtController.text})
-                    .then((value) => setState(() {
+                    .then((data) => setState(() {
                           wardController.clear();
-                          wardList = value;
+                          wardList = data;
                         }));
               },
               itemAsString: (KeyValue? u) => u!.name,
@@ -300,15 +321,16 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Quận huyện',
             ),
-
             DropdownInput<KeyValue>(
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
-              selectedItem: (widget.quarantineInfo?.ward != null)
-                  ? KeyValue.fromJson(widget.quarantineInfo!.ward)
-                  : wardList
-                      .safeFirstWhere((type) => type.id == wardController.text),
+              selectedItem: wardList.length == 0
+                  ? ((widget.quarantineInfo?.ward != null)
+                      ? KeyValue.fromJson(widget.quarantineInfo!.ward)
+                      : null)
+                  : wardList.safeFirstWhere(
+                      (type) => type.id.toString() == wardController.text),
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
@@ -318,11 +340,13 @@ class _QuarantineFormState extends State<QuarantineForm> {
                       fetchWard({'district_id': districtController.text})
                   : null,
               onChanged: (value) {
-                if (value == null) {
-                  wardController.text = "";
-                } else {
-                  wardController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    wardController.text = "";
+                  } else {
+                    wardController.text = value.id.toString();
+                  }
+                });
               },
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
@@ -330,12 +354,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
               maxHeight: MediaQuery.of(context).size.height - 100,
               popupTitle: 'Phường xã',
             ),
-
             Input(
               label: 'Địa chỉ',
               controller: addressController,
             ),
-
             DropdownInput<KeyValue>(
                 label: 'Người quản lý',
                 hint: 'Chọn người quản lý',
@@ -361,7 +383,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 mode: Mode.BOTTOM_SHEET,
                 maxHeight: MediaQuery.of(context).size.height - 100,
                 popupTitle: 'Quản lý'),
-
             DropdownInput<KeyValue>(
               label: 'Cơ sở cách ly',
               hint: 'Cơ sở cách ly',
@@ -380,7 +401,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 }
               },
             ),
-
             DropdownInput<KeyValue>(
               label: 'Trạng thái',
               hint: 'Trạng thái',
@@ -399,7 +419,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                 }
               },
             ),
-
             Input(
               label: 'Thời gian cách ly (ngày)',
               hint: 'Thời gian cách ly',
@@ -408,7 +427,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: quarantineTimeValidator,
               controller: quarantineTimeController,
             ),
-
             Input(
               label: 'Điện thoại liên lạc',
               hint: 'Điện thoại liên lạc',
@@ -416,7 +434,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
               validatorFunction: phoneNullableValidator,
               controller: phoneNumberController,
             ),
-
             Input(
               label: 'Email',
               hint: 'Email liên lạc',
@@ -425,98 +442,108 @@ class _QuarantineFormState extends State<QuarantineForm> {
               type: TextInputType.emailAddress,
               validatorFunction: emailValidator,
             ),
-
             Container(
               margin: EdgeInsets.all(16),
               child: Text(
-                (widget.mode == Permission.add) ? 'Thêm ảnh' : 'Sửa bộ ảnh',
+                'Hình ảnh',
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
             Container(
-              height: 50,
-              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
-              child: DottedBorder(
-                padding: EdgeInsets.all(0),
-                color: CustomColors.primary,
-                strokeWidth: 1,
-                child: OutlinedButton(
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(Size.infinite),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
-                    ),
-                    side: MaterialStateProperty.all(
-                      BorderSide(
-                        color: CustomColors.primary,
-                        width: 1.0,
-                        style: BorderStyle.none,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {
-                    selectImages();
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.camera_alt,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text('Thêm ảnh'),
-                    ],
-                  ),
+              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
                 ),
+                itemBuilder: (BuildContext ctx, int index) {
+                  return index == 0
+                      ? Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Container(
+                            child: DottedBorder(
+                              borderType: BorderType.RRect,
+                              radius: Radius.circular(8),
+                              color: CustomColors.primary,
+                              strokeWidth: 1,
+                              child: OutlinedButton(
+                                style: ButtonStyle(
+                                  minimumSize:
+                                      MaterialStateProperty.all(Size.infinite),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+                                  side: MaterialStateProperty.all(
+                                    BorderSide(
+                                      color: CustomColors.primary,
+                                      width: 1.0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  EasyLoading.show();
+                                  upLoadImages(
+                                    _imageFileList,
+                                    multi: true,
+                                    type: "Quarantine_Ward",
+                                  ).then((value) => setState(() {
+                                        EasyLoading.dismiss();
+                                        imageList.addAll(value);
+                                      }));
+                                },
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.camera_alt_outlined,
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      'Thêm ảnh',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.0),
+                                child: Image.network(
+                                    cloudinary
+                                        .getImage(imageList[index])
+                                        .toString(),
+                                    fit: BoxFit.cover),
+                              ),
+                              Positioned(
+                                right: -0.05,
+                                top: -0.05,
+                                child: CircleButton(
+                                    onTap: () {
+                                      imageList.removeAt(index);
+                                      setState(() {});
+                                    },
+                                    iconData: Icons.close),
+                              ),
+                            ],
+                          ),
+                        );
+                },
+                itemCount: imageList.length,
               ),
             ),
-
-            //Selected pictures display
-            _imageFileList.isEmpty
-                ? Center(
-                    heightFactor: 5,
-                    child: Text('Chưa có hình nào được chọn'),
-                  )
-                : Container(
-                    margin: EdgeInsets.fromLTRB(8, 12, 8, 12),
-                    child: Padding(
-                      padding: EdgeInsets.all(8),
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                        ),
-                        itemBuilder: (BuildContext ctx, int index) {
-                          return Container(
-                            padding: const EdgeInsets.all(5),
-                            child: Stack(
-                              fit: StackFit.expand,
-                              children: [
-                                Image.file(File(_imageFileList[index].path),
-                                    fit: BoxFit.cover),
-                                Positioned(
-                                  right: -0.05,
-                                  top: -0.05,
-                                  child: CircleButton(
-                                      onTap: () {
-                                        _imageFileList.removeAt(index);
-                                        setState(() {});
-                                      },
-                                      iconData: Icons.close),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        itemCount: _imageFileList.length,
-                      ),
-                    ),
-                  ),
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.all(16),
@@ -532,13 +559,5 @@ class _QuarantineFormState extends State<QuarantineForm> {
         ),
       ),
     );
-  }
-
-  Future<void> selectImages() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      _imageFileList.addAll(selectedImages);
-    }
-    setState(() {});
   }
 }

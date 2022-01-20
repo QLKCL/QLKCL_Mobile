@@ -33,6 +33,7 @@ class Quarantine {
     this.updatedBy,
     required this.currentMem,
     required this.capacity,
+    this.image,
   });
 
   final int id;
@@ -57,6 +58,7 @@ class Quarantine {
   final dynamic updatedBy;
   final int currentMem;
   final int? capacity;
+  final String? image;
 
   factory Quarantine.fromJson(Map<String, dynamic> json) => Quarantine(
         id: json["id"],
@@ -81,6 +83,7 @@ class Quarantine {
         updatedBy: json["updated_by"],
         currentMem: json["num_current_member"],
         capacity: json["total_capacity"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,6 +109,7 @@ class Quarantine {
         "updated_by": updatedBy,
         "num_current_member": currentMem,
         "total_capacity": capacity,
+        "image": image,
       };
 }
 

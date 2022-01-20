@@ -70,6 +70,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
       ),
       child: PagedListView<int, dynamic>(
         pagingController: _pagingController,
+        padding: EdgeInsets.only(bottom: 70),
         builderDelegate: PagedChildBuilderDelegate<dynamic>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
@@ -86,6 +87,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
                     ? "${item['district']['name']}, "
                     : "") +
                 (item['city'] != null ? "${item['city']['name']}" : ""),
+            image: item['image'],
           ),
         ),
       ),

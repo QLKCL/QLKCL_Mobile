@@ -26,6 +26,11 @@ class KeyValue {
   }
 
   toList() {}
+
+  @override
+  String toString() {
+    return '$id - $name';
+  }
 }
 
 Future<List<KeyValue>> fetchCountry() async {

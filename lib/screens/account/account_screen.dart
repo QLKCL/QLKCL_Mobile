@@ -112,9 +112,10 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                await logout();
                 handleDeleteTag("role");
+                handleDeleteTag("quarantine_ward_id");
                 handleRemoveExternalUserId();
+                await logout();
                 Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },

@@ -71,7 +71,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Danh sách tòa',
+                      'Danh sách tòa (' + widget.data.length.toString() + ')',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,

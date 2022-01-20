@@ -65,7 +65,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Carousel(),
+          Carousel(image: widget.quarantineInfo.image),
           SizedBox(
             height: 10,
           ),

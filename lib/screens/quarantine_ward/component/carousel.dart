@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 
 class Carousel extends StatefulWidget {
+  final String? image;
+
+  const Carousel({
+    Key? key,
+    this.image,
+  }) : super(key: key);
   @override
   State<Carousel> createState() => _CarouselState();
 }
@@ -9,13 +16,17 @@ class Carousel extends StatefulWidget {
 class _CarouselState extends State<Carousel> {
   // ignore: unused_field
   int _counter = 0;
-
-  final listImg = [
-    'assets/images/carousel1.jpg',
-    'assets/images/carousel2.jpg',
-    'assets/images/carousel3.jpeg',
-    'assets/images/carousel4.jpg',
+  List<String> imageList = [
+    'Default/no_image_available',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.image != null && widget.image != "") {
+      imageList = widget.image!.split(',');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +41,7 @@ class _CarouselState extends State<Carousel> {
                   setState(() => _counter = index),
               aspectRatio: 2,
             ),
-            items: listImg.map((imgUrl) {
+            items: imageList.map((imgUrl) {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
@@ -41,7 +52,9 @@ class _CarouselState extends State<Carousel> {
                         borderRadius: BorderRadius.all(Radius.circular(5))),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
-                      child: Image.asset(imgUrl, fit: BoxFit.cover),
+                      child: Image.network(
+                          cloudinary.getImage(imgUrl).toString(),
+                          fit: BoxFit.cover),
                     ),
                   );
                 },

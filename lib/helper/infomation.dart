@@ -46,7 +46,7 @@ Future<void> setInfo() async {
   var infoBox = await Hive.openBox('myInfo');
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getMember, null);
-  int role = response['data']['custom_user']['role'];
+  int role = response['data']['custom_user']['role']['id'];
   infoBox.put('role', role);
   String name = response['data']['custom_user']['full_name'];
   infoBox.put('name', name);

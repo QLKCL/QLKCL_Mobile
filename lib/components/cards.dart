@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
@@ -143,18 +144,27 @@ class TestNoResultCard extends StatelessWidget {
   final String time;
   final String healthStatus;
   final Widget? menus;
-  const TestNoResultCard(
-      {required this.onTap,
-      required this.name,
-      required this.gender,
-      required this.birthday,
-      required this.id,
-      required this.time,
-      this.healthStatus = "NORMAL",
-      this.menus});
+  final String? image;
+  const TestNoResultCard({
+    required this.onTap,
+    required this.name,
+    required this.gender,
+    required this.birthday,
+    required this.id,
+    required this.time,
+    this.healthStatus = "NORMAL",
+    this.menus,
+    this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
+    List<String> imageList = [
+      'Default/no_avatar',
+    ];
+    if (image != null && image != "") {
+      imageList = image!.split(',');
+    }
     return Card(
       child: ListTile(
         // contentPadding: EdgeInsets.all(16),
@@ -234,7 +244,8 @@ class TestNoResultCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               CircleAvatar(
-                backgroundImage: AssetImage("assets/images/no-avatar.png"),
+                backgroundImage:
+                    NetworkImage(cloudinary.getImage(imageList[0]).toString()),
               ),
               Positioned(
                 bottom: -5,
@@ -282,18 +293,21 @@ class MemberCard extends StatefulWidget {
   final String? lastTestTime;
   final String healthStatus;
   final Widget? menus;
-  const MemberCard(
-      {required this.onTap,
-      this.onLongPress,
-      required this.name,
-      required this.gender,
-      required this.birthday,
-      required this.room,
-      this.lastTestResult,
-      this.lastTestTime,
-      this.longPressEnabled,
-      required this.healthStatus,
-      this.menus});
+  final String? image;
+  const MemberCard({
+    required this.onTap,
+    this.onLongPress,
+    required this.name,
+    required this.gender,
+    required this.birthday,
+    required this.room,
+    this.lastTestResult,
+    this.lastTestTime,
+    this.longPressEnabled,
+    required this.healthStatus,
+    this.menus,
+    this.image,
+  });
 
   @override
   _MemberCardState createState() => _MemberCardState();
@@ -301,6 +315,9 @@ class MemberCard extends StatefulWidget {
 
 class _MemberCardState extends State<MemberCard> {
   bool _selected = false;
+  List<String> imageList = [
+    'Default/no_avatar',
+  ];
 
   action() {
     if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
@@ -315,6 +332,14 @@ class _MemberCardState extends State<MemberCard> {
       );
     } else {
       return widget.menus ?? Container();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.image != null && widget.image != "") {
+      imageList = widget.image!.split(',');
     }
   }
 
@@ -440,7 +465,8 @@ class _MemberCardState extends State<MemberCard> {
               fit: StackFit.expand,
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/no-avatar.png"),
+                  backgroundImage: NetworkImage(
+                      cloudinary.getImage(imageList[0]).toString()),
                 ),
                 Positioned(
                   bottom: -5,
@@ -465,11 +491,6 @@ class _MemberCardState extends State<MemberCard> {
             children: <Widget>[action()],
           ),
         ),
-        // decoration: _selected
-        //     ? new BoxDecoration(
-        //         color: Colors.black38,
-        //         border: new Border.all(color: Colors.black))
-        //     : new BoxDecoration(),
       ),
     );
   }
@@ -482,12 +503,14 @@ class QuarantineRelatedCard extends StatelessWidget {
   final String name;
   final int numOfMem;
   final int maxMem;
+  final Widget? menus;
   const QuarantineRelatedCard(
       {required this.onTap,
       required this.id,
       required this.name,
       required this.numOfMem,
-      required this.maxMem});
+      required this.maxMem,
+      this.menus});
 
   @override
   Widget build(BuildContext context) {
@@ -520,17 +543,10 @@ class QuarantineRelatedCard extends StatelessWidget {
             )
           ],
         ),
-        isThreeLine: true,
+        isThreeLine: false,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            GestureDetector(
-              child: Icon(
-                Icons.more_vert,
-              ),
-              onTap: () {},
-            ),
-          ],
+          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -545,17 +561,28 @@ class MemberInRoomCard extends StatelessWidget {
   final bool? lastTestResult;
   final String? lastTestTime;
   final String healthStatus;
-  const MemberInRoomCard(
-      {required this.onTap,
-      required this.name,
-      required this.gender,
-      required this.birthday,
-      this.lastTestResult,
-      this.lastTestTime,
-      required this.healthStatus});
+  final Widget? menus;
+  final String? image;
+  const MemberInRoomCard({
+    required this.onTap,
+    required this.name,
+    required this.gender,
+    required this.birthday,
+    this.lastTestResult,
+    this.lastTestTime,
+    required this.healthStatus,
+    this.menus,
+    this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
+    List<String> imageList = [
+      'Default/no_avatar',
+    ];
+    if (image != null && image != "") {
+      imageList = image!.split(',');
+    }
     return Card(
       child: Container(
         child: ListTile(
@@ -595,12 +622,16 @@ class MemberInRoomCard extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
+                SizedBox(
+                  height: 4,
+                ),
                 Text.rich(
                   TextSpan(
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.history,
+                          size: 16,
                           color: CustomColors.disableText,
                         ),
                       ),
@@ -610,7 +641,11 @@ class MemberInRoomCard extends StatelessWidget {
                                 ? (lastTestResult! ? "Dương tính" : "Âm tính")
                                 : "Chưa có kết quả xét nghiệm") +
                             (lastTestTime != null
-                                ? " (" + lastTestTime! + ")"
+                                ? " (" +
+                                    DateFormat("dd/MM/yyyy HH:mm:ss").format(
+                                        DateTime.parse(lastTestTime!)
+                                            .toLocal()) +
+                                    ")"
                                 : ""),
                       )
                     ],
@@ -619,7 +654,7 @@ class MemberInRoomCard extends StatelessWidget {
               ],
             ),
           ),
-          isThreeLine: true,
+          isThreeLine: false,
           leading: SizedBox(
             height: 56,
             width: 56,
@@ -628,7 +663,8 @@ class MemberInRoomCard extends StatelessWidget {
               fit: StackFit.expand,
               children: [
                 CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/no-avatar.png"),
+                  backgroundImage: NetworkImage(
+                      cloudinary.getImage(imageList[0]).toString()),
                 ),
                 Positioned(
                   bottom: -5,
@@ -650,21 +686,9 @@ class MemberInRoomCard extends StatelessWidget {
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                child: Icon(
-                  Icons.more_vert,
-                ),
-                onTap: () {},
-              )
-            ],
+            children: <Widget>[menus ?? Container()],
           ),
         ),
-        // decoration: _selected
-        //     ? new BoxDecoration(
-        //         color: Colors.black38,
-        //         border: new Border.all(color: Colors.black))
-        //     : new BoxDecoration(),
       ),
     );
   }
@@ -677,6 +701,7 @@ class QuarantineItem extends StatefulWidget {
   final int currentMem;
   final String? address;
   final Widget? menus;
+  final String? image;
 
   const QuarantineItem({
     required this.id,
@@ -685,6 +710,7 @@ class QuarantineItem extends StatefulWidget {
     required this.currentMem,
     this.menus,
     this.address,
+    this.image,
   });
 
   @override
@@ -693,6 +719,18 @@ class QuarantineItem extends StatefulWidget {
 
 class _QuarantineItemState extends State<QuarantineItem> {
   late Future<int> numOfMem;
+  List<String> imageList = [
+    'Default/no_image_available',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.image != null && widget.image != "") {
+      imageList = widget.image!.split(',');
+    }
+  }
+
   void selectQuarantine(BuildContext context) {
     Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
@@ -719,10 +757,9 @@ class _QuarantineItemState extends State<QuarantineItem> {
                 width: 105,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'assets/images/QuarantineWard.jpg',
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.network(
+                      cloudinary.getImage(imageList[0]).toString(),
+                      fit: BoxFit.cover),
                 ),
               ),
               SizedBox(
