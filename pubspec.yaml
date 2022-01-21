@@ -112,6 +112,6 @@ flutter_icons:
 flutter_native_splash:
   color: "#ffffff"
   image: assets/images/Logo.png
-  web: false
+  web: true
   fullscreen: true
   

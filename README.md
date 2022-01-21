@@ -39,6 +39,17 @@ flutter build apk --release
 flutter install
 ```
 
+## Release web
+```
+flutter build web --release --base-href '/QLKCL_Web/' --no-sound-null-safety
+```
+
+## Change icon
+```
+flutter pub run flutter_launcher_icons:main
+flutter pub run flutter_native_splash:create
+```
+
 # Default account
 Login as admin
 ```
