@@ -44,7 +44,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    // _pagingController.dispose();
     super.dispose();
   }
 
