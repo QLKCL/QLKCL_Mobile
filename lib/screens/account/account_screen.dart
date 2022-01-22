@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';

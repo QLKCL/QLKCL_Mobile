@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/helper/infomation.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
@@ -276,7 +276,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                         ),
                                         TextSpan(
                                           text: " Xét nghiệm: " +
-                                              (snapshot.data['positive_test_now'] !=
+                                              (snapshot.data[
+                                                          'positive_test_now'] !=
                                                       null
                                                   ? ((snapshot.data[
                                                                   'positive_test_now'] ==

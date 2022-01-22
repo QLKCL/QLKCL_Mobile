@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';

@@ -3,7 +3,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/config/routes.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';

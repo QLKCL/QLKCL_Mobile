@@ -39,4 +39,8 @@ if exist %CD%\QLKCL_Mobile_Flutter\build\web\ (
     git push
 )
 
+echo.
+echo ==============================================
+echo Run successfully!!!
+echo Press Any Key To Exit...
 pause >nul
