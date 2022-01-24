@@ -26,6 +26,17 @@
   <title>qlkcl</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" type="text/css" href="splash/style.css">
+
+  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function() {
+      OneSignal.init({
+        appId: "3def0255-600c-4376-bece-77202ef908e5",
+      });
+    });
+  </script>
+
 </head>
 <body style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
   <!-- This script installs service_worker.js to provide PWA functionality to

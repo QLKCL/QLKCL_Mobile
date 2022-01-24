@@ -24,7 +24,7 @@ call flutter build apk --release --no-sound-null-safety
 echo.
 echo ==============================================
 echo Flutter build web
-call flutter build web --release --base-href "/QLKCL_Web/" --no-sound-null-safety
+call flutter build web --release --base-href "/" --no-sound-null-safety
 
 cd ..
 if exist %CD%\QLKCL_Mobile_Flutter\build\web\ (
