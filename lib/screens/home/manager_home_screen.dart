@@ -68,6 +68,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 child: IconButton(
                   icon: Icon(Icons.notifications_none_outlined),
                   onPressed: () {},
+                  tooltip: "Thông báo",
                 ),
               ),
             ],
@@ -124,7 +125,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             openCloseDial: isDialOpen,
             childPadding: const EdgeInsets.all(5),
             spaceBetweenChildren: 4,
-            
+
             /// If false, backgroundOverlay will not be rendered.
             renderOverlay: renderOverlay,
             overlayColor: Colors.black,

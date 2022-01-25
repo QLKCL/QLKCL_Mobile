@@ -59,6 +59,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
             ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
+          tooltip: "Cập nhật",
         ),
       ],
     );

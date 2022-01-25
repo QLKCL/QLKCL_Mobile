@@ -199,6 +199,7 @@ class _SearchMemberState extends State<SearchMember> {
                 );
               },
               icon: Icon(Icons.filter_list_outlined),
+              tooltip: "Lọc",
             )
           ],
         ),

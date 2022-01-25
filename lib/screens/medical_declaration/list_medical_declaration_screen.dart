@@ -87,6 +87,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
               );
         },
         child: Icon(Icons.add),
+        tooltip: "Thêm tờ khai",
       ),
       appBar: AppBar(
         title: Text("Lịch sử khai báo y tế"),
@@ -95,6 +96,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
         //   IconButton(
         //     onPressed: () {},
         //     icon: Icon(Icons.search),
+        //     tooltip: "Tìm kiếm",
         //   ),
         // ],
       ),

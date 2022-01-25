@@ -78,6 +78,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                   .push(MaterialPageRoute(builder: (context) => SearchTest()));
             },
             icon: Icon(Icons.search),
+            tooltip: "Tìm kiếm",
           ),
         ],
       ),

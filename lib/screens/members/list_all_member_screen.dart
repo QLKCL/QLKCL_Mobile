@@ -66,6 +66,7 @@ class _ListAllMemberState extends State<ListAllMember>
                 );
               },
               child: Icon(Icons.add),
+              tooltip: "Thêm người cách ly",
             )
           : null,
       body: NestedScrollView(
@@ -115,6 +116,7 @@ class _ListAllMemberState extends State<ListAllMember>
                                   builder: (context) => SearchMember()));
                         },
                         icon: Icon(Icons.search),
+                        tooltip: "Tìm kiếm",
                       )),
               ],
               pinned: true,

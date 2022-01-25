@@ -35,6 +35,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
                 MaterialPageRoute(builder: (context) => SearchQuarantine()));
           },
           icon: Icon(Icons.search),
+          tooltip: "Tìm kiếm",
         ),
       ],
     );

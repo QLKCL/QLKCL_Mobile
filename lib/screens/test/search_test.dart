@@ -154,6 +154,7 @@ class _SearchTestState extends State<SearchTest> {
                 );
               },
               icon: Icon(Icons.filter_list_outlined),
+              tooltip: "Lọc",
             )
           ],
         ),

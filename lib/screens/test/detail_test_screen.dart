@@ -54,6 +54,7 @@ class _DetailTestState extends State<DetailTest> {
                                         )));
                           },
                           icon: Icon(Icons.edit),
+                          tooltip: "Cập nhật",
                         )
                       : Container();
                 }

@@ -90,6 +90,7 @@ class _ListTestState extends State<ListTest> {
                                   AddTest(code: code, name: name)));
                     },
                     child: Icon(Icons.add),
+                    tooltip: "Thêm phiếu xét nghiệm",
                   )
                 : Container();
           }
@@ -103,6 +104,7 @@ class _ListTestState extends State<ListTest> {
         //   IconButton(
         //     onPressed: () {},
         //     icon: Icon(Icons.search),
+        //     tooltip: "Tìm kiếm",
         //   ),
         // ],
       ),
