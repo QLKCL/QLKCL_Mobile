@@ -102,22 +102,10 @@ class _ConfirmMemberState extends State<ConfirmMember>
               name: item['full_name'] ?? "",
               gender: item['gender'] ?? "",
               birthday: item['birthday'] ?? "",
-              room:
-                  (item['quarantine_room'] != null
-                          ? "${item['quarantine_room']['name']} - "
-                          : "") +
-                      (item['quarantine_floor'] != null
-                          ? "${item['quarantine_floor']['name']} - "
-                          : "") +
-                      (item['quarantine_building'] != null
-                          ? "${item['quarantine_building']['name']} - "
-                          : "") +
-                      (item['quarantine_ward'] != null
-                          ? "${item['quarantine_ward']['full_name']}"
-                          : ""),
               lastTestResult: item['positive_test_now'],
               lastTestTime: item['last_tested'],
               healthStatus: item['health_status'],
+              isThreeLine: false,
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(

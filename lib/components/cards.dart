@@ -288,25 +288,27 @@ class MemberCard extends StatefulWidget {
   final String name;
   final String gender;
   final String birthday;
-  final String room;
+  final String? room;
   final bool? lastTestResult;
   final String? lastTestTime;
   final String healthStatus;
   final Widget? menus;
   final String? image;
+  final bool isThreeLine;
   const MemberCard({
     required this.onTap,
     this.onLongPress,
     required this.name,
     required this.gender,
     required this.birthday,
-    required this.room,
+    this.room,
     this.lastTestResult,
     this.lastTestTime,
     this.longPressEnabled,
     required this.healthStatus,
     this.menus,
     this.image,
+    this.isThreeLine = true,
   });
 
   @override
@@ -400,28 +402,30 @@ class _MemberCardState extends State<MemberCard> {
                     fontSize: 12,
                   ),
                 ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.place_outlined,
-                          size: 16,
-                          color: CustomColors.disableText,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " " + widget.room,
-                      )
-                    ],
+                if (widget.room != null)
+                  SizedBox(
+                    height: 4,
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap: false,
-                ),
+                if (widget.room != null)
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        WidgetSpan(
+                          child: Icon(
+                            Icons.place_outlined,
+                            size: 16,
+                            color: CustomColors.disableText,
+                          ),
+                        ),
+                        TextSpan(
+                          text: " " + widget.room!,
+                        )
+                      ],
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    softWrap: false,
+                  ),
                 SizedBox(
                   height: 4,
                 ),
@@ -547,147 +551,6 @@ class QuarantineRelatedCard extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[menus ?? Container()],
-        ),
-      ),
-    );
-  }
-}
-
-class MemberInRoomCard extends StatelessWidget {
-  final VoidCallback onTap;
-  final String name;
-  final String gender;
-  final String birthday;
-  final bool? lastTestResult;
-  final String? lastTestTime;
-  final String healthStatus;
-  final Widget? menus;
-  final String? image;
-  const MemberInRoomCard({
-    required this.onTap,
-    required this.name,
-    required this.gender,
-    required this.birthday,
-    this.lastTestResult,
-    this.lastTestTime,
-    required this.healthStatus,
-    this.menus,
-    this.image,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    List<String> imageList = [
-      'Default/no_avatar',
-    ];
-    if (image != null && image != "") {
-      imageList = image!.split(',');
-    }
-    return Card(
-      child: Container(
-        child: ListTile(
-          onTap: () {
-            onTap();
-          },
-          title: Container(
-            padding: EdgeInsets.only(top: 8),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: name + " ",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  WidgetSpan(
-                    alignment: PlaceholderAlignment.top,
-                    child: gender == "MALE"
-                        ? WebsafeSvg.asset("assets/svg/male.svg")
-                        : WebsafeSvg.asset("assets/svg/female.svg"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          subtitle: Container(
-            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // direction: Axis.vertical, // make sure to set this
-              // spacing: 4, // set your spacing
-              children: [
-                Text(
-                  birthday,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.history,
-                          size: 16,
-                          color: CustomColors.disableText,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " " +
-                            (lastTestResult != null
-                                ? (lastTestResult! ? "Dương tính" : "Âm tính")
-                                : "Chưa có kết quả xét nghiệm") +
-                            (lastTestTime != null
-                                ? " (" +
-                                    DateFormat("dd/MM/yyyy HH:mm:ss").format(
-                                        DateTime.parse(lastTestTime!)
-                                            .toLocal()) +
-                                    ")"
-                                : ""),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          isThreeLine: false,
-          leading: SizedBox(
-            height: 56,
-            width: 56,
-            child: Stack(
-              clipBehavior: Clip.none,
-              fit: StackFit.expand,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      cloudinary.getImage(imageList[0]).toString()),
-                ),
-                Positioned(
-                  bottom: -5,
-                  right: -5,
-                  child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        color: CustomColors.white,
-                        borderRadius: BorderRadius.circular(100)),
-                    child: healthStatus == "SERIOUS"
-                        ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                        : healthStatus == "UNWELL"
-                            ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
-                            : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[menus ?? Container()],
-          ),
         ),
       ),
     );
