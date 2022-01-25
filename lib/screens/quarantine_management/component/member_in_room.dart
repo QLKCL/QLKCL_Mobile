@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
@@ -37,7 +38,10 @@ class MemberRoom extends StatelessWidget {
                                   )));
                     },
                     menus: PopupMenuButton(
-                      icon: Icon(Icons.more_vert),
+                      icon: Icon(
+                        Icons.more_vert,
+                        color: CustomColors.disableText,
+                      ),
                       onSelected: (result) {
                         if (result == 'update_info') {
                           Navigator.of(context, rootNavigator: true)

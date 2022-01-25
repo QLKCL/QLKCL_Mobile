@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -123,7 +124,10 @@ class _ConfirmMemberState extends State<ConfirmMember>
                 widget.longPress();
               },
               menus: PopupMenuButton(
-                icon: Icon(Icons.more_vert),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: CustomColors.disableText,
+                ),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   // PopupMenuItem(child: Text('Chấp nhận')),
                   PopupMenuItem(

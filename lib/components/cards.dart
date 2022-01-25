@@ -166,115 +166,141 @@ class TestNoResultCard extends StatelessWidget {
       imageList = image!.split(',');
     }
     return Card(
-      child: ListTile(
-        // contentPadding: EdgeInsets.all(16),
-        onTap: onTap,
-        title: Container(
-          padding: EdgeInsets.only(top: 8),
-          child: Text.rich(
-            TextSpan(
-              // style: TextStyle(
-              //   fontSize: 17,
-              // ),
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextSpan(
-                  text: name + " ",
-                  style: Theme.of(context).textTheme.headline6,
+                SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            cloudinary.getImage(imageList[0]).toString()),
+                      ),
+                      Positioned(
+                        bottom: -5,
+                        right: -5,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: CustomColors.white,
+                              borderRadius: BorderRadius.circular(100)),
+                          child: healthStatus == "SERIOUS"
+                              ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                              : healthStatus == "UNWELL"
+                                  ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                                  : WebsafeSvg.asset(
+                                      "assets/svg/binh_thuong.svg"),
+                        ),
+                        // RawMaterialButton(
+                        //           onPressed: () {},
+                        //           elevation: 2.0,
+                        //           fillColor: CustomColors.white,
+                        //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                        //           shape: CircleBorder(),
+                        //         ),
+                      ),
+                    ],
+                  ),
                 ),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.top,
-                  child: gender == "MALE"
-                      ? WebsafeSvg.asset("assets/svg/male.svg")
-                      : WebsafeSvg.asset("assets/svg/female.svg"),
+                SizedBox(
+                  width: 8,
                 ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: name + " ",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: CustomColors.primaryText),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.top,
+                              child: gender == "MALE"
+                                  ? WebsafeSvg.asset("assets/svg/male.svg")
+                                  : WebsafeSvg.asset("assets/svg/female.svg"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        birthday,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.qr_code,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " + id,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " +
+                                  DateFormat("dd/MM/yyyy HH:mm:ss")
+                                      .format(DateTime.parse(time).toLocal()),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                menus ?? Container(),
               ],
             ),
           ),
-        ),
-        subtitle: Container(
-          padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                birthday,
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.qr_code,
-                        color: CustomColors.disableText,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " + id,
-                    )
-                  ],
-                ),
-              ),
-              Text.rich(
-                TextSpan(
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.history,
-                        color: CustomColors.disableText,
-                      ),
-                    ),
-                    TextSpan(
-                      text: " " +
-                          DateFormat("dd/MM/yyyy HH:mm:ss")
-                              .format(DateTime.parse(time).toLocal()),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        isThreeLine: true,
-        leading: SizedBox(
-          height: 56,
-          width: 56,
-          child: Stack(
-            clipBehavior: Clip.none,
-            fit: StackFit.expand,
-            children: [
-              CircleAvatar(
-                backgroundImage:
-                    NetworkImage(cloudinary.getImage(imageList[0]).toString()),
-              ),
-              Positioned(
-                bottom: -5,
-                right: -5,
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                      color: CustomColors.white,
-                      borderRadius: BorderRadius.circular(100)),
-                  child: healthStatus == "SERIOUS"
-                      ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                      : healthStatus == "UNWELL"
-                          ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
-                          : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
-                ),
-                // RawMaterialButton(
-                //           onPressed: () {},
-                //           elevation: 2.0,
-                //           fillColor: CustomColors.white,
-                //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
-                //           shape: CircleBorder(),
-                //         ),
-              ),
-            ],
-          ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[menus ?? Container()],
         ),
       ),
     );
@@ -349,7 +375,7 @@ class _MemberCardState extends State<MemberCard> {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        child: ListTile(
+        child: InkWell(
           onTap: () {
             if (widget.longPressEnabled != null &&
                 widget.longPressEnabled == true) {
@@ -369,130 +395,146 @@ class _MemberCardState extends State<MemberCard> {
               widget.onLongPress!();
             }
           },
-          title: Container(
-            padding: EdgeInsets.only(top: 8),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: widget.name + " ",
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  WidgetSpan(
-                    alignment: PlaceholderAlignment.top,
-                    child: widget.gender == "MALE"
-                        ? WebsafeSvg.asset("assets/svg/male.svg")
-                        : WebsafeSvg.asset("assets/svg/female.svg"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          subtitle: Container(
-            padding: EdgeInsets.fromLTRB(0, 4, 0, 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
-              // direction: Axis.vertical, // make sure to set this
-              // spacing: 4, // set your spacing
               children: [
-                Text(
-                  widget.birthday,
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                if (widget.room != null)
-                  SizedBox(
-                    height: 4,
-                  ),
-                if (widget.room != null)
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Icon(
-                            Icons.place_outlined,
-                            size: 16,
-                            color: CustomColors.disableText,
-                          ),
-                        ),
-                        TextSpan(
-                          text: " " + widget.room!,
-                        )
-                      ],
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: false,
-                  ),
                 SizedBox(
-                  height: 4,
-                ),
-                Text.rich(
-                  TextSpan(
+                  height: 56,
+                  width: 56,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
                     children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.history,
-                          size: 16,
-                          color: CustomColors.disableText,
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            cloudinary.getImage(imageList[0]).toString()),
+                      ),
+                      Positioned(
+                        bottom: -5,
+                        right: -5,
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                              color: CustomColors.white,
+                              borderRadius: BorderRadius.circular(100)),
+                          child: widget.healthStatus == "SERIOUS"
+                              ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                              : widget.healthStatus == "UNWELL"
+                                  ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                                  : WebsafeSvg.asset(
+                                      "assets/svg/binh_thuong.svg"),
                         ),
                       ),
-                      TextSpan(
-                        text: " " +
-                            (widget.lastTestResult != null
-                                ? (widget.lastTestResult!
-                                    ? "Dương tính"
-                                    : "Âm tính")
-                                : "Chưa có kết quả xét nghiệm") +
-                            (widget.lastTestTime != null
-                                ? " (" +
-                                    DateFormat("dd/MM/yyyy HH:mm:ss").format(
-                                        DateTime.parse(widget.lastTestTime!)
-                                            .toLocal()) +
-                                    ")"
-                                : ""),
-                      )
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          isThreeLine: true,
-          leading: SizedBox(
-            height: 56,
-            width: 56,
-            child: Stack(
-              clipBehavior: Clip.none,
-              fit: StackFit.expand,
-              children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      cloudinary.getImage(imageList[0]).toString()),
+                SizedBox(
+                  width: 8,
                 ),
-                Positioned(
-                  bottom: -5,
-                  right: -5,
-                  child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                        color: CustomColors.white,
-                        borderRadius: BorderRadius.circular(100)),
-                    child: widget.healthStatus == "SERIOUS"
-                        ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                        : widget.healthStatus == "UNWELL"
-                            ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
-                            : WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: widget.name + " ",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: CustomColors.primaryText),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.top,
+                              child: widget.gender == "MALE"
+                                  ? WebsafeSvg.asset("assets/svg/male.svg")
+                                  : WebsafeSvg.asset("assets/svg/female.svg"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        widget.birthday,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      if (widget.room != null)
+                        SizedBox(
+                          height: 4,
+                        ),
+                      if (widget.room != null)
+                        Text.rich(
+                          TextSpan(
+                            style: TextStyle(
+                              color: CustomColors.disableText,
+                            ),
+                            children: [
+                              WidgetSpan(
+                                child: Icon(
+                                  Icons.place_outlined,
+                                  size: 16,
+                                  color: CustomColors.disableText,
+                                ),
+                              ),
+                              TextSpan(
+                                text: " " + widget.room!,
+                              )
+                            ],
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
+                        ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " +
+                                  (widget.lastTestResult != null
+                                      ? (widget.lastTestResult!
+                                          ? "Dương tính"
+                                          : "Âm tính")
+                                      : "Chưa có kết quả xét nghiệm") +
+                                  (widget.lastTestTime != null
+                                      ? " (" +
+                                          DateFormat("dd/MM/yyyy HH:mm:ss")
+                                              .format(DateTime.parse(
+                                                      widget.lastTestTime!)
+                                                  .toLocal()) +
+                                          ")"
+                                      : ""),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                widget.menus != null ? action() : Container(),
               ],
             ),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[action()],
           ),
         ),
       ),
@@ -637,7 +679,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     Text(
                       widget.name,
                       style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryText),
                     ),
@@ -648,8 +690,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     RichText(
                       text: TextSpan(
                         style: TextStyle(
-                          fontSize: 12,
-                          color: CustomColors.primaryText,
+                          color: CustomColors.disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -673,8 +714,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     RichText(
                       text: TextSpan(
                         style: TextStyle(
-                          fontSize: 12,
-                          color: CustomColors.primaryText,
+                          color: CustomColors.disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -698,8 +738,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                       RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: 12,
-                            color: CustomColors.primaryText,
+                            color: CustomColors.disableText,
                           ),
                           children: [
                             WidgetSpan(

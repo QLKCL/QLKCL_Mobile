@@ -79,7 +79,10 @@ class _ListAllMemberState extends State<ListAllMember>
               actions: [
                 longPressFlag
                     ? PopupMenuButton(
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: CustomColors.disableText,
+                        ),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                           // PopupMenuItem(child: Text('Chấp nhận')),
                           PopupMenuItem(

@@ -119,29 +119,64 @@ class InfoManagerHomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
+      child: InkWell(
         onTap: onTap,
-        title: Text(title),
-        subtitle: Text.rich(
-          TextSpan(
-            style: TextStyle(
-              fontSize: 17,
-            ),
+        child: Padding(
+          padding: EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              WidgetSpan(
-                child: Icon(
-                  Icons.groups_rounded,
-                  color: CustomColors.disableText,
+              icon,
+              SizedBox(
+                width: 8,
+              ),
+
+              //text
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.normal,
+                          color: CustomColors.primaryText),
+                    ),
+                    SizedBox(
+                      height: 4,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: CustomColors.disableText,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.groups_rounded,
+                              size: 22,
+                              color: CustomColors.disableText,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " " + subtitle,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              TextSpan(
-                text: " " + subtitle,
-              )
+              Icon(
+                Icons.keyboard_arrow_right,
+                color: CustomColors.disableText,
+              ),
             ],
           ),
         ),
-        leading: icon,
-        trailing: Icon(Icons.keyboard_arrow_right),
       ),
     );
   }
