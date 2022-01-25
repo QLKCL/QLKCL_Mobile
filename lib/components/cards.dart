@@ -230,10 +230,16 @@ class TestNoResultCard extends StatelessWidget {
                                   color: CustomColors.primaryText),
                             ),
                             WidgetSpan(
-                              alignment: PlaceholderAlignment.top,
+                              alignment: PlaceholderAlignment.middle,
                               child: gender == "MALE"
-                                  ? WebsafeSvg.asset("assets/svg/male.svg")
-                                  : WebsafeSvg.asset("assets/svg/female.svg"),
+                                  ? Icon(
+                                      Icons.male,
+                                      color: HexColor("#00BBD3"),
+                                    )
+                                  : Icon(
+                                      Icons.female,
+                                      color: HexColor("#FF4181"),
+                                    ),
                             ),
                           ],
                         ),
@@ -449,10 +455,16 @@ class _MemberCardState extends State<MemberCard> {
                                   color: CustomColors.primaryText),
                             ),
                             WidgetSpan(
-                              alignment: PlaceholderAlignment.top,
+                              alignment: PlaceholderAlignment.middle,
                               child: widget.gender == "MALE"
-                                  ? WebsafeSvg.asset("assets/svg/male.svg")
-                                  : WebsafeSvg.asset("assets/svg/female.svg"),
+                                  ? Icon(
+                                      Icons.male,
+                                      color: HexColor("#00BBD3"),
+                                    )
+                                  : Icon(
+                                      Icons.female,
+                                      color: HexColor("#FF4181"),
+                                    ),
                             ),
                           ],
                         ),

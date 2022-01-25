@@ -155,6 +155,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                         ),
                         children: [
                           WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
                             child: Icon(
                               Icons.groups_rounded,
                               size: 22,

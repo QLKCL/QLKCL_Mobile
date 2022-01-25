@@ -207,14 +207,19 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                 .headline6,
                                           ),
                                           WidgetSpan(
-                                            alignment: PlaceholderAlignment.top,
+                                            alignment:
+                                                PlaceholderAlignment.middle,
                                             child: snapshot.data['custom_user']
                                                         ['gender'] ==
                                                     "MALE"
-                                                ? WebsafeSvg.asset(
-                                                    "assets/svg/male.svg")
-                                                : WebsafeSvg.asset(
-                                                    "assets/svg/female.svg"),
+                                                ? Icon(
+                                                    Icons.male,
+                                                    color: HexColor("#00BBD3"),
+                                                  )
+                                                : Icon(
+                                                    Icons.female,
+                                                    color: HexColor("#FF4181"),
+                                                  ),
                                           ),
                                         ],
                                       ),
