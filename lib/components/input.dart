@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 class Input extends StatefulWidget {
   final String label;
@@ -97,36 +98,38 @@ class _InputState extends State<Input> {
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
-            labelText: widget.required ? widget.label + " \*" : widget.label,
-            hintText: widget.hint,
-            suffixIcon: _obscure != null
-                ? (IconButton(
-                    icon: Icon(
-                      _obscure == true
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      _obscure = !_obscure!;
-                      setState(() {});
-                    },
-                  ))
-                : ((widget.showClearButton &&
-                        widget.controller != null &&
-                        widget.controller!.text != "" &&
-                        _focus == true)
-                    ? IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () {
-                          widget.controller!.clear();
-                          setState(() {});
-                        },
-                      )
-                    : null),
-            helperText: widget.helper,
-            errorText: (widget.error != null && widget.error!.isNotEmpty)
-                ? widget.error
-                : null),
+          labelText: widget.required ? widget.label + " \*" : widget.label,
+          hintText: widget.hint,
+          suffixIcon: _obscure != null
+              ? (IconButton(
+                  icon: Icon(
+                    _obscure == true ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    _obscure = !_obscure!;
+                    setState(() {});
+                  },
+                ))
+              : ((widget.showClearButton &&
+                      widget.controller != null &&
+                      widget.controller!.text != "" &&
+                      _focus == true)
+                  ? IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        widget.controller!.clear();
+                        setState(() {});
+                      },
+                    )
+                  : null),
+          helperText: widget.helper,
+          errorText: (widget.error != null && widget.error!.isNotEmpty)
+              ? widget.error
+              : null,
+          fillColor: !widget.enabled ? CustomColors.disable : null,
+          filled: !widget.enabled, // dont forget this line
+        ),
+
         textCapitalization: widget.textCapitalization,
       ),
     );

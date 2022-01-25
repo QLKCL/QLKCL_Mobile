@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/config/app_theme.dart';
 
 // cre: https://pub.dev/packages/dropdown_search
 
@@ -79,6 +80,8 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
+          fillColor: !widget.enabled ? CustomColors.disable : null,
+          filled: !widget.enabled, // dont forget this line
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
@@ -203,6 +206,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
+          fillColor: !widget.enabled ? CustomColors.disable : null,
+          filled: !widget.enabled, // dont forget this line
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
