@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
@@ -8,6 +9,7 @@ import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
+import 'package:badges/badges.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
@@ -103,9 +105,18 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           icon: Icon(Icons.add_box_outlined),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_none_outlined),
+          Badge(
+            position: BadgePosition.topEnd(top: 0, end: 3),
+            animationDuration: Duration(milliseconds: 300),
+            animationType: BadgeAnimationType.scale,
+            badgeContent: Text(
+              "",
+              style: TextStyle(color: CustomColors.white),
+            ),
+            child: IconButton(
+              icon: Icon(Icons.notifications_none_outlined),
+              onPressed: () {},
+            ),
           ),
         ],
       ),
