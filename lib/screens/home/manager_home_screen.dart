@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
@@ -12,6 +15,8 @@ import 'package:intl/intl.dart';
 import 'package:badges/badges.dart';
 
 // cre: https://pub.dev/packages/flutter_speed_dial/example
+// cre: https://pub.dev/packages/badges
+// cre: https://stackoverflow.com/questions/45631350/flutter-hiding-floatingactionbutton
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
@@ -23,6 +28,7 @@ class ManagerHomePage extends StatefulWidget {
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
   late Future<dynamic> futureData;
+  bool _showFab = true;
 
   var renderOverlay = true;
   var useRAnimation = true;
@@ -45,35 +51,114 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          if (isDialOpen.value) {
-            isDialOpen.value = false;
-            return false;
-          }
-          return true;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Trang chủ"),
-            centerTitle: true,
+      onWillPop: () async {
+        if (isDialOpen.value) {
+          isDialOpen.value = false;
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(72.0), // here the desired height
+          child: AppBar(
+            toolbarHeight: 64, // Set this height
+            automaticallyImplyLeading: false,
+            title: Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 56.0,
+                    height: 56.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(cloudinary
+                            .getImage('Default/no_avatar')
+                            .toString()),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      border: Border.all(
+                        color: CustomColors.secondary,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Xin chào,",
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        FutureBuilder(
+                          future: getName(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.primaryText),
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            titleTextStyle:
+                TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
+            backgroundColor: CustomColors.background,
+            centerTitle: false,
             actions: [
               Badge(
-                position: BadgePosition.topEnd(top: 0, end: 3),
+                position: BadgePosition.topEnd(top: 10, end: 4),
                 animationDuration: Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 badgeContent: Text(
-                  "",
-                  style: TextStyle(color: CustomColors.white),
+                  "2",
+                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.notifications_none_outlined),
+                  icon: Icon(
+                    Icons.notifications_none_outlined,
+                    color: CustomColors.primaryText,
+                  ),
                   onPressed: () {},
                   tooltip: "Thông báo",
                 ),
               ),
             ],
           ),
-          body: RefreshIndicator(
+        ),
+        body: NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            final ScrollDirection direction = notification.direction;
+            setState(() {
+              if (direction == ScrollDirection.reverse) {
+                _showFab = false;
+              } else if (direction == ScrollDirection.forward) {
+                _showFab = true;
+              }
+            });
+            return true;
+          },
+          child: RefreshIndicator(
             onRefresh: () => Future.sync(() {
               setState(() {
                 futureData = fetch();
@@ -118,51 +203,61 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               },
             ),
           ),
-          floatingActionButton: SpeedDial(
-            icon: Icons.add,
-            activeIcon: Icons.close,
-            spacing: 3,
-            openCloseDial: isDialOpen,
-            childPadding: const EdgeInsets.all(5),
-            spaceBetweenChildren: 4,
+        ),
+        floatingActionButton: AnimatedSlide(
+          duration: Duration(milliseconds: 300),
+          offset: _showFab ? Offset.zero : Offset(0, 2),
+          child: AnimatedOpacity(
+            duration: Duration(milliseconds: 300),
+            opacity: _showFab ? 1 : 0,
+            child: SpeedDial(
+              icon: Icons.add,
+              activeIcon: Icons.close,
+              spacing: 3,
+              openCloseDial: isDialOpen,
+              childPadding: const EdgeInsets.all(5),
+              spaceBetweenChildren: 4,
 
-            /// If false, backgroundOverlay will not be rendered.
-            renderOverlay: renderOverlay,
-            overlayColor: Colors.black,
-            overlayOpacity: 0.3,
-            useRotationAnimation: useRAnimation,
-            tooltip: 'Tạo mới',
+              /// If false, backgroundOverlay will not be rendered.
+              renderOverlay: renderOverlay,
+              overlayColor: Colors.black,
+              overlayOpacity: 0.3,
+              useRotationAnimation: useRAnimation,
+              tooltip: 'Tạo mới',
 
-            animationSpeed: 200,
-            shape: const StadiumBorder(),
-            childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            children: [
-              SpeedDialChild(
-                child: const Icon(Icons.description_outlined),
-                label: 'Phiếu xét nghiệm',
-                onTap: () => Navigator.of(context, rootNavigator: true)
-                    .pushNamed(AddTest.routeName),
-              ),
-              SpeedDialChild(
-                child: const Icon(Icons.person_add_alt),
-                label: 'Người cách ly',
-                onTap: () => Navigator.of(context, rootNavigator: true)
-                    .pushNamed(AddMember.routeName),
-              ),
-              SpeedDialChild(
-                child: const Icon(Icons.manage_accounts_outlined),
-                label: 'Quản lý',
-                onTap: () => {},
-              ),
-              SpeedDialChild(
-                child: const Icon(Icons.business_outlined),
-                label: 'Khu cách ly',
-                visible: true,
-                onTap: () => Navigator.of(context, rootNavigator: true)
-                    .pushNamed(NewQuarantine.routeName),
-              ),
-            ],
+              animationSpeed: 200,
+              shape: const StadiumBorder(),
+              childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              children: [
+                SpeedDialChild(
+                  child: const Icon(Icons.description_outlined),
+                  label: 'Phiếu xét nghiệm',
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(AddTest.routeName),
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.person_add_alt),
+                  label: 'Người cách ly',
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(AddMember.routeName),
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.manage_accounts_outlined),
+                  label: 'Quản lý',
+                  onTap: () => {},
+                ),
+                SpeedDialChild(
+                  child: const Icon(Icons.business_outlined),
+                  label: 'Khu cách ly',
+                  visible: true,
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(NewQuarantine.routeName),
+                ),
+              ],
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
