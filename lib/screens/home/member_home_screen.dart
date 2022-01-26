@@ -8,7 +8,6 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
-import 'package:websafe_svg/websafe_svg.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
@@ -237,8 +236,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     Axis.vertical, // make sure to set this
                                 spacing: 8, // s
                                 children: [
-                                  RichText(
-                                    text: TextSpan(
+                                  Text.rich(
+                                    TextSpan(
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: CustomColors.primaryText,
@@ -265,8 +264,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                       ],
                                     ),
                                   ),
-                                  RichText(
-                                    text: TextSpan(
+                                  Text.rich(
+                                    TextSpan(
                                       style: TextStyle(
                                         fontSize: 14,
                                         color: CustomColors.primaryText,

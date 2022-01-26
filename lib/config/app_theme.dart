@@ -121,7 +121,7 @@ class CustomColors {
   static Color active = HexColor("#18A0FB");
   static Color warning = HexColor("#FAAD14");
   static Color error = HexColor("#FF4852");
-  static Color disable = HexColor("#F6F6F6");
+  static Color disable = HexColor("#F0F0F0");
 
   // App color
   static Color primary = HexColor("#484F8F"); // For title and button

@@ -21,49 +21,79 @@ class MedicalDeclarationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        onTap: onTap,
-        title: Text("Mã tờ khai: " + id),
-        subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.history,
-                      color: CustomColors.disableText,
-                    ),
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Mã tờ khai: " + id,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Thời gian: " + time,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.description_outlined,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Tình trạng: " + status,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: " Thời gian: " + time,
-                  )
-                ],
-              ),
+                ),
+                menus ?? Container()
+              ],
             ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.description_outlined,
-                      color: CustomColors.disableText,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " Tình trạng: " + status,
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-        isThreeLine: true,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[menus ?? Container()],
+          ),
         ),
       ),
     );
@@ -86,49 +116,79 @@ class TestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        onTap: onTap,
-        title: Text("Mã phiếu: " + id),
-        subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.history,
-                      color: CustomColors.disableText,
-                    ),
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Mã phiếu: " + id,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Thời gian: " + time,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.description_outlined,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Kết quả: " + status,
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: " Thời gian: " + time,
-                  )
-                ],
-              ),
+                ),
+                menus ?? Container()
+              ],
             ),
-            Text.rich(
-              TextSpan(
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.description_outlined,
-                      color: CustomColors.disableText,
-                    ),
-                  ),
-                  TextSpan(
-                    text: " Kết quả: " + status,
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-        isThreeLine: true,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[menus ?? Container()],
+          ),
         ),
       ),
     );
@@ -244,9 +304,6 @@ class TestNoResultCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
                       Text(
                         birthday,
                         style: TextStyle(
@@ -264,6 +321,7 @@ class TestNoResultCard extends StatelessWidget {
                           ),
                           children: [
                             WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
                               child: Icon(
                                 Icons.qr_code,
                                 size: 16,
@@ -286,6 +344,7 @@ class TestNoResultCard extends StatelessWidget {
                           ),
                           children: [
                             WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
                               child: Icon(
                                 Icons.history,
                                 size: 16,
@@ -469,9 +528,6 @@ class _MemberCardState extends State<MemberCard> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
                       Text(
                         widget.birthday,
                         style: TextStyle(
@@ -491,6 +547,7 @@ class _MemberCardState extends State<MemberCard> {
                             ),
                             children: [
                               WidgetSpan(
+                                alignment: PlaceholderAlignment.middle,
                                 child: Icon(
                                   Icons.place_outlined,
                                   size: 16,
@@ -516,6 +573,7 @@ class _MemberCardState extends State<MemberCard> {
                           ),
                           children: [
                             WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
                               child: Icon(
                                 Icons.history,
                                 size: 16,
@@ -699,8 +757,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
                       height: 8,
                     ),
                     //subtitle and icon
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           color: CustomColors.disableText,
                         ),
@@ -723,8 +781,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     SizedBox(
                       height: 4,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           color: CustomColors.disableText,
                         ),
@@ -747,8 +805,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
                       height: 4,
                     ),
                     if (widget.address != null)
-                      RichText(
-                        text: TextSpan(
+                      Text.rich(
+                        TextSpan(
                           style: TextStyle(
                             color: CustomColors.disableText,
                           ),
@@ -820,8 +878,8 @@ class QuarantineHome extends StatelessWidget {
                       height: 8,
                     ),
                     //subtitle and icon
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
@@ -844,8 +902,8 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
@@ -868,8 +926,8 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
@@ -893,8 +951,8 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
@@ -919,8 +977,8 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
@@ -943,8 +1001,8 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
                           fontSize: 14,
                           color: CustomColors.primaryText,
