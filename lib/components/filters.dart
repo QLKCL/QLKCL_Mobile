@@ -21,7 +21,14 @@ Future memberFilter(
   required List<KeyValue> quarantineBuildingList,
   required List<KeyValue> quarantineFloorList,
   required List<KeyValue> quarantineRoomList,
-  required void Function()? onSubmit,
+  required void Function(
+    List<KeyValue> quarantineWardList,
+    List<KeyValue> quarantineBuildingList,
+    List<KeyValue> quarantineFloorList,
+    List<KeyValue> quarantineRoomList,
+    bool search,
+  )?
+      onSubmit,
 }) {
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
@@ -220,7 +227,7 @@ Future memberFilter(
                       quarantineAtMinController.clear();
                       quarantineAtMaxController.clear();
                       labelController.clear();
-                      onSubmit!();
+                      onSubmit!(quarantineWardList, [], [], [], false);
                       Navigator.pop(context);
                     },
                     child: Text("Đặt lại"),
@@ -229,7 +236,13 @@ Future memberFilter(
                   ElevatedButton(
                     onPressed: () {
                       // Respond to button press
-                      onSubmit!();
+                      onSubmit!(
+                        quarantineWardList,
+                        quarantineBuildingList,
+                        quarantineFloorList,
+                        quarantineRoomList,
+                        true,
+                      );
                       Navigator.pop(context);
                     },
                     child: Text("Tìm kiếm"),
@@ -420,11 +433,17 @@ Future quarantineFilter(
   required TextEditingController wardController,
   required TextEditingController mainManagerController,
   bool myQuarantine = false,
-  required void Function()? onSubmit,
   required List<KeyValue> managerList,
   required List<KeyValue> cityList,
   required List<KeyValue> districtList,
   required List<KeyValue> wardList,
+  required void Function(
+    List<KeyValue> cityList,
+    List<KeyValue> districtList,
+    List<KeyValue> wardList,
+    bool search,
+  )?
+      onSubmit,
 }) {
   return showBarModalBottomSheet(
     barrierColor: Colors.black54,
@@ -505,7 +524,6 @@ Future quarantineFilter(
                 });
                 fetchWard({'district_id': districtController.text})
                     .then((data) => setState(() {
-                          wardController.clear();
                           wardList = data;
                         }));
               },
@@ -595,7 +613,7 @@ Future quarantineFilter(
                       districtController.clear();
                       wardController.clear();
                       mainManagerController.clear();
-                      onSubmit!();
+                      onSubmit!(cityList, [], [], false);
                       Navigator.pop(context);
                     },
                     child: Text("Đặt lại"),
@@ -604,7 +622,12 @@ Future quarantineFilter(
                   ElevatedButton(
                     onPressed: () {
                       // Respond to button press
-                      onSubmit!();
+                      onSubmit!(
+                        cityList,
+                        districtList,
+                        wardList,
+                        true,
+                      );
                       Navigator.pop(context);
                     },
                     child: Text("Tìm kiếm"),

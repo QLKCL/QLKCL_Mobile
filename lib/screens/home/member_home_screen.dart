@@ -6,7 +6,7 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/screens/home/component/covid_info.dart';
+// import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';

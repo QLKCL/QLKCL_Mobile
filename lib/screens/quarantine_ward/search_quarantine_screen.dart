@@ -26,12 +26,12 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   TextEditingController wardController = TextEditingController();
   TextEditingController mainManagerController = TextEditingController();
 
-  List<KeyValue> cityList = [];
-  List<KeyValue> districtList = [];
-  List<KeyValue> wardList = [];
+  List<KeyValue> _cityList = [];
+  List<KeyValue> _districtList = [];
+  List<KeyValue> _wardList = [];
   List<KeyValue> managerList = [];
 
-  bool searched = false;
+  bool _searched = false;
 
   late Future<dynamic> futureQuarantineList;
   final PagingController<int, dynamic> _pagingController =
@@ -40,15 +40,15 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
   @override
   void initState() {
     fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-          cityList = value;
+          _cityList = value;
         }));
     fetchDistrict({'city_id': cityController.text})
         .then((value) => setState(() {
-              districtList = value;
+              _districtList = value;
             }));
     fetchWard({'district_id': districtController.text})
         .then((value) => setState(() {
-              wardList = value;
+              _wardList = value;
             }));
     fetchNotMemberList({'role_name_list': 'MANAGER'})
         .then((value) => managerList = value);
@@ -140,7 +140,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       /* Clear the search field */
                       keySearch.clear();
                       setState(() {
-                        searched = false;
+                        _searched = false;
                       });
                     },
                   ),
@@ -150,7 +150,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 ),
                 onSubmitted: (v) {
                   setState(() {
-                    searched = true;
+                    _searched = true;
                   });
                   _pagingController.refresh();
                 },
@@ -167,13 +167,21 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   districtController: districtController,
                   wardController: wardController,
                   mainManagerController: mainManagerController,
-                  cityList: cityList,
-                  districtList: districtList,
-                  wardList: wardList,
+                  cityList: _cityList,
+                  districtList: _districtList,
+                  wardList: _wardList,
                   managerList: managerList,
-                  onSubmit: () {
+                  onSubmit: (
+                    cityList,
+                    districtList,
+                    wardList,
+                    search,
+                  ) {
                     setState(() {
-                      searched = true;
+                      _searched = search;
+                      _cityList = cityList;
+                      _districtList = districtList;
+                      _wardList = wardList;
                     });
                     _pagingController.refresh();
                   },
@@ -184,7 +192,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             )
           ],
         ),
-        body: searched
+        body: _searched
             ? MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
