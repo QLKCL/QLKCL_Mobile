@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
@@ -118,7 +119,10 @@ class _AllMemberState extends State<AllMember>
                             )));
               },
               menus: PopupMenuButton(
-                icon: Icon(Icons.more_vert),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: CustomColors.disableText,
+                ),
                 onSelected: (result) {
                   if (result == 'update_info') {
                     Navigator.of(context, rootNavigator: true)

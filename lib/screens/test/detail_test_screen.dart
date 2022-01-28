@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/component/test_form.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
@@ -54,6 +54,7 @@ class _DetailTestState extends State<DetailTest> {
                                         )));
                           },
                           icon: Icon(Icons.edit),
+                          tooltip: "Cập nhật",
                         )
                       : Container();
                 }
@@ -78,9 +79,7 @@ class _DetailTestState extends State<DetailTest> {
             }
 
             EasyLoading.show();
-            return TestForm(
-              mode: Permission.view,
-            );
+            return Container();
           },
         ),
       ),

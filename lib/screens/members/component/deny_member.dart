@@ -85,13 +85,14 @@ class _DenyMemberState extends State<DenyMember>
               noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Text('Không có dữ liệu'),
                   ),
-              itemBuilder: (context, item, index) => MemberInRoomCard(
+              itemBuilder: (context, item, index) => MemberCard(
                     name: item['full_name'] ?? "",
                     gender: item['gender'] ?? "",
                     birthday: item['birthday'] ?? "",
                     lastTestResult: item['positive_test_now'],
                     lastTestTime: item['last_tested'],
                     healthStatus: item['health_status'],
+                    isThreeLine: false,
                     onTap: () {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(

@@ -53,6 +53,9 @@ dependencies:
   rxdart: ^0.27.3
   syncfusion_flutter_datepicker: ^19.4.42
   cloudinary_public: ^0.11.0
+  url_strategy: ^0.2.0
+  badges: ^2.0.2
+  flutter_speed_dial: ^5.0.0+1
 
 dev_dependencies:
   build_runner: ^2.1.4
@@ -112,6 +115,6 @@ flutter_icons:
 flutter_native_splash:
   color: "#ffffff"
   image: assets/images/Logo.png
-  web: false
+  web: true
   fullscreen: true
   

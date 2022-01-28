@@ -199,6 +199,7 @@ class _SearchMemberState extends State<SearchMember> {
                 );
               },
               icon: Icon(Icons.filter_list_outlined),
+              tooltip: "Lọc",
             )
           ],
         ),
@@ -241,7 +242,10 @@ class _SearchMemberState extends State<SearchMember> {
                                           )));
                             },
                             menus: PopupMenuButton(
-                              icon: Icon(Icons.more_vert),
+                              icon: Icon(
+                                Icons.more_vert,
+                                color: CustomColors.disableText,
+                              ),
                               onSelected: (result) {
                                 if (result == 'update_info') {
                                   Navigator.of(context, rootNavigator: true)

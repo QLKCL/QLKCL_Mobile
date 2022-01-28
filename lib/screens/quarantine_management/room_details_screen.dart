@@ -73,6 +73,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             );
           },
           icon: Icon(Icons.edit),
+          tooltip: "Cập nhật",
         ),
       ],
     );

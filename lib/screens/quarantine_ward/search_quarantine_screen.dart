@@ -180,6 +180,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 );
               },
               icon: Icon(Icons.filter_list_outlined),
+              tooltip: "Lọc",
             )
           ],
         ),

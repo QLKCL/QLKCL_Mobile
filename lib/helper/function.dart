@@ -1,4 +1,6 @@
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 extension IterableX<T> on Iterable<T> {
   T? safeFirstWhere(bool Function(T) test) {
@@ -25,4 +27,50 @@ String parseDateToDateTimeWithTimeZone(String date) {
     outputDate = outputFormat.format(inputDate);
   }
   return outputDate;
+}
+
+extension Target on Object {
+  bool isAndroid() {
+    try {
+      return Platform.isAndroid;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isIOS() {
+    try {
+      return Platform.isIOS;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isLinux() {
+    try {
+      return Platform.isLinux;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isWindows() {
+    try {
+      return Platform.isWindows;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isMacOS() {
+    try {
+      return Platform.isMacOS;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  bool isWeb() {
+    return kIsWeb;
+  }
 }

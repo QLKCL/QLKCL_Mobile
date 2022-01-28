@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/detail_test_screen.dart';
@@ -90,6 +90,7 @@ class _ListTestState extends State<ListTest> {
                                   AddTest(code: code, name: name)));
                     },
                     child: Icon(Icons.add),
+                    tooltip: "Thêm phiếu xét nghiệm",
                   )
                 : Container();
           }
@@ -103,6 +104,7 @@ class _ListTestState extends State<ListTest> {
         //   IconButton(
         //     onPressed: () {},
         //     icon: Icon(Icons.search),
+        //     tooltip: "Tìm kiếm",
         //   ),
         // ],
       ),

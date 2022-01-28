@@ -61,6 +61,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
             ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
+          tooltip: "Cập nhật",
         ),
       ],
     );

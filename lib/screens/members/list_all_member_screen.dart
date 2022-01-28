@@ -66,6 +66,7 @@ class _ListAllMemberState extends State<ListAllMember>
                 );
               },
               child: Icon(Icons.add),
+              tooltip: "Thêm người cách ly",
             )
           : null,
       body: NestedScrollView(
@@ -79,7 +80,10 @@ class _ListAllMemberState extends State<ListAllMember>
               actions: [
                 longPressFlag
                     ? PopupMenuButton(
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: CustomColors.disableText,
+                        ),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                           // PopupMenuItem(child: Text('Chấp nhận')),
                           PopupMenuItem(
@@ -112,6 +116,7 @@ class _ListAllMemberState extends State<ListAllMember>
                                   builder: (context) => SearchMember()));
                         },
                         icon: Icon(Icons.search),
+                        tooltip: "Tìm kiếm",
                       )),
               ],
               pinned: true,

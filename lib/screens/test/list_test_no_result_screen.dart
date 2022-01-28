@@ -44,7 +44,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    // _pagingController.dispose();
     super.dispose();
   }
 
@@ -78,6 +78,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                   .push(MaterialPageRoute(builder: (context) => SearchTest()));
             },
             icon: Icon(Icons.search),
+            tooltip: "Tìm kiếm",
           ),
         ],
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/helper/infomation.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/screens/medical_declaration/detail_md_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -87,6 +87,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
               );
         },
         child: Icon(Icons.add),
+        tooltip: "Thêm tờ khai",
       ),
       appBar: AppBar(
         title: Text("Lịch sử khai báo y tế"),
@@ -95,6 +96,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
         //   IconButton(
         //     onPressed: () {},
         //     icon: Icon(Icons.search),
+        //     tooltip: "Tìm kiếm",
         //   ),
         // ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -102,22 +103,10 @@ class _ConfirmMemberState extends State<ConfirmMember>
               name: item['full_name'] ?? "",
               gender: item['gender'] ?? "",
               birthday: item['birthday'] ?? "",
-              room:
-                  (item['quarantine_room'] != null
-                          ? "${item['quarantine_room']['name']} - "
-                          : "") +
-                      (item['quarantine_floor'] != null
-                          ? "${item['quarantine_floor']['name']} - "
-                          : "") +
-                      (item['quarantine_building'] != null
-                          ? "${item['quarantine_building']['name']} - "
-                          : "") +
-                      (item['quarantine_ward'] != null
-                          ? "${item['quarantine_ward']['full_name']}"
-                          : ""),
               lastTestResult: item['positive_test_now'],
               lastTestTime: item['last_tested'],
               healthStatus: item['health_status'],
+              isThreeLine: false,
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
@@ -135,7 +124,10 @@ class _ConfirmMemberState extends State<ConfirmMember>
                 widget.longPress();
               },
               menus: PopupMenuButton(
-                icon: Icon(Icons.more_vert),
+                icon: Icon(
+                  Icons.more_vert,
+                  color: CustomColors.disableText,
+                ),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   // PopupMenuItem(child: Text('Chấp nhận')),
                   PopupMenuItem(

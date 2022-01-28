@@ -36,16 +36,8 @@ class _TestFormState extends State<TestForm> {
   final updateByController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
-    if (widget.mode == Permission.add) {
-      userCodeController.text =
-          widget.userCode != null ? widget.userCode!.code : "";
-      userNameController.text =
-          widget.userCode != null ? widget.userCode!.fullName : "";
-      stateController.text = "WAITING";
-      typeController.text = "QUICK";
-      resultController.text = "NONE";
-    } else {
+  void initState() {
+    if (widget.testData != null) {
       testCodeController.text =
           widget.testData?.code != null ? widget.testData!.code : "";
       userCodeController.text =
@@ -63,17 +55,30 @@ class _TestFormState extends State<TestForm> {
           ? DateFormat("dd/MM/yyyy HH:mm:ss")
               .format(widget.testData!.createdAt.toLocal())
           : "";
-      createByController.text = widget.testData?.createdBy.fullName != null
+      createByController.text = widget.testData?.createdBy != null
           ? widget.testData!.createdBy.fullName
           : "";
       updateAtController.text = widget.testData?.updatedAt != null
           ? DateFormat("dd/MM/yyyy HH:mm:ss")
               .format(widget.testData!.updatedAt.toLocal())
           : "";
-      updateByController.text = widget.testData?.updatedBy.fullName != null
+      updateByController.text = widget.testData?.updatedBy != null
           ? widget.testData!.updatedBy.fullName
           : "";
+    } else {
+      userCodeController.text =
+          widget.userCode != null ? widget.userCode!.code : "";
+      userNameController.text =
+          widget.userCode != null ? widget.userCode!.fullName : "";
+      stateController.text = "WAITING";
+      typeController.text = "QUICK";
+      resultController.text = "NONE";
     }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -180,7 +185,7 @@ class _TestFormState extends State<TestForm> {
             if (widget.mode == Permission.view)
               Input(
                 label: 'Người tạo',
-                initValue: widget.testData?.createdBy.fullName,
+                controller: createByController,
                 enabled: false,
               ),
             if (widget.mode == Permission.view)
@@ -192,7 +197,7 @@ class _TestFormState extends State<TestForm> {
             if (widget.mode == Permission.view)
               Input(
                 label: 'Người cập nhật',
-                initValue: widget.testData?.updatedBy.fullName,
+                controller: updateByController,
                 enabled: false,
               ),
             if (widget.mode == Permission.edit || widget.mode == Permission.add)

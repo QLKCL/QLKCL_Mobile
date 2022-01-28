@@ -41,7 +41,9 @@ class Test {
         id: json["id"],
         user: CreatedBy.fromJson(json["user"]),
         createdBy: CreatedBy.fromJson(json["created_by"]),
-        updatedBy: CreatedBy.fromJson(json["updated_by"]),
+        updatedBy: json["updated_by"] != null
+            ? CreatedBy.fromJson(json["updated_by"])
+            : null,
         code: json["code"],
         status: json["status"],
         result: json["result"],
@@ -64,39 +66,37 @@ class Test {
       };
 }
 
-
 class CreatedBy {
-    CreatedBy({
-        required this.code,
-        required this.fullName,
-        this.birthday,
-        this.gender,
-        this.healthStatus,
-    });
+  CreatedBy({
+    required this.code,
+    required this.fullName,
+    this.birthday,
+    this.gender,
+    this.healthStatus,
+  });
 
-    final String code;
-    final String fullName;
-    final String? birthday;
-    final String? gender;
-    final dynamic healthStatus;
+  final String code;
+  final String fullName;
+  final String? birthday;
+  final String? gender;
+  final dynamic healthStatus;
 
-    factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
+  factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
         code: json["code"],
         fullName: json["full_name"],
         birthday: json["birthday"],
         gender: json["gender"],
         healthStatus: json["health_status"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "code": code,
         "full_name": fullName,
         "birthday": birthday,
         "gender": gender,
         "health_status": healthStatus,
-    };
+      };
 }
-
 
 Future<dynamic> fetchTest({data}) async {
   ApiHelper api = ApiHelper();

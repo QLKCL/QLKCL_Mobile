@@ -3,15 +3,19 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/config/routes.dart';
-import 'package:qlkcl/helper/infomation.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
+  // Here we set the URL strategy for our web app.
+  // It is safe to call this function when running on mobile or desktop as well.
+  setPathUrlStrategy();
+
   // Automatically show the notification bar when the app loads in IOS.
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,

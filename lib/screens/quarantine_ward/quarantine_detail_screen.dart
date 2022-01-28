@@ -56,6 +56,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
             ).then((value) => setState(() {}));
           },
           icon: Icon(Icons.edit),
+          tooltip: "Cập nhật",
         ),
       ],
     );

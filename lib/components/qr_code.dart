@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/helper/infomation.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 //cre: https://pub.dev/packages/qr_flutter

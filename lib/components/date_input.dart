@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:qlkcl/config/app_theme.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class DateInput extends StatefulWidget {
@@ -85,6 +86,8 @@ class _DateInputState extends State<DateInput> {
                 )
               : Icon(Icons.calendar_today),
           helperText: widget.helper,
+          fillColor: !widget.enabled ? CustomColors.disable : null,
+          filled: !widget.enabled, // dont forget this line
         ),
       ),
     );

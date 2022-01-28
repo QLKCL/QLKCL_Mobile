@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qlkcl/components/bottom_navigation.dart';
-import 'package:qlkcl/helper/infomation.dart';
+import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -42,7 +43,10 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _role = widget.role;
-    initPlatformState();
+
+    if (isAndroid() || isIOS()) {
+      initPlatformState();
+    }
   }
 
   @override
