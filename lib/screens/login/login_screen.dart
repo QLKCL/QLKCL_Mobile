@@ -34,15 +34,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: CustomColors.background,
-        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
                 width: MediaQuery.of(context).size.width * 0.6,
-                margin: const EdgeInsets.all(16),
+                margin: const EdgeInsets.fromLTRB(16, 80, 16, 16),
                 child: Image.asset("assets/images/sign_in.png"),
               ),
               LoginForm(),

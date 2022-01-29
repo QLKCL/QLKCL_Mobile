@@ -21,9 +21,16 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  List<KeyValue> quarantineWardList = [];
+
   @override
   void initState() {
     super.initState();
+    fetchQuarantineWardNoToken({
+      'is_full': "false",
+    }).then((value) => setState(() {
+          quarantineWardList = value;
+        }));
   }
 
   @override
@@ -50,7 +57,7 @@ class _RegisterState extends State<Register> {
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/sign_up.png"),
               ),
-              RegisterForm(),
+              RegisterForm(quarantineWardList: quarantineWardList),
             ],
           ),
         ),
@@ -60,8 +67,14 @@ class _RegisterState extends State<Register> {
 }
 
 class RegisterForm extends StatefulWidget {
+  final List<KeyValue> quarantineWardList;
+  RegisterForm({
+    Key? key,
+    this.quarantineWardList = const [],
+  }) : super(key: key);
+
   @override
-  _RegisterFormState createState() => _RegisterFormState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
 class _RegisterFormState extends State<RegisterForm> {
@@ -115,10 +128,13 @@ class _RegisterFormState extends State<RegisterForm> {
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: (String? filter) => fetchQuarantineWardNoToken({
-              'is_full': "false",
-            }),
+            onFind: widget.quarantineWardList.length == 0
+                ? (String? filter) => fetchQuarantineWardNoToken({
+                      'is_full': "false",
+                    })
+                : null,
             compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+            itemValue: widget.quarantineWardList,
             onChanged: (value) {
               if (value == null) {
                 quarantineWardController.text = "";
@@ -130,6 +146,7 @@ class _RegisterFormState extends State<RegisterForm> {
             maxHeight: MediaQuery.of(context).size.height - 100,
             showSearchBox: true,
             required: true,
+            popupTitle: 'Khu cách ly',
           ),
           Container(
             margin: const EdgeInsets.all(16),
