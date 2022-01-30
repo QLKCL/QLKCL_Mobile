@@ -177,9 +177,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineWardList,
               selectedItem: widget.quarantineWard ??
-                  (quarantineWardList.length == 0
-                      ? initQuarantineWard
-                      : quarantineWardList.safeFirstWhere((type) =>
+                  (initQuarantineWard ??
+                      quarantineWardList.safeFirstWhere((type) =>
                           type.id.toString() == quarantineWardController.text)),
               onChanged: (value) {
                 setState(() {
@@ -226,9 +225,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineBuildingList,
               selectedItem: widget.quarantineBuilding ??
-                  (quarantineBuildingList.length == 0
-                      ? initQuarantineBuilding
-                      : quarantineBuildingList.safeFirstWhere((type) =>
+                  (initQuarantineBuilding ??
+                      quarantineBuildingList.safeFirstWhere((type) =>
                           type.id.toString() ==
                           quarantineBuildingController.text)),
               onChanged: (value) {
@@ -274,9 +272,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineFloorList,
               selectedItem: widget.quarantineFloor ??
-                  (quarantineFloorList.length == 0
-                      ? initQuarantineFloor
-                      : quarantineFloorList.safeFirstWhere((type) =>
+                  (initQuarantineFloor ??
+                      quarantineFloorList.safeFirstWhere((type) =>
                           type.id.toString() ==
                           quarantineFloorController.text)),
               onChanged: (value) {
@@ -318,9 +315,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineRoomList,
               selectedItem: widget.quarantineRoom ??
-                  (quarantineRoomList.length == 0
-                      ? initQuarantineRoom
-                      : quarantineRoomList.safeFirstWhere((type) =>
+                  (initQuarantineRoom ??
+                      quarantineRoomList.safeFirstWhere((type) =>
                           type.id.toString() == quarantineRoomController.text)),
               onChanged: (value) {
                 setState(() {

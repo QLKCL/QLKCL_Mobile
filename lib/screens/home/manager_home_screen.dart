@@ -27,7 +27,6 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
-  late Future<dynamic> futureData;
   bool _showFab = true;
 
   var renderOverlay = true;
@@ -37,10 +36,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    futureData = fetch();
   }
 
   Future<dynamic> fetch() async {
+    await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
     final response = await api.postHTTP(Constant.homeManager, null);
     return response != null && response['data'] != null
@@ -159,13 +158,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             return true;
           },
           child: RefreshIndicator(
-            onRefresh: () => Future.sync(() {
-              setState(() {
-                futureData = fetch();
-              });
-            }),
+            onRefresh: fetch,
             child: FutureBuilder<dynamic>(
-              future: futureData,
+              future: fetch(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return InfoManagerHomePage(
