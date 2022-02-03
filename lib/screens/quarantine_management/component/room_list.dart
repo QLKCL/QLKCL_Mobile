@@ -43,7 +43,6 @@ class RoomList extends StatelessWidget {
                         ),
                       );
                     },
-                    id: data[index]['id'],
                     name: data[index]['name'],
                     numOfMem: data[index]['num_current_member'],
                     maxMem: data[index]['capacity'],

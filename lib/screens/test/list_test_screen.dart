@@ -123,7 +123,7 @@ class _ListTestState extends State<ListTest> {
                 child: Text('Không có dữ liệu'),
               ),
               itemBuilder: (context, item, index) => TestCard(
-                id: item['code'],
+                code: item['code'],
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")
                     .format(DateTime.parse(item['created_at']).toLocal()),
                 status: testValueList

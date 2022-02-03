@@ -101,7 +101,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                 gender: item['user'] != null ? item['user']['gender'] : "",
                 birthday:
                     item['user'] != null ? item['user']['birthday'] ?? "" : "",
-                id: item['code'],
+                code: item['code'],
                 time: item['created_at'],
                 healthStatus: item['user'] != null
                     ? item['user']['health_status'] ?? ""

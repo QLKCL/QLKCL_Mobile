@@ -7,13 +7,13 @@ import 'package:intl/intl.dart';
 
 class MedicalDeclarationCard extends StatelessWidget {
   final VoidCallback onTap;
-  final String id;
+  final String code;
   final String time;
   final String status;
   final Widget? menus;
   const MedicalDeclarationCard(
       {required this.onTap,
-      required this.id,
+      required this.code,
       required this.time,
       required this.status,
       this.menus});
@@ -35,7 +35,7 @@ class MedicalDeclarationCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Mã tờ khai: " + id,
+                        "Mã tờ khai: " + code,
                         style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.normal,
@@ -102,13 +102,13 @@ class MedicalDeclarationCard extends StatelessWidget {
 
 class TestCard extends StatelessWidget {
   final VoidCallback onTap;
-  final String id;
+  final String code;
   final String time;
   final String status;
   final Widget? menus;
   const TestCard(
       {required this.onTap,
-      required this.id,
+      required this.code,
       required this.time,
       required this.status,
       this.menus});
@@ -130,7 +130,7 @@ class TestCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Mã phiếu: " + id,
+                        "Mã phiếu: " + code,
                         style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.normal,
@@ -200,7 +200,7 @@ class TestNoResultCard extends StatelessWidget {
   final String name;
   final String gender;
   final String birthday;
-  final String id;
+  final String code;
   final String time;
   final String healthStatus;
   final Widget? menus;
@@ -210,7 +210,7 @@ class TestNoResultCard extends StatelessWidget {
     required this.name,
     required this.gender,
     required this.birthday,
-    required this.id,
+    required this.code,
     required this.time,
     this.healthStatus = "NORMAL",
     this.menus,
@@ -329,7 +329,7 @@ class TestNoResultCard extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: " " + id,
+                              text: " " + code,
                             )
                           ],
                         ),
@@ -615,14 +615,12 @@ class _MemberCardState extends State<MemberCard> {
 // Building,room card
 class QuarantineRelatedCard extends StatelessWidget {
   final VoidCallback onTap;
-  final int id;
   final String name;
   final int numOfMem;
   final int maxMem;
   final Widget? menus;
   const QuarantineRelatedCard(
       {required this.onTap,
-      required this.id,
       required this.name,
       required this.numOfMem,
       required this.maxMem,
