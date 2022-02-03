@@ -89,7 +89,7 @@ class ApiHelper {
       }
     } catch (e) {
       print(e.toString());
-      // await logout();
+      await logout();
     }
   }
 

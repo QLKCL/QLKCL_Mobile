@@ -32,12 +32,12 @@ class _SearchMemberState extends State<SearchMember> {
   TextEditingController quarantineAtMaxController = TextEditingController();
   TextEditingController labelController = TextEditingController();
 
-  List<KeyValue> quarantineWardList = [];
-  List<KeyValue> quarantineBuildingList = [];
-  List<KeyValue> quarantineFloorList = [];
-  List<KeyValue> quarantineRoomList = [];
+  List<KeyValue> _quarantineWardList = [];
+  List<KeyValue> _quarantineBuildingList = [];
+  List<KeyValue> _quarantineFloorList = [];
+  List<KeyValue> _quarantineRoomList = [];
 
-  bool searched = false;
+  bool _searched = false;
 
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
@@ -48,25 +48,25 @@ class _SearchMemberState extends State<SearchMember> {
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
     }).then((value) => setState(() {
-          quarantineWardList = value;
+          _quarantineWardList = value;
         }));
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
       'page_size': PAGE_SIZE_MAX,
     }).then((value) => setState(() {
-          quarantineBuildingList = value;
+          _quarantineBuildingList = value;
         }));
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
       'page_size': PAGE_SIZE_MAX,
     }).then((value) => setState(() {
-          quarantineFloorList = value;
+          _quarantineFloorList = value;
         }));
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
       'page_size': PAGE_SIZE_MAX,
     }).then((value) => setState(() {
-          quarantineRoomList = value;
+          _quarantineRoomList = value;
         }));
 
     _pagingController.addPageRequestListener((pageKey) {
@@ -156,7 +156,7 @@ class _SearchMemberState extends State<SearchMember> {
                       /* Clear the search field */
                       keySearch.clear();
                       setState(() {
-                        searched = false;
+                        _searched = false;
                       });
                     },
                   ),
@@ -166,7 +166,7 @@ class _SearchMemberState extends State<SearchMember> {
                 ),
                 onSubmitted: (v) {
                   setState(() {
-                    searched = true;
+                    _searched = true;
                   });
                   _pagingController.refresh();
                 },
@@ -185,14 +185,24 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineRoomController: quarantineRoomController,
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
-                  quarantineWardList: quarantineWardList,
-                  quarantineBuildingList: quarantineBuildingList,
-                  quarantineFloorList: quarantineFloorList,
-                  quarantineRoomList: quarantineRoomList,
+                  quarantineWardList: _quarantineWardList,
+                  quarantineBuildingList: _quarantineBuildingList,
+                  quarantineFloorList: _quarantineFloorList,
+                  quarantineRoomList: _quarantineRoomList,
                   labelController: labelController,
-                  onSubmit: () {
+                  onSubmit: (
+                    quarantineWardList,
+                    quarantineBuildingList,
+                    quarantineFloorList,
+                    quarantineRoomList,
+                    _searched,
+                  ) {
                     setState(() {
-                      searched = true;
+                      _searched = true;
+                      _quarantineWardList = quarantineWardList;
+                      _quarantineBuildingList = quarantineBuildingList;
+                      _quarantineFloorList = quarantineFloorList;
+                      _quarantineRoomList = quarantineRoomList;
                     });
                     _pagingController.refresh();
                   },
@@ -203,7 +213,7 @@ class _SearchMemberState extends State<SearchMember> {
             )
           ],
         ),
-        body: searched
+        body: _searched
             ? MediaQuery.removePadding(
                 context: context,
                 removeTop: true,

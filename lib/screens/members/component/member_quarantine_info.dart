@@ -54,6 +54,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   List<KeyValue> quarantineFloorList = [];
   List<KeyValue> quarantineRoomList = [];
 
+  KeyValue? initQuarantineWard;
+  KeyValue? initQuarantineBuilding;
+  KeyValue? initQuarantineFloor;
+  KeyValue? initQuarantineRoom;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -105,6 +110,20 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.otherBackgroundDisease ?? "";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
+
+      initQuarantineWard = (widget.quarantineData?.quarantineWard != null)
+          ? KeyValue.fromJson(widget.quarantineData?.quarantineWard)
+          : null;
+      initQuarantineBuilding =
+          (widget.quarantineData?.quarantineBuilding != null)
+              ? KeyValue.fromJson(widget.quarantineData?.quarantineBuilding)
+              : null;
+      initQuarantineFloor = (widget.quarantineData?.quarantineFloor != null)
+          ? KeyValue.fromJson(widget.quarantineData?.quarantineFloor)
+          : null;
+      initQuarantineRoom = (widget.quarantineData?.quarantineRoom != null)
+          ? KeyValue.fromJson(widget.quarantineData?.quarantineRoom)
+          : null;
     }
     super.initState();
     fetchQuarantineWard({
@@ -158,12 +177,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineWardList,
               selectedItem: widget.quarantineWard ??
-                  (quarantineWardList.length == 0
-                      ? ((widget.quarantineData?.quarantineWard != null)
-                          ? KeyValue.fromJson(
-                              widget.quarantineData!.quarantineWard)
-                          : null)
-                      : quarantineWardList.safeFirstWhere((type) =>
+                  (initQuarantineWard ??
+                      quarantineWardList.safeFirstWhere((type) =>
                           type.id.toString() == quarantineWardController.text)),
               onChanged: (value) {
                 setState(() {
@@ -178,6 +193,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   quarantineBuildingList = [];
                   quarantineFloorList = [];
                   quarantineRoomList = [];
+                  initQuarantineWard = null;
+                  initQuarantineBuilding = null;
+                  initQuarantineFloor = null;
+                  initQuarantineRoom = null;
                 });
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
@@ -206,12 +225,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineBuildingList,
               selectedItem: widget.quarantineBuilding ??
-                  (quarantineBuildingList.length == 0
-                      ? ((widget.quarantineData?.quarantineBuilding != null)
-                          ? KeyValue.fromJson(
-                              widget.quarantineData!.quarantineBuilding)
-                          : null)
-                      : quarantineBuildingList.safeFirstWhere((type) =>
+                  (initQuarantineBuilding ??
+                      quarantineBuildingList.safeFirstWhere((type) =>
                           type.id.toString() ==
                           quarantineBuildingController.text)),
               onChanged: (value) {
@@ -225,6 +240,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   quarantineRoomController.clear();
                   quarantineFloorList = [];
                   quarantineRoomList = [];
+                  initQuarantineBuilding = null;
+                  initQuarantineFloor = null;
+                  initQuarantineRoom = null;
                 });
                 fetchQuarantineFloor({
                   'quarantine_building': quarantineBuildingController.text,
@@ -254,12 +272,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineFloorList,
               selectedItem: widget.quarantineFloor ??
-                  (quarantineFloorList.length == 0
-                      ? ((widget.quarantineData?.quarantineFloor != null)
-                          ? KeyValue.fromJson(
-                              widget.quarantineData!.quarantineFloor)
-                          : null)
-                      : quarantineFloorList.safeFirstWhere((type) =>
+                  (initQuarantineFloor ??
+                      quarantineFloorList.safeFirstWhere((type) =>
                           type.id.toString() ==
                           quarantineFloorController.text)),
               onChanged: (value) {
@@ -271,6 +285,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   }
                   quarantineRoomController.clear();
                   quarantineRoomList = [];
+                  initQuarantineFloor = null;
+                  initQuarantineRoom = null;
                 });
                 fetchQuarantineRoom({
                   'quarantine_floor': quarantineFloorController.text,
@@ -299,16 +315,18 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemValue: quarantineRoomList,
               selectedItem: widget.quarantineRoom ??
-                  ((widget.quarantineData?.quarantineRoom != null)
-                      ? KeyValue.fromJson(widget.quarantineData!.quarantineRoom)
-                      : quarantineRoomList.safeFirstWhere((type) =>
+                  (initQuarantineRoom ??
+                      quarantineRoomList.safeFirstWhere((type) =>
                           type.id.toString() == quarantineRoomController.text)),
               onChanged: (value) {
-                if (value == null) {
-                  quarantineRoomController.text = "";
-                } else {
-                  quarantineRoomController.text = value.id.toString();
-                }
+                setState(() {
+                  if (value == null) {
+                    quarantineRoomController.text = "";
+                  } else {
+                    quarantineRoomController.text = value.id.toString();
+                  }
+                  initQuarantineRoom = null;
+                });
               },
               enabled: widget.mode != Permission.view ? true : false,
               // showSearchBox: true,

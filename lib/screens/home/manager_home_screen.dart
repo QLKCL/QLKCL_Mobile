@@ -8,6 +8,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
+import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -27,7 +28,6 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
-  late Future<dynamic> futureData;
   bool _showFab = true;
 
   var renderOverlay = true;
@@ -37,10 +37,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    futureData = fetch();
   }
 
   Future<dynamic> fetch() async {
+    await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
     final response = await api.postHTTP(Constant.homeManager, null);
     return response != null && response['data'] != null
@@ -139,7 +139,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     Icons.notifications_none_outlined,
                     color: CustomColors.primaryText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListNotification.routeName);
+                  },
                   tooltip: "Thông báo",
                 ),
               ),
@@ -159,13 +162,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             return true;
           },
           child: RefreshIndicator(
-            onRefresh: () => Future.sync(() {
-              setState(() {
-                futureData = fetch();
-              });
-            }),
+            onRefresh: fetch,
             child: FutureBuilder<dynamic>(
-              future: futureData,
+              future: fetch(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return InfoManagerHomePage(

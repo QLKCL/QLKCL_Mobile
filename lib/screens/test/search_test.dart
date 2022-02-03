@@ -182,7 +182,7 @@ class _SearchTestState extends State<SearchTest> {
                         birthday: item['user'] != null
                             ? item['user']['birthday'] ?? ""
                             : "",
-                        id: item['code'],
+                        code: item['code'],
                         time: item['created_at'],
                         healthStatus: item['user'] != null
                             ? item['user']['health_status'] ?? ""

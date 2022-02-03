@@ -54,6 +54,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
 
+  KeyValue? initCountry;
+  KeyValue? initCity;
+  KeyValue? initDistrict;
+  KeyValue? initWard;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -87,6 +92,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
       healthInsuranceNumberController.text =
           widget.personalData?.healthInsuranceNumber ?? "";
       passportNumberController.text = widget.personalData?.passportNumber ?? "";
+
+      initCountry = (widget.personalData?.country != null)
+          ? KeyValue.fromJson(widget.personalData!.country)
+          : null;
+      initCity = (widget.personalData?.city != null)
+          ? KeyValue.fromJson(widget.personalData!.city)
+          : null;
+      initDistrict = (widget.personalData?.district != null)
+          ? KeyValue.fromJson(widget.personalData!.district)
+          : null;
+      initWard = (widget.personalData?.ward != null)
+          ? KeyValue.fromJson(widget.personalData!.ward)
+          : null;
     } else {
       nationalityController.text = "VNM";
       countryController.text = "VNM";
@@ -230,9 +248,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               required: widget.mode == Permission.view ? false : true,
               itemValue: countryList,
               selectedItem: countryList.length == 0
-                  ? ((widget.personalData?.country != null)
-                      ? KeyValue.fromJson(widget.personalData!.country)
-                      : null)
+                  ? initCountry
                   : countryList.safeFirstWhere(
                       (type) => type.id.toString() == countryController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -255,12 +271,17 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   cityList = [];
                   districtList = [];
                   wardList = [];
+                  initCountry = null;
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchCity({'country_code': countryController.text})
                     .then((data) => setState(() {
                           cityList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -273,9 +294,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               itemValue: cityList,
               required: widget.mode == Permission.view ? false : true,
               selectedItem: cityList.length == 0
-                  ? ((widget.personalData?.city != null)
-                      ? KeyValue.fromJson(widget.personalData!.city)
-                      : null)
+                  ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -297,12 +316,16 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   wardController.clear();
                   districtList = [];
                   wardList = [];
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchDistrict({'city_id': cityController.text})
                     .then((data) => setState(() {
                           districtList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -315,9 +338,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               itemValue: districtList,
               required: widget.mode == Permission.view ? false : true,
               selectedItem: districtList.length == 0
-                  ? ((widget.personalData?.district != null)
-                      ? KeyValue.fromJson(widget.personalData!.district)
-                      : null)
+                  ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -337,13 +358,15 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   }
                   wardController.clear();
                   wardList = [];
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchWard({'district_id': districtController.text})
                     .then((data) => setState(() {
-                          wardController.clear();
                           wardList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -356,9 +379,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               itemValue: wardList,
               required: widget.mode == Permission.view ? false : true,
               selectedItem: wardList.length == 0
-                  ? ((widget.personalData?.ward != null)
-                      ? KeyValue.fromJson(widget.personalData!.ward)
-                      : null)
+                  ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -376,8 +397,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   } else {
                     wardController.text = value.id.toString();
                   }
+                  initWard = null;
                 });
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,

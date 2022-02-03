@@ -48,6 +48,12 @@ class _QuarantineFormState extends State<QuarantineForm> {
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
+
+  KeyValue? initCountry;
+  KeyValue? initCity;
+  KeyValue? initDistrict;
+  KeyValue? initWard;
+
   List<String> imageList = [
     'Default/no_image_available',
   ];
@@ -89,6 +95,19 @@ class _QuarantineFormState extends State<QuarantineForm> {
       if (widget.quarantineInfo?.image != null &&
           widget.quarantineInfo?.image != "")
         imageList.addAll(widget.quarantineInfo!.image!.split(','));
+
+      initCountry = (widget.quarantineInfo?.country != null)
+          ? KeyValue.fromJson(widget.quarantineInfo!.country)
+          : null;
+      initCity = (widget.quarantineInfo?.city != null)
+          ? KeyValue.fromJson(widget.quarantineInfo!.city)
+          : null;
+      initDistrict = (widget.quarantineInfo?.district != null)
+          ? KeyValue.fromJson(widget.quarantineInfo!.district)
+          : null;
+      initWard = (widget.quarantineInfo?.ward != null)
+          ? KeyValue.fromJson(widget.quarantineInfo!.ward)
+          : null;
     } else {
       countryController.text = "VNM";
       statusController.text = "RUNNING";
@@ -205,9 +224,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               required: widget.mode == Permission.view ? false : true,
               itemValue: countryList,
               selectedItem: countryList.length == 0
-                  ? ((widget.quarantineInfo?.country != null)
-                      ? KeyValue.fromJson(widget.quarantineInfo!.country)
-                      : null)
+                  ? initCountry
                   : countryList.safeFirstWhere(
                       (type) => type.id.toString() == countryController.text),
               onFind: countryList.length == 0
@@ -226,12 +243,17 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   cityList = [];
                   districtList = [];
                   wardList = [];
+                  initCountry = null;
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchCity({'country_code': countryController.text})
                     .then((data) => setState(() {
                           cityList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -244,9 +266,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemValue: cityList,
               required: widget.mode == Permission.view ? false : true,
               selectedItem: cityList.length == 0
-                  ? ((widget.quarantineInfo?.city != null)
-                      ? KeyValue.fromJson(widget.quarantineInfo!.city)
-                      : null)
+                  ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -268,12 +288,16 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   wardController.clear();
                   districtList = [];
                   wardList = [];
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchDistrict({'city_id': cityController.text})
                     .then((data) => setState(() {
                           districtList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -286,9 +310,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               itemValue: districtList,
               required: widget.mode == Permission.view ? false : true,
               selectedItem: districtList.length == 0
-                  ? ((widget.quarantineInfo?.district != null)
-                      ? KeyValue.fromJson(widget.quarantineInfo!.district)
-                      : null)
+                  ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -308,13 +330,15 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   }
                   wardController.clear();
                   wardList = [];
+                  initDistrict = null;
+                  initWard = null;
                 });
                 fetchWard({'district_id': districtController.text})
                     .then((data) => setState(() {
-                          wardController.clear();
                           wardList = data;
                         }));
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
@@ -326,9 +350,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               hint: 'Phường/xã',
               itemValue: wardList,
               selectedItem: wardList.length == 0
-                  ? ((widget.quarantineInfo?.ward != null)
-                      ? KeyValue.fromJson(widget.quarantineInfo!.ward)
-                      : null)
+                  ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
               enabled: (widget.mode == Permission.edit ||
@@ -346,8 +368,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   } else {
                     wardController.text = value.id.toString();
                   }
+                  initWard = null;
                 });
               },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
               mode: Mode.BOTTOM_SHEET,
