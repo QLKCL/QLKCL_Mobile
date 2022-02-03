@@ -50,6 +50,14 @@ class Constant {
   static const String getMedDecl = '/api/form/medical-declaration/get';
   static const String createMedDecl = '/api/form/medical-declaration/create';
   static const String getListNotMem = '/api/user/member/not_member_filter';
+  static const String filterUserNotification =
+      '/api/notification/user_notification/filter';
+  static const String getUserNotification =
+      '/api/notification/user_notification/get';
+  static const String changeStateUserNotification =
+      '/api/notification/user_notification/change_status';
+  static const String deleteUserNotification =
+      '/api/notification/user_notification/delete';
 }
 
 enum Permission {

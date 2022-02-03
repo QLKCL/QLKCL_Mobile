@@ -10,6 +10,7 @@ import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class MemberHomePage extends StatefulWidget {
@@ -136,7 +137,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   Icons.notifications_none_outlined,
                   color: CustomColors.primaryText,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamed(ListNotification.routeName);
+                },
                 tooltip: "Thông báo",
               ),
             ),

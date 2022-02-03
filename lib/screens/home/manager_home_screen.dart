@@ -8,6 +8,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
+import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -138,7 +139,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     Icons.notifications_none_outlined,
                     color: CustomColors.primaryText,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListNotification.routeName);
+                  },
                   tooltip: "Thông báo",
                 ),
               ),

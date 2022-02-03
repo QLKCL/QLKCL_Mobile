@@ -1033,3 +1033,62 @@ class QuarantineHome extends StatelessWidget {
     );
   }
 }
+
+class NotificationCard extends StatelessWidget {
+  final VoidCallback? onTap;
+  final String title;
+  final String description;
+  final String time;
+  final bool status;
+  final Widget? menus;
+  const NotificationCard({
+    this.onTap,
+    required this.title,
+    required this.description,
+    required this.time,
+    required this.status,
+    this.menus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        description,
+                        style: TextStyle(color: CustomColors.disableText),
+                      )
+                    ],
+                  ),
+                ),
+                menus ?? Container()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
