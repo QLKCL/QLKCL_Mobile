@@ -477,11 +477,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             quarantineWard: (await getQuarantineWard()).toString(),
           ));
           cancel();
+          showNotification(response);
           if (response.success) {
-            showNotification(response.message);
             widget.tabController!.animateTo(1);
-          } else {
-            showNotification(response.message, status: "error");
           }
         }
         if (widget.mode == Permission.edit) {
@@ -502,11 +500,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             passport: passportNumberController.text,
           ));
           cancel();
-          if (response.success) {
-            showNotification(response.message);
-          } else {
-            showNotification(response.message, status: "error");
-          }
+          showNotification(response);
         }
       }
     }

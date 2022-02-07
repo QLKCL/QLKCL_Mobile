@@ -47,7 +47,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       ));
 
       cancel();
-      showNotification(response.message);
+      showNotification(response);
     }
   }
 

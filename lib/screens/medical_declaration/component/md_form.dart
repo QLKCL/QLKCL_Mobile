@@ -97,7 +97,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
         ));
 
         cancel();
-        showNotification(registerResponse.message);
+        showNotification(registerResponse);
       }
     }
 

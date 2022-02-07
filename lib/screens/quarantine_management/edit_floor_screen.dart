@@ -53,7 +53,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
         id: widget.currentFloor!.id,
       ));
       cancel();
-      showNotification(response.message);
+      showNotification(response);
       Navigator.pop(context);
     }
   }

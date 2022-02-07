@@ -138,11 +138,9 @@ class _ConfirmMemberState extends State<ConfirmMember>
                       final response =
                           await denyMember({'member_codes': item['code']});
                       cancel();
+                      showNotification(response);
                       if (response.success) {
                         _pagingController.refresh();
-                        showNotification(response.message);
-                      } else {
-                        showNotification(response.message, status: "error");
                       }
                     },
                   ),

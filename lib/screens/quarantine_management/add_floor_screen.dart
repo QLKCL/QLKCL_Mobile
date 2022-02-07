@@ -69,7 +69,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         ),
       );
       cancel();
-      showNotification(response.message);
+      showNotification(response);
       Navigator.pop(context);
     }
   }

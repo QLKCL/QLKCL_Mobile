@@ -450,7 +450,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                                 widget.quarantineData!.customUserCode.toString()
                           });
                           cancel();
-                          showNotification(response.message);
+                          showNotification(response);
                         },
                         child: Text("Từ chối"),
                       ),
@@ -499,14 +499,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           });
           cancel();
 
-          showNotification(response.message);
+          showNotification(response);
         } else {
           cancel();
-          showNotification(updateResponse.message);
+          showNotification(updateResponse);
         }
       } else {
         cancel();
-        showNotification(updateResponse.message, status: "error");
+        showNotification(updateResponse);
       }
     }
   }

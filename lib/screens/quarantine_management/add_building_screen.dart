@@ -49,7 +49,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
         quarantineWard: widget.currentQuarrantine!.id,
       ));
       cancel();
-      showNotification(response.message);
+      showNotification(response);
       Navigator.pop(context);
     }
   }

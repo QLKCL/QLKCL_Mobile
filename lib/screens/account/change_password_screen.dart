@@ -129,11 +129,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
             newPassword: passController.text,
             confirmPassword: secondPassController.text));
         cancel();
+        showNotification(response);
         if (response.success) {
-          showNotification(response.message);
           Navigator.pop(context);
-        } else {
-          showNotification(response.message, status: "error");
         }
       }
     }

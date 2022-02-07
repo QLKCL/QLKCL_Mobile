@@ -197,7 +197,7 @@ class _OtpState extends State<Otp> {
       final response =
           await requestOtp(requestOtpDataForm(email: widget.email));
       cancel();
-      showNotification(response.message);
+      showNotification(response);
     }
   }
 }

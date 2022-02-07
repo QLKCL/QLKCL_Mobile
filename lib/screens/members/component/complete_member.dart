@@ -165,11 +165,9 @@ class _CompleteMemberState extends State<CompleteMember>
                       final response =
                           await finishMember({'member_codes': item['code']});
                       cancel();
+                      showNotification(response);
                       if (response.success) {
                         _pagingController.refresh();
-                        showNotification(response.message);
-                      } else {
-                        showNotification(response.message, status: "error");
                       }
                     },
                   ),

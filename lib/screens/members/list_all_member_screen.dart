@@ -94,13 +94,10 @@ class _ListAllMemberState extends State<ListAllMember>
                               final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
+                              showNotification(response);
                               if (response.success) {
                                 indexList.clear();
                                 longPress();
-                                showNotification(response.message);
-                              } else {
-                                showNotification(response.message,
-                                    status: "error");
                               }
                             },
                           ),

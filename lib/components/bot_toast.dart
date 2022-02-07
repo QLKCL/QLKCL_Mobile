@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/networking/response.dart';
 
 // TextToast
 CancelFunc Function(String) showTextToast = (text) {
@@ -136,18 +137,31 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 }
 
 // Notification
-void Function(String title, {String status, String? subTitle})
-    showNotification = (title, {status = "success", subTitle}) {
-  BotToast.showSimpleNotification(
-    title: title,
-    subTitle: subTitle,
-    onlyOne: false,
-    duration: Duration(seconds: 3),
-    hideCloseButton: true,
-    backgroundColor: status == "success"
-        ? CustomColors.success
-        : (status == "warning" ? CustomColors.warning : CustomColors.error),
-    titleStyle: const TextStyle(color: Colors.white),
-    subTitleStyle: const TextStyle(color: Colors.white),
-  );
+CancelFunc Function(dynamic data, {String status, String? subTitle})
+    showNotification = (data, {status = "success", subTitle}) {
+  if (data.runtimeType == Response) {
+    return BotToast.showSimpleNotification(
+      title: data.message,
+      subTitle: subTitle,
+      onlyOne: false,
+      duration: Duration(seconds: 3),
+      hideCloseButton: true,
+      backgroundColor: data.success ? CustomColors.success : CustomColors.error,
+      titleStyle: const TextStyle(color: Colors.white),
+      subTitleStyle: const TextStyle(color: Colors.white),
+    );
+  } else {
+    return BotToast.showSimpleNotification(
+      title: data,
+      subTitle: subTitle,
+      onlyOne: false,
+      duration: Duration(seconds: 3),
+      hideCloseButton: true,
+      backgroundColor: status == "success"
+          ? CustomColors.success
+          : (status == "warning" ? CustomColors.warning : CustomColors.error),
+      titleStyle: const TextStyle(color: Colors.white),
+      subTitleStyle: const TextStyle(color: Colors.white),
+    );
+  }
 };

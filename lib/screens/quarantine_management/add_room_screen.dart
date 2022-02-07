@@ -70,7 +70,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         capacity: capacityController.text,
       ));
       cancel();
-      showNotification(response.message);
+      showNotification(response);
       Navigator.pop(context);
     }
   }

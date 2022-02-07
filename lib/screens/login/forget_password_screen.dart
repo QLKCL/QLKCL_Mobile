@@ -106,14 +106,12 @@ class _ForgetFormState extends State<ForgetForm> {
       final response =
           await requestOtp(requestOtpDataForm(email: emailController.text));
       cancel();
+      showNotification(response);
       if (response.success) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Otp(email: emailController.text)));
-        showNotification(response.message);
-      } else {
-        showNotification(response.message, status: "error");
       }
     }
   }

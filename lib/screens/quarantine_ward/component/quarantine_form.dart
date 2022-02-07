@@ -158,11 +158,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           image: imageList.sublist(1).join(','),
         ));
         cancel();
-        if (response.success) {
-          showNotification(response.message);
-        } else {
-          showNotification(response.message, status: "error");
-        }
+        showNotification(response);
       } else if (widget.mode == Permission.edit) {
         final response = await updateQuarantine(updateQuarantineDataForm(
           id: widget.quarantineInfo!.id.toInt(),
@@ -181,11 +177,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           image: imageList.sublist(1).join(','),
         ));
         cancel();
-        if (response.success) {
-          showNotification(response.message);
-        } else {
-          showNotification(response.message, status: "error");
-        }
+        showNotification(response);
       }
     }
   }

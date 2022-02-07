@@ -112,11 +112,9 @@ class _CreatePasswordState extends State<CreatePassword> {
             newPassword: passController.text,
             confirmPassword: secondPassController.text));
         cancel();
+        showNotification(response);
         if (response.success) {
           Navigator.popUntil(context, (route) => route.isFirst);
-          showNotification(response.message);
-        } else {
-          showNotification(response.message, status: "error");
         }
       }
     }

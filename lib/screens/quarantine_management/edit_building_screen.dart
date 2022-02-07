@@ -52,7 +52,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
       ));
 
       cancel();
-      showNotification(response.message);
+      showNotification(response);
       Navigator.pop(context);
     }
   }

@@ -231,11 +231,9 @@ class _TestFormState extends State<TestForm> {
             type: typeController.text,
             result: resultController.text));
         cancel();
+        showNotification(response);
         if (response.success) {
-          showNotification(response.message);
           Navigator.pop(context);
-        } else {
-          showNotification(response.message, status: "error");
         }
       } else if (widget.mode == Permission.edit) {
         final response = await updateTest(updateTestDataForm(
@@ -244,11 +242,9 @@ class _TestFormState extends State<TestForm> {
             type: typeController.text,
             result: resultController.text));
         cancel();
+        showNotification(response);
         if (response.success) {
-          showNotification(response.message);
           Navigator.pop(context);
-        } else {
-          showNotification(response.message, status: "error");
         }
       }
     }
