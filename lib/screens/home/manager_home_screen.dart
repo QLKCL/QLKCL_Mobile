@@ -5,6 +5,7 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
@@ -28,6 +29,8 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
+  late String unreadNotifications = '';
+  late dynamic listNotification = [];
   bool _showFab = true;
 
   var renderOverlay = true;
@@ -37,6 +40,15 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
+    notifications.fetchUserNotificationList().then((value) => setState(() {
+          listNotification = value;
+          unreadNotifications = listNotification
+              .where((element) =>
+                  notifications.Notification.fromJson(element).isRead == false)
+              .toList()
+              .length
+              .toString();
+        }));
   }
 
   Future<dynamic> fetch() async {
@@ -126,15 +138,30 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             backgroundColor: CustomColors.background,
             centerTitle: false,
             actions: [
-              Badge(
-                position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: Duration(milliseconds: 300),
-                animationType: BadgeAnimationType.scale,
-                badgeContent: Text(
-                  "2",
-                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+              if (unreadNotifications != '')
+                Badge(
+                  position: BadgePosition.topEnd(top: 10, end: 16),
+                  animationDuration: Duration(milliseconds: 300),
+                  animationType: BadgeAnimationType.scale,
+                  badgeContent: Text(
+                    unreadNotifications,
+                    style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                  ),
+                  child: IconButton(
+                    padding: EdgeInsets.only(right: 24),
+                    icon: Icon(
+                      Icons.notifications_none_outlined,
+                      color: CustomColors.primaryText,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true)
+                          .pushNamed(ListNotification.routeName);
+                    },
+                    tooltip: "Thông báo",
+                  ),
                 ),
-                child: IconButton(
+              if (unreadNotifications == '')
+                IconButton(
                   padding: EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
@@ -146,7 +173,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   },
                   tooltip: "Thông báo",
                 ),
-              ),
             ],
           ),
         ),
