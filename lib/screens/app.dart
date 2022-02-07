@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:qlkcl/components/bottom_navigation.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
@@ -16,6 +17,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  DateTime currentBackPressTime = DateTime.now();
   late int _role;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
@@ -64,7 +66,15 @@ class _AppState extends State<App> {
             return false;
           }
         }
+
         // let system handle back button if we're on the first route
+        DateTime now = DateTime.now();
+        int seconds = 2;
+        if (now.difference(currentBackPressTime) > Duration(seconds: seconds)) {
+          currentBackPressTime = now;
+          showTextToast('Press "Back" button again to exit');
+          return false;
+        }
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(

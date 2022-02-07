@@ -127,7 +127,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             centerTitle: false,
             actions: [
               Badge(
-                position: BadgePosition.topEnd(top: 10, end: 4),
+                position: BadgePosition.topEnd(top: 10, end: 16),
                 animationDuration: Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 badgeContent: Text(
@@ -135,6 +135,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
+                  padding: EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
                     color: CustomColors.primaryText,
