@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
@@ -36,7 +37,6 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -47,15 +47,13 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
-      final registerResponse = await updateFloor(updateFloorDataForm(
+      CancelFunc cancel = showLoading();
+      final response = await updateFloor(updateFloorDataForm(
         name: nameController.text,
         id: widget.currentFloor!.id,
       ));
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(registerResponse.message)),
-      );
+      cancel();
+      showNotification(response);
       Navigator.pop(context);
     }
   }
@@ -73,8 +71,9 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
           child: FutureBuilder<dynamic>(
               future: numOfRoom,
               builder: (context, snapshot) {
+                showLoading();
                 if (snapshot.hasData) {
-                  EasyLoading.dismiss();
+                  BotToast.closeAllLoading();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -124,7 +123,6 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                 } else if (snapshot.hasError) {
                   return Text('Snapshot has error');
                 }
-                EasyLoading.show();
                 return Container();
               }),
         ),

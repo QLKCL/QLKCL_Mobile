@@ -5,6 +5,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 // import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -22,8 +23,12 @@ class MemberHomePage extends StatefulWidget {
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
+  late String unreadNotifications = '';
+  late dynamic listNotification = [];
+
   late Future<CovidData> futureCovid;
   late Future<dynamic> futureData;
+
   bool _showFab = true;
 
   @override
@@ -31,6 +36,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
+    notifications.fetchUserNotificationList().then((value) => setState(() {
+          listNotification = value;
+          unreadNotifications = listNotification
+              .where((element) =>
+                  notifications.Notification.fromJson(element).isRead == false)
+              .toList()
+              .length
+              .toString();
+        }));
   }
 
   Future<dynamic> fetch() async {
@@ -124,15 +138,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
           backgroundColor: CustomColors.background,
           centerTitle: false,
           actions: [
-            Badge(
-              position: BadgePosition.topEnd(top: 10, end: 4),
-              animationDuration: Duration(milliseconds: 300),
-              animationType: BadgeAnimationType.scale,
-              badgeContent: Text(
-                "2",
-                style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+            if (unreadNotifications != '')
+              Badge(
+                position: BadgePosition.topEnd(top: 10, end: 16),
+                animationDuration: Duration(milliseconds: 300),
+                animationType: BadgeAnimationType.scale,
+                badgeContent: Text(
+                  unreadNotifications,
+                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.only(right: 24),
+                  icon: Icon(
+                    Icons.notifications_none_outlined,
+                    color: CustomColors.primaryText,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListNotification.routeName);
+                  },
+                  tooltip: "Thông báo",
+                ),
               ),
-              child: IconButton(
+            if (unreadNotifications == '')
+              IconButton(
+                padding: EdgeInsets.only(right: 24),
                 icon: Icon(
                   Icons.notifications_none_outlined,
                   color: CustomColors.primaryText,
@@ -143,7 +173,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 },
                 tooltip: "Thông báo",
               ),
-            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -26,7 +27,6 @@ class _ViewMDState extends State<ViewMD> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -41,8 +41,9 @@ class _ViewMDState extends State<ViewMD> {
         body: FutureBuilder<dynamic>(
           future: futureMD,
           builder: (context, snapshot) {
+            showLoading();
             if (snapshot.connectionState == ConnectionState.done) {
-              EasyLoading.dismiss();
+              BotToast.closeAllLoading();
               if (snapshot.hasData) {
                 return MedDeclForm(
                   medicalDeclData: MedicalDecl.fromJson(snapshot.data),
@@ -53,7 +54,6 @@ class _ViewMDState extends State<ViewMD> {
               }
             }
 
-            EasyLoading.show();
             return Container();
           },
         ),

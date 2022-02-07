@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -30,7 +31,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -127,25 +127,17 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                                   widget.quarantineInfo.phoneNumber.toString());
                             }
                           : () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Số điện thoại không tồn tại.'),
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
+                              showNotification('Số điện thoại không tồn tại.',
+                                  status: "error");
                             },
                       icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                     ),
                     IconButton(
                         iconSize: 38,
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('Ứng dụng chưa hỗ trợ chức năng này.'),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
+                          showNotification(
+                              'Ứng dụng chưa hỗ trợ chức năng này.',
+                              status: "error");
                         },
                         icon: WebsafeSvg.asset("assets/svg/Location.svg"))
                   ],
@@ -157,8 +149,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
+              showLoading();
               if (snapshot.hasData) {
-                EasyLoading.dismiss();
+                BotToast.closeAllLoading();
                 return CarouselBuilding(
                   data: snapshot.data,
                   currentQuarantine: widget.quarantineInfo,
@@ -166,7 +159,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }
-              EasyLoading.show();
               return Container();
             },
           ),

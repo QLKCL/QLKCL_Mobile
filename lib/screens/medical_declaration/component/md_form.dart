@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -82,7 +83,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
     void _submit() async {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        EasyLoading.show();
+        CancelFunc cancel = showLoading();
         final registerResponse = await createMedDecl(createMedDeclDataForm(
           phoneNumber: phoneNumberController.text,
           heartBeat: int.tryParse(heartBeatController.text),
@@ -95,10 +96,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
           spo2: double.tryParse(spo2Controller.text),
         ));
 
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
-        );
+        cancel();
+        showNotification(registerResponse);
       }
     }
 
@@ -325,12 +324,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                           onPressed: agree
                               ? _submit
                               : () {
-                                  final snackBar = SnackBar(
-                                    content: const Text(
-                                        'Vui lòng cam kết trước khi khai báo.'),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
+                                  showNotification(
+                                      'Vui lòng chọn cam kết trước khi khai báo.',
+                                      status: "error");
                                 },
                           child: Text(
                             "Khai báo",

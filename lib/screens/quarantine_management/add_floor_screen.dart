@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
@@ -43,7 +44,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -60,7 +60,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
       } else {
         capacityController.text = "0";
       }
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response = await createFloor(
         createFloorDataForm(
           name: nameController.text,
@@ -68,10 +68,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           roomQuantity: capacityController.text,
         ),
       );
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(response.message)),
-      );
+      cancel();
+      showNotification(response);
       Navigator.pop(context);
     }
   }
@@ -107,8 +105,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
           child: FutureBuilder<dynamic>(
               future: futureFloorList,
               builder: (context, snapshot) {
+                showLoading();
                 if (snapshot.hasData) {
-                  EasyLoading.dismiss();
+                  BotToast.closeAllLoading();
 
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -245,7 +244,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                 } else if (snapshot.hasError) {
                   return Text('Snapshot has error');
                 }
-                EasyLoading.show();
                 return Container();
               }),
         ),

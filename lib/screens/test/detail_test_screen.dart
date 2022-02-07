@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/test.dart';
@@ -18,16 +19,17 @@ class DetailTest extends StatefulWidget {
 
 class _DetailTestState extends State<DetailTest> {
   late Future<dynamic> futureTest;
+  late dynamic testData;
 
   @override
   void initState() {
     super.initState();
     futureTest = fetchTest(data: {'code': widget.code});
+    futureTest.then((value) => testData = value);
   }
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -50,8 +52,8 @@ class _DetailTestState extends State<DetailTest> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => UpdateTest(
-                                          code: widget.code,
-                                        )));
+                                        code: widget.code,
+                                        testData: testData)));
                           },
                           icon: Icon(Icons.edit),
                           tooltip: "Cập nhật",
@@ -66,8 +68,9 @@ class _DetailTestState extends State<DetailTest> {
         body: FutureBuilder<dynamic>(
           future: futureTest,
           builder: (context, snapshot) {
+            showLoading();
             if (snapshot.connectionState == ConnectionState.done) {
-              EasyLoading.dismiss();
+              BotToast.closeAllLoading();
               if (snapshot.hasData) {
                 return TestForm(
                   testData: Test.fromJson(snapshot.data),
@@ -78,7 +81,6 @@ class _DetailTestState extends State<DetailTest> {
               }
             }
 
-            EasyLoading.show();
             return Container();
           },
         ),

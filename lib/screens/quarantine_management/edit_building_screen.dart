@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
@@ -34,7 +35,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -45,16 +45,14 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
-      final registerResponse = await updateBuilding(updateBuildingDataForm(
+      CancelFunc cancel = showLoading();
+      final response = await updateBuilding(updateBuildingDataForm(
         name: nameController.text,
         id: widget.currentBuilding!.id,
       ));
 
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(registerResponse.message)),
-      );
+      cancel();
+      showNotification(response);
       Navigator.pop(context);
     }
   }
@@ -72,8 +70,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
           child: FutureBuilder<dynamic>(
               future: numOfFloor,
               builder: (context, snapshot) {
+                showLoading();
                 if (snapshot.hasData) {
-                  EasyLoading.dismiss();
+                  BotToast.closeAllLoading();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,7 +121,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                 } else if (snapshot.hasError) {
                   return Text('Snapshot has error');
                 }
-                EasyLoading.show();
                 return Container();
               }),
         ),

@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -222,43 +223,28 @@ class _TestFormState extends State<TestForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
         final response = await createTest(createTestDataForm(
             userCode: userCodeController.text,
             status: stateController.text,
             type: typeController.text,
             result: resultController.text));
+        cancel();
+        showNotification(response);
         if (response.success) {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
           Navigator.pop(context);
-        } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
         }
-      }
-      if (widget.mode == Permission.edit) {
+      } else if (widget.mode == Permission.edit) {
         final response = await updateTest(updateTestDataForm(
             code: widget.testData!.code,
             status: stateController.text,
             type: typeController.text,
             result: resultController.text));
+        cancel();
+        showNotification(response);
         if (response.success) {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
           Navigator.pop(context);
-        } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
         }
       }
     }

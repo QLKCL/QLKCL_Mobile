@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/component/bulding_list.dart';
@@ -24,7 +25,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -42,8 +42,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
         child: FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
+              showLoading();
               if (snapshot.hasData) {
-                EasyLoading.dismiss();
+                BotToast.closeAllLoading();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -72,7 +73,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }
-              EasyLoading.show();
               return Container();
             }),
       ),

@@ -40,7 +40,6 @@ class GeneralInfoRoom extends StatelessWidget {
           Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
-              height: 70,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,7 +48,7 @@ class GeneralInfoRoom extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text.rich(
@@ -87,7 +86,7 @@ class GeneralInfoRoom extends StatelessWidget {
                     flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const Text(

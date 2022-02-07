@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -35,7 +36,6 @@ class _RegisterState extends State<Register> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -174,7 +174,7 @@ class _RegisterFormState extends State<RegisterForm> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        EasyLoading.show();
+        CancelFunc cancel = showLoading();
         final registerResponse = await register(registerDataForm(
             phoneNumber: phoneController.text,
             password: passController.text,
@@ -183,7 +183,7 @@ class _RegisterFormState extends State<RegisterForm> {
           final loginResponse = await login(loginDataForm(
               phoneNumber: phoneController.text,
               password: passController.text));
-          EasyLoading.dismiss();
+          cancel();
           if (loginResponse.success) {
             int role = await getRole();
             Navigator.pushAndRemoveUntil(
@@ -194,15 +194,11 @@ class _RegisterFormState extends State<RegisterForm> {
               MaterialPageRoute(builder: (context) => UpdateMember()),
             );
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(loginResponse.message)),
-            );
+            showNotification(loginResponse.message, status: "error");
           }
         } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
-          );
+          cancel();
+          showNotification(registerResponse.message, status: "error");
         }
       }
     }

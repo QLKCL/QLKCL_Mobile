@@ -1,6 +1,5 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:qlkcl/config/loading.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/config/routes.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -29,7 +28,6 @@ void main() async {
     isLoggedIn: isLoggedIn,
     role: role,
   ));
-  configLoading();
 }
 
 class MyApp extends StatelessWidget {
@@ -61,7 +59,8 @@ class MyApp extends StatelessWidget {
             home: isLoggedIn ? App(role: role) : Login(),
             routes: routes,
             initialRoute: isLoggedIn ? App.routeName : Login.routeName,
-            builder: EasyLoading.init(),
+            builder: BotToastInit(),
+            navigatorObservers: [BotToastNavigatorObserver()],
           );
         }
       },

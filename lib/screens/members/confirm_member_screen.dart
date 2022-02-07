@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
@@ -38,7 +39,6 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -73,8 +73,9 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
         body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
+            showLoading();
             if (snapshot.connectionState == ConnectionState.done) {
-              EasyLoading.dismiss();
+              BotToast.closeAllLoading();
               if (snapshot.hasData) {
                 personalData =
                     CustomUser.fromJson(snapshot.data["custom_user"]);
@@ -104,7 +105,6 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
               }
             }
 
-            EasyLoading.show();
             return Container();
           },
         ),

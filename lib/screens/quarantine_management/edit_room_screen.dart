@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/building.dart';
@@ -37,18 +38,16 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
-      final registerResponse = await updateRoom(updateRoomDataForm(
+      CancelFunc cancel = showLoading();
+      final response = await updateRoom(updateRoomDataForm(
         name: nameController.text,
         id: widget.currentRoom!.id,
         quarantineFloor: widget.currentFloor!.id,
         capacity: int.parse(capacityController.text),
       ));
 
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(registerResponse.message)),
-      );
+      cancel();
+      showNotification(response);
     }
   }
 

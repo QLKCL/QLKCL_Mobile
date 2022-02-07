@@ -35,7 +35,6 @@ class GeneralInfo extends StatelessWidget {
           Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
-              height: 82,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

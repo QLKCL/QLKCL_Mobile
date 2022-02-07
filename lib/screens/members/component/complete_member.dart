@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -160,20 +161,13 @@ class _CompleteMemberState extends State<CompleteMember>
                   PopupMenuItem(
                     child: Text('Hoàn thành cách ly'),
                     onTap: () async {
-                      EasyLoading.show();
+                      CancelFunc cancel = showLoading();
                       final response =
                           await finishMember({'member_codes': item['code']});
+                      cancel();
+                      showNotification(response);
                       if (response.success) {
                         _pagingController.refresh();
-                        EasyLoading.dismiss();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
-                        );
-                      } else {
-                        EasyLoading.dismiss();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(response.message)),
-                        );
                       }
                     },
                   ),

@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -35,7 +36,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -71,8 +71,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
         child: FutureBuilder<dynamic>(
             future: futureRoomList,
             builder: (context, snapshot) {
+              showLoading();
               if (snapshot.hasData) {
-                EasyLoading.dismiss();
+                BotToast.closeAllLoading();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -107,7 +108,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }
-              EasyLoading.show();
               return Container();
             }),
       ),

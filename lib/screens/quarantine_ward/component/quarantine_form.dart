@@ -1,7 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
@@ -133,17 +134,15 @@ class _QuarantineFormState extends State<QuarantineForm> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
-        final registerResponse =
-            await createQuarantine(createQuarantineDataForm(
+        final response = await createQuarantine(createQuarantineDataForm(
           email: emailController.text,
           fullName: nameController.text,
           country: countryController.text,
@@ -158,13 +157,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
           phoneNumber: phoneNumberController.text,
           image: imageList.sublist(1).join(','),
         ));
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(registerResponse.message)),
-        );
+        cancel();
+        showNotification(response);
       } else if (widget.mode == Permission.edit) {
-        final registerResponse =
-            await updateQuarantine(updateQuarantineDataForm(
+        final response = await updateQuarantine(updateQuarantineDataForm(
           id: widget.quarantineInfo!.id.toInt(),
           email: emailController.text,
           fullName: nameController.text,
@@ -180,17 +176,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
           phoneNumber: phoneNumberController.text,
           image: imageList.sublist(1).join(','),
         ));
-        if (registerResponse.success) {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
-          );
-        } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(registerResponse.message)),
-          );
-        }
+        cancel();
+        showNotification(response);
       }
     }
   }
@@ -509,13 +496,13 @@ class _QuarantineFormState extends State<QuarantineForm> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  EasyLoading.show();
+                                  CancelFunc cancel = showLoading();
                                   upLoadImages(
                                     _imageFileList,
                                     multi: true,
                                     type: "Quarantine_Ward",
                                   ).then((value) => setState(() {
-                                        EasyLoading.dismiss();
+                                        cancel();
                                         imageList.addAll(value);
                                       }));
                                 },

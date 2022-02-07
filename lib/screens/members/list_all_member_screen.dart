@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
@@ -89,21 +90,14 @@ class _ListAllMemberState extends State<ListAllMember>
                           PopupMenuItem(
                             child: Text('Từ chối'),
                             onTap: () async {
-                              EasyLoading.show();
+                              CancelFunc cancel = showLoading();
                               final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
+                              cancel();
+                              showNotification(response);
                               if (response.success) {
                                 indexList.clear();
                                 longPress();
-                                EasyLoading.dismiss();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(response.message)),
-                                );
-                              } else {
-                                EasyLoading.dismiss();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(response.message)),
-                                );
                               }
                             },
                           ),
