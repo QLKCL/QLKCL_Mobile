@@ -139,6 +139,18 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 // Notification
 CancelFunc Function(dynamic data, {String status, String? subTitle})
     showNotification = (data, {status = "success", subTitle}) {
+  // return BotToast.showSimpleNotification(
+  //   title: data,
+  //   subTitle: subTitle,
+  //   onlyOne: false,
+  //   duration: Duration(seconds: 3),
+  //   hideCloseButton: true,
+  //   backgroundColor: status == "success"
+  //       ? CustomColors.success
+  //       : (status == "warning" ? CustomColors.warning : CustomColors.error),
+  //   titleStyle: const TextStyle(color: Colors.white),
+  //   subTitleStyle: const TextStyle(color: Colors.white),
+  // );
   return BotToast.showCustomNotification(
     duration: Duration(seconds: 3),
     toastBuilder: (cancel) {
@@ -193,33 +205,35 @@ class _CustomWidgetState extends State<_CustomWidget> {
   @override
   Widget build(BuildContext context) {
     return Align(
-        alignment: Alignment.topRight,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Card(
-            color: widget.backgroundColor ?? CustomColors.success,
-            shape: widget.borderRadius == null
-                ? null
-                : RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(widget.borderRadius!),
-                  ),
-            child: ListTile(
-                leading: widget.leading,
-                title: Text(
-                  widget.title,
-                  style: widget.titleStyle,
+      alignment: Alignment.topRight,
+      heightFactor: 1,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          color: widget.backgroundColor ?? CustomColors.success,
+          shape: widget.borderRadius == null
+              ? null
+              : RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(widget.borderRadius!),
                 ),
-                subtitle: widget.subTitle != null
-                    ? Text(
-                        widget.subTitle!,
-                        style: widget.subTitleStyle,
-                      )
-                    : null,
-                trailing: widget.hideCloseButton
-                    ? null
-                    : IconButton(
-                        icon: widget.closeIcon, onPressed: widget.cancelFunc)),
-          ),
-        ));
+          child: ListTile(
+              leading: widget.leading,
+              title: Text(
+                widget.title,
+                style: widget.titleStyle,
+              ),
+              subtitle: widget.subTitle != null
+                  ? Text(
+                      widget.subTitle!,
+                      style: widget.subTitleStyle,
+                    )
+                  : null,
+              trailing: widget.hideCloseButton
+                  ? null
+                  : IconButton(
+                      icon: widget.closeIcon, onPressed: widget.cancelFunc)),
+        ),
+      ),
+    );
   }
 }
