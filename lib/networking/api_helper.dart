@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'dart:convert';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -24,6 +25,10 @@ class ApiHelper {
     dio.interceptors.clear();
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
+        // var accessToken = await getAccessToken();
+        // var refreshToken = await getRefreshToken();
+        // bool _token = isTokenExpired(accessToken!);
+        // bool _refresh = isTokenExpired(refreshToken!);
         requestInterceptor(options);
         return handler.next(options); //modify your request
       },
@@ -85,10 +90,14 @@ class ApiHelper {
         await setAccessToken(accessToken);
       } else {
         print(response.toString());
+        showTextToast(
+            'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại');
         await logout();
       }
     } catch (e) {
       print(e.toString());
+      showTextToast(
+          'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại');
       await logout();
     }
   }
