@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -48,7 +49,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -83,8 +83,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
         child: FutureBuilder<dynamic>(
             future: futureMemberList,
             builder: (context, snapshot) {
+              showLoading();
               if (snapshot.hasData) {
-                EasyLoading.dismiss();
+                BotToast.closeAllLoading();
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -114,7 +115,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               } else if (snapshot.hasError) {
                 return Text('Snapshot has error');
               }
-              EasyLoading.show();
               return Container();
             }),
       ),
@@ -124,10 +124,17 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => AddMember(
-                quarantineWard: KeyValue(id: widget.currentQuarantine!.id, name: widget.currentQuarantine!.fullName) ,
-                quarantineBuilding: KeyValue(id: widget.currentBuilding!.id, name: widget.currentBuilding!.name) ,
-                quarantineFloor: KeyValue(id: widget.currentFloor!.id, name: widget.currentFloor!.name) ,
-                quarantineRoom: KeyValue(id: widget.currentRoom!.id, name: widget.currentRoom!.name) ,
+                quarantineWard: KeyValue(
+                    id: widget.currentQuarantine!.id,
+                    name: widget.currentQuarantine!.fullName),
+                quarantineBuilding: KeyValue(
+                    id: widget.currentBuilding!.id,
+                    name: widget.currentBuilding!.name),
+                quarantineFloor: KeyValue(
+                    id: widget.currentFloor!.id,
+                    name: widget.currentFloor!.name),
+                quarantineRoom: KeyValue(
+                    id: widget.currentRoom!.id, name: widget.currentRoom!.name),
               ),
             ),
           );

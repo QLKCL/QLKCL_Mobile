@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
@@ -443,15 +444,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         widget.quarantineData?.customUserCode != null)
                       OutlinedButton(
                         onPressed: () async {
-                          EasyLoading.show();
+                          CancelFunc cancel = showLoading();
                           final response = await denyMember({
                             'member_codes':
                                 widget.quarantineData!.customUserCode.toString()
                           });
-                          EasyLoading.dismiss();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(response.message)),
-                          );
+                          cancel();
+                          showNotification(response.message);
                         },
                         child: Text("Từ chối"),
                       ),
@@ -475,7 +474,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final updateResponse = await updateMember(updateMemberDataForm(
         code: (widget.mode == Permission.add &&
                 MemberPersonalInfo.userCode != null)
@@ -498,20 +497,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           final response = await acceptMember({
             'member_codes': widget.quarantineData!.customUserCode.toString()
           });
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(response.message)));
+          cancel();
+
+          showNotification(response.message);
         } else {
-          EasyLoading.dismiss();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(updateResponse.message)),
-          );
+          cancel();
+          showNotification(updateResponse.message);
         }
       } else {
-        EasyLoading.dismiss();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(updateResponse.message)),
-        );
+        cancel();
+        showNotification(updateResponse.message, status: "error");
       }
     }
   }

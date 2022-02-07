@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -122,21 +123,17 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        EasyLoading.show();
+        CancelFunc cancel = showLoading();
         final response = await changePass(changePassDataForm(
             oldPassword: oldPassController.text,
             newPassword: passController.text,
             confirmPassword: secondPassController.text));
-        EasyLoading.dismiss();
+        cancel();
         if (response.success) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
+          showNotification(response.message);
           Navigator.pop(context);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
+          showNotification(response.message, status: "error");
         }
       }
     }

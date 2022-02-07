@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -38,7 +39,6 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -55,8 +55,9 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
             : (FutureBuilder<dynamic>(
                 future: futureQuarantine,
                 builder: (context, snapshot) {
+                  showLoading();
                   if (snapshot.connectionState == ConnectionState.done) {
-                    EasyLoading.dismiss();
+                    BotToast.closeAllLoading();
                     if (snapshot.hasData) {
                       quarantineInfo = Quarantine.fromJson(snapshot.data);
 
@@ -69,7 +70,6 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
                     }
                   }
 
-                  EasyLoading.show();
                   return Container();
                 },
               )),

@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -101,22 +102,18 @@ class _ForgetFormState extends State<ForgetForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response =
           await requestOtp(requestOtpDataForm(email: emailController.text));
-      EasyLoading.dismiss();
+      cancel();
       if (response.success) {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => Otp(email: emailController.text)));
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message)),
-        );
+        showNotification(response.message);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message)),
-        );
+        showNotification(response.message, status: "error");
       }
     }
   }

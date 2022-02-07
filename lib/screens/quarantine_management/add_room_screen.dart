@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/building.dart';
@@ -47,7 +48,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -63,16 +63,14 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         nameController.text = nameList.join(",");
         capacityController.text = capacityList.join(",");
       }
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response = await createRoom(createRoomDataForm(
         name: nameController.text,
         quarantineFloor: widget.currentFloor!.id,
         capacity: capacityController.text,
       ));
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(response.message)),
-      );
+      cancel();
+      showNotification(response.message);
       Navigator.pop(context);
     }
   }
@@ -108,8 +106,9 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
           child: FutureBuilder<dynamic>(
               future: futureRoomList,
               builder: (context, snapshot) {
+                showLoading();
                 if (snapshot.hasData) {
-                  EasyLoading.dismiss();
+                  BotToast.closeAllLoading();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -269,7 +268,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                 } else if (snapshot.hasError) {
                   return Text('Snapshot has error');
                 }
-                EasyLoading.show();
                 return Container();
               }),
         ),

@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 
 import 'package:qlkcl/models/quarantine.dart';
 import './edit_quarantine_screen.dart';
@@ -26,7 +27,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -67,8 +67,9 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
       body: FutureBuilder<dynamic>(
         future: futureQuarantine,
         builder: (context, snapshot) {
+          showLoading();
           if (snapshot.connectionState == ConnectionState.done) {
-            EasyLoading.dismiss();
+            BotToast.closeAllLoading();
             if (snapshot.hasData) {
               quarantineInfo = Quarantine.fromJson(snapshot.data);
               return QuarantineInfo(
@@ -78,7 +79,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
               return Text('${snapshot.error}');
             }
           }
-          EasyLoading.show();
           return Container();
         },
       ),

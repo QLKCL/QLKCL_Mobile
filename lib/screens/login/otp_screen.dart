@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -167,10 +168,10 @@ class _OtpState extends State<Otp> {
           hasError = false;
         },
       );
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response =
           await sendOtp(sendOtpDataForm(email: widget.email, otp: otp));
-      EasyLoading.dismiss();
+      cancel();
       if (response.success) {
         Navigator.push(
             context,
@@ -180,9 +181,7 @@ class _OtpState extends State<Otp> {
                       otp: response.data,
                     )));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message)),
-        );
+        showNotification(response.message, status: "error");
       }
     } else {
       errorController!
@@ -194,13 +193,11 @@ class _OtpState extends State<Otp> {
   void _reSend() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response =
           await requestOtp(requestOtpDataForm(email: widget.email));
-      EasyLoading.dismiss();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(response.message)),
-      );
+      cancel();
+      showNotification(response.message);
     }
   }
 }

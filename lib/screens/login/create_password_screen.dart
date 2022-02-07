@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -104,22 +105,18 @@ class _CreatePasswordState extends State<CreatePassword> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        EasyLoading.show();
+        CancelFunc cancel = showLoading();
         final response = await createPass(createPassDataForm(
             email: widget.email,
             otp: widget.otp,
             newPassword: passController.text,
             confirmPassword: secondPassController.text));
-        EasyLoading.dismiss();
+        cancel();
         if (response.success) {
           Navigator.popUntil(context, (route) => route.isFirst);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
+          showNotification(response.message);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.message)),
-          );
+          showNotification(response.message, status: "error");
         }
       }
     }

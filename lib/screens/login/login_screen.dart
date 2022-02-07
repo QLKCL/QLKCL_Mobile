@@ -1,5 +1,6 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -26,7 +27,6 @@ class _LoginState extends State<Login> {
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -143,10 +143,10 @@ class _LoginFormState extends State<LoginForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show();
+      CancelFunc cancel = showLoading();
       final response = await login(loginDataForm(
           phoneNumber: phoneController.text, password: passController.text));
-      EasyLoading.dismiss();
+      cancel();
       if (response.success) {
         int role = await getRole();
         Navigator.pushAndRemoveUntil(
@@ -154,9 +154,7 @@ class _LoginFormState extends State<LoginForm> {
             MaterialPageRoute(builder: (context) => App(role: role)),
             (Route<dynamic> route) => false);
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response.message)),
-        );
+        showNotification(response.message, status: "error");
       }
     }
   }

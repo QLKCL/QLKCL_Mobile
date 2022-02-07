@@ -142,8 +142,8 @@ void Function(String title, {String status, String? subTitle})
     title: title,
     subTitle: subTitle,
     onlyOne: false,
-    crossPage: false,
-    duration: Duration(seconds: 5),
+    duration: Duration(seconds: 3),
+    hideCloseButton: true,
     backgroundColor: status == "success"
         ? CustomColors.success
         : (status == "warning" ? CustomColors.warning : CustomColors.error),

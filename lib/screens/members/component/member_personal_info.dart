@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
@@ -130,7 +131,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
 
   @override
   void deactivate() {
-    EasyLoading.dismiss();
     super.deactivate();
   }
 
@@ -457,9 +457,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     } else {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        EasyLoading.show();
+        CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
-          final registerResponse = await createMember(createMemberDataForm(
+          final response = await createMember(createMemberDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -476,21 +476,16 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             passport: passportNumberController.text,
             quarantineWard: (await getQuarantineWard()).toString(),
           ));
-          if (registerResponse.success) {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
+          cancel();
+          if (response.success) {
+            showNotification(response.message);
             widget.tabController!.animateTo(1);
           } else {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
+            showNotification(response.message, status: "error");
           }
         }
         if (widget.mode == Permission.edit) {
-          final registerResponse = await updateMember(updateMemberDataForm(
+          final response = await updateMember(updateMemberDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -506,16 +501,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             identity: identityNumberController.text,
             passport: passportNumberController.text,
           ));
-          if (registerResponse.success) {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
+          cancel();
+          if (response.success) {
+            showNotification(response.message);
           } else {
-            EasyLoading.dismiss();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(registerResponse.message)),
-            );
+            showNotification(response.message, status: "error");
           }
         }
       }
