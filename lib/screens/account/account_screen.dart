@@ -8,6 +8,7 @@ import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 
 class Account extends StatefulWidget {
   static const String routeName = "/account";
@@ -67,6 +68,18 @@ class _AccountState extends State<Account> {
                         .pushNamed(ListTest.routeName);
                   },
                   title: Text('Kết quả xét nghiệm'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+                Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(ListVaccineDose.routeName);
+                  },
+                  title: Text('Thông tin tiêm chủng'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
               ],

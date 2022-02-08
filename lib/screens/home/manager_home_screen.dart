@@ -8,6 +8,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
@@ -255,6 +256,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               shape: const StadiumBorder(),
               childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               children: [
+                SpeedDialChild(
+                  child: const Icon(Icons.edit_outlined),
+                  label: 'Khai báo y tế',
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(MedicalDeclarationScreen.routeName),
+                ),
                 SpeedDialChild(
                   child: const Icon(Icons.description_outlined),
                   label: 'Phiếu xét nghiệm',

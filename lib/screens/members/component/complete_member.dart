@@ -7,6 +7,7 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
+import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 
@@ -143,6 +144,12 @@ class _CompleteMemberState extends State<CompleteMember>
                                   code: item["code"],
                                   name: item['full_name'],
                                 )));
+                  } else if (result == 'vaccine_dose_history') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListVaccineDose(
+                                  code: item["code"],
+                                )));
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -157,6 +164,10 @@ class _CompleteMemberState extends State<CompleteMember>
                   PopupMenuItem(
                     child: Text('Lịch sử xét nghiệm'),
                     value: "test_history",
+                  ),
+                  PopupMenuItem(
+                    child: Text('Thông tin tiêm chủng'),
+                    value: "vaccine_dose_history",
                   ),
                   PopupMenuItem(
                     child: Text('Hoàn thành cách ly'),

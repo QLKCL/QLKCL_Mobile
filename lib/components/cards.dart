@@ -1092,3 +1092,97 @@ class NotificationCard extends StatelessWidget {
     );
   }
 }
+
+class VaccineDoseCard extends StatelessWidget {
+  final VoidCallback? onTap;
+  final String vaccine;
+  final String time;
+  final Widget? menus;
+  const VaccineDoseCard({
+    this.onTap,
+    required this.time,
+    required this.vaccine,
+    this.menus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        vaccine,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Thời gian: " + time,
+                            )
+                          ],
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: 4,
+                      // ),
+                      // Text.rich(
+                      //   TextSpan(
+                      //     style: TextStyle(
+                      //       color: CustomColors.disableText,
+                      //     ),
+                      //     children: [
+                      //       WidgetSpan(
+                      //         alignment: PlaceholderAlignment.middle,
+                      //         child: Icon(
+                      //           Icons.description_outlined,
+                      //           size: 16,
+                      //           color: CustomColors.disableText,
+                      //         ),
+                      //       ),
+                      //       TextSpan(
+                      //         text: " Nơi tiêm: " ,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                menus ?? Container()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

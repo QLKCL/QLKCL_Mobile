@@ -58,6 +58,8 @@ class Constant {
       '/api/notification/user_notification/change_status';
   static const String deleteUserNotification =
       '/api/notification/user_notification/delete';
+  static const String getVaccineDose = '/api/form/vaccine_dose/get';
+  static const String filterVaccineDose = '/api/form/vaccine_dose/filter';
 }
 
 enum Permission {
