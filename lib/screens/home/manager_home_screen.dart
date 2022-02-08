@@ -41,7 +41,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    notifications.fetchUserNotificationList().then((value) => setState(() {
+    notifications.fetchUserNotificationList(data: {
+      'page_size': PAGE_SIZE_MAX
+    }).then((value) => setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>

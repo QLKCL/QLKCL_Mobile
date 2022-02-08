@@ -49,11 +49,7 @@ class _ListNotificationState extends State<ListNotification> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchUserNotificationList(
-          //   data: {
-          //   'page': pageKey
-          // }
-          );
+      final newItems = await fetchUserNotificationList(data: {'page': pageKey});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
