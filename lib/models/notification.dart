@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 Notification notificationFromJson(String str) =>
@@ -110,4 +111,19 @@ Future<dynamic> fetchUserNotificationList({data}) async {
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
+}
+
+Future<dynamic> changeStateUserNotification({data}) async {
+  ApiHelper api = ApiHelper();
+  final response =
+      await api.postHTTP(Constant.changeStateUserNotification, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true);
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
 }

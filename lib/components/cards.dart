@@ -1074,11 +1074,46 @@ class NotificationCard extends StatelessWidget {
                             color: CustomColors.primaryText),
                       ),
                       SizedBox(
+                        height: 2,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " + time + " ",
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                status ? Icons.done_all : null,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
                         height: 4,
                       ),
                       Text(
                         description,
-                        style: TextStyle(color: CustomColors.disableText),
+                        style: TextStyle(
+                            color: status
+                                ? CustomColors.disableText
+                                : CustomColors.primaryText),
                       )
                     ],
                   ),

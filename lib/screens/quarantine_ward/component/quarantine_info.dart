@@ -149,9 +149,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
-              showLoading();
               if (snapshot.hasData) {
-                BotToast.closeAllLoading();
                 return CarouselBuilding(
                   data: snapshot.data,
                   currentQuarantine: widget.quarantineInfo,
