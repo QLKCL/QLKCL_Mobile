@@ -12,6 +12,7 @@ class Constant {
   static const String updateMember = '/api/user/member/update';
   static const String denyMember = '/api/user/member/refuse';
   static const String acceptOneMember = '/api/user/member/accept_one';
+  static const String acceptManyMember = '/api/user/member/accept_many';
   static const String finishMember = '/api/user/member/finish_quarantine';
 
   static const String homeManager = '/api/user/home/manager';

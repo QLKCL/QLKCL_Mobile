@@ -13,11 +13,15 @@ class ConfirmMember extends StatefulWidget {
       {Key? key,
       required this.longPressFlag,
       required this.indexList,
-      required this.longPress})
+      required this.longPress,
+      this.onDone = false,
+      required this.onDoneCallback})
       : super(key: key);
   final bool longPressFlag;
   final List<String> indexList;
   final VoidCallback longPress;
+  final bool onDone;
+  final VoidCallback onDoneCallback;
 
   @override
   _ConfirmMemberState createState() => _ConfirmMemberState();
@@ -81,6 +85,12 @@ class _ConfirmMemberState extends State<ConfirmMember>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    if (widget.onDone == true) {
+      widget.indexList.clear();
+      widget.onDoneCallback();
+      _pagingController.refresh();
+    }
+
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
