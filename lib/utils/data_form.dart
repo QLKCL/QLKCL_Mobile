@@ -474,3 +474,18 @@ Map<String, dynamic> filterMedDeclDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> acceptOneMemberDataForm({
+  required String code,
+  String? quarantineRoom,
+  String? quarantinedAt,
+  String? staffCode,
+}) {
+  var data = {
+    "code": code,
+    "quarantine_room_id": quarantineRoom,
+    "quarantined_at": quarantinedAt,
+    "care_staff_code": staffCode,
+  };
+  return prepareDataForm(data);
+}

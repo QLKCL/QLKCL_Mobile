@@ -198,9 +198,9 @@ Future<dynamic> denyMember(data) async {
   }
 }
 
-Future<dynamic> acceptMember(data) async {
+Future<dynamic> acceptOneMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.acceptMember, data);
+  final response = await api.postHTTP(Constant.acceptOneMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

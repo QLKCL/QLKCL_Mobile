@@ -129,7 +129,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   http.Response? response;
   try {
     response = await http.post(
-        Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToekn),
+        Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToken),
         headers: {
           'Accept': 'application/json',
         },
