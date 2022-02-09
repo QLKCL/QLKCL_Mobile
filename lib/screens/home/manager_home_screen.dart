@@ -30,7 +30,7 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
-  late String unreadNotifications = '';
+  late int unreadNotifications = 0;
   late dynamic listNotification = [];
   bool _showFab = true;
 
@@ -49,8 +49,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
-              .length
-              .toString();
+              .length;
         }));
   }
 
@@ -141,13 +140,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             backgroundColor: CustomColors.background,
             centerTitle: false,
             actions: [
-              if (unreadNotifications != '')
+              if (unreadNotifications != 0)
                 Badge(
                   position: BadgePosition.topEnd(top: 10, end: 16),
                   animationDuration: Duration(milliseconds: 300),
                   animationType: BadgeAnimationType.scale,
                   badgeContent: Text(
-                    unreadNotifications,
+                    unreadNotifications.toString(),
                     style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                   ),
                   child: IconButton(
@@ -163,7 +162,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     tooltip: "Thông báo",
                   ),
                 ),
-              if (unreadNotifications == '')
+              if (unreadNotifications == 0)
                 IconButton(
                   padding: EdgeInsets.only(right: 24),
                   icon: Icon(

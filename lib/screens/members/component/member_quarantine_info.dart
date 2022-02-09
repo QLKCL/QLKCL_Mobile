@@ -207,7 +207,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineBuildingList = data;
                     }));
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode == Permission.add ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(

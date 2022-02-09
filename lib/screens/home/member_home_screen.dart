@@ -23,7 +23,7 @@ class MemberHomePage extends StatefulWidget {
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  late String unreadNotifications = '';
+  late int unreadNotifications = 0;
   late dynamic listNotification = [];
 
   late Future<CovidData> futureCovid;
@@ -36,14 +36,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
-    notifications.fetchUserNotificationList().then((value) => setState(() {
+    notifications.fetchUserNotificationList(data: {
+      'page_size': PAGE_SIZE_MAX
+    }).then((value) => setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
-              .length
-              .toString();
+              .length;
         }));
   }
 
@@ -138,13 +139,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
           backgroundColor: CustomColors.background,
           centerTitle: false,
           actions: [
-            if (unreadNotifications != '')
+            if (unreadNotifications != 0)
               Badge(
                 position: BadgePosition.topEnd(top: 10, end: 16),
                 animationDuration: Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 badgeContent: Text(
-                  unreadNotifications,
+                  unreadNotifications.toString(),
                   style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
@@ -160,7 +161,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   tooltip: "Thông báo",
                 ),
               ),
-            if (unreadNotifications == '')
+            if (unreadNotifications == 0)
               IconButton(
                 padding: EdgeInsets.only(right: 24),
                 icon: Icon(
@@ -205,13 +206,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       var msg = "";
                       if (snapshot.data == "WAITING") {
                         msg =
-                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ với quản lý khu cách ly!";
                       } else if (snapshot.data == "REFUSED") {
                         msg =
-                            "Tài khoản của bạn bị từ chối. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn đã bị từ chối. Vui lòng liên hệ với quản lý khu cách ly!";
                       } else if (snapshot.data == "LOCKED") {
                         msg =
-                            "Tài khoản của bạn bị khóa. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản lý khu cách ly!";
                       }
                       if (msg != "") {
                         return Card(
@@ -280,7 +281,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                             child: Text(
-                              "Thông tin sức khỏe của bạn",
+                              "Thông tin sức khỏe",
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.headline5,
                             ),

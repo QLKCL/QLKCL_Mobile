@@ -175,6 +175,15 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
         return Response(success: false, message: "Email đã được sử dụng!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            success: false, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room does not satisfy max_day_quarantined") {
+        return Response(
+            success: false, message: "Phòng đã chọn không phù hợp!");
       } else {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }
@@ -192,6 +201,21 @@ Future<dynamic> denyMember(data) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Từ chối thành công!");
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> acceptManyMember(data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.acceptManyMember, data);
+  print(response);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Chấp nhận thành công!");
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

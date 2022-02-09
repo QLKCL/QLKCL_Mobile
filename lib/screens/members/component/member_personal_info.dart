@@ -143,7 +143,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         child: Column(
           children: <Widget>[
             Input(
-              label: 'Mã số',
+              label: 'Mã định danh',
               enabled: false,
               controller: codeController,
             ),
