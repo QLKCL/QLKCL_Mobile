@@ -96,6 +96,9 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => TestNoResultCard(
                 name: item['user'] != null ? item['user']['full_name'] : "",
                 gender: item['user'] != null ? item['user']['gender'] : "",

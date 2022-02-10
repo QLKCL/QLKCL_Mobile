@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
@@ -102,9 +103,19 @@ class Member {
 Future<dynamic> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
-  return response != null && response['data'] != null
-      ? response['data']['content']
-      : null;
+  if (response != null) {
+    if (response['error_code'] == 0 && response['data'] != null) {
+      return response['data']['content'];
+    } else if (response['error_code'] == 401) {
+      if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Permission denied") {
+        showNotification('Không có quyền truy cập!', status: 'error');
+      }
+      return null;
+    }
+  }
+
+  return null;
 }
 
 Future<dynamic> createMember(Map<String, dynamic> data) async {
@@ -175,6 +186,15 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
         return Response(success: false, message: "Email đã được sử dụng!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            success: false, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room does not satisfy max_day_quarantined") {
+        return Response(
+            success: false, message: "Phòng đã chọn không phù hợp!");
       } else {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }
@@ -198,9 +218,30 @@ Future<dynamic> denyMember(data) async {
   }
 }
 
-Future<dynamic> acceptMember(data) async {
+Future<dynamic> acceptManyMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.acceptMember, data);
+  final response = await api.postHTTP(Constant.acceptManyMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0 && response['data'] == {}) {
+      showNotification("Chấp nhận thành công!");
+      return Response(success: true, message: "Chấp nhận thành công!");
+    } else if (response['error_code'] == 0 && response['data'] != {}) {
+      showNotification("Một số tài khoản không thể xét duyệt!",
+          status: 'warning');
+      return Response(
+          success: true, message: "Một số tài khoản không thể xét duyệt!");
+    } else {
+      showNotification("Có lỗi xảy ra!", status: 'error');
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> acceptOneMember(data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.acceptOneMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

@@ -8,6 +8,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
@@ -29,7 +30,7 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
-  late String unreadNotifications = '';
+  late int unreadNotifications = 0;
   late dynamic listNotification = [];
   bool _showFab = true;
 
@@ -40,14 +41,15 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
-    notifications.fetchUserNotificationList().then((value) => setState(() {
+    notifications.fetchUserNotificationList(data: {
+      'page_size': PAGE_SIZE_MAX
+    }).then((value) => setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
-              .length
-              .toString();
+              .length;
         }));
   }
 
@@ -138,13 +140,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             backgroundColor: CustomColors.background,
             centerTitle: false,
             actions: [
-              if (unreadNotifications != '')
+              if (unreadNotifications != 0)
                 Badge(
                   position: BadgePosition.topEnd(top: 10, end: 16),
                   animationDuration: Duration(milliseconds: 300),
                   animationType: BadgeAnimationType.scale,
+                  shape: BadgeShape.square,
+                  borderRadius: BorderRadius.circular(8),
+                  padding: EdgeInsets.fromLTRB(4, 2, 4, 1),
                   badgeContent: Text(
-                    unreadNotifications,
+                    unreadNotifications.toString(),
                     style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                   ),
                   child: IconButton(
@@ -160,7 +165,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     tooltip: "Thông báo",
                   ),
                 ),
-              if (unreadNotifications == '')
+              if (unreadNotifications == 0)
                 IconButton(
                   padding: EdgeInsets.only(right: 24),
                   icon: Icon(
@@ -255,6 +260,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               shape: const StadiumBorder(),
               childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               children: [
+                SpeedDialChild(
+                  child: const Icon(Icons.edit_outlined),
+                  label: 'Khai báo y tế',
+                  onTap: () => Navigator.of(context, rootNavigator: true)
+                      .pushNamed(MedicalDeclarationScreen.routeName),
+                ),
                 SpeedDialChild(
                   child: const Icon(Icons.description_outlined),
                   label: 'Phiếu xét nghiệm',

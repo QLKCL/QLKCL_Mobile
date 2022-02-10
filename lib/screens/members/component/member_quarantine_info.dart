@@ -207,13 +207,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineBuildingList = data;
                     }));
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode == Permission.add ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
               label: 'Tòa',
               hint: 'Chọn tòa',
-              required: widget.mode == Permission.view ? false : true,
+              required: (widget.mode == Permission.view ||
+                      widget.mode == Permission.change_status)
+                  ? false
+                  : true,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineBuildingList.length == 0
                   ? (String? filter) => fetchQuarantineBuilding({
@@ -259,7 +262,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Tầng',
               hint: 'Chọn tầng',
-              required: widget.mode == Permission.view ? false : true,
+              required: (widget.mode == Permission.view ||
+                      widget.mode == Permission.change_status)
+                  ? false
+                  : true,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineFloorList.length == 0
                   ? (String? filter) => fetchQuarantineFloor({
@@ -303,7 +309,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Phòng',
               hint: 'Chọn phòng',
-              required: widget.mode == Permission.view ? false : true,
+              required: (widget.mode == Permission.view ||
+                      widget.mode == Permission.change_status)
+                  ? false
+                  : true,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineRoomList.length == 0
                   ? (String? filter) => fetchQuarantineRoom({
@@ -474,37 +483,35 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      final updateResponse = await updateMember(updateMemberDataForm(
-        code: (widget.mode == Permission.add &&
-                MemberPersonalInfo.userCode != null)
-            ? MemberPersonalInfo.userCode
-            : ((widget.quarantineData != null &&
-                    widget.quarantineData?.customUserCode != null)
-                ? widget.quarantineData!.customUserCode.toString()
-                : ""),
-        quarantineWard: quarantineWardController.text,
-        quarantineRoom: quarantineRoomController.text,
-        label: labelController.text,
-        quarantinedAt:
-            parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
-        positiveBefore: _isPositiveTestedBefore,
-        backgroundDisease: backgroundDiseaseController.text,
-        otherBackgroundDisease: otherBackgroundDiseaseController.text,
-      ));
-      if (updateResponse.success) {
-        if (widget.mode == Permission.change_status) {
-          final response = await acceptMember({
-            'member_codes': widget.quarantineData!.customUserCode.toString()
-          });
-          cancel();
-
-          showNotification(response);
-        } else {
-          cancel();
-          showNotification(updateResponse);
-        }
+      if (widget.mode == Permission.change_status) {
+        CancelFunc cancel = showLoading();
+        final response = await acceptOneMember(acceptOneMemberDataForm(
+          code: widget.quarantineData!.customUserCode.toString(),
+          quarantineRoom: quarantineRoomController.text,
+          quarantinedAt:
+              parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
+        ));
+        cancel();
+        showNotification(response);
       } else {
+        CancelFunc cancel = showLoading();
+        final updateResponse = await updateMember(updateMemberDataForm(
+          code: (widget.mode == Permission.add &&
+                  MemberPersonalInfo.userCode != null)
+              ? MemberPersonalInfo.userCode
+              : ((widget.quarantineData != null &&
+                      widget.quarantineData?.customUserCode != null)
+                  ? widget.quarantineData!.customUserCode.toString()
+                  : ""),
+          quarantineWard: quarantineWardController.text,
+          quarantineRoom: quarantineRoomController.text,
+          label: labelController.text,
+          quarantinedAt:
+              parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
+          positiveBefore: _isPositiveTestedBefore,
+          backgroundDisease: backgroundDiseaseController.text,
+          otherBackgroundDisease: otherBackgroundDiseaseController.text,
+        ));
         cancel();
         showNotification(updateResponse);
       }

@@ -122,6 +122,9 @@ class _ListTestState extends State<ListTest> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => TestCard(
                 code: item['code'],
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")

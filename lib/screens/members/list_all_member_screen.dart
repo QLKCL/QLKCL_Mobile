@@ -55,6 +55,11 @@ class _ListAllMemberState extends State<ListAllMember>
     });
   }
 
+  bool onDone = false;
+  void onDoneCallback() {
+    onDone = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +91,22 @@ class _ListAllMemberState extends State<ListAllMember>
                           color: CustomColors.disableText,
                         ),
                         itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                          // PopupMenuItem(child: Text('Chấp nhận')),
+                          PopupMenuItem(
+                            child: Text('Chấp nhận'),
+                            onTap: () async {
+                              CancelFunc cancel = showLoading();
+                              final response = await acceptManyMember(
+                                  {'member_codes': indexList.join(",")});
+                              cancel();
+                              if (response.success) {
+                                setState(() {
+                                  onDone = true;
+                                });
+                                indexList.clear();
+                                longPress();
+                              }
+                            },
+                          ),
                           PopupMenuItem(
                             child: Text('Từ chối'),
                             onTap: () async {
@@ -96,6 +116,9 @@ class _ListAllMemberState extends State<ListAllMember>
                               cancel();
                               showNotification(response);
                               if (response.success) {
+                                setState(() {
+                                  onDone = true;
+                                });
                                 indexList.clear();
                                 longPress();
                               }
@@ -140,6 +163,8 @@ class _ListAllMemberState extends State<ListAllMember>
               longPressFlag: longPressFlag,
               indexList: indexList,
               longPress: longPress,
+              onDone: onDone,
+              onDoneCallback: onDoneCallback,
             ),
             SuspectMember(),
             TestMember(),

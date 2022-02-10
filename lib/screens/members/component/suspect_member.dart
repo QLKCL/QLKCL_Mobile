@@ -7,6 +7,7 @@ import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_scree
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
+import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class SuspectMember extends StatefulWidget {
@@ -89,6 +90,9 @@ class _SuspectMemberState extends State<SuspectMember>
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Text('Không có dữ liệu'),
             ),
+            firstPageErrorIndicatorBuilder: (context) => Center(
+              child: Text('Có lỗi xảy ra'),
+            ),
             itemBuilder: (context, item, index) => MemberCard(
               name: item['full_name'] ?? "",
               gender: item['gender'] ?? "",
@@ -151,6 +155,12 @@ class _SuspectMemberState extends State<SuspectMember>
                                   code: item["code"],
                                   name: item['full_name'],
                                 )));
+                  } else if (result == 'vaccine_dose_history') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListVaccineDose(
+                                  code: item["code"],
+                                )));
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -169,6 +179,10 @@ class _SuspectMemberState extends State<SuspectMember>
                   PopupMenuItem(
                     child: Text('Tạo phiếu xét nghiệm'),
                     value: "create_test",
+                  ),
+                  PopupMenuItem(
+                    child: Text('Thông tin tiêm chủng'),
+                    value: "vaccine_dose_history",
                   ),
                 ],
               ),

@@ -49,11 +49,7 @@ class _ListNotificationState extends State<ListNotification> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchUserNotificationList(
-          //   data: {
-          //   'page': pageKey
-          // }
-          );
+      final newItems = await fetchUserNotificationList(data: {'page': pageKey});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -88,6 +84,9 @@ class _ListNotificationState extends State<ListNotification> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => NotificationCard(
                 title: item['notification']['title'],
                 description: item['notification']['description'],
@@ -95,7 +94,15 @@ class _ListNotificationState extends State<ListNotification> {
                     DateTime.parse(item['notification']['created_at'])
                         .toLocal()),
                 status: item['is_read'],
-                onTap: () {},
+                image: item['notification']['image'],
+                url: item['notification']['url'],
+                onTap: () async {
+                  final response = await changeStateUserNotification(
+                      data: {'notification': item['notification']['id']});
+                  if (response.success) {
+                    // _pagingController.refresh();
+                  }
+                },
               ),
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -149,15 +148,20 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
-              showLoading();
-              if (snapshot.hasData) {
-                BotToast.closeAllLoading();
-                return CarouselBuilding(
-                  data: snapshot.data,
-                  currentQuarantine: widget.quarantineInfo,
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return CarouselBuilding(
+                    data: snapshot.data,
+                    currentQuarantine: widget.quarantineInfo,
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                } else {
+                  return Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
+                }
               }
               return Container();
             },

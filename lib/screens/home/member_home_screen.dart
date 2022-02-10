@@ -7,7 +7,7 @@ import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
-// import 'package:qlkcl/screens/home/component/covid_info.dart';
+import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -23,7 +23,7 @@ class MemberHomePage extends StatefulWidget {
 }
 
 class _MemberHomePageState extends State<MemberHomePage> {
-  late String unreadNotifications = '';
+  late int unreadNotifications = 0;
   late dynamic listNotification = [];
 
   late Future<CovidData> futureCovid;
@@ -36,14 +36,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
-    notifications.fetchUserNotificationList().then((value) => setState(() {
+    notifications.fetchUserNotificationList(data: {
+      'page_size': PAGE_SIZE_MAX
+    }).then((value) => setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
-              .length
-              .toString();
+              .length;
         }));
   }
 
@@ -138,13 +139,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
           backgroundColor: CustomColors.background,
           centerTitle: false,
           actions: [
-            if (unreadNotifications != '')
+            if (unreadNotifications != 0)
               Badge(
                 position: BadgePosition.topEnd(top: 10, end: 16),
                 animationDuration: Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
+                shape: BadgeShape.square,
+                borderRadius: BorderRadius.circular(8),
+                padding: EdgeInsets.fromLTRB(4, 2, 4, 1),
                 badgeContent: Text(
-                  unreadNotifications,
+                  unreadNotifications.toString(),
                   style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
@@ -160,7 +164,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   tooltip: "Thông báo",
                 ),
               ),
-            if (unreadNotifications == '')
+            if (unreadNotifications == 0)
               IconButton(
                 padding: EdgeInsets.only(right: 24),
                 icon: Icon(
@@ -205,13 +209,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       var msg = "";
                       if (snapshot.data == "WAITING") {
                         msg =
-                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ với quản lý khu cách ly!";
                       } else if (snapshot.data == "REFUSED") {
                         msg =
-                            "Tài khoản của bạn bị từ chối. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn đã bị từ chối. Vui lòng liên hệ với quản lý khu cách ly!";
                       } else if (snapshot.data == "LOCKED") {
                         msg =
-                            "Tài khoản của bạn bị khóa. Vui lòng liên hệ người quản lý!";
+                            "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản lý khu cách ly!";
                       }
                       if (msg != "") {
                         return Card(
@@ -238,38 +242,36 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     return Container();
                   },
                 ),
-                // Container(
-                //   alignment: Alignment.centerLeft,
-                //   margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                //   child: Text(
-                //     "Thông tin dịch bệnh (Việt Nam)",
-                //     textAlign: TextAlign.left,
-                //     style: Theme.of(context).textTheme.headline5,
-                //   ),
-                // ),
-                // FutureBuilder<CovidData>(
-                //   future: futureCovid,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return InfoCovidHomePage(
-                //           increaseConfirmed: snapshot.data!.increaseConfirmed,
-                //           confirmed: snapshot.data!.confirmed,
-                //           increaseDeaths: snapshot.data!.increaseDeaths,
-                //           deaths: snapshot.data!.deaths,
-                //           increaseRecovered: snapshot.data!.increaseRecovered,
-                //           recovered: snapshot.data!.recovered,
-                //           lastUpdate: DateFormat('HH:mm, dd/MM/yyyy').format(
-                //               DateTime.fromMillisecondsSinceEpoch(
-                //                   snapshot.data!.lastUpdate * 1000)));
-                //     } else if (snapshot.hasError) {
-                //       return Text('${snapshot.error}');
-                //     }
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                  child: Text(
+                    "Thông tin dịch bệnh (Việt Nam)",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+                FutureBuilder<CovidData>(
+                  future: futureCovid,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return InfoCovidHomePage(
+                          increaseConfirmed: snapshot.data!.increaseConfirmed,
+                          confirmed: snapshot.data!.confirmed,
+                          increaseDeaths: snapshot.data!.increaseDeaths,
+                          deaths: snapshot.data!.deaths,
+                          increaseRecovered: snapshot.data!.increaseRecovered,
+                          recovered: snapshot.data!.recovered,
+                          lastUpdate: snapshot.data!.lastUpdate);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
 
-                //     // By default, show a loading spinner.
-                //     // return const CircularProgressIndicator();
-                //     return InfoCovidHomePage();
-                //   },
-                // ),
+                    // By default, show a loading spinner.
+                    // return const CircularProgressIndicator();
+                    return InfoCovidHomePage();
+                  },
+                ),
                 FutureBuilder<dynamic>(
                   future: futureData,
                   builder: (context, snapshot) {
@@ -280,7 +282,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                             child: Text(
-                              "Thông tin sức khỏe của bạn",
+                              "Thông tin sức khỏe",
                               textAlign: TextAlign.left,
                               style: Theme.of(context).textTheme.headline5,
                             ),

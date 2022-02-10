@@ -71,55 +71,62 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
               future: numOfFloor,
               builder: (context, snapshot) {
                 showLoading();
-                if (snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done) {
                   BotToast.closeAllLoading();
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: GeneralInfoBuilding(
-                          currentQuarantine: widget.currentQuarantine!,
-                          currentBuilding: widget.currentBuilding!,
-                          numberOfFloor: snapshot.data,
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
-                              0.6,
-                          child: Input(
-                            label: 'Tên tòa mới',
-                            hint: 'Tên tòa mới',
-                            controller: nameController,
+                              0.25,
+                          child: GeneralInfoBuilding(
+                            currentQuarantine: widget.currentQuarantine!,
+                            currentBuilding: widget.currentBuilding!,
+                            numberOfFloor: snapshot.data,
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Spacer(),
-                            ElevatedButton(
-                              onPressed: _submit,
-                              child: Text("Xác nhận"),
+                        Form(
+                          key: _formKey,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: (MediaQuery.of(context).size.height -
+                                    appBar.preferredSize.height -
+                                    MediaQuery.of(context).padding.top) *
+                                0.6,
+                            child: Input(
+                              label: 'Tên tòa mới',
+                              hint: 'Tên tòa mới',
+                              controller: nameController,
                             ),
-                            Spacer(),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                        Container(
+                          margin: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              ElevatedButton(
+                                onPressed: _submit,
+                                child: Text("Xác nhận"),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Snapshot has error');
+                  } else {
+                    return Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 }
                 return Container();
               }),

@@ -1040,14 +1040,18 @@ class NotificationCard extends StatelessWidget {
   final String description;
   final String time;
   final bool status;
+  final String? image;
+  final String? url;
   final Widget? menus;
   const NotificationCard({
     this.onTap,
     required this.title,
     required this.description,
     required this.time,
-    required this.status,
+    this.status = false,
     this.menus,
+    this.image,
+    this.url,
   });
 
   @override
@@ -1074,12 +1078,154 @@ class NotificationCard extends StatelessWidget {
                             color: CustomColors.primaryText),
                       ),
                       SizedBox(
+                        height: 2,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " + time + " ",
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                status ? Icons.done_all : null,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (image != null)
+                        SizedBox(
+                          height: 4,
+                        ),
+                      if (image != null)
+                        Image.network(
+                          image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Container();
+                          },
+                        ),
+                      SizedBox(
                         height: 4,
                       ),
                       Text(
                         description,
-                        style: TextStyle(color: CustomColors.disableText),
-                      )
+                        style: TextStyle(
+                            color: status
+                                ? CustomColors.disableText
+                                : CustomColors.primaryText),
+                      ),
+                    ],
+                  ),
+                ),
+                menus ?? Container()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VaccineDoseCard extends StatelessWidget {
+  final VoidCallback? onTap;
+  final String vaccine;
+  final String time;
+  final Widget? menus;
+  const VaccineDoseCard({
+    this.onTap,
+    required this.time,
+    required this.vaccine,
+    this.menus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        vaccine,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.history,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " Thời gian: " + time,
+                            )
+                          ],
+                        ),
+                      ),
+                      // SizedBox(
+                      //   height: 4,
+                      // ),
+                      // Text.rich(
+                      //   TextSpan(
+                      //     style: TextStyle(
+                      //       color: CustomColors.disableText,
+                      //     ),
+                      //     children: [
+                      //       WidgetSpan(
+                      //         alignment: PlaceholderAlignment.middle,
+                      //         child: Icon(
+                      //           Icons.description_outlined,
+                      //           size: 16,
+                      //           color: CustomColors.disableText,
+                      //         ),
+                      //       ),
+                      //       TextSpan(
+                      //         text: " Nơi tiêm: " ,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

@@ -190,15 +190,10 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineFloorList: _quarantineFloorList,
                   quarantineRoomList: _quarantineRoomList,
                   labelController: labelController,
-                  onSubmit: (
-                    quarantineWardList,
-                    quarantineBuildingList,
-                    quarantineFloorList,
-                    quarantineRoomList,
-                    _searched,
-                  ) {
+                  onSubmit: (quarantineWardList, quarantineBuildingList,
+                      quarantineFloorList, quarantineRoomList, search) {
                     setState(() {
-                      _searched = true;
+                      _searched = search;
                       _quarantineWardList = quarantineWardList;
                       _quarantineBuildingList = quarantineBuildingList;
                       _quarantineFloorList = quarantineFloorList;
@@ -223,6 +218,9 @@ class _SearchMemberState extends State<SearchMember> {
                       animateTransitions: true,
                       noItemsFoundIndicatorBuilder: (context) => Center(
                             child: Text('Không có kết quả tìm kiếm'),
+                          ),
+                      firstPageErrorIndicatorBuilder: (context) => Center(
+                            child: Text('Có lỗi xảy ra'),
                           ),
                       itemBuilder: (context, item, index) => MemberCard(
                             name: item['full_name'] ?? "",

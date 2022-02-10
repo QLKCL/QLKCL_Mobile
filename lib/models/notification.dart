@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 Notification notificationFromJson(String str) =>
@@ -45,7 +46,7 @@ class NotificationClass {
   });
 
   final int id;
-  final CreatedBy createdBy;
+  final CreatedBy? createdBy;
   final String title;
   final String description;
   final dynamic image;
@@ -56,7 +57,9 @@ class NotificationClass {
   factory NotificationClass.fromJson(Map<String, dynamic> json) =>
       NotificationClass(
         id: json["id"],
-        createdBy: CreatedBy.fromJson(json["created_by"]),
+        createdBy: json["created_by"] != null
+            ? CreatedBy.fromJson(json["created_by"])
+            : null,
         title: json["title"],
         description: json["description"],
         image: json["image"],
@@ -67,7 +70,7 @@ class NotificationClass {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "created_by": createdBy.toJson(),
+        "created_by": createdBy?.toJson(),
         "title": title,
         "description": description,
         "image": image,
@@ -110,4 +113,19 @@ Future<dynamic> fetchUserNotificationList({data}) async {
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
+}
+
+Future<dynamic> changeStateUserNotification({data}) async {
+  ApiHelper api = ApiHelper();
+  final response =
+      await api.postHTTP(Constant.changeStateUserNotification, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true);
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
 }
