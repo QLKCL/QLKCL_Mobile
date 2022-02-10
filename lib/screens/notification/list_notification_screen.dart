@@ -94,6 +94,8 @@ class _ListNotificationState extends State<ListNotification> {
                     DateTime.parse(item['notification']['created_at'])
                         .toLocal()),
                 status: item['is_read'],
+                image: item['notification']['image'],
+                url: item['notification']['url'],
                 onTap: () async {
                   final response = await changeStateUserNotification(
                       data: {'notification': item['notification']['id']});

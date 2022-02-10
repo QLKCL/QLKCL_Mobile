@@ -1040,18 +1040,23 @@ class NotificationCard extends StatelessWidget {
   final String description;
   final String time;
   final bool status;
+  final String? image;
+  final String? url;
   final Widget? menus;
   const NotificationCard({
     this.onTap,
     required this.title,
     required this.description,
     required this.time,
-    required this.status,
+    this.status = false,
     this.menus,
+    this.image,
+    this.url,
   });
 
   @override
   Widget build(BuildContext context) {
+    print(image);
     return Card(
       child: Container(
         child: InkWell(
@@ -1105,6 +1110,12 @@ class NotificationCard extends StatelessWidget {
                           ],
                         ),
                       ),
+                      if (image != null)
+                        SizedBox(
+                          height: 4,
+                        ),
+                      if (image != null)
+                        Image.network(image!, fit: BoxFit.cover),
                       SizedBox(
                         height: 4,
                       ),
@@ -1114,7 +1125,7 @@ class NotificationCard extends StatelessWidget {
                             color: status
                                 ? CustomColors.disableText
                                 : CustomColors.primaryText),
-                      )
+                      ),
                     ],
                   ),
                 ),
