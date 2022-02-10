@@ -46,7 +46,7 @@ class NotificationClass {
   });
 
   final int id;
-  final CreatedBy createdBy;
+  final CreatedBy? createdBy;
   final String title;
   final String description;
   final dynamic image;
@@ -57,7 +57,9 @@ class NotificationClass {
   factory NotificationClass.fromJson(Map<String, dynamic> json) =>
       NotificationClass(
         id: json["id"],
-        createdBy: CreatedBy.fromJson(json["created_by"]),
+        createdBy: json["created_by"] != null
+            ? CreatedBy.fromJson(json["created_by"])
+            : null,
         title: json["title"],
         description: json["description"],
         image: json["image"],
@@ -68,7 +70,7 @@ class NotificationClass {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "created_by": createdBy.toJson(),
+        "created_by": createdBy?.toJson(),
         "title": title,
         "description": description,
         "image": image,
