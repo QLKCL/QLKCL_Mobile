@@ -8,7 +8,7 @@ class CovidData {
   final String confirmed;
   final String recovered;
   final String deaths;
-  final int lastUpdate;
+  final String lastUpdate;
 
   CovidData({
     this.increaseConfirmed = "0",
@@ -17,33 +17,30 @@ class CovidData {
     this.confirmed = "0",
     this.recovered = "0",
     this.deaths = "0",
-    this.lastUpdate = 0,
+    this.lastUpdate = '',
   });
 
   factory CovidData.fromJson(json) {
-    return json != null &&
-            json['data'] != null &&
-            json['data'] != {} &&
-            json['data']['VN'] != null
+    return json != null
         ? CovidData(
-            increaseConfirmed:
-                json['data']['VN'].last["increase_confirmed"].toString(),
-            increaseRecovered:
-                json['data']['VN'].last["increase_recovered"].toString(),
-            increaseDeaths:
-                json['data']['VN'].last["increase_deaths"].toString(),
-            confirmed: json['data']['VN'].last["confirmed"].toString(),
-            recovered: json['data']['VN'].last["recovered"].toString(),
-            deaths: json['data']['VN'].last["deaths"].toString(),
-            lastUpdate: json['data']['VN'].last["last_update"],
+            // increaseConfirmed:
+            //     json["increase_confirmed"].toString(),
+            // increaseRecovered:
+            //     json["increase_recovered"].toString(),
+            // increaseDeaths:
+            //     json["increase_deaths"].toString(),
+            confirmed: json["total_case"].toString(),
+            recovered: json["total_recovered"].toString(),
+            deaths: json["total_death"].toString(),
+            lastUpdate: json["last_updated"],
           )
         : CovidData();
   }
 }
 
-RequestHelper _provider = RequestHelper(baseUrl: "https://ncovi.vnpt.vn");
+RequestHelper _provider = RequestHelper(baseUrl: "https://covid19.ncsc.gov.vn");
 
 Future<CovidData> fetchCovidList() async {
-  final response = await _provider.get("/thongtindichbenh_v2");
+  final response = await _provider.get("/api/v3/covid/national_total");
   return CovidData.fromJson(response.data);
 }

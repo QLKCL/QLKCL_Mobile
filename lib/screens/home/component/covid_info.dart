@@ -30,11 +30,11 @@ class InfoCovid extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: CustomColors.white),
               ),
-              subtitle: Text(
-                "+" + newCase,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: CustomColors.white),
-              ),
+              // subtitle: Text(
+              //   "+" + newCase,
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(color: CustomColors.white),
+              // ),
             ),
             Text(
               totalCase,
@@ -63,7 +63,7 @@ class InfoCovidHomePage extends StatelessWidget {
       this.deaths: "0",
       this.increaseRecovered: "0",
       this.recovered: "0",
-      this.lastUpdate: "HH:mm, dd/MM/yyyy"});
+      this.lastUpdate: "dd/MM/yyyy HH:mm:ss"});
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class InfoCovidHomePage extends StatelessWidget {
             ),
             Spacer(),
             Text(
-              "Nguồn: Bộ Y Tế"
+              "Nguồn: Dữ liệu Covid-19"
             ),
           ],
         ),

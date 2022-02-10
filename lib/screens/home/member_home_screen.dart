@@ -7,7 +7,7 @@ import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
-// import 'package:qlkcl/screens/home/component/covid_info.dart';
+import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -239,38 +239,36 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     return Container();
                   },
                 ),
-                // Container(
-                //   alignment: Alignment.centerLeft,
-                //   margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                //   child: Text(
-                //     "Thông tin dịch bệnh (Việt Nam)",
-                //     textAlign: TextAlign.left,
-                //     style: Theme.of(context).textTheme.headline5,
-                //   ),
-                // ),
-                // FutureBuilder<CovidData>(
-                //   future: futureCovid,
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasData) {
-                //       return InfoCovidHomePage(
-                //           increaseConfirmed: snapshot.data!.increaseConfirmed,
-                //           confirmed: snapshot.data!.confirmed,
-                //           increaseDeaths: snapshot.data!.increaseDeaths,
-                //           deaths: snapshot.data!.deaths,
-                //           increaseRecovered: snapshot.data!.increaseRecovered,
-                //           recovered: snapshot.data!.recovered,
-                //           lastUpdate: DateFormat('HH:mm, dd/MM/yyyy').format(
-                //               DateTime.fromMillisecondsSinceEpoch(
-                //                   snapshot.data!.lastUpdate * 1000)));
-                //     } else if (snapshot.hasError) {
-                //       return Text('${snapshot.error}');
-                //     }
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                  child: Text(
+                    "Thông tin dịch bệnh (Việt Nam)",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                ),
+                FutureBuilder<CovidData>(
+                  future: futureCovid,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return InfoCovidHomePage(
+                          increaseConfirmed: snapshot.data!.increaseConfirmed,
+                          confirmed: snapshot.data!.confirmed,
+                          increaseDeaths: snapshot.data!.increaseDeaths,
+                          deaths: snapshot.data!.deaths,
+                          increaseRecovered: snapshot.data!.increaseRecovered,
+                          recovered: snapshot.data!.recovered,
+                          lastUpdate: snapshot.data!.lastUpdate);
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
 
-                //     // By default, show a loading spinner.
-                //     // return const CircularProgressIndicator();
-                //     return InfoCovidHomePage();
-                //   },
-                // ),
+                    // By default, show a loading spinner.
+                    // return const CircularProgressIndicator();
+                    return InfoCovidHomePage();
+                  },
+                ),
                 FutureBuilder<dynamic>(
                   future: futureData,
                   builder: (context, snapshot) {
