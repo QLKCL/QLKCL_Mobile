@@ -145,6 +145,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   position: BadgePosition.topEnd(top: 10, end: 16),
                   animationDuration: Duration(milliseconds: 300),
                   animationType: BadgeAnimationType.scale,
+                  shape: BadgeShape.square,
+                  borderRadius: BorderRadius.circular(8),
+                  padding: EdgeInsets.fromLTRB(4, 2, 4, 1),
                   badgeContent: Text(
                     unreadNotifications.toString(),
                     style: TextStyle(fontSize: 11.0, color: CustomColors.white),

@@ -1056,7 +1056,6 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(image);
     return Card(
       child: Container(
         child: InkWell(
@@ -1115,7 +1114,14 @@ class NotificationCard extends StatelessWidget {
                           height: 4,
                         ),
                       if (image != null)
-                        Image.network(image!, fit: BoxFit.cover),
+                        Image.network(
+                          image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (BuildContext context, Object exception,
+                              StackTrace? stackTrace) {
+                            return Container();
+                          },
+                        ),
                       SizedBox(
                         height: 4,
                       ),
