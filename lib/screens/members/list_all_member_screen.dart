@@ -98,7 +98,6 @@ class _ListAllMemberState extends State<ListAllMember>
                               final response = await acceptManyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
-                              showNotification(response);
                               if (response.success) {
                                 setState(() {
                                   onDone = true;

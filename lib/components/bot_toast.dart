@@ -139,18 +139,6 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 // Notification
 CancelFunc Function(dynamic data, {String status, String? subTitle})
     showNotification = (data, {status = "success", subTitle}) {
-  // return BotToast.showSimpleNotification(
-  //   title: data,
-  //   subTitle: subTitle,
-  //   onlyOne: false,
-  //   duration: Duration(seconds: 3),
-  //   hideCloseButton: true,
-  //   backgroundColor: status == "success"
-  //       ? CustomColors.success
-  //       : (status == "warning" ? CustomColors.warning : CustomColors.error),
-  //   titleStyle: const TextStyle(color: Colors.white),
-  //   subTitleStyle: const TextStyle(color: Colors.white),
-  // );
   return BotToast.showCustomNotification(
     duration: Duration(seconds: 3),
     toastBuilder: (cancel) {

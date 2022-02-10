@@ -221,13 +221,19 @@ Future<dynamic> denyMember(data) async {
 Future<dynamic> acceptManyMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.acceptManyMember, data);
-  print(response);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
-    if (response['error_code'] == 0) {
+    if (response['error_code'] == 0 && response['data'] == {}) {
+      showNotification("Chấp nhận thành công!");
       return Response(success: true, message: "Chấp nhận thành công!");
+    } else if (response['error_code'] == 0 && response['data'] != {}) {
+      showNotification("Một số tài khoản không thể xét duyệt!",
+          status: 'warning');
+      return Response(
+          success: true, message: "Một số tài khoản không thể xét duyệt!");
     } else {
+      showNotification("Có lỗi xảy ra!", status: 'error');
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }

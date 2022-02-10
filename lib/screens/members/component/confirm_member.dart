@@ -143,7 +143,19 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   color: CustomColors.disableText,
                 ),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  // PopupMenuItem(child: Text('Chấp nhận')),
+                  PopupMenuItem(
+                    child: Text('Chấp nhận'),
+                    onTap: () async {
+                      CancelFunc cancel = showLoading();
+                      final response =
+                          await acceptOneMember({'code': item['code']});
+                      cancel();
+                      showNotification(response);
+                      if (response.success) {
+                        _pagingController.refresh();
+                      }
+                    },
+                  ),
                   PopupMenuItem(
                     child: Text('Từ chối'),
                     onTap: () async {
