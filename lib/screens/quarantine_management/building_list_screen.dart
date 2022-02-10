@@ -43,35 +43,42 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
             future: futureBuildingList,
             builder: (context, snapshot) {
               showLoading();
-              if (snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.done) {
                 BotToast.closeAllLoading();
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.25,
-                      child: GeneralInfo(
-                        currentQuarantine: widget.currentQuarrantine!,
-                        numOfBuilding: snapshot.data.length,
+                if (snapshot.hasData) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: GeneralInfo(
+                          currentQuarantine: widget.currentQuarrantine!,
+                          numOfBuilding: snapshot.data.length,
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.75,
-                      child: BuildingList(
-                          data: snapshot.data,
-                          currentQuarantine: widget.currentQuarrantine!),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
+                      Container(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.75,
+                        child: BuildingList(
+                            data: snapshot.data,
+                            currentQuarantine: widget.currentQuarrantine!),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                } else {
+                  return Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
+                }
               }
               return Container();
             }),

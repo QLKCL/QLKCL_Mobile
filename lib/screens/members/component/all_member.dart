@@ -92,6 +92,9 @@ class _AllMemberState extends State<AllMember>
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Text('Không có dữ liệu'),
             ),
+            firstPageErrorIndicatorBuilder: (context) => Center(
+              child: Text('Có lỗi xảy ra'),
+            ),
             itemBuilder: (context, item, index) => MemberCard(
               name: item['full_name'] ?? "",
               gender: item['gender'] ?? "",

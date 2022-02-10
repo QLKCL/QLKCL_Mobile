@@ -107,90 +107,126 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
               future: futureRoomList,
               builder: (context, snapshot) {
                 showLoading();
-                if (snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done) {
                   BotToast.closeAllLoading();
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: GeneralInfoFloor(
-                          currentBuilding: widget.currentBuilding!,
-                          currentQuarantine: widget.currentQuarantine!,
-                          currentFloor: widget.currentFloor!,
-                          numOfRoom: snapshot.data,
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.25,
+                          child: GeneralInfoFloor(
+                            currentBuilding: widget.currentBuilding!,
+                            currentQuarantine: widget.currentQuarantine!,
+                            currentFloor: widget.currentFloor!,
+                            numOfRoom: snapshot.data,
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.6,
-                        //Input fields
-                        child: SingleChildScrollView(
-                          physics: ScrollPhysics(),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Add multiple floors
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 55,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.all(0),
-                                          child: CheckboxListTile(
-                                            title: Text("Thêm nhiều phòng"),
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                            value: addMultiple,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                addMultiple = value!;
-                                                nameController.text = "";
-                                                capacityController.text = "";
-                                              });
-                                            },
+                        Container(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.6,
+                          //Input fields
+                          child: SingleChildScrollView(
+                            physics: ScrollPhysics(),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Add multiple floors
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 55,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.all(0),
+                                            child: CheckboxListTile(
+                                              title: Text("Thêm nhiều phòng"),
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              value: addMultiple,
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  addMultiple = value!;
+                                                  nameController.text = "";
+                                                  capacityController.text = "";
+                                                });
+                                              },
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      // insert number of floor
-                                      addMultiple
-                                          ? Expanded(
-                                              flex: 45,
-                                              child: Input(
-                                                label: 'Số phòng',
-                                                hint: 'Số phòng',
-                                                type: TextInputType.number,
-                                                required: true,
-                                                controller: myController,
-                                              ),
-                                            )
-                                          : Container(),
-                                    ],
+                                        // insert number of floor
+                                        addMultiple
+                                            ? Expanded(
+                                                flex: 45,
+                                                child: Input(
+                                                  label: 'Số phòng',
+                                                  hint: 'Số phòng',
+                                                  type: TextInputType.number,
+                                                  required: true,
+                                                  controller: myController,
+                                                ),
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 16),
-                                  child: const Text(
-                                    'Chỉnh sửa thông tin phòng',
-                                    style: TextStyle(fontSize: 16),
+                                  Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 16),
+                                    child: const Text(
+                                      'Chỉnh sửa thông tin phòng',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
                                   ),
-                                ),
-                                addMultiple
-                                    ? ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemBuilder: (ctx, index) {
-                                          return Row(
+                                  addMultiple
+                                      ? ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemBuilder: (ctx, index) {
+                                            return Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 55,
+                                                  child: Input(
+                                                    label: 'Tên phòng',
+                                                    hint: 'Tên phòng',
+                                                    required: true,
+                                                    onChangedFunction: (text) {
+                                                      nameList[index] = text;
+                                                    },
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 45,
+                                                  child: Input(
+                                                    label: 'Số người tối đa',
+                                                    hint: 'Số người tối đa',
+                                                    required: true,
+                                                    type: TextInputType.number,
+                                                    onChangedFunction: (text) {
+                                                      capacityList[index] =
+                                                          text;
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                          itemCount: numOfAddedRoom,
+                                        )
+                                      : Container(
+                                          child: Row(
                                             children: [
                                               Expanded(
                                                 flex: 55,
@@ -198,9 +234,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                                   label: 'Tên phòng',
                                                   hint: 'Tên phòng',
                                                   required: true,
-                                                  onChangedFunction: (text) {
-                                                    nameList[index] = text;
-                                                  },
+                                                  controller: nameController,
                                                 ),
                                               ),
                                               Expanded(
@@ -210,63 +244,41 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                                   hint: 'Số người tối đa',
                                                   required: true,
                                                   type: TextInputType.number,
-                                                  onChangedFunction: (text) {
-                                                    capacityList[index] = text;
-                                                  },
+                                                  controller:
+                                                      capacityController,
                                                 ),
                                               ),
                                             ],
-                                          );
-                                        },
-                                        itemCount: numOfAddedRoom,
-                                      )
-                                    : Container(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 55,
-                                              child: Input(
-                                                label: 'Tên phòng',
-                                                hint: 'Tên phòng',
-                                                required: true,
-                                                controller: nameController,
-                                              ),
-                                            ),
-                                            Expanded(
-                                              flex: 45,
-                                              child: Input(
-                                                label: 'Số người tối đa',
-                                                hint: 'Số người tối đa',
-                                                required: true,
-                                                type: TextInputType.number,
-                                                controller: capacityController,
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        child: Row(
-                          children: [
-                            Spacer(),
-                            ElevatedButton(
-                              onPressed: _submit,
-                              child: Text("Xác nhận"),
-                            ),
-                            Spacer(),
-                          ],
+                        Container(
+                          margin: const EdgeInsets.all(16),
+                          child: Row(
+                            children: [
+                              Spacer(),
+                              ElevatedButton(
+                                onPressed: _submit,
+                                child: Text("Xác nhận"),
+                              ),
+                              Spacer(),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Snapshot has error');
+                  } else {
+                    return Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 }
                 return Container();
               }),

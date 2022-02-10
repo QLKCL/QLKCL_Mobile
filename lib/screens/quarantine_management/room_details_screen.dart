@@ -79,44 +79,53 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
     );
     return Scaffold(
       appBar: appBar,
-      body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: futureMemberList,
-            builder: (context, snapshot) {
-              showLoading();
-              if (snapshot.hasData) {
-                BotToast.closeAllLoading();
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Container(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: GeneralInfoRoom(
-                          currentBuilding: widget.currentBuilding!,
-                          currentFloor: widget.currentFloor!,
-                          currentQuarantine: widget.currentQuarantine!,
-                          currentRoom: widget.currentRoom!,
-                        )),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: (MediaQuery.of(context).size.height -
-                              appBar.preferredSize.height -
-                              MediaQuery.of(context).padding.top) *
-                          0.75,
-                      //margin: const EdgeInsets.symmetric(vertical: 8),
-                      child: MemberRoom(data: snapshot.data),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
-              }
-              return Container();
-            }),
+      body: Center(
+        child: SingleChildScrollView(
+          child: FutureBuilder<dynamic>(
+              future: futureMemberList,
+              builder: (context, snapshot) {
+                showLoading();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  BotToast.closeAllLoading();
+                  if (snapshot.hasData) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                            height: (MediaQuery.of(context).size.height -
+                                    appBar.preferredSize.height -
+                                    MediaQuery.of(context).padding.top) *
+                                0.25,
+                            child: GeneralInfoRoom(
+                              currentBuilding: widget.currentBuilding!,
+                              currentFloor: widget.currentFloor!,
+                              currentQuarantine: widget.currentQuarantine!,
+                              currentRoom: widget.currentRoom!,
+                            )),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.75,
+                          //margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: MemberRoom(data: snapshot.data),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Snapshot has error');
+                  } else {
+                    return Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
+                }
+                return Container();
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

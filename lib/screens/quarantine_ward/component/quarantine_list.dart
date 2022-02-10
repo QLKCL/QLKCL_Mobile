@@ -76,6 +76,9 @@ class _QuanrantineListState extends State<QuanrantineList> {
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Text('Không có dữ liệu'),
           ),
+          firstPageErrorIndicatorBuilder: (context) => Center(
+            child: Text('Có lỗi xảy ra'),
+          ),
           itemBuilder: (context, item, index) => QuarantineItem(
             id: item['id'].toString(),
             name: item['full_name'] ?? "",

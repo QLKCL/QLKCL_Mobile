@@ -203,6 +203,9 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text('Không có kết quả tìm kiếm'),
                     ),
+                    firstPageErrorIndicatorBuilder: (context) => Center(
+                      child: Text('Có lỗi xảy ra'),
+                    ),
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item['id'].toString(),
                       name: item['full_name'] ?? "",

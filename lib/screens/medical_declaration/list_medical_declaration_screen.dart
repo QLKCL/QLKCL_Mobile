@@ -114,6 +114,9 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => MedicalDeclarationCard(
                 code: item['code'].toString(),
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")

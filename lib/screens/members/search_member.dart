@@ -224,6 +224,9 @@ class _SearchMemberState extends State<SearchMember> {
                       noItemsFoundIndicatorBuilder: (context) => Center(
                             child: Text('Không có kết quả tìm kiếm'),
                           ),
+                      firstPageErrorIndicatorBuilder: (context) => Center(
+                            child: Text('Có lỗi xảy ra'),
+                          ),
                       itemBuilder: (context, item, index) => MemberCard(
                             name: item['full_name'] ?? "",
                             gender: item['gender'] ?? "",

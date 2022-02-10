@@ -84,6 +84,9 @@ class _ListNotificationState extends State<ListNotification> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => NotificationCard(
                 title: item['notification']['title'],
                 description: item['notification']['description'],

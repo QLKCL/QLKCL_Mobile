@@ -96,6 +96,9 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Text('Không có dữ liệu'),
               ),
+              firstPageErrorIndicatorBuilder: (context) => Center(
+                child: Text('Có lỗi xảy ra'),
+              ),
               itemBuilder: (context, item, index) => VaccineDoseCard(
                 vaccine: item["vaccine"]["name"],
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")

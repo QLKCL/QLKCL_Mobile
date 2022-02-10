@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
@@ -102,9 +103,19 @@ class Member {
 Future<dynamic> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
-  return response != null && response['data'] != null
-      ? response['data']['content']
-      : null;
+  if (response != null) {
+    if (response['error_code'] == 0 && response['data'] != null) {
+      return response['data']['content'];
+    } else if (response['error_code'] == 401) {
+      if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Permission denied") {
+        showNotification('Không có quyền truy cập!', status: 'error');
+      }
+      return null;
+    }
+  }
+
+  return null;
 }
 
 Future<dynamic> createMember(Map<String, dynamic> data) async {

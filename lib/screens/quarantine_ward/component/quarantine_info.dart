@@ -148,13 +148,20 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           FutureBuilder<dynamic>(
             future: futureBuildingList,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return CarouselBuilding(
-                  data: snapshot.data,
-                  currentQuarantine: widget.quarantineInfo,
-                );
-              } else if (snapshot.hasError) {
-                return Text('Snapshot has error');
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return CarouselBuilding(
+                    data: snapshot.data,
+                    currentQuarantine: widget.quarantineInfo,
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Snapshot has error');
+                } else {
+                  return Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
+                }
               }
               return Container();
             },
