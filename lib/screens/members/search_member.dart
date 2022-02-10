@@ -190,15 +190,10 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineFloorList: _quarantineFloorList,
                   quarantineRoomList: _quarantineRoomList,
                   labelController: labelController,
-                  onSubmit: (
-                    quarantineWardList,
-                    quarantineBuildingList,
-                    quarantineFloorList,
-                    quarantineRoomList,
-                    _searched,
-                  ) {
+                  onSubmit: (quarantineWardList, quarantineBuildingList,
+                      quarantineFloorList, quarantineRoomList, search) {
                     setState(() {
-                      _searched = true;
+                      _searched = search;
                       _quarantineWardList = quarantineWardList;
                       _quarantineBuildingList = quarantineBuildingList;
                       _quarantineFloorList = quarantineFloorList;
