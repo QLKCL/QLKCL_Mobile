@@ -100,6 +100,9 @@ class _ListNotificationState extends State<ListNotification> {
                   final response = await changeStateUserNotification(
                       data: {'notification': item['notification']['id']});
                   if (response.success) {
+                    setState(() {
+                      item['is_read'] = response.data;
+                    });
                     // _pagingController.refresh();
                   }
                 },
