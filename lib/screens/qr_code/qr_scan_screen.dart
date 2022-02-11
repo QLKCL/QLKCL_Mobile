@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -138,9 +139,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('no Permission')),
-      );
+      showTextToast("Ứng dụng không có quyền truy cập Camera!");
     }
   }
 
