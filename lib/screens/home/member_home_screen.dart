@@ -205,46 +205,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                FutureBuilder(
-                  future: getQuarantineStatus(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      var msg = "";
-                      if (snapshot.data == "WAITING") {
-                        msg =
-                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ với quản lý khu cách ly!";
-                      } else if (snapshot.data == "REFUSED") {
-                        msg =
-                            "Tài khoản của bạn đã bị từ chối. Vui lòng liên hệ với quản lý khu cách ly!";
-                      } else if (snapshot.data == "LOCKED") {
-                        msg =
-                            "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản lý khu cách ly!";
-                      }
-                      if (msg != "") {
-                        return Card(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(8),
-                            title: Text(
-                              msg,
-                              style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: CustomColors.primaryText),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundColor: CustomColors.error,
-                              child: Icon(
-                                Icons.notification_important_outlined,
-                                color: CustomColors.white,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    }
-                    return Container();
-                  },
-                ),
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
@@ -279,8 +239,45 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   future: futureData,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+                      var msg = "";
+                      if (snapshot.data['custom_user']['status'] == "WAITING") {
+                        msg =
+                            "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ với quản lý khu cách ly!";
+                      } else if (snapshot.data['custom_user']['status'] ==
+                          "REFUSED") {
+                        msg =
+                            "Tài khoản của bạn đã bị từ chối. Vui lòng liên hệ với quản lý khu cách ly!";
+                      } else if (snapshot.data['custom_user']['status'] ==
+                          "LOCKED") {
+                        msg =
+                            "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản lý khu cách ly!";
+                      } else if (snapshot.data['custom_user']['status'] ==
+                          "LEAVE") {
+                        msg =
+                            "Tài khoản của bạn không còn hoạt động trong hệ thống. Vui lòng liên hệ với quản lý hoặc đăng ký tái cách ly!";
+                      }
                       return Column(
                         children: [
+                          if (msg != "")
+                            Card(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(8),
+                                title: Text(
+                                  msg,
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.normal,
+                                      color: CustomColors.primaryText),
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundColor: CustomColors.error,
+                                  child: Icon(
+                                    Icons.notification_important_outlined,
+                                    color: CustomColors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
@@ -460,11 +457,12 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   snapshot.data['quarantined_at'] != null
                                       ? snapshot.data['quarantined_at']
                                       : "",
-                              quarantineTime:
-                                  snapshot.data['quarantine_ward'] != null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['quarantine_time']
-                                      : 14,
+                              quarantineFinishExpect: snapshot.data[
+                                          'quarantined_finish_expected_at'] !=
+                                      null
+                                  ? snapshot
+                                      .data['quarantined_finish_expected_at']
+                                  : "",
                             ),
                         ],
                       );
