@@ -11,15 +11,15 @@ import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 
-class CompleteMember extends StatefulWidget {
-  CompleteMember({Key? key}) : super(key: key);
+class ExpectCompleteMember extends StatefulWidget {
+  ExpectCompleteMember({Key? key}) : super(key: key);
 
   @override
-  _CompleteMemberState createState() => _CompleteMemberState();
+  _ExpectCompleteMemberState createState() => _ExpectCompleteMemberState();
 }
 
-class _CompleteMemberState extends State<CompleteMember>
-    with AutomaticKeepAliveClientMixin<CompleteMember> {
+class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
+    with AutomaticKeepAliveClientMixin<ExpectCompleteMember> {
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);

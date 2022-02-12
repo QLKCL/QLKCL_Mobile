@@ -2,14 +2,15 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/members/component/completed_member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/all_member.dart';
-import 'package:qlkcl/screens/members/component/complete_member.dart';
+import 'package:qlkcl/screens/members/component/complete_expect_member.dart';
 import 'package:qlkcl/screens/members/component/confirm_member.dart';
-import 'package:qlkcl/screens/members/component/deny_member.dart';
+import 'package:qlkcl/screens/members/component/denied_member.dart';
 import 'package:qlkcl/screens/members/component/suspect_member.dart';
-import 'package:qlkcl/screens/members/component/test_member.dart';
+import 'package:qlkcl/screens/members/component/need_test_member.dart';
 import 'package:qlkcl/config/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
@@ -31,7 +32,7 @@ class _ListAllMemberState extends State<ListAllMember>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: 6, vsync: this, initialIndex: widget.tab);
+        TabController(length: 7, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -150,6 +151,7 @@ class _ListAllMemberState extends State<ListAllMember>
                   Tab(text: "Tới hạn xét nghiệm"),
                   Tab(text: "Sắp hoàn thành cách ly"),
                   Tab(text: "Từ chối"),
+                  Tab(text: "Đã hoàn thành cách ly"),
                 ],
               ),
             ),
@@ -167,9 +169,10 @@ class _ListAllMemberState extends State<ListAllMember>
               onDoneCallback: onDoneCallback,
             ),
             SuspectMember(),
-            TestMember(),
-            CompleteMember(),
-            DenyMember(),
+            NeedTestMember(),
+            ExpectCompleteMember(),
+            DeniedMember(),
+            CompletedMember(),
           ],
         ),
       ),

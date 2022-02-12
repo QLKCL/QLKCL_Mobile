@@ -8,15 +8,15 @@ import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
-class TestMember extends StatefulWidget {
-  TestMember({Key? key}) : super(key: key);
+class NeedTestMember extends StatefulWidget {
+  NeedTestMember({Key? key}) : super(key: key);
 
   @override
-  _TestMemberState createState() => _TestMemberState();
+  _NeedTestMemberState createState() => _NeedTestMemberState();
 }
 
-class _TestMemberState extends State<TestMember>
-    with AutomaticKeepAliveClientMixin<TestMember> {
+class _NeedTestMemberState extends State<NeedTestMember>
+    with AutomaticKeepAliveClientMixin<NeedTestMember> {
   late Future<dynamic> futureMemberList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1);
