@@ -266,3 +266,26 @@ Future<dynamic> finishMember(data) async {
     }
   }
 }
+
+Future<dynamic> changeRoomMember(data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Constant.changeRoomMember, data);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(success: true, message: "Chuyển phòng thành công!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room does not satisfy max_day_quarantined") {
+        return Response(
+            success: false, message: "Phòng đã chọn không phù hợp!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}

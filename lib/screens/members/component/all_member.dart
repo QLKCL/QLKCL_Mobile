@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
@@ -167,6 +169,14 @@ class _AllMemberState extends State<AllMember>
                             builder: (context) => ListVaccineDose(
                                   code: item["code"],
                                 )));
+                  } else if (result == 'change_room') {
+                    Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ChangeQuanrantineInfo(
+                                  code: item["code"],
+                                  quarantineWard: KeyValue.fromJson(
+                                      item['quarantine_ward']),
+                                )));
                   }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -193,6 +203,10 @@ class _AllMemberState extends State<AllMember>
                   PopupMenuItem(
                     child: Text('Thông tin tiêm chủng'),
                     value: "vaccine_dose_history",
+                  ),
+                  PopupMenuItem(
+                    child: Text('Chuyển phòng'),
+                    value: "change_room",
                   ),
                 ],
               ),
