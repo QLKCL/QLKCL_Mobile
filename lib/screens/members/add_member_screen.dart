@@ -4,6 +4,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class AddMember extends StatefulWidget {
@@ -27,6 +28,7 @@ class AddMember extends StatefulWidget {
 
 class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
   late TabController _tabController;
+  List<String>? infoFromIdentityCard;
 
   @override
   void initState() {
@@ -46,14 +48,25 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
         appBar: AppBar(
           title: Text("Thêm người cách ly"),
           centerTitle: true,
-          // actions: [
-          //   if (_tabController.index == 0)
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: Icon(Icons.qr_code_scanner),
-          //       tooltip: "Nhập dữ liệu từ CCCD",
-          //     ),
-          // ],
+          actions: [
+            if (_tabController.index == 0)
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                            builder: (context) => QrCodeScan(
+                                  type: 'cmnd_cccd',
+                                )),
+                      )
+                      .then((value) => setState(() {
+                            infoFromIdentityCard = value.split('|').toList();
+                          }));
+                },
+                icon: Icon(Icons.photo_camera_front_outlined),
+                tooltip: "Nhập dữ liệu từ CCCD",
+              ),
+          ],
           bottom: TabBar(
             controller: _tabController,
             indicatorColor: CustomColors.white,
@@ -69,6 +82,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
             MemberPersonalInfo(
               tabController: _tabController,
               mode: Permission.add,
+              infoFromIdentityCard: infoFromIdentityCard,
             ),
             MemberQuarantineInfo(
               quarantineWard: widget.quarantineWard,

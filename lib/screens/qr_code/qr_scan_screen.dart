@@ -1,6 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/config/app_theme.dart';
@@ -17,6 +17,10 @@ import 'package:rxdart/rxdart.dart';
 
 class QrCodeScan extends StatefulWidget {
   static const String routeName = "/qr_scan";
+  final String type;
+
+  QrCodeScan({Key? key, this.type = 'member_code'}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _QrCodeScanState();
 }
@@ -32,7 +36,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
+    if (isAndroid()) {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
@@ -41,42 +45,45 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 20),
-          child: SizedBox(
-            height: 120,
-            width: 100,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () => _getPhotoByGallery(),
-              child: Column(
-                children: [
-                  Container(
-                    height: 64,
-                    width: 64,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      shape: BoxShape.circle,
+        floatingActionButton: (isAndroid() || isIOS()) &&
+                widget.type == 'member_code'
+            ? Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: SizedBox(
+                  height: 120,
+                  width: 100,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    onPressed: () => _getPhotoByGallery(),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 64,
+                          width: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.photo_library_outlined, size: 30),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Chọn QR từ thư viện",
+                          style: TextStyle(
+                            color: CustomColors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    child: Icon(Icons.photo_library_outlined, size: 30),
+                    tooltip: "Chọn hình ảnh",
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "Chọn QR từ thư viện",
-                    style: TextStyle(
-                      color: CustomColors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              tooltip: "Chọn hình ảnh",
-            ),
-          ),
-        ),
+                ),
+              )
+            : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
           title: const Text('Quét mã QR'),
@@ -158,11 +165,16 @@ class _QrCodeScanState extends State<QrCodeScan> {
         },
       ));
     } else {
-      Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(
-              builder: (context) => UpdateMember(
-                    code: qrResult,
-                  )));
+      if (widget.type == 'member_code') {
+        Navigator.of(context, rootNavigator: true)
+            .pushReplacement(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: qrResult,
+                    )));
+      }
+      if (widget.type == 'cmnd_cccd') {
+        Navigator.of(context).pop(qrResult);
+      }
     }
   }
 
@@ -172,11 +184,16 @@ class _QrCodeScanState extends State<QrCodeScan> {
         .flatMap((file) {
       return Stream.fromFuture(QrCodeToolsPlugin.decodeFrom(file!.path));
     }).listen((data) {
-      Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(
-              builder: (context) => UpdateMember(
-                    code: data,
-                  )));
+      if (widget.type == 'member_code') {
+        Navigator.of(context, rootNavigator: true)
+            .pushReplacement(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: data,
+                    )));
+      }
+      if (widget.type == 'cmnd_cccd') {
+        Navigator.of(context).pop(data);
+      }
     }).onError((error, stackTrace) {
       showDialog<String>(
         barrierDismissible: false,

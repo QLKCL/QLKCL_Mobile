@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
@@ -124,9 +125,11 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                handleDeleteTag("role");
-                handleDeleteTag("quarantine_ward_id");
-                handleRemoveExternalUserId();
+                if (isAndroid() || isIOS()) {
+                  handleDeleteTag("role");
+                  handleDeleteTag("quarantine_ward_id");
+                  handleRemoveExternalUserId();
+                }
                 await logout();
                 Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);

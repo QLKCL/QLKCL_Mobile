@@ -20,11 +20,14 @@ class MemberPersonalInfo extends StatefulWidget {
   final CustomUser? personalData;
   final Permission mode;
   static var userCode;
+  final List<String>? infoFromIdentityCard;
+
   const MemberPersonalInfo(
       {Key? key,
       this.tabController,
       this.personalData,
-      this.mode = Permission.edit})
+      this.mode = Permission.edit,
+      this.infoFromIdentityCard})
       : super(key: key);
 
   @override
@@ -137,6 +140,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    if (widget.infoFromIdentityCard != null) {
+      fullNameController.text = widget.infoFromIdentityCard![2];
+      identityNumberController.text = widget.infoFromIdentityCard![0];
+      genderController.text = genderList
+          .safeFirstWhere(
+              (gender) => gender.name == widget.infoFromIdentityCard![4])
+          ?.id;
+    }
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
