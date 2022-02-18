@@ -4,7 +4,7 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/config/routes.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
-import 'package:qlkcl/screens/splash/splash_screen.dart';
+// import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -40,18 +40,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: Init.instance.initialize(),
-      builder: (context, AsyncSnapshot snapshot) {
-        // Show splash screen while waiting for app resources to load:
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            home: Splash(),
-          );
-        } else {
-          // Loading is done, return the app:
+    // return FutureBuilder(
+    //   future: Init.instance.initialize(),
+    //   builder: (context, AsyncSnapshot snapshot) {
+    //     // Show splash screen while waiting for app resources to load:
+    //     if (snapshot.connectionState == ConnectionState.waiting) {
+    //       return MaterialApp(
+    //         debugShowCheckedModeBanner: false,
+    //         theme: AppTheme.lightTheme,
+    //         home: Splash(),
+    //       );
+    //     } else {
+    //       // Loading is done, return the app:
           return MaterialApp(
             title: 'Quản lý khu cách ly',
             debugShowCheckedModeBanner: false,
@@ -63,9 +63,9 @@ class MyApp extends StatelessWidget {
             navigatorObservers: [BotToastNavigatorObserver()],
           );
         }
-      },
-    );
-  }
+      // },
+    // );
+  // }
 }
 
 class Init {
