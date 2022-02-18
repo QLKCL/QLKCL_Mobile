@@ -23,12 +23,12 @@ class CovidData {
   factory CovidData.fromJson(json) {
     return json != null
         ? CovidData(
-            // increaseConfirmed:
-            //     json["increase_confirmed"].toString(),
-            // increaseRecovered:
-            //     json["increase_recovered"].toString(),
-            // increaseDeaths:
-            //     json["increase_deaths"].toString(),
+            increaseConfirmed:
+                json["new_case"].toString(),
+            increaseRecovered:
+                json["new_recovered"].toString(),
+            increaseDeaths:
+                json["new_death"].toString(),
             confirmed: json["total_case"].toString(),
             recovered: json["total_recovered"].toString(),
             deaths: json["total_death"].toString(),
