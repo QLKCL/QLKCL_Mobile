@@ -207,7 +207,12 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
     if (data['error_code'] == 0) {
       return Response(success: true, message: "Gửi OTP thành công!");
     } else if (data['error_code'] == 400) {
-      return Response(success: false, message: "Email không hợp lệ!");
+      if (data['message'] == "User is not exist") {
+        return Response(
+            success: false, message: "Email không tồn tại trong hệ thống!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
