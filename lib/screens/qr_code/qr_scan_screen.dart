@@ -36,7 +36,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   void reassemble() {
     super.reassemble();
-    if (isAndroid()) {
+    if (isAndroidPlatform()) {
       controller!.pauseCamera();
     }
     controller!.resumeCamera();
@@ -45,7 +45,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: (isAndroid() || isIOS()) &&
+        floatingActionButton: (isAndroidPlatform() || isIOSPlatform()) &&
                 widget.type == 'member_code'
             ? Padding(
                 padding: EdgeInsets.only(bottom: 20),

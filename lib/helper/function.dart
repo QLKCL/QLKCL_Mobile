@@ -30,7 +30,7 @@ String parseDateToDateTimeWithTimeZone(String date) {
 }
 
 extension Target on Object {
-  bool isAndroid() {
+  bool isAndroidPlatform() {
     try {
       return Platform.isAndroid;
     } catch (e) {
@@ -38,7 +38,7 @@ extension Target on Object {
     }
   }
 
-  bool isIOS() {
+  bool isIOSPlatform() {
     try {
       return Platform.isIOS;
     } catch (e) {
@@ -46,7 +46,7 @@ extension Target on Object {
     }
   }
 
-  bool isLinux() {
+  bool isLinuxPlatform() {
     try {
       return Platform.isLinux;
     } catch (e) {
@@ -54,7 +54,7 @@ extension Target on Object {
     }
   }
 
-  bool isWindows() {
+  bool isWindowsPlatform() {
     try {
       return Platform.isWindows;
     } catch (e) {
@@ -62,7 +62,7 @@ extension Target on Object {
     }
   }
 
-  bool isMacOS() {
+  bool isMacOSPlatform() {
     try {
       return Platform.isMacOS;
     } catch (e) {
@@ -70,7 +70,7 @@ extension Target on Object {
     }
   }
 
-  bool isWeb() {
+  bool isWebPlatform() {
     return kIsWeb;
   }
 }

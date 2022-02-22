@@ -125,7 +125,7 @@ class _AccountState extends State<Account> {
           Card(
             child: ListTile(
               onTap: () async {
-                if (isAndroid() || isIOS()) {
+                if (isAndroidPlatform() || isIOSPlatform()) {
                   handleDeleteTag("role");
                   handleDeleteTag("quarantine_ward_id");
                   handleRemoveExternalUserId();

@@ -46,7 +46,7 @@ class _AppState extends State<App> {
     super.initState();
     _role = widget.role;
 
-    if (isAndroid() || isIOS()) {
+    if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();
     }
   }
