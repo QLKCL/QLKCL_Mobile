@@ -77,30 +77,30 @@ class _MedDeclFormState extends State<MedDeclForm> {
     phoneNumberController.text = widget.phone ?? "";
   }
 
+  //submit
+  void _submit() async {
+    // Validate returns true if the form is valid, or false otherwise.
+    if (_formKey.currentState!.validate()) {
+      CancelFunc cancel = showLoading();
+      final response = await createMedDecl(createMedDeclDataForm(
+        phoneNumber: phoneNumberController.text,
+        heartBeat: int.tryParse(heartBeatController.text),
+        temperature: double.tryParse(temperatureController.text),
+        breathing: int.tryParse(breathingController.text),
+        bloodPressure: double.tryParse(bloodPressureController.text),
+        mainSymtoms: mainSymptomController.text,
+        extraSymtoms: extraSymptomController.text,
+        otherSymtoms: otherController.text,
+        spo2: double.tryParse(spo2Controller.text),
+      ));
+
+      cancel();
+      showNotification(response);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    //submit
-    void _submit() async {
-      // Validate returns true if the form is valid, or false otherwise.
-      if (_formKey.currentState!.validate()) {
-        CancelFunc cancel = showLoading();
-        final registerResponse = await createMedDecl(createMedDeclDataForm(
-          phoneNumber: phoneNumberController.text,
-          heartBeat: int.tryParse(heartBeatController.text),
-          temperature: double.tryParse(temperatureController.text),
-          breathing: int.tryParse(breathingController.text),
-          bloodPressure: double.tryParse(bloodPressureController.text),
-          mainSymtoms: mainSymptomController.text,
-          extraSymtoms: extraSymptomController.text,
-          otherSymtoms: otherController.text,
-          spo2: double.tryParse(spo2Controller.text),
-        ));
-
-        cancel();
-        showNotification(registerResponse);
-      }
-    }
-
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
