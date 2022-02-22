@@ -272,7 +272,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   controller: otherController,
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 8),
 
                 //Button add medical declaration
                 if (widget.mode == Permission.add)
@@ -286,7 +286,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
                               padding: const EdgeInsets.only(right: 16.0),
                               child: Text(
                                 "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
-                                style: TextStyle(fontSize: 13),
                               )),
                           value: agree,
                           onChanged: (bool? value) {
@@ -298,7 +297,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           children: [
                             Text(
