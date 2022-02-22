@@ -44,7 +44,7 @@ import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 // We use name route
 // All our routes will be available here
 final Map<String, WidgetBuilder> routes = {
-  App.routeName: (context) => App(role: -1),
+  App.routeName: (context) => App(),
   ManagerHomePage.routeName: (context) => ManagerHomePage(),
   MemberHomePage.routeName: (context) => MemberHomePage(),
   Account.routeName: (context) => Account(),

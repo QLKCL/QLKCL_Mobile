@@ -14,7 +14,7 @@ Future<int> getRole() async {
   if (infoBox.containsKey('role')) {
     return infoBox.get('role');
   } else {
-    return -1;
+    return 5; // Member
   }
 }
 

@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             home: isLoggedIn ? App(role: role) : Login(),
             routes: routes,
-            initialRoute: isLoggedIn ? App.routeName : Login.routeName,
+            // initialRoute: isLoggedIn ? App.routeName : Login.routeName,
             builder: BotToastInit(),
             navigatorObservers: [BotToastNavigatorObserver()],
           );

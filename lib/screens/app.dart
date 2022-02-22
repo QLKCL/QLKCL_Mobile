@@ -9,8 +9,8 @@ import 'package:qlkcl/utils/constant.dart';
 
 class App extends StatefulWidget {
   static const String routeName = "/app";
-  final int role;
-  const App({Key? key, required this.role}) : super(key: key);
+  final int? role;
+  const App({Key? key, this.role}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -44,7 +44,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    _role = widget.role;
+    _role = widget.role ?? 5;
 
     if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();
