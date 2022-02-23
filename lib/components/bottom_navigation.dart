@@ -9,6 +9,8 @@ import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 
+import '../screens/members/update_member_screen.dart';
+
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 
 // cre: https://github.com/Kickbykick/Persistent-Bottom-Navigation-Bar
@@ -45,7 +47,19 @@ class BottomNavigation extends StatelessWidget {
       onTap: (index) => {
         index = (role == 5) ? index * 4 : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
-          {Navigator.pushNamed(context, QrCodeScan.routeName)}
+          {
+            Navigator.of(context)
+                .push(
+                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                )
+                .then((value) => value != null
+                    ? Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => UpdateMember(
+                                  code: value,
+                                )))
+                    : null)
+          }
         else
           {
             onSelectTab(

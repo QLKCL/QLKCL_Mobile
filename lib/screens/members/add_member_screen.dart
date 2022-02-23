@@ -54,10 +54,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                 onPressed: () {
                   Navigator.of(context)
                       .push(
-                        MaterialPageRoute(
-                            builder: (context) => QrCodeScan(
-                                  type: 'cmnd_cccd',
-                                )),
+                        MaterialPageRoute(builder: (context) => QrCodeScan()),
                       )
                       .then((value) => setState(() {
                             infoFromIdentityCard = value.split('|').toList();
