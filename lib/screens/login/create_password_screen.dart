@@ -44,49 +44,61 @@ class _CreatePasswordState extends State<CreatePassword> {
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/otp.png"),
               ),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Tạo mật khẩu mới",
-                        style: Theme.of(context).textTheme.headline6,
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 450
+                      ? 450
+                      : MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Tạo mật khẩu mới",
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ),
+                          Input(
+                            label: "Mật khẩu mới",
+                            hint: "Nhập mật khẩu mới",
+                            obscure: true,
+                            required: true,
+                            controller: passController,
+                            validatorFunction: passValidator,
+                          ),
+                          Input(
+                            label: "Xác nhận mật khẩu",
+                            hint: "Xác nhận mật khẩu",
+                            obscure: true,
+                            required: true,
+                            controller: secondPassController,
+                            validatorFunction: passValidator,
+                            error: error,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _submit();
+                              },
+                              child: Text(
+                                'Xác nhận',
+                                style: TextStyle(color: CustomColors.white),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Input(
-                      label: "Mật khẩu mới",
-                      hint: "Nhập mật khẩu mới",
-                      obscure: true,
-                      required: true,
-                      controller: passController,
-                      validatorFunction: passValidator,
-                    ),
-                    Input(
-                      label: "Xác nhận mật khẩu",
-                      hint: "Xác nhận mật khẩu",
-                      obscure: true,
-                      required: true,
-                      controller: secondPassController,
-                      validatorFunction: passValidator,
-                      error: error,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _submit();
-                        },
-                        child: Text(
-                          'Xác nhận',
-                          style: TextStyle(color: CustomColors.white),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

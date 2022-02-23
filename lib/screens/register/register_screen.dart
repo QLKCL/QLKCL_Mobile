@@ -57,7 +57,16 @@ class _RegisterState extends State<Register> {
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/sign_up.png"),
               ),
-              RegisterForm(quarantineWardList: quarantineWardList),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 450
+                      ? 450
+                      : MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: RegisterForm(quarantineWardList: quarantineWardList),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -91,6 +100,9 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(
+            height: 16,
+          ),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 16),
@@ -157,6 +169,21 @@ class _RegisterFormState extends State<RegisterForm> {
                 style: TextStyle(color: CustomColors.white),
               ),
             ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Đăng nhập",
+              style: TextStyle(
+                color: CustomColors.primary,
+                // decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16,
           ),
         ],
       ),

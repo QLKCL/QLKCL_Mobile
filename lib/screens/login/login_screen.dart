@@ -42,7 +42,16 @@ class _LoginState extends State<Login> {
                 margin: const EdgeInsets.fromLTRB(16, 80, 16, 16),
                 child: Image.asset("assets/images/sign_in.png"),
               ),
-              LoginForm(),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 450
+                      ? 450
+                      : MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: LoginForm(),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -69,6 +78,9 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(
+            height: 16,
+          ),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 16),
@@ -91,7 +103,6 @@ class _LoginFormState extends State<LoginForm> {
             obscure: true,
             required: true,
             controller: passController,
-            validatorFunction: passValidator,
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(0, 16, 16, 0),
@@ -134,7 +145,10 @@ class _LoginFormState extends State<LoginForm> {
                 // decoration: TextDecoration.underline,
               ),
             ),
-          )
+          ),
+          SizedBox(
+            height: 16,
+          ),
         ],
       ),
     );

@@ -8,6 +8,7 @@ import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
@@ -52,19 +53,36 @@ class MyApp extends StatelessWidget {
     //       );
     //     } else {
     //       // Loading is done, return the app:
-          return MaterialApp(
-            title: 'Quản lý khu cách ly',
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            home: isLoggedIn ? App(role: role) : Login(),
-            routes: routes,
-            // initialRoute: isLoggedIn ? App.routeName : Login.routeName,
-            builder: BotToastInit(),
-            navigatorObservers: [BotToastNavigatorObserver()],
-          );
-        }
-      // },
-    // );
+    final botToastBuilder = BotToastInit();
+    return MaterialApp(
+      title: 'Quản lý khu cách ly',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      home: isLoggedIn ? App(role: role) : Login(),
+      routes: routes,
+      // initialRoute: isLoggedIn ? App.routeName : Login.routeName,
+      builder: (context, child) {
+        child = ResponsiveWrapper.builder(
+            BouncingScrollWrapper.builder(context, child!),
+            maxWidth: 2460,
+            minWidth: 450,
+            defaultScale: true,
+            breakpoints: [
+              const ResponsiveBreakpoint.resize(450, name: MOBILE),
+              const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+              const ResponsiveBreakpoint.autoScale(1000, name: TABLET),
+              const ResponsiveBreakpoint.resize(1200, name: DESKTOP), // > 1200, only stretches to fill the available width
+              const ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+            ],
+            background: Container(color: const Color(0xFFF5F5F5)));
+        child = botToastBuilder(context, child);
+        return child;
+      },
+      navigatorObservers: [BotToastNavigatorObserver()],
+    );
+  }
+  // },
+  // );
   // }
 }
 
