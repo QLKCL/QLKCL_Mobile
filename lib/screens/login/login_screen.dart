@@ -93,6 +93,7 @@ class _LoginFormState extends State<LoginForm> {
             label: "Số điện thoại",
             hint: "Nhập số điện thoại",
             type: TextInputType.phone,
+            prefixIcon: Icons.phone,
             required: true,
             validatorFunction: phoneValidator,
             controller: phoneController,
@@ -100,6 +101,7 @@ class _LoginFormState extends State<LoginForm> {
           Input(
             label: "Mật khẩu",
             hint: "Nhập mật khẩu",
+            prefixIcon: Icons.lock,
             obscure: true,
             required: true,
             controller: passController,

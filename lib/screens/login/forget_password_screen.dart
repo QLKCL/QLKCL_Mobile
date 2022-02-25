@@ -93,6 +93,7 @@ class _ForgetFormState extends State<ForgetForm> {
             hint: "Nhập email",
             required: true,
             type: TextInputType.emailAddress,
+            prefixIcon: Icons.email_outlined,
             controller: emailController,
             validatorFunction: emailValidator,
           ),
