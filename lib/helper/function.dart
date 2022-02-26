@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 extension IterableX<T> on Iterable<T> {
   T? safeFirstWhere(bool Function(T) test) {
@@ -88,26 +89,28 @@ class Responsive extends StatelessWidget {
     required this.desktop,
   }) : super(key: key);
 
-  // This isMobileScreen, isTablet, isDesktop helep us later
-  static bool isMobileScreen(BuildContext context) =>
-      MediaQuery.of(context).size.width < 850;
+  // https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-tablet-and-mobile
 
-  static bool isTabletScreen(BuildContext context) =>
-      MediaQuery.of(context).size.width < 1100 &&
-      MediaQuery.of(context).size.width >= 850;
+  // This isMobileLayout, isTabletLayout, isDesktopLayout helep us later
+  static bool isMobileLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width < maxMobileSize;
 
-  static bool isDesktopScreen(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1100;
+  static bool isTabletLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width < maxTabletSize &&
+      MediaQuery.of(context).size.width >= maxMobileSize;
+
+  static bool isDesktopLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width >= maxTabletSize;
 
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
-    // If our width is more than 1100 then we consider it a desktop
-    if (_size.width >= 1100) {
+    // If our width is more than 768 then we consider it a desktop
+    if (_size.width >= maxTabletSize) {
       return desktop;
     }
-    // If width it less then 1100 and more then 850 we consider it as tablet
-    else if (_size.width >= 850 && tablet != null) {
+    // If width it less then 768 and more then 480 we consider it as tablet
+    else if (_size.width >= maxMobileSize && tablet != null) {
       return tablet!;
     }
     // Or less then that we called it mobile
