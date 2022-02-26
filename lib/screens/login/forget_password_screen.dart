@@ -32,11 +32,20 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           child: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.height * 0.3,
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/forget_password.png"),
               ),
-              ForgetForm(),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 450
+                      ? 450
+                      : MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: ForgetForm(),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -60,6 +69,9 @@ class _ForgetFormState extends State<ForgetForm> {
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(
+            height: 16,
+          ),
           Container(
             alignment: Alignment.center,
             child: Text(
@@ -81,6 +93,7 @@ class _ForgetFormState extends State<ForgetForm> {
             hint: "Nhập email",
             required: true,
             type: TextInputType.emailAddress,
+            prefixIcon: Icons.email_outlined,
             controller: emailController,
             validatorFunction: emailValidator,
           ),

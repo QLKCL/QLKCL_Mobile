@@ -14,6 +14,8 @@ class Constant {
   static const String acceptOneMember = '/api/user/member/accept_one';
   static const String acceptManyMember = '/api/user/member/accept_many';
   static const String finishMember = '/api/user/member/finish_quarantine';
+  static const String changeRoomMember =
+      '/api/user/member/change_quarantine_ward_and_room';
 
   static const String homeManager = '/api/user/home/manager';
   static const String homeMember = '/api/user/home/member';
@@ -184,3 +186,7 @@ const int PAGE_SIZE = 10;
 const int PAGE_SIZE_MAX = 0;
 
 const String OneSignalId = "3def0255-600c-4376-bece-77202ef908e5";
+
+const double maxMobileSize = 480;
+const double maxTabletSize = 768;
+const double minDesktopSize = 1200;

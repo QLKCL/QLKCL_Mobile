@@ -144,8 +144,12 @@ CancelFunc Function(dynamic data, {String status, String? subTitle})
     toastBuilder: (cancel) {
       return _CustomWidget(
         cancelFunc: cancel,
-        title: (data.runtimeType == Response) ? data.message : data,
-        subTitle: subTitle,
+        title: (data.runtimeType == Response)
+            ? (data.success ? "Thành công" : "Lỗi")
+            : (status == "success"
+                ? "Thành công"
+                : (status == "warning" ? "Cảnh báo" : "Lỗi")),
+        subTitle: (data.runtimeType == Response) ? data.message : data,
         backgroundColor: (data.runtimeType == Response)
             ? (data.success ? CustomColors.success : CustomColors.error)
             : (status == "success"
@@ -176,7 +180,10 @@ class _CustomWidget extends StatefulWidget {
       required this.cancelFunc,
       required this.title,
       this.subTitle,
-      this.titleStyle = const TextStyle(color: Colors.white),
+      this.titleStyle = const TextStyle(
+        color: Colors.white,
+        fontSize: 16.0,
+      ),
       this.subTitleStyle = const TextStyle(color: Colors.white),
       this.backgroundColor,
       this.borderRadius = 8.0,
@@ -196,30 +203,57 @@ class _CustomWidgetState extends State<_CustomWidget> {
       alignment: Alignment.topRight,
       heightFactor: 1,
       child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Card(
-          color: widget.backgroundColor ?? CustomColors.success,
-          shape: widget.borderRadius == null
-              ? null
-              : RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(widget.borderRadius!),
-                ),
-          child: ListTile(
-              leading: widget.leading,
-              title: Text(
-                widget.title,
-                style: widget.titleStyle,
-              ),
-              subtitle: widget.subTitle != null
-                  ? Text(
-                      widget.subTitle!,
-                      style: widget.subTitleStyle,
-                    )
-                  : null,
-              trailing: widget.hideCloseButton
+        width: MediaQuery.of(context).size.width > 450
+            ? 350
+            : MediaQuery.of(context).size.width,
+        child: Column(
+          children: <Widget>[
+            Card(
+              color: widget.backgroundColor ?? CustomColors.success,
+              shape: widget.borderRadius == null
                   ? null
-                  : IconButton(
-                      icon: widget.closeIcon, onPressed: widget.cancelFunc)),
+                  : RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(widget.borderRadius!),
+                    ),
+              child: Container(
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (widget.leading != null) widget.leading!,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: widget.titleStyle,
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            if (widget.subTitle != null)
+                              Text(
+                                widget.subTitle!,
+                                style: widget.subTitleStyle,
+                              ),
+                          ],
+                        ),
+                      ),
+                      if (!widget.hideCloseButton)
+                        IconButton(
+                          icon: widget.closeIcon,
+                          onPressed: widget.cancelFunc,
+                          color: Colors.white,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

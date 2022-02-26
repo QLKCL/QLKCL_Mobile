@@ -19,6 +19,7 @@ class Input extends StatefulWidget {
   final String? error;
   final TextCapitalization textCapitalization;
   final int maxLines;
+  final IconData? prefixIcon;
 
   Input(
       {Key? key,
@@ -38,7 +39,8 @@ class Input extends StatefulWidget {
       this.onSavedFunction,
       this.error,
       this.maxLines = 1,
-      this.textCapitalization = TextCapitalization.none})
+      this.textCapitalization = TextCapitalization.none,
+      this.prefixIcon})
       : super(key: key);
 
   @override
@@ -100,6 +102,11 @@ class _InputState extends State<Input> {
         decoration: InputDecoration(
           labelText: widget.required ? widget.label + " \*" : widget.label,
           hintText: widget.hint,
+          prefixIcon: widget.prefixIcon != null
+              ? Icon(
+                  widget.prefixIcon,
+                )
+              : null,
           suffixIcon: _obscure != null
               ? (IconButton(
                   icon: Icon(

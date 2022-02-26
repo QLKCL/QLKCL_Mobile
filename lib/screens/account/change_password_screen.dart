@@ -31,11 +31,20 @@ class _ChangePasswordState extends State<ChangePassword> {
           child: Column(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.5,
+                height: MediaQuery.of(context).size.height * 0.3,
                 margin: const EdgeInsets.all(16),
                 child: Image.asset("assets/images/otp.png"),
               ),
-              ChangePasswordForm(),
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 450
+                      ? 450
+                      : MediaQuery.of(context).size.width,
+                  child: Card(
+                    child: ChangePasswordForm(),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -62,9 +71,11 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
       key: _formKey,
       child: Column(
         children: [
+          SizedBox(
+            height: 16,
+          ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(16),
             child: Text(
               "Đổi mật khẩu",
               style: Theme.of(context).textTheme.headline6,

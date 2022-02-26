@@ -8,6 +8,9 @@ import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:side_navigation/side_navigation.dart';
+
+import '../screens/members/update_member_screen.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 
@@ -45,7 +48,19 @@ class BottomNavigation extends StatelessWidget {
       onTap: (index) => {
         index = (role == 5) ? index * 4 : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
-          {Navigator.pushNamed(context, QrCodeScan.routeName)}
+          {
+            Navigator.of(context)
+                .push(
+                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                )
+                .then((value) => value != null
+                    ? Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => UpdateMember(
+                                  code: value,
+                                )))
+                    : null)
+          }
         else
           {
             onSelectTab(
@@ -69,6 +84,86 @@ class BottomNavigation extends StatelessWidget {
       icon: tabItem == currentTab
           ? Icon(selectTabIcon[tabItem])
           : Icon(tabIcon[tabItem]),
+    );
+  }
+}
+
+class SideBar extends StatelessWidget {
+  SideBar({
+    required this.currentTab,
+    required this.onSelectTab,
+    required this.role,
+  });
+  final TabItem currentTab;
+  final ValueChanged<TabItem> onSelectTab;
+  final int role;
+
+  @override
+  Widget build(BuildContext context) {
+    return SideNavigationBar(
+      selectedIndex: currentTab.index,
+      theme: SideNavigationBarTheme(
+        backgroundColor: CustomColors.white,
+        itemTheme: ItemTheme(
+            selectedItemColor: CustomColors.secondary,
+            unselectedItemColor: CustomColors.disableText),
+        showFooterDivider: true,
+        showHeaderDivider: true,
+        showMainDivider: true,
+        togglerTheme: TogglerTheme(),
+      ),
+      header: SideNavigationBarHeader(
+        image: Image.asset(
+          'assets/images/Logo.png',
+          width: 36,
+        ),
+        title: Padding(
+          padding: EdgeInsets.only(right: 16),
+          child: Text(
+            "Hệ thống quản lý khu cách ly",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 17),
+          ),
+        ),
+        subtitle: Container(),
+      ),
+      items: [
+        _buildItem(TabItem.homepage),
+        if (role != 5) _buildItem(TabItem.quarantine_person),
+        if (role != 5) _buildItem(TabItem.qr_code_scan),
+        if (role != 5) _buildItem(TabItem.quarantine_ward),
+        _buildItem(TabItem.account),
+      ],
+      onTap: (index) => {
+        index = (role == 5) ? index * 4 : index,
+        if (TabItem.values[index] == TabItem.qr_code_scan)
+          {
+            Navigator.of(context)
+                .push(
+                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                )
+                .then((value) => value != null
+                    ? Navigator.of(context, rootNavigator: true)
+                        .push(MaterialPageRoute(
+                            builder: (context) => UpdateMember(
+                                  code: value,
+                                )))
+                    : null)
+          }
+        else
+          {
+            onSelectTab(
+              TabItem.values[index],
+            )
+          }
+      },
+    );
+  }
+
+  SideNavigationBarItem _buildItem(TabItem tabItem) {
+    return SideNavigationBarItem(
+      label: tabName[tabItem]!,
+      icon: tabItem == currentTab ? selectTabIcon[tabItem]! : tabIcon[tabItem]!,
     );
   }
 }

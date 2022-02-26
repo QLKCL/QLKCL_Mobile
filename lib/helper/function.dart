@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 extension IterableX<T> on Iterable<T> {
   T? safeFirstWhere(bool Function(T) test) {
@@ -30,7 +32,7 @@ String parseDateToDateTimeWithTimeZone(String date) {
 }
 
 extension Target on Object {
-  bool isAndroid() {
+  bool isAndroidPlatform() {
     try {
       return Platform.isAndroid;
     } catch (e) {
@@ -38,7 +40,7 @@ extension Target on Object {
     }
   }
 
-  bool isIOS() {
+  bool isIOSPlatform() {
     try {
       return Platform.isIOS;
     } catch (e) {
@@ -46,7 +48,7 @@ extension Target on Object {
     }
   }
 
-  bool isLinux() {
+  bool isLinuxPlatform() {
     try {
       return Platform.isLinux;
     } catch (e) {
@@ -54,7 +56,7 @@ extension Target on Object {
     }
   }
 
-  bool isWindows() {
+  bool isWindowsPlatform() {
     try {
       return Platform.isWindows;
     } catch (e) {
@@ -62,7 +64,7 @@ extension Target on Object {
     }
   }
 
-  bool isMacOS() {
+  bool isMacOSPlatform() {
     try {
       return Platform.isMacOS;
     } catch (e) {
@@ -70,7 +72,50 @@ extension Target on Object {
     }
   }
 
-  bool isWeb() {
+  bool isWebPlatform() {
     return kIsWeb;
+  }
+}
+
+class Responsive extends StatelessWidget {
+  final Widget mobile;
+  final Widget? tablet;
+  final Widget desktop;
+
+  const Responsive({
+    Key? key,
+    required this.mobile,
+    this.tablet,
+    required this.desktop,
+  }) : super(key: key);
+
+  // https://stackoverflow.com/questions/6370690/media-queries-how-to-target-desktop-tablet-and-mobile
+
+  // This isMobileLayout, isTabletLayout, isDesktopLayout helep us later
+  static bool isMobileLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width < maxMobileSize;
+
+  static bool isTabletLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width < maxTabletSize &&
+      MediaQuery.of(context).size.width >= maxMobileSize;
+
+  static bool isDesktopLayout(BuildContext context) =>
+      MediaQuery.of(context).size.width >= maxTabletSize;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size _size = MediaQuery.of(context).size;
+    // If our width is more than 768 then we consider it a desktop
+    if (_size.width >= maxTabletSize) {
+      return desktop;
+    }
+    // If width it less then 768 and more then 480 we consider it as tablet
+    else if (_size.width >= maxMobileSize && tablet != null) {
+      return tablet!;
+    }
+    // Or less then that we called it mobile
+    else {
+      return mobile;
+    }
   }
 }

@@ -140,33 +140,19 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             backgroundColor: CustomColors.background,
             centerTitle: false,
             actions: [
-              if (unreadNotifications != 0)
-                Badge(
-                  position: BadgePosition.topEnd(top: 10, end: 16),
-                  animationDuration: Duration(milliseconds: 300),
-                  animationType: BadgeAnimationType.scale,
-                  shape: BadgeShape.square,
-                  borderRadius: BorderRadius.circular(8),
-                  padding: EdgeInsets.fromLTRB(4, 2, 4, 1),
-                  badgeContent: Text(
-                    unreadNotifications.toString(),
-                    style: TextStyle(fontSize: 11.0, color: CustomColors.white),
-                  ),
-                  child: IconButton(
-                    padding: EdgeInsets.only(right: 24),
-                    icon: Icon(
-                      Icons.notifications_none_outlined,
-                      color: CustomColors.primaryText,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context, rootNavigator: true)
-                          .pushNamed(ListNotification.routeName);
-                    },
-                    tooltip: "Thông báo",
-                  ),
+              Badge(
+                showBadge: unreadNotifications != 0,
+                position: BadgePosition.topEnd(top: 10, end: 16),
+                animationDuration: Duration(milliseconds: 300),
+                animationType: BadgeAnimationType.scale,
+                shape: BadgeShape.square,
+                borderRadius: BorderRadius.circular(8),
+                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                badgeContent: Text(
+                  unreadNotifications.toString(),
+                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
-              if (unreadNotifications == 0)
-                IconButton(
+                child: IconButton(
                   padding: EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
@@ -174,10 +160,27 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   ),
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true)
-                        .pushNamed(ListNotification.routeName);
+                        .pushNamed(ListNotification.routeName)
+                        .then((value) => {
+                              notifications.fetchUserNotificationList(data: {
+                                'page_size': PAGE_SIZE_MAX
+                              }).then((value) => setState(() {
+                                    listNotification = value;
+                                    unreadNotifications = listNotification
+                                        .where((element) =>
+                                            notifications.Notification.fromJson(
+                                                    element)
+                                                .isRead ==
+                                            false)
+                                        .toList()
+                                        .length;
+                                    print(unreadNotifications);
+                                  }))
+                            });
                   },
                   tooltip: "Thông báo",
                 ),
+              ),
             ],
           ),
         ),

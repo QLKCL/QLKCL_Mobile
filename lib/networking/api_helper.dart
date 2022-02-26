@@ -81,9 +81,11 @@ class ApiHelper {
     var dio = Dio();
     final Uri apiUrl = Uri.parse(Constant.baseUrl + "/api/token/refresh");
     var refreshToken = await getRefreshToken();
-    dio.options.headers["Authorization"] = "Bearer " + refreshToken!;
     try {
-      response = await dio.postUri(apiUrl);
+      response = await dio.postUri(
+        apiUrl,
+        data: {'refresh': refreshToken},
+      );
       if (response.statusCode == 200) {
         var refreshTokenResponse = jsonDecode(response.toString());
         var accessToken = refreshTokenResponse.data.access;
@@ -91,14 +93,14 @@ class ApiHelper {
       } else {
         print(response.toString());
         showTextToast(
-            'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại');
-        await logout();
+            'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
+        // await logout();
       }
     } catch (e) {
       print(e.toString());
       showTextToast(
-          'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại');
-      await logout();
+          'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
+      // await logout();
     }
   }
 

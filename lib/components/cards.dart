@@ -842,7 +842,7 @@ class QuarantineHome extends StatelessWidget {
   final String room;
   final String phone;
   final String quarantineAt;
-  final int quarantineTime;
+  final String quarantineFinishExpect;
 
   const QuarantineHome({
     required this.name,
@@ -851,7 +851,7 @@ class QuarantineHome extends StatelessWidget {
     required this.room,
     required this.phone,
     required this.quarantineAt,
-    required this.quarantineTime,
+    required this.quarantineFinishExpect,
   });
 
   @override
@@ -962,7 +962,7 @@ class QuarantineHome extends StatelessWidget {
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
                             child: Icon(
-                              Icons.event_available_outlined,
+                              Icons.date_range_outlined,
                               size: 16,
                               color: CustomColors.disableText,
                             ),
@@ -970,8 +970,7 @@ class QuarantineHome extends StatelessWidget {
                           TextSpan(
                               text: " Dự kiến hoàn thành cách ly: " +
                                   DateFormat("dd/MM/yyyy").format(
-                                      DateTime.parse(quarantineAt).add(
-                                          Duration(days: quarantineTime)))),
+                                      DateTime.parse(quarantineFinishExpect))),
                         ],
                       ),
                     ),

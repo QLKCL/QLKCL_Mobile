@@ -30,11 +30,11 @@ class InfoCovid extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(color: CustomColors.white),
               ),
-              // subtitle: Text(
-              //   "+" + newCase,
-              //   textAlign: TextAlign.center,
-              //   style: TextStyle(color: CustomColors.white),
-              // ),
+              subtitle: Text(
+                "+" + newCase,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: CustomColors.white),
+              ),
             ),
             Text(
               totalCase,

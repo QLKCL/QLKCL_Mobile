@@ -123,7 +123,7 @@ Future<dynamic> changeStateUserNotification({data}) async {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true);
+      return Response(success: true, data: response['data']['is_read']);
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

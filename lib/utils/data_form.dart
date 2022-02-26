@@ -489,3 +489,18 @@ Map<String, dynamic> acceptOneMemberDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> changeRoomMemberDataForm({
+  required String code,
+  required String quarantineWard,
+  String? quarantineRoom,
+  String? staffCode,
+}) {
+  var data = {
+    "custom_user_code": code,
+    "quarantine_ward_id": quarantineWard,
+    "quarantine_room_id": quarantineRoom,
+    "care_staff_code": staffCode,
+  };
+  return prepareDataForm(data);
+}

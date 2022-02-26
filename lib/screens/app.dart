@@ -9,8 +9,8 @@ import 'package:qlkcl/utils/constant.dart';
 
 class App extends StatefulWidget {
   static const String routeName = "/app";
-  final int role;
-  const App({Key? key, required this.role}) : super(key: key);
+  final int? role;
+  const App({Key? key, this.role}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -44,9 +44,9 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    _role = widget.role;
+    _role = widget.role ?? 5;
 
-    if (isAndroid() || isIOS()) {
+    if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();
     }
   }
@@ -78,16 +78,54 @@ class _AppState extends State<App> {
         return isFirstRouteInCurrentTab;
       },
       child: Scaffold(
-        body: Stack(children: <Widget>[
-          _buildOffstageNavigator(TabItem.homepage),
-          if (_role != 5) _buildOffstageNavigator(TabItem.quarantine_person),
-          if (_role != 5) _buildOffstageNavigator(TabItem.quarantine_ward),
-          _buildOffstageNavigator(TabItem.account),
-        ]),
-        bottomNavigationBar: BottomNavigation(
-          role: _role,
-          currentTab: _currentTab,
-          onSelectTab: _selectTab,
+        /// You can use an AppBar if you want to
+        // appBar: AppBar(
+        //  title: const Text('App'),
+        // ),
+
+        // The row is needed to display the current view
+        body: Row(
+          children: [
+            /// Pretty similar to the BottomNavigationBar!
+            if (Responsive.isDesktopLayout(context))
+              SideBar(
+                role: _role,
+                currentTab: _currentTab,
+                onSelectTab: _selectTab,
+              ),
+
+            /// Make it take the rest of the available width
+            Expanded(
+              child: Stack(children: <Widget>[
+                _buildOffstageNavigator(TabItem.homepage),
+                if (_role != 5)
+                  _buildOffstageNavigator(TabItem.quarantine_person),
+                if (_role != 5)
+                  _buildOffstageNavigator(TabItem.quarantine_ward),
+                _buildOffstageNavigator(TabItem.account),
+              ]),
+            )
+          ],
+        ),
+
+        bottomNavigationBar: Container(
+          height: 60,
+          width: MediaQuery.of(context).size.width,
+          child: !Responsive.isDesktopLayout(context)
+              ? BottomNavigation(
+                  role: _role,
+                  currentTab: _currentTab,
+                  onSelectTab: _selectTab,
+                )
+              : Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
+                    textAlign: TextAlign.center,
+                  ),
+                ),
         ),
       ),
     );

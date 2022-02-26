@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/config/app_theme.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -16,6 +16,9 @@ import 'package:rxdart/rxdart.dart';
 
 class QrCodeScan extends StatefulWidget {
   static const String routeName = "/qr_scan";
+
+  QrCodeScan({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _QrCodeScanState();
 }
@@ -31,51 +34,54 @@ class _QrCodeScanState extends State<QrCodeScan> {
   @override
   void reassemble() {
     super.reassemble();
-    if (Platform.isAndroid) {
+    if (isAndroidPlatform()) {
       controller!.pauseCamera();
+    } else if (isIOSPlatform()) {
+      controller!.resumeCamera();
     }
-    controller!.resumeCamera();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: 20),
-          child: SizedBox(
-            height: 120,
-            width: 100,
-            child: FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              onPressed: () => _getPhotoByGallery(),
-              child: Column(
-                children: [
-                  Container(
-                    height: 64,
-                    width: 64,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 2),
-                      shape: BoxShape.circle,
+        floatingActionButton: (isAndroidPlatform() || isIOSPlatform())
+            ? Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: SizedBox(
+                  height: 120,
+                  width: 100,
+                  child: FloatingActionButton(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                    onPressed: () => _getPhotoByGallery(),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 64,
+                          width: 64,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.photo_library_outlined, size: 30),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Chọn QR từ thư viện",
+                          style: TextStyle(
+                            color: CustomColors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    child: Icon(Icons.photo_library_outlined, size: 30),
+                    tooltip: "Chọn hình ảnh",
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "Chọn QR từ thư viện",
-                    style: TextStyle(
-                      color: CustomColors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              tooltip: "Chọn hình ảnh",
-            ),
-          ),
-        ),
+                ),
+              )
+            : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         appBar: AppBar(
           title: const Text('Quét mã QR'),
@@ -138,9 +144,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('no Permission')),
-      );
+      showTextToast("Ứng dụng không có quyền truy cập Camera!");
     }
   }
 
@@ -150,20 +154,16 @@ class _QrCodeScanState extends State<QrCodeScan> {
     super.dispose();
   }
 
-  parseData(String qrResult) async {
+  parseData(String? qrResult) async {
     controller?.pauseCamera();
-    if (qrResult.contains("...")) {
+    if (qrResult == null || qrResult.contains("...")) {
       await Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
           return Error();
         },
       ));
     } else {
-      Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(
-              builder: (context) => UpdateMember(
-                    code: qrResult,
-                  )));
+      Navigator.of(context).pop(qrResult);
     }
   }
 
@@ -173,11 +173,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
         .flatMap((file) {
       return Stream.fromFuture(QrCodeToolsPlugin.decodeFrom(file!.path));
     }).listen((data) {
-      Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(
-              builder: (context) => UpdateMember(
-                    code: data,
-                  )));
+      Navigator.of(context).pop(data);
     }).onError((error, stackTrace) {
       showDialog<String>(
         barrierDismissible: false,
