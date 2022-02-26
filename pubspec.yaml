@@ -58,6 +58,7 @@ dependencies:
   flutter_speed_dial: ^5.0.0+1
   bot_toast: ^4.0.1
   responsive_framework: ^0.1.7
+  side_navigation: ^0.0.7
   # shimmer: ^2.0.0
 
 dev_dependencies:
