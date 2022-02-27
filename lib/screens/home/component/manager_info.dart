@@ -3,6 +3,8 @@ import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
+import 'package:qlkcl/utils/constant.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 
 import 'charts.dart';
@@ -27,54 +29,87 @@ class InfoManagerHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<InfoManagerHomeCard> listTest = [
+      InfoManagerHomeCard(
+        title: "Xét nghiệm cần cập nhật",
+        subtitle: waitingTests.toString(),
+        icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(ListTestNoResult.routeName);
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Chờ xét duyệt",
+        subtitle: waitingUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/cho_xet_duyet.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => ListAllMember(tab: 1)));
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Nghi nhiễm",
+        subtitle: suspectedUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => ListAllMember(tab: 2)));
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Tới hạn xét nghiệm",
+        subtitle: needTestUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => ListAllMember(tab: 3)));
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Sắp hoàn thành cách ly",
+        subtitle: canFinishUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => ListAllMember(tab: 4)));
+        },
+      ),
+    ];
+
+    var _screenWidth = MediaQuery.of(context).size.width - 16;
+    var _crossAxisCount = _screenWidth <= maxMobileSize
+        ? 1
+        : _screenWidth >= minDesktopSize
+            ? (_screenWidth - 230) ~/ (maxMobileSize - 64)
+            : _screenWidth ~/ (maxMobileSize - 32);
+    var _width = (_screenWidth) / _crossAxisCount;
+    var cellHeight = 122;
+    var _aspectRatio = _width / cellHeight;
+
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          InfoManagerHomeCard(
-            title: "Xét nghiệm cần cập nhật",
-            subtitle: waitingTests.toString(),
-            icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true)
-                  .pushNamed(ListTestNoResult.routeName);
-            },
-          ),
-          InfoManagerHomeCard(
-            title: "Chờ xét duyệt",
-            subtitle: waitingUsers.toString(),
-            icon: WebsafeSvg.asset("assets/svg/cho_xet_duyet.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 1)));
-            },
-          ),
-          InfoManagerHomeCard(
-            title: "Nghi nhiễm",
-            subtitle: suspectedUsers.toString(),
-            icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 2)));
-            },
-          ),
-          InfoManagerHomeCard(
-            title: "Tới hạn xét nghiệm",
-            subtitle: needTestUsers.toString(),
-            icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 3)));
-            },
-          ),
-          InfoManagerHomeCard(
-            title: "Sắp hoàn thành cách ly",
-            subtitle: canFinishUsers.toString(),
-            icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
-            onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 4)));
-            },
-          ),
+          if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+            ResponsiveGridView.builder(
+              padding: EdgeInsets.only(bottom: 8),
+              gridDelegate: ResponsiveGridDelegate(
+                maxCrossAxisExtent: _width,
+                minCrossAxisExtent:
+                    _width < maxMobileSize ? _width : maxMobileSize,
+                childAspectRatio: _aspectRatio,
+              ),
+              itemCount: listTest.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return listTest[index];
+              },
+            ),
+          if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+            ...listTest.map(
+              (e) => e,
+            ),
           Container(
             height: 400,
             padding: const EdgeInsets.only(bottom: 8),
@@ -135,7 +170,7 @@ class InfoManagerHomeCard extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       title,
