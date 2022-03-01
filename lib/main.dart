@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
   static const String routeName = "/init";
   final bool isLoggedIn;
   final int role;
-  const MyApp({Key? key, required this.isLoggedIn, required this.role})
+  const MyApp({Key? key, this.isLoggedIn = false, this.role = 5})
       : super(key: key);
 
   // This widget is the root of your application.

@@ -129,7 +129,7 @@ class CustomColors {
       HexColor("#8792F2"); // For button and active navigation
   static Color nonactive = HexColor("#ABAFD1"); // For non active tab layout
   static Color white = HexColor("#FFFFFF");
-  static Color background = HexColor("#F9FAFC");
+  static Color background = HexColor("#F0F2F5");
   static Color shadow = HexColor("#22313F");
 }
 
