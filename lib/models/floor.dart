@@ -62,8 +62,6 @@ Future<dynamic> createFloor(Map<String, dynamic> data) async {
           message: "Tạo tầng thành công!",
           data: response['data']);
     } else {
-      print(response['message']);
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }

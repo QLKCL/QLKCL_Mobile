@@ -16,6 +16,7 @@ import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:badges/badges.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 // cre: https://pub.dev/packages/flutter_speed_dial/example
 // cre: https://pub.dev/packages/badges
@@ -56,7 +57,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   Future<dynamic> fetch() async {
     await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
-    final response = await api.postHTTP(Constant.homeManager, null);
+    final response =
+        await api.postHTTP(Constant.homeManager, {"number_of_days_in_out": 12});
     return response != null && response['data'] != null
         ? response['data']
         : null;
@@ -174,7 +176,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                             false)
                                         .toList()
                                         .length;
-                                    print(unreadNotifications);
                                   }))
                             });
                   },
@@ -202,11 +203,20 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               future: fetch(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  int numberDays =
+                      ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
+                          ? 4
+                          : ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                              ? 12
+                              : 6;
                   return InfoManagerHomePage(
-                    waitingUsers: snapshot.data['number_of_waiting_users'],
-                    suspectedUsers: snapshot.data['number_of_suspected_users'],
-                    needTestUsers: snapshot.data['number_of_need_test_users'],
-                    canFinishUsers: snapshot.data['number_of_can_finish_users'],
+                    totalUsers: snapshot.data['number_of_members'],
+                    waitingUsers: snapshot.data['number_of_waiting_members'],
+                    suspectedUsers:
+                        snapshot.data['number_of_suspected_members'],
+                    needTestUsers: snapshot.data['number_of_need_test_members'],
+                    canFinishUsers:
+                        snapshot.data['number_of_can_finish_members'],
                     waitingTests: snapshot.data['number_of_waiting_tests'],
                     numberIn: snapshot.data['in'].entries
                         .map((entry) => KeyValue(
@@ -216,6 +226,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         .toList()
                         .cast<KeyValue>()
                         .reversed
+                        .take(numberDays)
+                        .toList()
+                        .reversed
                         .toList(),
                     numberOut: snapshot.data['out'].entries
                         .map((entry) => KeyValue(
@@ -224,6 +237,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             name: entry.value))
                         .toList()
                         .cast<KeyValue>()
+                        .reversed
+                        .take(numberDays)
+                        .toList()
                         .reversed
                         .toList(),
                   );

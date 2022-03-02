@@ -123,6 +123,7 @@ Map<String, dynamic> filterMemberDataForm({
   String? quarantineAtMin,
   String? quarantineAtMax,
   String? label,
+  String? careStaff,
   required int page,
 }) {
   var data = {
@@ -134,6 +135,7 @@ Map<String, dynamic> filterMemberDataForm({
     "created_at_min": quarantineAtMin,
     "created_at_max": quarantineAtMax,
     "label_list": label,
+    "care_staff_code": careStaff,
     "page": page,
   };
   return prepareDataForm(data);

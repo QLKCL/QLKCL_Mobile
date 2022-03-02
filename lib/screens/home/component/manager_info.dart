@@ -10,6 +10,7 @@ import 'package:websafe_svg/websafe_svg.dart';
 import 'charts.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
+  final int totalUsers;
   final int waitingUsers;
   final int suspectedUsers;
   final int needTestUsers;
@@ -18,6 +19,7 @@ class InfoManagerHomePage extends StatelessWidget {
   final List<KeyValue> numberIn;
   final List<KeyValue> numberOut;
   const InfoManagerHomePage({
+    this.totalUsers = 0,
     this.waitingUsers = 0,
     this.suspectedUsers = 0,
     this.needTestUsers = 0,
@@ -30,6 +32,15 @@ class InfoManagerHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<InfoManagerHomeCard> listTest = [
+      InfoManagerHomeCard(
+        title: "Đang cách ly",
+        subtitle: totalUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
+        onTap: () {
+          Navigator.of(context, rootNavigator: true)
+              .pushNamed(ListTestNoResult.routeName);
+        },
+      ),
       InfoManagerHomeCard(
         title: "Xét nghiệm cần cập nhật",
         subtitle: waitingTests.toString(),
