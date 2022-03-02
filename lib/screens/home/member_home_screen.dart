@@ -173,7 +173,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                           false)
                                       .toList()
                                       .length;
-                                  print(unreadNotifications);
                                 }))
                           });
                 },
