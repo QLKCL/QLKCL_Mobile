@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
@@ -37,8 +38,8 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: totalUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true)
-              .pushNamed(ListTestNoResult.routeName);
+          Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (context) => ListAllMember(tab: 0)));
         },
       ),
       InfoManagerHomeCard(
@@ -95,7 +96,7 @@ class InfoManagerHomePage extends StatelessWidget {
             ? (_screenWidth - 230) ~/ (maxMobileSize - 64)
             : _screenWidth ~/ (maxMobileSize - 32);
     var _width = (_screenWidth) / _crossAxisCount;
-    var cellHeight = 122;
+    var cellHeight = 128;
     var _aspectRatio = _width / cellHeight;
 
     return SingleChildScrollView(
@@ -103,7 +104,7 @@ class InfoManagerHomePage extends StatelessWidget {
         children: <Widget>[
           if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
             ResponsiveGridView.builder(
-              padding: EdgeInsets.only(bottom: 8),
+              padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
               gridDelegate: ResponsiveGridDelegate(
                 maxCrossAxisExtent: _width,
                 minCrossAxisExtent:
@@ -125,6 +126,9 @@ class InfoManagerHomePage extends StatelessWidget {
             height: 400,
             padding: const EdgeInsets.only(bottom: 8),
             child: Card(
+              margin: Responsive.isDesktopLayout(context)
+                  ? EdgeInsets.fromLTRB(16, 0, 16, 0)
+                  : null,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -165,6 +169,9 @@ class InfoManagerHomeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: Responsive.isDesktopLayout(context)
+          ? EdgeInsets.fromLTRB(8, 8, 8, 0)
+          : null,
       child: InkWell(
         onTap: onTap,
         child: Padding(

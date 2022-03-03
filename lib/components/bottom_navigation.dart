@@ -106,7 +106,7 @@ class SideBar extends StatelessWidget {
         backgroundColor: CustomColors.white,
         itemTheme: ItemTheme(
             selectedItemColor: CustomColors.secondary,
-            unselectedItemColor: CustomColors.disableText),
+            unselectedItemColor: CustomColors.secondaryText),
         showFooterDivider: true,
         showHeaderDivider: true,
         showMainDivider: true,
