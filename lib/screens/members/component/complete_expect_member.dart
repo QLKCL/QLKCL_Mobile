@@ -20,8 +20,7 @@ class ExpectCompleteMember extends StatefulWidget {
 
 class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
     with AutomaticKeepAliveClientMixin<ExpectCompleteMember> {
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
+  final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1);
 
   @override
@@ -83,10 +82,10 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
         onRefresh: () => Future.sync(
           () => _pagingController.refresh(),
         ),
-        child: PagedListView<int, dynamic>(
+        child: PagedListView<int, FilterMember>(
           padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Text('Không có dữ liệu'),
@@ -95,30 +94,12 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
               child: Text('Có lỗi xảy ra'),
             ),
             itemBuilder: (context, item, index) => MemberCard(
-              name: item['full_name'] ?? "",
-              gender: item['gender'] ?? "",
-              birthday: item['birthday'] ?? "",
-              room:
-                  (item['quarantine_room'] != null
-                          ? "${item['quarantine_room']['name']} - "
-                          : "") +
-                      (item['quarantine_floor'] != null
-                          ? "${item['quarantine_floor']['name']} - "
-                          : "") +
-                      (item['quarantine_building'] != null
-                          ? "${item['quarantine_building']['name']} - "
-                          : "") +
-                      (item['quarantine_ward'] != null
-                          ? "${item['quarantine_ward']['full_name']}"
-                          : ""),
-              lastTestResult: item['positive_test_now'],
-              lastTestTime: item['last_tested'],
-              healthStatus: item['health_status'],
+              member: item,
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
-                              code: item['code'],
+                              code: item.code,
                             )));
               },
               menus: PopupMenuButton(
@@ -131,27 +112,27 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => UpdateMember(
-                                  code: item['code'],
+                                  code: item.code,
                                 )));
                   } else if (result == 'medical_declare_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => ListMedicalDeclaration(
-                                  code: item['code'],
-                                  phone: item["phone_number"],
+                                  code: item.code,
+                                  phone: item.phoneNumber,
                                 )));
                   } else if (result == 'test_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => ListTest(
-                                  code: item["code"],
-                                  name: item['full_name'],
+                                  code: item.code,
+                                  name: item.fullName,
                                 )));
                   } else if (result == 'vaccine_dose_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => ListVaccineDose(
-                                  code: item["code"],
+                                  code: item.code,
                                 )));
                   }
                 },
@@ -177,7 +158,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                     onTap: () async {
                       CancelFunc cancel = showLoading();
                       final response =
-                          await finishMember({'member_codes': item['code']});
+                          await finishMember({'member_codes': item.code});
                       cancel();
                       showNotification(response);
                       if (response.success) {

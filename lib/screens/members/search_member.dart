@@ -39,8 +39,7 @@ class _SearchMemberState extends State<SearchMember> {
 
   bool _searched = false;
 
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
+  final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1);
 
   @override
@@ -212,9 +211,9 @@ class _SearchMemberState extends State<SearchMember> {
             ? MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
-                child: PagedListView<int, dynamic>(
+                child: PagedListView<int, FilterMember>(
                   pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<dynamic>(
+                  builderDelegate: PagedChildBuilderDelegate<FilterMember>(
                       animateTransitions: true,
                       noItemsFoundIndicatorBuilder: (context) => Center(
                             child: Text('Không có kết quả tìm kiếm'),
@@ -223,30 +222,12 @@ class _SearchMemberState extends State<SearchMember> {
                             child: Text('Có lỗi xảy ra'),
                           ),
                       itemBuilder: (context, item, index) => MemberCard(
-                            name: item['full_name'] ?? "",
-                            gender: item['gender'] ?? "",
-                            birthday: item['birthday'] ?? "",
-                            room:
-                                (item['quarantine_room'] != null
-                                        ? "${item['quarantine_room']['name']} - "
-                                        : "") +
-                                    (item['quarantine_floor'] != null
-                                        ? "${item['quarantine_floor']['name']} - "
-                                        : "") +
-                                    (item['quarantine_building'] != null
-                                        ? "${item['quarantine_building']['name']} - "
-                                        : "") +
-                                    (item['quarantine_ward'] != null
-                                        ? "${item['quarantine_ward']['full_name']}"
-                                        : ""),
-                            lastTestResult: item['positive_test_now'],
-                            lastTestTime: item['last_tested'],
-                            healthStatus: item['health_status'],
+                            member: item,
                             onTap: () {
                               Navigator.of(context, rootNavigator: true)
                                   .push(MaterialPageRoute(
                                       builder: (context) => UpdateMember(
-                                            code: item['code'],
+                                            code: item.code,
                                           )));
                             },
                             menus: PopupMenuButton(
@@ -259,7 +240,7 @@ class _SearchMemberState extends State<SearchMember> {
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (context) => UpdateMember(
-                                                code: item['code'],
+                                                code: item.code,
                                               )));
                                 } else if (result ==
                                     'create_medical_declaration') {
@@ -267,7 +248,7 @@ class _SearchMemberState extends State<SearchMember> {
                                       .push(MaterialPageRoute(
                                           builder: (context) =>
                                               MedicalDeclarationScreen(
-                                                phone: item["phone_number"],
+                                                phone: item.phoneNumber,
                                               )));
                                 } else if (result ==
                                     'medical_declare_history') {
@@ -275,22 +256,22 @@ class _SearchMemberState extends State<SearchMember> {
                                       .push(MaterialPageRoute(
                                           builder: (context) =>
                                               ListMedicalDeclaration(
-                                                code: item['code'],
-                                                phone: item["phone_number"],
+                                                code: item.code,
+                                                phone: item.phoneNumber,
                                               )));
                                 } else if (result == 'create_test') {
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (context) => AddTest(
-                                                code: item["code"],
-                                                name: item['full_name'],
+                                                code: item.code,
+                                                name: item.fullName,
                                               )));
                                 } else if (result == 'test_history') {
                                   Navigator.of(context, rootNavigator: true)
                                       .push(MaterialPageRoute(
                                           builder: (context) => ListTest(
-                                                code: item["code"],
-                                                name: item['full_name'],
+                                                code: item.code,
+                                                name: item.fullName,
                                               )));
                                 }
                               },

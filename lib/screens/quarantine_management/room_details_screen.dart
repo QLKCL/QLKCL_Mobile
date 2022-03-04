@@ -32,7 +32,7 @@ class RoomDetailsScreen extends StatefulWidget {
 }
 
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
-  late Future<dynamic> futureMemberList;
+  late Future<List<FilterMember>> futureMemberList;
 
   @override
   void initState() {

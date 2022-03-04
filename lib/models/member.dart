@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
@@ -100,22 +101,25 @@ class Member {
       };
 }
 
-Future<dynamic> fetchMemberList({data}) async {
+Future<List<FilterMember>> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
-      return response['data']['content'];
+      List<FilterMember> itemList = response['data']['content']
+          .map<FilterMember>((json) => FilterMember.fromJson(json))
+          .toList();
+      return itemList;
     } else if (response['error_code'] == 401) {
       if (response['message']['quarantine_ward_id'] != null &&
           response['message']['quarantine_ward_id'] == "Permission denied") {
         showNotification('Không có quyền truy cập!', status: 'error');
       }
-      return null;
+      return [];
     }
   }
 
-  return null;
+  return [];
 }
 
 Future<dynamic> createMember(Map<String, dynamic> data) async {
@@ -288,4 +292,150 @@ Future<dynamic> changeRoomMember(data) async {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
+}
+
+// To parse this JSON data, do
+//
+//     final filterMember = filterMemberFromJson(jsonString);
+
+FilterMember filterMemberFromJson(String str) =>
+    FilterMember.fromJson(json.decode(str));
+
+String filterMemberToJson(FilterMember data) => json.encode(data.toJson());
+
+class FilterMember {
+  FilterMember({
+    required this.code,
+    required this.status,
+    required this.fullName,
+    required this.gender,
+    this.birthday,
+    this.quarantineRoom,
+    required this.phoneNumber,
+    required this.createdAt,
+    this.quarantinedAt,
+    this.quarantinedFinishExpectedAt,
+    this.quarantineFloor,
+    this.quarantineBuilding,
+    required this.quarantineWard,
+    required this.healthStatus,
+    this.positiveTestNow,
+    this.lastTested,
+    this.lastTestedHadResult,
+    required this.label,
+    required this.numberOfVaccineDoses,
+    this.quarantineLocation,
+  });
+
+  final String code;
+  final String status;
+  final String fullName;
+  final String gender;
+  final String? birthday;
+  final KeyValue? quarantineRoom;
+  final String phoneNumber;
+  final String createdAt;
+  final String? quarantinedAt;
+  final String? quarantinedFinishExpectedAt;
+  final KeyValue? quarantineFloor;
+  final KeyValue? quarantineBuilding;
+  final KeyValue? quarantineWard;
+  final String healthStatus;
+  final bool? positiveTestNow;
+  final String? lastTested;
+  final String? lastTestedHadResult;
+  final String label;
+  final String numberOfVaccineDoses;
+  final String? quarantineLocation;
+
+  factory FilterMember.fromJson(Map<String, dynamic> json) => FilterMember(
+        code: json["code"],
+        status: json["status"],
+        fullName: json["full_name"],
+        gender: json["gender"],
+        birthday: json["birthday"],
+        quarantineRoom: json["quarantine_room"] != null
+            ? KeyValue.fromJson(json["quarantine_room"])
+            : null,
+        phoneNumber: json["phone_number"],
+        createdAt: json["created_at"],
+        quarantinedAt: json["quarantined_at"],
+        quarantinedFinishExpectedAt: json["quarantined_finish_expected_at"],
+        quarantineFloor: json["quarantine_floor"] != null
+            ? KeyValue.fromJson(json["quarantine_floor"])
+            : null,
+        quarantineBuilding: json["quarantine_building"] != null
+            ? KeyValue.fromJson(json["quarantine_building"])
+            : null,
+        quarantineWard: KeyValue.fromJson(json["quarantine_ward"]),
+        healthStatus: json["health_status"],
+        positiveTestNow: json["positive_test_now"],
+        lastTested: json["last_tested"],
+        lastTestedHadResult: json["last_tested_had_result"],
+        label: json["label"],
+        numberOfVaccineDoses: json["number_of_vaccine_doses"],
+        quarantineLocation: (json['quarantine_room'] != null
+                ? "${json['quarantine_room']['name']} - "
+                : "") +
+            (json['quarantine_floor'] != null
+                ? "${json['quarantine_floor']['name']} - "
+                : "") +
+            (json['quarantine_building'] != null
+                ? "${json['quarantine_building']['name']} - "
+                : "") +
+            (json['quarantine_ward'] != null
+                ? "${json['quarantine_ward']['full_name']}"
+                : ""),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "code": code,
+        "status": status,
+        "full_name": fullName,
+        "gender": gender,
+        "birthday": birthday,
+        "quarantine_room": quarantineRoom?.toJson(),
+        "phone_number": phoneNumber,
+        "created_at": createdAt,
+        "quarantined_at": quarantinedAt,
+        "quarantined_finish_expected_at": quarantinedFinishExpectedAt,
+        "quarantine_floor": quarantineFloor?.toJson(),
+        "quarantine_building": quarantineBuilding?.toJson(),
+        "quarantine_ward": quarantineWard?.toJson(),
+        "health_status": healthStatus,
+        "positive_test_now": positiveTestNow,
+        "last_tested": lastTested,
+        "last_tested_had_result": lastTestedHadResult,
+        "label": label,
+        "number_of_vaccine_doses": numberOfVaccineDoses,
+      };
+
+  @override
+  String toString() {
+    return "$code";
+  }
+}
+
+class QuarantineWard {
+  QuarantineWard({
+    required this.id,
+    required this.fullName,
+    required this.image,
+  });
+
+  final int id;
+  final String fullName;
+  final dynamic image;
+
+  factory QuarantineWard.fromJson(Map<String, dynamic> json) => QuarantineWard(
+        id: json["id"],
+        fullName: json["full_name"],
+        image: json["image"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "full_name": fullName,
+        "image": image,
+      };
 }

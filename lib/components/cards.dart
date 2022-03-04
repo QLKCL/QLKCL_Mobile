@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
@@ -376,27 +377,15 @@ class MemberCard extends StatefulWidget {
   final bool? longPressEnabled;
   final VoidCallback onTap;
   final VoidCallback? onLongPress;
-  final String name;
-  final String gender;
-  final String birthday;
-  final String? room;
-  final bool? lastTestResult;
-  final String? lastTestTime;
-  final String healthStatus;
   final Widget? menus;
   final String? image;
   final bool isThreeLine;
+  final FilterMember member;
   const MemberCard({
     required this.onTap,
+    required this.member,
     this.onLongPress,
-    required this.name,
-    required this.gender,
-    required this.birthday,
-    this.room,
-    this.lastTestResult,
-    this.lastTestTime,
     this.longPressEnabled,
-    required this.healthStatus,
     this.menus,
     this.image,
     this.isThreeLine = true,
@@ -484,9 +473,9 @@ class _MemberCardState extends State<MemberCard> {
                           decoration: BoxDecoration(
                               color: CustomColors.white,
                               borderRadius: BorderRadius.circular(100)),
-                          child: widget.healthStatus == "SERIOUS"
+                          child: widget.member.healthStatus == "SERIOUS"
                               ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                              : widget.healthStatus == "UNWELL"
+                              : widget.member.healthStatus == "UNWELL"
                                   ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
                                   : WebsafeSvg.asset(
                                       "assets/svg/binh_thuong.svg"),
@@ -507,7 +496,7 @@ class _MemberCardState extends State<MemberCard> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.name + " ",
+                              text: widget.member.fullName + " ",
                               style: TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.normal,
@@ -515,7 +504,7 @@ class _MemberCardState extends State<MemberCard> {
                             ),
                             WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
-                              child: widget.gender == "MALE"
+                              child: widget.member.gender == "MALE"
                                   ? Icon(
                                       Icons.male,
                                       color: HexColor("#00BBD3"),
@@ -529,17 +518,17 @@ class _MemberCardState extends State<MemberCard> {
                         ),
                       ),
                       Text(
-                        widget.birthday,
+                        widget.member.birthday ?? "",
                         style: TextStyle(
                           fontSize: 12,
                           color: CustomColors.disableText,
                         ),
                       ),
-                      if (widget.room != null)
+                      if (widget.member.quarantineLocation != null)
                         SizedBox(
                           height: 4,
                         ),
-                      if (widget.room != null)
+                      if (widget.member.quarantineLocation != null)
                         Text.rich(
                           TextSpan(
                             style: TextStyle(
@@ -555,8 +544,11 @@ class _MemberCardState extends State<MemberCard> {
                                 ),
                               ),
                               TextSpan(
-                                text: " " + widget.room!,
-                              )
+                                text: " " +
+                                    (widget.member.quarantineLocation != null
+                                        ? widget.member.quarantineLocation!
+                                        : ""),
+                              ),
                             ],
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -582,16 +574,17 @@ class _MemberCardState extends State<MemberCard> {
                             ),
                             TextSpan(
                               text: " " +
-                                  (widget.lastTestResult != null
-                                      ? (widget.lastTestResult!
+                                  (widget.member.positiveTestNow != null
+                                      ? (widget.member.positiveTestNow!
                                           ? "Dương tính"
                                           : "Âm tính")
                                       : "Chưa có kết quả xét nghiệm") +
-                                  (widget.lastTestTime != null
+                                  (widget.member.lastTestedHadResult != null
                                       ? " (" +
                                           DateFormat("dd/MM/yyyy HH:mm:ss")
-                                              .format(DateTime.parse(
-                                                      widget.lastTestTime!)
+                                              .format(DateTime.parse(widget
+                                                      .member
+                                                      .lastTestedHadResult!)
                                                   .toLocal()) +
                                           ")"
                                       : ""),

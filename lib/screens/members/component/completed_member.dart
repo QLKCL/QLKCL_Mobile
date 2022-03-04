@@ -16,8 +16,7 @@ class CompletedMember extends StatefulWidget {
 
 class _CompletedMemberState extends State<CompletedMember>
     with AutomaticKeepAliveClientMixin<CompletedMember> {
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
+  final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1);
 
   @override
@@ -79,10 +78,10 @@ class _CompletedMemberState extends State<CompletedMember>
         onRefresh: () => Future.sync(
           () => _pagingController.refresh(),
         ),
-        child: PagedListView<int, dynamic>(
+        child: PagedListView<int, FilterMember>(
           padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Text('Không có dữ liệu'),
@@ -91,18 +90,13 @@ class _CompletedMemberState extends State<CompletedMember>
                     child: Text('Có lỗi xảy ra'),
                   ),
               itemBuilder: (context, item, index) => MemberCard(
-                    name: item['full_name'] ?? "",
-                    gender: item['gender'] ?? "",
-                    birthday: item['birthday'] ?? "",
-                    lastTestResult: item['positive_test_now'],
-                    lastTestTime: item['last_tested'],
-                    healthStatus: item['health_status'],
+                    member: item,
                     isThreeLine: false,
                     onTap: () {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(
                               builder: (context) => UpdateMember(
-                                    code: item['code'],
+                                    code: item.code,
                                   )));
                     },
                     menus: PopupMenuButton(
@@ -115,14 +109,14 @@ class _CompletedMemberState extends State<CompletedMember>
                           Navigator.of(context, rootNavigator: true)
                               .push(MaterialPageRoute(
                                   builder: (context) => UpdateMember(
-                                        code: item['code'],
+                                        code: item.code,
                                       )));
                         } else if (result == 'quarantine_history') {
                         } else if (result == 'vaccine_dose_history') {
                           Navigator.of(context, rootNavigator: true)
                               .push(MaterialPageRoute(
                                   builder: (context) => ListVaccineDose(
-                                        code: item["code"],
+                                        code: item.code,
                                       )));
                         }
                       },
