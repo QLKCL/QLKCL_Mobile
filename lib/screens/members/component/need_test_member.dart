@@ -17,9 +17,8 @@ class NeedTestMember extends StatefulWidget {
 
 class _NeedTestMemberState extends State<NeedTestMember>
     with AutomaticKeepAliveClientMixin<NeedTestMember> {
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+  final PagingController<int, FilterMember> _pagingController =
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;
@@ -80,10 +79,10 @@ class _NeedTestMemberState extends State<NeedTestMember>
         onRefresh: () => Future.sync(
           () => _pagingController.refresh(),
         ),
-        child: PagedListView<int, dynamic>(
+        child: PagedListView<int, FilterMember>(
           padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Text('Không có dữ liệu'),
@@ -92,30 +91,12 @@ class _NeedTestMemberState extends State<NeedTestMember>
               child: Text('Có lỗi xảy ra'),
             ),
             itemBuilder: (context, item, index) => MemberCard(
-              name: item['full_name'] ?? "",
-              gender: item['gender'] ?? "",
-              birthday: item['birthday'] ?? "",
-              room:
-                  (item['quarantine_room'] != null
-                          ? "${item['quarantine_room']['name']} - "
-                          : "") +
-                      (item['quarantine_floor'] != null
-                          ? "${item['quarantine_floor']['name']} - "
-                          : "") +
-                      (item['quarantine_building'] != null
-                          ? "${item['quarantine_building']['name']} - "
-                          : "") +
-                      (item['quarantine_ward'] != null
-                          ? "${item['quarantine_ward']['full_name']}"
-                          : ""),
-              lastTestResult: item['positive_test_now'],
-              lastTestTime: item['last_tested'],
-              healthStatus: item['health_status'],
+              member: item,
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
-                              code: item['code'],
+                              code: item.code,
                             )));
               },
               menus: PopupMenuButton(
@@ -128,21 +109,21 @@ class _NeedTestMemberState extends State<NeedTestMember>
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => UpdateMember(
-                                  code: item['code'],
+                                  code: item.code,
                                 )));
                   } else if (result == 'medical_declare_history') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => ListMedicalDeclaration(
-                                  code: item['code'],
-                                  phone: item["phone_number"],
+                                  code: item.code,
+                                  phone: item.phoneNumber,
                                 )));
                   } else if (result == 'create_test') {
                     Navigator.of(context, rootNavigator: true)
                         .push(MaterialPageRoute(
                             builder: (context) => AddTest(
-                                  code: item["code"],
-                                  name: item['full_name'],
+                                  code: item.code,
+                                  name: item.fullName,
                                 )))
                         .then(
                           (value) => _pagingController.refresh(),

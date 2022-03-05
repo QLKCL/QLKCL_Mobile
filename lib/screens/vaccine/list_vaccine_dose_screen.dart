@@ -18,7 +18,7 @@ class ListVaccineDose extends StatefulWidget {
 class _ListVaccineDoseState extends State<ListVaccineDose> {
   late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;
 
   @override

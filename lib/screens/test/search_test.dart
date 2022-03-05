@@ -29,7 +29,7 @@ class _SearchTestState extends State<SearchTest> {
   bool searched = false;
   late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   void initState() {
@@ -174,8 +174,8 @@ class _SearchTestState extends State<SearchTest> {
                         child: Text('Không có dữ liệu'),
                       ),
                       firstPageErrorIndicatorBuilder: (context) => Center(
-                            child: Text('Có lỗi xảy ra'),
-                          ),
+                        child: Text('Có lỗi xảy ra'),
+                      ),
                       itemBuilder: (context, item, index) => TestNoResultCard(
                         name: item['user'] != null
                             ? item['user']['full_name']

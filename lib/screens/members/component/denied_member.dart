@@ -14,9 +14,8 @@ class DeniedMember extends StatefulWidget {
 
 class _DeniedMemberState extends State<DeniedMember>
     with AutomaticKeepAliveClientMixin<DeniedMember> {
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+  final PagingController<int, FilterMember> _pagingController =
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;
@@ -77,10 +76,10 @@ class _DeniedMemberState extends State<DeniedMember>
         onRefresh: () => Future.sync(
           () => _pagingController.refresh(),
         ),
-        child: PagedListView<int, dynamic>(
+        child: PagedListView<int, FilterMember>(
           padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                     child: Text('Không có dữ liệu'),
@@ -89,18 +88,13 @@ class _DeniedMemberState extends State<DeniedMember>
                     child: Text('Có lỗi xảy ra'),
                   ),
               itemBuilder: (context, item, index) => MemberCard(
-                    name: item['full_name'] ?? "",
-                    gender: item['gender'] ?? "",
-                    birthday: item['birthday'] ?? "",
-                    lastTestResult: item['positive_test_now'],
-                    lastTestTime: item['last_tested'],
-                    healthStatus: item['health_status'],
+                    member: item,
                     isThreeLine: false,
                     onTap: () {
                       Navigator.of(context, rootNavigator: true)
                           .push(MaterialPageRoute(
                               builder: (context) => UpdateMember(
-                                    code: item['code'],
+                                    code: item.code,
                                   )));
                     },
                   )),

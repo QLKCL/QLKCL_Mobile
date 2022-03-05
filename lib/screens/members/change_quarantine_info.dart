@@ -27,7 +27,6 @@ class ChangeQuanrantineInfo extends StatefulWidget {
 
 class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
   final _formKey = GlobalKey<FormState>();
-  late Future<dynamic> futureMember;
   late Member? quarantineData;
 
   final newQuarantineRoomController = TextEditingController();

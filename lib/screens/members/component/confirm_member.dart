@@ -29,9 +29,8 @@ class ConfirmMember extends StatefulWidget {
 
 class _ConfirmMemberState extends State<ConfirmMember>
     with AutomaticKeepAliveClientMixin<ConfirmMember> {
-  late Future<dynamic> futureMemberList;
-  final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+  final PagingController<int, FilterMember> _pagingController =
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;
@@ -102,10 +101,10 @@ class _ConfirmMemberState extends State<ConfirmMember>
             widget.longPress(),
           },
         ),
-        child: PagedListView<int, dynamic>(
+        child: PagedListView<int, FilterMember>(
           padding: EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Text('Không có dữ liệu'),
@@ -114,26 +113,21 @@ class _ConfirmMemberState extends State<ConfirmMember>
               child: Text('Có lỗi xảy ra'),
             ),
             itemBuilder: (context, item, index) => MemberCard(
-              name: item['full_name'] ?? "",
-              gender: item['gender'] ?? "",
-              birthday: item['birthday'] ?? "",
-              lastTestResult: item['positive_test_now'],
-              lastTestTime: item['last_tested'],
-              healthStatus: item['health_status'],
+              member: item,
               isThreeLine: false,
               onTap: () {
                 Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
                         builder: (context) => ConfirmDetailMember(
-                              code: item['code'],
+                              code: item.code,
                             )));
               },
               longPressEnabled: widget.longPressFlag,
               onLongPress: () {
-                if (widget.indexList.contains(item['code'])) {
-                  widget.indexList.remove(item['code']);
+                if (widget.indexList.contains(item.code)) {
+                  widget.indexList.remove(item.code);
                 } else {
-                  widget.indexList.add(item['code']);
+                  widget.indexList.add(item.code);
                 }
                 widget.longPress();
               },
@@ -148,7 +142,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     onTap: () async {
                       CancelFunc cancel = showLoading();
                       final response =
-                          await acceptOneMember({'code': item['code']});
+                          await acceptOneMember({'code': item.code});
                       cancel();
                       showNotification(response);
                       if (response.success) {
@@ -161,7 +155,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     onTap: () async {
                       CancelFunc cancel = showLoading();
                       final response =
-                          await denyMember({'member_codes': item['code']});
+                          await denyMember({'member_codes': item.code});
                       cancel();
                       showNotification(response);
                       if (response.success) {
