@@ -20,7 +20,7 @@ class SuspectMember extends StatefulWidget {
 class _SuspectMemberState extends State<SuspectMember>
     with AutomaticKeepAliveClientMixin<SuspectMember> {
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;

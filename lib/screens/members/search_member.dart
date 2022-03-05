@@ -40,7 +40,7 @@ class _SearchMemberState extends State<SearchMember> {
   bool _searched = false;
 
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   void initState() {

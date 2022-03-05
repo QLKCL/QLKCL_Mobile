@@ -22,7 +22,7 @@ class ListTest extends StatefulWidget {
 class _ListTestState extends State<ListTest> {
   late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;
   late String name;
 

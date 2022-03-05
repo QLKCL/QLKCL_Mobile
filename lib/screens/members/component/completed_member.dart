@@ -17,7 +17,7 @@ class CompletedMember extends StatefulWidget {
 class _CompletedMemberState extends State<CompletedMember>
     with AutomaticKeepAliveClientMixin<CompletedMember> {
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;

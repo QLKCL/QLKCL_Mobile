@@ -18,7 +18,7 @@ class NeedTestMember extends StatefulWidget {
 class _NeedTestMemberState extends State<NeedTestMember>
     with AutomaticKeepAliveClientMixin<NeedTestMember> {
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;

@@ -15,7 +15,7 @@ class DeniedMember extends StatefulWidget {
 class _DeniedMemberState extends State<DeniedMember>
     with AutomaticKeepAliveClientMixin<DeniedMember> {
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;

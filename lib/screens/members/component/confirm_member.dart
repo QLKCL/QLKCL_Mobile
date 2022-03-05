@@ -30,7 +30,7 @@ class ConfirmMember extends StatefulWidget {
 class _ConfirmMemberState extends State<ConfirmMember>
     with AutomaticKeepAliveClientMixin<ConfirmMember> {
   final PagingController<int, FilterMember> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   bool get wantKeepAlive => true;
