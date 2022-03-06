@@ -170,7 +170,7 @@ class InfoManagerHomeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: Responsive.isDesktopLayout(context)
-          ? EdgeInsets.fromLTRB(8, 8, 8, 0)
+          ? EdgeInsets.fromLTRB(8, 8, 2, 0)
           : null,
       child: InkWell(
         onTap: onTap,
