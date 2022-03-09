@@ -62,6 +62,7 @@ dependencies:
   bot_toast: ^4.0.1
   responsive_framework: ^0.1.7
   side_navigation: ^0.0.7
+  syncfusion_flutter_datagrid: ^19.4.55
   # shimmer: ^2.0.0
 
 dev_dependencies:
