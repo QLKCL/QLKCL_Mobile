@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/completed_member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
@@ -79,80 +80,84 @@ class _ListAllMemberState extends State<ListAllMember>
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
-            SliverAppBar(
-              title: longPressFlag
-                  ? Text('${indexList.length} đã chọn')
-                  : Text("Danh sách người cách ly"),
-              centerTitle: true,
-              actions: [
-                longPressFlag
-                    ? PopupMenuButton(
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: CustomColors.disableText,
-                        ),
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                          PopupMenuItem(
-                            child: Text('Chấp nhận'),
-                            onTap: () async {
-                              CancelFunc cancel = showLoading();
-                              final response = await acceptManyMember(
-                                  {'member_codes': indexList.join(",")});
-                              cancel();
-                              if (response.success) {
-                                setState(() {
-                                  onDone = true;
-                                });
-                                indexList.clear();
-                                longPress();
-                              }
-                            },
+            SliverOverlapAbsorber(
+              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
+              sliver: SliverAppBar(
+                title: longPressFlag
+                    ? Text('${indexList.length} đã chọn')
+                    : Text("Danh sách người cách ly"),
+                centerTitle: true,
+                actions: [
+                  longPressFlag
+                      ? PopupMenuButton(
+                          icon: Icon(
+                            Icons.more_vert,
+                            color: CustomColors.disableText,
                           ),
-                          PopupMenuItem(
-                            child: Text('Từ chối'),
-                            onTap: () async {
-                              CancelFunc cancel = showLoading();
-                              final response = await denyMember(
-                                  {'member_codes': indexList.join(",")});
-                              cancel();
-                              showNotification(response);
-                              if (response.success) {
-                                setState(() {
-                                  onDone = true;
-                                });
-                                indexList.clear();
-                                longPress();
-                              }
-                            },
-                          ),
-                        ],
-                      )
-                    : (IconButton(
-                        onPressed: () {
-                          Navigator.of(context, rootNavigator: true).push(
-                              MaterialPageRoute(
-                                  builder: (context) => SearchMember()));
-                        },
-                        icon: Icon(Icons.search),
-                        tooltip: "Tìm kiếm",
-                      )),
-              ],
-              pinned: true,
-              floating: true,
-              forceElevated: innerBoxIsScrolled,
-              bottom: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                indicatorColor: CustomColors.white,
-                tabs: [
-                  Tab(text: "Toàn bộ"),
-                  Tab(text: "Chờ xét duyệt"),
-                  Tab(text: "Nghi nhiễm"),
-                  Tab(text: "Tới hạn xét nghiệm"),
-                  Tab(text: "Sắp hoàn thành cách ly"),
-                  Tab(text: "Từ chối"),
-                  Tab(text: "Đã hoàn thành cách ly"),
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry>[
+                            PopupMenuItem(
+                              child: Text('Chấp nhận'),
+                              onTap: () async {
+                                CancelFunc cancel = showLoading();
+                                final response = await acceptManyMember(
+                                    {'member_codes': indexList.join(",")});
+                                cancel();
+                                if (response.success) {
+                                  setState(() {
+                                    onDone = true;
+                                  });
+                                  indexList.clear();
+                                  longPress();
+                                }
+                              },
+                            ),
+                            PopupMenuItem(
+                              child: Text('Từ chối'),
+                              onTap: () async {
+                                CancelFunc cancel = showLoading();
+                                final response = await denyMember(
+                                    {'member_codes': indexList.join(",")});
+                                cancel();
+                                showNotification(response);
+                                if (response.success) {
+                                  setState(() {
+                                    onDone = true;
+                                  });
+                                  indexList.clear();
+                                  longPress();
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                      : (IconButton(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                    builder: (context) => SearchMember()));
+                          },
+                          icon: Icon(Icons.search),
+                          tooltip: "Tìm kiếm",
+                        )),
                 ],
+                pinned: true,
+                floating: !Responsive.isDesktopLayout(context),
+                forceElevated: innerBoxIsScrolled,
+                bottom: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  indicatorColor: CustomColors.white,
+                  tabs: [
+                    Tab(text: "Toàn bộ"),
+                    Tab(text: "Chờ xét duyệt"),
+                    Tab(text: "Nghi nhiễm"),
+                    Tab(text: "Tới hạn xét nghiệm"),
+                    Tab(text: "Sắp hoàn thành cách ly"),
+                    Tab(text: "Từ chối"),
+                    Tab(text: "Đã hoàn thành cách ly"),
+                  ],
+                ),
               ),
             ),
           ];
@@ -173,7 +178,31 @@ class _ListAllMemberState extends State<ListAllMember>
             ExpectCompleteMember(),
             DeniedMember(),
             CompletedMember(),
-          ],
+          ].map((e) {
+            return SafeArea(
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return CustomScrollView(
+                    slivers: <Widget>[
+                      SliverOverlapInjector(
+                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                            context),
+                      ),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          child: e,
+                          width: constraints.maxWidth,
+                          height: Responsive.isDesktopLayout(context)
+                              ? constraints.maxHeight - 275
+                              : constraints.maxHeight,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

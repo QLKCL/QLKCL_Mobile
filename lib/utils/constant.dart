@@ -184,6 +184,7 @@ List<KeyValue> labelList = [
 
 const int PAGE_SIZE = 10;
 const int PAGE_SIZE_MAX = 0;
+const int ROWS_PER_PAGE = 10;
 
 const String OneSignalId = "3def0255-600c-4376-bece-77202ef908e5";
 

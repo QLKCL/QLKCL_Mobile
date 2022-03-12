@@ -101,12 +101,16 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideNavigationBar(
+      toggler: SideBarToggler(
+        expandIcon: Icons.menu,
+        shrinkIcon: Icons.menu_open,
+      ),
       selectedIndex: currentTab.index,
       theme: SideNavigationBarTheme(
         backgroundColor: CustomColors.white,
         itemTheme: ItemTheme(
             selectedItemColor: CustomColors.secondary,
-            unselectedItemColor: CustomColors.disableText),
+            unselectedItemColor: CustomColors.secondaryText),
         showFooterDivider: true,
         showHeaderDivider: true,
         showMainDivider: true,

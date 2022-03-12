@@ -15,7 +15,7 @@ class QuanrantineList extends StatefulWidget {
 class _QuanrantineListState extends State<QuanrantineList> {
   late Future<dynamic> futureQuarantineList;
   final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
   void initState() {
