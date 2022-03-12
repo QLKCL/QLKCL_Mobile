@@ -1,6 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/completed_member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
@@ -138,7 +139,7 @@ class _ListAllMemberState extends State<ListAllMember>
                       )),
               ],
               pinned: true,
-              floating: true,
+              floating: !Responsive.isDesktopLayout(context),
               forceElevated: innerBoxIsScrolled,
               bottom: TabBar(
                 controller: _tabController,
