@@ -19,15 +19,15 @@ import 'package:intl/intl.dart';
 // cre: https://pub.dev/packages/infinite_scroll_pagination/example
 // cre: https://help.syncfusion.com/flutter/datagrid/paging
 
+
+List<FilterMember> paginatedDataSource = [];
+
 class AllMember extends StatefulWidget {
   AllMember({Key? key}) : super(key: key);
 
   @override
   _AllMemberState createState() => _AllMemberState();
 }
-
-List<FilterMember> paginatedDataSource = [];
-List<FilterMember> _members = [];
 
 class _AllMemberState extends State<AllMember>
     with AutomaticKeepAliveClientMixin<AllMember> {
@@ -53,11 +53,10 @@ class _AllMemberState extends State<AllMember>
       }
     });
     super.initState();
-    _fetchPage(1).then((value) => setState((() {
-          _members = value;
-          paginatedDataSource = _members;
-          pageCount = (_members.length / ROWS_PER_PAGE).ceilToDouble();
-        })));
+    _fetchPage(1).then((value) => setState(() {
+          paginatedDataSource = value.data;
+          pageCount = value.totalPages.toDouble();
+        }));
   }
 
   @override
@@ -66,85 +65,63 @@ class _AllMemberState extends State<AllMember>
     super.dispose();
   }
 
-  Future<List<FilterMember>> _fetchPage(int pageKey) async {
+  Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'page_size': PAGE_SIZE_MAX});
+      final newItems = await fetchMemberList(data: {'page': pageKey});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        _pagingController.appendLastPage(newItems.data);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        _pagingController.appendPage(newItems.data, nextPageKey);
       }
       return newItems;
     } catch (error) {
       _pagingController.error = error;
-      return [];
+      return FilterResponse<FilterMember>();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: RefreshIndicator(
-        onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
-        ),
-        child: Responsive.isDesktopLayout(context)
-            ? (_members.length > 0
-                ? listMemberTable()
-                : Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const CircularProgressIndicator(),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: Text(
-                              "Loading",
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ))
-            : listMemberCard(_pagingController),
-      ),
-    );
+    return Responsive.isDesktopLayout(context)
+        ? (paginatedDataSource.length > 0
+            ? listMemberTable()
+            : Align(
+                alignment: Alignment.center,
+                child: const CircularProgressIndicator(),
+              ))
+        : listMemberCard(_pagingController);
   }
 
   Widget listMemberCard(_pagingController) {
-    return PagedListView<int, FilterMember>(
-      padding: EdgeInsets.only(bottom: 70),
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<FilterMember>(
-        animateTransitions: true,
-        noItemsFoundIndicatorBuilder: (context) => Center(
-          child: Text('Không có dữ liệu'),
-        ),
-        firstPageErrorIndicatorBuilder: (context) => Center(
-          child: Text('Có lỗi xảy ra'),
-        ),
-        itemBuilder: (context, item, index) => MemberCard(
-          member: item,
-          onTap: () {
-            Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-          },
-          menus: menus(context, item),
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(
+        () => _pagingController.refresh(),
+      ),
+      child: PagedListView<int, FilterMember>(
+        padding: EdgeInsets.only(bottom: 70),
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<FilterMember>(
+          animateTransitions: true,
+          noItemsFoundIndicatorBuilder: (context) => Center(
+            child: Text('Không có dữ liệu'),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => Center(
+            child: Text('Có lỗi xảy ra'),
+          ),
+          itemBuilder: (context, item, index) => MemberCard(
+            member: item,
+            onTap: () {
+              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
+                  builder: (context) => UpdateMember(
+                        code: item.code,
+                      )));
+            },
+            menus: menus(context, item),
+          ),
         ),
       ),
     );
@@ -152,38 +129,36 @@ class _AllMemberState extends State<AllMember>
 
   Widget listMemberTable() {
     return Card(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 128),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return Row(children: [
-            Column(
-              children: [
-                SizedBox(
-                    height: constraints.maxHeight - 60,
-                    width: constraints.maxWidth,
-                    child: buildStack(constraints)),
-                Container(
-                  height: 60,
-                  width: constraints.maxWidth,
-                  child: SfDataPager(
-                    pageCount: pageCount,
-                    direction: Axis.horizontal,
-                    onPageNavigationStart: (int pageIndex) {
-                      setState(() {
-                        showLoadingIndicator = true;
-                      });
-                    },
-                    delegate: _memberDataSource,
-                    onPageNavigationEnd: (int pageIndex) {
-                      setState(() {
-                        showLoadingIndicator = false;
-                      });
-                    },
-                  ),
-                )
-              ],
-            ),
-          ]);
+          return Column(
+            children: [
+              SizedBox(
+                height: constraints.maxHeight - 60,
+                width: constraints.maxWidth,
+                child: buildStack(constraints),
+              ),
+              Container(
+                height: 60,
+                width: constraints.maxWidth,
+                child: SfDataPager(
+                  pageCount: pageCount,
+                  direction: Axis.horizontal,
+                  onPageNavigationStart: (int pageIndex) {
+                    setState(() {
+                      showLoadingIndicator = true;
+                    });
+                  },
+                  delegate: _memberDataSource,
+                  onPageNavigationEnd: (int pageIndex) {
+                    setState(() {
+                      showLoadingIndicator = false;
+                    });
+                  },
+                ),
+              )
+            ],
+          );
         },
       ),
     );
@@ -192,11 +167,11 @@ class _AllMemberState extends State<AllMember>
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.lastColumnFill,
+      columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
-      rowsPerPage: ROWS_PER_PAGE,
-      selectionMode: SelectionMode.single,
+      selectionMode: SelectionMode.multiple,
+      showCheckboxColumn: true,
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
@@ -296,11 +271,7 @@ class _AllMemberState extends State<AllMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource() {
-    paginatedDataSource =
-        _members.length > 0 ? _members.getRange(0, 10).toList() : [];
-    buildDataGridRows();
-  }
+  MemberDataSource();
 
   List<DataGridRow> _memberData = [];
 
@@ -309,19 +280,13 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * ROWS_PER_PAGE;
-    int endIndex = startIndex + ROWS_PER_PAGE;
-    if (startIndex < _members.length) {
-      if (endIndex > _members.length) {
-        endIndex = _members.length;
-      }
-      paginatedDataSource =
-          _members.getRange(startIndex, endIndex).toList(growable: false);
+    final newItems = await fetchMemberList(data: {'page': newPageIndex + 1});
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
       buildDataGridRows();
     } else {
       paginatedDataSource = [];
     }
-    notifyListeners();
     return true;
   }
 
@@ -331,7 +296,11 @@ class MemberDataSource extends DataGridSource {
           (e) => DataGridRow(
             cells: [
               DataGridCell<String>(columnName: 'fullName', value: e.fullName),
-              DataGridCell<String>(columnName: 'birthday', value: e.birthday),
+              DataGridCell<DateTime?>(
+                  columnName: 'birthday',
+                  value: e.birthday != null
+                      ? DateFormat('dd/MM/yyyy').parse(e.birthday!)
+                      : null),
               DataGridCell<String>(columnName: 'gender', value: e.gender),
               DataGridCell<String>(
                   columnName: 'phoneNumber', value: e.phoneNumber),
@@ -365,12 +334,11 @@ class MemberDataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.center,
-          child: 
-          // Text(
-            // DateFormat("dd/MM/yyyy")
-            //     .format(DateTime.parse(row.getCells()[1].value.toString())),
-          // ),
-          Text(row.getCells()[1].value.toString()),
+          child: Text(
+            row.getCells()[1].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[1].value)
+                : "",
+          ),
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -421,7 +389,7 @@ class MemberDataSource extends DataGridSource {
                 ? SizedBox()
                 : menus(
                     context,
-                    _members.safeFirstWhere(
+                    paginatedDataSource.safeFirstWhere(
                         (e) => e.code == row.getCells()[8].value.toString())!);
           },
         ),

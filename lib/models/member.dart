@@ -101,7 +101,7 @@ class Member {
       };
 }
 
-Future<List<FilterMember>> fetchMemberList({data}) async {
+Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Constant.getListMembers, data);
   if (response != null) {
@@ -109,17 +109,21 @@ Future<List<FilterMember>> fetchMemberList({data}) async {
       List<FilterMember> itemList = response['data']['content']
           .map<FilterMember>((json) => FilterMember.fromJson(json))
           .toList();
-      return itemList;
+      return FilterResponse<FilterMember>(
+          data: itemList,
+          totalPages: response['data']['totalPages'],
+          totalRows: response['data']['totalRows'],
+          currentPage: response['data']['currentPage']);
     } else if (response['error_code'] == 401) {
       if (response['message']['quarantine_ward_id'] != null &&
           response['message']['quarantine_ward_id'] == "Permission denied") {
         showNotification('Không có quyền truy cập!', status: 'error');
       }
-      return [];
+      return FilterResponse<FilterMember>();
     }
   }
 
-  return [];
+  return FilterResponse<FilterMember>();
 }
 
 Future<dynamic> createMember(Map<String, dynamic> data) async {
@@ -381,10 +385,7 @@ class FilterMember {
                 ? "${json['quarantine_floor']['name']} - "
                 : "") +
             (json['quarantine_building'] != null
-                ? "${json['quarantine_building']['name']} - "
-                : "") +
-            (json['quarantine_ward'] != null
-                ? "${json['quarantine_ward']['full_name']}"
+                ? "${json['quarantine_building']['name']}"
                 : ""),
       );
 
@@ -416,26 +417,16 @@ class FilterMember {
   }
 }
 
-class QuarantineWard {
-  QuarantineWard({
-    required this.id,
-    required this.fullName,
-    required this.image,
+class FilterResponse<T> {
+  final int currentPage;
+  final int totalPages;
+  final int totalRows;
+  final List<T> data;
+
+  FilterResponse({
+    this.data = const [],
+    this.currentPage = 0,
+    this.totalPages = 0,
+    this.totalRows = 0,
   });
-
-  final int id;
-  final String fullName;
-  final dynamic image;
-
-  factory QuarantineWard.fromJson(Map<String, dynamic> json) => QuarantineWard(
-        id: json["id"],
-        fullName: json["full_name"],
-        image: json["image"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "full_name": fullName,
-        "image": image,
-      };
 }
