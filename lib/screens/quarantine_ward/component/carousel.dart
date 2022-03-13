@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 
 class Carousel extends StatefulWidget {
   final String? image;
@@ -36,10 +37,12 @@ class _CarouselState extends State<Carousel> {
           margin: EdgeInsets.symmetric(vertical: 12),
           child: CarouselSlider(
             options: CarouselOptions(
-              // enableInfiniteScroll: false,
+              scrollPhysics: ScrollPhysics(),
               onPageChanged: (index, reason) =>
                   setState(() => _counter = index),
               aspectRatio: 2,
+              height: Responsive.isDesktopLayout(context) ? 500 : null,
+              autoPlay: true,
             ),
             items: imageList.map((imgUrl) {
               return Builder(

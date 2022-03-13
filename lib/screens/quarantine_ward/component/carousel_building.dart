@@ -98,12 +98,13 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                 ),
               ),
               Container(
-                height: 150,
+                height: 170,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.data.length,
+                  padding: EdgeInsets.only(bottom: 16),
                   itemBuilder: (BuildContext context, int index) => Card(
                     child: Container(
                       child: BuildingItem(
