@@ -120,7 +120,8 @@ class _CompletedMemberState extends State<CompletedMember>
               member: item,
               isThreeLine: false,
               onTap: () {
-                Navigator.of(context, rootNavigator: true)
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
                               code: item.code,
@@ -414,16 +415,20 @@ Widget menus(BuildContext context, FilterMember item) {
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'quarantine_history') {
       } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListVaccineDose(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

@@ -143,7 +143,8 @@ class _ConfirmMemberState extends State<ConfirmMember>
                 member: item,
                 isThreeLine: false,
                 onTap: () {
-                  Navigator.of(context, rootNavigator: true)
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
                           builder: (context) => ConfirmDetailMember(
                                 code: item.code,

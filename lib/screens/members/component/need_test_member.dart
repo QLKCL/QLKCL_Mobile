@@ -117,7 +117,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
           itemBuilder: (context, item, index) => MemberCard(
               member: item,
               onTap: () {
-                Navigator.of(context, rootNavigator: true)
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
                               code: item.code,
@@ -410,18 +411,23 @@ Widget menus(BuildContext context, FilterMember item,
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true)
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
                 builder: (context) => AddTest(
                       code: item.code,

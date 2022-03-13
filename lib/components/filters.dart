@@ -36,7 +36,7 @@ Future memberFilter(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
-    useRootNavigator: true,
+    useRootNavigator: !Responsive.isDesktopLayout(context),
     context: context,
     builder: (context) {
       return StatefulBuilder(builder: (BuildContext context,
@@ -303,7 +303,7 @@ Future testFilter(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
-    useRootNavigator: true,
+    useRootNavigator: !Responsive.isDesktopLayout(context),
     context: context,
     builder: (context) {
       // Using Wrap makes the bottom sheet height the height of the content.
@@ -451,7 +451,7 @@ Future quarantineFilter(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10.0), topRight: Radius.circular(10.0)),
     ),
-    useRootNavigator: true,
+    useRootNavigator: !Responsive.isDesktopLayout(context),
     context: context,
     builder: (context) {
       // Using Wrap makes the bottom sheet height the height of the content.

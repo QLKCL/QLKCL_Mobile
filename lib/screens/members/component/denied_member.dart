@@ -115,7 +115,8 @@ class _DeniedMemberState extends State<DeniedMember>
                   member: item,
                   isThreeLine: false,
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .push(MaterialPageRoute(
                             builder: (context) => UpdateMember(
                                   code: item.code,

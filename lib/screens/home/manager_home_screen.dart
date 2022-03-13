@@ -4,6 +4,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
@@ -161,7 +162,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     color: CustomColors.primaryText,
                   ),
                   onPressed: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListNotification.routeName)
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
@@ -282,19 +284,22 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 SpeedDialChild(
                   child: const Icon(Icons.edit_outlined),
                   label: 'Khai báo y tế',
-                  onTap: () => Navigator.of(context, rootNavigator: true)
+                  onTap: () => Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(MedicalDeclarationScreen.routeName),
                 ),
                 SpeedDialChild(
                   child: const Icon(Icons.description_outlined),
                   label: 'Phiếu xét nghiệm',
-                  onTap: () => Navigator.of(context, rootNavigator: true)
+                  onTap: () => Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(AddTest.routeName),
                 ),
                 SpeedDialChild(
                   child: const Icon(Icons.person_add_alt),
                   label: 'Người cách ly',
-                  onTap: () => Navigator.of(context, rootNavigator: true)
+                  onTap: () => Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(AddMember.routeName),
                 ),
                 SpeedDialChild(
@@ -306,7 +311,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   child: const Icon(Icons.business_outlined),
                   label: 'Khu cách ly',
                   visible: true,
-                  onTap: () => Navigator.of(context, rootNavigator: true)
+                  onTap: () => Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(NewQuarantine.routeName),
                 ),
               ],

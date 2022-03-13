@@ -180,7 +180,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       member: data.data[index],
                       isThreeLine: false,
                       onTap: () {
-                        Navigator.of(context, rootNavigator: true)
+                        Navigator.of(context,
+                                rootNavigator:
+                                    !Responsive.isDesktopLayout(context))
                             .push(MaterialPageRoute(
                                 builder: (context) => UpdateMember(
                                       code: data.data[index].code,
@@ -477,44 +479,58 @@ Widget menus(BuildContext context, FilterMember item) {
     ),
     onSelected: (result) {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'create_medical_declaration') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => MedicalDeclarationScreen(
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => MedicalDeclarationScreen(
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => AddTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => AddTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'test_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListVaccineDose(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
+                      code: item.code,
+                    )));
       } else if (result == 'change_room') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ChangeQuanrantineInfo(
-                  code: item.code,
-                  quarantineWard: item.quarantineWard,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ChangeQuanrantineInfo(
+                      code: item.code,
+                      quarantineWard: item.quarantineWard,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

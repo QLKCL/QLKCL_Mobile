@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/quarantine_ward/search_quarantine_screen.dart';
 import './add_quarantine_screen.dart';
 import './component/quarantine_list.dart';
@@ -31,8 +32,10 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.of(context, rootNavigator: true).push(
-                MaterialPageRoute(builder: (context) => SearchQuarantine()));
+            Navigator.of(context,
+                    rootNavigator: !Responsive.isDesktopLayout(context))
+                .push(MaterialPageRoute(
+                    builder: (context) => SearchQuarantine()));
           },
           icon: Icon(Icons.search),
           tooltip: "Tìm kiếm",
@@ -47,7 +50,9 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
         heroTag: "quarantine_fab",
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context, rootNavigator: true).pushNamed(
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .pushNamed(
             NewQuarantine.routeName,
           );
         },

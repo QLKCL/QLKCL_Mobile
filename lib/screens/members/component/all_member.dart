@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 // cre: https://pub.dev/packages/infinite_scroll_pagination/example
 // cre: https://help.syncfusion.com/flutter/datagrid/paging
 
-
 List<FilterMember> paginatedDataSource = [];
 
 class AllMember extends StatefulWidget {
@@ -115,10 +114,12 @@ class _AllMemberState extends State<AllMember>
           itemBuilder: (context, item, index) => MemberCard(
             member: item,
             onTap: () {
-              Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-                  builder: (context) => UpdateMember(
-                        code: item.code,
-                      )));
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(MaterialPageRoute(
+                      builder: (context) => UpdateMember(
+                            code: item.code,
+                          )));
             },
             menus: menus(context, item),
           ),
@@ -406,44 +407,58 @@ Widget menus(BuildContext context, FilterMember item) {
     ),
     onSelected: (result) {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'create_medical_declaration') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => MedicalDeclarationScreen(
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => MedicalDeclarationScreen(
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => AddTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => AddTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'test_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListVaccineDose(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
+                      code: item.code,
+                    )));
       } else if (result == 'change_room') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ChangeQuanrantineInfo(
-                  code: item.code,
-                  quarantineWard: item.quarantineWard,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ChangeQuanrantineInfo(
+                      code: item.code,
+                      quarantineWard: item.quarantineWard,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

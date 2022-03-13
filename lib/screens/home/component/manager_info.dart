@@ -38,8 +38,10 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: totalUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => ListAllMember(tab: 0)));
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 0)));
         },
       ),
       InfoManagerHomeCard(
@@ -47,7 +49,8 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: waitingTests.toString(),
         icon: WebsafeSvg.asset("assets/svg/xet_nghiem_cap_nhat.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true)
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
               .pushNamed(ListTestNoResult.routeName);
         },
       ),
@@ -56,8 +59,10 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: waitingUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/cho_xet_duyet.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => ListAllMember(tab: 1)));
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 1)));
         },
       ),
       InfoManagerHomeCard(
@@ -65,8 +70,10 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: suspectedUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => ListAllMember(tab: 2)));
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 2)));
         },
       ),
       InfoManagerHomeCard(
@@ -74,8 +81,10 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: needTestUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => ListAllMember(tab: 3)));
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 3)));
         },
       ),
       InfoManagerHomeCard(
@@ -83,8 +92,10 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: canFinishUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
         onTap: () {
-          Navigator.of(context, rootNavigator: true).push(
-              MaterialPageRoute(builder: (context) => ListAllMember(tab: 4)));
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 4)));
         },
       ),
     ];

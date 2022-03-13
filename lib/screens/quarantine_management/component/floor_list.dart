@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -31,7 +32,10 @@ class FloorList extends StatelessWidget {
                 children: [
                   QuarantineRelatedCard(
                     onTap: () {
-                      Navigator.of(context, rootNavigator: true).push(
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(
                         MaterialPageRoute(
                           builder: (context) => FloorDetailsScreen(
                             currentBuilding: currentBuilding,

@@ -6,6 +6,7 @@ import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -217,7 +218,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 context,
                 MaterialPageRoute(builder: (context) => App(role: role)),
                 (Route<dynamic> route) => false);
-            Navigator.of(context, rootNavigator: true).push(
+            Navigator.of(context,
+                    rootNavigator: !Responsive.isDesktopLayout(context))
+                .push(
               MaterialPageRoute(builder: (context) => UpdateMember()),
             );
           } else {

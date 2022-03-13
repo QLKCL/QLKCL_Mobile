@@ -69,7 +69,9 @@ class _ListAllMemberState extends State<ListAllMember>
           ? FloatingActionButton(
               heroTag: "member_fab",
               onPressed: () {
-                Navigator.of(context, rootNavigator: true).pushNamed(
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
+                    .pushNamed(
                   AddMember.routeName,
                 );
               },
@@ -133,8 +135,10 @@ class _ListAllMemberState extends State<ListAllMember>
                         )
                       : (IconButton(
                           onPressed: () {
-                            Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
+                            Navigator.of(context,
+                                    rootNavigator:
+                                        !Responsive.isDesktopLayout(context))
+                                .push(MaterialPageRoute(
                                     builder: (context) => SearchMember()));
                           },
                           icon: Icon(Icons.search),

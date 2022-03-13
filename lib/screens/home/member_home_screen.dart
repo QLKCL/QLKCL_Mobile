@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
@@ -158,7 +159,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   color: CustomColors.primaryText,
                 ),
                 onPressed: () {
-                  Navigator.of(context, rootNavigator: true)
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(ListNotification.routeName)
                       .then((value) => {
                             notifications.fetchUserNotificationList(data: {
@@ -482,8 +484,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       primary: CustomColors.secondary,
                     ),
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
                               builder: (context) =>
                                   MedicalDeclarationScreen()));
                     },

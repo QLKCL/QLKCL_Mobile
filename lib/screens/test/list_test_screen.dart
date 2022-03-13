@@ -84,8 +84,10 @@ class _ListTestState extends State<ListTest> {
             return snapshot.data != 5
                 ? FloatingActionButton(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
                               builder: (context) =>
                                   AddTest(code: code, name: name)));
                     },
