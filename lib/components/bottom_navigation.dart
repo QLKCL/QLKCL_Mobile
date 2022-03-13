@@ -107,7 +107,7 @@ class SideBar extends StatelessWidget {
         expandIcon: Icons.menu,
         shrinkIcon: Icons.menu_open,
       ),
-      selectedIndex: currentTab.index,
+      selectedIndex: (role == 5) ? currentTab.index ~/ 4 : currentTab.index,
       theme: SideNavigationBarTheme(
         backgroundColor: CustomColors.white,
         itemTheme: ItemTheme(

@@ -118,6 +118,7 @@ class _ListTestState extends State<ListTest> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
+            padding: EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,

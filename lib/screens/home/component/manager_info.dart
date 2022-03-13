@@ -137,9 +137,6 @@ class InfoManagerHomePage extends StatelessWidget {
             height: 400,
             padding: const EdgeInsets.only(bottom: 8),
             child: Card(
-              margin: Responsive.isDesktopLayout(context)
-                  ? EdgeInsets.fromLTRB(16, 0, 16, 0)
-                  : null,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

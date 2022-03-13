@@ -256,6 +256,7 @@ class _SearchMemberState extends State<SearchMember> {
         () => _pagingController.refresh(),
       ),
       child: PagedListView<int, FilterMember>(
+        padding: EdgeInsets.only(bottom: 16),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
           animateTransitions: true,

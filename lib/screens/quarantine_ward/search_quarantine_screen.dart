@@ -197,6 +197,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 context: context,
                 removeTop: true,
                 child: PagedListView<int, dynamic>(
+                  padding: EdgeInsets.only(bottom: 16),
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<dynamic>(
                     animateTransitions: true,
