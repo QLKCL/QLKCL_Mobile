@@ -9,6 +9,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
+double pageCount = 0;
+final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+DataPagerController _dataPagerController = DataPagerController();
 
 class DeniedMember extends StatefulWidget {
   DeniedMember({Key? key}) : super(key: key);
@@ -22,10 +25,9 @@ class _DeniedMemberState extends State<DeniedMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource _memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -142,6 +144,7 @@ class _DeniedMemberState extends State<DeniedMember>
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
+                  controller: _dataPagerController,
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
@@ -166,6 +169,8 @@ class _DeniedMemberState extends State<DeniedMember>
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+      key: key,
+      allowPullToRefresh: true,
       source: _memberDataSource,
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
@@ -289,6 +294,21 @@ class MemberDataSource extends DataGridSource {
       paginatedDataSource = [];
     }
     return true;
+  }
+
+  @override
+  Future<void> handleRefresh() async {
+    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(
+        data: {'page': currentPageIndex + 1, 'status': "REFUSED"});
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+    } else {
+      paginatedDataSource = [];
+    }
+    notifyListeners();
   }
 
   void buildDataGridRows() {

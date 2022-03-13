@@ -12,6 +12,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
+double pageCount = 0;
+final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+DataPagerController _dataPagerController = DataPagerController();
 
 class NeedTestMember extends StatefulWidget {
   NeedTestMember({Key? key}) : super(key: key);
@@ -25,10 +28,9 @@ class _NeedTestMemberState extends State<NeedTestMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource _memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -145,6 +147,7 @@ class _NeedTestMemberState extends State<NeedTestMember>
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
+                  controller: _dataPagerController,
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
@@ -169,6 +172,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+      key: key,
+      allowPullToRefresh: true,
       source: _memberDataSource,
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
@@ -292,6 +297,21 @@ class MemberDataSource extends DataGridSource {
       paginatedDataSource = [];
     }
     return true;
+  }
+
+  @override
+  Future<void> handleRefresh() async {
+    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(
+        data: {'page': currentPageIndex + 1, 'is_last_tested': true});
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+    } else {
+      paginatedDataSource = [];
+    }
+    notifyListeners();
   }
 
   void buildDataGridRows() {
@@ -434,8 +454,14 @@ Widget menus(BuildContext context, FilterMember item,
                       name: item.fullName,
                     )))
             .then(
-              (value) => pagingController!.refresh(),
-            );
+          (value) {
+            if (Responsive.isDesktopLayout(context)) {
+              key.currentState!.refresh();
+            } else {
+              pagingController!.refresh();
+            }
+          },
+        );
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
