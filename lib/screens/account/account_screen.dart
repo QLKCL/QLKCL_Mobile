@@ -137,7 +137,7 @@ class _AccountState extends State<Account> {
                 }
                 await logout();
                 Navigator.of(context,
-                        rootNavigator: !Responsive.isDesktopLayout(context))
+                        rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },
               title: Text('Đăng xuất',
