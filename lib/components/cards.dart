@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/app_theme.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_detail_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
@@ -698,7 +699,8 @@ class _QuarantineItemState extends State<QuarantineItem> {
   }
 
   void selectQuarantine(BuildContext context) {
-    Navigator.of(context, rootNavigator: true).push(
+    Navigator.of(context, rootNavigator: !Responsive.isDesktopLayout(context))
+        .push(
       MaterialPageRoute(
         builder: (context) => QuarantineDetailScreen(
           id: this.widget.id,

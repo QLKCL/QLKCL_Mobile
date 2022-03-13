@@ -41,8 +41,8 @@ class BuildingItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 76,
-            width: MediaQuery.of(context).size.width * 0.3,
+            height: 87,
+            width: 150,
             //margin: EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: SvgPicture.asset('assets/svg/building.svg'),

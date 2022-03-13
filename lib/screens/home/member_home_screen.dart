@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
@@ -158,7 +159,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   color: CustomColors.primaryText,
                 ),
                 onPressed: () {
-                  Navigator.of(context, rootNavigator: true)
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(ListNotification.routeName)
                       .then((value) => {
                             notifications.fetchUserNotificationList(data: {
@@ -204,35 +206,44 @@ class _MemberHomePageState extends State<MemberHomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                  child: Text(
-                    "Thông tin dịch bệnh (Việt Nam)",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                ),
-                FutureBuilder<CovidData>(
-                  future: futureCovid,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return InfoCovidHomePage(
-                          increaseConfirmed: snapshot.data!.increaseConfirmed,
-                          confirmed: snapshot.data!.confirmed,
-                          increaseDeaths: snapshot.data!.increaseDeaths,
-                          deaths: snapshot.data!.deaths,
-                          increaseRecovered: snapshot.data!.increaseRecovered,
-                          recovered: snapshot.data!.recovered,
-                          lastUpdate: snapshot.data!.lastUpdate);
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
+                Card(
+                  child: Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Thông tin dịch bệnh (Việt Nam)",
+                            style: Theme.of(context).textTheme.headline6,
+                          ),
+                        ),
+                        FutureBuilder<CovidData>(
+                          future: futureCovid,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return InfoCovidHomePage(
+                                  increaseConfirmed:
+                                      snapshot.data!.increaseConfirmed,
+                                  confirmed: snapshot.data!.confirmed,
+                                  increaseDeaths: snapshot.data!.increaseDeaths,
+                                  deaths: snapshot.data!.deaths,
+                                  increaseRecovered:
+                                      snapshot.data!.increaseRecovered,
+                                  recovered: snapshot.data!.recovered,
+                                  lastUpdate: snapshot.data!.lastUpdate);
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            }
 
-                    // By default, show a loading spinner.
-                    // return const CircularProgressIndicator();
-                    return InfoCovidHomePage();
-                  },
+                            // By default, show a loading spinner.
+                            // return const CircularProgressIndicator();
+                            return InfoCovidHomePage();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 FutureBuilder<dynamic>(
                   future: futureData,
@@ -277,15 +288,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 ),
                               ),
                             ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                            child: Text(
-                              "Thông tin sức khỏe",
-                              textAlign: TextAlign.left,
-                              style: Theme.of(context).textTheme.headline5,
-                            ),
-                          ),
                           Card(
                             child: Container(
                               child: InkWell(
@@ -300,6 +302,18 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
+                                            Container(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "Thông tin sức khỏe",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline6,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
                                             Text.rich(
                                               TextSpan(
                                                 style: TextStyle(
@@ -482,8 +496,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       primary: CustomColors.secondary,
                     ),
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
                               builder: (context) =>
                                   MedicalDeclarationScreen()));
                     },

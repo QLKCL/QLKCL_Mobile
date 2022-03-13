@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/search_test.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
@@ -74,7 +75,8 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context, rootNavigator: true)
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(MaterialPageRoute(builder: (context) => SearchTest()));
             },
             icon: Icon(Icons.search),
@@ -90,6 +92,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
+            padding: EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,

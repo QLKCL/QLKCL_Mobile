@@ -170,14 +170,13 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           //Information
           Container(
             width: MediaQuery.of(context).size.width * 1,
-            margin: EdgeInsets.only(left: 23, right: 23, top: 20, bottom: 8),
+            margin: EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   margin: EdgeInsets.only(
-                    top: 15,
                     bottom: 10,
                   ),
                   child: Text(

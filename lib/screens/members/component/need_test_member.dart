@@ -12,6 +12,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
+double pageCount = 0;
+final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+DataPagerController _dataPagerController = DataPagerController();
 
 class NeedTestMember extends StatefulWidget {
   NeedTestMember({Key? key}) : super(key: key);
@@ -25,10 +28,9 @@ class _NeedTestMemberState extends State<NeedTestMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource _memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -117,7 +119,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
           itemBuilder: (context, item, index) => MemberCard(
               member: item,
               onTap: () {
-                Navigator.of(context, rootNavigator: true)
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
                               code: item.code,
@@ -144,6 +147,7 @@ class _NeedTestMemberState extends State<NeedTestMember>
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
+                  controller: _dataPagerController,
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
@@ -168,6 +172,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+      key: key,
+      allowPullToRefresh: true,
       source: _memberDataSource,
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
@@ -293,6 +299,21 @@ class MemberDataSource extends DataGridSource {
     return true;
   }
 
+  @override
+  Future<void> handleRefresh() async {
+    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(
+        data: {'page': currentPageIndex + 1, 'is_last_tested': true});
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+    } else {
+      paginatedDataSource = [];
+    }
+    notifyListeners();
+  }
+
   void buildDataGridRows() {
     _memberData = paginatedDataSource
         .map<DataGridRow>(
@@ -410,26 +431,37 @@ Widget menus(BuildContext context, FilterMember item,
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true)
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
                 builder: (context) => AddTest(
                       code: item.code,
                       name: item.fullName,
                     )))
             .then(
-              (value) => pagingController!.refresh(),
-            );
+          (value) {
+            if (Responsive.isDesktopLayout(context)) {
+              key.currentState!.refresh();
+            } else {
+              pagingController!.refresh();
+            }
+          },
+        );
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

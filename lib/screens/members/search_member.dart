@@ -18,6 +18,10 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
+double pageCount = 0;
+final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+DataPagerController _dataPagerController = DataPagerController();
+
 TextEditingController keySearch = TextEditingController();
 TextEditingController quarantineWardController = TextEditingController();
 TextEditingController quarantineBuildingController = TextEditingController();
@@ -45,10 +49,9 @@ class _SearchMemberState extends State<SearchMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource _memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   @override
   void initState() {
@@ -177,11 +180,14 @@ class _SearchMemberState extends State<SearchMember> {
                   setState(() {
                     _searched = true;
                   });
-                  _pagingController.refresh();
-                  _fetchPage(1).then((value) => setState(() {
-                        paginatedDataSource = value.data;
-                        pageCount = value.totalPages.toDouble();
-                      }));
+                  if (Responsive.isDesktopLayout(context)) {
+                    _fetchPage(1).then((value) => setState(() {
+                          paginatedDataSource = value.data;
+                          pageCount = value.totalPages.toDouble();
+                        }));
+                  } else {
+                    _pagingController.refresh();
+                  }
                 },
               ),
             ),
@@ -212,7 +218,14 @@ class _SearchMemberState extends State<SearchMember> {
                       _quarantineFloorList = quarantineFloorList;
                       _quarantineRoomList = quarantineRoomList;
                     });
-                    _pagingController.refresh();
+                    if (Responsive.isDesktopLayout(context)) {
+                      _fetchPage(1).then((value) => setState(() {
+                            paginatedDataSource = value.data;
+                            pageCount = value.totalPages.toDouble();
+                          }));
+                    } else {
+                      _pagingController.refresh();
+                    }
                   },
                 );
               },
@@ -243,6 +256,7 @@ class _SearchMemberState extends State<SearchMember> {
         () => _pagingController.refresh(),
       ),
       child: PagedListView<int, FilterMember>(
+        padding: EdgeInsets.only(bottom: 16),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
           animateTransitions: true,
@@ -255,7 +269,9 @@ class _SearchMemberState extends State<SearchMember> {
           itemBuilder: (context, item, index) => MemberCard(
             member: item,
             onTap: () {
-              Navigator.of(context, rootNavigator: true).push(
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(
                 MaterialPageRoute(
                   builder: (context) => UpdateMember(
                     code: item.code,
@@ -292,6 +308,7 @@ class _SearchMemberState extends State<SearchMember> {
                     height: 60,
                     width: constraints.maxWidth,
                     child: SfDataPager(
+                      controller: _dataPagerController,
                       pageCount: pageCount,
                       direction: Axis.horizontal,
                       onPageNavigationStart: (int pageIndex) {
@@ -318,6 +335,8 @@ class _SearchMemberState extends State<SearchMember> {
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+      key: key,
+      allowPullToRefresh: true,
       source: _memberDataSource,
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
@@ -455,6 +474,33 @@ class MemberDataSource extends DataGridSource {
     return true;
   }
 
+  @override
+  Future<void> handleRefresh() async {
+    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(
+      data: filterMemberDataForm(
+          keySearch: keySearch.text,
+          page: currentPageIndex + 1,
+          quarantineWard: quarantineWardController.text,
+          quarantineBuilding: quarantineBuildingController.text,
+          quarantineFloor: quarantineFloorController.text,
+          quarantineRoom: quarantineRoomController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+          label: labelController.text),
+    );
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+    } else {
+      paginatedDataSource = [];
+    }
+    notifyListeners();
+  }
+
   void buildDataGridRows() {
     _memberData = paginatedDataSource
         .map<DataGridRow>(
@@ -572,33 +618,43 @@ Widget menus(BuildContext context, FilterMember item,
     ),
     onSelected: (result) {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'create_medical_declaration') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => MedicalDeclarationScreen(
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => MedicalDeclarationScreen(
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => AddTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => AddTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'test_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

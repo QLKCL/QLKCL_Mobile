@@ -84,8 +84,10 @@ class _ListTestState extends State<ListTest> {
             return snapshot.data != 5
                 ? FloatingActionButton(
                     onPressed: () {
-                      Navigator.of(context, rootNavigator: true).push(
-                          MaterialPageRoute(
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
                               builder: (context) =>
                                   AddTest(code: code, name: name)));
                     },
@@ -116,6 +118,7 @@ class _ListTestState extends State<ListTest> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
+            padding: EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,

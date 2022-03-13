@@ -53,7 +53,8 @@ class _AccountState extends State<Account> {
               children: <Widget>[
                 ListTile(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListMedicalDeclaration.routeName);
                   },
                   title: Text('Lịch sử khai báo y tế'),
@@ -65,7 +66,8 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListTest.routeName);
                   },
                   title: Text('Kết quả xét nghiệm'),
@@ -77,7 +79,8 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListVaccineDose.routeName);
                   },
                   title: Text('Thông tin tiêm chủng'),
@@ -100,7 +103,8 @@ class _AccountState extends State<Account> {
               children: <Widget>[
                 ListTile(
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(UpdateMember.routeName);
                   },
                   title: Text('Thông tin cá nhân'),
@@ -113,7 +117,8 @@ class _AccountState extends State<Account> {
                 ListTile(
                   onTap: () {
                     // cre: https://stackoverflow.com/questions/55192347/in-flutter-bottom-navigation-bar-should-disappear-when-we-navigate-to-new-screen
-                    Navigator.of(context, rootNavigator: true)
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ChangePassword.routeName);
                   },
                   title: Text('Đổi mật khẩu'),
@@ -131,7 +136,8 @@ class _AccountState extends State<Account> {
                   handleRemoveExternalUserId();
                 }
                 await logout();
-                Navigator.of(context, rootNavigator: true)
+                Navigator.of(context,
+                        rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },
               title: Text('Đăng xuất',

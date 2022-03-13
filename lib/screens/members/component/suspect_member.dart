@@ -14,6 +14,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
+double pageCount = 0;
+final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+DataPagerController _dataPagerController = DataPagerController();
 
 class SuspectMember extends StatefulWidget {
   SuspectMember({Key? key}) : super(key: key);
@@ -27,10 +30,9 @@ class _SuspectMemberState extends State<SuspectMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource _memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   @override
   bool get wantKeepAlive => true;
@@ -119,7 +121,8 @@ class _SuspectMemberState extends State<SuspectMember>
           itemBuilder: (context, item, index) => MemberCard(
               member: item,
               onTap: () {
-                Navigator.of(context, rootNavigator: true)
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
                         builder: (context) => UpdateMember(
                               code: item.code,
@@ -146,6 +149,7 @@ class _SuspectMemberState extends State<SuspectMember>
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
+                  controller: _dataPagerController,
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
@@ -170,6 +174,8 @@ class _SuspectMemberState extends State<SuspectMember>
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
+      key: key,
+      allowPullToRefresh: true,
       source: _memberDataSource,
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
@@ -297,6 +303,23 @@ class MemberDataSource extends DataGridSource {
     return true;
   }
 
+  @override
+  Future<void> handleRefresh() async {
+    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(data: {
+      'page': currentPageIndex + 1,
+      'health_status_list': "UNWELL,SERIOUS"
+    });
+    if (newItems.currentPage <= newItems.totalPages) {
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+    } else {
+      paginatedDataSource = [];
+    }
+    notifyListeners();
+  }
+
   void buildDataGridRows() {
     _memberData = paginatedDataSource
         .map<DataGridRow>(
@@ -414,36 +437,51 @@ Widget menus(BuildContext context, FilterMember item,
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => UpdateMember(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
       } else if (result == 'create_medical_declaration') {
-        Navigator.of(context, rootNavigator: true)
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
                 builder: (context) => MedicalDeclarationScreen(
                       phone: item.phoneNumber,
                     )))
             .then(
-              (value) => pagingController!.refresh(),
-            );
+          (value) {
+            if (Responsive.isDesktopLayout(context)) {
+              key.currentState!.refresh();
+            } else {
+              pagingController!.refresh();
+            }
+          },
+        );
       } else if (result == 'medical_declare_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListMedicalDeclaration(
-                  code: item.code,
-                  phone: item.phoneNumber,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
       } else if (result == 'create_test') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => AddTest(
-                  code: item.code,
-                  name: item.fullName,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => AddTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
-            builder: (context) => ListVaccineDose(
-                  code: item.code,
-                )));
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[

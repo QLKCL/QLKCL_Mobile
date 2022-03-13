@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/config/routes.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
@@ -54,7 +55,8 @@ class BottomNavigation extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => QrCodeScan()),
                 )
                 .then((value) => value != null
-                    ? Navigator.of(context, rootNavigator: true)
+                    ? Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .push(MaterialPageRoute(
                             builder: (context) => UpdateMember(
                                   code: value,
@@ -105,7 +107,7 @@ class SideBar extends StatelessWidget {
         expandIcon: Icons.menu,
         shrinkIcon: Icons.menu_open,
       ),
-      selectedIndex: currentTab.index,
+      selectedIndex: (role == 5) ? currentTab.index ~/ 4 : currentTab.index,
       theme: SideNavigationBarTheme(
         backgroundColor: CustomColors.white,
         itemTheme: ItemTheme(
@@ -147,7 +149,8 @@ class SideBar extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => QrCodeScan()),
                 )
                 .then((value) => value != null
-                    ? Navigator.of(context, rootNavigator: true)
+                    ? Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
                         .push(MaterialPageRoute(
                             builder: (context) => UpdateMember(
                                   code: value,
