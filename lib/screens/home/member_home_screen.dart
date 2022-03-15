@@ -232,6 +232,9 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   increaseRecovered:
                                       snapshot.data!.increaseRecovered,
                                   recovered: snapshot.data!.recovered,
+                                  increaseActived:
+                                      snapshot.data!.increaseActived,
+                                  actived: snapshot.data!.actived,
                                   lastUpdate: snapshot.data!.lastUpdate);
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
