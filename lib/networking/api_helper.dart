@@ -88,8 +88,10 @@ class ApiHelper {
       );
       if (response.statusCode == 200) {
         var refreshTokenResponse = jsonDecode(response.toString());
-        var accessToken = refreshTokenResponse.data.access;
+        var accessToken = refreshTokenResponse['access'];
         await setAccessToken(accessToken);
+        var refreshToken = refreshTokenResponse['refresh'];
+        await setRefreshToken(refreshToken);
       } else {
         print(response.toString());
         showTextToast(
