@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';

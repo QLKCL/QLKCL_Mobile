@@ -12,7 +12,7 @@ import 'package:qlkcl/screens/members/component/confirm_member.dart';
 import 'package:qlkcl/screens/members/component/denied_member.dart';
 import 'package:qlkcl/screens/members/component/suspect_member.dart';
 import 'package:qlkcl/screens/members/component/need_test_member.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
 

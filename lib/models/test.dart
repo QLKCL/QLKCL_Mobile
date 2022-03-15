@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Test testFromJson(String str) => Test.fromJson(json.decode(str));
 
@@ -100,13 +100,13 @@ class CreatedBy {
 
 Future<dynamic> fetchTest({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getTest, data);
+  final response = await api.postHTTP(Api.getTest, data);
   return response["data"];
 }
 
 Future<dynamic> fetchTestList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListTests, data);
+  final response = await api.postHTTP(Api.getListTests, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -114,7 +114,7 @@ Future<dynamic> fetchTestList({data}) async {
 
 Future<dynamic> createTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createTest, data);
+  final response = await api.postHTTP(Api.createTest, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -130,7 +130,7 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
 
 Future<dynamic> updateTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateTest, data);
+  final response = await api.postHTTP(Api.updateTest, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

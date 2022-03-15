@@ -9,7 +9,8 @@ import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/api.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
@@ -51,7 +52,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   Future<dynamic> fetch() async {
     ApiHelper api = ApiHelper();
-    final response = await api.postHTTP(Constant.homeMember, null);
+    final response = await api.postHTTP(Api.homeMember, null);
     return response != null && response['data'] != null
         ? response['data']
         : null;

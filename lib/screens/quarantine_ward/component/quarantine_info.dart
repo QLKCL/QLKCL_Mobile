@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:websafe_svg/websafe_svg.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'carousel.dart';
 import 'carousel_building.dart';
 import 'package:url_launcher/url_launcher.dart';

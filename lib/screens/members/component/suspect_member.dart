@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';

@@ -6,7 +6,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class ConfirmDetailMember extends StatefulWidget {

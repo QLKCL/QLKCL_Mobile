@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 
 class Input extends StatefulWidget {
   final String label;

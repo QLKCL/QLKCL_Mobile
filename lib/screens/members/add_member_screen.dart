@@ -3,7 +3,7 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 

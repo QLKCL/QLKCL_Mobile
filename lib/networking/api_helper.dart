@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/utils/api.dart';
 import 'dart:convert';
-import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/helper/authentication.dart';
 
 // cre: https://stackoverflow.com/questions/56740793/using-interceptor-in-dio-for-flutter-to-refresh-token
@@ -10,7 +10,7 @@ import 'package:qlkcl/helper/authentication.dart';
 
 class ApiHelper {
   static BaseOptions opts = BaseOptions(
-    baseUrl: Constant.baseUrl,
+    baseUrl: Api.baseUrl,
     responseType: ResponseType.json,
     connectTimeout: 15000,
     receiveTimeout: 12000,
@@ -79,7 +79,7 @@ class ApiHelper {
   static refreshToken() async {
     Response response;
     var dio = Dio();
-    final Uri apiUrl = Uri.parse(Constant.baseUrl + "/api/token/refresh");
+    final Uri apiUrl = Uri.parse(Api.baseUrl + "/api/token/refresh");
     var refreshToken = await getRefreshToken();
     try {
       response = await dio.postUri(

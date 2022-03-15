@@ -9,7 +9,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Member memberFromJson(String str) => Member.fromJson(json.decode(str));
 
@@ -103,7 +103,7 @@ class Member {
 
 Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListMembers, data);
+  final response = await api.postHTTP(Api.getListMembers, data);
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
       List<FilterMember> itemList = response['data']['content']
@@ -128,7 +128,7 @@ Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
 
 Future<dynamic> createMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createMember, data);
+  final response = await api.postHTTP(Api.createMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -161,7 +161,7 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
 
 Future<dynamic> updateMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateMember, data);
+  final response = await api.postHTTP(Api.updateMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -214,7 +214,7 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
 
 Future<dynamic> denyMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.denyMember, data);
+  final response = await api.postHTTP(Api.denyMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -228,7 +228,7 @@ Future<dynamic> denyMember(data) async {
 
 Future<dynamic> acceptManyMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.acceptManyMember, data);
+  final response = await api.postHTTP(Api.acceptManyMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -249,7 +249,7 @@ Future<dynamic> acceptManyMember(data) async {
 
 Future<dynamic> acceptOneMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.acceptOneMember, data);
+  final response = await api.postHTTP(Api.acceptOneMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -263,7 +263,7 @@ Future<dynamic> acceptOneMember(data) async {
 
 Future<dynamic> finishMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.finishMember, data);
+  final response = await api.postHTTP(Api.finishMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -277,7 +277,7 @@ Future<dynamic> finishMember(data) async {
 
 Future<dynamic> changeRoomMember(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.changeRoomMember, data);
+  final response = await api.postHTTP(Api.changeRoomMember, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

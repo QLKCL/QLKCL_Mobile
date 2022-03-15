@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
 
@@ -35,7 +35,7 @@ class KeyValue {
 
 Future<List<KeyValue>> fetchCountry() async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListCountry, null);
+  final response = await api.postHTTP(Api.getListCountry, null);
   final dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
@@ -45,7 +45,7 @@ Future<List<KeyValue>> fetchCountry() async {
 
 Future<List<KeyValue>> fetchCity(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListCity, data);
+  final response = await api.postHTTP(Api.getListCity, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
@@ -55,7 +55,7 @@ Future<List<KeyValue>> fetchCity(data) async {
 
 Future<List<KeyValue>> fetchDistrict(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListDistrict, data);
+  final response = await api.postHTTP(Api.getListDistrict, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
@@ -65,7 +65,7 @@ Future<List<KeyValue>> fetchDistrict(data) async {
 
 Future<List<KeyValue>> fetchWard(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListWard, data);
+  final response = await api.postHTTP(Api.getListWard, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
@@ -75,7 +75,7 @@ Future<List<KeyValue>> fetchWard(data) async {
 
 Future<List<KeyValue>> fetchQuarantineWard(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListQuarantine, data);
+  final response = await api.postHTTP(Api.getListQuarantine, data);
 
   if (response['data'] != null) {
     final dataResponse = response['data']['content'];
@@ -88,7 +88,7 @@ Future<List<KeyValue>> fetchQuarantineWard(data) async {
 
 Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListBuilding, data);
+  final response = await api.postHTTP(Api.getListBuilding, data);
 
   if (response['data'] != null) {
     final dataResponse = response['data']['content'];
@@ -101,7 +101,7 @@ Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
 
 Future<List<KeyValue>> fetchQuarantineFloor(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListFloor, data);
+  final response = await api.postHTTP(Api.getListFloor, data);
 
   if (response['data'] != null) {
     final dataResponse = response['data']['content'];
@@ -114,7 +114,7 @@ Future<List<KeyValue>> fetchQuarantineFloor(data) async {
 
 Future<List<KeyValue>> fetchQuarantineRoom(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListRoom, data);
+  final response = await api.postHTTP(Api.getListRoom, data);
 
   if (response['data'] != null) {
     final dataResponse = response['data']['content'];
@@ -129,7 +129,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   http.Response? response;
   try {
     response = await http.post(
-        Uri.parse(Constant.baseUrl + Constant.getListQuarantineNoToken),
+        Uri.parse(Api.baseUrl + Api.getListQuarantineNoToken),
         headers: {
           'Accept': 'application/json',
         },
@@ -149,7 +149,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
 
 Future<List<KeyValue>> fetchNotMemberList(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListNotMem, data);
+  final response = await api.postHTTP(Api.getListNotMem, data);
   final dataResponse = response['data'];
 
   if (dataResponse != null) {

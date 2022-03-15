@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Floor floorFromJson(String str) => Floor.fromJson(json.decode(str));
 
@@ -46,13 +46,13 @@ class Floor {
 
 Future<dynamic> fetchFloor({id}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Constant.getFloor + '?id=' + id);
+  final response = await api.getHTTP(Api.getFloor + '?id=' + id);
   return response["data"];
 }
 
 Future<dynamic> createFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createFloor, data);
+  final response = await api.postHTTP(Api.createFloor, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -69,7 +69,7 @@ Future<dynamic> createFloor(Map<String, dynamic> data) async {
 
 Future<dynamic> fetchFloorList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListFloor, data);
+  final response = await api.postHTTP(Api.getListFloor, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -77,7 +77,7 @@ Future<dynamic> fetchFloorList(Map<String, dynamic> data) async {
 
 Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListFloor, data);
+  final response = await api.postHTTP(Api.getListFloor, data);
   return response != null && response['data'] != null
       ? response['data']['totalRows']
       : null;
@@ -85,7 +85,7 @@ Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
 
 Future<dynamic> updateFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateFloor, data);
+  final response = await api.postHTTP(Api.updateFloor, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
