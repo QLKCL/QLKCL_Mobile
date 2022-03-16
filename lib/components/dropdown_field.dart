@@ -80,8 +80,9 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,
@@ -206,8 +207,9 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
         mode: widget.mode,
         showSelectedItems: !widget.showSearchBox || T == String,

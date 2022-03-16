@@ -133,8 +133,9 @@ class _InputState extends State<Input> {
           errorText: (widget.error != null && widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
 
         textCapitalization: widget.textCapitalization,

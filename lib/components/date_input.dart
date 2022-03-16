@@ -86,8 +86,9 @@ class _DateInputState extends State<DateInput> {
                 )
               : Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
       ),
     );
@@ -209,8 +210,9 @@ class _DateRangeInputState extends State<DateRangeInput> {
                 )
               : Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
       ),
     );
@@ -332,8 +334,9 @@ class _NewDateInputState extends State<NewDateInput> {
                 )
               : Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
       ),
     );
@@ -497,8 +500,9 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                 )
               : Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor: !widget.enabled ? CustomColors.disable : null,
-          filled: !widget.enabled, // dont forget this line
+          fillColor:
+              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          filled: true, // dont forget this line
         ),
       ),
     );
