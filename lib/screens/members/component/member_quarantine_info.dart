@@ -354,7 +354,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 if (value == null) {
                   labelController.text = "";
                 } else {
-                  labelController.text = value.toString();
+                  labelController.text = value.id.toString();
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,
