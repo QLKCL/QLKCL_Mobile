@@ -5,7 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -354,7 +354,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 if (value == null) {
                   labelController.text = "";
                 } else {
-                  labelController.text = value.toString();
+                  labelController.text = value.id.toString();
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,

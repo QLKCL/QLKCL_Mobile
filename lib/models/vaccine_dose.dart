@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 VaccineDose vaccineDoseFromJson(String str) =>
     VaccineDose.fromJson(json.decode(str));
@@ -98,13 +98,13 @@ class Vaccine {
 
 Future<dynamic> fetchVaccineDose({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getVaccineDose, data);
+  final response = await api.postHTTP(Api.getVaccineDose, data);
   return response["data"];
 }
 
 Future<dynamic> fetchVaccineDoseList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.filterVaccineDose, data);
+  final response = await api.postHTTP(Api.filterVaccineDose, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;

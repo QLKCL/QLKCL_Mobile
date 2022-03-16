@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/quarantine.dart';

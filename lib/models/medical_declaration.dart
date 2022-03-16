@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 MedicalDecl medicalDeclFromJson(String str) =>
     MedicalDecl.fromJson(json.decode(str));
@@ -104,13 +104,13 @@ class User {
 
 Future<dynamic> fetchMedDecl({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getMedDecl, data);
+  final response = await api.postHTTP(Api.getMedDecl, data);
   return response["data"];
 }
 
 Future<dynamic> fetchMedList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.filterMedDecl, data);
+  final response = await api.postHTTP(Api.filterMedDecl, data);
  
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -119,7 +119,7 @@ Future<dynamic> fetchMedList({data}) async {
 
 Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createMedDecl, data);
+  final response = await api.postHTTP(Api.createMedDecl, data);
   
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
@@ -135,7 +135,7 @@ Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
 
 Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateTest, data);
+  final response = await api.postHTTP(Api.updateTest, data);
  
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");

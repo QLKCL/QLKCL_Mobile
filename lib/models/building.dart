@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Building buildingFromJson(String str) => Building.fromJson(json.decode(str));
 
@@ -46,14 +46,14 @@ class Building {
 
 Future<dynamic> fetchBuilding({id}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Constant.getBuilding + '?id=' + id);
+  final response = await api.getHTTP(Api.getBuilding + '?id=' + id);
   return response["data"];
 }
 
 //fetchBuildingList is in quarantine.dart
 Future<dynamic> createBuilding(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createBuilding, data);
+  final response = await api.postHTTP(Api.createBuilding, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -71,7 +71,7 @@ Future<dynamic> createBuilding(Map<String, dynamic> data) async {
 
 Future<dynamic> updateBuilding(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateBuilding, data);
+  final response = await api.postHTTP(Api.updateBuilding, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

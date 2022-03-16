@@ -1,11 +1,11 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/authentication.dart';
-import 'package:qlkcl/config/routes.dart';
+import 'package:qlkcl/utils/routes.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 // import 'package:qlkcl/screens/splash/splash_screen.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qlkcl/utils/constant.dart';

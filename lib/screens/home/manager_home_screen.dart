@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/api.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -59,7 +60,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
     final response =
-        await api.postHTTP(Constant.homeManager, {"number_of_days_in_out": 12});
+        await api.postHTTP(Api.homeManager, {"number_of_days_in_out": 12});
     return response != null && response['data'] != null
         ? response['data']
         : null;

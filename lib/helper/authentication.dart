@@ -6,7 +6,7 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Future<int> getRole() async {
   var infoBox = await Hive.openBox('myInfo');
@@ -51,7 +51,7 @@ Future<String> getQuarantineStatus() async {
 Future<void> setInfo() async {
   var infoBox = await Hive.openBox('myInfo');
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getMember, null);
+  final response = await api.postHTTP(Api.getMember, null);
   int role = response['data']['custom_user']['role']['id'];
   infoBox.put('role', role);
   String name = response['data']['custom_user']['full_name'];
@@ -113,7 +113,7 @@ Future<bool> setToken(String accessToken, String refreshToken) async {
 Future<Response> login(Map<String, String> loginDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(Uri.parse(Constant.baseUrl + Constant.login),
+    response = await http.post(Uri.parse(Api.baseUrl + Api.login),
         headers: {
           'Accept': 'application/json',
         },
@@ -144,7 +144,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
 Future<Response> register(Map<String, dynamic> registerDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(Uri.parse(Constant.baseUrl + Constant.register),
+    response = await http.post(Uri.parse(Api.baseUrl + Api.register),
         headers: {
           'Accept': 'application/json',
         },
@@ -190,7 +190,7 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
   http.Response? response;
   try {
     response =
-        await http.post(Uri.parse(Constant.baseUrl + Constant.requestOtp),
+        await http.post(Uri.parse(Api.baseUrl + Api.requestOtp),
             headers: {
               'Accept': 'application/json',
             },
@@ -225,7 +225,7 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
 Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
   http.Response? response;
   try {
-    response = await http.post(Uri.parse(Constant.baseUrl + Constant.sendOtp),
+    response = await http.post(Uri.parse(Api.baseUrl + Api.sendOtp),
         headers: {
           'Accept': 'application/json',
         },
@@ -256,7 +256,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
   http.Response? response;
   try {
     response =
-        await http.post(Uri.parse(Constant.baseUrl + Constant.createPass),
+        await http.post(Uri.parse(Api.baseUrl + Api.createPass),
             headers: {
               'Accept': 'application/json',
             },
@@ -292,7 +292,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
 
 Future<Response> changePass(Map<String, String> changePassDataForm) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.changePass, changePassDataForm);
+  final response = await api.postHTTP(Api.changePass, changePassDataForm);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

@@ -8,7 +8,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/screens/login/create_password_screen.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 // cre: https://pub.dev/packages/pin_code_fields

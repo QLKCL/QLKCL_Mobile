@@ -17,7 +17,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'component/general_info_room.dart';
 import './edit_room_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';

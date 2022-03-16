@@ -2,13 +2,14 @@ import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/response.dart';
 import 'dart:convert';
 import 'dart:async';
-import 'package:qlkcl/utils/constant.dart';
+
+import 'package:qlkcl/utils/api.dart';
 
 // cre: https://ichi.pro/vi/flutter-xu-ly-cac-lenh-goi-api-mang-cua-ban-nhu-mot-ong-chu-158964374994071
 
 class RequestHelper {
   final String? baseUrl;
-  String _baseUrl = Constant.baseUrl;
+  String _baseUrl = Api.baseUrl;
 
   RequestHelper({this.baseUrl});
 

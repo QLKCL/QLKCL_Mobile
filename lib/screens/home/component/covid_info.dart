@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -131,60 +131,6 @@ class InfoCovidHomePage extends StatelessWidget {
           return listInfo[index];
         },
       ),
-      // Container(
-      //   padding: EdgeInsets.only(top: 8),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     crossAxisAlignment: CrossAxisAlignment.center,
-      //     children: [
-      //       Expanded(
-      //         flex: 3,
-      //         child: InfoCovid(
-      //           color: CustomColors.warning,
-      //           title: "Nhiễm bệnh",
-      //           newCase: increaseConfirmed,
-      //           totalCase: confirmed,
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         width: 8,
-      //       ),
-      //       Expanded(
-      //         flex: 3,
-      //         child: InfoCovid(
-      //           color: CustomColors.disableText,
-      //           title: "Tử vong",
-      //           newCase: increaseDeaths,
-      //           totalCase: deaths,
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         width: 8,
-      //       ),
-      //       Expanded(
-      //         flex: 3,
-      //         child: InfoCovid(
-      //           color: CustomColors.success,
-      //           title: "Bình phục",
-      //           newCase: increaseRecovered,
-      //           totalCase: recovered,
-      //         ),
-      //       ),
-      //       SizedBox(
-      //         width: 8,
-      //       ),
-      //       Expanded(
-      //         flex: 3,
-      //         child: InfoCovid(
-      //           color: CustomColors.error,
-      //           title: "Đang điều trị",
-      //           newCase: increaseActived,
-      //           totalCase: actived,
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
       SizedBox(
         height: 8,
       ),

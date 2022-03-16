@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/networking/response.dart';
 
 Quarantine quarantineFromJson(String str) =>
@@ -115,13 +115,13 @@ class Quarantine {
 
 Future<dynamic> fetchQuarantine({id}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Constant.getQuarantine + '?id=' + id);
+  final response = await api.getHTTP(Api.getQuarantine + '?id=' + id);
   return response["data"];
 }
 
 Future<dynamic> fetchQuarantineList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListQuarantine, data);
+  final response = await api.postHTTP(Api.getListQuarantine, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -129,7 +129,7 @@ Future<dynamic> fetchQuarantineList({data}) async {
 
 Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createQuarantine, data);
+  final response = await api.postHTTP(Api.createQuarantine, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -146,7 +146,7 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
 
 Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateQuarantine, data);
+  final response = await api.postHTTP(Api.updateQuarantine, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -172,7 +172,7 @@ Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
 
 Future<dynamic> fetchBuildingList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListBuilding, data);
+  final response = await api.postHTTP(Api.getListBuilding, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;

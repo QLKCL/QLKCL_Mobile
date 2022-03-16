@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/config/routes.dart';
+import 'package:qlkcl/utils/routes.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
@@ -8,7 +8,7 @@ import 'package:qlkcl/screens/home/member_home_screen.dart';
 import 'package:qlkcl/screens/members/list_all_member_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:side_navigation/side_navigation.dart';
 
 import '../screens/members/update_member_screen.dart';

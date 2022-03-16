@@ -5,7 +5,7 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 CustomUser customUserFromJson(str) => CustomUser.fromJson(json.decode(str));
 
@@ -131,7 +131,7 @@ class CustomUser {
 
 Future<dynamic> fetchCustomUser({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getMember, data);
+  final response = await api.postHTTP(Api.getMember, data);
   if (response == null) {
     return null;
   } else {

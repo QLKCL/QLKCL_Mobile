@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 // ignore: import_of_legacy_library_into_null_safe

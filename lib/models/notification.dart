@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Notification notificationFromJson(String str) =>
     Notification.fromJson(json.decode(str));
@@ -103,13 +103,13 @@ class CreatedBy {
 Future<dynamic> fetchUserNotification({id}) async {
   ApiHelper api = ApiHelper();
   final response =
-      await api.getHTTP(Constant.getUserNotification + '?id=' + id);
+      await api.getHTTP(Api.getUserNotification + '?id=' + id);
   return response["data"];
 }
 
 Future<dynamic> fetchUserNotificationList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.filterUserNotification, data);
+  final response = await api.postHTTP(Api.filterUserNotification, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -118,7 +118,7 @@ Future<dynamic> fetchUserNotificationList({data}) async {
 Future<dynamic> changeStateUserNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response =
-      await api.postHTTP(Constant.changeStateUserNotification, data);
+      await api.postHTTP(Api.changeStateUserNotification, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {

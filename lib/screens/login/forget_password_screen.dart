@@ -6,7 +6,7 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/screens/login/otp_screen.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class ForgetPassword extends StatefulWidget {

@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/utils/api.dart';
 
 Room roomFromJson(String str) => Room.fromJson(json.decode(str));
 
@@ -46,13 +46,13 @@ class Room {
 
 Future<dynamic> fetchRoom({id}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Constant.getRoom + '?id=' + id);
+  final response = await api.getHTTP(Api.getRoom + '?id=' + id);
   return response["data"];
 }
 
 Future<dynamic> createRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.createRoom, data);
+  final response = await api.postHTTP(Api.createRoom, data);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
@@ -70,7 +70,7 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
 
 Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListRoom, data);
+  final response = await api.postHTTP(Api.getListRoom, data);
  
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -79,7 +79,7 @@ Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
 
 Future<int> fetchNumOfRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.getListRoom, data);
+  final response = await api.postHTTP(Api.getListRoom, data);
   return response != null && response['data'] != null
       ? response['data']['totalRows']
       : null;
@@ -87,7 +87,7 @@ Future<int> fetchNumOfRoom(Map<String, dynamic> data) async {
 
 Future<dynamic> updateRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Constant.updateRoom, data);
+  final response = await api.postHTTP(Api.updateRoom, data);
 
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");

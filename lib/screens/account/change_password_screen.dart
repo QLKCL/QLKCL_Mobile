@@ -4,7 +4,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/utils/data_form.dart';
 

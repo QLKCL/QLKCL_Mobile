@@ -6,7 +6,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/config/app_theme.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
