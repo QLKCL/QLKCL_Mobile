@@ -37,7 +37,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   late dynamic listNotification = [];
   bool _showFab = true;
 
-  var renderOverlay = true;
+  var renderOverlay = false;
   var useRAnimation = true;
   var isDialOpen = ValueNotifier<bool>(false);
 
