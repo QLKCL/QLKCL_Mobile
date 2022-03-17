@@ -863,6 +863,16 @@ class QuarantineHome extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Thông tin cách ly",
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
                     Text(
                       name,
                       style: TextStyle(

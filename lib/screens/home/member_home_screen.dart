@@ -410,16 +410,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             ),
                           ),
                           if (snapshot.data['quarantine_ward'] != null)
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                              child: Text(
-                                "Thông tin cách ly",
-                                textAlign: TextAlign.left,
-                                style: Theme.of(context).textTheme.headline5,
-                              ),
-                            ),
-                          if (snapshot.data['quarantine_ward'] != null)
                             QuarantineHome(
                               name: snapshot.data['quarantine_ward'] != null
                                   ? snapshot.data['quarantine_ward']
