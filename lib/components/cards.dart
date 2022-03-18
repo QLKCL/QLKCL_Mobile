@@ -998,7 +998,7 @@ class QuarantineHome extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " " + room,
+                            text: " Phòng cách ly: " + room,
                           ),
                         ],
                       ),
@@ -1022,7 +1022,7 @@ class QuarantineHome extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " " + address,
+                            text: " Địa chỉ: " + address,
                           ),
                         ],
                       ),

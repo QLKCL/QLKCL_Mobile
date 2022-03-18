@@ -105,7 +105,7 @@ class SideBar extends StatelessWidget {
     return SideNavigationBar(
       toggler: SideBarToggler(
         expandIcon: Icons.menu,
-        shrinkIcon: Icons.menu_open,
+        shrinkIcon: Icons.chevron_left
       ),
       selectedIndex: (role == 5) ? currentTab.index ~/ 4 : currentTab.index,
       theme: SideNavigationBarTheme(

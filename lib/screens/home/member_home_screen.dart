@@ -207,48 +207,50 @@ class _MemberHomePageState extends State<MemberHomePage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            "Thông tin dịch bệnh (Việt Nam)",
-                            style: Theme.of(context).textTheme.headline6,
+                if (!isWebPlatform())
+                  Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Thông tin dịch bệnh (Việt Nam)",
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
                           ),
-                        ),
-                        FutureBuilder<CovidData>(
-                          future: futureCovid,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return InfoCovidHomePage(
-                                  increaseConfirmed:
-                                      snapshot.data!.increaseConfirmed,
-                                  confirmed: snapshot.data!.confirmed,
-                                  increaseDeaths: snapshot.data!.increaseDeaths,
-                                  deaths: snapshot.data!.deaths,
-                                  increaseRecovered:
-                                      snapshot.data!.increaseRecovered,
-                                  recovered: snapshot.data!.recovered,
-                                  increaseActived:
-                                      snapshot.data!.increaseActived,
-                                  actived: snapshot.data!.actived,
-                                  lastUpdate: snapshot.data!.lastUpdate);
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            }
+                          FutureBuilder<CovidData>(
+                            future: futureCovid,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return InfoCovidHomePage(
+                                    increaseConfirmed:
+                                        snapshot.data!.increaseConfirmed,
+                                    confirmed: snapshot.data!.confirmed,
+                                    increaseDeaths:
+                                        snapshot.data!.increaseDeaths,
+                                    deaths: snapshot.data!.deaths,
+                                    increaseRecovered:
+                                        snapshot.data!.increaseRecovered,
+                                    recovered: snapshot.data!.recovered,
+                                    increaseActived:
+                                        snapshot.data!.increaseActived,
+                                    actived: snapshot.data!.actived,
+                                    lastUpdate: snapshot.data!.lastUpdate);
+                              } else if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              }
 
-                            // By default, show a loading spinner.
-                            // return const CircularProgressIndicator();
-                            return InfoCovidHomePage();
-                          },
-                        ),
-                      ],
+                              // By default, show a loading spinner.
+                              // return const CircularProgressIndicator();
+                              return InfoCovidHomePage();
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 FutureBuilder<dynamic>(
                   future: futureData,
                   builder: (context, snapshot) {

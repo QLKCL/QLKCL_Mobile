@@ -147,6 +147,7 @@ class InfoCovidHomePage extends StatelessWidget {
                 children: [
                   new TextSpan(
                     text: 'Nguồn: ',
+                    style: TextStyle(color: CustomColors.primaryText),
                   ),
                   new TextSpan(
                     text: 'Dữ liệu Covid-19',
