@@ -53,7 +53,7 @@ class _DeniedMemberState extends State<DeniedMember>
       }
     });
     super.initState();
-    _fetchPage(1).then((value) => setState(() {
+    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
           paginatedDataSource = value.data;
           pageCount = value.totalPages.toDouble();
         }));
@@ -65,7 +65,7 @@ class _DeniedMemberState extends State<DeniedMember>
     super.dispose();
   }
 
-  Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems =
           await fetchMemberList(data: {'page': pageKey, 'status': "REFUSED"});
@@ -77,10 +77,8 @@ class _DeniedMemberState extends State<DeniedMember>
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
-      return newItems;
     } catch (error) {
       _pagingController.error = error;
-      return FilterResponse<FilterMember>();
     }
   }
 

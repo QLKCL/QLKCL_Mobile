@@ -181,10 +181,11 @@ class _SearchMemberState extends State<SearchMember> {
                     _searched = true;
                   });
                   if (Responsive.isDesktopLayout(context)) {
-                    _fetchPage(1).then((value) => setState(() {
-                          paginatedDataSource = value.data;
-                          pageCount = value.totalPages.toDouble();
-                        }));
+                    fetchMemberList(data: {'page': 1})
+                        .then((value) => setState(() {
+                              paginatedDataSource = value.data;
+                              pageCount = value.totalPages.toDouble();
+                            }));
                   } else {
                     _pagingController.refresh();
                   }
@@ -219,10 +220,11 @@ class _SearchMemberState extends State<SearchMember> {
                       _quarantineRoomList = quarantineRoomList;
                     });
                     if (Responsive.isDesktopLayout(context)) {
-                      _fetchPage(1).then((value) => setState(() {
-                            paginatedDataSource = value.data;
-                            pageCount = value.totalPages.toDouble();
-                          }));
+                      fetchMemberList(data: {'page': 1})
+                          .then((value) => setState(() {
+                                paginatedDataSource = value.data;
+                                pageCount = value.totalPages.toDouble();
+                              }));
                     } else {
                       _pagingController.refresh();
                     }

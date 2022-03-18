@@ -54,7 +54,7 @@ class _AllMemberState extends State<AllMember>
       }
     });
     super.initState();
-    _fetchPage(1).then((value) => setState(() {
+    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
           paginatedDataSource = value.data;
           pageCount = value.totalPages.toDouble();
         }));
@@ -66,7 +66,7 @@ class _AllMemberState extends State<AllMember>
     super.dispose();
   }
 
-  Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(data: {'page': pageKey});
 
@@ -77,10 +77,8 @@ class _AllMemberState extends State<AllMember>
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
-      return newItems;
     } catch (error) {
       _pagingController.error = error;
-      return FilterResponse<FilterMember>();
     }
   }
 
