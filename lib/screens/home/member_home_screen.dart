@@ -1,6 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
@@ -9,6 +9,7 @@ import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
+import 'package:qlkcl/screens/notification/create_notification_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +32,9 @@ class _MemberHomePageState extends State<MemberHomePage> {
   late Future<CovidData> futureCovid;
   late Future<dynamic> futureData;
 
-  bool _showFab = true;
+  var renderOverlay = false;
+  var useRAnimation = true;
+  var isDialOpen = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -60,144 +63,161 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: AnimatedSlide(
-        duration: Duration(milliseconds: 300),
-        offset: _showFab ? Offset.zero : Offset(0, 2),
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: 300),
-          opacity: _showFab ? 1 : 0,
-          child: FloatingActionButton(
-            onPressed: () {},
-            child: Icon(Icons.phone),
-            tooltip: "Liên hệ khẩn cấp!",
-            backgroundColor: Colors.red,
-          ),
-        ),
-      ),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(72.0), // here the desired height
-        child: AppBar(
-          toolbarHeight: 64, // Set this height
-          automaticallyImplyLeading: false,
-          title: Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Row(
-              children: [
-                Container(
-                  width: 56.0,
-                  height: 56.0,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          cloudinary.getImage('Default/no_avatar').toString()),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                    border: Border.all(
-                      color: CustomColors.secondary,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Xin chào,",
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      FutureBuilder(
-                        future: getName(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasData) {
-                            return Text(
-                              snapshot.data,
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: CustomColors.primaryText),
-                            );
-                          }
-                          return Container();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        if (isDialOpen.value) {
+          isDialOpen.value = false;
+          return false;
+        }
+        return true;
+      },
+      child: Scaffold(
+        floatingActionButton: SpeedDial(
+          icon: Icons.send,
+          activeIcon: Icons.close,
+          spacing: 3,
+          openCloseDial: isDialOpen,
+          childPadding: const EdgeInsets.all(5),
+          spaceBetweenChildren: 4,
+          backgroundColor: Colors.red,
+
+          /// If false, backgroundOverlay will not be rendered.
+          renderOverlay: renderOverlay,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.3,
+          useRotationAnimation: useRAnimation,
+          tooltip: 'Tạo mới',
+
+          animationSpeed: 200,
+          shape: const StadiumBorder(),
+          childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          children: [
+            SpeedDialChild(
+              child: const Icon(Icons.phone),
+              label: 'Gọi cấp cứu',
+              onTap: () => {},
             ),
-          ),
-          titleTextStyle:
-              TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
-          backgroundColor: CustomColors.background,
-          centerTitle: false,
-          actions: [
-            Badge(
-              showBadge: unreadNotifications != 0,
-              position: BadgePosition.topEnd(top: 10, end: 16),
-              animationDuration: Duration(milliseconds: 300),
-              animationType: BadgeAnimationType.scale,
-              shape: BadgeShape.square,
-              borderRadius: BorderRadius.circular(8),
-              padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
-              badgeContent: Text(
-                unreadNotifications.toString(),
-                style: TextStyle(fontSize: 11.0, color: CustomColors.white),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.only(right: 24),
-                icon: Icon(
-                  Icons.notifications_none_outlined,
-                  color: CustomColors.primaryText,
-                ),
-                onPressed: () {
-                  Navigator.of(context,
-                          rootNavigator: !Responsive.isDesktopLayout(context))
-                      .pushNamed(ListNotification.routeName)
-                      .then((value) => {
-                            notifications.fetchUserNotificationList(data: {
-                              'page_size': PAGE_SIZE_MAX
-                            }).then((value) => setState(() {
-                                  listNotification = value;
-                                  unreadNotifications = listNotification
-                                      .where((element) =>
-                                          notifications.Notification.fromJson(
-                                                  element)
-                                              .isRead ==
-                                          false)
-                                      .toList()
-                                      .length;
-                                }))
-                          });
-                },
-                tooltip: "Thông báo",
-              ),
+            SpeedDialChild(
+              child: const Icon(Icons.comment),
+              label: 'Phản ánh/yêu cầu',
+              onTap: () => Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .pushNamed(CreateRequest.routeName),
             ),
           ],
         ),
-      ),
-      body: NotificationListener<UserScrollNotification>(
-        onNotification: (notification) {
-          final ScrollDirection direction = notification.direction;
-          setState(() {
-            if (direction == ScrollDirection.reverse) {
-              _showFab = false;
-            } else if (direction == ScrollDirection.forward) {
-              _showFab = true;
-            }
-          });
-          return true;
-        },
-        child: RefreshIndicator(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(72.0), // here the desired height
+          child: AppBar(
+            toolbarHeight: 64, // Set this height
+            automaticallyImplyLeading: false,
+            title: Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Row(
+                children: [
+                  Container(
+                    width: 56.0,
+                    height: 56.0,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(cloudinary
+                            .getImage('Default/no_avatar')
+                            .toString()),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      border: Border.all(
+                        color: CustomColors.secondary,
+                        width: 2.0,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Xin chào,",
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        FutureBuilder(
+                          future: getName(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data,
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: CustomColors.primaryText),
+                              );
+                            }
+                            return Container();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            titleTextStyle:
+                TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
+            backgroundColor: CustomColors.background,
+            centerTitle: false,
+            actions: [
+              Badge(
+                showBadge: unreadNotifications != 0,
+                position: BadgePosition.topEnd(top: 10, end: 16),
+                animationDuration: Duration(milliseconds: 300),
+                animationType: BadgeAnimationType.scale,
+                shape: BadgeShape.square,
+                borderRadius: BorderRadius.circular(8),
+                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                badgeContent: Text(
+                  unreadNotifications.toString(),
+                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.only(right: 24),
+                  icon: Icon(
+                    Icons.notifications_none_outlined,
+                    color: CustomColors.primaryText,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
+                        .pushNamed(ListNotification.routeName)
+                        .then((value) => {
+                              notifications.fetchUserNotificationList(data: {
+                                'page_size': PAGE_SIZE_MAX
+                              }).then((value) => setState(() {
+                                    listNotification = value;
+                                    unreadNotifications = listNotification
+                                        .where((element) =>
+                                            notifications.Notification.fromJson(
+                                                    element)
+                                                .isRead ==
+                                            false)
+                                        .toList()
+                                        .length;
+                                  }))
+                            });
+                  },
+                  tooltip: "Thông báo",
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: RefreshIndicator(
           onRefresh: () => Future.sync(() {
             setState(() {
               futureCovid = fetchCovidList();
@@ -387,16 +407,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                                         false
                                                                     ? "Âm tính"
                                                                     : "Dương tính") +
-                                                                " (" +
                                                                 (snapshot.data[
-                                                                            'positive_test_now'] !=
+                                                                            'last_tested_had_result'] !=
                                                                         null
-                                                                    ? DateFormat(
-                                                                            "dd/MM/yyyy HH:mm:ss")
-                                                                        .format(
-                                                                            DateTime.parse(snapshot.data['last_tested_had_result']).toLocal())
+                                                                    ? " (" +
+                                                                        DateFormat("dd/MM/yyyy HH:mm:ss")
+                                                                            .format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal()) +
+                                                                        ")"
                                                                     : "") +
-                                                                ")")
+                                                                "")
                                                             : "Chưa có kết quả xét nghiệm"),
                                                   )
                                                 ],
