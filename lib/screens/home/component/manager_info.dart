@@ -12,30 +12,44 @@ import 'charts.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
   final int totalUsers;
+  final int activeUsers;
   final int waitingUsers;
   final int suspectedUsers;
   final int needTestUsers;
   final int canFinishUsers;
   final int waitingTests;
+  final int positiveUsers;
+  final int hospitalizedUsers;
   final List<KeyValue> numberIn;
   final List<KeyValue> numberOut;
+  final List<KeyValue> hospitalize;
   const InfoManagerHomePage({
     this.totalUsers = 0,
+    this.activeUsers = 0,
     this.waitingUsers = 0,
     this.suspectedUsers = 0,
     this.needTestUsers = 0,
     this.canFinishUsers = 0,
     this.waitingTests = 0,
+    this.positiveUsers = 0,
+    this.hospitalizedUsers = 0,
     this.numberIn = const [],
     this.numberOut = const [],
+    this.hospitalize = const [],
   });
 
   @override
   Widget build(BuildContext context) {
     List<InfoManagerHomeCard> listTest = [
       InfoManagerHomeCard(
-        title: "Đang cách ly",
+        title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
+        onTap: () {},
+      ),
+      InfoManagerHomeCard(
+        title: "Đang cách ly",
+        subtitle: activeUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
         onTap: () {
           Navigator.of(context,
@@ -95,7 +109,29 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 4)));
+                  builder: (context) => ListAllMember(tab: 6)));
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Dương tính",
+        subtitle: positiveUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
+        onTap: () {
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 5)));
+        },
+      ),
+      InfoManagerHomeCard(
+        title: "Chuyển viện điều trị",
+        subtitle: hospitalizedUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
+        onTap: () {
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => ListAllMember(tab: 9)));
         },
       ),
     ];
@@ -150,7 +186,7 @@ class InfoManagerHomePage extends StatelessWidget {
                     ),
                     Expanded(
                       child: GroupedFillColorBarChart.withData(
-                          numberIn, numberOut),
+                          numberIn, numberOut, hospitalize),
                     ),
                   ],
                 ),

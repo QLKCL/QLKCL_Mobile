@@ -213,7 +213,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               ? 12
                               : 6;
                   return InfoManagerHomePage(
-                    totalUsers: snapshot.data['number_of_members'],
+                    totalUsers:
+                        snapshot.data['number_of_all_members_past_and_now'],
+                    activeUsers:
+                        snapshot.data['number_of_quarantining_members'],
                     waitingUsers: snapshot.data['number_of_waiting_members'],
                     suspectedUsers:
                         snapshot.data['number_of_suspected_members'],
@@ -221,6 +224,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     canFinishUsers:
                         snapshot.data['number_of_can_finish_members'],
                     waitingTests: snapshot.data['number_of_waiting_tests'],
+                    positiveUsers: snapshot.data['number_of_positive_members'],
+                    hospitalizedUsers:
+                        snapshot.data['number_of_hospitalized_members'],
                     numberIn: snapshot.data['in'].entries
                         .map((entry) => KeyValue(
                             id: DateFormat("dd/MM/yyyy")
@@ -234,6 +240,18 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         .reversed
                         .toList(),
                     numberOut: snapshot.data['out'].entries
+                        .map((entry) => KeyValue(
+                            id: DateFormat("dd/MM/yyyy")
+                                .format(DateTime.parse(entry.key)),
+                            name: entry.value))
+                        .toList()
+                        .cast<KeyValue>()
+                        .reversed
+                        .take(numberDays)
+                        .toList()
+                        .reversed
+                        .toList(),
+                    hospitalize: snapshot.data['hospitalize'].entries
                         .map((entry) => KeyValue(
                             id: DateFormat("dd/MM/yyyy")
                                 .format(DateTime.parse(entry.key)),
