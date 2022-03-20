@@ -108,25 +108,27 @@ class _AppState extends State<App> {
           ],
         ),
 
-        bottomNavigationBar: Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          child: !Responsive.isDesktopLayout(context)
-              ? BottomNavigation(
-                  role: _role,
-                  currentTab: _currentTab,
-                  onSelectTab: _selectTab,
-                )
-              : Container(
-                  color: Colors.white,
-                  width: MediaQuery.of(context).size.width,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-        ),
+        bottomNavigationBar: MediaQuery.of(context).size.height > 600
+            ? Container(
+                height: 60,
+                width: MediaQuery.of(context).size.width,
+                child: !Responsive.isDesktopLayout(context)
+                    ? BottomNavigation(
+                        role: _role,
+                        currentTab: _currentTab,
+                        onSelectTab: _selectTab,
+                      )
+                    : Container(
+                        color: Colors.white,
+                        width: MediaQuery.of(context).size.width,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+              )
+            : SizedBox(),
       ),
     );
   }
