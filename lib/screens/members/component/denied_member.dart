@@ -113,7 +113,17 @@ class _DeniedMemberState extends State<DeniedMember>
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
-                  child: Text('Không có dữ liệu'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        child: Image.asset("assets/images/no_data.png"),
+                      ),
+                      Text('Không có dữ liệu'),
+                    ],
+                  ),
                 ),
             firstPageErrorIndicatorBuilder: (context) => Center(
                   child: Text('Có lỗi xảy ra'),
