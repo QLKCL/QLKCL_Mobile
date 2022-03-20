@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -18,15 +19,15 @@ double pageCount = 0;
 final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
-class SuspectMember extends StatefulWidget {
-  SuspectMember({Key? key}) : super(key: key);
+class PositiveMember extends StatefulWidget {
+  PositiveMember({Key? key}) : super(key: key);
 
   @override
-  _SuspectMemberState createState() => _SuspectMemberState();
+  _PositiveMemberState createState() => _PositiveMemberState();
 }
 
-class _SuspectMemberState extends State<SuspectMember>
-    with AutomaticKeepAliveClientMixin<SuspectMember> {
+class _PositiveMemberState extends State<PositiveMember>
+    with AutomaticKeepAliveClientMixin<PositiveMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -58,7 +59,7 @@ class _SuspectMemberState extends State<SuspectMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1, 'health_status_list': "UNWELL,SERIOUS"})
+    fetchMemberList(data: {'page': 1, 'positive_test_now_list': true})
         .then((value) => setState(() {
               paginatedDataSource = value.data;
               pageCount = value.totalPages.toDouble();
@@ -74,7 +75,7 @@ class _SuspectMemberState extends State<SuspectMember>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'health_status_list': "UNWELL,SERIOUS"});
+          data: {'page': pageKey, 'positive_test_now_list': true});
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
@@ -289,10 +290,8 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    final newItems = await fetchMemberList(data: {
-      'page': newPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS"
-    });
+    final newItems = await fetchMemberList(
+        data: {'page': newPageIndex + 1, 'positive_test_now_list': true});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       buildDataGridRows();
@@ -305,10 +304,8 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(data: {
-      'page': currentPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS"
-    });
+    final newItems = await fetchMemberList(
+        data: {'page': currentPageIndex + 1, 'positive_test_now_list': true});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -473,6 +470,14 @@ Widget menus(BuildContext context, FilterMember item,
                       code: item.code,
                       name: item.fullName,
                     )));
+      } else if (result == 'test_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       } else if (result == 'vaccine_dose_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
@@ -498,6 +503,10 @@ Widget menus(BuildContext context, FilterMember item,
       PopupMenuItem(
         child: Text('Tạo phiếu xét nghiệm'),
         value: "create_test",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử xét nghiệm'),
+        value: "test_history",
       ),
       PopupMenuItem(
         child: Text('Thông tin tiêm chủng'),

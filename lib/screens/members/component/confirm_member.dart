@@ -68,10 +68,11 @@ class _ConfirmMemberState extends State<ConfirmMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(data: {'page': 1, 'status_list': "WAITING"})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -82,8 +83,8 @@ class _ConfirmMemberState extends State<ConfirmMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems =
-          await fetchMemberList(data: {'page': pageKey, 'status': "WAITING"});
+      final newItems = await fetchMemberList(
+          data: {'page': pageKey, 'status_list': "WAITING"});
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
@@ -324,7 +325,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     final newItems = await fetchMemberList(
-        data: {'page': newPageIndex + 1, 'status': "WAITING"});
+        data: {'page': newPageIndex + 1, 'status_list': "WAITING"});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       buildDataGridRows();
@@ -338,7 +339,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
-        data: {'page': currentPageIndex + 1, 'status': "WAITING"});
+        data: {'page': currentPageIndex + 1, 'status_list': "WAITING"});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -371,9 +372,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),

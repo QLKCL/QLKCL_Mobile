@@ -258,6 +258,15 @@ Future<Response> acceptOneMember(data) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Xét duyệt thành công!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['main'] != null &&
+          response['message']['main'] ==
+              "All rooms are not accept any more member") {
+        return Response(
+            success: false, message: "Khu cách ly này đã hết giường trống!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

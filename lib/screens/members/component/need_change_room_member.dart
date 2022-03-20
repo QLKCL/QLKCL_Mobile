@@ -1,38 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/members/change_quarantine_info.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
-import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/test/add_test_screen.dart';
-import 'package:qlkcl/screens/test/list_test_screen.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
-
-// cre: https://pub.dev/packages/infinite_scroll_pagination/example
-// cre: https://help.syncfusion.com/flutter/datagrid/paging
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
-class AllMember extends StatefulWidget {
-  AllMember({Key? key}) : super(key: key);
+class NeedChangeRoomMember extends StatefulWidget {
+  NeedChangeRoomMember({Key? key}) : super(key: key);
 
   @override
-  _AllMemberState createState() => _AllMemberState();
+  _NeedChangeRoomMemberState createState() => _NeedChangeRoomMemberState();
 }
 
-class _AllMemberState extends State<AllMember>
-    with AutomaticKeepAliveClientMixin<AllMember> {
+class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
+    with AutomaticKeepAliveClientMixin<NeedChangeRoomMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -50,14 +43,26 @@ class _AllMemberState extends State<AllMember>
     });
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        showNotification("Có lỗi xảy ra!", status: "error");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Có lỗi xảy ra!',
+            ),
+            action: SnackBarAction(
+              label: 'Thử lại',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(
+            data: {'page': 1, 'is_need_change_room_because_be_positive': true})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -68,7 +73,10 @@ class _AllMemberState extends State<AllMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(data: {'page': pageKey});
+      final newItems = await fetchMemberList(data: {
+        'page': pageKey,
+        'is_need_change_room_because_be_positive': true
+      });
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
@@ -112,17 +120,16 @@ class _AllMemberState extends State<AllMember>
             child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => MemberCard(
-            member: item,
-            onTap: () {
-              Navigator.of(context,
-                      rootNavigator: !Responsive.isDesktopLayout(context))
-                  .push(MaterialPageRoute(
-                      builder: (context) => UpdateMember(
-                            code: item.code,
-                          )));
-            },
-            menus: menus(context, item),
-          ),
+              member: item,
+              onTap: () {
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
+                    .push(MaterialPageRoute(
+                        builder: (context) => UpdateMember(
+                              code: item.code,
+                            )));
+              },
+              menus: menus(context, item, pagingController: _pagingController)),
         ),
       ),
     );
@@ -284,7 +291,10 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    final newItems = await fetchMemberList(data: {'page': newPageIndex + 1});
+    final newItems = await fetchMemberList(data: {
+      'page': newPageIndex + 1,
+      'is_need_change_room_because_be_positive': true
+    });
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       buildDataGridRows();
@@ -297,8 +307,10 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems =
-        await fetchMemberList(data: {'page': currentPageIndex + 1});
+    final newItems = await fetchMemberList(data: {
+      'page': currentPageIndex + 1,
+      'is_need_change_room_because_be_positive': true
+    });
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -331,9 +343,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -417,26 +428,20 @@ class MemberDataSource extends DataGridSource {
   }
 }
 
-Widget menus(BuildContext context, FilterMember item) {
+Widget menus(BuildContext context, FilterMember item,
+    {PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
       color: CustomColors.disableText,
     ),
-    onSelected: (result) {
+    onSelected: (result) async {
       if (result == 'update_info') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
                 builder: (context) => UpdateMember(
                       code: item.code,
-                    )));
-      } else if (result == 'create_medical_declaration') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => MedicalDeclarationScreen(
-                      phone: item.phoneNumber,
                     )));
       } else if (result == 'medical_declare_history') {
         Navigator.of(context,
@@ -446,14 +451,6 @@ Widget menus(BuildContext context, FilterMember item) {
                       code: item.code,
                       phone: item.phoneNumber,
                     )));
-      } else if (result == 'create_test') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => AddTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
       } else if (result == 'test_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
@@ -461,13 +458,6 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListTest(
                       code: item.code,
                       name: item.fullName,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
                     )));
       } else if (result == 'change_room') {
         Navigator.of(context,
@@ -485,24 +475,12 @@ Widget menus(BuildContext context, FilterMember item) {
         value: "update_info",
       ),
       PopupMenuItem(
-        child: Text('Khai báo y tế'),
-        value: "create_medical_declaration",
-      ),
-      PopupMenuItem(
         child: Text('Lịch sử khai báo y tế'),
         value: "medical_declare_history",
       ),
       PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
-        value: "create_test",
-      ),
-      PopupMenuItem(
         child: Text('Lịch sử xét nghiệm'),
         value: "test_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
       ),
       PopupMenuItem(
         child: Text('Chuyển phòng'),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -56,10 +57,11 @@ class _NeedTestMemberState extends State<NeedTestMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(data: {'page': 1, 'is_last_tested': true})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -334,9 +336,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -460,6 +461,14 @@ Widget menus(BuildContext context, FilterMember item,
             }
           },
         );
+      } else if (result == 'test_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -474,6 +483,10 @@ Widget menus(BuildContext context, FilterMember item,
       PopupMenuItem(
         child: Text('Tạo phiếu xét nghiệm'),
         value: "create_test",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử xét nghiệm'),
+        value: "test_history",
       ),
     ],
   );

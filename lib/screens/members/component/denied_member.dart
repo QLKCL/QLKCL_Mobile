@@ -1,9 +1,15 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
@@ -53,10 +59,11 @@ class _DeniedMemberState extends State<DeniedMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1}).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(data: {'page': 1, 'status_list': "REFUSED"})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -67,8 +74,8 @@ class _DeniedMemberState extends State<DeniedMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems =
-          await fetchMemberList(data: {'page': pageKey, 'status': "REFUSED"});
+      final newItems = await fetchMemberList(
+          data: {'page': pageKey, 'status_list': "REFUSED"});
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
@@ -284,7 +291,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     final newItems = await fetchMemberList(
-        data: {'page': newPageIndex + 1, 'status': "REFUSED"});
+        data: {'page': newPageIndex + 1, 'status_list': "REFUSED"});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       buildDataGridRows();
@@ -298,7 +305,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
-        data: {'page': currentPageIndex + 1, 'status': "REFUSED"});
+        data: {'page': currentPageIndex + 1, 'status_list': "REFUSED"});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -331,9 +338,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -419,5 +425,76 @@ class MemberDataSource extends DataGridSource {
 
 Widget menus(BuildContext context, FilterMember item,
     {PagingController<int, FilterMember>? pagingController}) {
-  return Container();
+  return PopupMenuButton(
+    icon: Icon(
+      Icons.more_vert,
+      color: CustomColors.disableText,
+    ),
+    onSelected: (result) async {
+      if (result == 'update_info') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => UpdateMember(
+                      code: item.code,
+                    )));
+      } else if (result == 'create_medical_declaration') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => MedicalDeclarationScreen(
+                      phone: item.phoneNumber,
+                    )));
+      } else if (result == 'medical_declare_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListMedicalDeclaration(
+                      code: item.code,
+                      phone: item.phoneNumber,
+                    )));
+      } else if (result == 'vaccine_dose_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
+                      code: item.code,
+                    )));
+      } else if (result == 'accept_one') {
+        CancelFunc cancel = showLoading();
+        final response = await acceptOneMember({'code': item.code});
+        cancel();
+        showNotification(response);
+        if (response.success) {
+          if (Responsive.isDesktopLayout(context)) {
+            key.currentState!.refresh();
+          } else {
+            pagingController!.refresh();
+          }
+        }
+      }
+    },
+    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+      PopupMenuItem(
+        child: Text('Cập nhật thông tin'),
+        value: "update_info",
+      ),
+      PopupMenuItem(
+        child: Text('Khai báo y tế'),
+        value: "create_medical_declaration",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử khai báo y tế'),
+        value: "medical_declare_history",
+      ),
+      PopupMenuItem(
+        child: Text('Thông tin tiêm chủng'),
+        value: "vaccine_dose_history",
+      ),
+      PopupMenuItem(
+        child: Text('Chấp nhận'),
+        value: "accept_one",
+      ),
+    ],
+  );
 }

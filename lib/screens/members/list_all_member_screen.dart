@@ -4,9 +4,12 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/completed_member.dart';
+import 'package:qlkcl/screens/members/component/hospitalized_member.dart';
+import 'package:qlkcl/screens/members/component/need_change_room_member.dart';
+import 'package:qlkcl/screens/members/component/positive_member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/screens/members/component/all_member.dart';
+import 'package:qlkcl/screens/members/component/active_member.dart';
 import 'package:qlkcl/screens/members/component/complete_expect_member.dart';
 import 'package:qlkcl/screens/members/component/confirm_member.dart';
 import 'package:qlkcl/screens/members/component/denied_member.dart';
@@ -33,7 +36,7 @@ class _ListAllMemberState extends State<ListAllMember>
   void initState() {
     super.initState();
     _tabController =
-        TabController(length: 7, vsync: this, initialIndex: widget.tab);
+        TabController(length: 10, vsync: this, initialIndex: widget.tab);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -153,13 +156,16 @@ class _ListAllMemberState extends State<ListAllMember>
                   isScrollable: true,
                   indicatorColor: CustomColors.white,
                   tabs: [
-                    Tab(text: "Toàn bộ"),
+                    Tab(text: "Đang cách ly"),
                     Tab(text: "Chờ xét duyệt"),
                     Tab(text: "Nghi nhiễm"),
                     Tab(text: "Tới hạn xét nghiệm"),
+                    Tab(text: "Cần chuyển phòng"),
+                    Tab(text: "Dương tính"),
                     Tab(text: "Sắp hoàn thành cách ly"),
                     Tab(text: "Từ chối"),
                     Tab(text: "Đã hoàn thành cách ly"),
+                    Tab(text: "Đã chuyển viện"),
                   ],
                 ),
               ),
@@ -169,7 +175,7 @@ class _ListAllMemberState extends State<ListAllMember>
         body: TabBarView(
           controller: _tabController,
           children: [
-            AllMember(),
+            ActiveMember(),
             ConfirmMember(
               longPressFlag: longPressFlag,
               indexList: indexList,
@@ -179,9 +185,12 @@ class _ListAllMemberState extends State<ListAllMember>
             ),
             SuspectMember(),
             NeedTestMember(),
+            NeedChangeRoomMember(),
+            PositiveMember(),
             ExpectCompleteMember(),
             DeniedMember(),
             CompletedMember(),
+            HospitalizedMember(),
           ].map((e) {
             return SafeArea(
               child: LayoutBuilder(
@@ -197,7 +206,7 @@ class _ListAllMemberState extends State<ListAllMember>
                           child: e,
                           width: constraints.maxWidth,
                           height: Responsive.isDesktopLayout(context)
-                              ? constraints.maxHeight - 275
+                              ? constraints.maxHeight - 150
                               : constraints.maxHeight,
                         ),
                       ),
