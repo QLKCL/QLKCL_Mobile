@@ -57,7 +57,9 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                         MaterialPageRoute(builder: (context) => QrCodeScan()),
                       )
                       .then((value) => setState(() {
-                            infoFromIdentityCard = value.split('|').toList();
+                            if (value != null) {
+                              infoFromIdentityCard = value.split('|').toList();
+                            }
                           }));
                 },
                 icon: Icon(Icons.photo_camera_front_outlined),

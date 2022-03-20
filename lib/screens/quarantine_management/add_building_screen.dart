@@ -89,10 +89,6 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                           key: _formKey,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.height -
-                                    appBar.preferredSize.height -
-                                    MediaQuery.of(context).padding.top) *
-                                0.6,
                             child: Input(
                               label: 'Tên tòa',
                               required: true,

@@ -28,10 +28,13 @@ class FloorDetailsScreen extends StatefulWidget {
 
 class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   late Future<dynamic> futureRoomList;
+  late Floor currentFloor;
 
   @override
   void initState() {
     super.initState();
+    currentFloor = widget.currentFloor!;
+    futureRoomList = fetchRoomList({'quarantine_floor': currentFloor.id});
   }
 
   @override
@@ -41,8 +44,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    futureRoomList =
-        fetchRoomList({'quarantine_floor': widget.currentFloor!.id});
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tầng"),
       centerTitle: true,
@@ -58,7 +59,13 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   currentFloor: widget.currentFloor,
                 ),
               ),
-            ).then((value) => setState(() {}));
+            ).then((value) => setState(() {
+                  if (value != null) {
+                    currentFloor = value;
+                  }
+                  futureRoomList =
+                      fetchRoomList({'quarantine_floor': currentFloor.id});
+                }));
           },
           icon: Icon(Icons.edit),
           tooltip: "Cập nhật",
@@ -87,7 +94,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                         child: GeneralInfoFloor(
                           currentBuilding: widget.currentBuilding!,
                           currentQuarantine: widget.currentQuarantine!,
-                          currentFloor: widget.currentFloor!,
+                          currentFloor: currentFloor,
                           numOfRoom: snapshot.data.length,
                         ),
                       ),
@@ -101,7 +108,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                           data: snapshot.data,
                           currentBuilding: widget.currentBuilding!,
                           currentQuarantine: widget.currentQuarantine!,
-                          currentFloor: widget.currentFloor!,
+                          currentFloor: currentFloor,
                         ),
                       ),
                     ],
@@ -129,7 +136,10 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 currentFloor: widget.currentFloor,
               ),
             ),
-          ).then((value) => setState(() {}));
+          ).then((value) => setState(() {
+                futureRoomList =
+                    fetchRoomList({'quarantine_floor': currentFloor.id});
+              }));
         },
         child: const Icon(Icons.add),
         tooltip: 'Thêm phòng',

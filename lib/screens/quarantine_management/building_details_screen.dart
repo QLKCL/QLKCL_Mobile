@@ -26,10 +26,14 @@ class BuildingDetailsScreen extends StatefulWidget {
 
 class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   late Future<dynamic> futureFloorList;
+  late Building currentBuilding;
 
   @override
   void initState() {
     super.initState();
+    currentBuilding = widget.currentBuilding!;
+    futureFloorList =
+        fetchFloorList({'quarantine_building': currentBuilding.id});
   }
 
   @override
@@ -39,9 +43,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    futureFloorList =
-        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
-
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
@@ -56,7 +57,13 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                   currentQuarantine: widget.currentQuarantine,
                 ),
               ),
-            ).then((value) => setState(() {}));
+            ).then((value) => setState(() {
+                  if (value != null) {
+                    currentBuilding = value;
+                  }
+                  futureFloorList = fetchFloorList(
+                      {'quarantine_building': currentBuilding.id});
+                }));
           },
           icon: Icon(Icons.edit),
           tooltip: "Cập nhật",
@@ -84,7 +91,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                             0.25,
                         child: GeneralInfoBuilding(
                           currentQuarantine: widget.currentQuarantine!,
-                          currentBuilding: widget.currentBuilding!,
+                          currentBuilding: currentBuilding,
                           numberOfFloor: snapshot.data.length,
                         ),
                       ),
@@ -95,7 +102,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                             0.75,
                         child: FloorList(
                           data: snapshot.data,
-                          currentBuilding: widget.currentBuilding!,
+                          currentBuilding: currentBuilding,
                           currentQuarantine: widget.currentQuarantine!,
                         ),
                       ),
@@ -123,7 +130,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                 currentQuarantine: widget.currentQuarantine,
               ),
             ),
-          ).then((value) => setState(() {}));
+          ).then((value) => setState(() {
+                futureFloorList =
+                    fetchFloorList({'quarantine_building': currentBuilding.id});
+              }));
         },
         tooltip: 'Thêm tầng',
         child: const Icon(Icons.add),

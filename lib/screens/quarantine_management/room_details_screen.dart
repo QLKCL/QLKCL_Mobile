@@ -50,15 +50,18 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   bool showLoadingIndicator = true;
   double pageCount = 0;
 
+  late Room currentRoom;
+
   @override
   void initState() {
     super.initState();
+    currentRoom = widget.currentRoom!;
     futureMemberList = fetchMemberList(
       data: filterMemberByRoomDataForm(
         quarantineWard: widget.currentQuarantine!.id,
         quarantineBuilding: widget.currentBuilding!.id,
         quarantineFloor: widget.currentFloor!.id,
-        quarantineRoom: widget.currentRoom!.id,
+        quarantineRoom: currentRoom.id,
       ),
     );
   }
@@ -80,11 +83,27 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => EditRoomScreen(
-                  currentBuilding: widget.currentBuilding,
-                  currentQuarantine: widget.currentQuarantine,
-                  currentFloor: widget.currentFloor,
-                  currentRoom: widget.currentRoom,
+                  currentBuilding: widget.currentBuilding!,
+                  currentQuarantine: widget.currentQuarantine!,
+                  currentFloor: widget.currentFloor!,
+                  currentRoom: currentRoom,
                 ),
+              ),
+            ).then(
+              (value) => setState(
+                () {
+                  if (value != null) {
+                    currentRoom = value;
+                  }
+                  futureMemberList = fetchMemberList(
+                    data: filterMemberByRoomDataForm(
+                      quarantineWard: widget.currentQuarantine!.id,
+                      quarantineBuilding: widget.currentBuilding!.id,
+                      quarantineFloor: widget.currentFloor!.id,
+                      quarantineRoom: currentRoom.id,
+                    ),
+                  );
+                },
               ),
             );
           },
@@ -136,11 +155,20 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 quarantineFloor: KeyValue(
                     id: widget.currentFloor!.id,
                     name: widget.currentFloor!.name),
-                quarantineRoom: KeyValue(
-                    id: widget.currentRoom!.id, name: widget.currentRoom!.name),
+                quarantineRoom:
+                    KeyValue(id: currentRoom.id, name: currentRoom.name),
               ),
             ),
-          );
+          ).then((value) => setState(() {
+                futureMemberList = fetchMemberList(
+                  data: filterMemberByRoomDataForm(
+                    quarantineWard: widget.currentQuarantine!.id,
+                    quarantineBuilding: widget.currentBuilding!.id,
+                    quarantineFloor: widget.currentFloor!.id,
+                    quarantineRoom: currentRoom.id,
+                  ),
+                );
+              }));
         },
         tooltip: 'Thêm người cách ly',
         child: const Icon(Icons.add),
@@ -163,7 +191,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentBuilding: widget.currentBuilding!,
               currentFloor: widget.currentFloor!,
               currentQuarantine: widget.currentQuarantine!,
-              currentRoom: widget.currentRoom!,
+              currentRoom: currentRoom,
             )),
         Container(
           width: MediaQuery.of(context).size.width,
@@ -216,7 +244,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentBuilding: widget.currentBuilding!,
               currentFloor: widget.currentFloor!,
               currentQuarantine: widget.currentQuarantine!,
-              currentRoom: widget.currentRoom!,
+              currentRoom: currentRoom,
             )),
         Container(
           width: MediaQuery.of(context).size.width,
