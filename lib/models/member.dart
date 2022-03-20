@@ -117,8 +117,12 @@ Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
     } else if (response['error_code'] == 401) {
       if (response['message']['quarantine_ward_id'] != null &&
           response['message']['quarantine_ward_id'] == "Permission denied") {
-        showNotification('Không có quyền truy cập!', status: 'error');
+        showNotification('Không có quyền thực hiện chức năng này!',
+            status: 'error');
       }
+      return FilterResponse<FilterMember>();
+    } else {
+      showNotification('Có lỗi xảy ra!', status: 'error');
       return FilterResponse<FilterMember>();
     }
   }
@@ -126,7 +130,7 @@ Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
   return FilterResponse<FilterMember>();
 }
 
-Future<dynamic> createMember(Map<String, dynamic> data) async {
+Future<Response> createMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createMember, data);
   if (response == null) {
@@ -153,13 +157,12 @@ Future<dynamic> createMember(Map<String, dynamic> data) async {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }
     } else {
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
 }
 
-Future<dynamic> updateMember(Map<String, dynamic> data) async {
+Future<Response> updateMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateMember, data);
   if (response == null) {
@@ -212,7 +215,7 @@ Future<dynamic> updateMember(Map<String, dynamic> data) async {
   }
 }
 
-Future<dynamic> denyMember(data) async {
+Future<Response> denyMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.denyMember, data);
   if (response == null) {
@@ -226,7 +229,7 @@ Future<dynamic> denyMember(data) async {
   }
 }
 
-Future<dynamic> acceptManyMember(data) async {
+Future<Response> acceptManyMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptManyMember, data);
   if (response == null) {
@@ -247,7 +250,7 @@ Future<dynamic> acceptManyMember(data) async {
   }
 }
 
-Future<dynamic> acceptOneMember(data) async {
+Future<Response> acceptOneMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptOneMember, data);
   if (response == null) {
@@ -261,7 +264,7 @@ Future<dynamic> acceptOneMember(data) async {
   }
 }
 
-Future<dynamic> finishMember(data) async {
+Future<Response> finishMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.finishMember, data);
   if (response == null) {
@@ -275,7 +278,7 @@ Future<dynamic> finishMember(data) async {
   }
 }
 
-Future<dynamic> changeRoomMember(data) async {
+Future<Response> changeRoomMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changeRoomMember, data);
   if (response == null) {

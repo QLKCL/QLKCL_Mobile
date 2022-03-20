@@ -114,7 +114,7 @@ Future<dynamic> fetchUserNotificationList({data}) async {
       : null;
 }
 
-Future<dynamic> changeStateUserNotification({data}) async {
+Future<Response> changeStateUserNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changeStateUserNotification, data);
   if (response == null) {
@@ -128,7 +128,7 @@ Future<dynamic> changeStateUserNotification({data}) async {
   }
 }
 
-Future<dynamic> createNotification({data}) async {
+Future<Response> createNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createNotification, data);
   print(response);

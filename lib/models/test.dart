@@ -112,7 +112,7 @@ Future<dynamic> fetchTestList({data}) async {
       : null;
 }
 
-Future<dynamic> createTest(Map<String, dynamic> data) async {
+Future<Response> createTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createTest, data);
   if (response == null) {
@@ -122,13 +122,12 @@ Future<dynamic> createTest(Map<String, dynamic> data) async {
       return Response(
           success: true, message: "Tạo phiếu xét nghiệm thành công!");
     } else {
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
 }
 
-Future<dynamic> updateTest(Map<String, dynamic> data) async {
+Future<Response> updateTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateTest, data);
   if (response == null) {
