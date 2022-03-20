@@ -25,22 +25,22 @@ class EditBuildingScreen extends StatefulWidget {
 
 class _EditBuildingScreenState extends State<EditBuildingScreen> {
   late Future<int> numOfFloor;
+  //Input Controller
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     numOfFloor =
         fetchNumOfFloor({'quarantine_building': widget.currentBuilding!.id});
+    nameController.text = widget.currentBuilding!.name;
   }
 
   @override
   void deactivate() {
     super.deactivate();
   }
-
-  //Input Controller
-  final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
 
   //Submit
   Future<void> _submit() async {
@@ -53,7 +53,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
 
       cancel();
       showNotification(response);
-      Navigator.pop(context);
+      if (response.success) {
+        Navigator.of(context).pop(response.data);
+      }
     }
   }
 
@@ -93,10 +95,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                           key: _formKey,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.height -
-                                    appBar.preferredSize.height -
-                                    MediaQuery.of(context).padding.top) *
-                                0.6,
                             child: Input(
                               label: 'Tên tòa mới',
                               hint: 'Tên tòa mới',

@@ -28,21 +28,21 @@ class EditFloorScreen extends StatefulWidget {
 
 class _EditFloorScreenState extends State<EditFloorScreen> {
   late Future<int> numOfRoom;
+  //Input Controller
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     numOfRoom = fetchNumOfRoom({'quarantine_floor': widget.currentFloor!.id});
+    nameController.text = widget.currentFloor!.name;
   }
 
   @override
   void deactivate() {
     super.deactivate();
   }
-
-  //Input Controller
-  final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
 
   //Submit
   Future<void> _submit() async {
@@ -54,7 +54,9 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       ));
       cancel();
       showNotification(response);
-      Navigator.pop(context);
+      if (response.success) {
+        Navigator.of(context).pop(response.data);
+      }
     }
   }
 
@@ -95,10 +97,6 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                           key: _formKey,
                           child: Container(
                             width: MediaQuery.of(context).size.width,
-                            height: (MediaQuery.of(context).size.height -
-                                    appBar.preferredSize.height -
-                                    MediaQuery.of(context).padding.top) *
-                                0.6,
                             child: Input(
                               label: 'Tên tầng mới',
                               hint: 'Tên tầng mới',

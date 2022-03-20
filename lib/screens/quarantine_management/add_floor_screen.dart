@@ -30,6 +30,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   void initState() {
     super.initState();
+    futureFloorList =
+        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
 
     myController.addListener(_updateLatestValue);
   }
@@ -91,8 +93,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    futureFloorList =
-        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
     final appBar = AppBar(
       title: Text('Thêm tầng'),
       centerTitle: true,
@@ -125,11 +125,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                           ),
                         ),
                         Container(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.6,
-
                           //Input fields
                           child: SingleChildScrollView(
                             physics: ScrollPhysics(),

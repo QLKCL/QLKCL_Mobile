@@ -35,6 +35,13 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   final nameController = TextEditingController();
   final capacityController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    nameController.text = widget.currentRoom!.name;
+    capacityController.text = widget.currentRoom!.capacity.toString();
+  }
+
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
@@ -48,6 +55,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
 
       cancel();
       showNotification(response);
+      if (response.success) {
+        Navigator.of(context).pop(response.data);
+      }
     }
   }
 
@@ -81,10 +91,6 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                 key: _formKey,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  height: (MediaQuery.of(context).size.height -
-                          appBar.preferredSize.height -
-                          MediaQuery.of(context).padding.top) *
-                      0.65,
                   child: Column(
                     children: [
                       Input(

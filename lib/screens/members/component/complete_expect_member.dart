@@ -59,10 +59,11 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
       }
     });
     super.initState();
-    _fetchPage(1).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(data: {'page': 1, 'can_finish_quarantine': true})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -71,7 +72,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
     super.dispose();
   }
 
-  Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(
           data: {'page': pageKey, 'can_finish_quarantine': true});
@@ -83,10 +84,8 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
-      return newItems;
     } catch (error) {
       _pagingController.error = error;
-      return FilterResponse<FilterMember>();
     }
   }
 
@@ -114,7 +113,17 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
-            child: Text('Không có dữ liệu'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Image.asset("assets/images/no_data.png"),
+                ),
+                Text('Không có dữ liệu'),
+              ],
+            ),
           ),
           firstPageErrorIndicatorBuilder: (context) => Center(
             child: Text('Có lỗi xảy ra'),
@@ -340,9 +349,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),

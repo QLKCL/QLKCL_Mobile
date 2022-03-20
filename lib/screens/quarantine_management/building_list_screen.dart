@@ -21,6 +21,8 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
   @override
   void initState() {
     super.initState();
+    futureBuildingList =
+        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
   }
 
   @override
@@ -30,9 +32,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
-
     final appBar = AppBar(
       title: Text('Danh sách tòa'),
     );
@@ -90,7 +89,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
               MaterialPageRoute(
                   builder: (context) => AddBuildingScreen(
                         currentQuarrantine: widget.currentQuarrantine,
-                      )));
+                      ))).then((value) => setState(() {
+                futureBuildingList = fetchBuildingList(
+                    {'quarantine_ward': widget.currentQuarrantine!.id});
+              }));
         },
         tooltip: 'Thêm tòa',
         child: const Icon(Icons.add),

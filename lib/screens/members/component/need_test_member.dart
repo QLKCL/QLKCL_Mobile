@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -56,10 +57,11 @@ class _NeedTestMemberState extends State<NeedTestMember>
       }
     });
     super.initState();
-    _fetchPage(1).then((value) => setState(() {
-          paginatedDataSource = value.data;
-          pageCount = value.totalPages.toDouble();
-        }));
+    fetchMemberList(data: {'page': 1, 'is_last_tested': true})
+        .then((value) => setState(() {
+              paginatedDataSource = value.data;
+              pageCount = value.totalPages.toDouble();
+            }));
   }
 
   @override
@@ -68,7 +70,7 @@ class _NeedTestMemberState extends State<NeedTestMember>
     super.dispose();
   }
 
-  Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
+  Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(
           data: {'page': pageKey, 'is_last_tested': true});
@@ -80,10 +82,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
         final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
-      return newItems;
     } catch (error) {
       _pagingController.error = error;
-      return FilterResponse<FilterMember>();
     }
   }
 
@@ -111,7 +111,17 @@ class _NeedTestMemberState extends State<NeedTestMember>
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
-            child: Text('Không có dữ liệu'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Image.asset("assets/images/no_data.png"),
+                ),
+                Text('Không có dữ liệu'),
+              ],
+            ),
           ),
           firstPageErrorIndicatorBuilder: (context) => Center(
             child: Text('Có lỗi xảy ra'),
@@ -336,9 +346,8 @@ class MemberDataSource extends DataGridSource {
                   value: e.quarantineLocation),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -462,6 +471,14 @@ Widget menus(BuildContext context, FilterMember item,
             }
           },
         );
+      } else if (result == 'test_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListTest(
+                      code: item.code,
+                      name: item.fullName,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -476,6 +493,10 @@ Widget menus(BuildContext context, FilterMember item,
       PopupMenuItem(
         child: Text('Tạo phiếu xét nghiệm'),
         value: "create_test",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử xét nghiệm'),
+        value: "test_history",
       ),
     ],
   );

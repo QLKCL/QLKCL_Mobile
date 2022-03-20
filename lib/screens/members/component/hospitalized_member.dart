@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -18,15 +17,15 @@ double pageCount = 0;
 final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
-class SuspectMember extends StatefulWidget {
-  SuspectMember({Key? key}) : super(key: key);
+class HospitalizedMember extends StatefulWidget {
+  HospitalizedMember({Key? key}) : super(key: key);
 
   @override
-  _SuspectMemberState createState() => _SuspectMemberState();
+  _HospitalizedMemberState createState() => _HospitalizedMemberState();
 }
 
-class _SuspectMemberState extends State<SuspectMember>
-    with AutomaticKeepAliveClientMixin<SuspectMember> {
+class _HospitalizedMemberState extends State<HospitalizedMember>
+    with AutomaticKeepAliveClientMixin<HospitalizedMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -58,11 +57,14 @@ class _SuspectMemberState extends State<SuspectMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1, 'health_status_list': "UNWELL,SERIOUS"})
-        .then((value) => setState(() {
-              paginatedDataSource = value.data;
-              pageCount = value.totalPages.toDouble();
-            }));
+    fetchMemberList(data: {
+      'page': 1,
+      'status_list': "LEAVE",
+      'quarantined_status_list': "HOSPITALIZE"
+    }).then((value) => setState(() {
+          paginatedDataSource = value.data;
+          pageCount = value.totalPages.toDouble();
+        }));
   }
 
   @override
@@ -73,8 +75,11 @@ class _SuspectMemberState extends State<SuspectMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'health_status_list': "UNWELL,SERIOUS"});
+      final newItems = await fetchMemberList(data: {
+        'page': pageKey,
+        'status_list': "LEAVE",
+        'quarantined_status_list': "HOSPITALIZE"
+      });
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
@@ -102,33 +107,37 @@ class _SuspectMemberState extends State<SuspectMember>
   }
 
   Widget listMemberCard(_pagingController) {
-    return RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
-      child: PagedListView<int, FilterMember>(
-        padding: EdgeInsets.only(bottom: 70),
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<FilterMember>(
-          animateTransitions: true,
-          noItemsFoundIndicatorBuilder: (context) => Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Image.asset("assets/images/no_data.png"),
-                ),
-                Text('Không có dữ liệu'),
-              ],
+    return MediaQuery.removePadding(
+      context: context,
+      removeTop: true,
+      child: RefreshIndicator(
+        onRefresh: () => Future.sync(
+          () => _pagingController.refresh(),
+        ),
+        child: PagedListView<int, FilterMember>(
+          padding: EdgeInsets.only(bottom: 70),
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
+            animateTransitions: true,
+            noItemsFoundIndicatorBuilder: (context) => Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    child: Image.asset("assets/images/no_data.png"),
+                  ),
+                  Text('Không có dữ liệu'),
+                ],
+              ),
             ),
-          ),
-          firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Có lỗi xảy ra'),
-          ),
-          itemBuilder: (context, item, index) => MemberCard(
+            firstPageErrorIndicatorBuilder: (context) => Center(
+              child: Text('Có lỗi xảy ra'),
+            ),
+            itemBuilder: (context, item, index) => MemberCard(
               member: item,
+              isThreeLine: false,
               onTap: () {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
@@ -137,7 +146,9 @@ class _SuspectMemberState extends State<SuspectMember>
                               code: item.code,
                             )));
               },
-              menus: menus(context, item, pagingController: _pagingController)),
+              menus: menus(context, item),
+            ),
+          ),
         ),
       ),
     );
@@ -301,7 +312,8 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     final newItems = await fetchMemberList(data: {
       'page': newPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS"
+      'status_list': "LEAVE",
+      'quarantined_status_list': "HOSPITALIZE"
     });
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
@@ -317,7 +329,8 @@ class MemberDataSource extends DataGridSource {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS"
+      'status_list': "LEAVE",
+      'quarantined_status_list': "HOSPITALIZE"
     });
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
@@ -436,8 +449,7 @@ class MemberDataSource extends DataGridSource {
   }
 }
 
-Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+Widget menus(BuildContext context, FilterMember item) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
@@ -451,22 +463,6 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => UpdateMember(
                       code: item.code,
                     )));
-      } else if (result == 'create_medical_declaration') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => MedicalDeclarationScreen(
-                      phone: item.phoneNumber,
-                    )))
-            .then(
-          (value) {
-            if (Responsive.isDesktopLayout(context)) {
-              key.currentState!.refresh();
-            } else {
-              pagingController!.refresh();
-            }
-          },
-        );
       } else if (result == 'medical_declare_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
@@ -475,11 +471,11 @@ Widget menus(BuildContext context, FilterMember item,
                       code: item.code,
                       phone: item.phoneNumber,
                     )));
-      } else if (result == 'create_test') {
+      } else if (result == 'test_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
-                builder: (context) => AddTest(
+                builder: (context) => ListTest(
                       code: item.code,
                       name: item.fullName,
                     )));
@@ -490,7 +486,7 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      }
+      } else if (result == 'move_hospital') {}
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
       PopupMenuItem(
@@ -498,20 +494,20 @@ Widget menus(BuildContext context, FilterMember item,
         value: "update_info",
       ),
       PopupMenuItem(
-        child: Text('Khai báo y tế'),
-        value: "create_medical_declaration",
-      ),
-      PopupMenuItem(
         child: Text('Lịch sử khai báo y tế'),
         value: "medical_declare_history",
       ),
       PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
-        value: "create_test",
+        child: Text('Lịch sử xét nghiệm'),
+        value: "test_history",
       ),
       PopupMenuItem(
         child: Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
+      ),
+      PopupMenuItem(
+        child: Text('Chuyển viện'),
+        value: "move_hospital",
       ),
     ],
   );

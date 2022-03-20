@@ -111,38 +111,36 @@ Future<dynamic> fetchMedDecl({data}) async {
 Future<dynamic> fetchMedList({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.filterMedDecl, data);
- 
+
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
 }
 
-Future<dynamic> createMedDecl(Map<String, dynamic> data) async {
+Future<Response> createMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createMedDecl, data);
-  
+
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Khai báo thành công!");
     } else {
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
 }
 
-Future<dynamic> updateMedDecl(Map<String, dynamic> data) async {
+Future<Response> updateMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateTest, data);
- 
+
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(
-          success: true, message: "Cập nhật khai báo thành công!");
+      return Response(success: true, message: "Cập nhật khai báo thành công!");
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

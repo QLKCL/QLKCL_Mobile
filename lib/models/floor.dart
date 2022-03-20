@@ -50,7 +50,7 @@ Future<dynamic> fetchFloor({id}) async {
   return response["data"];
 }
 
-Future<dynamic> createFloor(Map<String, dynamic> data) async {
+Future<Response> createFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createFloor, data);
   if (response == null) {
@@ -83,7 +83,7 @@ Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
       : null;
 }
 
-Future<dynamic> updateFloor(Map<String, dynamic> data) async {
+Future<Response> updateFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateFloor, data);
   if (response == null) {
@@ -93,7 +93,15 @@ Future<dynamic> updateFloor(Map<String, dynamic> data) async {
       return Response(
           success: true,
           message: "Cập nhật thông tin thành công!",
-          data: response['data']);
+          data: Floor.fromJson(response['data']));
+    } else if (response['error_code'] == 401) {
+      if (response['message'] != null &&
+          response['message'] == "Permission denied") {
+        return Response(
+            success: false, message: 'Không có quyền thực hiện chức năng này!');
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

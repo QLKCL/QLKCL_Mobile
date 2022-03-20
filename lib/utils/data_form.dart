@@ -506,3 +506,28 @@ Map<String, dynamic> changeRoomMemberDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> createNotificationDataForm({
+  required String title,
+  required String description,
+  required int receiverType,
+  int? role,
+  int? quarantineWard,
+  String? users,
+  String? image,
+  String? url,
+  String? type,
+}) {
+  var data = {
+    "title": title,
+    "description": description,
+    "receiver_type": receiverType,
+    "role": role,
+    "quarantine_ward": quarantineWard,
+    "users": users,
+    "image": image,
+    "type": type,
+    "url": url,
+  };
+  return prepareDataForm(data);
+}

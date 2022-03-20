@@ -34,6 +34,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   @override
   void initState() {
     super.initState();
+    futureRoomList =
+        fetchNumOfRoom({'quarantine_floor': widget.currentFloor!.id});
 
     myController.addListener(_updateLatestValue);
   }
@@ -92,8 +94,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    futureRoomList =
-        fetchNumOfRoom({'quarantine_floor': widget.currentFloor!.id});
     final appBar = AppBar(
       title: Text('Thêm phòng'),
       centerTitle: true,
@@ -127,10 +127,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                           ),
                         ),
                         Container(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.6,
                           //Input fields
                           child: SingleChildScrollView(
                             physics: ScrollPhysics(),

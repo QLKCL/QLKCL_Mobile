@@ -62,7 +62,6 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
           message: "Tạo phòng thành công!",
           data: response['data']);
     } else {
-      // return Response(success: false, message: jsonEncode(response['message']));
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
@@ -71,7 +70,7 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
 Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListRoom, data);
- 
+
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -85,7 +84,7 @@ Future<int> fetchNumOfRoom(Map<String, dynamic> data) async {
       : null;
 }
 
-Future<dynamic> updateRoom(Map<String, dynamic> data) async {
+Future<Response> updateRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateRoom, data);
 
@@ -96,7 +95,22 @@ Future<dynamic> updateRoom(Map<String, dynamic> data) async {
       return Response(
           success: true,
           message: "Cập nhật thông tin thành công!",
-          data: response['data']);
+          data: Room.fromJson(response['data']));
+    } else if (response['error_code'] == 400) {
+      if (response['message']['name'] != null &&
+          response['message']['name'] == "Exist") {
+        return Response(success: false, message: 'Tên phòng đã tồn tại!');
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else if (response['error_code'] == 401) {
+      if (response['message'] != null &&
+          response['message'] == "Permission denied") {
+        return Response(
+            success: false, message: 'Không có quyền thực hiện chức năng này!');
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }

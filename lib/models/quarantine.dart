@@ -127,7 +127,7 @@ Future<dynamic> fetchQuarantineList({data}) async {
       : null;
 }
 
-Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
+Future<Response> createQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createQuarantine, data);
   if (response == null) {
@@ -144,7 +144,7 @@ Future<dynamic> createQuarantine(Map<String, dynamic> data) async {
   }
 }
 
-Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
+Future<Response> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateQuarantine, data);
   if (response == null) {
@@ -163,6 +163,16 @@ Future<dynamic> updateQuarantine(Map<String, dynamic> data) async {
           response['message']['full_name'] == "Exist") {
         return Response(
             success: false, message: "Tên khu cách ly đã được sử dụng!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else if (response['error_code'] == 401) {
+      if (response['message'] != null &&
+          response['message'] == "Permission denied") {
+        return Response(
+            success: false, message: 'Không có quyền thực hiện chức năng này!');
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
       }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");

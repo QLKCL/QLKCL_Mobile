@@ -23,7 +23,17 @@ class FloorList extends StatelessWidget {
   Widget build(BuildContext context) {
     return (data == null || data.isEmpty)
         ? Center(
-            child: Text('Không có dữ liệu'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Image.asset("assets/images/no_data.png"),
+                ),
+                Text('Không có dữ liệu'),
+              ],
+            ),
           )
         : ListView.builder(
             shrinkWrap: true,

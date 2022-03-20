@@ -140,6 +140,8 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 CancelFunc Function(dynamic data, {String status, String? subTitle})
     showNotification = (data, {status = "success", subTitle}) {
   return BotToast.showCustomNotification(
+    dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
+    align: Alignment(1, -1),
     duration: Duration(seconds: 3),
     toastBuilder: (cancel) {
       return _CustomWidget(
@@ -199,62 +201,56 @@ class _CustomWidget extends StatefulWidget {
 class _CustomWidgetState extends State<_CustomWidget> {
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topRight,
-      heightFactor: 1,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width > 450
-            ? 350
-            : MediaQuery.of(context).size.width,
-        child: Column(
-          children: <Widget>[
-            Card(
-              color: widget.backgroundColor ?? CustomColors.success,
-              shape: widget.borderRadius == null
-                  ? null
-                  : RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(widget.borderRadius!),
-                    ),
-              child: Container(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (widget.leading != null) widget.leading!,
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.title,
-                              style: widget.titleStyle,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            if (widget.subTitle != null)
-                              Text(
-                                widget.subTitle!,
-                                style: widget.subTitleStyle,
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (!widget.hideCloseButton)
-                        IconButton(
-                          icon: widget.closeIcon,
-                          onPressed: widget.cancelFunc,
-                          color: Colors.white,
-                        ),
-                    ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width > 450
+          ? 350
+          : MediaQuery.of(context).size.width,
+      child: Wrap(
+        children: <Widget>[
+          Card(
+            color: widget.backgroundColor ?? CustomColors.success,
+            shape: widget.borderRadius == null
+                ? null
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(widget.borderRadius!),
                   ),
-                ),
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (widget.leading != null) widget.leading!,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.title,
+                          style: widget.titleStyle,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        if (widget.subTitle != null)
+                          Text(
+                            widget.subTitle!,
+                            style: widget.subTitleStyle,
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (!widget.hideCloseButton)
+                    IconButton(
+                      icon: widget.closeIcon,
+                      onPressed: widget.cancelFunc,
+                      color: Colors.white,
+                    ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

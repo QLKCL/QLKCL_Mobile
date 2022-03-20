@@ -12,10 +12,10 @@ class GroupedFillColorBarChart extends StatelessWidget {
 
   GroupedFillColorBarChart(this.seriesList, {required this.animate});
 
-  factory GroupedFillColorBarChart.withData(
-      List<KeyValue> inData, List<KeyValue> outData) {
+  factory GroupedFillColorBarChart.withData(List<KeyValue> inData,
+      List<KeyValue> outData, List<KeyValue> hospitalizeData) {
     return new GroupedFillColorBarChart(
-      _createChart(inData, outData),
+      _createChart(inData, outData, hospitalizeData),
       // Disable animations for image tests.
       animate: true,
     );
@@ -39,7 +39,9 @@ class GroupedFillColorBarChart extends StatelessWidget {
 
   /// Create series list with multiple series
   static List<charts.Series<KeyValue, String>> _createChart(
-      List<KeyValue> inData, List<KeyValue> outData) {
+      List<KeyValue> inData,
+      List<KeyValue> outData,
+      List<KeyValue> hospitalizeData) {
     return [
       // Blue bars with a lighter center color.
       new charts.Series<KeyValue, String>(
@@ -58,6 +60,15 @@ class GroupedFillColorBarChart extends StatelessWidget {
         data: outData,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      ),
+      // Hollow green bars.
+      new charts.Series<KeyValue, String>(
+        id: 'Chuyển viện',
+        domainFn: (KeyValue num, _) => num.id,
+        measureFn: (KeyValue num, _) => num.name,
+        data: hospitalizeData,
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+        fillColorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
       ),
     ];
   }
