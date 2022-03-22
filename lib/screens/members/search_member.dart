@@ -50,6 +50,7 @@ class _SearchMemberState extends State<SearchMember> {
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   MemberDataSource _memberDataSource = MemberDataSource();
+  late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
 
@@ -343,6 +344,8 @@ class _SearchMemberState extends State<SearchMember> {
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
+      allowMultiColumnSorting: true,
+      allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
       columns: <GridColumn>[
@@ -453,27 +456,31 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    final newItems = await fetchMemberList(
-      data: filterMemberDataForm(
-          keySearch: keySearch.text,
-          page: newPageIndex + 1,
-          quarantineWard: quarantineWardController.text,
-          quarantineBuilding: quarantineBuildingController.text,
-          quarantineFloor: quarantineFloorController.text,
-          quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin:
-              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-          quarantineAtMax:
-              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-          label: labelController.text),
-    );
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
+    if (oldPageIndex != newPageIndex) {
+      final newItems = await fetchMemberList(
+        data: filterMemberDataForm(
+            keySearch: keySearch.text,
+            page: newPageIndex + 1,
+            quarantineWard: quarantineWardController.text,
+            quarantineBuilding: quarantineBuildingController.text,
+            quarantineFloor: quarantineFloorController.text,
+            quarantineRoom: quarantineRoomController.text,
+            quarantineAtMin:
+                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+            quarantineAtMax:
+                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+            label: labelController.text),
+      );
+      if (newItems.currentPage <= newItems.totalPages) {
+        paginatedDataSource = newItems.data;
+        buildDataGridRows();
+        notifyListeners();
+      } else {
+        paginatedDataSource = [];
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 
   @override
@@ -533,6 +540,10 @@ class MemberDataSource extends DataGridSource {
           ),
         )
         .toList();
+  }
+
+  void updateDataGridSource() {
+    notifyListeners();
   }
 
   @override

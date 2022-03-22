@@ -192,28 +192,26 @@ class _ListAllMemberState extends State<ListAllMember>
             CompletedMember(),
             HospitalizedMember(),
           ].map((e) {
-            return SafeArea(
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return CustomScrollView(
-                    slivers: <Widget>[
-                      SliverOverlapInjector(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            context),
+            return LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return CustomScrollView(
+                  slivers: <Widget>[
+                    SliverOverlapInjector(
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                          context),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        child: e,
+                        width: constraints.maxWidth,
+                        height: Responsive.isDesktopLayout(context)
+                            ? constraints.maxHeight - 140
+                            : constraints.maxHeight - 20,
                       ),
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          child: e,
-                          width: constraints.maxWidth,
-                          height: Responsive.isDesktopLayout(context)
-                              ? constraints.maxHeight - 150
-                              : constraints.maxHeight,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             );
           }).toList(),
         ),
