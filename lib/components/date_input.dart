@@ -247,6 +247,8 @@ class NewDateInput extends StatefulWidget {
 
 class _NewDateInputState extends State<NewDateInput> {
   bool _focus = false;
+  String newDate = "";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -263,16 +265,21 @@ class _NewDateInputState extends State<NewDateInput> {
                     TextButton(
                       child: Text('Hủy'),
                       onPressed: () {
-                        widget.controller!.text = "";
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
                       child: Text('Chọn'),
                       onPressed: () {
-                        widget.controller!.text = DateFormat('dd/MM/yyyy')
-                            .format(DateTime.now())
-                            .toString();
+                        if (newDate == "" && widget.controller!.text == "") {
+                          widget.controller!.text = DateFormat('dd/MM/yyyy')
+                              .format(DateTime.now())
+                              .toString();
+                        } else if (newDate != "") {
+                          setState(() {
+                            widget.controller!.text = newDate;
+                          });
+                        }
                         Navigator.of(context).pop();
                       },
                     ),
@@ -282,10 +289,7 @@ class _NewDateInputState extends State<NewDateInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        setState(() {
-                          widget.controller!.text =
-                              DateFormat('dd/MM/yyyy').format(data.value);
-                        });
+                        newDate = DateFormat('dd/MM/yyyy').format(data.value);
                       },
                       selectionMode: DateRangePickerSelectionMode.single,
                       monthViewSettings:
@@ -374,6 +378,8 @@ class NewDateRangeInput extends StatefulWidget {
 class _NewDateRangeInputState extends State<NewDateRangeInput> {
   bool _focus = false;
   late TextEditingController controller;
+  String newStartDate = "";
+  String newEndDate = "";
 
   @override
   void initState() {
@@ -406,30 +412,37 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     TextButton(
                       child: Text('Hủy'),
                       onPressed: () {
-                        widget.controllerStart!.text = "";
-                        widget.controllerEnd!.text = "";
-                        controller.text = "";
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
                       child: Text('Chọn'),
                       onPressed: () {
-                        if (widget.controllerStart != null &&
-                            widget.controllerStart!.text == "") {
-                          widget.controllerStart?.text =
-                              DateFormat('dd/MM/yyyy')
-                                  .format(DateTime.now())
-                                  .toString();
-                        }
-                        if (widget.controllerEnd != null &&
-                            widget.controllerEnd!.text == "") {
-                          widget.controllerEnd?.text = DateFormat('dd/MM/yyyy')
-                              .format(DateTime.now())
-                              .toString();
-                        }
-                        controller.text = '${widget.controllerStart!.text} -'
-                            ' ${widget.controllerEnd!.text}';
+                        setState(() {
+                          if (newStartDate == "" &&
+                              widget.controllerStart != null &&
+                              widget.controllerStart!.text == "") {
+                            widget.controllerStart?.text =
+                                DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.now())
+                                    .toString();
+                          } else if (newStartDate != "") {
+                            widget.controllerStart!.text = newStartDate;
+                          }
+                          if (newEndDate == "" &&
+                              widget.controllerEnd != null &&
+                              widget.controllerEnd!.text == "") {
+                            widget.controllerEnd?.text =
+                                DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.now())
+                                    .toString();
+                          } else if (newEndDate != "") {
+                            widget.controllerEnd!.text = newEndDate;
+                          }
+
+                          controller.text = '${widget.controllerStart!.text} -'
+                              ' ${widget.controllerEnd!.text}';
+                        });
                         Navigator.of(context).pop();
                       },
                     ),
@@ -439,17 +452,15 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        setState(() {
-                          widget.controllerStart!.text =
-                              DateFormat('dd/MM/yyyy')
-                                  .format(data.value.startDate);
-                          widget.controllerEnd!.text = DateFormat('dd/MM/yyyy')
-                              .format(
-                                  data.value.endDate ?? data.value.startDate);
-                          controller.text =
-                              '${DateFormat('dd/MM/yyyy').format(data.value.startDate)} -'
-                              ' ${DateFormat('dd/MM/yyyy').format(data.value.endDate ?? data.value.startDate)}';
-                        });
+                        newStartDate = DateFormat('dd/MM/yyyy')
+                            .format(data.value.startDate);
+                        newEndDate = data.value.endDate != null
+                            ? DateFormat('dd/MM/yyyy')
+                                .format(data.value.endDate)
+                            : DateFormat('dd/MM/yyyy')
+                                .format(data.value.startDate);
+                        controller.text =
+                            '$newStartDate -                             $newEndDate';
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
                       monthViewSettings:

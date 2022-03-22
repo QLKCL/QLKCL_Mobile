@@ -279,6 +279,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
+      allowMultiColumnSorting: true,
+      allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
       columns: <GridColumn>[
@@ -421,6 +423,10 @@ class MemberDataSource extends DataGridSource {
           ),
         )
         .toList();
+  }
+
+  void updateDataGridSource() {
+    notifyListeners();
   }
 
   @override

@@ -411,7 +411,7 @@ Map<String, dynamic> updateRoomDataForm({
 }) {
   var data = {
     "id": id,
-    "quarantine_floor": quarantineFloor,
+    // "quarantine_floor": quarantineFloor,
     "name": name,
     "capacity": capacity,
   };

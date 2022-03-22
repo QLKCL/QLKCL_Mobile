@@ -1,5 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
@@ -30,6 +32,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   MemberDataSource _memberDataSource = MemberDataSource();
+  late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
 
@@ -57,12 +60,8 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
       }
     });
     super.initState();
-    fetchMemberList(
-            data: {'page': 1, 'is_need_change_room_because_be_positive': true})
-        .then((value) => setState(() {
-              paginatedDataSource = value.data;
-              pageCount = value.totalPages.toDouble();
-            }));
+    fetch = fetchMemberList(
+        data: {'page': 1, 'is_need_change_room_because_be_positive': true});
   }
 
   @override
@@ -94,12 +93,42 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
   Widget build(BuildContext context) {
     super.build(context);
     return Responsive.isDesktopLayout(context)
-        ? (paginatedDataSource.length > 0
-            ? listMemberTable()
-            : Align(
+        ? FutureBuilder(
+            future: fetch,
+            builder: (BuildContext context,
+                AsyncSnapshot<FilterResponse<FilterMember>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.data.isEmpty) {
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: Image.asset("assets/images/no_data.png"),
+                          ),
+                          Text('Không có dữ liệu'),
+                        ],
+                      ),
+                    );
+                  } else {
+                    showLoadingIndicator = false;
+                    paginatedDataSource = snapshot.data!.data;
+                    pageCount = snapshot.data!.totalPages.toDouble();
+                    _memberDataSource.buildDataGridRows();
+                    _memberDataSource.updateDataGridSource();
+                    return listMemberTable();
+                  }
+                }
+              }
+              return Align(
                 alignment: Alignment.center,
                 child: const CircularProgressIndicator(),
-              ))
+              );
+            },
+          )
         : listMemberCard(_pagingController);
   }
 
@@ -151,10 +180,12 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
         builder: (context, constraints) {
           return Column(
             children: [
-              SizedBox(
-                height: constraints.maxHeight - 60,
-                width: constraints.maxWidth,
-                child: buildStack(constraints),
+              Expanded(
+                child: SizedBox(
+                  height: constraints.maxHeight - 60,
+                  width: constraints.maxWidth,
+                  child: buildStack(constraints),
+                ),
               ),
               Container(
                 height: 60,
@@ -164,15 +195,11 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
-                    setState(() {
-                      showLoadingIndicator = true;
-                    });
+                    showLoading();
                   },
                   delegate: _memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
-                    setState(() {
-                      showLoadingIndicator = false;
-                    });
+                    BotToast.closeAllLoading();
                   },
                 ),
               )
@@ -191,6 +218,8 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
+      allowMultiColumnSorting: true,
+      allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
       columns: <GridColumn>[
@@ -301,17 +330,21 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    final newItems = await fetchMemberList(data: {
-      'page': newPageIndex + 1,
-      'is_need_change_room_because_be_positive': true
-    });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
+    if (oldPageIndex != newPageIndex) {
+      final newItems = await fetchMemberList(data: {
+        'page': newPageIndex + 1,
+        'is_need_change_room_because_be_positive': true
+      });
+      if (newItems.currentPage <= newItems.totalPages) {
+        paginatedDataSource = newItems.data;
+        buildDataGridRows();
+        notifyListeners();
+      } else {
+        paginatedDataSource = [];
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 
   @override
@@ -360,6 +393,10 @@ class MemberDataSource extends DataGridSource {
           ),
         )
         .toList();
+  }
+
+  void updateDataGridSource() {
+    notifyListeners();
   }
 
   @override

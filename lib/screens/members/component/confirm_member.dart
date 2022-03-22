@@ -41,6 +41,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   MemberDataSource _memberDataSource = MemberDataSource();
+  late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
 
@@ -68,11 +69,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       }
     });
     super.initState();
-    fetchMemberList(data: {'page': 1, 'status_list': "WAITING"})
-        .then((value) => setState(() {
-              paginatedDataSource = value.data;
-              pageCount = value.totalPages.toDouble();
-            }));
+    fetch = fetchMemberList(data: {'page': 1, 'status_list': "WAITING"});
   }
 
   @override
@@ -108,12 +105,42 @@ class _ConfirmMemberState extends State<ConfirmMember>
     }
 
     return Responsive.isDesktopLayout(context)
-        ? (paginatedDataSource.length > 0
-            ? listMemberTable()
-            : Align(
+        ? FutureBuilder(
+            future: fetch,
+            builder: (BuildContext context,
+                AsyncSnapshot<FilterResponse<FilterMember>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.data.isEmpty) {
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.15,
+                            child: Image.asset("assets/images/no_data.png"),
+                          ),
+                          Text('Không có dữ liệu'),
+                        ],
+                      ),
+                    );
+                  } else {
+                    showLoadingIndicator = false;
+                    paginatedDataSource = snapshot.data!.data;
+                    pageCount = snapshot.data!.totalPages.toDouble();
+                    _memberDataSource.buildDataGridRows();
+                    _memberDataSource.updateDataGridSource();
+                    return listMemberTable();
+                  }
+                }
+              }
+              return Align(
                 alignment: Alignment.center,
                 child: const CircularProgressIndicator(),
-              ))
+              );
+            },
+          )
         : listMemberCard(_pagingController);
   }
 
@@ -184,10 +211,12 @@ class _ConfirmMemberState extends State<ConfirmMember>
         builder: (context, constraints) {
           return Column(
             children: [
-              SizedBox(
-                height: constraints.maxHeight - 60,
-                width: constraints.maxWidth,
-                child: buildStack(constraints),
+              Expanded(
+                child: SizedBox(
+                  height: constraints.maxHeight - 60,
+                  width: constraints.maxWidth,
+                  child: buildStack(constraints),
+                ),
               ),
               Container(
                 height: 60,
@@ -197,15 +226,11 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   pageCount: pageCount,
                   direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
-                    setState(() {
-                      showLoadingIndicator = true;
-                    });
+                    showLoading();
                   },
                   delegate: _memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
-                    setState(() {
-                      showLoadingIndicator = false;
-                    });
+                    BotToast.closeAllLoading();
                   },
                 ),
               )
@@ -224,6 +249,8 @@ class _ConfirmMemberState extends State<ConfirmMember>
       columnWidthMode: ColumnWidthMode.auto,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
+      allowMultiColumnSorting: true,
+      allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
       columns: <GridColumn>[
@@ -334,15 +361,19 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    final newItems = await fetchMemberList(
-        data: {'page': newPageIndex + 1, 'status_list': "WAITING"});
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
+    if (oldPageIndex != newPageIndex) {
+      final newItems = await fetchMemberList(
+          data: {'page': newPageIndex + 1, 'status_list': "WAITING"});
+      if (newItems.currentPage <= newItems.totalPages) {
+        paginatedDataSource = newItems.data;
+        buildDataGridRows();
+        notifyListeners();
+      } else {
+        paginatedDataSource = [];
+      }
+      return true;
     }
-    return true;
+    return false;
   }
 
   @override
@@ -389,6 +420,10 @@ class MemberDataSource extends DataGridSource {
           ),
         )
         .toList();
+  }
+
+  void updateDataGridSource() {
+    notifyListeners();
   }
 
   @override
