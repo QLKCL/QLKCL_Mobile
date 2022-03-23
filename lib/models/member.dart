@@ -26,6 +26,7 @@ class Member {
     this.positiveTestedBefore,
     this.abroad,
     this.quarantinedAt,
+    this.quarantinedFinishExpectedAt,
     this.quarantinedStatus,
     this.lastTested,
     this.healthStatus,
@@ -47,6 +48,7 @@ class Member {
   final bool? positiveTestedBefore;
   final bool? abroad;
   final dynamic quarantinedAt;
+  final dynamic quarantinedFinishExpectedAt;
   final String? quarantinedStatus;
   final dynamic lastTested;
   final String? healthStatus;
@@ -68,6 +70,7 @@ class Member {
         positiveTestedBefore: json["positive_tested_before"],
         abroad: json["abroad"],
         quarantinedAt: json["quarantined_at"],
+        quarantinedFinishExpectedAt: json["quarantined_finish_expected_at"],
         quarantinedStatus: json["quarantined_status"],
         lastTested: json["last_tested"],
         healthStatus: json["health_status"],
@@ -89,6 +92,7 @@ class Member {
         "positive_tested_before": positiveTestedBefore,
         "abroad": abroad,
         "quarantined_at": quarantinedAt,
+        "quarantined_finish_expected_at": quarantinedFinishExpectedAt,
         "quarantined_status": quarantinedStatus,
         "last_tested": lastTested,
         "health_status": healthStatus,

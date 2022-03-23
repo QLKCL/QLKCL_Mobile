@@ -47,6 +47,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   final quarantineWardController = TextEditingController();
   final labelController = TextEditingController();
   final quarantinedAtController = TextEditingController();
+  final quarantinedFinishExpectedAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
 
@@ -104,6 +105,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.quarantinedAt != null
               ? DateFormat("dd/MM/yyyy")
                   .format(DateTime.parse(widget.quarantineData?.quarantinedAt))
+              : "";
+      quarantinedFinishExpectedAtController.text =
+          widget.quarantineData?.quarantinedFinishExpectedAt != null
+              ? DateFormat("dd/MM/yyyy").format(DateTime.parse(
+                  widget.quarantineData?.quarantinedFinishExpectedAt))
               : "";
       backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
@@ -364,6 +370,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               controller: quarantinedAtController,
               enabled: widget.mode != Permission.view ? true : false,
             ),
+            NewDateInput(
+              label: 'Thời gian dự kiến hoàn thành cách ly',
+              controller: quarantinedFinishExpectedAtController,
+              enabled: widget.mode != Permission.view ? true : false,
+            ),
             Input(
               label: 'Lịch sử di chuyển',
               maxLines: 4,
@@ -508,6 +519,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           label: labelController.text,
           quarantinedAt:
               parseDateToDateTimeWithTimeZone(quarantinedAtController.text),
+          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtController.text),
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: backgroundDiseaseController.text,
           otherBackgroundDisease: otherBackgroundDiseaseController.text,
