@@ -380,7 +380,7 @@ class _SearchMemberState extends State<SearchMember> {
       key: key,
       allowPullToRefresh: true,
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.fill,
+      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -390,6 +390,7 @@ class _SearchMemberState extends State<SearchMember> {
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
+            columnWidthMode: ColumnWidthMode.fill,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -404,6 +405,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
+            columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -420,6 +422,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -427,6 +430,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineLocation',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -434,6 +438,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -455,6 +460,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -462,6 +468,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -689,30 +696,26 @@ class MemberDataSource extends DataGridSource {
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
                 : row.getCells()[9].value.toString() == "SERIOUS"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[9].value.toString() == "SERIOUS"
-                  ? Text(
-                      "Nguy hiểm",
-                      style: TextStyle(color: CustomColors.error),
-                    )
-                  : row.getCells()[9].value.toString() == "SERIOUS"
-                      ? Text(
-                          "Không tốt",
-                          style: TextStyle(color: CustomColors.warning),
-                        )
-                      : Text(
-                          "Bình thường",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
+                ? Text(
+                    "Nguy hiểm",
+                    style: TextStyle(color: CustomColors.error),
+                  )
+                : row.getCells()[9].value.toString() == "SERIOUS"
+                    ? Text(
+                        "Không tốt",
+                        style: TextStyle(color: CustomColors.warning),
+                      )
+                    : Text(
+                        "Bình thường",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         Container(
@@ -722,30 +725,26 @@ class MemberDataSource extends DataGridSource {
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[10].value == null
                 ? CustomColors.secondaryText.withOpacity(0.25)
                 : row.getCells()[10].value == true
                     ? CustomColors.error.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[10].value == null
-                  ? Text(
-                      "Chưa có",
-                      style: TextStyle(color: CustomColors.secondaryText),
-                    )
-                  : row.getCells()[10].value == true
-                      ? Text(
-                          "Dương tính",
-                          style: TextStyle(color: CustomColors.error),
-                        )
-                      : Text(
-                          "Âm tính",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[10].value == null
+                ? Text(
+                    "Chưa có",
+                    style: TextStyle(color: CustomColors.secondaryText),
+                  )
+                : row.getCells()[10].value == true
+                    ? Text(
+                        "Dương tính",
+                        style: TextStyle(color: CustomColors.error),
+                      )
+                    : Text(
+                        "Âm tính",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         FutureBuilder(

@@ -286,6 +286,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
+            columnWidthMode: ColumnWidthMode.fill,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -300,6 +301,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
+            columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -316,6 +318,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -323,6 +326,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineLocation',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -330,6 +334,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -351,6 +356,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -358,6 +364,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
