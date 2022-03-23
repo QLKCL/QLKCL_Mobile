@@ -196,12 +196,20 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context,
                     Icons.history,
                     ' Thời gian cách ly: ' +
-                        widget.quarantineInfo.quarantineTime.toString()),
+                        widget.quarantineInfo.quarantineTime.toString() +
+                        ' ngày'),
+                buildInformation(
+                    context,
+                    Icons.hotel_outlined,
+                    ' Tổng số giường: ' +
+                        widget.quarantineInfo.capacity.toString() +
+                        ' giường'),
                 buildInformation(
                     context,
                     Icons.groups_outlined,
                     ' Đang cách ly: ' +
-                        widget.quarantineInfo.currentMem.toString()),
+                        widget.quarantineInfo.currentMem.toString() +
+                        ' người'),
                 buildInformation(
                     context,
                     Icons.account_box_outlined,
