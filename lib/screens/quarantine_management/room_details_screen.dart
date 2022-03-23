@@ -276,7 +276,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.auto,
+      columnWidthMode: ColumnWidthMode.fill,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -327,6 +327,27 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
                 child: Text('Phòng',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'label',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Diện cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Ngày cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedFinishExpectedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -413,6 +434,17 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineLocation',
                   value: e.quarantineLocation),
+              DataGridCell<String>(columnName: 'label', value: e.label),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedAt',
+                  value: e.quarantinedAt != null
+                      ? DateTime.parse(e.quarantinedAt!)
+                      : null),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedFinishExpectedAt',
+                  value: e.quarantinedFinishExpectedAt != null
+                      ? DateTime.parse(e.quarantinedFinishExpectedAt!)
+                      : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<String>(
@@ -464,7 +496,6 @@ class MemberDataSource extends DataGridSource {
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
-            overflow: TextOverflow.ellipsis,
           ),
         ),
         Container(

@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -213,7 +214,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
       key: key,
       allowPullToRefresh: true,
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.auto,
+      columnWidthMode: ColumnWidthMode.fill,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -264,6 +265,27 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
                 child: Text('Phòng',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'label',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Diện cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Ngày cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedFinishExpectedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                alignment: Alignment.center,
+                child: Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -378,6 +400,17 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineLocation',
                   value: e.quarantineLocation),
+              DataGridCell<String>(columnName: 'label', value: e.label),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedAt',
+                  value: e.quarantinedAt != null
+                      ? DateTime.parse(e.quarantinedAt!)
+                      : null),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedFinishExpectedAt',
+                  value: e.quarantinedFinishExpectedAt != null
+                      ? DateTime.parse(e.quarantinedFinishExpectedAt!)
+                      : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<bool?>(
@@ -428,7 +461,6 @@ class MemberDataSource extends DataGridSource {
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
-            overflow: TextOverflow.ellipsis,
           ),
         ),
         Container(
@@ -439,20 +471,92 @@ class MemberDataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.center,
+          child: Text(row.getCells()[6].value.toString()),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
           child: Text(
-            row.getCells()[6].value.toString() == "SERIOUS"
-                ? "Nguy hiểm"
-                : (row.getCells()[6].toString() == "UNWELL"
-                    ? "Không tốt"
-                    : "Bình thường"),
+            row.getCells()[7].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[7].value)
+                : "",
           ),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: Text(row.getCells()[7].value != null
-                ? (row.getCells()[7].value == true ? "Dương tính" : "Âm tính")
-                : "Chưa có")),
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Text(
+            row.getCells()[8].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[8].value)
+                : "",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Badge(
+            elevation: 0,
+            shape: BadgeShape.square,
+            borderRadius: BorderRadius.circular(16),
+            padding: EdgeInsets.zero,
+            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
+                ? CustomColors.error.withOpacity(0.25)
+                : row.getCells()[9].value.toString() == "SERIOUS"
+                    ? CustomColors.warning.withOpacity(0.25)
+                    : CustomColors.success.withOpacity(0.25),
+            badgeContent: Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.center,
+              child: row.getCells()[9].value.toString() == "SERIOUS"
+                  ? Text(
+                      "Nguy hiểm",
+                      style: TextStyle(color: CustomColors.error),
+                    )
+                  : row.getCells()[9].value.toString() == "SERIOUS"
+                      ? Text(
+                          "Không tốt",
+                          style: TextStyle(color: CustomColors.warning),
+                        )
+                      : Text(
+                          "Bình thường",
+                          style: TextStyle(color: CustomColors.success),
+                        ),
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Badge(
+            elevation: 0,
+            shape: BadgeShape.square,
+            borderRadius: BorderRadius.circular(16),
+            padding: EdgeInsets.zero,
+            badgeColor: row.getCells()[10].value == null
+                ? CustomColors.secondaryText.withOpacity(0.25)
+                : row.getCells()[10].value == true
+                    ? CustomColors.error.withOpacity(0.25)
+                    : CustomColors.success.withOpacity(0.25),
+            badgeContent: Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.center,
+              child: row.getCells()[10].value == null
+                  ? Text(
+                      "Chưa có",
+                      style: TextStyle(color: CustomColors.secondaryText),
+                    )
+                  : row.getCells()[10].value == true
+                      ? Text(
+                          "Dương tính",
+                          style: TextStyle(color: CustomColors.error),
+                        )
+                      : Text(
+                          "Âm tính",
+                          style: TextStyle(color: CustomColors.success),
+                        ),
+            ),
+          ),
+        ),
         FutureBuilder(
           future: Future.delayed(Duration(milliseconds: 500), () => true),
           builder: (context, snapshot) {
@@ -461,7 +565,7 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[8].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!);
           },
         ),
       ],
