@@ -189,21 +189,24 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                 ),
                 buildInformation(
                     context,
+                    Icons.medical_services_outlined,
+                    ' Dịch bệnh cách ly: ' +
+                        (widget.quarantineInfo.pandemic?.name ?? "")),
+                buildInformation(
+                    context,
                     Icons.history,
                     ' Thời gian cách ly: ' +
                         widget.quarantineInfo.quarantineTime.toString()),
                 buildInformation(
                     context,
-                    Icons.groups_rounded,
+                    Icons.groups_outlined,
                     ' Đang cách ly: ' +
                         widget.quarantineInfo.currentMem.toString()),
-                // ' Đang cách ly: ${thisQuarantine.numOfMem}'),
                 buildInformation(
                     context,
                     Icons.account_box_outlined,
                     ' Quản lý: ' +
                         widget.quarantineInfo.mainManager["full_name"]),
-
                 buildInformation(
                   context,
                   Icons.place_outlined,
@@ -221,7 +224,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           ? "${widget.quarantineInfo.city['name']}"
                           : ""),
                 ),
-
                 buildInformation(
                     context,
                     Icons.phone,
@@ -229,7 +231,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         (widget.quarantineInfo.phoneNumber != null
                             ? widget.quarantineInfo.phoneNumber!
                             : 'Chưa có')),
-
                 buildInformation(context, Icons.email_outlined,
                     ' Email: ' + widget.quarantineInfo.email),
               ],

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:qlkcl/models/pandemic.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/networking/response.dart';
@@ -34,6 +35,7 @@ class Quarantine {
     required this.currentMem,
     required this.capacity,
     this.image,
+    this.pandemic,
   });
 
   final int id;
@@ -59,32 +61,33 @@ class Quarantine {
   final int currentMem;
   final int? capacity;
   final String? image;
+  final Pandemic? pandemic;
 
   factory Quarantine.fromJson(Map<String, dynamic> json) => Quarantine(
-        id: json["id"],
-        country: json["country"],
-        city: json["city"],
-        district: json["district"],
-        ward: json["ward"],
-        email: json["email"],
-        fullName: json["full_name"],
-        phoneNumber: json["phone_number"],
-        address: json["address"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
-        status: json["status"],
-        type: json["type"],
-        quarantineTime: json["quarantine_time"],
-        trash: json["trash"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        mainManager: json["main_manager"],
-        createdBy: json["created_by"],
-        updatedBy: json["updated_by"],
-        currentMem: json["num_current_member"],
-        capacity: json["total_capacity"],
-        image: json["image"],
-      );
+      id: json["id"],
+      country: json["country"],
+      city: json["city"],
+      district: json["district"],
+      ward: json["ward"],
+      email: json["email"],
+      fullName: json["full_name"],
+      phoneNumber: json["phone_number"],
+      address: json["address"],
+      latitude: json["latitude"],
+      longitude: json["longitude"],
+      status: json["status"],
+      type: json["type"],
+      quarantineTime: json["quarantine_time"],
+      trash: json["trash"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      mainManager: json["main_manager"],
+      createdBy: json["created_by"],
+      updatedBy: json["updated_by"],
+      currentMem: json["num_current_member"],
+      capacity: json["total_capacity"],
+      image: json["image"],
+      pandemic: Pandemic.fromJson(json["pandemic"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -110,6 +113,7 @@ class Quarantine {
         "num_current_member": currentMem,
         "total_capacity": capacity,
         "image": image,
+        "pandemic": pandemic?.toJson(),
       };
 }
 
