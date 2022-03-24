@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -276,7 +277,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.fill,
+      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -471,10 +472,31 @@ class MemberDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
       cells: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.centerLeft,
-          child: Text(row.getCells()[0].value.toString()),
+        FutureBuilder(
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          builder: (context, snapshot) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateMember(
+                                code: row.getCells()[11].value.toString(),
+                              )));
+                },
+                child: Text(
+                  row.getCells()[0].value.toString(),
+                  style: TextStyle(
+                    color: CustomColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -512,29 +534,93 @@ class MemberDataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.center,
+          child: Text(row.getCells()[6].value.toString()),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
           child: Text(
-            row.getCells()[6].value.toString() == "SERIOUS"
-                ? "Nguy hiểm"
-                : (row.getCells()[6].toString() == "UNWELL"
-                    ? "Không tốt"
-                    : "Bình thường"),
+            row.getCells()[7].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[7].value)
+                : "",
           ),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
-            alignment: Alignment.center,
-            child: Text(row.getCells()[7].value != null
-                ? (row.getCells()[7].value == true ? "Dương tính" : "Âm tính")
-                : "Chưa có")),
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Text(
+            row.getCells()[8].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[8].value)
+                : "",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Badge(
+            elevation: 0,
+            shape: BadgeShape.square,
+            borderRadius: BorderRadius.circular(16),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
+                ? CustomColors.error.withOpacity(0.25)
+                : row.getCells()[9].value.toString() == "UNWELL"
+                    ? CustomColors.warning.withOpacity(0.25)
+                    : CustomColors.success.withOpacity(0.25),
+            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
+                ? Text(
+                    "Nguy hiểm",
+                    style: TextStyle(color: CustomColors.error),
+                  )
+                : row.getCells()[9].value.toString() == "UNWELL"
+                    ? Text(
+                        "Không tốt",
+                        style: TextStyle(color: CustomColors.warning),
+                      )
+                    : Text(
+                        "Bình thường",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: Badge(
+            elevation: 0,
+            shape: BadgeShape.square,
+            borderRadius: BorderRadius.circular(16),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            badgeColor: row.getCells()[10].value == null
+                ? CustomColors.secondaryText.withOpacity(0.25)
+                : row.getCells()[10].value == true
+                    ? CustomColors.error.withOpacity(0.25)
+                    : CustomColors.success.withOpacity(0.25),
+            badgeContent: row.getCells()[10].value == null
+                ? Text(
+                    "Chưa có",
+                    style: TextStyle(color: CustomColors.secondaryText),
+                  )
+                : row.getCells()[10].value == true
+                    ? Text(
+                        "Dương tính",
+                        style: TextStyle(color: CustomColors.error),
+                      )
+                    : Text(
+                        "Âm tính",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
+          ),
+        ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 500), () => true),
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? SizedBox()
                 : menus(
                     context,
                     members.safeFirstWhere(
-                        (e) => e.code == row.getCells()[8].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!);
           },
         ),
       ],

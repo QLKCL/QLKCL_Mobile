@@ -459,10 +459,31 @@ class MemberDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
       cells: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.centerLeft,
-          child: Text(row.getCells()[0].value.toString()),
+        FutureBuilder(
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          builder: (context, snapshot) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
+                      .push(MaterialPageRoute(
+                          builder: (context) => ConfirmDetailMember(
+                                code: row.getCells()[10].value.toString(),
+                              )));
+                },
+                child: Text(
+                  row.getCells()[0].value.toString(),
+                  style: TextStyle(
+                    color: CustomColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -574,7 +595,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 500), () => true),
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? SizedBox()
