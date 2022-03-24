@@ -215,6 +215,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   return InfoManagerHomePage(
                     totalUsers:
                         snapshot.data['number_of_all_members_past_and_now'],
+                    availableSlots: snapshot.data['number_of_available_slots'],
                     activeUsers:
                         snapshot.data['number_of_quarantining_members'],
                     waitingUsers: snapshot.data['number_of_waiting_members'],
