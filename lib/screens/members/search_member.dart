@@ -32,7 +32,11 @@ TextEditingController quarantineFloorController = TextEditingController();
 TextEditingController quarantineRoomController = TextEditingController();
 TextEditingController quarantineAtMinController = TextEditingController();
 TextEditingController quarantineAtMaxController = TextEditingController();
+TextEditingController quarantinedFinishExpectedAtController =
+    TextEditingController();
 TextEditingController labelController = TextEditingController();
+TextEditingController healthStatusController = TextEditingController();
+TextEditingController testController = TextEditingController();
 
 class SearchMember extends StatefulWidget {
   SearchMember({Key? key}) : super(key: key);
@@ -115,17 +119,22 @@ class _SearchMemberState extends State<SearchMember> {
     try {
       final newItems = await fetchMemberList(
         data: filterMemberDataForm(
-            keySearch: keySearch.text,
-            page: pageKey,
-            quarantineWard: quarantineWardController.text,
-            quarantineBuilding: quarantineBuildingController.text,
-            quarantineFloor: quarantineFloorController.text,
-            quarantineRoom: quarantineRoomController.text,
-            quarantineAtMin:
-                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-            quarantineAtMax:
-                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-            label: labelController.text),
+          keySearch: keySearch.text,
+          page: pageKey,
+          quarantineWard: quarantineWardController.text,
+          quarantineBuilding: quarantineBuildingController.text,
+          quarantineFloor: quarantineFloorController.text,
+          quarantineRoom: quarantineRoomController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtController.text),
+          label: labelController.text,
+          healthStatus: healthStatusController.text,
+          test: testController.text,
+        ),
       );
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
@@ -205,11 +214,15 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineRoomController: quarantineRoomController,
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
+                  quarantinedFinishExpectedAtController:
+                      quarantinedFinishExpectedAtController,
                   quarantineWardList: _quarantineWardList,
                   quarantineBuildingList: _quarantineBuildingList,
                   quarantineFloorList: _quarantineFloorList,
                   quarantineRoomList: _quarantineRoomList,
                   labelController: labelController,
+                  healthStatusController: healthStatusController,
+                  testController: testController,
                   onSubmit: (quarantineWardList, quarantineBuildingList,
                       quarantineFloorList, quarantineRoomList, search) {
                     setState(() {
@@ -247,7 +260,12 @@ class _SearchMemberState extends State<SearchMember> {
                             quarantineAtMinController.text),
                         quarantineAtMax: parseDateToDateTimeWithTimeZone(
                             quarantineAtMaxController.text),
+                        quarantinedFinishExpectedAt:
+                            parseDateToDateTimeWithTimeZone(
+                                quarantinedFinishExpectedAtController.text),
                         label: labelController.text,
+                        healthStatus: healthStatusController.text,
+                        test: testController.text,
                       ),
                     ),
                     builder: (BuildContext context,
@@ -526,17 +544,21 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(
         data: filterMemberDataForm(
-            keySearch: keySearch.text,
-            page: newPageIndex + 1,
-            quarantineWard: quarantineWardController.text,
-            quarantineBuilding: quarantineBuildingController.text,
-            quarantineFloor: quarantineFloorController.text,
-            quarantineRoom: quarantineRoomController.text,
-            quarantineAtMin:
-                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-            quarantineAtMax:
-                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-            label: labelController.text),
+          keySearch: keySearch.text,
+          page: newPageIndex + 1,
+          quarantineWard: quarantineWardController.text,
+          quarantineBuilding: quarantineBuildingController.text,
+          quarantineFloor: quarantineFloorController.text,
+          quarantineRoom: quarantineRoomController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtController.text),
+          label: labelController.text,
+          healthStatus: healthStatusController.text,
+        ),
       );
       if (newItems.currentPage <= newItems.totalPages) {
         paginatedDataSource = newItems.data;
@@ -555,17 +577,21 @@ class MemberDataSource extends DataGridSource {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
       data: filterMemberDataForm(
-          keySearch: keySearch.text,
-          page: currentPageIndex + 1,
-          quarantineWard: quarantineWardController.text,
-          quarantineBuilding: quarantineBuildingController.text,
-          quarantineFloor: quarantineFloorController.text,
-          quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin:
-              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-          quarantineAtMax:
-              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-          label: labelController.text),
+        keySearch: keySearch.text,
+        page: currentPageIndex + 1,
+        quarantineWard: quarantineWardController.text,
+        quarantineBuilding: quarantineBuildingController.text,
+        quarantineFloor: quarantineFloorController.text,
+        quarantineRoom: quarantineRoomController.text,
+        quarantineAtMin:
+            parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+        quarantineAtMax:
+            parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+        quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+            quarantinedFinishExpectedAtController.text),
+        label: labelController.text,
+        healthStatus: healthStatusController.text,
+      ),
     );
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;

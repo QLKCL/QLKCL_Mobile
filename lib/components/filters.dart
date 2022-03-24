@@ -16,7 +16,10 @@ Future memberFilter(
   required TextEditingController quarantineRoomController,
   required TextEditingController quarantineAtMinController,
   required TextEditingController quarantineAtMaxController,
+  required TextEditingController quarantinedFinishExpectedAtController,
   required TextEditingController labelController,
+  required TextEditingController healthStatusController,
+  required TextEditingController testController,
   required List<KeyValue> quarantineWardList,
   required List<KeyValue> quarantineBuildingList,
   required List<KeyValue> quarantineFloorList,
@@ -189,6 +192,11 @@ Future memberFilter(
               maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
               showClearButton: true,
             ),
+            NewDateInput(
+              label: 'Ngày dự kiến hoàn thành cách ly',
+              controller: quarantinedFinishExpectedAtController,
+              showClearButton: true,
+            ),
             MultiDropdownInput<KeyValue>(
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
@@ -212,6 +220,53 @@ Future memberFilter(
                 }
               },
             ),
+            MultiDropdownInput<KeyValue>(
+              label: 'Tình trạng sức khỏe',
+              hint: 'Chọn tình trạng sức khỏe',
+              itemValue: medDeclValueList,
+              mode: Mode.MENU,
+              dropdownBuilder: _customDropDown,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              selectedItems: healthStatusController.text != ""
+                  ? (healthStatusController.text
+                      .split(',')
+                      .map((e) => medDeclValueList
+                          .safeFirstWhere((result) => result.id == e)!)
+                      .toList())
+                  : null,
+              onChanged: (value) {
+                if (value == null) {
+                  healthStatusController.text = "";
+                } else {
+                  healthStatusController.text =
+                      value.map((e) => e.id).join(",");
+                }
+              },
+            ),
+            MultiDropdownInput<KeyValue>(
+              label: 'Kết quả xét nghiệm',
+              hint: 'Chọn kết quả xét nghiệm',
+              itemValue: testValueWithBoolList,
+              mode: Mode.MENU,
+              dropdownBuilder: _customDropDown,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              selectedItems: testController.text != ""
+                  ? (testController.text
+                      .split(',')
+                      .map((e) => testValueWithBoolList
+                          .safeFirstWhere((result) => result.id == e)!)
+                      .toList())
+                  : null,
+              onChanged: (value) {
+                if (value == null) {
+                  testController.text = "";
+                } else {
+                  testController.text = value.map((e) => e.id).join(",");
+                }
+              },
+            ),
             Container(
               margin: const EdgeInsets.all(16),
               child: Row(
@@ -226,6 +281,7 @@ Future memberFilter(
                       quarantineRoomController.clear();
                       quarantineAtMinController.clear();
                       quarantineAtMaxController.clear();
+                      quarantinedFinishExpectedAtController.clear();
                       labelController.clear();
                       onSubmit!(quarantineWardList, [], [], [], false);
                       Navigator.pop(context);
