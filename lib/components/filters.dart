@@ -259,22 +259,15 @@ Future memberFilter(
 }
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  if (selectedItems.isEmpty) {
-    return Text(
-      "Chọn diện cách ly",
-      style: TextStyle(fontSize: 16),
-    );
-  }
-
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          // margin: EdgeInsets.symmetric(horizontal: 2),
+          margin: EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(16),
               color: Theme.of(context).primaryColorLight),
           child: Text(
             e!.name,
