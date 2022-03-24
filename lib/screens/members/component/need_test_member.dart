@@ -507,7 +507,7 @@ class MemberDataSource extends DataGridSource {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "SERIOUS"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
             badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
@@ -515,7 +515,7 @@ class MemberDataSource extends DataGridSource {
                     "Nguy hiểm",
                     style: TextStyle(color: CustomColors.error),
                   )
-                : row.getCells()[9].value.toString() == "SERIOUS"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: CustomColors.warning),

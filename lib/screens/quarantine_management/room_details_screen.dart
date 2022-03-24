@@ -454,9 +454,8 @@ class MemberDataSource extends DataGridSource {
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
