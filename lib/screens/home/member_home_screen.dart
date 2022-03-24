@@ -438,6 +438,40 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                 ],
                                               ),
                                             ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text.rich(
+                                              TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      CustomColors.primaryText,
+                                                ),
+                                                children: [
+                                                  WidgetSpan(
+                                                    alignment:
+                                                        PlaceholderAlignment
+                                                            .middle,
+                                                    child: Icon(
+                                                      Icons.vaccines_outlined,
+                                                      size: 16,
+                                                      color: CustomColors
+                                                          .disableText,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " Số mũi vaccine: " +
+                                                        (snapshot.data[
+                                                                    'number_of_vaccine_doses'] !=
+                                                                null
+                                                            ? (snapshot.data[
+                                                                'number_of_vaccine_doses'] + " mũi")
+                                                            : "Chưa có số liệu"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
