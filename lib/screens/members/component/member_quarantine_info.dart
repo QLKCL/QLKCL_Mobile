@@ -50,6 +50,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   final quarantinedFinishExpectedAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
+  String? positiveTestNow;
 
   List<KeyValue> quarantineWardList = [];
   List<KeyValue> quarantineBuildingList = [];
@@ -115,6 +116,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.backgroundDisease ?? "";
       otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
+      positiveTestNow = widget.quarantineData?.positiveTest.toString();
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
@@ -376,9 +378,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               enabled: widget.mode != Permission.view ? true : false,
             ),
             Input(
-              label: 'Lịch sử di chuyển',
-              maxLines: 4,
-              enabled: widget.mode != Permission.view ? true : false,
+              label: "Tình trạng bệnh",
+              initValue: testValueWithBoolList
+                  .safeFirstWhere(
+                      (result) => result.id == positiveTestNow?.capitalize())
+                  ?.name,
+              enabled: false,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
