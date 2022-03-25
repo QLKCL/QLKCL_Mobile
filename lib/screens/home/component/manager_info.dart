@@ -1,4 +1,6 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -24,7 +26,11 @@ class InfoManagerHomePage extends StatelessWidget {
   final List<KeyValue> numberIn;
   final List<KeyValue> numberOut;
   final List<KeyValue> hospitalize;
-  const InfoManagerHomePage({
+  final TextEditingController quarantineWardController;
+  final VoidCallback refresh;
+  final List<KeyValue> quarantineWardList;
+  final int role;
+  InfoManagerHomePage({
     this.totalUsers = 0,
     this.availableSlots = 0,
     this.activeUsers = 0,
@@ -38,6 +44,10 @@ class InfoManagerHomePage extends StatelessWidget {
     this.numberIn = const [],
     this.numberOut = const [],
     this.hospitalize = const [],
+    required this.quarantineWardController,
+    required this.refresh,
+    this.quarantineWardList = const [],
+    required this.role,
   });
 
   @override
@@ -157,6 +167,70 @@ class InfoManagerHomePage extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
+          ResponsiveRowColumn(
+            layout: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
+                ? ResponsiveRowColumnType.COLUMN
+                : ResponsiveRowColumnType.ROW,
+            rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+            rowCrossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              ResponsiveRowColumnItem(
+                rowFlex: 4,
+                child: Container(
+                  margin: EdgeInsets.only(left: 16),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Số liệu tổng quát",
+                    textAlign: TextAlign.left,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+              ),
+              if (role < 3)
+                ResponsiveRowColumnItem(
+                  rowFlex: 6,
+                  rowFit: FlexFit.loose,
+                  child: Container(
+                    margin: EdgeInsets.zero,
+                    padding: EdgeInsets.zero,
+                    width:
+                        _width < maxMobileSize ? _width + 100 : maxMobileSize,
+                    child: DropdownInput<KeyValue>(
+                      label: 'Khu cách ly',
+                      hint: 'Chọn khu cách ly',
+                      itemAsString: (KeyValue? u) => u!.name,
+                      itemValue: [KeyValue(name: "Toàn bộ", id: "")] +
+                          quarantineWardList,
+                      selectedItem: quarantineWardController.text == ""
+                          ? KeyValue(name: "Toàn bộ", id: "")
+                          : quarantineWardList.safeFirstWhere((type) =>
+                              type.id.toString() ==
+                              quarantineWardController.text),
+                      onFind: quarantineWardList.length == 0
+                          ? (String? filter) => fetchQuarantineWard({
+                                "page_size": PAGE_SIZE_MAX,
+                                "search": filter,
+                              })
+                          : null,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      onChanged: (value) {
+                        if (value == null) {
+                          quarantineWardController.text = "";
+                        } else {
+                          quarantineWardController.text = value.id.toString();
+                        }
+                        refresh();
+                      },
+                      // showClearButton: true,
+                      mode: Mode.MENU,
+                      maxHeight: 400,
+                      showSearchBox: true,
+                    ),
+                  ),
+                ),
+            ],
+          ),
           if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
             ResponsiveGridView.builder(
               padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
