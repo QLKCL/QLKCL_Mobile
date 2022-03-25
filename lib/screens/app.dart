@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
+import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class App extends StatefulWidget {
@@ -18,7 +19,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   DateTime currentBackPressTime = DateTime.now();
-  late int _role;
+  int? _role;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
   bool _requireConsent = false;
@@ -43,8 +44,14 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    if (widget.role == null) {
+      getRole().then((value) => setState((() {
+            _role = value;
+          })));
+    } else {
+      _role = widget.role;
+    }
     super.initState();
-    _role = widget.role ?? 5;
 
     if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();
@@ -53,91 +60,95 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        final isFirstRouteInCurrentTab =
-            !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
-        if (isFirstRouteInCurrentTab) {
-          // if not on the 'main' tab
-          if (_currentTab != TabItem.homepage) {
-            // select 'main' tab
-            _selectTab(TabItem.homepage);
-            // back button handled by app
-            return false;
-          }
-        }
+    print(_role);
+    return _role == null
+        ? Splash()
+        : WillPopScope(
+            onWillPop: () async {
+              final isFirstRouteInCurrentTab =
+                  !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
+              if (isFirstRouteInCurrentTab) {
+                // if not on the 'main' tab
+                if (_currentTab != TabItem.homepage) {
+                  // select 'main' tab
+                  _selectTab(TabItem.homepage);
+                  // back button handled by app
+                  return false;
+                }
+              }
 
-        // let system handle back button if we're on the first route
-        DateTime now = DateTime.now();
-        int seconds = 2;
-        if (now.difference(currentBackPressTime) > Duration(seconds: seconds)) {
-          currentBackPressTime = now;
-          showTextToast('Press "Back" button again to exit');
-          return false;
-        }
-        return isFirstRouteInCurrentTab;
-      },
-      child: Scaffold(
-        /// You can use an AppBar if you want to
-        // appBar: AppBar(
-        //  title: const Text('App'),
-        // ),
+              // let system handle back button if we're on the first route
+              DateTime now = DateTime.now();
+              int seconds = 2;
+              if (now.difference(currentBackPressTime) >
+                  Duration(seconds: seconds)) {
+                currentBackPressTime = now;
+                showTextToast('Press "Back" button again to exit');
+                return false;
+              }
+              return isFirstRouteInCurrentTab;
+            },
+            child: Scaffold(
+              /// You can use an AppBar if you want to
+              // appBar: AppBar(
+              //  title: const Text('App'),
+              // ),
 
-        // The row is needed to display the current view
-        body: Row(
-          children: [
-            /// Pretty similar to the BottomNavigationBar!
-            if (Responsive.isDesktopLayout(context))
-              SideBar(
-                role: _role,
-                currentTab: _currentTab,
-                onSelectTab: _selectTab,
+              // The row is needed to display the current view
+              body: Row(
+                children: [
+                  /// Pretty similar to the BottomNavigationBar!
+                  if (Responsive.isDesktopLayout(context))
+                    SideBar(
+                      role: _role!,
+                      currentTab: _currentTab,
+                      onSelectTab: _selectTab,
+                    ),
+
+                  /// Make it take the rest of the available width
+                  Expanded(
+                    child: Stack(children: <Widget>[
+                      _buildOffstageNavigator(TabItem.homepage),
+                      if (_role != 5)
+                        _buildOffstageNavigator(TabItem.quarantine_person),
+                      if (_role != 5)
+                        _buildOffstageNavigator(TabItem.quarantine_ward),
+                      _buildOffstageNavigator(TabItem.account),
+                    ]),
+                  )
+                ],
               ),
 
-            /// Make it take the rest of the available width
-            Expanded(
-              child: Stack(children: <Widget>[
-                _buildOffstageNavigator(TabItem.homepage),
-                if (_role != 5)
-                  _buildOffstageNavigator(TabItem.quarantine_person),
-                if (_role != 5)
-                  _buildOffstageNavigator(TabItem.quarantine_ward),
-                _buildOffstageNavigator(TabItem.account),
-              ]),
-            )
-          ],
-        ),
-
-        bottomNavigationBar: MediaQuery.of(context).size.height > 600
-            ? Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                child: !Responsive.isDesktopLayout(context)
-                    ? BottomNavigation(
-                        role: _role,
-                        currentTab: _currentTab,
-                        onSelectTab: _selectTab,
-                      )
-                    : Container(
-                        color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-              )
-            : SizedBox(),
-      ),
-    );
+              bottomNavigationBar: MediaQuery.of(context).size.height > 600
+                  ? Container(
+                      height: 60,
+                      width: MediaQuery.of(context).size.width,
+                      child: !Responsive.isDesktopLayout(context)
+                          ? BottomNavigation(
+                              role: _role!,
+                              currentTab: _currentTab,
+                              onSelectTab: _selectTab,
+                            )
+                          : Container(
+                              color: Colors.white,
+                              width: MediaQuery.of(context).size.width,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                    )
+                  : SizedBox(),
+            ),
+          );
   }
 
   Widget _buildOffstageNavigator(TabItem tabItem) {
     return Offstage(
       offstage: _currentTab != tabItem,
       child: TabNavigator(
-        role: _role,
+        role: _role!,
         navigatorKey: _navigatorKeys[tabItem],
         tabItem: tabItem,
       ),

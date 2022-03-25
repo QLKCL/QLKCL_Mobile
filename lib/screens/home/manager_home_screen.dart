@@ -26,7 +26,11 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
-  ManagerHomePage({Key? key}) : super(key: key);
+  final int role;
+  ManagerHomePage({
+    Key? key,
+    this.role = 4, // Staff
+  }) : super(key: key);
 
   @override
   _ManagerHomePageState createState() => _ManagerHomePageState();
@@ -37,13 +41,19 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   late dynamic listNotification = [];
   bool _showFab = true;
 
+  late Future<dynamic> futureData;
+
   var renderOverlay = false;
   var useRAnimation = true;
   var isDialOpen = ValueNotifier<bool>(false);
 
+  final quarantineWardController = TextEditingController();
+  List<KeyValue> quarantineWardList = [];
+
   @override
   void initState() {
     super.initState();
+    futureData = fetch();
     notifications.fetchUserNotificationList(data: {
       'page_size': PAGE_SIZE_MAX
     }).then((value) => setState(() {
@@ -54,13 +64,22 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               .toList()
               .length;
         }));
+    fetchQuarantineWard({
+      'page_size': PAGE_SIZE_MAX,
+    }).then((value) => setState(() {
+          quarantineWardList = value;
+        }));
   }
 
   Future<dynamic> fetch() async {
     await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
-    final response =
-        await api.postHTTP(Api.homeManager, {"number_of_days_in_out": 12});
+    final response = await api.postHTTP(
+        Api.homeManager,
+        prepareDataForm({
+          "number_of_days_in_out": 12,
+          "quarantine_ward_id": quarantineWardController.text
+        }));
     return response != null && response['data'] != null
         ? response['data']
         : null;
@@ -201,9 +220,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             return true;
           },
           child: RefreshIndicator(
-            onRefresh: fetch,
+            onRefresh: () => Future.sync(() {
+              setState(() {
+                futureData = fetch();
+              });
+            }),
             child: FutureBuilder<dynamic>(
-              future: fetch(),
+              future: futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   int numberDays =
@@ -264,6 +287,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         .toList()
                         .reversed
                         .toList(),
+                    quarantineWardList: quarantineWardList,
+                    quarantineWardController: quarantineWardController,
+                    refresh: () {
+                      setState(() {});
+                    },
+                    role: widget.role,
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
@@ -271,7 +300,14 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
 
                 // By default, show a loading spinner.
                 // return const CircularProgressIndicator();
-                return InfoManagerHomePage();
+                return InfoManagerHomePage(
+                  quarantineWardList: quarantineWardList,
+                  quarantineWardController: quarantineWardController,
+                  refresh: () {
+                    setState(() {});
+                  },
+                  role: widget.role,
+                );
               },
             ),
           ),

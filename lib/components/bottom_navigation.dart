@@ -253,7 +253,11 @@ class TabNavigator extends StatelessWidget {
           role == 5 ? tabMemberRouteName[tabItem] : tabRouteName[tabItem],
       onGenerateRoute: (settings) {
         Widget child;
-        if (routes.containsKey(settings.name)) {
+        if (settings.name == "/manager_home") {
+          child = ManagerHomePage(
+            role: role,
+          );
+        } else if (routes.containsKey(settings.name)) {
           child = routes[settings.name!]!(context);
         } else if (settings.name == "/") {
           return null;
