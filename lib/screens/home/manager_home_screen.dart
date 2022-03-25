@@ -41,6 +41,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   late dynamic listNotification = [];
   bool _showFab = true;
 
+  late Future<dynamic> futureData;
+
   var renderOverlay = false;
   var useRAnimation = true;
   var isDialOpen = ValueNotifier<bool>(false);
@@ -51,6 +53,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   @override
   void initState() {
     super.initState();
+    futureData = fetch();
     notifications.fetchUserNotificationList(data: {
       'page_size': PAGE_SIZE_MAX
     }).then((value) => setState(() {
@@ -217,9 +220,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             return true;
           },
           child: RefreshIndicator(
-            onRefresh: fetch,
+            onRefresh: () => Future.sync(() {
+              setState(() {
+                futureData = fetch();
+              });
+            }),
             child: FutureBuilder<dynamic>(
-              future: fetch(),
+              future: futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   int numberDays =
