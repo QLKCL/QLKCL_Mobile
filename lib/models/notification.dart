@@ -131,7 +131,6 @@ Future<Response> changeStateUserNotification({data}) async {
 Future<Response> createNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createNotification, data);
-  print(response);
   if (response == null) {
     return Response(success: false, message: "Lỗi kết nối!");
   } else {
