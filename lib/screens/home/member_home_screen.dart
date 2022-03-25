@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
@@ -16,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
@@ -31,6 +33,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   late Future<CovidData> futureCovid;
   late Future<dynamic> futureData;
+  String quarantineWardPhone = "";
 
   var renderOverlay = false;
   var useRAnimation = true;
@@ -95,7 +98,14 @@ class _MemberHomePageState extends State<MemberHomePage> {
             SpeedDialChild(
               child: const Icon(Icons.phone),
               label: 'Gọi cấp cứu',
-              onTap: () => {},
+              onTap: quarantineWardPhone != ""
+                  ? () async {
+                      launch("tel://" + quarantineWardPhone);
+                    }
+                  : () {
+                      showNotification('Số điện thoại không tồn tại.',
+                          status: "error");
+                    },
             ),
             SpeedDialChild(
               child: const Icon(Icons.comment),
@@ -292,6 +302,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         msg =
                             "Tài khoản của bạn không còn hoạt động trong hệ thống. Vui lòng liên hệ với quản lý hoặc đăng ký tái cách ly!";
                       }
+                      quarantineWardPhone =
+                          snapshot.data['quarantine_ward'] != null &&
+                                  snapshot.data['quarantine_ward']
+                                          ['phone_number'] !=
+                                      null
+                              ? snapshot.data['quarantine_ward']['phone_number']
+                              : "";
                       return Column(
                         children: [
                           if (msg != "")
@@ -417,6 +434,40 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                                     : "") +
                                                                 "")
                                                             : "Chưa có kết quả xét nghiệm"),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text.rich(
+                                              TextSpan(
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color:
+                                                      CustomColors.primaryText,
+                                                ),
+                                                children: [
+                                                  WidgetSpan(
+                                                    alignment:
+                                                        PlaceholderAlignment
+                                                            .middle,
+                                                    child: Icon(
+                                                      Icons.vaccines_outlined,
+                                                      size: 16,
+                                                      color: CustomColors
+                                                          .disableText,
+                                                    ),
+                                                  ),
+                                                  TextSpan(
+                                                    text: " Số mũi vaccine: " +
+                                                        (snapshot.data[
+                                                                    'number_of_vaccine_doses'] !=
+                                                                null
+                                                            ? (snapshot.data[
+                                                                'number_of_vaccine_doses'] + " mũi")
+                                                            : "Chưa có số liệu"),
                                                   )
                                                 ],
                                               ),

@@ -91,9 +91,9 @@ class _QrCodeScanState extends State<QrCodeScan> {
                 future: controller?.getFlashStatus(),
                 builder: (context, snapshot) {
                   if (snapshot.data == false)
-                    return const Icon(Icons.flash_on);
-                  else
                     return const Icon(Icons.flash_off);
+                  else
+                    return const Icon(Icons.flash_on);
                 },
               ),
               tooltip: 'Toggle Flash',
@@ -175,20 +175,24 @@ class _QrCodeScanState extends State<QrCodeScan> {
     }).listen((data) {
       Navigator.of(context).pop(data);
     }).onError((error, stackTrace) {
-      showDialog<String>(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-          title: const Text('Lỗi'),
-          content: Text("Không tìm thấy dữ liệu từ hình ảnh"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, 'OK'),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      ).then((value) => controller!.resumeCamera());
+      if (error.toString().contains("Not found data"))
+        showDialog<String>(
+          barrierDismissible: false,
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text('Lỗi'),
+            content: Text("Không tìm thấy dữ liệu từ hình ảnh"),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'OK'),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        ).then((value) => controller!.resumeCamera());
+      else {
+        controller!.resumeCamera();
+      }
       print('${error.toString()}');
     });
   }

@@ -213,7 +213,7 @@ class _DeniedMemberState extends State<DeniedMember>
       key: key,
       allowPullToRefresh: true,
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.fill,
+      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -223,6 +223,7 @@ class _DeniedMemberState extends State<DeniedMember>
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
+            columnWidthMode: ColumnWidthMode.fill,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -237,6 +238,7 @@ class _DeniedMemberState extends State<DeniedMember>
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
+            columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -253,41 +255,23 @@ class _DeniedMemberState extends State<DeniedMember>
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
                 child: Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'quarantineLocation',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                alignment: Alignment.centerLeft,
-                child: Text('Phòng',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
             columnName: 'label',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
                 child: Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'quarantinedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                alignment: Alignment.center,
-                child: Text('Ngày cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantinedFinishExpectedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                alignment: Alignment.center,
-                child: Text('Ngày dự kiến hoàn thành',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
             columnName: 'healthStatus',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -295,6 +279,7 @@ class _DeniedMemberState extends State<DeniedMember>
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -396,20 +381,7 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineWard',
                   value: e.quarantineWard?.name ?? ""),
-              DataGridCell<String>(
-                  columnName: 'quarantineLocation',
-                  value: e.quarantineLocation),
               DataGridCell<String>(columnName: 'label', value: e.label),
-              DataGridCell<DateTime?>(
-                  columnName: 'quarantinedAt',
-                  value: e.quarantinedAt != null
-                      ? DateTime.parse(e.quarantinedAt!)
-                      : null),
-              DataGridCell<DateTime?>(
-                  columnName: 'quarantinedFinishExpectedAt',
-                  value: e.quarantinedFinishExpectedAt != null
-                      ? DateTime.parse(e.quarantinedFinishExpectedAt!)
-                      : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<bool?>(
@@ -429,10 +401,31 @@ class MemberDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
       cells: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.centerLeft,
-          child: Text(row.getCells()[0].value.toString()),
+        FutureBuilder(
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          builder: (context, snapshot) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateMember(
+                                code: row.getCells()[8].value.toString(),
+                              )));
+                },
+                child: Text(
+                  row.getCells()[0].value.toString(),
+                  style: TextStyle(
+                    color: CustomColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -464,63 +457,36 @@ class MemberDataSource extends DataGridSource {
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(row.getCells()[5].value.toString()),
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.center,
-          child: Text(row.getCells()[6].value.toString()),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: Text(
-            row.getCells()[7].value != null
-                ? DateFormat('dd/MM/yyyy').format(row.getCells()[7].value)
-                : "",
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: Text(
-            row.getCells()[8].value != null
-                ? DateFormat('dd/MM/yyyy').format(row.getCells()[8].value)
-                : "",
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
           child: Badge(
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
-            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            badgeColor: row.getCells()[6].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "SERIOUS"
+                : row.getCells()[6].value.toString() == "UNWELL"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[9].value.toString() == "SERIOUS"
-                  ? Text(
-                      "Nguy hiểm",
-                      style: TextStyle(color: CustomColors.error),
-                    )
-                  : row.getCells()[9].value.toString() == "SERIOUS"
-                      ? Text(
-                          "Không tốt",
-                          style: TextStyle(color: CustomColors.warning),
-                        )
-                      : Text(
-                          "Bình thường",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[6].value.toString() == "SERIOUS"
+                ? Text(
+                    "Nguy hiểm",
+                    style: TextStyle(color: CustomColors.error),
+                  )
+                : row.getCells()[6].value.toString() == "UNWELL"
+                    ? Text(
+                        "Không tốt",
+                        style: TextStyle(color: CustomColors.warning),
+                      )
+                    : Text(
+                        "Bình thường",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         Container(
@@ -530,41 +496,37 @@ class MemberDataSource extends DataGridSource {
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
-            badgeColor: row.getCells()[10].value == null
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+            badgeColor: row.getCells()[7].value == null
                 ? CustomColors.secondaryText.withOpacity(0.25)
-                : row.getCells()[10].value == true
+                : row.getCells()[7].value == true
                     ? CustomColors.error.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[10].value == null
-                  ? Text(
-                      "Chưa có",
-                      style: TextStyle(color: CustomColors.secondaryText),
-                    )
-                  : row.getCells()[10].value == true
-                      ? Text(
-                          "Dương tính",
-                          style: TextStyle(color: CustomColors.error),
-                        )
-                      : Text(
-                          "Âm tính",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[7].value == null
+                ? Text(
+                    "Chưa có",
+                    style: TextStyle(color: CustomColors.secondaryText),
+                  )
+                : row.getCells()[7].value == true
+                    ? Text(
+                        "Dương tính",
+                        style: TextStyle(color: CustomColors.error),
+                      )
+                    : Text(
+                        "Âm tính",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 500), () => true),
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? SizedBox()
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[8].value.toString())!);
           },
         ),
       ],

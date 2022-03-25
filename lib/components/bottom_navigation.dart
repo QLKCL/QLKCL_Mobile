@@ -43,11 +43,18 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      currentIndex:
-          (role == 5) ? (currentTab.index ~/ 4).toInt() : currentTab.index,
+      currentIndex: (role == 5)
+          ? currentTab.index ~/ 4
+          : (isWebPlatform() && currentTab.index > 1)
+              ? currentTab.index - 1
+              : currentTab.index,
       selectedItemColor: CustomColors.secondary,
       onTap: (index) => {
-        index = (role == 5) ? index * 4 : index,
+        index = (role == 5)
+            ? index * 4
+            : (isWebPlatform() && index > 1)
+                ? index + 1
+                : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
           {
             Navigator.of(context)
@@ -73,7 +80,7 @@ class BottomNavigation extends StatelessWidget {
       items: [
         _buildItem(TabItem.homepage),
         if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5) _buildItem(TabItem.qr_code_scan),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
         if (role != 5) _buildItem(TabItem.quarantine_ward),
         _buildItem(TabItem.account),
       ],
@@ -105,7 +112,11 @@ class SideBar extends StatelessWidget {
     return SideNavigationBar(
       toggler: SideBarToggler(
           expandIcon: Icons.menu, shrinkIcon: Icons.chevron_left),
-      selectedIndex: (role == 5) ? currentTab.index ~/ 4 : currentTab.index,
+      selectedIndex: (role == 5)
+          ? currentTab.index ~/ 4
+          : (isWebPlatform() && currentTab.index > 1)
+              ? currentTab.index - 1
+              : currentTab.index,
       theme: SideNavigationBarTheme(
         backgroundColor: CustomColors.white,
         itemTheme: ItemTheme(
@@ -134,12 +145,16 @@ class SideBar extends StatelessWidget {
       items: [
         _buildItem(TabItem.homepage),
         if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5) _buildItem(TabItem.qr_code_scan),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
         if (role != 5) _buildItem(TabItem.quarantine_ward),
         _buildItem(TabItem.account),
       ],
       onTap: (index) => {
-        index = (role == 5) ? index * 4 : index,
+        index = (role == 5)
+            ? index * 4
+            : (isWebPlatform() && index > 1)
+                ? index + 1
+                : index,
         if (TabItem.values[index] == TabItem.qr_code_scan)
           {
             Navigator.of(context)

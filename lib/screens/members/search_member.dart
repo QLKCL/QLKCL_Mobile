@@ -32,7 +32,11 @@ TextEditingController quarantineFloorController = TextEditingController();
 TextEditingController quarantineRoomController = TextEditingController();
 TextEditingController quarantineAtMinController = TextEditingController();
 TextEditingController quarantineAtMaxController = TextEditingController();
+TextEditingController quarantinedFinishExpectedAtController =
+    TextEditingController();
 TextEditingController labelController = TextEditingController();
+TextEditingController healthStatusController = TextEditingController();
+TextEditingController testController = TextEditingController();
 
 class SearchMember extends StatefulWidget {
   SearchMember({Key? key}) : super(key: key);
@@ -115,17 +119,22 @@ class _SearchMemberState extends State<SearchMember> {
     try {
       final newItems = await fetchMemberList(
         data: filterMemberDataForm(
-            keySearch: keySearch.text,
-            page: pageKey,
-            quarantineWard: quarantineWardController.text,
-            quarantineBuilding: quarantineBuildingController.text,
-            quarantineFloor: quarantineFloorController.text,
-            quarantineRoom: quarantineRoomController.text,
-            quarantineAtMin:
-                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-            quarantineAtMax:
-                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-            label: labelController.text),
+          keySearch: keySearch.text,
+          page: pageKey,
+          quarantineWard: quarantineWardController.text,
+          quarantineBuilding: quarantineBuildingController.text,
+          quarantineFloor: quarantineFloorController.text,
+          quarantineRoom: quarantineRoomController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtController.text),
+          label: labelController.text,
+          healthStatus: healthStatusController.text,
+          test: testController.text,
+        ),
       );
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
@@ -205,11 +214,15 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineRoomController: quarantineRoomController,
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
+                  quarantinedFinishExpectedAtController:
+                      quarantinedFinishExpectedAtController,
                   quarantineWardList: _quarantineWardList,
                   quarantineBuildingList: _quarantineBuildingList,
                   quarantineFloorList: _quarantineFloorList,
                   quarantineRoomList: _quarantineRoomList,
                   labelController: labelController,
+                  healthStatusController: healthStatusController,
+                  testController: testController,
                   onSubmit: (quarantineWardList, quarantineBuildingList,
                       quarantineFloorList, quarantineRoomList, search) {
                     setState(() {
@@ -247,7 +260,12 @@ class _SearchMemberState extends State<SearchMember> {
                             quarantineAtMinController.text),
                         quarantineAtMax: parseDateToDateTimeWithTimeZone(
                             quarantineAtMaxController.text),
+                        quarantinedFinishExpectedAt:
+                            parseDateToDateTimeWithTimeZone(
+                                quarantinedFinishExpectedAtController.text),
                         label: labelController.text,
+                        healthStatus: healthStatusController.text,
+                        test: testController.text,
                       ),
                     ),
                     builder: (BuildContext context,
@@ -380,7 +398,7 @@ class _SearchMemberState extends State<SearchMember> {
       key: key,
       allowPullToRefresh: true,
       source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.fill,
+      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -390,6 +408,7 @@ class _SearchMemberState extends State<SearchMember> {
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
+            columnWidthMode: ColumnWidthMode.fill,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -404,6 +423,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
+            columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -420,6 +440,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -427,6 +448,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineLocation',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
@@ -434,6 +456,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -455,6 +478,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -462,6 +486,7 @@ class _SearchMemberState extends State<SearchMember> {
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
+            columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
@@ -519,17 +544,21 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(
         data: filterMemberDataForm(
-            keySearch: keySearch.text,
-            page: newPageIndex + 1,
-            quarantineWard: quarantineWardController.text,
-            quarantineBuilding: quarantineBuildingController.text,
-            quarantineFloor: quarantineFloorController.text,
-            quarantineRoom: quarantineRoomController.text,
-            quarantineAtMin:
-                parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-            quarantineAtMax:
-                parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-            label: labelController.text),
+          keySearch: keySearch.text,
+          page: newPageIndex + 1,
+          quarantineWard: quarantineWardController.text,
+          quarantineBuilding: quarantineBuildingController.text,
+          quarantineFloor: quarantineFloorController.text,
+          quarantineRoom: quarantineRoomController.text,
+          quarantineAtMin:
+              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+          quarantineAtMax:
+              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtController.text),
+          label: labelController.text,
+          healthStatus: healthStatusController.text,
+        ),
       );
       if (newItems.currentPage <= newItems.totalPages) {
         paginatedDataSource = newItems.data;
@@ -548,17 +577,21 @@ class MemberDataSource extends DataGridSource {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
       data: filterMemberDataForm(
-          keySearch: keySearch.text,
-          page: currentPageIndex + 1,
-          quarantineWard: quarantineWardController.text,
-          quarantineBuilding: quarantineBuildingController.text,
-          quarantineFloor: quarantineFloorController.text,
-          quarantineRoom: quarantineRoomController.text,
-          quarantineAtMin:
-              parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-          quarantineAtMax:
-              parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-          label: labelController.text),
+        keySearch: keySearch.text,
+        page: currentPageIndex + 1,
+        quarantineWard: quarantineWardController.text,
+        quarantineBuilding: quarantineBuildingController.text,
+        quarantineFloor: quarantineFloorController.text,
+        quarantineRoom: quarantineRoomController.text,
+        quarantineAtMin:
+            parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+        quarantineAtMax:
+            parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+        quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+            quarantinedFinishExpectedAtController.text),
+        label: labelController.text,
+        healthStatus: healthStatusController.text,
+      ),
     );
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
@@ -603,9 +636,8 @@ class MemberDataSource extends DataGridSource {
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<String>(
-                  columnName: 'positiveTestNow',
-                  value: e.positiveTestNow.toString()),
+              DataGridCell<bool?>(
+                  columnName: 'positiveTestNow', value: e.positiveTestNow),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -621,10 +653,31 @@ class MemberDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
       cells: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.centerLeft,
-          child: Text(row.getCells()[0].value.toString()),
+        FutureBuilder(
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          builder: (context, snapshot) {
+            return Container(
+              padding: const EdgeInsets.all(8.0),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
+                      .push(MaterialPageRoute(
+                          builder: (context) => UpdateMember(
+                                code: row.getCells()[11].value.toString(),
+                              )));
+                },
+                child: Text(
+                  row.getCells()[0].value.toString(),
+                  style: TextStyle(
+                    color: CustomColors.primaryText,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         Container(
           padding: const EdgeInsets.all(8.0),
@@ -689,30 +742,26 @@ class MemberDataSource extends DataGridSource {
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "SERIOUS"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[9].value.toString() == "SERIOUS"
-                  ? Text(
-                      "Nguy hiểm",
-                      style: TextStyle(color: CustomColors.error),
-                    )
-                  : row.getCells()[9].value.toString() == "SERIOUS"
-                      ? Text(
-                          "Không tốt",
-                          style: TextStyle(color: CustomColors.warning),
-                        )
-                      : Text(
-                          "Bình thường",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
+                ? Text(
+                    "Nguy hiểm",
+                    style: TextStyle(color: CustomColors.error),
+                  )
+                : row.getCells()[9].value.toString() == "UNWELL"
+                    ? Text(
+                        "Không tốt",
+                        style: TextStyle(color: CustomColors.warning),
+                      )
+                    : Text(
+                        "Bình thường",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         Container(
@@ -722,34 +771,30 @@ class MemberDataSource extends DataGridSource {
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
-            padding: EdgeInsets.zero,
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[10].value == null
                 ? CustomColors.secondaryText.withOpacity(0.25)
                 : row.getCells()[10].value == true
                     ? CustomColors.error.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: Container(
-              padding: const EdgeInsets.all(8.0),
-              alignment: Alignment.center,
-              child: row.getCells()[10].value == null
-                  ? Text(
-                      "Chưa có",
-                      style: TextStyle(color: CustomColors.secondaryText),
-                    )
-                  : row.getCells()[10].value == true
-                      ? Text(
-                          "Dương tính",
-                          style: TextStyle(color: CustomColors.error),
-                        )
-                      : Text(
-                          "Âm tính",
-                          style: TextStyle(color: CustomColors.success),
-                        ),
-            ),
+            badgeContent: row.getCells()[10].value == null
+                ? Text(
+                    "Chưa có",
+                    style: TextStyle(color: CustomColors.secondaryText),
+                  )
+                : row.getCells()[10].value == true
+                    ? Text(
+                        "Dương tính",
+                        style: TextStyle(color: CustomColors.error),
+                      )
+                    : Text(
+                        "Âm tính",
+                        style: TextStyle(color: CustomColors.success),
+                      ),
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 500), () => true),
+          future: Future.delayed(Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? SizedBox()

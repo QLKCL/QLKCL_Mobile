@@ -29,6 +29,12 @@ List<KeyValue> testValueList = [
   KeyValue(id: "POSITIVE", name: "Dương tính")
 ];
 
+List<KeyValue> testValueWithBoolList = [
+  KeyValue(id: "Null", name: "Chưa có kết quả"),
+  KeyValue(id: "False", name: "Âm tính"),
+  KeyValue(id: "True", name: "Dương tính")
+];
+
 List<KeyValue> medDeclValueList = [
   KeyValue(id: "NORMAL", name: "Bình thường"),
   KeyValue(id: "UNWELL", name: "Có dấu hiệu nghi nhiễm"),

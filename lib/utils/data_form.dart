@@ -124,7 +124,10 @@ Map<String, dynamic> filterMemberDataForm({
   String? quarantineRoom,
   String? quarantineAtMin,
   String? quarantineAtMax,
+  String? quarantinedFinishExpectedAt,
   String? label,
+  String? healthStatus,
+  String? test,
   String? careStaff,
   required int page,
 }) {
@@ -136,8 +139,11 @@ Map<String, dynamic> filterMemberDataForm({
     "quarantine_room_id": quarantineRoom,
     "created_at_min": quarantineAtMin,
     "created_at_max": quarantineAtMax,
+    "quarantined_finish_expected_at_max": quarantinedFinishExpectedAt,
     "label_list": label,
+    "health_status_list": healthStatus,
     "care_staff_code": careStaff,
+    "positive_test_now_list": test,
     "page": page,
   };
   return prepareDataForm(data);

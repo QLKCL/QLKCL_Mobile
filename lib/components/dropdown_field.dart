@@ -247,6 +247,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
               )
             : null,
         dropdownBuilder: widget.dropdownBuilder,
+        dropdownBuilderSupportsNullItem: true,
         emptyBuilder: (BuildContext context, t) => (Center(
           child: Text('Không có dữ liệu'),
         )),

@@ -50,6 +50,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   final quarantinedFinishExpectedAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
+  String? positiveTestNow;
 
   List<KeyValue> quarantineWardList = [];
   List<KeyValue> quarantineBuildingList = [];
@@ -115,6 +116,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.backgroundDisease ?? "";
       otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
+      positiveTestNow = widget.quarantineData?.positiveTest.toString();
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
@@ -376,9 +378,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               enabled: widget.mode != Permission.view ? true : false,
             ),
             Input(
-              label: 'Lịch sử di chuyển',
-              maxLines: 4,
-              enabled: widget.mode != Permission.view ? true : false,
+              label: "Tình trạng bệnh",
+              initValue: testValueWithBoolList
+                  .safeFirstWhere(
+                      (result) => result.id == positiveTestNow?.capitalize())
+                  ?.name,
+              enabled: false,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -533,22 +538,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 }
 
 Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  if (selectedItems.isEmpty) {
-    return Text(
-      "Chọn bệnh nền",
-      style: TextStyle(fontSize: 16),
-    );
-  }
-
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          // margin: EdgeInsets.symmetric(horizontal: 2),
+          margin: EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(16),
               color: Theme.of(context).primaryColorLight),
           child: Text(
             e!.name,

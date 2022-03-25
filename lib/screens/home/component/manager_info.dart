@@ -12,6 +12,7 @@ import 'charts.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
   final int totalUsers;
+  final int availableSlots;
   final int activeUsers;
   final int waitingUsers;
   final int suspectedUsers;
@@ -25,6 +26,7 @@ class InfoManagerHomePage extends StatelessWidget {
   final List<KeyValue> hospitalize;
   const InfoManagerHomePage({
     this.totalUsers = 0,
+    this.availableSlots = 0,
     this.activeUsers = 0,
     this.waitingUsers = 0,
     this.suspectedUsers = 0,
@@ -44,6 +46,12 @@ class InfoManagerHomePage extends StatelessWidget {
       InfoManagerHomeCard(
         title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
+        icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
+        onTap: () {},
+      ),
+      InfoManagerHomeCard(
+        title: "Số giường trống",
+        subtitle: availableSlots.toString(),
         icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
         onTap: () {},
       ),
