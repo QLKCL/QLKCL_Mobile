@@ -290,7 +290,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     quarantineWardList: quarantineWardList,
                     quarantineWardController: quarantineWardController,
                     refresh: () {
-                      setState(() {});
+                      setState(() {
+                        futureData = fetch();
+                      });
                     },
                     role: widget.role,
                   );
@@ -304,7 +306,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   quarantineWardList: quarantineWardList,
                   quarantineWardController: quarantineWardController,
                   refresh: () {
-                    setState(() {});
+                    setState(() {
+                      futureData = fetch();
+                    });
                   },
                   role: widget.role,
                 );

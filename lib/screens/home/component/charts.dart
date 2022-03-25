@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 
 // cre: https://google.github.io/charts/flutter/example/bar_charts/grouped_fill_color.html
@@ -31,6 +32,7 @@ class GroupedFillColorBarChart extends StatelessWidget {
       //     groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
       behaviors: [
         new charts.SeriesLegend(
+          desiredMaxColumns: Responsive.isMobileLayout(context) ? 2 : 3,
           position: charts.BehaviorPosition.bottom,
         )
       ],
@@ -54,7 +56,7 @@ class GroupedFillColorBarChart extends StatelessWidget {
       ),
       // Hollow green bars.
       new charts.Series<KeyValue, String>(
-        id: 'Hoàn thành cách ly',
+        id: 'Đã hoàn thành cách ly',
         domainFn: (KeyValue num, _) => num.id,
         measureFn: (KeyValue num, _) => num.name,
         data: outData,

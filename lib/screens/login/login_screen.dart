@@ -164,7 +164,6 @@ class _LoginFormState extends State<LoginForm> {
           phoneNumber: phoneController.text, password: passController.text));
       cancel();
       if (response.success) {
-        int role = await getRole();
         Navigator.pushNamedAndRemoveUntil(
             context, App.routeName, (Route<dynamic> route) => false);
       } else {

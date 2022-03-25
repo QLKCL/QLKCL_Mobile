@@ -60,7 +60,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    print(_role);
     return _role == null
         ? Splash()
         : WillPopScope(

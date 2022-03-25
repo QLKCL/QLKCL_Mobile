@@ -213,7 +213,6 @@ class _RegisterFormState extends State<RegisterForm> {
               password: passController.text));
           cancel();
           if (loginResponse.success) {
-            int role = await getRole();
             Navigator.pushNamedAndRemoveUntil(
                 context, App.routeName, (Route<dynamic> route) => false);
             Navigator.of(context,
