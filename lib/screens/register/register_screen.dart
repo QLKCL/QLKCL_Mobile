@@ -214,10 +214,8 @@ class _RegisterFormState extends State<RegisterForm> {
           cancel();
           if (loginResponse.success) {
             int role = await getRole();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => App(role: role)),
-                (Route<dynamic> route) => false);
+            Navigator.pushNamedAndRemoveUntil(
+                context, App.routeName, (Route<dynamic> route) => false);
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
                 .push(
