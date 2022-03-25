@@ -91,9 +91,9 @@ class _QrCodeScanState extends State<QrCodeScan> {
                 future: controller?.getFlashStatus(),
                 builder: (context, snapshot) {
                   if (snapshot.data == false)
-                    return const Icon(Icons.flash_on);
-                  else
                     return const Icon(Icons.flash_off);
+                  else
+                    return const Icon(Icons.flash_on);
                 },
               ),
               tooltip: 'Toggle Flash',
