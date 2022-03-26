@@ -62,11 +62,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   KeyValue? initQuarantineFloor;
   KeyValue? initQuarantineRoom;
 
+  int _role = 5;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
+    getRole().then((value) => setState(() {
+          _role = value;
+        }));
     if (widget.mode == Permission.add) {
       quarantineRoomController.text = widget.quarantineRoom != null
           ? widget.quarantineRoom!.id.toString()
@@ -215,7 +220,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineBuildingList = data;
                     }));
               },
-              enabled: widget.mode == Permission.add ? true : false,
+              enabled:
+                  (widget.mode == Permission.add && _role != 5) ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -264,7 +270,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineFloorList = data;
                     }));
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled:
+                  (widget.mode != Permission.view && _role != 5) ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -311,7 +318,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineRoomList = data;
                     }));
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled:
+                  (widget.mode != Permission.view && _role != 5) ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -346,7 +354,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineRoom = null;
                 });
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled:
+                  (widget.mode != Permission.view && _role != 5) ? true : false,
               // showSearchBox: true,
             ),
             DropdownInput<KeyValue>(
@@ -364,18 +373,26 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 } else {
                   labelController.text = value.id.toString();
                 }
+                print(widget.mode);
+                print(labelController.text);
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: (widget.mode == Permission.add ||
+                      (widget.mode == Permission.edit &&
+                          (_role != 5 || labelController.text == "")))
+                  ? true
+                  : false,
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled:
+                  (widget.mode != Permission.view && _role != 5) ? true : false,
             ),
             NewDateInput(
               label: 'Thời gian dự kiến hoàn thành cách ly',
               controller: quarantinedFinishExpectedAtController,
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled:
+                  (widget.mode != Permission.view && _role != 5) ? true : false,
             ),
             Input(
               label: "Tình trạng bệnh",
