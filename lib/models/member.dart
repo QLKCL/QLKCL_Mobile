@@ -227,6 +227,14 @@ Future<Response> denyMember(data) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Từ chối thành công!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['member_codes'] != null &&
+          response['message']['member_codes'] == "empty") {
+        return Response(
+            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
@@ -247,6 +255,17 @@ Future<Response> acceptManyMember(data) async {
           status: 'warning');
       return Response(
           success: true, message: "Một số tài khoản không thể xét duyệt!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['member_codes'] != null &&
+          response['message']['member_codes'] == "empty") {
+        showNotification("Vui lòng chọn tài khoản cần xét duyệt!",
+            status: 'error');
+        return Response(
+            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+      } else {
+        showNotification("Có lỗi xảy ra!", status: 'error');
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
     } else {
       showNotification("Có lỗi xảy ra!", status: 'error');
       return Response(success: false, message: "Có lỗi xảy ra!");
@@ -263,7 +282,11 @@ Future<Response> acceptOneMember(data) async {
     if (response['error_code'] == 0) {
       return Response(success: true, message: "Xét duyệt thành công!");
     } else if (response['error_code'] == 400) {
-      if (response['message']['main'] != null &&
+      if (response['message']['member_codes'] != null &&
+          response['message']['member_codes'] == "empty") {
+        return Response(
+            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+      } else if (response['message']['main'] != null &&
           response['message']['main'] ==
               "All rooms are not accept any more member") {
         return Response(

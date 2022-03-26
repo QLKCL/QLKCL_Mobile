@@ -93,60 +93,70 @@ class _ListAllMemberState extends State<ListAllMember>
                     : Text("Danh sách người cách ly"),
                 centerTitle: true,
                 actions: [
-                  longPressFlag
-                      ? PopupMenuButton(
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: CustomColors.disableText,
-                          ),
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry>[
-                            PopupMenuItem(
-                              child: Text('Chấp nhận'),
-                              onTap: () async {
-                                CancelFunc cancel = showLoading();
-                                final response = await acceptManyMember(
-                                    {'member_codes': indexList.join(",")});
-                                cancel();
-                                if (response.success) {
-                                  setState(() {
-                                    onDone = true;
-                                  });
-                                  indexList.clear();
-                                  longPress();
-                                }
-                              },
-                            ),
-                            PopupMenuItem(
-                              child: Text('Từ chối'),
-                              onTap: () async {
-                                CancelFunc cancel = showLoading();
-                                final response = await denyMember(
-                                    {'member_codes': indexList.join(",")});
-                                cancel();
-                                showNotification(response);
-                                if (response.success) {
-                                  setState(() {
-                                    onDone = true;
-                                  });
-                                  indexList.clear();
-                                  longPress();
-                                }
-                              },
-                            ),
-                          ],
-                        )
-                      : (IconButton(
-                          onPressed: () {
-                            Navigator.of(context,
-                                    rootNavigator:
-                                        !Responsive.isDesktopLayout(context))
-                                .push(MaterialPageRoute(
-                                    builder: (context) => SearchMember()));
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
+                              builder: (context) => SearchMember()));
+                    },
+                    icon: Icon(Icons.search),
+                    tooltip: "Tìm kiếm",
+                  ),
+                  if (_tabController.index == 1)
+                    PopupMenuButton(
+                      icon: Icon(
+                        Icons.more_vert,
+                      ),
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: Text('Chấp nhận'),
+                          onTap: () async {
+                            if (indexList.length == 0) {
+                              showNotification(
+                                  "Vui lòng chọn tài khoản cần xét duyệt!",
+                                  status: 'error');
+                            } else {
+                              CancelFunc cancel = showLoading();
+                              final response = await acceptManyMember(
+                                  {'member_codes': indexList.join(",")});
+                              cancel();
+                              if (response.success) {
+                                setState(() {
+                                  onDone = true;
+                                });
+                                indexList.clear();
+                                longPress();
+                              }
+                            }
                           },
-                          icon: Icon(Icons.search),
-                          tooltip: "Tìm kiếm",
-                        )),
+                        ),
+                        PopupMenuItem(
+                          child: Text('Từ chối'),
+                          onTap: () async {
+                            if (indexList.length == 0) {
+                              showNotification(
+                                  "Vui lòng chọn tài khoản cần xét duyệt!",
+                                  status: 'error');
+                            } else {
+                              CancelFunc cancel = showLoading();
+                              final response = await denyMember(
+                                  {'member_codes': indexList.join(",")});
+                              cancel();
+                              showNotification(response);
+                              if (response.success) {
+                                setState(() {
+                                  onDone = true;
+                                });
+                                indexList.clear();
+                                longPress();
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                 ],
                 pinned: true,
                 floating: !Responsive.isDesktopLayout(context),

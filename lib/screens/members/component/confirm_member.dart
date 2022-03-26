@@ -40,6 +40,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
     with AutomaticKeepAliveClientMixin<ConfirmMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
+  final DataGridController _dataGridController = DataGridController();
 
   MemberDataSource _memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
@@ -102,7 +103,11 @@ class _ConfirmMemberState extends State<ConfirmMember>
     if (widget.onDone == true) {
       widget.indexList.clear();
       widget.onDoneCallback();
-      _pagingController.refresh();
+      if (Responsive.isDesktopLayout(context)) {
+        key.currentState!.refresh();
+      } else {
+        _pagingController.refresh();
+      }
     }
 
     return Responsive.isDesktopLayout(context)
@@ -254,6 +259,18 @@ class _ConfirmMemberState extends State<ConfirmMember>
       allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
+      controller: _dataGridController,
+      onSelectionChanged:
+          (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
+        addedRows.forEach((element) {
+          if (!widget.indexList.contains(element.getCells()[10].value))
+            widget.indexList.add(element.getCells()[10].value);
+        });
+        removedRows.forEach((element) {
+          if (widget.indexList.contains(element.getCells()[10].value))
+            widget.indexList.remove(element.getCells()[10].value);
+        });
+      },
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
@@ -544,17 +561,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
+            badgeColor: row.getCells()[8].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "UNWELL"
+                : row.getCells()[8].value.toString() == "UNWELL"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
+            badgeContent: row.getCells()[8].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
                     style: TextStyle(color: CustomColors.error),
                   )
-                : row.getCells()[9].value.toString() == "UNWELL"
+                : row.getCells()[8].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: CustomColors.warning),
@@ -573,17 +590,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[10].value == null
+            badgeColor: row.getCells()[9].value == null
                 ? CustomColors.secondaryText.withOpacity(0.25)
-                : row.getCells()[10].value == true
+                : row.getCells()[9].value == true
                     ? CustomColors.error.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: row.getCells()[10].value == null
+            badgeContent: row.getCells()[9].value == null
                 ? Text(
                     "Chưa có",
                     style: TextStyle(color: CustomColors.secondaryText),
                   )
-                : row.getCells()[10].value == true
+                : row.getCells()[9].value == true
                     ? Text(
                         "Dương tính",
                         style: TextStyle(color: CustomColors.error),

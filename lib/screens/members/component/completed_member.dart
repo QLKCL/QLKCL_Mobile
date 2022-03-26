@@ -527,17 +527,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
+            badgeColor: row.getCells()[8].value.toString() == "SERIOUS"
                 ? CustomColors.error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "UNWELL"
+                : row.getCells()[8].value.toString() == "UNWELL"
                     ? CustomColors.warning.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
+            badgeContent: row.getCells()[8].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
                     style: TextStyle(color: CustomColors.error),
                   )
-                : row.getCells()[9].value.toString() == "UNWELL"
+                : row.getCells()[8].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: CustomColors.warning),
@@ -556,17 +556,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[10].value == null
+            badgeColor: row.getCells()[9].value == null
                 ? CustomColors.secondaryText.withOpacity(0.25)
-                : row.getCells()[10].value == true
+                : row.getCells()[9].value == true
                     ? CustomColors.error.withOpacity(0.25)
                     : CustomColors.success.withOpacity(0.25),
-            badgeContent: row.getCells()[10].value == null
+            badgeContent: row.getCells()[9].value == null
                 ? Text(
                     "Chưa có",
                     style: TextStyle(color: CustomColors.secondaryText),
                   )
-                : row.getCells()[10].value == true
+                : row.getCells()[9].value == true
                     ? Text(
                         "Dương tính",
                         style: TextStyle(color: CustomColors.error),
