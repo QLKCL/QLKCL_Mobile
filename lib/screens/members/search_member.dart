@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -877,6 +878,15 @@ Widget menus(BuildContext context, FilterMember item,
       PopupMenuItem(
         child: Text('Lịch sử xét nghiệm'),
         value: "test_history",
+      ),
+      PopupMenuItem(
+        child: Text('Đặt lại mật khẩu'),
+        onTap: () async {
+          CancelFunc cancel = showLoading();
+          final response = await resetPass({'code': item.code});
+          cancel();
+          showNotification(response, duration: 5);
+        },
       ),
     ],
   );

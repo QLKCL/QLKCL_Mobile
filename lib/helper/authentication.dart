@@ -189,12 +189,11 @@ bool isTokenExpired(String _token) {
 Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
   http.Response? response;
   try {
-    response =
-        await http.post(Uri.parse(Api.baseUrl + Api.requestOtp),
-            headers: {
-              'Accept': 'application/json',
-            },
-            body: requestOtpDataForm);
+    response = await http.post(Uri.parse(Api.baseUrl + Api.requestOtp),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: requestOtpDataForm);
   } catch (e) {
     print('Error: $e');
   }
@@ -255,12 +254,11 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
 Future<Response> createPass(Map<String, String> createPassDataForm) async {
   http.Response? response;
   try {
-    response =
-        await http.post(Uri.parse(Api.baseUrl + Api.createPass),
-            headers: {
-              'Accept': 'application/json',
-            },
-            body: createPassDataForm);
+    response = await http.post(Uri.parse(Api.baseUrl + Api.createPass),
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: createPassDataForm);
   } catch (e) {
     print('Error: $e');
   }
@@ -306,6 +304,36 @@ Future<Response> changePass(Map<String, String> changePassDataForm) async {
           "New password is the same with old password") {
         return Response(
             success: false, message: "Mật khẩu mới trùng mật khẩu cũ!");
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<Response> resetPass(Map<String, String> resetPassDataForm) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.resetPass, resetPassDataForm);
+  if (response == null) {
+    return Response(success: false, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          success: true,
+          message: "Mật khẩu mới là ${response['data']['new_password']}");
+    } else if (response['error_code'] == 401) {
+      if (response['message'] != null &&
+          response['message'] == "Permission denied") {
+        return Response(
+            success: false, message: 'Không có quyền thực hiện chức năng này!');
+      } else {
+        return Response(success: false, message: "Có lỗi xảy ra!");
+      }
+    } else if (response['error_code'] == 400) {
+      if (response['message']['code'] == "Not exist") {
+        return Response(success: false, message: "Tài khoản không tồn tại!");
       } else {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }

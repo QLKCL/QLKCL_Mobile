@@ -32,6 +32,8 @@ class Api {
   static const String sendOtp = '/api/oauth/reset_password/otp';
   static const String createPass = '/api/oauth/reset_password/confirm';
   static const String changePass = '/api/oauth/change_password/confirm';
+  static const String resetPass =
+      '/api/oauth/reset_password/manager_reset_member';
 
   static const String getQuarantine = '/api/quarantine_ward/ward/get';
   static const String createQuarantine = '/api/quarantine_ward/ward/create';
