@@ -23,6 +23,14 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    getLoginState().then((value) {
+      if (value) {
+        Future(() {
+          Navigator.pushNamedAndRemoveUntil(
+              context, App.routeName, (Route<dynamic> route) => false);
+        });
+      }
+    });
   }
 
   @override
