@@ -373,8 +373,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 } else {
                   labelController.text = value.id.toString();
                 }
-                print(widget.mode);
-                print(labelController.text);
               },
               enabled: (widget.mode == Permission.add ||
                       (widget.mode == Permission.edit &&
