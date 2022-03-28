@@ -20,28 +20,30 @@ class Input extends StatefulWidget {
   final TextCapitalization textCapitalization;
   final int maxLines;
   final IconData? prefixIcon;
+  final EdgeInsets? margin;
 
-  Input(
-      {Key? key,
-      required this.label,
-      this.hint,
-      this.obscure,
-      this.required: false,
-      this.type: TextInputType.text,
-      this.enabled: true,
-      this.initValue,
-      this.helper,
-      this.showClearButton = true,
-      this.controller,
-      this.maxLength,
-      this.validatorFunction,
-      this.onChangedFunction,
-      this.onSavedFunction,
-      this.error,
-      this.maxLines = 1,
-      this.textCapitalization = TextCapitalization.none,
-      this.prefixIcon})
-      : super(key: key);
+  Input({
+    Key? key,
+    required this.label,
+    this.hint,
+    this.obscure,
+    this.required: false,
+    this.type: TextInputType.text,
+    this.enabled: true,
+    this.initValue,
+    this.helper,
+    this.showClearButton = true,
+    this.controller,
+    this.maxLength,
+    this.validatorFunction,
+    this.onChangedFunction,
+    this.onSavedFunction,
+    this.error,
+    this.maxLines = 1,
+    this.textCapitalization = TextCapitalization.none,
+    this.prefixIcon,
+    this.margin,
+  }) : super(key: key);
 
   @override
   _InputState createState() => _InputState();
@@ -60,7 +62,7 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 00),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () {
           _focus = true;

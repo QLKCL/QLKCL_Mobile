@@ -25,30 +25,32 @@ class DropdownInput<T> extends StatefulWidget {
   final String? error;
   final bool Function(T?, T?)? compareFn;
   final String? popupTitle;
+  final EdgeInsets? margin;
 
-  DropdownInput(
-      {Key? key,
-      required this.label,
-      this.hint,
-      this.required: false,
-      this.itemValue,
-      this.selectedItem,
-      this.itemAsString,
-      this.mode = Mode.MENU,
-      this.helper,
-      this.showSearchBox = false,
-      this.showClearButton = false,
-      this.maxHeight,
-      this.controller,
-      this.enabled = true,
-      this.validator,
-      this.onChanged,
-      this.onSaved,
-      this.onFind,
-      this.error,
-      this.compareFn,
-      this.popupTitle})
-      : super(key: key);
+  DropdownInput({
+    Key? key,
+    required this.label,
+    this.hint,
+    this.required: false,
+    this.itemValue,
+    this.selectedItem,
+    this.itemAsString,
+    this.mode = Mode.MENU,
+    this.helper,
+    this.showSearchBox = false,
+    this.showClearButton = false,
+    this.maxHeight,
+    this.controller,
+    this.enabled = true,
+    this.validator,
+    this.onChanged,
+    this.onSaved,
+    this.onFind,
+    this.error,
+    this.compareFn,
+    this.popupTitle,
+    this.margin,
+  }) : super(key: key);
 
   @override
   State<DropdownInput<T>> createState() => _DropdownInputState<T>();
@@ -59,7 +61,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,

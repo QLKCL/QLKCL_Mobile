@@ -10,8 +10,10 @@ class DateInput extends StatefulWidget {
   final bool enabled;
   final TextEditingController? controller;
   final String? helper;
+  final String? minDate;
   final String? maxDate;
   final bool showClearButton;
+  final EdgeInsets? margin;
 
   DateInput({
     Key? key,
@@ -21,8 +23,10 @@ class DateInput extends StatefulWidget {
     this.enabled: true,
     this.helper,
     this.controller,
+    this.minDate,
     this.maxDate,
     this.showClearButton = false,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -34,7 +38,7 @@ class _DateInputState extends State<DateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -44,7 +48,9 @@ class _DateInputState extends State<DateInput> {
                 (widget.controller != null && widget.controller!.text != "")
                     ? DateFormat("dd/MM/yyyy").parse(widget.controller!.text)
                     : DateTime.now(),
-            firstDate: DateTime(1900),
+            firstDate: (widget.minDate != null)
+                ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
+                : DateTime(1900),
             lastDate: (widget.maxDate != null)
                 ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
                 : DateTime(2100),
@@ -103,8 +109,10 @@ class DateRangeInput extends StatefulWidget {
   final TextEditingController? controllerStart;
   final TextEditingController? controllerEnd;
   final String? helper;
+  final String? minDate;
   final String? maxDate;
   final bool showClearButton;
+  final EdgeInsets? margin;
 
   DateRangeInput({
     Key? key,
@@ -115,8 +123,10 @@ class DateRangeInput extends StatefulWidget {
     this.helper,
     this.controllerStart,
     this.controllerEnd,
+    this.minDate,
     this.maxDate,
     this.showClearButton = false,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -145,7 +155,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -161,7 +171,9 @@ class _DateRangeInputState extends State<DateRangeInput> {
                         widget.controllerEnd!.text != "")
                     ? DateFormat("dd/MM/yyyy").parse(widget.controllerEnd!.text)
                     : DateTime.now()),
-            firstDate: DateTime(1900),
+            firstDate: (widget.minDate != null)
+                ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
+                : DateTime(1900),
             lastDate: (widget.maxDate != null)
                 ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
                 : DateTime(2100),
@@ -226,9 +238,11 @@ class NewDateInput extends StatefulWidget {
   final bool enabled;
   final TextEditingController? controller;
   final String? helper;
+  final String? minDate;
   final String? maxDate;
   final bool showClearButton;
   final void Function()? onChangedFunction;
+  final EdgeInsets? margin;
 
   NewDateInput({
     Key? key,
@@ -238,9 +252,11 @@ class NewDateInput extends StatefulWidget {
     this.enabled: true,
     this.helper,
     this.controller,
+    this.minDate,
     this.maxDate,
     this.showClearButton = false,
     this.onChangedFunction,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -254,7 +270,7 @@ class _NewDateInputState extends State<NewDateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -301,7 +317,9 @@ class _NewDateInputState extends State<NewDateInput> {
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
                       ),
-                      minDate: DateTime(1900),
+                      minDate: (widget.minDate != null)
+                          ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
+                          : DateTime(1900),
                       maxDate: (widget.maxDate != null)
                           ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
                           : DateTime(2100),
@@ -363,9 +381,11 @@ class NewDateRangeInput extends StatefulWidget {
   final TextEditingController? controllerStart;
   final TextEditingController? controllerEnd;
   final String? helper;
+  final String? minDate;
   final String? maxDate;
   final bool showClearButton;
   final void Function()? onChangedFunction;
+  final EdgeInsets? margin;
 
   NewDateRangeInput({
     Key? key,
@@ -376,9 +396,11 @@ class NewDateRangeInput extends StatefulWidget {
     this.helper,
     this.controllerStart,
     this.controllerEnd,
+    this.minDate,
     this.maxDate,
     this.showClearButton = false,
     this.onChangedFunction,
+    this.margin,
   }) : super(key: key);
 
   @override
@@ -409,7 +431,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -480,7 +502,9 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
                       ),
-                      minDate: DateTime(1900),
+                      minDate: (widget.minDate != null)
+                          ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
+                          : DateTime(1900),
                       maxDate: (widget.maxDate != null)
                           ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
                           : DateTime(2100),
