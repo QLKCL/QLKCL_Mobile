@@ -44,21 +44,26 @@ class ApiHelper {
             dio.interceptors.responseLock.lock();
             RequestOptions requestOptions = e.requestOptions;
 
-            await refreshToken();
-            var accessToken = await getAccessToken();
-            final opts = new Options(method: requestOptions.method);
-            dio.options.headers["Authorization"] = "Bearer " + accessToken!;
-            dio.options.headers["Accept"] = "*/*";
-            dio.interceptors.requestLock.unlock();
-            dio.interceptors.responseLock.unlock();
-            final response = await dio.request(requestOptions.path,
-                options: opts,
-                cancelToken: requestOptions.cancelToken,
-                onReceiveProgress: requestOptions.onReceiveProgress,
-                data: requestOptions.data,
-                queryParameters: requestOptions.queryParameters);
+            var accessToken = await refreshToken();
+            if (accessToken != null) {
+              final opts = new Options(method: requestOptions.method);
+              dio.options.headers["Authorization"] = "Bearer " + accessToken;
+              dio.options.headers["Accept"] = "*/*";
+              dio.interceptors.requestLock.unlock();
+              dio.interceptors.responseLock.unlock();
+              final response = await dio.request(requestOptions.path,
+                  options: opts,
+                  cancelToken: requestOptions.cancelToken,
+                  onReceiveProgress: requestOptions.onReceiveProgress,
+                  data: requestOptions.data,
+                  queryParameters: requestOptions.queryParameters);
 
-            handler.resolve(response);
+              handler.resolve(response);
+            } else {
+              dio.interceptors.requestLock.unlock();
+              dio.interceptors.responseLock.unlock();
+              handler.reject(e);
+            }
           } else {
             handler.next(e);
           }
@@ -76,7 +81,7 @@ class ApiHelper {
     return options;
   }
 
-  static refreshToken() async {
+  static Future<String?> refreshToken() async {
     Response response;
     var dio = Dio();
     final Uri apiUrl = Uri.parse(Api.baseUrl + "/api/token/refresh");
@@ -92,17 +97,20 @@ class ApiHelper {
         await setAccessToken(accessToken);
         var refreshToken = refreshTokenResponse['refresh'];
         await setRefreshToken(refreshToken);
+        return accessToken;
       } else {
         print(response.toString());
         showTextToast(
             'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
         // await logout();
+        return null;
       }
     } catch (e) {
       print(e.toString());
       showTextToast(
           'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
       // await logout();
+      return null;
     }
   }
 

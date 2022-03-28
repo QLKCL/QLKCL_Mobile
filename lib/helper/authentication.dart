@@ -129,9 +129,13 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
-    await setToken(accessToken, refreshToken);
-    await setInfo();
-    return Response(success: true);
+    bool status = await setToken(accessToken, refreshToken);
+    if (status) {
+      await setInfo();
+      return Response(success: true);
+    } else {
+      return Response(success: false, message: "Có lỗi xảy ra!");
+    }
   } else if (response.statusCode == 401) {
     return Response(
         success: false, message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
