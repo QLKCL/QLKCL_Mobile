@@ -228,6 +228,7 @@ class NewDateInput extends StatefulWidget {
   final String? helper;
   final String? maxDate;
   final bool showClearButton;
+  final void Function()? onChangedFunction;
 
   NewDateInput({
     Key? key,
@@ -239,6 +240,7 @@ class NewDateInput extends StatefulWidget {
     this.controller,
     this.maxDate,
     this.showClearButton = false,
+    this.onChangedFunction,
   }) : super(key: key);
 
   @override
@@ -280,6 +282,8 @@ class _NewDateInputState extends State<NewDateInput> {
                             widget.controller!.text = newDate;
                           });
                         }
+                        if (widget.onChangedFunction != null)
+                          widget.onChangedFunction!();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -292,8 +296,11 @@ class _NewDateInputState extends State<NewDateInput> {
                         newDate = DateFormat('dd/MM/yyyy').format(data.value);
                       },
                       selectionMode: DateRangePickerSelectionMode.single,
-                      monthViewSettings:
-                          DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
+                      monthViewSettings: DateRangePickerMonthViewSettings(
+                        firstDayOfWeek: 1,
+                        showTrailingAndLeadingDates: true,
+                        dayFormat: 'EEE',
+                      ),
                       minDate: DateTime(1900),
                       maxDate: (widget.maxDate != null)
                           ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
@@ -308,6 +315,7 @@ class _NewDateInputState extends State<NewDateInput> {
                           ? DateFormat("dd/MM/yyyy")
                               .parse(widget.controller!.text)
                           : DateTime.now(),
+                      showNavigationArrow: true,
                     ),
                   ),
                 );
@@ -357,6 +365,7 @@ class NewDateRangeInput extends StatefulWidget {
   final String? helper;
   final String? maxDate;
   final bool showClearButton;
+  final void Function()? onChangedFunction;
 
   NewDateRangeInput({
     Key? key,
@@ -369,6 +378,7 @@ class NewDateRangeInput extends StatefulWidget {
     this.controllerEnd,
     this.maxDate,
     this.showClearButton = false,
+    this.onChangedFunction,
   }) : super(key: key);
 
   @override
@@ -443,6 +453,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           controller.text = '${widget.controllerStart!.text} -'
                               ' ${widget.controllerEnd!.text}';
                         });
+                        if (widget.onChangedFunction != null)
+                          widget.onChangedFunction!();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -463,8 +475,11 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                             '$newStartDate -                             $newEndDate';
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
-                      monthViewSettings:
-                          DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
+                      monthViewSettings: DateRangePickerMonthViewSettings(
+                        firstDayOfWeek: 1,
+                        showTrailingAndLeadingDates: true,
+                        dayFormat: 'EEE',
+                      ),
                       minDate: DateTime(1900),
                       maxDate: (widget.maxDate != null)
                           ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
@@ -480,6 +495,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               ? DateFormat("dd/MM/yyyy")
                                   .parse(widget.controllerEnd!.text)
                               : DateTime.now()),
+                      showNavigationArrow: true,
                     ),
                   ),
                 );
