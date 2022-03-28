@@ -17,6 +17,48 @@ extension StringExtension on String {
   }
 }
 
+extension DateUtils on DateTime {
+  DateTime copyWith({
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+    int? second,
+    int? millisecond,
+    int? microsecond,
+  }) {
+    return DateTime(
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+      millisecond ?? this.millisecond,
+      microsecond ?? this.microsecond,
+    );
+  }
+}
+
+// Cre: https://gist.github.com/apgapg/84d855e41c0134a34ff8b2cf034ad249
+/// converts [date] into into string format
+/// Example:
+/// * Positive:   (UK)   `2020-09-16T11:55:01.802248+00:00`
+/// * Negative: (Canada) `2020-09-16T11:55:01.802248-08:00`
+String formatISOTime(DateTime? dateTime) {
+  var date = dateTime ?? DateTime.now();
+  var duration = date.timeZoneOffset;
+
+  /// If the user is in Canada the time zone is GMT-8 then the signal will need to be negative.
+  /// Because we already get the minus from the hours in the string then we don't need to add it to the string.
+  /// In the case the timezone is GMT-0 or higher then the sign will need to be positive.
+  var timezoneSignal = !(duration.isNegative) ? '+' : '';
+  var dateString = (date.toIso8601String() +
+      "$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
+  return dateString;
+}
+
 dynamic prepareDataForm(dynamic data,
     {List<String> exceptionField = const []}) {
   data.removeWhere((key, value) =>
@@ -26,11 +68,17 @@ dynamic prepareDataForm(dynamic data,
   return data;
 }
 
-String parseDateToDateTimeWithTimeZone(String date) {
+String parseDateToDateTimeWithTimeZone(String date, {String? time}) {
   String outputDate = "";
   if (date != "") {
     DateTime parseDate = new DateFormat("dd/MM/yyyy").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
+    if (time != null) {
+      int hour = int.parse(time.split(':').first);
+      int minute = int.parse(time.split(':').last);
+      inputDate = inputDate.copyWith(hour: hour, minute: minute);
+    }
+    inputDate = DateTime.parse(formatISOTime(inputDate));
     var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     outputDate = outputFormat.format(inputDate);
   }
