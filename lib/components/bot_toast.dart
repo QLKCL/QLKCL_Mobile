@@ -137,12 +137,13 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 }
 
 // Notification
-CancelFunc Function(dynamic data, {String status, String? subTitle})
-    showNotification = (data, {status = "success", subTitle}) {
+CancelFunc Function(dynamic data,
+        {String status, String? subTitle, int duration}) showNotification =
+    (data, {status = "success", subTitle, duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
     align: Alignment(1, -1),
-    duration: Duration(seconds: 3),
+    duration: Duration(seconds: duration),
     toastBuilder: (cancel) {
       return _CustomWidget(
         cancelFunc: cancel,

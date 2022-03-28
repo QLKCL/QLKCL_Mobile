@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
+import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -44,14 +45,25 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    getLoginState().then((value) {
+      if (!value) {
+        Future(() {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Login.routeName, (Route<dynamic> route) => false);
+        });
+      }
+    });
+    super.initState();
     if (widget.role == null) {
-      getRole().then((value) => setState((() {
+      getRole().then((value) {
+        if (this.mounted)
+          setState((() {
             _role = value;
-          })));
+          }));
+      });
     } else {
       _role = widget.role;
     }
-    super.initState();
 
     if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();

@@ -54,21 +54,26 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     super.initState();
     futureData = fetch();
-    notifications.fetchUserNotificationList(data: {
-      'page_size': PAGE_SIZE_MAX
-    }).then((value) => setState(() {
+    notifications.fetchUserNotificationList(
+        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
+      if (this.mounted)
+        setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
               .length;
-        }));
+        });
+    });
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineWardList = value;
-        }));
+        });
+    });
   }
 
   Future<dynamic> fetch() async {

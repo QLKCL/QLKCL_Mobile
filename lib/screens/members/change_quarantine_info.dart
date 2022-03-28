@@ -73,16 +73,22 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineWardList = value;
-        }));
+        });
+    });
     fetchQuarantineBuilding({
       'quarantine_ward': newQuarantineWardController.text,
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineBuildingList = value;
-        }));
+        });
+    });
   }
 
   @override

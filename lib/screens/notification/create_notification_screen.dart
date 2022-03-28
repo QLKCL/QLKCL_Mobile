@@ -33,9 +33,12 @@ class _CreateRequestState extends State<CreateRequest> {
   void initState() {
     super.initState();
     titleController.text = "Phản ánh";
-    getQuarantineWard().then((value) => setState(() {
+    getQuarantineWard().then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineWard = value;
-        }));
+        });
+    });
   }
 
   @override

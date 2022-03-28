@@ -539,3 +539,28 @@ Map<String, dynamic> createNotificationDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> createDestiantionHistoryDataForm({
+  required String code,
+  required String country,
+  required String city,
+  String? district,
+  String? ward,
+  String? address,
+  required String startTime,
+  String? endTime,
+  String? note,
+}) {
+  var data = {
+    "user_code": code,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "start_time": startTime,
+    "end_time": endTime,
+    "note": note
+  };
+  return prepareDataForm(data);
+}

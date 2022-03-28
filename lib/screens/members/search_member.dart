@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -65,27 +66,39 @@ class _SearchMemberState extends State<SearchMember> {
   void initState() {
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           _quarantineWardList = value;
-        }));
+        });
+    });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           _quarantineBuildingList = value;
-        }));
+        });
+    });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           _quarantineFloorList = value;
-        }));
+        });
+    });
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
       'page_size': PAGE_SIZE_MAX,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           _quarantineRoomList = value;
-        }));
+        });
+    });
 
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
@@ -877,6 +890,15 @@ Widget menus(BuildContext context, FilterMember item,
       PopupMenuItem(
         child: Text('Lịch sử xét nghiệm'),
         value: "test_history",
+      ),
+      PopupMenuItem(
+        child: Text('Đặt lại mật khẩu'),
+        onTap: () async {
+          CancelFunc cancel = showLoading();
+          final response = await resetPass({'code': item.code});
+          cancel();
+          showNotification(response, duration: 5);
+        },
       ),
     ],
   );

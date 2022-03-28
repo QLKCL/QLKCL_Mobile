@@ -44,16 +44,18 @@ class _MemberHomePageState extends State<MemberHomePage> {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
-    notifications.fetchUserNotificationList(data: {
-      'page_size': PAGE_SIZE_MAX
-    }).then((value) => setState(() {
+    notifications.fetchUserNotificationList(
+        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
+      if (this.mounted)
+        setState(() {
           listNotification = value;
           unreadNotifications = listNotification
               .where((element) =>
                   notifications.Notification.fromJson(element).isRead == false)
               .toList()
               .length;
-        }));
+        });
+    });
   }
 
   Future<dynamic> fetch() async {
@@ -466,7 +468,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                                     'number_of_vaccine_doses'] !=
                                                                 null
                                                             ? (snapshot.data[
-                                                                'number_of_vaccine_doses'] + " mũi")
+                                                                    'number_of_vaccine_doses'] +
+                                                                " mũi")
                                                             : "Chưa có số liệu"),
                                                   )
                                                 ],
