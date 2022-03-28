@@ -79,4 +79,13 @@ class Api {
 
   static const String getVaccineDose = '/api/form/vaccine_dose/get';
   static const String filterVaccineDose = '/api/form/vaccine_dose/filter';
+
+  static const String filterDestiantionHistory =
+      '/api/user/destination_history/filter';
+  static const String getDestiantionHistory =
+      '/api/user/destination_history/get';
+  static const String createDestiantionHistory =
+      '/api/user/destination_history/create';
+  static const String updateDestiantionHistory =
+      '/api/user/destination_history/update';
 }

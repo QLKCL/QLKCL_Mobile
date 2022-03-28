@@ -4,12 +4,15 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
+import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
+
+// cre: https://stackoverflow.com/questions/55192347/in-flutter-bottom-navigation-bar-should-disappear-when-we-navigate-to-new-screen
 
 class Account extends StatefulWidget {
   static const String routeName = "/account";
@@ -86,6 +89,19 @@ class _AccountState extends State<Account> {
                   title: Text('Thông tin tiêm chủng'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
+                Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
+                        .pushNamed(ListDestinationHistory.routeName);
+                  },
+                  title: Text('Lịch sử di chuyển'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
               ],
             ),
           ),
@@ -116,7 +132,6 @@ class _AccountState extends State<Account> {
                 ),
                 ListTile(
                   onTap: () {
-                    // cre: https://stackoverflow.com/questions/55192347/in-flutter-bottom-navigation-bar-should-disappear-when-we-navigate-to-new-screen
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ChangePassword.routeName);
@@ -136,8 +151,7 @@ class _AccountState extends State<Account> {
                   handleRemoveExternalUserId();
                 }
                 await logout();
-                Navigator.of(context,
-                        rootNavigator: true)
+                Navigator.of(context, rootNavigator: true)
                     .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
               },
               title: Text('Đăng xuất',

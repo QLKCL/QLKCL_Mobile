@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/app.dart';
+import 'package:qlkcl/screens/destination_history/destination_history_screen.dart';
+import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
@@ -56,6 +58,7 @@ final Map<String, WidgetBuilder> routes = {
   ChangePassword.routeName: (context) => ChangePassword(),
   Error.routeName: (context) => Error(),
   ListMedicalDeclaration.routeName: (context) => ListMedicalDeclaration(),
+  MedicalDeclarationScreen.routeName: (context) => MedicalDeclarationScreen(),
   ListTest.routeName: (context) => ListTest(),
   ListTestNoResult.routeName: (context) => ListTestNoResult(),
   AddTest.routeName: (context) => AddTest(),
@@ -73,7 +76,6 @@ final Map<String, WidgetBuilder> routes = {
   BuildingDetailsScreen.routeName: (context) => BuildingDetailsScreen(),
   FloorDetailsScreen.routeName: (context) => FloorDetailsScreen(),
   RoomDetailsScreen.routeName: (context) => RoomDetailsScreen(),
-  MedicalDeclarationScreen.routeName: (context) => MedicalDeclarationScreen(),
   EditBuildingScreen.routeName: (context) => EditBuildingScreen(),
   AddBuildingScreen.routeName: (context) => AddBuildingScreen(),
   EditFloorScreen.routeName: (context) => EditFloorScreen(),
@@ -83,4 +85,6 @@ final Map<String, WidgetBuilder> routes = {
   ListNotification.routeName: (context) => ListNotification(),
   CreateRequest.routeName: (context) => CreateRequest(),
   ListVaccineDose.routeName: (context) => ListVaccineDose(),
+  ListDestinationHistory.routeName: (context) => ListDestinationHistory(),
+  DestinationHistoryScreen.routeName: (context) => DestinationHistoryScreen(),
 };
