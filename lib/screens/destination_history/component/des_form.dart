@@ -94,21 +94,30 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
       countryController.text = "VNM";
     }
     super.initState();
-    fetchCountry().then((value) => setState(() {
+    fetchCountry().then((value) {
+      if (this.mounted)
+        setState(() {
           countryList = value;
-        }));
-    fetchCity({'country_code': countryController.text})
-        .then((value) => setState(() {
-              cityList = value;
-            }));
-    fetchDistrict({'city_id': cityController.text})
-        .then((value) => setState(() {
-              districtList = value;
-            }));
-    fetchWard({'district_id': districtController.text})
-        .then((value) => setState(() {
-              wardList = value;
-            }));
+        });
+    });
+    fetchCity({'country_code': countryController.text}).then((value) {
+      if (this.mounted)
+        setState(() {
+          cityList = value;
+        });
+    });
+    fetchDistrict({'city_id': cityController.text}).then((value) {
+      if (this.mounted)
+        setState(() {
+          districtList = value;
+        });
+    });
+    fetchWard({'district_id': districtController.text}).then((value) {
+      if (this.mounted)
+        setState(() {
+          wardList = value;
+        });
+    });
   }
 
   //submit

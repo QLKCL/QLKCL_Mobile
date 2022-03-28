@@ -53,14 +53,17 @@ class _AppState extends State<App> {
         });
       }
     });
+    super.initState();
     if (widget.role == null) {
-      getRole().then((value) => setState((() {
+      getRole().then((value) {
+        if (this.mounted)
+          setState((() {
             _role = value;
-          })));
+          }));
+      });
     } else {
       _role = widget.role;
     }
-    super.initState();
 
     if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();

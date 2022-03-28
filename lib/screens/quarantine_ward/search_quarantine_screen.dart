@@ -39,20 +39,6 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   @override
   void initState() {
-    fetchCity({'country_code': 'VNM'}).then((value) => setState(() {
-          _cityList = value;
-        }));
-    fetchDistrict({'city_id': cityController.text})
-        .then((value) => setState(() {
-              _districtList = value;
-            }));
-    fetchWard({'district_id': districtController.text})
-        .then((value) => setState(() {
-              _wardList = value;
-            }));
-    fetchNotMemberList({'role_name_list': 'MANAGER'})
-        .then((value) => managerList = value);
-
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -73,6 +59,30 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
     });
 
     super.initState();
+    fetchCity({'country_code': 'VNM'}).then((value) {
+      if (this.mounted)
+        setState(() {
+          _cityList = value;
+        });
+    });
+    fetchDistrict({'city_id': cityController.text}).then((value) {
+      if (this.mounted)
+        setState(() {
+          _districtList = value;
+        });
+    });
+    fetchWard({'district_id': districtController.text}).then((value) {
+      if (this.mounted)
+        setState(() {
+          _wardList = value;
+        });
+    });
+    fetchNotMemberList({'role_name_list': 'MANAGER'}).then((value) {
+      if (this.mounted)
+        setState(() {
+          managerList = value;
+        });
+    });
   }
 
   @override

@@ -143,30 +143,42 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineWardList = value;
-        }));
+        });
+    });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineBuildingList = value;
-        }));
+        });
+    });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineFloorList = value;
-        }));
+        });
+    });
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
       'page_size': PAGE_SIZE_MAX,
       'is_full': false,
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineRoomList = value;
-        }));
+        });
+    });
   }
 
   @override

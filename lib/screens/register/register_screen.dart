@@ -38,9 +38,12 @@ class _RegisterState extends State<Register> {
     super.initState();
     fetchQuarantineWardNoToken({
       'is_full': "false",
-    }).then((value) => setState(() {
+    }).then((value) {
+      if (this.mounted)
+        setState(() {
           quarantineWardList = value;
-        }));
+        });
+    });
   }
 
   @override
