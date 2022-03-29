@@ -14,6 +14,7 @@ import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
   final Member? quarantineData;
@@ -434,7 +435,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Bệnh nền',
               hint: 'Chọn bệnh nền',
               itemValue: backgroundDiseaseList,
-              mode: Mode.BOTTOM_SHEET,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
               dropdownBuilder: _customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
@@ -455,7 +458,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,
-              maxHeight: MediaQuery.of(context).size.height - 100,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
               popupTitle: 'Bệnh nền',
             ),
             Input(

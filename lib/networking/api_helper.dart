@@ -39,13 +39,17 @@ class ApiHelper {
       onError: (DioError e, handler) async {
         if (e.response != null) {
           if (e.response!.statusCode == 401) {
-            //catch the 401 here
+            // catch the 401 here
+            // If user is unauthorized
+            // Lock error, response, request here
             dio.interceptors.requestLock.lock();
             dio.interceptors.responseLock.lock();
             RequestOptions requestOptions = e.requestOptions;
 
+            /// Silently refresh token here
             var accessToken = await refreshToken();
             if (accessToken != null) {
+              // Unlock error, response, request here
               final opts = new Options(method: requestOptions.method);
               dio.options.headers["Authorization"] = "Bearer " + accessToken;
               dio.options.headers["Accept"] = "*/*";
@@ -58,13 +62,17 @@ class ApiHelper {
                   data: requestOptions.data,
                   queryParameters: requestOptions.queryParameters);
 
+              // If you want to resolve the request with some custom data,
+              // you can resolve a 'Response' object eg: 'handler.resolve(response)'
               handler.resolve(response);
             } else {
+              //If dont unlock, every request and response after refresh request failding may never be executed to
               dio.interceptors.requestLock.unlock();
               dio.interceptors.responseLock.unlock();
               handler.reject(e);
             }
           } else {
+            // Do something with response error
             handler.next(e);
           }
         }

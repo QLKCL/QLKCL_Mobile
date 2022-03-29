@@ -14,6 +14,7 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
@@ -304,8 +305,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
-              mode: Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height - 100,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
               popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
@@ -348,8 +355,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
-              mode: Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height - 100,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
               popupTitle: 'Tỉnh/thành',
             ),
             DropdownInput<KeyValue>(
@@ -389,8 +402,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
-              mode: Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height - 100,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
               popupTitle: 'Quận/huyện',
             ),
             DropdownInput<KeyValue>(
@@ -423,8 +442,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               showSearchBox: true,
-              mode: Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height - 100,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
               popupTitle: 'Phường/xã',
             ),
             Input(

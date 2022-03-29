@@ -9,6 +9,7 @@ import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchTest extends StatefulWidget {
   SearchTest({Key? key}) : super(key: key);
@@ -151,6 +152,8 @@ class _SearchTestState extends State<SearchTest> {
                     });
                     _pagingController.refresh();
                   },
+                  useCustomBottomSheetMode:
+                      ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
               icon: Icon(Icons.filter_list_outlined),

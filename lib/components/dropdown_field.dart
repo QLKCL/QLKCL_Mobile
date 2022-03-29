@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 // cre: https://pub.dev/packages/dropdown_search
 
@@ -125,13 +126,17 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
               )
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
-            ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              )
+            ? widget.mode == Mode.BOTTOM_SHEET
+                ? RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ))
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  )
             : null,
+        dialogMaxWidth: maxMobileSize,
       ),
     );
   }
@@ -265,13 +270,17 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
               )
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
-            ? RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              )
+            ? widget.mode == Mode.BOTTOM_SHEET
+                ? RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ))
+                : RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  )
             : null,
+        dialogMaxWidth: maxMobileSize,
       ),
     );
   }
