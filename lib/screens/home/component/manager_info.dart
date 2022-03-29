@@ -59,12 +59,14 @@ class InfoManagerHomePage extends StatelessWidget {
         subtitle: totalUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
         onTap: () {},
+        iconSuffix: false,
       ),
       InfoManagerHomeCard(
         title: "Số giường trống",
         subtitle: availableSlots.toString(),
         icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
         onTap: () {},
+        iconSuffix: false,
       ),
       InfoManagerHomeCard(
         title: "Đang cách ly",
@@ -287,11 +289,14 @@ class InfoManagerHomeCard extends StatelessWidget {
   final Widget icon;
   final String title;
   final String subtitle;
-  const InfoManagerHomeCard(
-      {required this.onTap,
-      required this.icon,
-      required this.title,
-      required this.subtitle});
+  final bool iconSuffix;
+  const InfoManagerHomeCard({
+    required this.onTap,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    this.iconSuffix = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -351,10 +356,11 @@ class InfoManagerHomeCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.keyboard_arrow_right,
-                color: CustomColors.disableText,
-              ),
+              if (iconSuffix)
+                Icon(
+                  Icons.keyboard_arrow_right,
+                  color: CustomColors.disableText,
+                ),
             ],
           ),
         ),
