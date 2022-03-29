@@ -352,6 +352,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         controller: startDateController,
                         required: widget.mode == Permission.view ? false : true,
                         onChangedFunction: () {
+                          if (startTimeController.text == "") {
+                            startTimeController.text =
+                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}";
+                          }
                           setState(() {});
                         },
                         maxDate:
@@ -376,6 +380,13 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       child: NewDateInput(
                         label: 'Đến thời gian',
                         controller: endDateController,
+                        onChangedFunction: () {
+                          if (endTimeController.text == "") {
+                            endTimeController.text =
+                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}";
+                          }
+                          setState(() {});
+                        },
                         enabled: startDateController.text != "" ? true : false,
                         minDate: startDateController.text,
                         maxDate:
@@ -388,7 +399,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       child: TimeInput(
                         label: "Thời gian",
                         controller: endTimeController,
-                        enabled: startDateController.text != "" ? true : false,
+                        enabled: (startDateController.text != "" &&
+                                endTimeController.text != "")
+                            ? true
+                            : false,
                       ),
                     ),
                   ],
