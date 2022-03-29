@@ -57,21 +57,21 @@ class InfoManagerHomePage extends StatelessWidget {
       InfoManagerHomeCard(
         title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
-        icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
+        icon: WebsafeSvg.asset("assets/svg/total.svg"),
         onTap: () {},
         iconSuffix: false,
       ),
       InfoManagerHomeCard(
         title: "Số giường trống",
         subtitle: availableSlots.toString(),
-        icon: WebsafeSvg.asset("assets/svg/nghi_nhiem.svg"),
+        icon: WebsafeSvg.asset("assets/svg/giuong_trong.svg"),
         onTap: () {},
         iconSuffix: false,
       ),
       InfoManagerHomeCard(
         title: "Đang cách ly",
         subtitle: activeUsers.toString(),
-        icon: WebsafeSvg.asset("assets/svg/toi_han_xet_nghiem.svg"),
+        icon: WebsafeSvg.asset("assets/svg/dang_cach_ly.svg"),
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
@@ -136,7 +136,7 @@ class InfoManagerHomePage extends StatelessWidget {
       InfoManagerHomeCard(
         title: "Dương tính",
         subtitle: positiveUsers.toString(),
-        icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
+        icon: WebsafeSvg.asset("assets/svg/covid.svg"),
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
@@ -147,7 +147,7 @@ class InfoManagerHomePage extends StatelessWidget {
       InfoManagerHomeCard(
         title: "Chuyển viện điều trị",
         subtitle: hospitalizedUsers.toString(),
-        icon: WebsafeSvg.asset("assets/svg/sap_hoan_thanh_cach_ly.svg"),
+        icon: WebsafeSvg.asset("assets/svg/dieu_tri.svg"),
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
