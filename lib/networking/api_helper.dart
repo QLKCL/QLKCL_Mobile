@@ -39,27 +39,40 @@ class ApiHelper {
       onError: (DioError e, handler) async {
         if (e.response != null) {
           if (e.response!.statusCode == 401) {
-            //catch the 401 here
+            // catch the 401 here
+            // If user is unauthorized
+            // Lock error, response, request here
             dio.interceptors.requestLock.lock();
             dio.interceptors.responseLock.lock();
             RequestOptions requestOptions = e.requestOptions;
 
-            await refreshToken();
-            var accessToken = await getAccessToken();
-            final opts = new Options(method: requestOptions.method);
-            dio.options.headers["Authorization"] = "Bearer " + accessToken!;
-            dio.options.headers["Accept"] = "*/*";
-            dio.interceptors.requestLock.unlock();
-            dio.interceptors.responseLock.unlock();
-            final response = await dio.request(requestOptions.path,
-                options: opts,
-                cancelToken: requestOptions.cancelToken,
-                onReceiveProgress: requestOptions.onReceiveProgress,
-                data: requestOptions.data,
-                queryParameters: requestOptions.queryParameters);
+            /// Silently refresh token here
+            var accessToken = await refreshToken();
+            if (accessToken != null) {
+              // Unlock error, response, request here
+              final opts = new Options(method: requestOptions.method);
+              dio.options.headers["Authorization"] = "Bearer " + accessToken;
+              dio.options.headers["Accept"] = "*/*";
+              dio.interceptors.requestLock.unlock();
+              dio.interceptors.responseLock.unlock();
+              final response = await dio.request(requestOptions.path,
+                  options: opts,
+                  cancelToken: requestOptions.cancelToken,
+                  onReceiveProgress: requestOptions.onReceiveProgress,
+                  data: requestOptions.data,
+                  queryParameters: requestOptions.queryParameters);
 
-            handler.resolve(response);
+              // If you want to resolve the request with some custom data,
+              // you can resolve a 'Response' object eg: 'handler.resolve(response)'
+              handler.resolve(response);
+            } else {
+              //If dont unlock, every request and response after refresh request failding may never be executed to
+              dio.interceptors.requestLock.unlock();
+              dio.interceptors.responseLock.unlock();
+              handler.reject(e);
+            }
           } else {
+            // Do something with response error
             handler.next(e);
           }
         }
@@ -76,7 +89,7 @@ class ApiHelper {
     return options;
   }
 
-  static refreshToken() async {
+  static Future<String?> refreshToken() async {
     Response response;
     var dio = Dio();
     final Uri apiUrl = Uri.parse(Api.baseUrl + "/api/token/refresh");
@@ -92,17 +105,20 @@ class ApiHelper {
         await setAccessToken(accessToken);
         var refreshToken = refreshTokenResponse['refresh'];
         await setRefreshToken(refreshToken);
+        return accessToken;
       } else {
         print(response.toString());
         showTextToast(
             'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
         // await logout();
+        return null;
       }
     } catch (e) {
       print(e.toString());
       showTextToast(
           'Phiên làm việc đã hết hạn, vui lòng đăng xuất và đăng nhập lại.');
       // await logout();
+      return null;
     }
   }
 
