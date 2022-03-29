@@ -9,6 +9,7 @@ import 'package:qlkcl/screens/test/list_test_no_result_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:websafe_svg/websafe_svg.dart';
+import 'package:intl/intl.dart';
 
 import 'charts.dart';
 
@@ -180,7 +181,7 @@ class InfoManagerHomePage extends StatelessWidget {
                   margin: EdgeInsets.only(left: 16),
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Số liệu tổng quát",
+                    "Số liệu tổng quát (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.headline6,
                   ),
