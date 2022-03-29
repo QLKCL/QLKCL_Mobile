@@ -13,6 +13,7 @@ import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class Register extends StatefulWidget {
   static const String routeName = "/register";
@@ -166,8 +167,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 quarantineWardController.text = value.id.toString();
               }
             },
-            mode: Mode.BOTTOM_SHEET,
-            maxHeight: MediaQuery.of(context).size.height - 100,
+            mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                ? Mode.DIALOG
+                : Mode.BOTTOM_SHEET,
+            maxHeight: MediaQuery.of(context).size.height -
+                AppBar().preferredSize.height -
+                MediaQuery.of(context).padding.top -
+                MediaQuery.of(context).padding.bottom -
+                100,
             showSearchBox: true,
             required: true,
             popupTitle: 'Khu cách ly',

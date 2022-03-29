@@ -9,6 +9,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchQuarantine extends StatefulWidget {
   const SearchQuarantine({Key? key}) : super(key: key);
@@ -195,6 +196,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     });
                     _pagingController.refresh();
                   },
+                  useCustomBottomSheetMode:
+                      ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
               icon: Icon(Icons.filter_list_outlined),

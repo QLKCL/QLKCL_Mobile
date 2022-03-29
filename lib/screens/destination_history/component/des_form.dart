@@ -13,6 +13,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class DestinationHistoryForm extends StatefulWidget {
   const DestinationHistoryForm({
@@ -199,8 +200,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
                   showSearchBox: true,
-                  mode: Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Quốc gia',
                 ),
                 DropdownInput<KeyValue>(
@@ -241,8 +248,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
                   showSearchBox: true,
-                  mode: Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Tỉnh/thành',
                 ),
                 DropdownInput<KeyValue>(
@@ -280,8 +293,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
                   showSearchBox: true,
-                  mode: Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Quận/huyện',
                 ),
                 DropdownInput<KeyValue>(
@@ -310,8 +329,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
                   showSearchBox: true,
-                  mode: Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Phường/xã',
                 ),
                 Input(

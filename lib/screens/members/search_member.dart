@@ -18,6 +18,7 @@ import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
@@ -251,6 +252,8 @@ class _SearchMemberState extends State<SearchMember> {
                       _pagingController.refresh();
                     }
                   },
+                  useCustomBottomSheetMode:
+                      ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
               icon: Icon(Icons.filter_list_outlined),

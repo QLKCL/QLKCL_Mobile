@@ -11,6 +11,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class MedDeclForm extends StatefulWidget {
   const MedDeclForm({
@@ -210,7 +211,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   label: 'Triệu chứng nghi nhiễm',
                   hint: 'Chọn triệu chứng',
                   itemValue: symptomMainList,
-                  mode: Mode.BOTTOM_SHEET,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
                   dropdownBuilder: _customDropDown,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -232,7 +235,11 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Triệu chứng nghi nhiễm',
                 ),
 
@@ -240,7 +247,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   label: 'Triệu chứng khác',
                   hint: 'Chọn triệu chứng',
                   itemValue: symptomExtraList,
-                  mode: Mode.BOTTOM_SHEET,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
                   dropdownBuilder: _customDropDown,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -262,7 +271,11 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     }
                   },
                   enabled: widget.mode != Permission.view ? true : false,
-                  maxHeight: MediaQuery.of(context).size.height - 100,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
                   popupTitle: 'Triệu chứng khác',
                 ),
 
