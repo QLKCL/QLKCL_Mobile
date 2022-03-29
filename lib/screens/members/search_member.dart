@@ -65,6 +65,26 @@ class _SearchMemberState extends State<SearchMember> {
 
   @override
   void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    _pagingController.addStatusListener((status) {
+      if (status == PagingStatus.subsequentPageError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Có lỗi xảy ra!',
+            ),
+            action: SnackBarAction(
+              label: 'Thử lại',
+              onPressed: () => _pagingController.retryLastFailedRequest(),
+            ),
+          ),
+        );
+      }
+    });
+
+    super.initState();
     fetchQuarantineWard({
       'page_size': PAGE_SIZE_MAX,
     }).then((value) {
@@ -100,27 +120,25 @@ class _SearchMemberState extends State<SearchMember> {
           _quarantineRoomList = value;
         });
     });
-
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-    _pagingController.addStatusListener((status) {
-      if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Có lỗi xảy ra!',
-            ),
-            action: SnackBarAction(
-              label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
-            ),
-          ),
-        );
-      }
-    });
-
-    super.initState();
+    fetch = fetchMemberList(
+      data: filterMemberDataForm(
+        keySearch: keySearch.text,
+        page: 1,
+        quarantineWard: quarantineWardController.text,
+        quarantineBuilding: quarantineBuildingController.text,
+        quarantineFloor: quarantineFloorController.text,
+        quarantineRoom: quarantineRoomController.text,
+        quarantineAtMin:
+            parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
+        quarantineAtMax:
+            parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
+        quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+            quarantinedFinishExpectedAtController.text),
+        label: labelController.text,
+        healthStatus: healthStatusController.text,
+        test: testController.text,
+      ),
+    );
   }
 
   @override
@@ -208,7 +226,28 @@ class _SearchMemberState extends State<SearchMember> {
                     _searched = true;
                   });
                   if (Responsive.isDesktopLayout(context)) {
-                    setState(() {});
+                    setState(() {
+                      fetch = fetchMemberList(
+                        data: filterMemberDataForm(
+                          keySearch: keySearch.text,
+                          page: 1,
+                          quarantineWard: quarantineWardController.text,
+                          quarantineBuilding: quarantineBuildingController.text,
+                          quarantineFloor: quarantineFloorController.text,
+                          quarantineRoom: quarantineRoomController.text,
+                          quarantineAtMin: parseDateToDateTimeWithTimeZone(
+                              quarantineAtMinController.text),
+                          quarantineAtMax: parseDateToDateTimeWithTimeZone(
+                              quarantineAtMaxController.text),
+                          quarantinedFinishExpectedAt:
+                              parseDateToDateTimeWithTimeZone(
+                                  quarantinedFinishExpectedAtController.text),
+                          label: labelController.text,
+                          healthStatus: healthStatusController.text,
+                          test: testController.text,
+                        ),
+                      );
+                    });
                   } else {
                     _pagingController.refresh();
                   }
@@ -247,7 +286,29 @@ class _SearchMemberState extends State<SearchMember> {
                       _quarantineRoomList = quarantineRoomList;
                     });
                     if (Responsive.isDesktopLayout(context)) {
-                      setState(() {});
+                      setState(() {
+                        fetch = fetchMemberList(
+                          data: filterMemberDataForm(
+                            keySearch: keySearch.text,
+                            page: 1,
+                            quarantineWard: quarantineWardController.text,
+                            quarantineBuilding:
+                                quarantineBuildingController.text,
+                            quarantineFloor: quarantineFloorController.text,
+                            quarantineRoom: quarantineRoomController.text,
+                            quarantineAtMin: parseDateToDateTimeWithTimeZone(
+                                quarantineAtMinController.text),
+                            quarantineAtMax: parseDateToDateTimeWithTimeZone(
+                                quarantineAtMaxController.text),
+                            quarantinedFinishExpectedAt:
+                                parseDateToDateTimeWithTimeZone(
+                                    quarantinedFinishExpectedAtController.text),
+                            label: labelController.text,
+                            healthStatus: healthStatusController.text,
+                            test: testController.text,
+                          ),
+                        );
+                      });
                     } else {
                       _pagingController.refresh();
                     }
@@ -264,26 +325,7 @@ class _SearchMemberState extends State<SearchMember> {
         body: _searched
             ? Responsive.isDesktopLayout(context)
                 ? FutureBuilder(
-                    future: fetchMemberList(
-                      data: filterMemberDataForm(
-                        keySearch: keySearch.text,
-                        page: 1,
-                        quarantineWard: quarantineWardController.text,
-                        quarantineBuilding: quarantineBuildingController.text,
-                        quarantineFloor: quarantineFloorController.text,
-                        quarantineRoom: quarantineRoomController.text,
-                        quarantineAtMin: parseDateToDateTimeWithTimeZone(
-                            quarantineAtMinController.text),
-                        quarantineAtMax: parseDateToDateTimeWithTimeZone(
-                            quarantineAtMaxController.text),
-                        quarantinedFinishExpectedAt:
-                            parseDateToDateTimeWithTimeZone(
-                                quarantinedFinishExpectedAtController.text),
-                        label: labelController.text,
-                        healthStatus: healthStatusController.text,
-                        test: testController.text,
-                      ),
-                    ),
+                    future: fetch,
                     builder: (BuildContext context,
                         AsyncSnapshot<FilterResponse<FilterMember>> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done) {
