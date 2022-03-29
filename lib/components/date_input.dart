@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:qlkcl/helper/function.dart';
 
 class DateInput extends StatefulWidget {
   final String label;
@@ -35,6 +36,27 @@ class DateInput extends StatefulWidget {
 
 class _DateInputState extends State<DateInput> {
   bool _focus = false;
+  DateTime minDate = DateTime(1900);
+  DateTime maxDate = DateTime(2100);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (widget.minDate != null && widget.minDate != "") {
+      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
+      minDate = minDate.copyWith(hour: 0, minute: 0);
+    }
+    if (widget.maxDate != null && widget.maxDate != "") {
+      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
+      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,12 +70,8 @@ class _DateInputState extends State<DateInput> {
                 (widget.controller != null && widget.controller!.text != "")
                     ? DateFormat("dd/MM/yyyy").parse(widget.controller!.text)
                     : DateTime.now(),
-            firstDate: (widget.minDate != null)
-                ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
-                : DateTime(1900),
-            lastDate: (widget.maxDate != null)
-                ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
-                : DateTime(2100),
+            firstDate: minDate,
+            lastDate: maxDate,
             initialEntryMode: DatePickerEntryMode.calendarOnly,
             helpText: 'Chọn ngày',
             cancelText: 'Hủy',
@@ -136,6 +154,8 @@ class DateRangeInput extends StatefulWidget {
 class _DateRangeInputState extends State<DateRangeInput> {
   bool _focus = false;
   late TextEditingController controller;
+  DateTime minDate = DateTime(1900);
+  DateTime maxDate = DateTime(2100);
 
   @override
   void initState() {
@@ -150,6 +170,19 @@ class _DateRangeInputState extends State<DateRangeInput> {
                     widget.controllerEnd!.text
                 : widget.controllerStart!.text)
             : "");
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (widget.minDate != null && widget.minDate != "") {
+      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
+      minDate = minDate.copyWith(hour: 0, minute: 0);
+    }
+    if (widget.maxDate != null && widget.maxDate != "") {
+      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
+      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -171,12 +204,8 @@ class _DateRangeInputState extends State<DateRangeInput> {
                         widget.controllerEnd!.text != "")
                     ? DateFormat("dd/MM/yyyy").parse(widget.controllerEnd!.text)
                     : DateTime.now()),
-            firstDate: (widget.minDate != null)
-                ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
-                : DateTime(1900),
-            lastDate: (widget.maxDate != null)
-                ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
-                : DateTime(2100),
+            firstDate: minDate,
+            lastDate: maxDate,
             initialEntryMode: DatePickerEntryMode.calendarOnly,
             helpText: 'Chọn ngày',
             cancelText: 'Hủy',
@@ -266,6 +295,26 @@ class NewDateInput extends StatefulWidget {
 class _NewDateInputState extends State<NewDateInput> {
   bool _focus = false;
   String newDate = "";
+  DateTime minDate = DateTime(1900);
+  DateTime maxDate = DateTime(2100);
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (widget.minDate != null && widget.minDate != "") {
+      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
+      minDate = minDate.copyWith(hour: 0, minute: 0);
+    }
+    if (widget.maxDate != null && widget.maxDate != "") {
+      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
+      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -317,12 +366,8 @@ class _NewDateInputState extends State<NewDateInput> {
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
                       ),
-                      minDate: (widget.minDate != null)
-                          ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
-                          : DateTime(1900),
-                      maxDate: (widget.maxDate != null)
-                          ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
-                          : DateTime(2100),
+                      minDate: minDate,
+                      maxDate: maxDate,
                       initialSelectedDate: (widget.controller != null &&
                               widget.controller!.text != "")
                           ? DateFormat("dd/MM/yyyy")
@@ -412,6 +457,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   late TextEditingController controller;
   String newStartDate = "";
   String newEndDate = "";
+  DateTime minDate = DateTime(1900);
+  DateTime maxDate = DateTime(2100);
 
   @override
   void initState() {
@@ -426,6 +473,19 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     widget.controllerEnd!.text
                 : widget.controllerStart!.text)
             : "");
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (widget.minDate != null && widget.minDate != "") {
+      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
+      minDate = minDate.copyWith(hour: 0, minute: 0);
+    }
+    if (widget.maxDate != null && widget.maxDate != "") {
+      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
+      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -502,12 +562,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
                       ),
-                      minDate: (widget.minDate != null)
-                          ? DateFormat("dd/MM/yyyy").parse(widget.minDate!)
-                          : DateTime(1900),
-                      maxDate: (widget.maxDate != null)
-                          ? DateFormat("dd/MM/yyyy").parse(widget.maxDate!)
-                          : DateTime(2100),
+                      minDate: minDate,
+                      maxDate: maxDate,
                       initialSelectedRange: PickerDateRange(
                           (widget.controllerStart != null &&
                                   widget.controllerStart!.text != "")
