@@ -1,77 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-// cre: https://google.github.io/charts/flutter/example/bar_charts/grouped_fill_color.html
-
-/// Example of a grouped bar chart with three series, each rendered with
-/// different fill colors.
-class GroupedFillColorBarChart extends StatelessWidget {
-  final List<charts.Series<dynamic, String>> seriesList;
-  final bool animate;
-
-  GroupedFillColorBarChart(this.seriesList, {required this.animate});
-
-  factory GroupedFillColorBarChart.withData(List<KeyValue> inData,
-      List<KeyValue> outData, List<KeyValue> hospitalizeData) {
-    return new GroupedFillColorBarChart(
-      _createChart(inData, outData, hospitalizeData),
-      // Disable animations for image tests.
-      animate: true,
-    );
-  }
+class InOutChart extends StatelessWidget {
+  final List<KeyValue> inData;
+  final List<KeyValue> outData;
+  final List<KeyValue> hospitalizeData;
+  InOutChart({
+    required this.inData,
+    required this.outData,
+    required this.hospitalizeData,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return new charts.BarChart(
-      seriesList,
-      animate: animate,
-      // Configure a stroke width to enable borders on the bars.
-      // defaultRenderer: new charts.BarRendererConfig(
-      //     groupingType: charts.BarGroupingType.grouped, strokeWidthPx: 2.0),
-      behaviors: [
-        new charts.SeriesLegend(
-          desiredMaxColumns: Responsive.isMobileLayout(context) ? 2 : 3,
-          position: charts.BehaviorPosition.bottom,
-        )
-      ],
+    return SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      title: ChartTitle(text: "Thống kê người cách ly"),
+      primaryXAxis: CategoryAxis(
+        majorGridLines: const MajorGridLines(width: 0),
+      ),
+      primaryYAxis: NumericAxis(
+          minimum: 0,
+          axisLine: const AxisLine(width: 0),
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: _getDefaultColumn(),
+      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      tooltipBehavior: TooltipBehavior(enable: true),
     );
   }
 
-  /// Create series list with multiple series
-  static List<charts.Series<KeyValue, String>> _createChart(
-      List<KeyValue> inData,
-      List<KeyValue> outData,
-      List<KeyValue> hospitalizeData) {
-    return [
-      // Blue bars with a lighter center color.
-      new charts.Series<KeyValue, String>(
-        id: 'Mới cách ly',
-        domainFn: (KeyValue num, _) => num.id,
-        measureFn: (KeyValue num, _) => num.name,
-        data: inData,
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        fillColorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-      ),
-      // Hollow green bars.
-      new charts.Series<KeyValue, String>(
-        id: 'Đã hoàn thành cách ly',
-        domainFn: (KeyValue num, _) => num.id,
-        measureFn: (KeyValue num, _) => num.name,
-        data: outData,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        fillColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      ),
-      // Hollow green bars.
-      new charts.Series<KeyValue, String>(
-        id: 'Chuyển viện',
-        domainFn: (KeyValue num, _) => num.id,
-        measureFn: (KeyValue num, _) => num.name,
-        data: hospitalizeData,
-        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-        fillColorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-      ),
+  ///Get the column series
+  List<ColumnSeries<KeyValue, String>> _getDefaultColumn() {
+    return <ColumnSeries<KeyValue, String>>[
+      ColumnSeries<KeyValue, String>(
+          dataSource: inData,
+          color: Colors.red,
+          xValueMapper: (KeyValue sales, _) => sales.id as String,
+          yValueMapper: (KeyValue sales, _) => sales.name,
+          name: 'Mới cách ly'),
+      ColumnSeries<KeyValue, String>(
+          dataSource: outData,
+          color: Colors.blue,
+          xValueMapper: (KeyValue sales, _) => sales.id as String,
+          yValueMapper: (KeyValue sales, _) => sales.name,
+          name: 'Đã hoàn thành cách ly'),
+      ColumnSeries<KeyValue, String>(
+          dataSource: hospitalizeData,
+          color: Colors.yellow,
+          xValueMapper: (KeyValue sales, _) => sales.id as String,
+          yValueMapper: (KeyValue sales, _) => sales.name,
+          name: 'Chuyển viện')
     ];
   }
 }

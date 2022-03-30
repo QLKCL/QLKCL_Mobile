@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
+import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -10,8 +11,6 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:intl/intl.dart';
-
-import 'charts.dart';
 
 class InfoManagerHomePage extends StatelessWidget {
   final int totalUsers;
@@ -167,119 +166,105 @@ class InfoManagerHomePage extends StatelessWidget {
     var cellHeight = 128;
     var _aspectRatio = _width / cellHeight;
 
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          ResponsiveRowColumn(
-            layout: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
-                ? ResponsiveRowColumnType.COLUMN
-                : ResponsiveRowColumnType.ROW,
-            rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
-            rowCrossAxisAlignment: CrossAxisAlignment.end,
-            children: [
+    return Column(
+      children: [
+        ResponsiveRowColumn(
+          layout: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
+              ? ResponsiveRowColumnType.COLUMN
+              : ResponsiveRowColumnType.ROW,
+          rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+          rowCrossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ResponsiveRowColumnItem(
+              rowFlex: 4,
+              child: Container(
+                margin: EdgeInsets.only(left: 16),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Số liệu tổng quát (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+            ),
+            if (role < 3)
               ResponsiveRowColumnItem(
-                rowFlex: 4,
+                rowFlex: 6,
+                rowFit: FlexFit.loose,
                 child: Container(
-                  margin: EdgeInsets.only(left: 16),
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Số liệu tổng quát (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline6,
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
+                  width: _width < maxMobileSize ? _width + 100 : maxMobileSize,
+                  child: DropdownInput<KeyValue>(
+                    label: 'Khu cách ly',
+                    hint: 'Chọn khu cách ly',
+                    itemAsString: (KeyValue? u) => u!.name,
+                    itemValue: [KeyValue(name: "Toàn bộ", id: "")] +
+                        quarantineWardList,
+                    selectedItem: quarantineWardController.text == ""
+                        ? KeyValue(name: "Toàn bộ", id: "")
+                        : quarantineWardList.safeFirstWhere((type) =>
+                            type.id.toString() ==
+                            quarantineWardController.text),
+                    onFind: quarantineWardList.length == 0
+                        ? (String? filter) => fetchQuarantineWard({
+                              "page_size": PAGE_SIZE_MAX,
+                              "search": filter,
+                            })
+                        : null,
+                    compareFn: (item, selectedItem) =>
+                        item?.id == selectedItem?.id,
+                    onChanged: (value) {
+                      if (value == null) {
+                        quarantineWardController.text = "";
+                      } else {
+                        quarantineWardController.text = value.id.toString();
+                      }
+                      refresh();
+                    },
+                    // showClearButton: true,
+                    mode: Mode.MENU,
+                    maxHeight: 400,
+                    showSearchBox: true,
                   ),
                 ),
               ),
-              if (role < 3)
-                ResponsiveRowColumnItem(
-                  rowFlex: 6,
-                  rowFit: FlexFit.loose,
-                  child: Container(
-                    margin: EdgeInsets.zero,
-                    padding: EdgeInsets.zero,
-                    width:
-                        _width < maxMobileSize ? _width + 100 : maxMobileSize,
-                    child: DropdownInput<KeyValue>(
-                      label: 'Khu cách ly',
-                      hint: 'Chọn khu cách ly',
-                      itemAsString: (KeyValue? u) => u!.name,
-                      itemValue: [KeyValue(name: "Toàn bộ", id: "")] +
-                          quarantineWardList,
-                      selectedItem: quarantineWardController.text == ""
-                          ? KeyValue(name: "Toàn bộ", id: "")
-                          : quarantineWardList.safeFirstWhere((type) =>
-                              type.id.toString() ==
-                              quarantineWardController.text),
-                      onFind: quarantineWardList.length == 0
-                          ? (String? filter) => fetchQuarantineWard({
-                                "page_size": PAGE_SIZE_MAX,
-                                "search": filter,
-                              })
-                          : null,
-                      compareFn: (item, selectedItem) =>
-                          item?.id == selectedItem?.id,
-                      onChanged: (value) {
-                        if (value == null) {
-                          quarantineWardController.text = "";
-                        } else {
-                          quarantineWardController.text = value.id.toString();
-                        }
-                        refresh();
-                      },
-                      // showClearButton: true,
-                      mode: Mode.MENU,
-                      maxHeight: 400,
-                      showSearchBox: true,
-                    ),
-                  ),
-                ),
-            ],
+          ],
+        ),
+        if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+          ResponsiveGridView.builder(
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
+            gridDelegate: ResponsiveGridDelegate(
+              maxCrossAxisExtent: _width,
+              minCrossAxisExtent:
+                  _width < maxMobileSize ? _width : maxMobileSize,
+              childAspectRatio: _aspectRatio,
+            ),
+            itemCount: listTest.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return listTest[index];
+            },
           ),
-          if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
-            ResponsiveGridView.builder(
-              padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
-              gridDelegate: ResponsiveGridDelegate(
-                maxCrossAxisExtent: _width,
-                minCrossAxisExtent:
-                    _width < maxMobileSize ? _width : maxMobileSize,
-                childAspectRatio: _aspectRatio,
-              ),
-              itemCount: listTest.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return listTest[index];
-              },
-            ),
-          if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE))
-            ...listTest.map(
-              (e) => e,
-            ),
-          Container(
-            height: 400,
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Thống kê người cách ly",
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    Expanded(
-                      child: GroupedFillColorBarChart.withData(
-                          numberIn, numberOut, hospitalize),
-                    ),
-                  ],
-                ),
-              ),
+        if (!ResponsiveWrapper.of(context).isLargerThan(MOBILE))
+          ...listTest.map(
+            (e) => e,
+          ),
+        Container(
+          height: 400,
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: InOutChart(
+                  inData: numberIn,
+                  outData: numberOut,
+                  hospitalizeData: hospitalize),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
