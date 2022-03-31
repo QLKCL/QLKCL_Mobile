@@ -30,11 +30,8 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.id != null) {
-      futureQuarantine = fetchQuarantine(id: widget.id);
-    } else {
-      futureQuarantine = fetchQuarantine();
-    }
+    if ((widget.quarantineInfo != null))
+      futureQuarantine = fetchQuarantine(widget.id);
   }
 
   @override

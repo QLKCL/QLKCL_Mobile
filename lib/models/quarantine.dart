@@ -59,7 +59,7 @@ class Quarantine {
   final dynamic createdBy;
   final dynamic updatedBy;
   final int currentMem;
-  final int? capacity;
+  final int capacity;
   final String? image;
   final Pandemic? pandemic;
 
@@ -85,9 +85,11 @@ class Quarantine {
       createdBy: json["created_by"],
       updatedBy: json["updated_by"],
       currentMem: json["num_current_member"],
-      capacity: json["total_capacity"],
+      capacity: json["total_capacity"] ?? 0,
       image: json["image"],
-      pandemic: Pandemic.fromJson(json["pandemic"]));
+      pandemic: json["pandemic"] != null
+          ? Pandemic.fromJson(json["pandemic"])
+          : null);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -117,7 +119,7 @@ class Quarantine {
       };
 }
 
-Future<dynamic> fetchQuarantine({id}) async {
+Future<dynamic> fetchQuarantine(id) async {
   ApiHelper api = ApiHelper();
   final response = await api.getHTTP(Api.getQuarantine + '?id=' + id);
   return response["data"];

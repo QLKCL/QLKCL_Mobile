@@ -66,7 +66,8 @@ final Map<String, WidgetBuilder> routes = {
   DetailTest.routeName: (context) => DetailTest(code: "-1"),
   QuarantineListScreen.routeName: (context) => QuarantineListScreen(),
   NewQuarantine.routeName: (context) => NewQuarantine(),
-  QuarantineDetailScreen.routeName: (context) => QuarantineDetailScreen(),
+  QuarantineDetailScreen.routeName: (context) =>
+      QuarantineDetailScreen(id: "-1"),
   EditQuarantineScreen.routeName: (context) => EditQuarantineScreen(),
   BuildingListScreen.routeName: (context) => BuildingListScreen(),
   ListAllMember.routeName: (context) => ListAllMember(),

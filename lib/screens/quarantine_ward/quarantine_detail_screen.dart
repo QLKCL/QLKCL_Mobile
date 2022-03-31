@@ -8,9 +8,9 @@ import './component/quarantine_info.dart';
 
 class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
-  final String? id;
+  final String id;
 
-  QuarantineDetailScreen({Key? key, this.id}) : super(key: key);
+  QuarantineDetailScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   _QuarantineDetailScreenState createState() => _QuarantineDetailScreenState();
@@ -23,6 +23,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
   @override
   void initState() {
     super.initState();
+    futureQuarantine = fetchQuarantine(widget.id);
   }
 
   @override
@@ -32,13 +33,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.id != null) {
-      futureQuarantine = fetchQuarantine(id: widget.id);
-    } else {
-      futureQuarantine = fetchQuarantine();
-    }
-
-    //define appBar
     final appBar = AppBar(
       title: Text('Thông tin khu cách ly'),
       centerTitle: true,
@@ -53,7 +47,9 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   quarantineInfo: quarantineInfo,
                 ),
               ),
-            ).then((value) => setState(() {}));
+            ).then((value) => setState(() {
+                  futureQuarantine = fetchQuarantine(widget.id);
+                }));
           },
           icon: Icon(Icons.edit),
           tooltip: "Cập nhật",

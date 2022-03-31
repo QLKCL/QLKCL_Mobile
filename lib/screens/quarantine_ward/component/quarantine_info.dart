@@ -191,7 +191,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context,
                     Icons.medical_services_outlined,
                     ' Dịch bệnh cách ly: ' +
-                        (widget.quarantineInfo.pandemic?.name ?? "")),
+                        (widget.quarantineInfo.pandemic?.name ?? "Chưa có thông tin")),
                 buildInformation(
                     context,
                     Icons.history,

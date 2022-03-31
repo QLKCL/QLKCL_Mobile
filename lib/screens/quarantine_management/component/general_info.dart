@@ -96,10 +96,7 @@ class GeneralInfo extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              '${currentQuarantine.currentMem}' +
-                                  (currentQuarantine.capacity != null
-                                      ? '/${currentQuarantine.capacity}'
-                                      : '/0'),
+                              '${currentQuarantine.currentMem}/${currentQuarantine.capacity}',
                               style: const TextStyle(
                                 fontSize: 16,
                               ),
