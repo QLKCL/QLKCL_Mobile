@@ -536,13 +536,11 @@ class _QuarantineFormState extends State<QuarantineForm> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  CancelFunc cancel = showLoading();
                                   upLoadImages(
                                     _imageFileList,
                                     multi: true,
                                     type: "Quarantine_Ward",
                                   ).then((value) => setState(() {
-                                        cancel();
                                         imageList.addAll(value);
                                       }));
                                 },

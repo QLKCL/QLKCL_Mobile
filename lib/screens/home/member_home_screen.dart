@@ -470,7 +470,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                             ? (snapshot.data[
                                                                     'number_of_vaccine_doses'] +
                                                                 " mũi")
-                                                            : "Chưa có số liệu"),
+                                                            : "Chưa có dữ liệu"),
                                                   )
                                                 ],
                                               ),

@@ -181,7 +181,7 @@ class InfoManagerHomePage extends StatelessWidget {
                 margin: EdgeInsets.only(left: 16),
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Số liệu tổng quát (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
+                  "Dữ liệu tổng hợp (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.headline6,
                 ),

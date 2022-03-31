@@ -1,5 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 
 final cloudinary = CloudinaryPublic(
   'qlkcl',
@@ -25,11 +27,16 @@ Future<List<XFile>> selectImages(
 }) async {
   final ImagePicker _picker = new ImagePicker();
   List<XFile>? selectedImages = [];
-  if (multi == true) {
-    selectedImages = await _picker.pickMultiImage();
-  } else {
-    XFile? selectedImage = await _picker.pickImage(source: ImageSource.gallery);
-    selectedImages = selectedImage != null ? [selectedImage] : [];
+  try {
+    if (multi == true) {
+      selectedImages = await _picker.pickMultiImage();
+    } else {
+      XFile? selectedImage =
+          await _picker.pickImage(source: ImageSource.gallery);
+      selectedImages = selectedImage != null ? [selectedImage] : [];
+    }
+  } catch (error) {
+    print("error: $error");
   }
 
   if (selectedImages != null && selectedImages.isNotEmpty) {
@@ -47,6 +54,7 @@ Future<List<String>> upload(
   Map<String, dynamic>? context,
 }) async {
   try {
+    CancelFunc cancel = showLoading();
     List<CloudinaryResponse> response =
         await cloudinary.uploadFiles(_imageFileList
             .map(
@@ -57,6 +65,7 @@ Future<List<String>> upload(
               ),
             )
             .toList());
+    cancel();
     return response.map((e) => e.publicId).toList();
   } on CloudinaryException catch (e) {
     print(e.message);

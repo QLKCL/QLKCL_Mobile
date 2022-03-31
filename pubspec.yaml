@@ -42,7 +42,7 @@ dependencies:
   jwt_decode: ^0.3.1
   url_launcher: ^6.0.0-nullsafety.1
   dotted_border: ^2.0.0+1
-  image_picker: ^0.8.3+3
+  image_picker: ^0.8.4+11
   infinite_scroll_pagination: ^3.1.0
   # connectivity_plus: ^2.1.0
   onesignal_flutter: ^3.2.7
