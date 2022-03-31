@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 DestinationHistory destinationHistoryFromJson(String str) =>
     DestinationHistory.fromJson(json.decode(str));
@@ -124,4 +125,14 @@ Future<Response> updateDestiantionHistory(Map<String, dynamic> data) async {
       return Response(success: false, message: "Có lỗi xảy ra!");
     }
   }
+}
+
+Future<dynamic> getCityWithMembersPassBy({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(
+      Api.getCityWithMembersPassBy, data ?? {'page_size': PAGE_SIZE_MAX});
+
+  return response != null && response['data'] != null
+      ? response['data']['content']
+      : null;
 }

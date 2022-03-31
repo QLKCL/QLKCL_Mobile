@@ -26,7 +26,12 @@ class InOutChart extends StatelessWidget {
           majorTickLines: const MajorTickLines(size: 0)),
       series: _getDefaultColumn(),
       legend: Legend(isVisible: true, position: LegendPosition.bottom),
-      tooltipBehavior: TooltipBehavior(enable: true),
+      tooltipBehavior: TooltipBehavior(
+          enable: true,
+
+          /// To specify the tooltip position, whethter its auto or pointer.
+          tooltipPosition: TooltipPosition.pointer,
+          canShowMarker: false),
     );
   }
 
@@ -51,6 +56,58 @@ class InOutChart extends StatelessWidget {
           xValueMapper: (KeyValue sales, _) => sales.id as String,
           yValueMapper: (KeyValue sales, _) => sales.name,
           name: 'Chuyển viện')
+    ];
+  }
+}
+
+class DestiantionChart extends StatelessWidget {
+  final List<KeyValue> data;
+  DestiantionChart({
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SfCartesianChart(
+      plotAreaBorderWidth: 0,
+      title: ChartTitle(text: "Thống kê di chuyển"),
+      primaryXAxis: CategoryAxis(
+          isInversed: true,
+          majorGridLines: const MajorGridLines(width: 0),
+          interval: 1,
+          visibleMaximum: 15),
+      zoomPanBehavior: ZoomPanBehavior(
+        enablePanning: true,
+
+        // /// To enable the pinch zooming as true.
+        // enablePinching: true,
+        // zoomMode: ZoomMode.y
+      ),
+      primaryYAxis: NumericAxis(
+          minimum: 0,
+          axisLine: const AxisLine(width: 0),
+          majorTickLines: const MajorTickLines(size: 0)),
+      series: _getDefaultColumn(),
+      legend: Legend(isVisible: true, position: LegendPosition.bottom),
+      tooltipBehavior: TooltipBehavior(
+          enable: true,
+
+          /// To specify the tooltip position, whethter its auto or pointer.
+          tooltipPosition: TooltipPosition.pointer,
+          canShowMarker: false),
+    );
+  }
+
+  ///Get the column series
+  List<BarSeries<KeyValue, String>> _getDefaultColumn() {
+    return <BarSeries<KeyValue, String>>[
+      BarSeries<KeyValue, String>(
+        dataSource: data,
+        color: Colors.red,
+        xValueMapper: (KeyValue sales, _) => sales.id as String,
+        yValueMapper: (KeyValue sales, _) => sales.name,
+        name: 'Tỉnh, thành phố',
+      ),
     ];
   }
 }

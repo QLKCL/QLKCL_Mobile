@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:qlkcl/models/destination_history.dart';
+import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -42,6 +44,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   bool _showFab = true;
 
   late Future<dynamic> futureData;
+  late Future<dynamic> futurePassBy;
 
   var renderOverlay = false;
   var useRAnimation = true;
@@ -54,6 +57,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     super.initState();
     futureData = fetch();
+    futurePassBy = getCityWithMembersPassBy();
     notifications.fetchUserNotificationList(
         data: {'page_size': PAGE_SIZE_MAX}).then((value) {
       if (this.mounted)
@@ -228,94 +232,77 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             onRefresh: () => Future.sync(() {
               setState(() {
                 futureData = fetch();
+                futurePassBy = getCityWithMembersPassBy();
               });
             }),
-            child: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  FutureBuilder<dynamic>(
-                    future: futureData,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        int numberDays = ResponsiveWrapper.of(context)
-                                .isSmallerThan(MOBILE)
-                            ? 4
-                            : ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                                ? 12
-                                : 6;
-                        return InfoManagerHomePage(
-                          totalUsers: snapshot
-                              .data['number_of_all_members_past_and_now'],
-                          availableSlots:
-                              snapshot.data['number_of_available_slots'],
-                          activeUsers:
-                              snapshot.data['number_of_quarantining_members'],
-                          waitingUsers:
-                              snapshot.data['number_of_waiting_members'],
-                          suspectedUsers:
-                              snapshot.data['number_of_suspected_members'],
-                          needTestUsers:
-                              snapshot.data['number_of_need_test_members'],
-                          canFinishUsers:
-                              snapshot.data['number_of_can_finish_members'],
-                          waitingTests:
-                              snapshot.data['number_of_waiting_tests'],
-                          positiveUsers:
-                              snapshot.data['number_of_positive_members'],
-                          hospitalizedUsers:
-                              snapshot.data['number_of_hospitalized_members'],
-                          numberIn: snapshot.data['in'].entries
-                              .map((entry) => KeyValue(
-                                  id: DateFormat("dd/MM/yyyy")
-                                      .format(DateTime.parse(entry.key)),
-                                  name: entry.value))
-                              .toList()
-                              .cast<KeyValue>()
-                              .reversed
-                              .take(numberDays)
-                              .toList()
-                              .reversed
-                              .toList(),
-                          numberOut: snapshot.data['out'].entries
-                              .map((entry) => KeyValue(
-                                  id: DateFormat("dd/MM/yyyy")
-                                      .format(DateTime.parse(entry.key)),
-                                  name: entry.value))
-                              .toList()
-                              .cast<KeyValue>()
-                              .reversed
-                              .take(numberDays)
-                              .toList()
-                              .reversed
-                              .toList(),
-                          hospitalize: snapshot.data['hospitalize'].entries
-                              .map((entry) => KeyValue(
-                                  id: DateFormat("dd/MM/yyyy")
-                                      .format(DateTime.parse(entry.key)),
-                                  name: entry.value))
-                              .toList()
-                              .cast<KeyValue>()
-                              .reversed
-                              .take(numberDays)
-                              .toList()
-                              .reversed
-                              .toList(),
-                          quarantineWardList: quarantineWardList,
-                          quarantineWardController: quarantineWardController,
-                          refresh: () {
-                            setState(() {
-                              futureData = fetch();
-                            });
-                          },
-                          role: widget.role,
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-
-                      // By default, show a loading spinner.
-                      // return const CircularProgressIndicator();
+            child: ListView(
+              children: <Widget>[
+                FutureBuilder<dynamic>(
+                  future: futureData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      int numberDays = ResponsiveWrapper.of(context)
+                              .isSmallerThan(MOBILE)
+                          ? 4
+                          : ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                              ? 12
+                              : 6;
                       return InfoManagerHomePage(
+                        totalUsers:
+                            snapshot.data['number_of_all_members_past_and_now'],
+                        availableSlots:
+                            snapshot.data['number_of_available_slots'],
+                        activeUsers:
+                            snapshot.data['number_of_quarantining_members'],
+                        waitingUsers:
+                            snapshot.data['number_of_waiting_members'],
+                        suspectedUsers:
+                            snapshot.data['number_of_suspected_members'],
+                        needTestUsers:
+                            snapshot.data['number_of_need_test_members'],
+                        canFinishUsers:
+                            snapshot.data['number_of_can_finish_members'],
+                        waitingTests: snapshot.data['number_of_waiting_tests'],
+                        positiveUsers:
+                            snapshot.data['number_of_positive_members'],
+                        hospitalizedUsers:
+                            snapshot.data['number_of_hospitalized_members'],
+                        numberIn: snapshot.data['in'].entries
+                            .map((entry) => KeyValue(
+                                id: DateFormat("dd/MM/yyyy")
+                                    .format(DateTime.parse(entry.key)),
+                                name: entry.value))
+                            .toList()
+                            .cast<KeyValue>()
+                            .reversed
+                            .take(numberDays)
+                            .toList()
+                            .reversed
+                            .toList(),
+                        numberOut: snapshot.data['out'].entries
+                            .map((entry) => KeyValue(
+                                id: DateFormat("dd/MM/yyyy")
+                                    .format(DateTime.parse(entry.key)),
+                                name: entry.value))
+                            .toList()
+                            .cast<KeyValue>()
+                            .reversed
+                            .take(numberDays)
+                            .toList()
+                            .reversed
+                            .toList(),
+                        hospitalize: snapshot.data['hospitalize'].entries
+                            .map((entry) => KeyValue(
+                                id: DateFormat("dd/MM/yyyy")
+                                    .format(DateTime.parse(entry.key)),
+                                name: entry.value))
+                            .toList()
+                            .cast<KeyValue>()
+                            .reversed
+                            .take(numberDays)
+                            .toList()
+                            .reversed
+                            .toList(),
                         quarantineWardList: quarantineWardList,
                         quarantineWardController: quarantineWardController,
                         refresh: () {
@@ -325,10 +312,62 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         },
                         role: widget.role,
                       );
-                    },
-                  ),
-                ],
-              ),
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    // By default, show a loading spinner.
+                    // return const CircularProgressIndicator();
+                    return InfoManagerHomePage(
+                      quarantineWardList: quarantineWardList,
+                      quarantineWardController: quarantineWardController,
+                      refresh: () {
+                        setState(() {
+                          futureData = fetch();
+                        });
+                      },
+                      role: widget.role,
+                    );
+                  },
+                ),
+                FutureBuilder<dynamic>(
+                  future: futurePassBy,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(
+                        height: 800,
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DestiantionChart(
+                              data: snapshot.data
+                                  .map((entry) => KeyValue(
+                                      id: entry['city']['name'],
+                                      name: entry['num_of_members_pass_by']))
+                                  .toList()
+                                  .cast<KeyValue>(),
+                            ),
+                          ),
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('${snapshot.error}');
+                    }
+
+                    return Container(
+                      height: 400,
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: DestiantionChart(data: []),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),

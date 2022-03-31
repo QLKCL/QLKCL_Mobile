@@ -17,6 +17,7 @@ class Api {
 
   static const String homeManager = '/api/user/home/manager';
   static const String homeMember = '/api/user/home/member';
+  static const String getCityWithMembersPassBy = '/api/user/home/filter_city_with_num_of_members_pass_by';
 
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';
