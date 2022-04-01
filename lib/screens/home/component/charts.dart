@@ -22,6 +22,8 @@ class InOutChart extends StatelessWidget {
           labelIntersectAction: AxisLabelIntersectAction.rotate45),
       primaryYAxis: NumericAxis(
         minimum: 0,
+        interval: 1,
+        // desiredIntervals: 1,
         axisLine: const AxisLine(width: 0),
         majorTickLines: const MajorTickLines(size: 0),
       ),
@@ -33,7 +35,7 @@ class InOutChart extends StatelessWidget {
         /// To specify the tooltip position, whethter its auto or pointer.
         tooltipPosition: TooltipPosition.pointer,
         canShowMarker: true,
-        ),
+      ),
     );
   }
 
@@ -106,7 +108,8 @@ class DestiantionChart extends StatelessWidget {
       ),
       primaryYAxis: NumericAxis(
         minimum: 0,
-        labelFormat: '{value}%',
+        interval: 1,
+        // labelFormat: '{value}%',
         axisLine: const AxisLine(width: 0),
         majorTickLines: const MajorTickLines(size: 0),
       ),
@@ -130,7 +133,7 @@ class DestiantionChart extends StatelessWidget {
         color: Colors.red,
         xValueMapper: (KeyValue sales, _) => sales.id as String,
         yValueMapper: (KeyValue sales, _) => sales.name,
-        name: 'Tỉnh, thành phố',
+        name: 'Số người',
         // dataLabelSettings: const DataLabelSettings(
         //   isVisible: true,
         //   labelAlignment: ChartDataLabelAlignment.top,

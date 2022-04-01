@@ -334,18 +334,18 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   future: futurePassBy,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      int sum = snapshot.data!.sumBy((e) => e.name).toInt();
-                      List<KeyValue> data = snapshot.data!
-                          .map((e) =>
-                              KeyValue(id: e.id, name: (e.name * 100 / sum)))
-                          .toList();
+                      // int sum = snapshot.data!.sumBy((e) => e.name).toInt();
+                      // List<KeyValue> data = snapshot.data!
+                      //     .map((e) =>
+                      //         KeyValue(id: e.id, name: (e.name * 100 / sum)))
+                      //     .toList();
                       return Container(
                         height: 600,
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Card(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: DestiantionChart(data: data),
+                            child: DestiantionChart(data: snapshot.data!),
                           ),
                         ),
                       );
