@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/destination_history.dart';
 import 'package:qlkcl/screens/destination_history/destination_history_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -133,17 +134,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                     (item['end_time'] != null
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['end_time']).toLocal())}"
                         : ""),
-                address: (item['detail_address'] != null
-                        ? "${item['detail_address']}, "
-                        : "") +
-                    (item['ward'] != null ? "${item['ward']['name']}, " : "") +
-                    (item['district'] != null
-                        ? "${item['district']['name']}, "
-                        : "") +
-                    (item['city'] != null ? "${item['city']['name']}, " : "") +
-                    (item['country'] != null
-                        ? "${item['country']['name']}"
-                        : ""),
+                address: getAddress(item),
                 note: item['note'],
               ),
             ),

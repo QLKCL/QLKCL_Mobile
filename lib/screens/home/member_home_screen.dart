@@ -494,40 +494,9 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   ? snapshot.data['quarantine_ward']
                                       ['main_manager']['full_name']
                                   : "",
-                              address: snapshot.data['quarantine_ward'] != null
-                                  ? (snapshot.data['quarantine_ward']
-                                                  ['address'] !=
-                                              null
-                                          ? "${snapshot.data['quarantine_ward']['address']}, "
-                                          : "") +
-                                      (snapshot.data['quarantine_ward']
-                                                  ['ward'] !=
-                                              null
-                                          ? "${snapshot.data['quarantine_ward']['ward']['name']}, "
-                                          : "") +
-                                      (snapshot.data['quarantine_ward']
-                                                  ['district'] !=
-                                              null
-                                          ? "${snapshot.data['quarantine_ward']['district']['name']}, "
-                                          : "") +
-                                      (snapshot.data['quarantine_ward']
-                                                  ['city'] !=
-                                              null
-                                          ? "${snapshot.data['quarantine_ward']['city']['name']}"
-                                          : "")
-                                  : "",
-                              room: (snapshot.data['quarantine_room'] != null
-                                      ? "${snapshot.data['quarantine_room']['name']} - "
-                                      : "") +
-                                  (snapshot.data['quarantine_floor'] != null
-                                      ? "${snapshot.data['quarantine_floor']['name']} - "
-                                      : "") +
-                                  (snapshot.data['quarantine_building'] != null
-                                      ? "${snapshot.data['quarantine_building']['name']} - "
-                                      : "") +
-                                  (snapshot.data['quarantine_ward'] != null
-                                      ? "${snapshot.data['quarantine_ward']['full_name']}"
-                                      : ""),
+                              address:
+                                  getAddress(snapshot.data['quarantine_ward']),
+                              room: getRoom(snapshot.data),
                               phone: snapshot.data['quarantine_ward'] != null &&
                                       snapshot.data['quarantine_ward']
                                               ['phone_number'] !=

@@ -183,3 +183,42 @@ class Responsive extends StatelessWidget {
     }
   }
 }
+
+String getAddress(data) {
+  if (data != null) {
+    String address = (data['detail_address'] != null
+        ? "${data['detail_address']}, "
+        : (data['address']) != null
+            ? "${data['address']}, "
+            : "");
+    String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
+    String district =
+        data['district'] != null ? "${data['district']['name']}, " : "";
+    String city = data['city'] != null ? "${data['city']['name']}, " : "";
+    String country =
+        data['country'] != null ? "${data['country']['name']}" : "";
+    return address + ward + district + city + country;
+  } else {
+    return "";
+  }
+}
+
+String getRoom(data) {
+  if (data != null) {
+    String room = data['quarantine_room'] != null
+        ? "${data['quarantine_room']['name']}, "
+        : "";
+    String floor = data['quarantine_floor'] != null
+        ? "${data['quarantine_floor']['name']}, "
+        : "";
+    String building = data['quarantine_building'] != null
+        ? "${data['quarantine_building']['name']}, "
+        : "";
+    String ward = data['quarantine_ward'] != null
+        ? "${data['quarantine_ward']['full_name']}"
+        : "";
+    return room + floor + building + ward;
+  } else {
+    return "";
+  }
+}

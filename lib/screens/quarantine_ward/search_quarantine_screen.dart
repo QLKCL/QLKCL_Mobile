@@ -225,18 +225,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       name: item['full_name'] ?? "",
                       currentMem: item['num_current_member'],
                       manager: item['main_manager']['full_name'] ?? "",
-                      address: (item['address'] != null
-                              ? "${item['address']}, "
-                              : "") +
-                          (item['ward'] != null
-                              ? "${item['ward']['name']}, "
-                              : "") +
-                          (item['district'] != null
-                              ? "${item['district']['name']}, "
-                              : "") +
-                          (item['city'] != null
-                              ? "${item['city']['name']}"
-                              : ""),
+                      address: getAddress(item),
                     ),
                   ),
                 ),

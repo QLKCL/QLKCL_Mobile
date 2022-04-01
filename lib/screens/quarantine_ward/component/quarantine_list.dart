@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -94,12 +95,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
             name: item['full_name'] ?? "",
             currentMem: item['num_current_member'],
             manager: item['main_manager']['full_name'] ?? "",
-            address: (item['address'] != null ? "${item['address']}, " : "") +
-                (item['ward'] != null ? "${item['ward']['name']}, " : "") +
-                (item['district'] != null
-                    ? "${item['district']['name']}, "
-                    : "") +
-                (item['city'] != null ? "${item['city']['name']}" : ""),
+            address: getAddress(item),
             image: item['image'],
           ),
         ),
