@@ -38,9 +38,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
       margin: EdgeInsets.only(bottom: 8),
       child: Text.rich(
         TextSpan(
-          style: TextStyle(
-            fontSize: 14,
-          ),
           children: [
             WidgetSpan(
               child: Icon(

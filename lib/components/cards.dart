@@ -46,49 +46,17 @@ class MedicalDeclarationCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Thời gian: " + time,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          title: "Thời gian",
+                          content: time),
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.description_outlined,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Tình trạng: " + status,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.description_outlined,
+                          title: "Tình trạng",
+                          content: status),
                     ],
                   ),
                 ),
@@ -141,49 +109,17 @@ class TestCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Thời gian: " + time,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          title: "Thời gian",
+                          content: time),
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.description_outlined,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Kết quả: " + status,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.description_outlined,
+                          title: "Kết quả",
+                          content: status),
                     ],
                   ),
                 ),
@@ -316,51 +252,14 @@ class TestNoResultCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.qr_code,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " " + code,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(icon: Icons.qr_code, content: code),
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " " +
-                                  DateFormat("dd/MM/yyyy HH:mm:ss")
-                                      .format(DateTime.parse(time).toLocal()),
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          content: DateFormat("dd/MM/yyyy HH:mm:ss")
+                              .format(DateTime.parse(time).toLocal())),
                     ],
                   ),
                 ),
@@ -559,39 +458,21 @@ class _MemberCardState extends State<MemberCard> {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " " +
-                                  (widget.member.positiveTestNow != null
-                                      ? (widget.member.positiveTestNow!
-                                          ? "Dương tính"
-                                          : "Âm tính")
-                                      : "Chưa có kết quả xét nghiệm") +
-                                  (widget.member.lastTestedHadResult != null
-                                      ? " (" +
-                                          DateFormat("dd/MM/yyyy HH:mm:ss")
-                                              .format(DateTime.parse(widget
-                                                      .member
-                                                      .lastTestedHadResult!)
-                                                  .toLocal()) +
-                                          ")"
-                                      : ""),
-                            )
-                          ],
-                        ),
+                      cardLine(
+                        icon: Icons.history,
+                        content: (widget.member.positiveTestNow != null
+                            ? (widget.member.positiveTestNow!
+                                    ? "Dương tính"
+                                    : "Âm tính") +
+                                (widget.member.lastTestedHadResult != null
+                                    ? " (" +
+                                        DateFormat("dd/MM/yyyy HH:mm:ss")
+                                            .format(DateTime.parse(widget.member
+                                                    .lastTestedHadResult!)
+                                                .toLocal()) +
+                                        ")"
+                                    : "")
+                            : "Chưa có kết quả xét nghiệm"),
                       ),
                     ],
                   ),
@@ -749,51 +630,17 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     SizedBox(
                       height: 8,
                     ),
-                    //subtitle and icon
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          color: CustomColors.disableText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.groups_rounded,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Đang cách ly: " +
-                                widget.currentMem.toString(),
-                          ),
-                        ],
-                      ),
-                    ),
+                    cardLine(
+                        icon: Icons.groups_rounded,
+                        title: "Đang cách ly",
+                        content: widget.currentMem.toString()),
                     SizedBox(
                       height: 4,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          color: CustomColors.disableText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.account_box_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Quản lý: " + widget.manager,
-                          ),
-                        ],
-                      ),
-                    ),
+                    cardLine(
+                        icon: Icons.account_box_outlined,
+                        title: "Quản lý",
+                        content: widget.manager),
                     SizedBox(
                       height: 4,
                     ),
@@ -883,149 +730,58 @@ class QuarantineHome extends StatelessWidget {
                     SizedBox(
                       height: 8,
                     ),
-                    //subtitle and icon
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.phone,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Liên hệ: " + phone,
-                          ),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.phone,
+                      title: "Liên hệ",
+                      content: phone,
+                      textColor: CustomColors.primaryText,
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.account_box_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Quản lý: " + manager,
-                          ),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.account_box_outlined,
+                      title: "Quản lý",
+                      content: manager,
+                      textColor: CustomColors.primaryText,
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.date_range_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                              text: " Bắt đầu cách ly: " +
-                                  DateFormat("dd/MM/yyyy")
-                                      .format(DateTime.parse(quarantineAt))),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.date_range_outlined,
+                      title: "Bắt đầu cách ly",
+                      content: DateFormat("dd/MM/yyyy")
+                          .format(DateTime.parse(quarantineAt)),
+                      textColor: CustomColors.primaryText,
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.date_range_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                              text: " Dự kiến hoàn thành cách ly: " +
-                                  DateFormat("dd/MM/yyyy").format(
-                                      DateTime.parse(quarantineFinishExpect))),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.date_range_outlined,
+                      title: "Dự kiến hoàn thành cách ly",
+                      content: DateFormat("dd/MM/yyyy")
+                          .format(DateTime.parse(quarantineFinishExpect)),
+                      textColor: CustomColors.primaryText,
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.maps_home_work_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Phòng cách ly: " + room,
-                          ),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.maps_home_work_outlined,
+                      title: "Phòng cách ly",
+                      content: room,
+                      textColor: CustomColors.primaryText,
                     ),
                     SizedBox(
                       height: 8,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: CustomColors.primaryText,
-                        ),
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.middle,
-                            child: Icon(
-                              Icons.place_outlined,
-                              size: 16,
-                              color: CustomColors.disableText,
-                            ),
-                          ),
-                          TextSpan(
-                            text: " Địa chỉ: " + address,
-                          ),
-                        ],
-                      ),
+                    cardLine(
+                      icon: Icons.place_outlined,
+                      title: "Địa chỉ",
+                      content: address,
+                      textColor: CustomColors.primaryText,
                     ),
                   ],
                 ),
@@ -1187,26 +943,10 @@ class VaccineDoseCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Thời gian: " + time,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          title: "Thời gian",
+                          content: time),
                       // SizedBox(
                       //   height: 4,
                       // ),
@@ -1248,14 +988,14 @@ class DestinationHistoryCard extends StatelessWidget {
   final String name;
   final String time;
   final String address;
-  final String? note;
+  final String note;
   final Widget? menus;
   const DestinationHistoryCard({
     required this.name,
     this.onTap,
     required this.time,
     required this.address,
-    this.note,
+    this.note = "",
     this.menus,
   });
 
@@ -1285,72 +1025,24 @@ class DestinationHistoryCard extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Thời gian: " + time,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          title: "Thời gian",
+                          content: time),
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.location_on_outlined,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Địa điểm: " + address,
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.location_on_outlined,
+                          title: "Địa điểm",
+                          content: address),
                       SizedBox(
                         height: 4,
                       ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.note_outlined,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " Ghi chú: " + (note ?? ""),
-                            )
-                          ],
-                        ),
-                      ),
+                      cardLine(
+                          icon: Icons.note_outlined,
+                          title: "Ghi chú",
+                          content: note),
                     ],
                   ),
                 ),
@@ -1362,4 +1054,32 @@ class DestinationHistoryCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget cardLine(
+    {IconData? icon,
+    String? title,
+    required String content,
+    Color? textColor}) {
+  return Text.rich(
+    TextSpan(
+      style: TextStyle(
+        color: textColor ?? CustomColors.disableText,
+      ),
+      children: [
+        if (icon != null)
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Icon(
+              icon,
+              size: 16,
+              color: CustomColors.disableText,
+            ),
+          ),
+        TextSpan(
+          text: title != null ? " $title: $content" : " $content",
+        )
+      ],
+    ),
+  );
 }

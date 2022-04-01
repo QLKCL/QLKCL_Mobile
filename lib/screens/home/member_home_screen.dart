@@ -359,121 +359,63 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                             SizedBox(
                                               height: 8,
                                             ),
-                                            Text.rich(
-                                              TextSpan(
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color:
-                                                      CustomColors.primaryText,
-                                                ),
-                                                children: [
-                                                  WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .middle,
-                                                    child: Icon(
-                                                      Icons.history,
-                                                      size: 16,
-                                                      color: CustomColors
-                                                          .disableText,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: " Sức khỏe: " +
-                                                        (snapshot.data[
-                                                                    'health_status'] ==
-                                                                "SERIOUS"
-                                                            ? "Nguy hiểm"
-                                                            : (snapshot.data[
-                                                                        'health_status'] ==
-                                                                    "UNWELL"
-                                                                ? "Nghi nhiễm"
-                                                                : "Bình thường")),
-                                                  )
-                                                ],
-                                              ),
+                                            cardLine(
+                                              icon: Icons.history,
+                                              title: "Sức khỏe",
+                                              content: snapshot.data[
+                                                          'health_status'] ==
+                                                      "SERIOUS"
+                                                  ? "Nguy hiểm"
+                                                  : (snapshot.data[
+                                                              'health_status'] ==
+                                                          "UNWELL"
+                                                      ? "Nghi nhiễm"
+                                                      : "Bình thường"),
+                                              textColor:
+                                                  CustomColors.primaryText,
                                             ),
                                             SizedBox(
                                               height: 8,
                                             ),
-                                            Text.rich(
-                                              TextSpan(
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color:
-                                                      CustomColors.primaryText,
-                                                ),
-                                                children: [
-                                                  WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .middle,
-                                                    child: Icon(
-                                                      Icons
-                                                          .description_outlined,
-                                                      size: 16,
-                                                      color: CustomColors
-                                                          .disableText,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: " Xét nghiệm: " +
-                                                        (snapshot.data[
-                                                                    'positive_test_now'] !=
-                                                                null
-                                                            ? ((snapshot.data[
-                                                                            'positive_test_now'] ==
-                                                                        false
-                                                                    ? "Âm tính"
-                                                                    : "Dương tính") +
-                                                                (snapshot.data[
-                                                                            'last_tested_had_result'] !=
-                                                                        null
-                                                                    ? " (" +
-                                                                        DateFormat("dd/MM/yyyy HH:mm:ss")
-                                                                            .format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal()) +
-                                                                        ")"
-                                                                    : "") +
-                                                                "")
-                                                            : "Chưa có kết quả xét nghiệm"),
-                                                  )
-                                                ],
-                                              ),
+                                            cardLine(
+                                              icon: Icons.description_outlined,
+                                              title: "Xét nghiệm",
+                                              content: snapshot.data[
+                                                          'positive_test_now'] !=
+                                                      null
+                                                  ? ((snapshot.data['positive_test_now'] ==
+                                                              false
+                                                          ? "Âm tính"
+                                                          : "Dương tính") +
+                                                      (snapshot.data[
+                                                                  'last_tested_had_result'] !=
+                                                              null
+                                                          ? " (" +
+                                                              DateFormat(
+                                                                      "dd/MM/yyyy HH:mm:ss")
+                                                                  .format(DateTime.parse(
+                                                                          snapshot
+                                                                              .data['last_tested_had_result'])
+                                                                      .toLocal()) +
+                                                              ")"
+                                                          : "") +
+                                                      "")
+                                                  : "Chưa có kết quả xét nghiệm",
+                                              textColor:
+                                                  CustomColors.primaryText,
                                             ),
                                             SizedBox(
                                               height: 8,
                                             ),
-                                            Text.rich(
-                                              TextSpan(
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                  color:
-                                                      CustomColors.primaryText,
-                                                ),
-                                                children: [
-                                                  WidgetSpan(
-                                                    alignment:
-                                                        PlaceholderAlignment
-                                                            .middle,
-                                                    child: Icon(
-                                                      Icons.vaccines_outlined,
-                                                      size: 16,
-                                                      color: CustomColors
-                                                          .disableText,
-                                                    ),
-                                                  ),
-                                                  TextSpan(
-                                                    text: " Số mũi vaccine: " +
-                                                        (snapshot.data[
-                                                                    'number_of_vaccine_doses'] !=
-                                                                null
-                                                            ? (snapshot.data[
-                                                                    'number_of_vaccine_doses'] +
-                                                                " mũi")
-                                                            : "Chưa có dữ liệu"),
-                                                  )
-                                                ],
-                                              ),
+                                            cardLine(
+                                              icon: Icons.vaccines_outlined,
+                                              title: "Số mũi vaccine",
+                                              content: (snapshot.data[
+                                                          'number_of_vaccine_doses'] +
+                                                      " mũi") ??
+                                                  "Chưa có dữ liệu",
+                                              textColor:
+                                                  CustomColors.primaryText,
                                             ),
                                           ],
                                         ),
