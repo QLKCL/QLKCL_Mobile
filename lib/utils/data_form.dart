@@ -564,3 +564,28 @@ Map<String, dynamic> createDestiantionHistoryDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> getAddressWithMembersPassByDataForm({
+  required String addressType,
+  String? fatherAddressId,
+  String? quarantineWardId,
+  String? startTimeMin,
+  String? startTimeMax,
+  String? page,
+  String? pageSize,
+  String? orderBy,
+  String? search,
+}) {
+  var data = {
+    "address_type": addressType,
+    "father_address_id": fatherAddressId,
+    "quarantine_ward_id": quarantineWardId,
+    "start_time_min": startTimeMin,
+    "start_time_max": startTimeMax,
+    "page": page,
+    "page_size": pageSize ?? 0,
+    "order_by": orderBy,
+    "search": search
+  };
+  return prepareDataForm(data);
+}

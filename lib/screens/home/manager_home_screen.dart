@@ -20,6 +20,7 @@ import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:badges/badges.dart';
+import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 // cre: https://pub.dev/packages/flutter_speed_dial/example
@@ -57,7 +58,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   void initState() {
     super.initState();
     futureData = fetch();
-    futurePassBy = getCityWithMembersPassBy();
+    futurePassBy =
+        getAddressWithMembersPassBy(getAddressWithMembersPassByDataForm(
+      addressType: "city",
+    ));
     notifications.fetchUserNotificationList(
         data: {'page_size': PAGE_SIZE_MAX}).then((value) {
       if (this.mounted)
@@ -232,7 +236,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             onRefresh: () => Future.sync(() {
               setState(() {
                 futureData = fetch();
-                futurePassBy = getCityWithMembersPassBy();
+                futurePassBy = getAddressWithMembersPassBy(
+                    getAddressWithMembersPassByDataForm(
+                  addressType: "city",
+                ));
               });
             }),
             child: ListView(

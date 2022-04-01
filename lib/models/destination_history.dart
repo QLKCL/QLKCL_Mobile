@@ -127,15 +127,15 @@ Future<Response> updateDestiantionHistory(Map<String, dynamic> data) async {
   }
 }
 
-Future<List<KeyValue>> getCityWithMembersPassBy({data}) async {
+Future<List<KeyValue>> getAddressWithMembersPassBy(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(
-      Api.getCityWithMembersPassBy, data ?? {'page_size': PAGE_SIZE_MAX});
+  final response = await api.postHTTP(Api.getAddressWithMembersPassBy, data);
 
   return response != null && response['data'] != null
       ? response['data']['content']
           .map<KeyValue>((e) => KeyValue(
-              id: e['city']['name'], name: e['num_of_members_pass_by']))
+              id: KeyValue.fromJson(e['city']),
+              name: e['num_of_members_pass_by']))
           .toList()
           .cast<KeyValue>()
       : [];

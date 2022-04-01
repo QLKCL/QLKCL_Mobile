@@ -16,6 +16,7 @@ class InOutChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
+      enableAxisAnimation: true,
       title: ChartTitle(text: "Thống kê người cách ly"),
       primaryXAxis: CategoryAxis(
           majorGridLines: const MajorGridLines(width: 0),
@@ -92,6 +93,7 @@ class DestiantionChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
+      enableAxisAnimation: true,
       title: ChartTitle(text: "Thống kê di chuyển"),
       primaryXAxis: CategoryAxis(
         isInversed: true,
@@ -122,6 +124,13 @@ class DestiantionChart extends StatelessWidget {
         tooltipPosition: TooltipPosition.pointer,
         canShowMarker: true,
       ),
+      // onAxisLabelTapped: (AxisLabelTapArgs args) {
+      //   Navigator.of(context,
+      //           rootNavigator: !Responsive.isDesktopLayout(context))
+      //       .push(
+      //     MaterialPageRoute(builder: (context) => Container()),
+      //   );
+      // },
     );
   }
 
@@ -131,7 +140,7 @@ class DestiantionChart extends StatelessWidget {
       BarSeries<KeyValue, String>(
         dataSource: data,
         color: Colors.red,
-        xValueMapper: (KeyValue sales, _) => sales.id as String,
+        xValueMapper: (KeyValue sales, _) => sales.id.name as String,
         yValueMapper: (KeyValue sales, _) => sales.name,
         name: 'Số người',
         // dataLabelSettings: const DataLabelSettings(
