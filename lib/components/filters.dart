@@ -682,6 +682,7 @@ Future quarantineFilter(
                 mainManagerController.text = value.id.toString();
               }
             },
+            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
             itemAsString: (KeyValue? u) => u!.name,
             showSearchBox: true,
             mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)

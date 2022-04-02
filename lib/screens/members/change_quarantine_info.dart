@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
@@ -9,6 +10,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class ChangeQuanrantineInfo extends StatefulWidget {
   static const String routeName = "/change_room_member";
@@ -146,6 +148,16 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                           quarantineBuildingList = data;
                         }));
                   },
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Khu cách ly',
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Tòa mới',
@@ -188,6 +200,16 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                           quarantineFloorList = data;
                         }));
                   },
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Tòa',
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Tầng mới',
@@ -226,6 +248,16 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                           quarantineRoomList = data;
                         }));
                   },
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Tầng',
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Phòng mới',
@@ -255,6 +287,16 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       }
                     });
                   },
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Phòng',
                 ),
                 Container(
                     margin: const EdgeInsets.all(16),

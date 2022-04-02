@@ -1,4 +1,5 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
@@ -9,6 +10,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/notification.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateRequest extends StatefulWidget {
   static const String routeName = "/create_request";
@@ -80,6 +82,16 @@ class _CreateRequestState extends State<CreateRequest> {
                     itemAsString: (KeyValue? u) => u!.name,
                     compareFn: (item, selectedItem) =>
                         item?.id == selectedItem?.id,
+                    showSearchBox: true,
+                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                        ? Mode.DIALOG
+                        : Mode.BOTTOM_SHEET,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        100,
+                    popupTitle: 'Người nhận',
                   ),
                   Input(
                     label: 'Tiêu đề',

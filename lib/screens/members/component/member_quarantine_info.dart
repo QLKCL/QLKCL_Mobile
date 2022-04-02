@@ -235,7 +235,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               },
               enabled:
                   (widget.mode == Permission.add && _role != 5) ? true : false,
-              // showSearchBox: true,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Khu cách ly',
             ),
             DropdownInput<KeyValue>(
               label: 'Tòa',
@@ -285,7 +294,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               },
               enabled:
                   (widget.mode != Permission.view && _role != 5) ? true : false,
-              // showSearchBox: true,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Tòa',
             ),
             DropdownInput<KeyValue>(
               label: 'Tầng',
@@ -333,7 +351,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               },
               enabled:
                   (widget.mode != Permission.view && _role != 5) ? true : false,
-              // showSearchBox: true,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Tầng',
             ),
             DropdownInput<KeyValue>(
               label: 'Phòng',
@@ -369,7 +396,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               },
               enabled:
                   (widget.mode != Permission.view && _role != 5) ? true : false,
-              // showSearchBox: true,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Phòng',
             ),
             DropdownInput<KeyValue>(
               label: 'Diện cách ly',
@@ -435,9 +471,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Bệnh nền',
               hint: 'Chọn bệnh nền',
               itemValue: backgroundDiseaseList,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
               dropdownBuilder: _customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
@@ -458,6 +491,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 }
               },
               enabled: widget.mode != Permission.view ? true : false,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
               maxHeight: MediaQuery.of(context).size.height -
                   AppBar().preferredSize.height -
                   MediaQuery.of(context).padding.top -

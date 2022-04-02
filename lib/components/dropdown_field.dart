@@ -88,7 +88,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
-        showSelectedItems: !widget.showSearchBox || T == String,
+        showSelectedItems: T == String || widget.compareFn != null,
         showClearButton: widget.showClearButton,
         items: widget.itemValue,
         selectedItem: widget.selectedItem,
@@ -219,7 +219,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
-        showSelectedItems: !widget.showSearchBox || T == String,
+        showSelectedItems: T == String || widget.compareFn != null,
         showClearButton: widget.showClearButton,
         items: widget.itemValue,
         selectedItems: widget.selectedItems ?? [],

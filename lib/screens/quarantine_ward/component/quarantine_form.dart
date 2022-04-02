@@ -423,6 +423,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                     managerController.text = value.id.toString();
                   }
                 },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                 itemAsString: (KeyValue? u) => u!.name,
                 showSearchBox: true,
                 mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
