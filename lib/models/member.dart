@@ -216,6 +216,9 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
         return Response(
             success: false,
             message: "Khổng thể chuyển người dương tính sang phòng này!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Exist") {
+        return Response(success: false, message: "Số hộ chiếu đã tồn tại!");
       } else {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }
@@ -334,6 +337,12 @@ Future<Response> changeRoomMember(data) async {
               "This room does not satisfy max_day_quarantined") {
         return Response(
             success: false, message: "Phòng đã chọn không phù hợp!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This member positive, but this room has member that is not positive") {
+        return Response(
+            success: false,
+            message: "Khổng thể chuyển người dương tính sang phòng này!");
       } else {
         return Response(success: false, message: "Có lỗi xảy ra!");
       }

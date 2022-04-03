@@ -105,7 +105,7 @@ class _RegisterFormState extends State<RegisterForm> {
   final passController = TextEditingController();
   final secondPassController = TextEditingController();
   final quarantineWardController = TextEditingController();
-  String? error;
+  String? dupplicateError;
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,7 @@ class _RegisterFormState extends State<RegisterForm> {
             required: true,
             controller: secondPassController,
             validatorFunction: passValidator,
-            error: error,
+            error: dupplicateError,
           ),
           DropdownInput<KeyValue>(
             label: 'Khu cách ly',
@@ -211,13 +211,13 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _submit() async {
     setState(() {
-      error = null;
+      dupplicateError = null;
     });
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       if (passController.text != secondPassController.text) {
         setState(() {
-          error = "Mật khẩu không trùng khớp";
+          dupplicateError = "Mật khẩu không trùng khớp";
         });
       } else {
         CancelFunc cancel = showLoading();

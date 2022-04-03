@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 class Input extends StatefulWidget {
@@ -61,6 +62,16 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
+    List<TextInputFormatter> formater = <TextInputFormatter>[];
+    if (widget.type == TextInputType.number)
+      formater.add(FilteringTextInputFormatter.singleLineFormatter);
+    if (widget.textCapitalization == TextCapitalization.characters)
+      formater.add(UpperCaseTextFormatter());
+    else if (widget.textCapitalization == TextCapitalization.words)
+      formater.add(TitleCaseInputFormatter());
+    else if (widget.textCapitalization == TextCapitalization.sentences)
+      formater.add(CapitalCaseTextFormatter());
+
     return Container(
       margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
@@ -141,7 +152,79 @@ class _InputState extends State<Input> {
         ),
 
         textCapitalization: widget.textCapitalization,
+        inputFormatters: formater, // Only numbers can be entered
       ),
+    );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}
+
+class TitleCaseInputFormatter extends TextInputFormatter {
+  String textToTitleCase(String text) {
+    if (text.length > 1) {
+      return text[0].toUpperCase() + text.substring(1);
+      /*or text[0].toUpperCase() + text.substring(1).toLowerCase(), if you want absolute title case*/
+    } else if (text.length == 1) {
+      return text[0].toUpperCase();
+    }
+
+    return '';
+  }
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String formattedText = newValue.text
+        .split(' ')
+        .map((element) => textToTitleCase(element))
+        .toList()
+        .join(' ');
+    return TextEditingValue(
+      text: formattedText,
+      selection: newValue.selection,
+    );
+  }
+}
+
+class CapitalCaseTextFormatter extends TextInputFormatter {
+  String capitalizeSentence(String text) {
+    // Each sentence becomes an array element
+    var sentences = text.split('. ');
+    // Initialize string as empty string
+    var output = '';
+    // Loop through each sentence
+    for (var x = 0; x < sentences.length; x++) {
+      // Trim leading and trailing whitespace
+      // var trimmed = sentences[x].trim();
+      var trimmed = sentences[x];
+      if (trimmed != "") {
+        // Capitalize first letter of current sentence
+        var capitalized = "${trimmed[0].toUpperCase() + trimmed.substring(1)}";
+        // Add current sentence to output with a period
+        output += capitalized;
+        if (x < sentences.length - 1) output += ". ";
+      }
+    }
+    return output;
+  }
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    String formattedText = capitalizeSentence(newValue.text);
+    return TextEditingValue(
+      text: formattedText,
+      selection: newValue.selection,
     );
   }
 }

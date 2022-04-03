@@ -35,6 +35,19 @@ String? Function(String?) emailValidator = (email) {
   return null;
 };
 
+String? Function(String?) passportValidator = (passport) {
+  String patttern =
+      r'(^[A-Z]{1}\d{7,8})$';
+  RegExp regExp = new RegExp(patttern);
+  if (passport == null || passport.isEmpty) {
+    return null;
+  } else if (!regExp.hasMatch(passport)) {
+    return 'Số hộ chiếu không hợp lệ';
+  }
+
+  return null;
+};
+
 String? Function(String?) identityValidator = (number) {
   String patttern = r'(^[0-9]{9,12}$)';
   RegExp regExp = new RegExp(patttern);

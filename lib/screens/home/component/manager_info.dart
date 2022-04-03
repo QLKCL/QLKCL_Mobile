@@ -199,10 +199,10 @@ class InfoManagerHomePage extends StatelessWidget {
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
                     itemAsString: (KeyValue? u) => u!.name,
-                    itemValue: [KeyValue(name: "Toàn bộ", id: "")] +
-                        quarantineWardList,
+                    itemValue:
+                        [KeyValue(name: "Tất cả", id: "")] + quarantineWardList,
                     selectedItem: quarantineWardController.text == ""
-                        ? KeyValue(name: "Toàn bộ", id: "")
+                        ? KeyValue(name: "Tất cả", id: "")
                         : quarantineWardList.safeFirstWhere((type) =>
                             type.id.toString() ==
                             quarantineWardController.text),

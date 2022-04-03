@@ -470,12 +470,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   : false,
             ),
             Input(
-              label: 'Số Hộ chiếu',
+              label: 'Số hộ chiếu',
               controller: passportNumberController,
               enabled: (widget.mode == Permission.edit ||
                       widget.mode == Permission.add)
                   ? true
                   : false,
+              textCapitalization: TextCapitalization.characters,
+              validatorFunction: passportValidator,
             ),
             if (widget.tabController != null)
               Container(
