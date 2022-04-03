@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -14,8 +13,8 @@ class QuanrantineList extends StatefulWidget {
 }
 
 class _QuanrantineListState extends State<QuanrantineList> {
-  late Future<dynamic> futureQuarantineList;
-  final PagingController<int, dynamic> _pagingController =
+  late Future<FilterQuanrantineWard> futureQuarantineList;
+  final PagingController<int, FilterQuanrantineWard> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
@@ -51,12 +50,12 @@ class _QuanrantineListState extends State<QuanrantineList> {
     try {
       final newItems = await fetchQuarantineList(data: {'page': pageKey});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        _pagingController.appendLastPage(newItems.data);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -69,10 +68,10 @@ class _QuanrantineListState extends State<QuanrantineList> {
       onRefresh: () => Future.sync(
         () => _pagingController.refresh(),
       ),
-      child: PagedListView<int, dynamic>(
+      child: PagedListView<int, FilterQuanrantineWard>(
         pagingController: _pagingController,
         padding: EdgeInsets.only(bottom: 70),
-        builderDelegate: PagedChildBuilderDelegate<dynamic>(
+        builderDelegate: PagedChildBuilderDelegate<FilterQuanrantineWard>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Column(
@@ -91,12 +90,16 @@ class _QuanrantineListState extends State<QuanrantineList> {
             child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => QuarantineItem(
-            id: item['id'].toString(),
-            name: item['full_name'] ?? "",
-            currentMem: item['num_current_member'],
-            manager: item['main_manager']['full_name'] ?? "",
-            address: getAddress(item),
-            image: item['image'],
+            id: item.id.toString(),
+            name: item.fullName,
+            currentMem: item.numCurrentMember,
+            manager: item.mainManager?.name,
+            address: (item.address != null ? "${item.address}, " : "") +
+                (item.ward != null ? "${item.ward?.name}, " : "") +
+                (item.district != null ? "${item.district?.name}, " : "") +
+                (item.city != null ? "${item.city?.name}, " : "") +
+                (item.country != null ? "${item.country?.name}" : ""),
+            image: item.image,
           ),
         ),
       ),

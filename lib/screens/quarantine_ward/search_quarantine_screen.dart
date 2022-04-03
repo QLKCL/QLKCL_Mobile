@@ -34,8 +34,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   bool _searched = false;
 
-  late Future<dynamic> futureQuarantineList;
-  final PagingController<int, dynamic> _pagingController =
+  late Future<FilterQuanrantineWard> futureQuarantineList;
+  final PagingController<int, FilterQuanrantineWard> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   @override
@@ -109,12 +109,12 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         ),
       );
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < PAGE_SIZE;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        _pagingController.appendLastPage(newItems.data);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems, nextPageKey);
+        _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -209,10 +209,11 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             ? MediaQuery.removePadding(
                 context: context,
                 removeTop: true,
-                child: PagedListView<int, dynamic>(
+                child: PagedListView<int, FilterQuanrantineWard>(
                   padding: EdgeInsets.only(bottom: 16),
                   pagingController: _pagingController,
-                  builderDelegate: PagedChildBuilderDelegate<dynamic>(
+                  builderDelegate:
+                      PagedChildBuilderDelegate<FilterQuanrantineWard>(
                     animateTransitions: true,
                     noItemsFoundIndicatorBuilder: (context) => Center(
                       child: Text('Không có kết quả tìm kiếm'),
@@ -221,11 +222,20 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       child: Text('Có lỗi xảy ra'),
                     ),
                     itemBuilder: (context, item, index) => QuarantineItem(
-                      id: item['id'].toString(),
-                      name: item['full_name'] ?? "",
-                      currentMem: item['num_current_member'],
-                      manager: item['main_manager']['full_name'] ?? "",
-                      address: getAddress(item),
+                      id: item.id.toString(),
+                      name: item.fullName,
+                      currentMem: item.numCurrentMember,
+                      manager: item.mainManager?.name,
+                      address: (item.address != null
+                              ? "${item.address}, "
+                              : "") +
+                          (item.ward != null ? "${item.ward?.name}, " : "") +
+                          (item.district != null
+                              ? "${item.district?.name}, "
+                              : "") +
+                          (item.city != null ? "${item.city?.name}, " : "") +
+                          (item.country != null ? "${item.country?.name}" : ""),
+                      image: item.image,
                     ),
                   ),
                 ),

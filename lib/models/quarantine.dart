@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/pandemic.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';
@@ -125,12 +128,24 @@ Future<dynamic> fetchQuarantine(id) async {
   return response["data"];
 }
 
-Future<dynamic> fetchQuarantineList({data}) async {
+Future<FilterResponse<FilterQuanrantineWard>> fetchQuarantineList(
+    {data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListQuarantine, data);
-  return response != null && response['data'] != null
-      ? response['data']['content']
-      : null;
+  if (response['error_code'] == 0 && response['data'] != null) {
+    List<FilterQuanrantineWard> itemList = response['data']['content']
+        .map<FilterQuanrantineWard>(
+            (json) => FilterQuanrantineWard.fromJson(json))
+        .toList();
+    return FilterResponse<FilterQuanrantineWard>(
+        data: itemList,
+        totalPages: response['data']['totalPages'],
+        totalRows: response['data']['totalRows'],
+        currentPage: response['data']['currentPage']);
+  } else {
+    showNotification('Có lỗi xảy ra!', status: 'error');
+    return FilterResponse<FilterQuanrantineWard>();
+  }
 }
 
 Future<Response> createQuarantine(Map<String, dynamic> data) async {
@@ -192,4 +207,101 @@ Future<dynamic> fetchBuildingList(Map<String, dynamic> data) async {
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
+}
+
+// To parse this JSON data, do
+//
+//     final filterQuanrantineWard = filterQuanrantineWardFromJson(jsonString);
+
+FilterQuanrantineWard filterQuanrantineWardFromJson(String str) =>
+    FilterQuanrantineWard.fromJson(json.decode(str));
+
+String filterQuanrantineWardToJson(FilterQuanrantineWard data) =>
+    json.encode(data.toJson());
+
+class FilterQuanrantineWard {
+  FilterQuanrantineWard({
+    required this.id,
+    required this.mainManager,
+    required this.fullName,
+    required this.image,
+    required this.pandemic,
+    required this.city,
+    required this.country,
+    required this.district,
+    required this.ward,
+    required this.address,
+    required this.latitude,
+    required this.longitude,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.numCurrentMember,
+    required this.totalCapacity,
+  });
+
+  final int id;
+  final KeyValue? mainManager;
+  final String fullName;
+  final String image;
+  final Pandemic? pandemic;
+  final KeyValue? city;
+  final KeyValue? country;
+  final KeyValue? district;
+  final KeyValue? ward;
+  final dynamic address;
+  final double latitude;
+  final double longitude;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int numCurrentMember;
+  final int totalCapacity;
+
+  factory FilterQuanrantineWard.fromJson(Map<String, dynamic> json) =>
+      FilterQuanrantineWard(
+        id: json["id"],
+        mainManager: json["main_manager"] != null
+            ? KeyValue.fromJson(json["main_manager"])
+            : null,
+        fullName: json["full_name"],
+        image: (json["image"] != null && json["image"] != "")
+            ? json["image"]
+            : "Default/no_image_available",
+        pandemic: json["pandemic"] != null
+            ? Pandemic.fromJson(json["pandemic"])
+            : null,
+        city: json["city"] != null ? KeyValue.fromJson(json["city"]) : null,
+        country:
+            json["country"] != null ? KeyValue.fromJson(json["country"]) : null,
+        district: json["district"] != null
+            ? KeyValue.fromJson(json["district"])
+            : null,
+        ward: json["ward"] != null ? KeyValue.fromJson(json["ward"]) : null,
+        address: json["address"],
+        latitude: json["latitude"] != null ? double.parse(json["latitude"]) : 0,
+        longitude:
+            json["longitude"] != null ? double.parse(json["longitude"]) : 0,
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        numCurrentMember: json["num_current_member"],
+        totalCapacity: json["total_capacity"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "main_manager": mainManager?.toJson(),
+        "full_name": fullName,
+        "image": image,
+        "pandemic": pandemic?.toJson(),
+        "city": city?.toJson(),
+        "country": country?.toJson(),
+        "district": district?.toJson(),
+        "ward": ward?.toJson(),
+        "address": address,
+        "latitude": latitude,
+        "longitude": longitude,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "num_current_member": numCurrentMember,
+        "total_capacity": totalCapacity,
+      };
 }
