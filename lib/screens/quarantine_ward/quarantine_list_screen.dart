@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/screens/quarantine_ward/component/quarantine_list_maps.dart';
 import 'package:qlkcl/screens/quarantine_ward/search_quarantine_screen.dart';
 import './add_quarantine_screen.dart';
 import './component/quarantine_list.dart';
@@ -22,13 +23,21 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
     super.deactivate();
   }
 
-  //bool searched = false;
-
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Text('Các khu cách ly'),
       centerTitle: true,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => QuanrantineListMaps()));
+        },
+        icon: Icon(Icons.map_outlined),
+        tooltip: "Bản đồ",
+      ),
       actions: [
         IconButton(
           onPressed: () {
