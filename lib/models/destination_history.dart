@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 DestinationHistory destinationHistoryFromJson(String str) =>
     DestinationHistory.fromJson(json.decode(str));

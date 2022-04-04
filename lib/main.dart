@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:url_strategy/url_strategy.dart';
+// import 'package:url_strategy/url_strategy.dart';
 
 void main() async {
   // Here we set the URL strategy for our web app.
