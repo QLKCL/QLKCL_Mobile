@@ -16,6 +16,7 @@ import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 
 class Account extends StatefulWidget {
   static const String routeName = "/account";
+
   Account({Key? key}) : super(key: key);
 
   @override
@@ -23,6 +24,19 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  int _role = 5;
+
+  @override
+  void initState() {
+    getRole().then((value) {
+      if (this.mounted)
+        setState((() {
+          _role = value;
+        }));
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,19 +131,22 @@ class _AccountState extends State<Account> {
           Card(
             child: Column(
               children: <Widget>[
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context,
-                            rootNavigator: !Responsive.isDesktopLayout(context))
-                        .pushNamed(UpdateMember.routeName);
-                  },
-                  title: Text('Thông tin cá nhân'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
-                ),
-                Divider(
-                  indent: 16,
-                  endIndent: 16,
-                ),
+                if (_role == 5)
+                  ListTile(
+                    onTap: () {
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .pushNamed(UpdateMember.routeName);
+                    },
+                    title: Text('Thông tin cá nhân'),
+                    trailing: Icon(Icons.keyboard_arrow_right),
+                  ),
+                if (_role == 5)
+                  Divider(
+                    indent: 16,
+                    endIndent: 16,
+                  ),
                 ListTile(
                   onTap: () {
                     Navigator.of(context,
