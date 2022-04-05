@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -11,6 +13,15 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 // import 'package:url_strategy/url_strategy.dart';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   // Here we set the URL strategy for our web app.
@@ -26,6 +37,9 @@ void main() async {
 
   bool isLoggedIn = await getLoginState();
   int role = await getRole();
+
+  HttpOverrides.global = MyHttpOverrides();
+
   runApp(MyApp(
     isLoggedIn: isLoggedIn,
     role: role,
