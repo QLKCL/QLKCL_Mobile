@@ -130,11 +130,22 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     ),
                     IconButton(
                         iconSize: 38,
-                        onPressed: () {
-                          showNotification(
-                              'Ứng dụng chưa hỗ trợ chức năng này.',
-                              status: "error");
-                        },
+                        onPressed: (widget.quarantineInfo.latitude != null &&
+                                widget.quarantineInfo.longitude != null)
+                            ? () async {
+                                String googleUrl =
+                                    'https://www.google.com/maps/search/?api=1&query=${widget.quarantineInfo.latitude},${widget.quarantineInfo.longitude}';
+                                if (await canLaunch(googleUrl)) {
+                                  await launch(googleUrl);
+                                } else {
+                                  showNotification('Không thể mở bản đồ.',
+                                      status: "error");
+                                }
+                              }
+                            : () {
+                                showNotification('Không thể xác định vị trí.',
+                                    status: "error");
+                              },
                         icon: WebsafeSvg.asset("assets/svg/Location.svg"))
                   ],
                 ),
@@ -188,7 +199,8 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     context,
                     Icons.medical_services_outlined,
                     ' Dịch bệnh cách ly: ' +
-                        (widget.quarantineInfo.pandemic?.name ?? "Chưa có thông tin")),
+                        (widget.quarantineInfo.pandemic?.name ??
+                            "Chưa có thông tin")),
                 buildInformation(
                     context,
                     Icons.history,
