@@ -45,7 +45,22 @@ Future<int> getQuarantineWard() async {
 
 Future<String> getQuarantineStatus() async {
   var infoBox = await Hive.openBox('myInfo');
-  return infoBox.get('status');
+  return infoBox.get('quarantineStatus');
+}
+
+Future<String> getGender() async {
+  var infoBox = await Hive.openBox('myInfo');
+  return infoBox.get('gender');
+}
+
+Future<String> getBirthday() async {
+  var infoBox = await Hive.openBox('myInfo');
+  return infoBox.get('birthday');
+}
+
+Future<String> getPhoneNumber() async {
+  var infoBox = await Hive.openBox('myInfo');
+  return infoBox.get('phoneNumber');
 }
 
 Future<void> setInfo() async {
@@ -56,12 +71,18 @@ Future<void> setInfo() async {
   infoBox.put('role', role);
   String name = response['data']['custom_user']['full_name'];
   infoBox.put('name', name);
+  String gender = response['data']['custom_user']['gender'];
+  infoBox.put('gender', gender);
+  String birthday = response['data']['custom_user']['birthday'];
+  infoBox.put('birthday', birthday);
+  String phoneNumber = response['data']['custom_user']['phone_number'];
+  infoBox.put('phoneNumber', phoneNumber);
   int quarantineWard = response['data']['custom_user']['quarantine_ward']['id'];
   infoBox.put('quarantineWard', quarantineWard);
   String code = response['data']['custom_user']['code'];
   infoBox.put('code', code);
-  String status = response['data']['custom_user']['status'];
-  infoBox.put('status', status);
+  String quarantineStatus = response['data']['custom_user']['status'];
+  infoBox.put('quarantineStatus', quarantineStatus);
 }
 
 Future<bool> getLoginState() async {

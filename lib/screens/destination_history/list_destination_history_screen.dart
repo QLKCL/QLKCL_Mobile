@@ -135,7 +135,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['end_time']).toLocal())}"
                         : ""),
                 address: getAddress(item),
-                note: item['note'],
+                note: item['note'] ?? "",
               ),
             ),
           ),

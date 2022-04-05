@@ -193,7 +193,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
-              required: widget.mode == Permission.view ? false : true,
+              required:
+                  (widget.mode == Permission.view || _role == 5) ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineWardList.length == 0
                   ? (String? filter) => fetchQuarantineWard({
@@ -250,7 +251,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Tòa',
               hint: 'Chọn tòa',
               required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status)
+                      widget.mode == Permission.change_status ||
+                      _role == 5)
                   ? false
                   : true,
               itemAsString: (KeyValue? u) => u!.name,
@@ -309,7 +311,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Tầng',
               hint: 'Chọn tầng',
               required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status)
+                      widget.mode == Permission.change_status ||
+                      _role == 5)
                   ? false
                   : true,
               itemAsString: (KeyValue? u) => u!.name,
@@ -366,7 +369,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Phòng',
               hint: 'Chọn phòng',
               required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status)
+                      widget.mode == Permission.change_status ||
+                      _role == 5)
                   ? false
                   : true,
               itemAsString: (KeyValue? u) => u!.name,

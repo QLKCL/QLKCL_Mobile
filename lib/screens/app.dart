@@ -45,6 +45,7 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
+    setInfo();
     getLoginState().then((value) {
       if (!value) {
         Future(() {
