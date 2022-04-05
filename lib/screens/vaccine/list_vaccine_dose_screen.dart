@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/vaccine_dose.dart';
+import 'package:qlkcl/screens/vaccine/sync_vaccine_portal.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 
@@ -119,6 +121,18 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
           ),
         ),
       ),
+      floatingActionButton: (!isWebPlatform())
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
+                    .push(MaterialPageRoute(
+                        builder: (context) => SyncVaccinePortal()));
+              },
+              child: Icon(Icons.cloud_sync),
+              tooltip: "Thêm phiếu xét nghiệm",
+            )
+          : null,
     );
   }
 }

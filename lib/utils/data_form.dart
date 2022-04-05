@@ -591,3 +591,23 @@ Map<String, dynamic> getAddressWithMembersPassByDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, String> syncVaccinePortalDataForm(
+    {required String fullName,
+    required String birthday,
+    required String gender,
+    required String phoneNumber,
+    String? identityNumber,
+    String? healthInsuranceNumber,
+    String? otpNumber}) {
+  var data = {
+    "fullname": fullName,
+    "birthday": birthday,
+    "genderId": gender,
+    "personalPhoneNumber": phoneNumber,
+    "identification": identityNumber,
+    "healthInsuranceNumber": healthInsuranceNumber,
+    "otp": otpNumber
+  };
+  return prepareDataForm(data);
+}
