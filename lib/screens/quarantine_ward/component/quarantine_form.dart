@@ -511,6 +511,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
             ImageField(
               controller: imageController,
               maxQuantityImage: 3,
+              type: "Quarantine_Ward",
             ),
             Container(
               alignment: Alignment.center,

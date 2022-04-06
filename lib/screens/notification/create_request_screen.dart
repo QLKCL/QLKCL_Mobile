@@ -112,6 +112,7 @@ class _CreateRequestState extends State<CreateRequest> {
                   ImageField(
                     controller: imageController,
                     maxQuantityImage: 1,
+                    type: "Request",
                   ),
                   Container(
                     margin: const EdgeInsets.all(16),

@@ -12,9 +12,11 @@ class ImageField extends StatefulWidget {
     Key? key,
     required this.controller,
     this.maxQuantityImage = 1,
+    required this.type,
   }) : super(key: key);
   final int maxQuantityImage;
   final TextEditingController controller;
+  final String type;
 
   @override
   State<ImageField> createState() => _ImageFieldState();
@@ -91,8 +93,10 @@ class _ImageFieldState extends State<ImageField> {
                                 upLoadImages(
                                   _imageFileList,
                                   multi: true,
-                                  maxQuantity: widget.maxQuantityImage,
-                                  type: "Request",
+                                  maxQuantity: widget.maxQuantityImage -
+                                      imageList.length +
+                                      1,
+                                  type: widget.type,
                                 ).then((value) => setState(() {
                                       imageList.addAll(value);
                                       widget.controller.text =
