@@ -197,7 +197,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   onPressed: () {
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
-                        .pushNamed(ListNotification.routeName)
+                        .push(MaterialPageRoute(
+                            builder: (context) => ListNotification(
+                                  role: widget.role,
+                                )))
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
                                 'page_size': PAGE_SIZE_MAX

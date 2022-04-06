@@ -60,74 +60,72 @@ class _CreateRequestState extends State<CreateRequest> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  DropdownInput<KeyValue>(
-                    label: 'Gửi đến',
-                    hint: 'Chọn người nhận',
-                    required: true,
-                    onFind: quarantineWard != null
-                        ? (String? filter) => fetchNotMemberList({
-                              'role_name_list': 'SUPER_MANAGER,MANAGER,STAFF',
-                              'quarantine_ward_id': quarantineWard,
-                            })
-                        : null,
-                    onChanged: (value) {
-                      if (value == null) {
-                        receiverUserController.text = "";
-                      } else {
-                        receiverUserController.text = value.id.toString();
-                      }
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                DropdownInput<KeyValue>(
+                  label: 'Gửi đến',
+                  hint: 'Chọn người nhận',
+                  required: true,
+                  onFind: quarantineWard != null
+                      ? (String? filter) => fetchNotMemberList({
+                            'role_name_list': 'SUPER_MANAGER,MANAGER,STAFF',
+                            'quarantine_ward_id': quarantineWard,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      receiverUserController.text = "";
+                    } else {
+                      receiverUserController.text = value.id.toString();
+                    }
+                  },
+                  itemAsString: (KeyValue? u) => u!.name,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Người nhận',
+                ),
+                Input(
+                  label: 'Tiêu đề',
+                  controller: titleController,
+                  showClearButton: false,
+                  required: true,
+                ),
+                Input(
+                  label: 'Nội dung',
+                  maxLines: 15,
+                  controller: descriptionController,
+                  showClearButton: false,
+                  required: true,
+                ),
+                ImageField(
+                  controller: imageController,
+                  maxQuantityImage: 1,
+                  type: "Request",
+                ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _submit();
                     },
-                    itemAsString: (KeyValue? u) => u!.name,
-                    compareFn: (item, selectedItem) =>
-                        item?.id == selectedItem?.id,
-                    showSearchBox: true,
-                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                        ? Mode.DIALOG
-                        : Mode.BOTTOM_SHEET,
-                    maxHeight: MediaQuery.of(context).size.height -
-                        AppBar().preferredSize.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom -
-                        100,
-                    popupTitle: 'Người nhận',
-                  ),
-                  Input(
-                    label: 'Tiêu đề',
-                    controller: titleController,
-                    showClearButton: false,
-                    required: true,
-                  ),
-                  Input(
-                    label: 'Nội dung',
-                    maxLines: 15,
-                    controller: descriptionController,
-                    showClearButton: false,
-                    required: true,
-                  ),
-                  ImageField(
-                    controller: imageController,
-                    maxQuantityImage: 1,
-                    type: "Request",
-                  ),
-                  Container(
-                    margin: const EdgeInsets.all(16),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _submit();
-                      },
-                      child: Text(
-                        'Gửi',
-                        style: TextStyle(color: CustomColors.white),
-                      ),
+                    child: Text(
+                      'Gửi',
+                      style: TextStyle(color: CustomColors.white),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

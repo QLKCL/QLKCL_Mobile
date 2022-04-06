@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/notification.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/notification/create_notification_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 
 class ListNotification extends StatefulWidget {
   static const String routeName = "/list_notification";
-  ListNotification({Key? key}) : super(key: key);
+  ListNotification({Key? key, this.role = 5}) : super(key: key);
+  final int role;
 
   @override
   _ListNotificationState createState() => _ListNotificationState();
@@ -123,6 +126,18 @@ class _ListNotificationState extends State<ListNotification> {
           ),
         ),
       ),
+      floatingActionButton: widget.role != 5
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
+                    .push(MaterialPageRoute(
+                        builder: (context) => CreateNotification()));
+              },
+              child: Icon(Icons.add),
+              tooltip: "Tạo thông báo",
+            )
+          : null,
     );
   }
 }
