@@ -9,8 +9,10 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/vaccine_dose.dart';
 import 'package:qlkcl/networking/request_helper.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/vaccine/vaccination_certificate_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -24,8 +26,7 @@ class SyncVaccinePortal extends StatefulWidget {
   _SyncVaccinePortalState createState() => _SyncVaccinePortalState();
 }
 
-class _SyncVaccinePortalState extends State<SyncVaccinePortal>
-    with AutomaticKeepAliveClientMixin<SyncVaccinePortal> {
+class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
   final _formKey = GlobalKey<FormState>();
   final fullNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
@@ -36,9 +37,6 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
   final passportNumberController = TextEditingController();
   final otpController = TextEditingController();
   bool enableNext = false;
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -65,7 +63,6 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
@@ -82,7 +79,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
                   required: true,
                   textCapitalization: TextCapitalization.words,
                   controller: fullNameController,
-                  enabled: false,
+                  //enabled: false,
                 ),
                 Input(
                   label: 'Số điện thoại',
@@ -90,7 +87,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
                   type: TextInputType.phone,
                   controller: phoneNumberController,
                   validatorFunction: phoneValidator,
-                  enabled: false,
+                  //enabled: false,
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Giới tính',
@@ -110,14 +107,14 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
                       genderController.text = value.id;
                     }
                   },
-                  enabled: false,
+                  //enabled: false,
                 ),
                 NewDateInput(
                   label: 'Ngày sinh',
                   required: true,
                   controller: birthdayController,
                   maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                  enabled: false,
+                  //enabled: false,
                 ),
                 // Input(
                 //   label: 'Số CMND/CCCD',
@@ -239,6 +236,13 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
       if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {
           showNotification(null);
+          VaccinationCertification vaccineCertification =
+              VaccinationCertification.fromJson(response.data);
+          Navigator.of(context,
+                  rootNavigator: !Responsive.isDesktopLayout(context))
+              .push(MaterialPageRoute(
+                  builder: (context) => VaccinationCertificationScreen(
+                      vaccineCertification: vaccineCertification)));
         }
       } else {
         showNotification(response.data['errorResponse']['description'],
