@@ -45,6 +45,9 @@ class _QuarantineFormState extends State<QuarantineForm> {
   final managerController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final statusController = TextEditingController();
+  // final lattitudeController = TextEditingController();
+  // final longtitudeController = TextEditingController();
+  final coordinateController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -94,6 +97,11 @@ class _QuarantineFormState extends State<QuarantineForm> {
           ? widget.quarantineInfo!.mainManager['code']
           : "";
       phoneNumberController.text = widget.quarantineInfo?.phoneNumber ?? "";
+      // longtitudeController.text = widget.quarantineInfo?.longitude ?? "";
+      // lattitudeController.text = widget.quarantineInfo?.latitude ?? "";
+      coordinateController.text =
+          "${widget.quarantineInfo?.latitude}, ${widget.quarantineInfo?.longitude}";
+
       if (widget.quarantineInfo?.image != null &&
           widget.quarantineInfo?.image != "")
         imageList.addAll(widget.quarantineInfo!.image!.split(','));
@@ -166,6 +174,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
           image: imageList.sublist(1).join(','),
+          latitude: coordinateController.text.split(',')[0].trim(),
+          longtitude: coordinateController.text.split(',')[1].trim(),
         ));
         cancel();
         showNotification(response);
@@ -185,6 +195,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
           image: imageList.sublist(1).join(','),
+          latitude: coordinateController.text.split(',')[0].trim(),
+          longtitude: coordinateController.text.split(',')[1].trim(),
         ));
         cancel();
         showNotification(response);
@@ -403,6 +415,19 @@ class _QuarantineFormState extends State<QuarantineForm> {
               label: 'Địa chỉ',
               controller: addressController,
             ),
+            Input(
+              label: 'Tọa độ',
+              controller: coordinateController,
+              helper: "Ví dụ: 10.77337803132624, 106.66062122468851",
+            ),
+            // Input(
+            //   label: 'Latitude',
+            //   controller: lattitudeController,
+            // ),
+            // Input(
+            //   label: 'Longtitude',
+            //   controller: longtitudeController,
+            // ),
             DropdownInput<KeyValue>(
                 label: 'Người quản lý',
                 hint: 'Chọn người quản lý',
@@ -423,7 +448,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                     managerController.text = value.id.toString();
                   }
                 },
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                 itemAsString: (KeyValue? u) => u!.name,
                 showSearchBox: true,
                 mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
