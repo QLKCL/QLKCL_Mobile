@@ -3,8 +3,10 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
+import 'package:qlkcl/components/image_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
+import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/notification.dart';
@@ -25,6 +27,7 @@ class _CreateRequestState extends State<CreateRequest> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController receiverUserController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
   late int receiverType;
   int role = 1;
   int? quarantineWard;
@@ -106,6 +109,10 @@ class _CreateRequestState extends State<CreateRequest> {
                     showClearButton: false,
                     required: true,
                   ),
+                  ImageField(
+                    controller: imageController,
+                    maxQuantityImage: 1,
+                  ),
                   Container(
                     margin: const EdgeInsets.all(16),
                     child: ElevatedButton(
@@ -139,6 +146,7 @@ class _CreateRequestState extends State<CreateRequest> {
           quarantineWard: quarantineWard,
           users: receiverUserController.text,
           role: 0,
+          image: cloudinary.getImage(imageController.text).toString(),
         ),
       );
       cancel();

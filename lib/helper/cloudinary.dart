@@ -12,12 +12,18 @@ final cloudinary = CloudinaryPublic(
 Future upLoadImages(
   List<XFile> _imageFileList, {
   bool multi = false,
+  int maxQuantity = 1,
   String type = "User",
   String folder = "",
   Map<String, dynamic>? context,
 }) async {
   _imageFileList = [];
   _imageFileList = await selectImages(_imageFileList, multi: multi);
+  if (_imageFileList.length > maxQuantity) {
+    showNotification("Chỉ có thể chọn tối đa $maxQuantity hình ảnh!",
+        status: "error");
+    _imageFileList = _imageFileList.take(maxQuantity).toList();
+  }
   return upload(_imageFileList, type: type, folder: folder, context: context);
 }
 

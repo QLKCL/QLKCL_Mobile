@@ -10,7 +10,7 @@ import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
-import 'package:qlkcl/screens/notification/create_notification_screen.dart';
+import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:intl/intl.dart';

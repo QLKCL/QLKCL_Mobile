@@ -1,18 +1,14 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
+import 'package:qlkcl/components/image_field.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
-import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -48,6 +44,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
   // final lattitudeController = TextEditingController();
   // final longtitudeController = TextEditingController();
   final coordinateController = TextEditingController();
+  TextEditingController imageController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -58,12 +55,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
   KeyValue? initCity;
   KeyValue? initDistrict;
   KeyValue? initWard;
-
-  List<String> imageList = [
-    'Default/no_image_available',
-  ];
-
-  List<XFile> _imageFileList = [];
 
   @override
   void initState() {
@@ -102,9 +93,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
       coordinateController.text =
           "${widget.quarantineInfo?.latitude}, ${widget.quarantineInfo?.longitude}";
 
-      if (widget.quarantineInfo?.image != null &&
-          widget.quarantineInfo?.image != "")
-        imageList.addAll(widget.quarantineInfo!.image!.split(','));
+      imageController.text = widget.quarantineInfo?.image ?? "";
 
       initCountry = (widget.quarantineInfo?.country != null)
           ? KeyValue.fromJson(widget.quarantineInfo!.country)
@@ -173,7 +162,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
-          image: imageList.sublist(1).join(','),
+          image: imageController.text,
           latitude: coordinateController.text.split(',')[0].trim(),
           longtitude: coordinateController.text.split(',')[1].trim(),
         ));
@@ -194,7 +183,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           address: addressController.text,
           type: typeController.text,
           phoneNumber: phoneNumberController.text,
-          image: imageList.sublist(1).join(','),
+          image: imageController.text,
           latitude: coordinateController.text.split(',')[0].trim(),
           longtitude: coordinateController.text.split(',')[1].trim(),
         ));
@@ -519,105 +508,9 @@ class _QuarantineFormState extends State<QuarantineForm> {
               type: TextInputType.emailAddress,
               validatorFunction: emailValidator,
             ),
-            Container(
-              margin: EdgeInsets.all(16),
-              child: Text(
-                'Hình ảnh',
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                ),
-                itemBuilder: (BuildContext ctx, int index) {
-                  return index == 0
-                      ? Container(
-                          padding: const EdgeInsets.all(5),
-                          child: Container(
-                            child: DottedBorder(
-                              borderType: BorderType.RRect,
-                              radius: Radius.circular(8),
-                              color: CustomColors.primary,
-                              strokeWidth: 1,
-                              child: OutlinedButton(
-                                style: ButtonStyle(
-                                  minimumSize:
-                                      MaterialStateProperty.all(Size.infinite),
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
-                                  ),
-                                  side: MaterialStateProperty.all(
-                                    BorderSide(
-                                      color: CustomColors.primary,
-                                      width: 1.0,
-                                      style: BorderStyle.none,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  upLoadImages(
-                                    _imageFileList,
-                                    multi: true,
-                                    type: "Quarantine_Ward",
-                                  ).then((value) => setState(() {
-                                        imageList.addAll(value);
-                                      }));
-                                },
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.camera_alt_outlined,
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      'Thêm ảnh',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : Container(
-                          padding: const EdgeInsets.all(5),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(8.0),
-                                child: Image.network(
-                                    cloudinary
-                                        .getImage(imageList[index])
-                                        .toString(),
-                                    fit: BoxFit.cover),
-                              ),
-                              Positioned(
-                                right: -0.05,
-                                top: -0.05,
-                                child: CircleButton(
-                                    onTap: () {
-                                      imageList.removeAt(index);
-                                      setState(() {});
-                                    },
-                                    iconData: Icons.close),
-                              ),
-                            ],
-                          ),
-                        );
-                },
-                itemCount: imageList.length,
-              ),
+            ImageField(
+              controller: imageController,
+              maxQuantityImage: 3,
             ),
             Container(
               alignment: Alignment.center,
