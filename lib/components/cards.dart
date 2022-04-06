@@ -592,87 +592,91 @@ class _QuarantineItemState extends State<QuarantineItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: () => selectQuarantine(context),
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Image container
-              Container(
-                height: 96,
-                width: 105,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                      cloudinary.getImage(imageList[0]).toString(),
-                      fit: BoxFit.cover),
-                ),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              //text
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      widget.name,
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+    return Wrap(
+      children: [
+        Card(
+          child: InkWell(
+            onTap: () => selectQuarantine(context),
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Image container
+                  Container(
+                    height: 96,
+                    width: 105,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                          cloudinary.getImage(imageList[0]).toString(),
+                          fit: BoxFit.cover),
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    cardLine(
-                        icon: Icons.groups_rounded,
-                        title: "Đang cách ly",
-                        content: widget.currentMem.toString()),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    cardLine(
-                        icon: Icons.account_box_outlined,
-                        title: "Quản lý",
-                        content: widget.manager),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    if (widget.address != null)
-                      Text.rich(
-                        TextSpan(
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  //text
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.name,
                           style: TextStyle(
-                            color: CustomColors.disableText,
-                          ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.place_outlined,
-                                size: 16,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.normal,
+                              color: CustomColors.primaryText),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        cardLine(
+                            icon: Icons.groups_rounded,
+                            title: "Đang cách ly",
+                            content: widget.currentMem.toString()),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        cardLine(
+                            icon: Icons.account_box_outlined,
+                            title: "Quản lý",
+                            content: widget.manager),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        if (widget.address != null)
+                          Text.rich(
+                            TextSpan(
+                              style: TextStyle(
                                 color: CustomColors.disableText,
                               ),
+                              children: [
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: Icon(
+                                    Icons.place_outlined,
+                                    size: 16,
+                                    color: CustomColors.disableText,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " " + widget.address!,
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: " " + widget.address!,
-                            ),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  widget.menus ?? Container(),
+                ],
               ),
-              widget.menus ?? Container(),
-            ],
+            ),
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 }
