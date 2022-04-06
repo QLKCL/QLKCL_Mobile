@@ -475,7 +475,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Bệnh nền',
               hint: 'Chọn bệnh nền',
               itemValue: backgroundDiseaseList,
-              dropdownBuilder: _customDropDown,
+              dropdownBuilder: customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               selectedItems: (widget.quarantineData?.backgroundDisease != null)
@@ -609,26 +609,4 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       }
     }
   }
-}
-
-Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  return Wrap(
-    children: selectedItems.map((e) {
-      return Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          margin: EdgeInsets.only(top: 4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Theme.of(context).primaryColorLight),
-          child: Text(
-            e!.name,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle2,
-          ),
-        ),
-      );
-    }).toList(),
-  );
 }

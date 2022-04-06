@@ -224,7 +224,7 @@ Future memberFilter(
           hint: 'Chọn diện cách ly',
           itemValue: labelList,
           mode: Mode.MENU,
-          dropdownBuilder: _customDropDown,
+          dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
           selectedItems: labelController.text != ""
@@ -247,7 +247,7 @@ Future memberFilter(
           hint: 'Chọn tình trạng sức khỏe',
           itemValue: medDeclValueList,
           mode: Mode.MENU,
-          dropdownBuilder: _customDropDown,
+          dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
           selectedItems: healthStatusController.text != ""
@@ -270,7 +270,7 @@ Future memberFilter(
           hint: 'Chọn kết quả xét nghiệm',
           itemValue: testValueWithBoolList,
           mode: Mode.MENU,
-          dropdownBuilder: _customDropDown,
+          dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
           selectedItems: testController.text != ""
@@ -351,28 +351,6 @@ Future memberFilter(
                 child: child,
               ),
           expand: false);
-}
-
-Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  return Wrap(
-    children: selectedItems.map((e) {
-      return Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          margin: EdgeInsets.only(top: 4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Theme.of(context).primaryColorLight),
-          child: Text(
-            e!.name,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle2,
-          ),
-        ),
-      );
-    }).toList(),
-  );
 }
 
 Future testFilter(

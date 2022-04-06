@@ -215,7 +215,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                       ? Mode.DIALOG
                       : Mode.BOTTOM_SHEET,
-                  dropdownBuilder: _customDropDown,
+                  dropdownBuilder: customDropDown,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
@@ -251,7 +251,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                       ? Mode.DIALOG
                       : Mode.BOTTOM_SHEET,
-                  dropdownBuilder: _customDropDown,
+                  dropdownBuilder: customDropDown,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
                   itemAsString: (KeyValue? u) => u!.name,
@@ -356,26 +356,4 @@ class _MedDeclFormState extends State<MedDeclForm> {
       ),
     );
   }
-}
-
-Widget _customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
-  return Wrap(
-    children: selectedItems.map((e) {
-      return Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          margin: EdgeInsets.only(top: 4),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: Theme.of(context).primaryColorLight),
-          child: Text(
-            e!.name,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle2,
-          ),
-        ),
-      );
-    }).toList(),
-  );
 }

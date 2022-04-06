@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -284,4 +285,26 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
       ),
     );
   }
+}
+
+Widget customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
+  return Wrap(
+    children: selectedItems.map((e) {
+      return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          margin: EdgeInsets.only(top: 4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Theme.of(context).primaryColorLight),
+          child: Text(
+            e!.name,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle2,
+          ),
+        ),
+      );
+    }).toList(),
+  );
 }
