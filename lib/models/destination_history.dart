@@ -86,27 +86,28 @@ Future<Response> createDestiantionHistory(Map<String, dynamic> data) async {
   final response = await api.postHTTP(Api.createDestiantionHistory, data);
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Khai báo thành công!");
+      return Response(status: Status.success, message: "Khai báo thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['user_code'] != null &&
           response['message']['user_code'] == "empty") {
-        return Response(success: false, message: "Lỗi người khai báo!");
+        return Response(status: Status.error, message: "Lỗi người khai báo!");
       } else if (response['message']['country_code'] != null &&
           response['message']['country_code'] == "empty") {
         return Response(
-            success: false, message: "Quốc gia không được để trống!");
+            status: Status.error, message: "Quốc gia không được để trống!");
       } else if (response['message']['city_id'] != null &&
           response['message']['city_id'] == "empty") {
         return Response(
-            success: false, message: "Tỉnh, thành phố không được để trống!");
+            status: Status.error,
+            message: "Tỉnh, thành phố không được để trống!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -116,12 +117,13 @@ Future<Response> updateDestiantionHistory(Map<String, dynamic> data) async {
   final response = await api.postHTTP(Api.updateTest, data);
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Cập nhật khai báo thành công!");
+      return Response(
+          status: Status.success, message: "Cập nhật khai báo thành công!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

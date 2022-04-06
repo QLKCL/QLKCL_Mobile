@@ -10,6 +10,7 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/request_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -198,15 +199,15 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
         ),
       );
       cancel();
-      if (response.success) {
+      if (response.status == Status.success) {
         if (response.data['code'] == 1) {
-          showNotification(response.data['message'], status: "success");
+          showNotification(response.data['message']);
           setState(() {
             enableNext = true;
           });
         }
       } else {
-        showNotification(response.data['message'], status: "error");
+        showNotification(response.data['message'], status: Status.error);
       }
     }
   }
@@ -235,13 +236,13 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal>
         ),
       );
       cancel();
-      if (response.success) {
+      if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {
-          showNotification(null, status: "success");
+          showNotification(null);
         }
       } else {
         showNotification(response.data['errorResponse']['description'],
-            status: "error");
+            status: Status.error);
       }
     }
   }

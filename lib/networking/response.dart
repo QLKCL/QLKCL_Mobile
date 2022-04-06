@@ -1,7 +1,13 @@
 class Response {
-  final bool success;
+  final Status status;
   final String message;
   final dynamic data;
 
-  Response({required this.success, this.message = "", this.data});
+  Response({required this.status, this.message = "", this.data});
+}
+
+enum Status {
+  success,
+  warning,
+  error,
 }

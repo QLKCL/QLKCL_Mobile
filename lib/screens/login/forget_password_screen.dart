@@ -5,6 +5,7 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/validation.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/login/otp_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -120,7 +121,7 @@ class _ForgetFormState extends State<ForgetForm> {
           await requestOtp(requestOtpDataForm(email: emailController.text));
       cancel();
       showNotification(response);
-      if (response.success) {
+      if (response.status == Status.success) {
         Navigator.push(
             context,
             MaterialPageRoute(

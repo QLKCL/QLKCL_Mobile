@@ -11,6 +11,7 @@ import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -525,7 +526,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           ));
           cancel();
           showNotification(response);
-          if (response.success) {
+          if (response.status == Status.success) {
             widget.tabController!.animateTo(1);
           }
         }

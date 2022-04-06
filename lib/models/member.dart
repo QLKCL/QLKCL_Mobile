@@ -122,11 +122,11 @@ Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
       if (response['message']['quarantine_ward_id'] != null &&
           response['message']['quarantine_ward_id'] == "Permission denied") {
         showNotification('Không có quyền thực hiện chức năng này!',
-            status: 'error');
+            status: Status.error);
       }
       return FilterResponse<FilterMember>();
     } else {
-      showNotification('Có lỗi xảy ra!', status: 'error');
+      showNotification('Có lỗi xảy ra!', status: Status.error);
       return FilterResponse<FilterMember>();
     }
   }
@@ -138,30 +138,32 @@ Future<Response> createMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       MemberPersonalInfo.userCode = response['data']['custom_user']["code"];
       return Response(
-          success: true,
+          status: Status.success,
           message: "Tạo người cách ly thành công!",
           data: response['data']);
     } else if (response['error_code'] == 400) {
       if (response['message']['phone_number'] != null &&
           response['message']['phone_number'] == "Exist") {
         return Response(
-            success: false, message: "Số điện thoại đã được sử dụng!");
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
-        return Response(success: false, message: "Email đã được sử dụng!");
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
       } else if (response['message']['identity_number'] != null &&
           response['message']['identity_number'] == "Exist") {
-        return Response(success: false, message: "Số CMND/CCCD đã tồn tại!");
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -170,60 +172,65 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Cập nhật thông tin thành công!",
           data: response['data']);
     } else if (response['error_code'] == 400) {
       if (response['message'] != null &&
           response['message'] == "Invalid argument") {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       } else if (response['message']['phone_number'] != null &&
           response['message']['phone_number'] == "Exist") {
         return Response(
-            success: false, message: "Số điện thoại đã được sử dụng!");
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
       } else if (response['message']['health_insurance_number'] != null &&
           response['message']['health_insurance_number'] == "Invalid") {
         return Response(
-            success: false, message: "Số bảo hiểm y tế không hợp lệ!");
+            status: Status.error, message: "Số bảo hiểm y tế không hợp lệ!");
       } else if (response['message']['passport_number'] != null &&
           response['message']['passport_number'] == "Invalid") {
-        return Response(success: false, message: "Số hộ chiếu không hợp lệ!");
+        return Response(
+            status: Status.error, message: "Số hộ chiếu không hợp lệ!");
       } else if (response['message']['identity_number'] != null &&
           response['message']['identity_number'] == "Exist") {
-        return Response(success: false, message: "Số CMND/CCCD đã tồn tại!");
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
       } else if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] == "Full") {
-        return Response(success: false, message: "Phòng đã hết chỗ trống!");
+        return Response(
+            status: Status.error, message: "Phòng đã hết chỗ trống!");
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
-        return Response(success: false, message: "Email đã được sử dụng!");
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
       } else if (response['message']['quarantine_ward_id'] != null &&
           response['message']['quarantine_ward_id'] == "Cannot change") {
         return Response(
-            success: false, message: "Không thể thay đổi khu cách ly!");
+            status: Status.error, message: "Không thể thay đổi khu cách ly!");
       } else if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] ==
               "This room does not satisfy max_day_quarantined") {
         return Response(
-            success: false, message: "Phòng đã chọn không phù hợp!");
+            status: Status.error, message: "Phòng đã chọn không phù hợp!");
       } else if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] ==
               "This member positive, but this room has member that is not positive") {
         return Response(
-            success: false,
+            status: Status.error,
             message: "Khổng thể chuyển người dương tính sang phòng này!");
       } else if (response['message']['passport_number'] != null &&
           response['message']['passport_number'] == "Exist") {
-        return Response(success: false, message: "Số hộ chiếu đã tồn tại!");
+        return Response(
+            status: Status.error, message: "Số hộ chiếu đã tồn tại!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -232,20 +239,21 @@ Future<Response> denyMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.denyMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Từ chối thành công!");
+      return Response(status: Status.success, message: "Từ chối thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['member_codes'] != null &&
           response['message']['member_codes'] == "empty") {
         return Response(
-            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+            status: Status.error,
+            message: "Vui lòng chọn tài khoản cần xét duyệt!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -254,30 +262,32 @@ Future<Response> acceptManyMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptManyMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0 && response['data'] == {}) {
       showNotification("Chấp nhận thành công!");
-      return Response(success: true, message: "Chấp nhận thành công!");
+      return Response(status: Status.success, message: "Chấp nhận thành công!");
     } else if (response['error_code'] == 0 && response['data'] != {}) {
       showNotification("Một số tài khoản không thể xét duyệt!",
-          status: 'warning');
+          status: Status.warning);
       return Response(
-          success: true, message: "Một số tài khoản không thể xét duyệt!");
+          status: Status.success,
+          message: "Một số tài khoản không thể xét duyệt!");
     } else if (response['error_code'] == 400) {
       if (response['message']['member_codes'] != null &&
           response['message']['member_codes'] == "empty") {
         showNotification("Vui lòng chọn tài khoản cần xét duyệt!",
-            status: 'error');
+            status: Status.error);
         return Response(
-            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+            status: Status.error,
+            message: "Vui lòng chọn tài khoản cần xét duyệt!");
       } else {
-        showNotification("Có lỗi xảy ra!", status: 'error');
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        showNotification("Có lỗi xảy ra!", status: Status.error);
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      showNotification("Có lỗi xảy ra!", status: 'error');
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      showNotification("Có lỗi xảy ra!", status: Status.error);
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -286,25 +296,27 @@ Future<Response> acceptOneMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptOneMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Xét duyệt thành công!");
+      return Response(status: Status.success, message: "Xét duyệt thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['member_codes'] != null &&
           response['message']['member_codes'] == "empty") {
         return Response(
-            success: false, message: "Vui lòng chọn tài khoản cần xét duyệt!");
+            status: Status.error,
+            message: "Vui lòng chọn tài khoản cần xét duyệt!");
       } else if (response['message']['main'] != null &&
           response['message']['main'] ==
               "All rooms are not accept any more member") {
         return Response(
-            success: false, message: "Khu cách ly này đã hết giường trống!");
+            status: Status.error,
+            message: "Khu cách ly này đã hết giường trống!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -313,12 +325,14 @@ Future<Response> finishMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.finishMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Đã hoàn thành cách ly!");
+      return Response(
+          status: Status.success, message: "Đã hoàn thành cách ly!");
     } else {
-      return Response(success: false, message: "Không thể hoàn thành cách ly!");
+      return Response(
+          status: Status.error, message: "Không thể hoàn thành cách ly!");
     }
   }
 }
@@ -327,27 +341,28 @@ Future<Response> changeRoomMember(data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changeRoomMember, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Chuyển phòng thành công!");
+      return Response(
+          status: Status.success, message: "Chuyển phòng thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] ==
               "This room does not satisfy max_day_quarantined") {
         return Response(
-            success: false, message: "Phòng đã chọn không phù hợp!");
+            status: Status.error, message: "Phòng đã chọn không phù hợp!");
       } else if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] ==
               "This member positive, but this room has member that is not positive") {
         return Response(
-            success: false,
+            status: Status.error,
             message: "Khổng thể chuyển người dương tính sang phòng này!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

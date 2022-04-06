@@ -54,15 +54,15 @@ Future<Response> createFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createFloor, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Tạo tầng thành công!",
           data: response['data']);
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -87,23 +87,24 @@ Future<Response> updateFloor(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateFloor, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Cập nhật thông tin thành công!",
           data: Floor.fromJson(response['data']));
     } else if (response['error_code'] == 401) {
       if (response['message'] != null &&
           response['message'] == "Permission denied") {
         return Response(
-            success: false, message: 'Không có quyền thực hiện chức năng này!');
+            status: Status.error,
+            message: 'Không có quyền thực hiện chức năng này!');
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

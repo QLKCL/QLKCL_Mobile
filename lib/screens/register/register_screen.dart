@@ -9,6 +9,7 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
@@ -225,12 +226,12 @@ class _RegisterFormState extends State<RegisterForm> {
             phoneNumber: phoneController.text,
             password: passController.text,
             quarantineWard: quarantineWardController.text));
-        if (registerResponse.success) {
+        if (registerResponse.status == Status.success) {
           final loginResponse = await login(loginDataForm(
               phoneNumber: phoneController.text,
               password: passController.text));
           cancel();
-          if (loginResponse.success) {
+          if (loginResponse.status == Status.success) {
             Navigator.pushNamedAndRemoveUntil(
                 context, App.routeName, (Route<dynamic> route) => false);
             Navigator.of(context,
@@ -239,11 +240,11 @@ class _RegisterFormState extends State<RegisterForm> {
               MaterialPageRoute(builder: (context) => UpdateMember()),
             );
           } else {
-            showNotification(loginResponse.message, status: "error");
+            showNotification(loginResponse.message, status: Status.error);
           }
         } else {
           cancel();
-          showNotification(registerResponse.message, status: "error");
+          showNotification(registerResponse.message, status: Status.error);
         }
       }
     }

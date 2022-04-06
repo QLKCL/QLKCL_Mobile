@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'carousel.dart';
@@ -124,7 +125,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                             }
                           : () {
                               showNotification('Số điện thoại không tồn tại.',
-                                  status: "error");
+                                  status: Status.error);
                             },
                       icon: WebsafeSvg.asset("assets/svg/Phone.svg"),
                     ),
@@ -139,12 +140,12 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                                   await launch(googleUrl);
                                 } else {
                                   showNotification('Không thể mở bản đồ.',
-                                      status: "error");
+                                      status: Status.error);
                                 }
                               }
                             : () {
                                 showNotification('Không thể xác định vị trí.',
-                                    status: "error");
+                                    status: Status.error);
                               },
                         icon: WebsafeSvg.asset("assets/svg/Location.svg"))
                   ],

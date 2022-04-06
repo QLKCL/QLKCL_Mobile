@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -232,7 +233,7 @@ class _TestFormState extends State<TestForm> {
             result: resultController.text));
         cancel();
         showNotification(response);
-        if (response.success) {
+        if (response.status == Status.success) {
           Navigator.pop(context);
         }
       } else if (widget.mode == Permission.edit) {
@@ -243,7 +244,7 @@ class _TestFormState extends State<TestForm> {
             result: resultController.text));
         cancel();
         showNotification(response);
-        if (response.success) {
+        if (response.status == Status.success) {
           Navigator.pop(context);
         }
       }

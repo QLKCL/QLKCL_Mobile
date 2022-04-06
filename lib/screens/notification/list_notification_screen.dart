@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/notification.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 
@@ -110,7 +111,7 @@ class _ListNotificationState extends State<ListNotification> {
                 onTap: () async {
                   final response = await changeStateUserNotification(
                       data: {'notification': item['notification']['id']});
-                  if (response.success) {
+                  if (response.status == Status.success) {
                     setState(() {
                       item['is_read'] = response.data;
                     });

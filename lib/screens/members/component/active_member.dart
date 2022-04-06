@@ -3,6 +3,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -53,7 +54,7 @@ class _ActiveMemberState extends State<ActiveMember>
     });
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        showNotification("Có lỗi xảy ra!", status: "error");
+        showNotification("Có lỗi xảy ra!", status: Status.error);
       }
     });
     super.initState();

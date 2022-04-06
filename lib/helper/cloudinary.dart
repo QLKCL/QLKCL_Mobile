@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/networking/response.dart';
 
 final cloudinary = CloudinaryPublic(
   'qlkcl',
@@ -21,7 +22,7 @@ Future upLoadImages(
   _imageFileList = await selectImages(_imageFileList, multi: multi);
   if (_imageFileList.length > maxQuantity) {
     showNotification("Chỉ có thể chọn tối đa $maxQuantity hình ảnh!",
-        status: "error");
+        status: Status.error);
     _imageFileList = _imageFileList.take(maxQuantity).toList();
   }
   return upload(_imageFileList, type: type, folder: folder, context: context);

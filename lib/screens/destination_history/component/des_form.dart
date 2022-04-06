@@ -7,6 +7,7 @@ import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/components/time_input.dart';
 import 'package:qlkcl/models/destination_history.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -144,7 +145,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
 
       cancel();
       showNotification(response);
-      if (response.success) {
+      if (response.status == Status.success) {
         Navigator.pop(context);
       }
     }

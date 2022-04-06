@@ -116,13 +116,13 @@ Future<Response> createTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createTest, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true, message: "Tạo phiếu xét nghiệm thành công!");
+          status: Status.success, message: "Tạo phiếu xét nghiệm thành công!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -131,13 +131,14 @@ Future<Response> updateTest(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateTest, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true, message: "Cập nhật phiếu xét nghiệm thành công!");
+          status: Status.success,
+          message: "Cập nhật phiếu xét nghiệm thành công!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

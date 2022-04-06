@@ -138,8 +138,8 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 
 // Notification
 CancelFunc Function(dynamic data,
-        {String status, String? subTitle, int duration}) showNotification =
-    (data, {status = "success", subTitle, duration = 3}) {
+        {Status status, String? subTitle, int duration}) showNotification =
+    (data, {status = Status.success, subTitle, duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
     align: Alignment(1, -1),
@@ -148,16 +148,21 @@ CancelFunc Function(dynamic data,
       return _CustomWidget(
         cancelFunc: cancel,
         title: (data.runtimeType == Response)
-            ? (data.success ? "Thành công" : "Lỗi")
-            : (status == "success"
+            ? ((data as Response).status == Status.success
                 ? "Thành công"
-                : (status == "warning" ? "Cảnh báo" : "Lỗi")),
-        subTitle: (data.runtimeType == Response) ? data.message : data,
+                : "Lỗi")
+            : (status == Status.success
+                ? "Thành công"
+                : (status == Status.warning ? "Cảnh báo" : "Lỗi")),
+        subTitle:
+            (data.runtimeType == Response) ? (data as Response).message : data,
         backgroundColor: (data.runtimeType == Response)
-            ? (data.success ? CustomColors.success : CustomColors.error)
-            : (status == "success"
+            ? ((data as Response).status == Status.success
                 ? CustomColors.success
-                : (status == "warning"
+                : CustomColors.error)
+            : (status == Status.success
+                ? CustomColors.success
+                : (status == Status.warning
                     ? CustomColors.warning
                     : CustomColors.error)),
       );

@@ -122,12 +122,12 @@ Future<Response> createMedDecl(Map<String, dynamic> data) async {
   final response = await api.postHTTP(Api.createMedDecl, data);
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Khai báo thành công!");
+      return Response(status: Status.success, message: "Khai báo thành công!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -137,12 +137,13 @@ Future<Response> updateMedDecl(Map<String, dynamic> data) async {
   final response = await api.postHTTP(Api.updateTest, data);
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Cập nhật khai báo thành công!");
+      return Response(
+          status: Status.success, message: "Cập nhật khai báo thành công!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/room.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info_floor.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import '../../components/input.dart';
@@ -54,7 +55,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       ));
       cancel();
       showNotification(response);
-      if (response.success) {
+      if (response.status == Status.success) {
         Navigator.of(context).pop(response.data);
       }
     }

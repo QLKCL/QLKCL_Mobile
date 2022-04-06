@@ -7,6 +7,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/login/create_password_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -187,7 +188,7 @@ class _OtpState extends State<Otp> {
       final response =
           await sendOtp(sendOtpDataForm(email: widget.email, otp: otp));
       cancel();
-      if (response.success) {
+      if (response.status == Status.success) {
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -196,7 +197,7 @@ class _OtpState extends State<Otp> {
                       otp: response.data,
                     )));
       } else {
-        showNotification(response.message, status: "error");
+        showNotification(response.message, status: Status.error);
       }
     } else {
       errorController!

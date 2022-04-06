@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -657,7 +658,7 @@ Widget menus(BuildContext context, FilterMember item,
           final response = await finishMember({'member_codes': item.code});
           cancel();
           showNotification(response);
-          if (response.success) {
+          if (response.status == Status.success) {
             if (Responsive.isDesktopLayout(context)) {
               key.currentState!.refresh();
             } else {

@@ -144,7 +144,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
   }
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
@@ -153,16 +153,17 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     bool status = await setToken(accessToken, refreshToken);
     if (status) {
       await setInfo();
-      return Response(success: true);
+      return Response(status: Status.success);
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else if (response.statusCode == 401) {
     return Response(
-        success: false, message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
+        status: Status.error,
+        message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
   } else {
     print("Response code: " + response.statusCode.toString());
-    return Response(success: false, message: "Có lỗi xảy ra!");
+    return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
 
@@ -179,21 +180,21 @@ Future<Response> register(Map<String, dynamic> registerDataForm) async {
   }
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
-      return Response(success: true);
+      return Response(status: Status.success);
     } else if (data['message']['phone_number'] == "Exist") {
       return Response(
-          success: false, message: "Số điện thoại đã được sử dụng!");
+          status: Status.error, message: "Số điện thoại đã được sử dụng!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
     print("Response code: " + response.statusCode.toString());
-    return Response(success: false, message: "Có lỗi xảy ra!");
+    return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
 
@@ -224,25 +225,26 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
   }
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
-      return Response(success: true, message: "Gửi OTP thành công!");
+      return Response(status: Status.success, message: "Gửi OTP thành công!");
     } else if (data['error_code'] == 400) {
       if (data['message'] == "User is not exist") {
         return Response(
-            success: false, message: "Email không tồn tại trong hệ thống!");
+            status: Status.error,
+            message: "Email không tồn tại trong hệ thống!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
     print("Response code: " + response.statusCode.toString());
-    return Response(success: false, message: "Có lỗi xảy ra!");
+    return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
 
@@ -259,20 +261,20 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
   }
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
-      return Response(success: true, data: data["data"]['new_otp']);
+      return Response(status: Status.success, data: data["data"]['new_otp']);
     } else if (data['error_code'] == 400) {
-      return Response(success: false, message: "OTP không hợp lệ!");
+      return Response(status: Status.error, message: "OTP không hợp lệ!");
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
     print("Response code: " + response.statusCode.toString());
-    return Response(success: false, message: "Có lỗi xảy ra!");
+    return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
 
@@ -289,27 +291,27 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
   }
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body.toString();
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Tạo mật khẩu thành công. Vui lòng đăng nhập lại!");
     } else if (data['error_code'] == 400) {
       if (data['message'] == "New password is the same with old password") {
         return Response(
-            success: false, message: "Mật khẩu đã từng được sử dụng!");
+            status: Status.error, message: "Mật khẩu đã từng được sử dụng!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
     print("Response code: " + response.statusCode.toString());
-    return Response(success: false, message: "Có lỗi xảy ra!");
+    return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
 
@@ -317,23 +319,24 @@ Future<Response> changePass(Map<String, String> changePassDataForm) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changePass, changePassDataForm);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Đổi mật khẩu thành công!");
+      return Response(
+          status: Status.success, message: "Đổi mật khẩu thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message'] == "Wrong password") {
         return Response(
-            success: false, message: "Mật khẩu cũ không chính xác!");
+            status: Status.error, message: "Mật khẩu cũ không chính xác!");
       } else if (response['message'] ==
           "New password is the same with old password") {
         return Response(
-            success: false, message: "Mật khẩu mới trùng mật khẩu cũ!");
+            status: Status.error, message: "Mật khẩu mới trùng mật khẩu cũ!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -342,28 +345,30 @@ Future<Response> resetPass(Map<String, String> resetPassDataForm) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.resetPass, resetPassDataForm);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Mật khẩu mới là ${response['data']['new_password']}");
     } else if (response['error_code'] == 401) {
       if (response['message'] != null &&
           response['message'] == "Permission denied") {
         return Response(
-            success: false, message: 'Không có quyền thực hiện chức năng này!');
+            status: Status.error,
+            message: 'Không có quyền thực hiện chức năng này!');
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else if (response['error_code'] == 400) {
       if (response['message']['code'] == "Not exist") {
-        return Response(success: false, message: "Tài khoản không tồn tại!");
+        return Response(
+            status: Status.error, message: "Tài khoản không tồn tại!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

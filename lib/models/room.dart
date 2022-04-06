@@ -54,15 +54,15 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createRoom, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Tạo phòng thành công!",
           data: response['data']);
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -89,30 +89,31 @@ Future<Response> updateRoom(Map<String, dynamic> data) async {
   final response = await api.postHTTP(Api.updateRoom, data);
 
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          success: true,
+          status: Status.success,
           message: "Cập nhật thông tin thành công!",
           data: Room.fromJson(response['data']));
     } else if (response['error_code'] == 400) {
       if (response['message']['name'] != null &&
           response['message']['name'] == "Exist") {
-        return Response(success: false, message: 'Tên phòng đã tồn tại!');
+        return Response(status: Status.error, message: 'Tên phòng đã tồn tại!');
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else if (response['error_code'] == 401) {
       if (response['message'] != null &&
           response['message'] == "Permission denied") {
         return Response(
-            success: false, message: 'Không có quyền thực hiện chức năng này!');
+            status: Status.error,
+            message: 'Không có quyền thực hiện chức năng này!');
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

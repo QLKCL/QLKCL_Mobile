@@ -9,6 +9,7 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/utils/api.dart';
@@ -106,7 +107,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     }
                   : () {
                       showNotification('Số điện thoại không tồn tại.',
-                          status: "error");
+                          status: Status.error);
                     },
             ),
             SpeedDialChild(

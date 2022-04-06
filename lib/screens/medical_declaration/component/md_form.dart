@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
@@ -338,7 +339,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                               : () {
                                   showNotification(
                                       'Vui lòng chọn cam kết trước khi khai báo.',
-                                      status: "error");
+                                      status: Status.error);
                                 },
                           child: Text(
                             "Khai báo",

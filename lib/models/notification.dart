@@ -118,12 +118,13 @@ Future<Response> changeStateUserNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changeStateUserNotification, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, data: response['data']['is_read']);
+      return Response(
+          status: Status.success, data: response['data']['is_read']);
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -132,27 +133,29 @@ Future<Response> createNotification({data}) async {
   ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createNotification, data);
   if (response == null) {
-    return Response(success: false, message: "Lỗi kết nối!");
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return Response(success: true, message: "Gửi yêu cầu thành công!");
+      return Response(
+          status: Status.success, message: "Gửi yêu cầu thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['users'] != null &&
           response['message']['users'] == "empty") {
-        return Response(success: false, message: "Vui lòng chọn người nhận!");
+        return Response(
+            status: Status.error, message: "Vui lòng chọn người nhận!");
       } else if (response['message']['description'] != null &&
           response['message']['description'] == "empty") {
         return Response(
-            success: false, message: "Nội dung không được để trống!");
+            status: Status.error, message: "Nội dung không được để trống!");
       } else if (response['message']['title'] != null &&
           response['message']['title'] == "empty") {
         return Response(
-            success: false, message: "Tiêu đề không được để trống!");
+            status: Status.error, message: "Tiêu đề không được để trống!");
       } else {
-        return Response(success: false, message: "Có lỗi xảy ra!");
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
     } else {
-      return Response(success: false, message: "Có lỗi xảy ra!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

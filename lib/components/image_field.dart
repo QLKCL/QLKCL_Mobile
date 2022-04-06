@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
@@ -85,7 +86,7 @@ class _ImageFieldState extends State<ImageField> {
                               if (widget.maxQuantityImage < imageList.length) {
                                 showNotification(
                                     "Chỉ có thể thêm tối đa ${widget.maxQuantityImage} hình ảnh!",
-                                    status: "error");
+                                    status: Status.error);
                               } else {
                                 upLoadImages(
                                   _imageFileList,

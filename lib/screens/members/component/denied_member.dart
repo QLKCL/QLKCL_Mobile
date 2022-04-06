@@ -6,6 +6,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
@@ -576,7 +577,7 @@ Widget menus(BuildContext context, FilterMember item,
         final response = await acceptOneMember({'code': item.code});
         cancel();
         showNotification(response);
-        if (response.success) {
+        if (response.status == Status.success) {
           if (Responsive.isDesktopLayout(context)) {
             key.currentState!.refresh();
           } else {

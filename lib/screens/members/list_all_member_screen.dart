@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/completed_member.dart';
 import 'package:qlkcl/screens/members/component/hospitalized_member.dart';
 import 'package:qlkcl/screens/members/component/need_change_room_member.dart';
@@ -116,13 +117,13 @@ class _ListAllMemberState extends State<ListAllMember>
                             if (indexList.length == 0) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
-                                  status: 'error');
+                                  status: Status.error);
                             } else {
                               CancelFunc cancel = showLoading();
                               final response = await acceptManyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
-                              if (response.success) {
+                              if (response.status == Status.success) {
                                 setState(() {
                                   onDone = true;
                                 });
@@ -138,14 +139,14 @@ class _ListAllMemberState extends State<ListAllMember>
                             if (indexList.length == 0) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
-                                  status: 'error');
+                                  status: Status.error);
                             } else {
                               CancelFunc cancel = showLoading();
                               final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
                               showNotification(response);
-                              if (response.success) {
+                              if (response.status == Status.success) {
                                 setState(() {
                                   onDone = true;
                                 });
