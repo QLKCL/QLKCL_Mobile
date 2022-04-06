@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/qr_code.dart';
+import 'package:qlkcl/screens/account/component/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
