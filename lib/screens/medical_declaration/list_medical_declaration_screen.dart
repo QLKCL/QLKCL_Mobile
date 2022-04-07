@@ -20,7 +20,6 @@ class ListMedicalDeclaration extends StatefulWidget {
 }
 
 class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
-  late Future<dynamic> futureMedDeclList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;

@@ -16,7 +16,6 @@ class ListTestNoResult extends StatefulWidget {
 }
 
 class _ListTestNoResultState extends State<ListTestNoResult> {
-  late Future<dynamic> futureTestList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 

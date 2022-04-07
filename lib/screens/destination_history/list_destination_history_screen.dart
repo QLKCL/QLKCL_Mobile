@@ -18,7 +18,6 @@ class ListDestinationHistory extends StatefulWidget {
 }
 
 class _ListDestinationHistoryState extends State<ListDestinationHistory> {
-  late Future<dynamic> futureDestinationHistoryList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;
