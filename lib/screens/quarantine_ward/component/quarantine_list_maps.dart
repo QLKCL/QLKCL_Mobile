@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
-import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 
