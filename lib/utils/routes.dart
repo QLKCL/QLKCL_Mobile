@@ -15,6 +15,7 @@ import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/login/create_password_screen.dart';
@@ -88,4 +89,5 @@ final Map<String, WidgetBuilder> routes = {
   ListVaccineDose.routeName: (context) => ListVaccineDose(),
   ListDestinationHistory.routeName: (context) => ListDestinationHistory(),
   DestinationHistoryScreen.routeName: (context) => DestinationHistoryScreen(),
+  ListQuarantineHistory.routeName: (context) => ListQuarantineHistory(),
 };

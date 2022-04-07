@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -609,6 +610,12 @@ Widget menus(BuildContext context, FilterMember item) {
                       code: item.code,
                     )));
       } else if (result == 'quarantine_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListQuarantineHistory(
+                      code: item.code,
+                    )));
       } else if (result == 'vaccine_dose_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))

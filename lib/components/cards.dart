@@ -1060,6 +1060,88 @@ class DestinationHistoryCard extends StatelessWidget {
   }
 }
 
+class QuarantineHistoryCard extends StatelessWidget {
+  final VoidCallback? onTap;
+  final String name;
+  final String time;
+  final String room;
+  final String pademic;
+  final String note;
+  final Widget? menus;
+  const QuarantineHistoryCard({
+    required this.name,
+    this.onTap,
+    required this.time,
+    required this.room,
+    required this.pademic,
+    this.note = "",
+    this.menus,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.normal,
+                            color: CustomColors.primaryText),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      cardLine(
+                          icon: Icons.history,
+                          title: "Thời gian",
+                          content: time),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      cardLine(
+                          icon: Icons.location_on_outlined,
+                          title: "Đơn vị",
+                          content: room),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      cardLine(
+                          icon: Icons.medical_services_outlined,
+                          title: "Dịch bệnh",
+                          content: pademic),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      cardLine(
+                          icon: Icons.note_outlined,
+                          title: "Ghi chú",
+                          content: note),
+                    ],
+                  ),
+                ),
+                menus ?? Container()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 Widget cardLine(
     {IconData? icon,
     String? title,
