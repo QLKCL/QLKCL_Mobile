@@ -93,4 +93,10 @@ class Api {
 
   static const String filterQuarantineHistory =
       '/api/user/quarantine_history/filter';
+
+  static const String createManager = '/api/user/manager/create';
+  static const String updateManager = '/api/user/manager/update';
+
+  static const String createStaff = '/api/user/staff/create';
+  static const String updateStaff = '/api/user/staff/update';
 }

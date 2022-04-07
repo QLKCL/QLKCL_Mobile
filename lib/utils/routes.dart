@@ -7,6 +7,9 @@ import 'package:qlkcl/screens/destination_history/list_destination_history_scree
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
+import 'package:qlkcl/screens/manager/add_manager_screen.dart';
+import 'package:qlkcl/screens/manager/list_all_manager_screen.dart';
+import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
@@ -90,4 +93,7 @@ final Map<String, WidgetBuilder> routes = {
   ListDestinationHistory.routeName: (context) => ListDestinationHistory(),
   DestinationHistoryScreen.routeName: (context) => DestinationHistoryScreen(),
   ListQuarantineHistory.routeName: (context) => ListQuarantineHistory(),
+  ListAllManager.routeName: (context) => ListAllManager(),
+  AddManager.routeName: (context) => AddManager(),
+  UpdateManager.routeName: (context) => UpdateManager(),
 };

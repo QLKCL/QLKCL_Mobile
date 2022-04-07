@@ -5,6 +5,8 @@
 import 'dart:convert';
 
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/api.dart';
 
 CustomUser customUserFromJson(str) => CustomUser.fromJson(json.decode(str));
@@ -129,18 +131,174 @@ class CustomUser {
       };
 }
 
-Future<dynamic> fetchCustomUser({data}) async {
+Future<Response> createManager(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getMember, data);
+  final response = await api.postHTTP(Api.createManager, data);
   if (response == null) {
-    return null;
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return response["data"];
+      MemberPersonalInfo.userCode = response['data']['custom_user']["code"];
+      return Response(
+          status: Status.success,
+          message: "Tạo quản lý thành công!",
+          data: response['data']);
     } else if (response['error_code'] == 400) {
-      return null;
+      if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
+      } else if (response['message']['email'] != null &&
+          response['message']['email'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
+      } else if (response['message']['identity_number'] != null &&
+          response['message']['identity_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
-      return null;
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<Response> updateManager(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateManager, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success,
+          message: "Cập nhật thông tin thành công!",
+          data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message'] != null &&
+          response['message'] == "Invalid argument") {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      } else if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
+      } else if (response['message']['health_insurance_number'] != null &&
+          response['message']['health_insurance_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số bảo hiểm y tế không hợp lệ!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu không hợp lệ!");
+      } else if (response['message']['identity_number'] != null &&
+          response['message']['identity_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
+      } else if (response['message']['email'] != null &&
+          response['message']['email'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            status: Status.error, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu đã tồn tại!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<Response> createStaff(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createStaff, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      MemberPersonalInfo.userCode = response['data']['custom_user']["code"];
+      return Response(
+          status: Status.success,
+          message: "Tạo cán bộ thành công!",
+          data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
+      } else if (response['message']['email'] != null &&
+          response['message']['email'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
+      } else if (response['message']['identity_number'] != null &&
+          response['message']['identity_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<Response> updateStaff(Map<String, dynamic> data) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateStaff, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success,
+          message: "Cập nhật thông tin thành công!",
+          data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message'] != null &&
+          response['message'] == "Invalid argument") {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      } else if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại đã được sử dụng!");
+      } else if (response['message']['health_insurance_number'] != null &&
+          response['message']['health_insurance_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số bảo hiểm y tế không hợp lệ!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu không hợp lệ!");
+      } else if (response['message']['identity_number'] != null &&
+          response['message']['identity_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
+      } else if (response['message']['email'] != null &&
+          response['message']['email'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Email đã được sử dụng!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            status: Status.error, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu đã tồn tại!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:qlkcl/models/destination_history.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
+import 'package:qlkcl/screens/manager/add_manager_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -427,8 +428,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 ),
                 SpeedDialChild(
                   child: const Icon(Icons.manage_accounts_outlined),
-                  label: 'Quản lý',
-                  onTap: () => {},
+                  label: 'Quản lý/Cán bộ',
+                  onTap: () => Navigator.of(context,
+                          rootNavigator: !Responsive.isDesktopLayout(context))
+                      .pushNamed(AddManager.routeName),
                 ),
                 SpeedDialChild(
                   child: const Icon(Icons.business_outlined),

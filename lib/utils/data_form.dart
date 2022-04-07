@@ -611,3 +611,184 @@ Map<String, String> syncVaccinePortalDataForm(
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> createManagerDataForm({
+  required String phoneNumber,
+  required String fullName,
+  String? email,
+  required String birthday,
+  required String gender,
+  required String nationality,
+  required String country,
+  required String city,
+  required String district,
+  required String ward,
+  required String address,
+  String? identity,
+  String? healthInsurance,
+  String? passport,
+  required String quarantineWard,
+}) {
+  var data = {
+    "phone_number": phoneNumber,
+    "full_name": fullName,
+    "email": email,
+    "birthday": birthday,
+    "gender": gender,
+    "nationality_code": nationality,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "health_insurance_number": healthInsurance,
+    "identity_number": identity,
+    "passport_number": passport,
+    "quarantine_ward_id": quarantineWard,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> updateManagerDataForm({
+  required String code,
+  String? fullName,
+  String? email,
+  String? birthday,
+  String? gender,
+  String? nationality,
+  String? country,
+  String? city,
+  String? district,
+  String? ward,
+  String? address,
+  String? identity,
+  String? healthInsurance,
+  String? passport,
+  String? quarantineWard,
+}) {
+  var data = {
+    "code": code,
+    "full_name": fullName,
+    "email": email,
+    "birthday": birthday,
+    "gender": gender,
+    "nationality_code": nationality,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "health_insurance_number": healthInsurance,
+    "identity_number": identity,
+    "passport_number": passport,
+    "quarantine_ward_id": quarantineWard,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> createStaffDataForm({
+  required String phoneNumber,
+  required String fullName,
+  String? email,
+  required String birthday,
+  required String gender,
+  required String nationality,
+  required String country,
+  required String city,
+  required String district,
+  required String ward,
+  required String address,
+  String? identity,
+  String? healthInsurance,
+  String? passport,
+  required String quarantineWard,
+  String? careArea,
+}) {
+  var data = {
+    "phone_number": phoneNumber,
+    "full_name": fullName,
+    "email": email,
+    "birthday": birthday,
+    "gender": gender,
+    "nationality_code": nationality,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "health_insurance_number": healthInsurance,
+    "identity_number": identity,
+    "passport_number": passport,
+    "quarantine_ward_id": quarantineWard,
+    "care_area": careArea,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> updateStaffDataForm({
+  required String code,
+  String? fullName,
+  String? email,
+  String? birthday,
+  String? gender,
+  String? nationality,
+  String? country,
+  String? city,
+  String? district,
+  String? ward,
+  String? address,
+  String? identity,
+  String? healthInsurance,
+  String? passport,
+  String? quarantineWard,
+  String? careArea,
+}) {
+  var data = {
+    "code": code,
+    "full_name": fullName,
+    "email": email,
+    "birthday": birthday,
+    "gender": gender,
+    "nationality_code": nationality,
+    "country_code": country,
+    "city_id": city,
+    "district_id": district,
+    "ward_id": ward,
+    "detail_address": address,
+    "health_insurance_number": healthInsurance,
+    "identity_number": identity,
+    "passport_number": passport,
+    "quarantine_ward_id": quarantineWard,
+    "care_area": careArea,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> filterStaffDataForm({
+  required String keySearch,
+  String? quarantineWard,
+  String? status,
+  String? isLastTested,
+  String? careArea,
+  String? quarantineAtMin,
+  String? quarantineAtMax,
+  String? pageSize,
+  String? healthStatus,
+  String? test,
+  required int page,
+}) {
+  var data = {
+    "search": keySearch,
+    "status": status,
+    "is_last_tested": isLastTested,
+    "quarantine_ward_id": quarantineWard,
+    "created_at_min": quarantineAtMin,
+    "created_at_max": quarantineAtMax,
+    "care_area": careArea,
+    "health_status_list": healthStatus,
+    "positive_test_now": test,
+    "page": page,
+    "page_size": pageSize,
+  };
+  return prepareDataForm(data);
+}
