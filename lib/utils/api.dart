@@ -17,7 +17,8 @@ class Api {
 
   static const String homeManager = '/api/user/home/manager';
   static const String homeMember = '/api/user/home/member';
-  static const String getAddressWithMembersPassBy = '/api/user/home/filter_address_with_num_of_members_pass_by';
+  static const String getAddressWithMembersPassBy =
+      '/api/user/home/filter_address_with_num_of_members_pass_by';
 
   static const String getListTests = '/api/form/test/filter';
   static const String createTest = '/api/form/test/create';
@@ -89,4 +90,13 @@ class Api {
       '/api/user/destination_history/create';
   static const String updateDestiantionHistory =
       '/api/user/destination_history/update';
+
+  static const String filterQuarantineHistory =
+      '/api/user/quarantine_history/filter';
+
+  static const String createManager = '/api/user/manager/create';
+  static const String updateManager = '/api/user/manager/update';
+
+  static const String createStaff = '/api/user/staff/create';
+  static const String updateStaff = '/api/user/staff/update';
 }

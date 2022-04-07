@@ -78,13 +78,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           ? widget.quarantineRoom!.id.toString()
           : "";
       quarantineFloorController.text = widget.quarantineFloor != null
-          ? widget.quarantineRoom!.id.toString()
+          ? widget.quarantineFloor!.id.toString()
           : "";
       quarantineBuildingController.text = widget.quarantineBuilding != null
-          ? widget.quarantineRoom!.id.toString()
+          ? widget.quarantineBuilding!.id.toString()
           : "";
       quarantineWardController.text = widget.quarantineWard != null
-          ? widget.quarantineRoom!.id.toString()
+          ? widget.quarantineWard!.id.toString()
           : "";
       backgroundDiseaseController.text = "";
       getQuarantineWard().then((val) {

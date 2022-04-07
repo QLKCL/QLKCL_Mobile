@@ -93,7 +93,7 @@ class DestiantionChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return SfCartesianChart(
       plotAreaBorderWidth: 0,
-      enableAxisAnimation: true,
+      // enableAxisAnimation: true,
       title: ChartTitle(text: "Thống kê người di chuyển"),
       primaryXAxis: CategoryAxis(
         isInversed: true,

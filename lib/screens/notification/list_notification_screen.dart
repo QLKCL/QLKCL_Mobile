@@ -18,7 +18,6 @@ class ListNotification extends StatefulWidget {
 }
 
 class _ListNotificationState extends State<ListNotification> {
-  late Future<dynamic> futureNotificationList;
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 

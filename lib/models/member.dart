@@ -486,16 +486,18 @@ class FilterMember {
   }
 }
 
-class FilterResponse<T> {
-  final int currentPage;
-  final int totalPages;
-  final int totalRows;
-  final List<T> data;
-
-  FilterResponse({
-    this.data = const [],
-    this.currentPage = 0,
-    this.totalPages = 0,
-    this.totalRows = 0,
-  });
+Future<dynamic> fetchCustomUser({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getMember, data);
+  if (response == null) {
+    return null;
+  } else {
+    if (response['error_code'] == 0) {
+      return response["data"];
+    } else if (response['error_code'] == 400) {
+      return null;
+    } else {
+      return null;
+    }
+  }
 }

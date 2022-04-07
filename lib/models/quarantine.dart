@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/key_value.dart';
-import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/pandemic.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';

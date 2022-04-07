@@ -10,6 +10,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/room.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';

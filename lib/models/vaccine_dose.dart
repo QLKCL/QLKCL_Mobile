@@ -4,8 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';
+import 'package:intl/intl.dart';
 
 VaccineDose vaccineDoseFromJson(String str) =>
     VaccineDose.fromJson(json.decode(str));
@@ -25,7 +27,7 @@ class VaccineDose {
 
   final int id;
   final Vaccine vaccine;
-  final CustomUser customUser;
+  final KeyValue customUser;
   final DateTime injectionDate;
   final dynamic injectionPlace;
   final dynamic batchNumber;
@@ -34,7 +36,7 @@ class VaccineDose {
   factory VaccineDose.fromJson(Map<String, dynamic> json) => VaccineDose(
         id: json["id"],
         vaccine: Vaccine.fromJson(json["vaccine"]),
-        customUser: CustomUser.fromJson(json["custom_user"]),
+        customUser: KeyValue.fromJson(json["custom_user"]),
         injectionDate: DateTime.parse(json["injection_date"]),
         injectionPlace: json["injection_place"],
         batchNumber: json["batch_number"],
@@ -49,26 +51,6 @@ class VaccineDose {
         "injection_place": injectionPlace,
         "batch_number": batchNumber,
         "symptom_after_injected": symptomAfterInjected,
-      };
-}
-
-class CustomUser {
-  CustomUser({
-    required this.code,
-    required this.fullName,
-  });
-
-  final String code;
-  final String fullName;
-
-  factory CustomUser.fromJson(Map<String, dynamic> json) => CustomUser(
-        code: json["code"],
-        fullName: json["full_name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "code": code,
-        "full_name": fullName,
       };
 }
 
@@ -108,4 +90,131 @@ Future<dynamic> fetchVaccineDoseList({data}) async {
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
+}
+
+// To parse this JSON data, do
+//
+//     final vaccinationCertification = vaccinationCertificationFromJson(jsonString);
+
+VaccinationCertification vaccinationCertificationFromJson(String str) =>
+    VaccinationCertification.fromJson(json.decode(str));
+
+String vaccinationCertificationToJson(VaccinationCertification data) =>
+    json.encode(data.toJson());
+
+class VaccinationCertification {
+  VaccinationCertification({
+    required this.patientInfo,
+    required this.qrCode,
+  });
+
+  final PatientInfo patientInfo;
+  final String qrCode;
+
+  factory VaccinationCertification.fromJson(Map<String, dynamic> json) =>
+      VaccinationCertification(
+        patientInfo: PatientInfo.fromJson(json["patientInfo"]),
+        qrCode: json["qrCode"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "patientInfo": patientInfo.toJson(),
+        "qrCode": qrCode,
+      };
+}
+
+class PatientInfo {
+  PatientInfo({
+    required this.fullname,
+    required this.birthday,
+    required this.personalPhoneNumber,
+    required this.province,
+    required this.district,
+    required this.ward,
+    required this.identification,
+    required this.fullyVaccinated,
+    required this.currentProvinceId,
+    required this.currentDistrictId,
+    required this.currentWardId,
+    required this.vaccinatedInfoes,
+  });
+
+  final String fullname;
+  final String birthday;
+  final String personalPhoneNumber;
+  final String province;
+  final String district;
+  final String ward;
+  final String identification;
+  final int fullyVaccinated;
+  final String currentProvinceId;
+  final String currentDistrictId;
+  final String currentWardId;
+  final List<VaccinatedInfoe> vaccinatedInfoes;
+
+  factory PatientInfo.fromJson(Map<String, dynamic> json) => PatientInfo(
+        fullname: json["fullname"],
+        birthday: DateFormat("dd/MM/yyyy")
+            .format(DateTime.fromMillisecondsSinceEpoch(json["birthday"])),
+        personalPhoneNumber: json["personalPhoneNumber"],
+        province: json["province"],
+        district: json["district"],
+        ward: json["ward"],
+        identification: json["identification"],
+        fullyVaccinated: json["fullyVaccinated"],
+        currentProvinceId: json["currentProvinceId"],
+        currentDistrictId: json["currentDistrictId"],
+        currentWardId: json["currentWardId"],
+        vaccinatedInfoes: List<VaccinatedInfoe>.from(
+            json["vaccinatedInfoes"].map((x) => VaccinatedInfoe.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fullname": fullname,
+        "birthday": birthday,
+        "personalPhoneNumber": personalPhoneNumber,
+        "province": province,
+        "district": district,
+        "ward": ward,
+        "identification": identification,
+        "fullyVaccinated": fullyVaccinated,
+        "currentProvinceId": currentProvinceId,
+        "currentDistrictId": currentDistrictId,
+        "currentWardId": currentWardId,
+        "vaccinatedInfoes":
+            List<dynamic>.from(vaccinatedInfoes.map((x) => x.toJson())),
+      };
+}
+
+class VaccinatedInfoe {
+  VaccinatedInfoe({
+    required this.vaccineId,
+    required this.vaccineName,
+    required this.injectionDate,
+    required this.injectionPlace,
+    required this.batchNumber,
+  });
+
+  final String vaccineId;
+  final String vaccineName;
+  final int injectionDate;
+  final String injectionPlace;
+  final String batchNumber;
+
+  factory VaccinatedInfoe.fromJson(Map<String, dynamic> json) =>
+      VaccinatedInfoe(
+        vaccineId: json["vaccineId"],
+        vaccineName: json["vaccineName"],
+        injectionDate: json["injectionDate"],
+        injectionPlace: json["injectionPlace"],
+        batchNumber: json["batchNumber"] == null ? null : json["batchNumber"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "vaccineId": vaccineId,
+        "vaccineName": vaccineName,
+        "injectionDate": injectionDate,
+        "injectionPlace": injectionPlace,
+        "batchNumber": batchNumber,
+      };
 }

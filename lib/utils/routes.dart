@@ -7,6 +7,9 @@ import 'package:qlkcl/screens/destination_history/list_destination_history_scree
 import 'package:qlkcl/screens/error/error_screen.dart';
 import 'package:qlkcl/screens/home/manager_home_screen.dart';
 import 'package:qlkcl/screens/home/member_home_screen.dart';
+import 'package:qlkcl/screens/manager/add_manager_screen.dart';
+import 'package:qlkcl/screens/manager/list_all_manager_screen.dart';
+import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
@@ -15,6 +18,7 @@ import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/login/create_password_screen.dart';
@@ -88,4 +92,8 @@ final Map<String, WidgetBuilder> routes = {
   ListVaccineDose.routeName: (context) => ListVaccineDose(),
   ListDestinationHistory.routeName: (context) => ListDestinationHistory(),
   DestinationHistoryScreen.routeName: (context) => DestinationHistoryScreen(),
+  ListQuarantineHistory.routeName: (context) => ListQuarantineHistory(),
+  ListAllManager.routeName: (context) => ListAllManager(),
+  AddManager.routeName: (context) => AddManager(),
+  UpdateManager.routeName: (context) => UpdateManager(),
 };

@@ -2,25 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
-import 'package:qlkcl/models/medical_declaration.dart';
-import 'package:qlkcl/screens/medical_declaration/detail_md_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/models/quarantine_history.dart';
 import 'package:qlkcl/utils/constant.dart';
-import 'package:qlkcl/helper/function.dart';
 import 'package:intl/intl.dart';
 
-class ListMedicalDeclaration extends StatefulWidget {
-  static const String routeName = "/list_medical_declaration";
-  ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
+class ListQuarantineHistory extends StatefulWidget {
+  static const String routeName = "/list_quarantine_history";
+  ListQuarantineHistory({Key? key, this.code}) : super(key: key);
   final String? code;
-  final String? phone;
 
   @override
-  _ListMedicalDeclarationState createState() => _ListMedicalDeclarationState();
+  _ListQuarantineHistoryState createState() => _ListQuarantineHistoryState();
 }
 
-class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
-  final PagingController<int, dynamic> _pagingController =
+class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
+  final PagingController<int, QuarantineHistory> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;
 
@@ -56,8 +52,8 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   Future<void> _fetchPage(int pageKey) async {
     code = widget.code ?? await getCode();
     try {
-      final newItems =
-          await fetchMedList(data: {'page': pageKey, 'user_code': code});
+      final newItems = await fetchQuarantineHistoryList(
+          data: {'page': pageKey, 'user_code': code});
 
       final isLastPage = newItems.length < PAGE_SIZE;
       if (isLastPage) {
@@ -74,22 +70,8 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(
-                  builder: (context) => MedicalDeclarationScreen(
-                        phone: widget.phone,
-                      )))
-              .then(
-                (value) => _pagingController.refresh(),
-              );
-        },
-        child: Icon(Icons.add),
-        tooltip: "Thêm tờ khai",
-      ),
       appBar: AppBar(
-        title: Text("Lịch sử khai báo y tế"),
+        title: Text("Lịch sử cách ly"),
         centerTitle: true,
         // actions: [
         //   IconButton(
@@ -106,10 +88,10 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
           onRefresh: () => Future.sync(
             () => _pagingController.refresh(),
           ),
-          child: PagedListView<int, dynamic>(
+          child: PagedListView<int, QuarantineHistory>(
             padding: EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
-            builderDelegate: PagedChildBuilderDelegate<dynamic>(
+            builderDelegate: PagedChildBuilderDelegate<QuarantineHistory>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
@@ -127,21 +109,25 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
               firstPageErrorIndicatorBuilder: (context) => Center(
                 child: Text('Có lỗi xảy ra'),
               ),
-              itemBuilder: (context, item, index) => MedicalDeclarationCard(
-                code: item['code'].toString(),
-                time: DateFormat("dd/MM/yyyy HH:mm:ss")
-                    .format(DateTime.parse(item['created_at']).toLocal()),
-                status: medDeclValueList
-                    .safeFirstWhere((result) => result.id == item['conclude'])!
-                    .name,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewMD(
-                                id: item['id'].toString(),
-                              )));
-                },
+              itemBuilder: (context, item, index) => QuarantineHistoryCard(
+                name: item.user.name,
+                time: ("${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.startDate).toLocal())}") +
+                    (item.endDate != null
+                        ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.endDate).toLocal())}"
+                        : " - Hiện tại"),
+                room:
+                    (item.quarantineRoom != null
+                            ? "${item.quarantineRoom?.name}, "
+                            : "") +
+                        (item.quarantineFloor != null
+                            ? "${item.quarantineFloor?.name}, "
+                            : "") +
+                        (item.quarantineBuilding != null
+                            ? "${item.quarantineBuilding?.name}, "
+                            : "") +
+                        ("${item.quarantineWard.name}"),
+                pademic: item.pandemic.name,
+                note: item.note ?? "",
               ),
             ),
           ),

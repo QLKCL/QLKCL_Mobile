@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/components/qr_code.dart';
+import 'package:qlkcl/screens/account/component/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
@@ -8,6 +8,7 @@ import 'package:qlkcl/screens/destination_history/list_destination_history_scree
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
@@ -114,6 +115,19 @@ class _AccountState extends State<Account> {
                         .pushNamed(ListDestinationHistory.routeName);
                   },
                   title: Text('Lịch sử di chuyển'),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                ),
+                Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
+                        .pushNamed(ListQuarantineHistory.routeName);
+                  },
+                  title: Text('Lịch sử cách ly'),
                   trailing: Icon(Icons.keyboard_arrow_right),
                 ),
               ],
