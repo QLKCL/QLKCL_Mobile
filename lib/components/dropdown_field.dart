@@ -204,7 +204,14 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
       child: DropdownSearch<T>.multiSelection(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: widget.validator,
+        validator: (widget.validator != null
+            ? widget.validator
+            : (value) {
+                return (widget.required == true &&
+                        (value == null || value.isEmpty))
+                    ? "Trường này là bắt buộc"
+                    : null;
+              }),
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
