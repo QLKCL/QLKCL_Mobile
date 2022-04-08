@@ -24,7 +24,7 @@ class AddManager extends StatefulWidget {
   _AddManagerState createState() => _AddManagerState();
 }
 
-class _AddManagerState extends State<AddManager> with TickerProviderStateMixin {
+class _AddManagerState extends State<AddManager> {
   List<String>? infoFromIdentityCard;
 
   @override

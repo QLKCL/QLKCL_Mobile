@@ -18,11 +18,11 @@ import 'package:responsive_framework/responsive_framework.dart';
 class ManagerForm extends StatefulWidget {
   final CustomUser? personalData;
   final Permission mode;
-  static var userCode;
   final List<String>? infoFromIdentityCard;
   final KeyValue? quarantineWard;
   final KeyValue? quarantineBuilding;
   final List<KeyValue>? quarantineFloor;
+  final dynamic staffData;
 
   const ManagerForm({
     Key? key,
@@ -32,6 +32,7 @@ class ManagerForm extends StatefulWidget {
     this.quarantineWard,
     this.quarantineBuilding,
     this.quarantineFloor,
+    this.staffData,
   }) : super(key: key);
 
   @override
@@ -124,9 +125,15 @@ class _ManagerFormState extends State<ManagerForm> {
           ? KeyValue.fromJson(widget.personalData!.ward)
           : null;
 
-      initQuarantineWard = (widget.personalData?.quarantineWard != null)
-          ? KeyValue.fromJson(widget.personalData?.quarantineWard)
-          : null;
+      quarantineWardController.text =
+          widget.personalData?.quarantineWard != null
+              ? "${widget.personalData!.quarantineWard?.id}"
+              : "";
+      initQuarantineWard = widget.personalData?.quarantineWard;
+
+      if (widget.staffData != null) {
+        type = "staff";
+      }
     } else {
       nationalityController.text = "VNM";
       countryController.text = "VNM";
@@ -223,9 +230,10 @@ class _ManagerFormState extends State<ManagerForm> {
                     value: "manager",
                     groupValue: type,
                     onChanged: (value) {
-                      setState(() {
-                        type = value!;
-                      });
+                      if (widget.mode == Permission.add)
+                        setState(() {
+                          type = value!;
+                        });
                     },
                   ),
                   Text(
@@ -239,9 +247,10 @@ class _ManagerFormState extends State<ManagerForm> {
                     value: "staff",
                     groupValue: type,
                     onChanged: (value) {
-                      setState(() {
-                        type = value!;
-                      });
+                      if (widget.mode == Permission.add)
+                        setState(() {
+                          type = value!;
+                        });
                     },
                   ),
                   Text(
