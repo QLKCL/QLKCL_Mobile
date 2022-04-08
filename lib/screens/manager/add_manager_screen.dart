@@ -10,15 +10,9 @@ class AddManager extends StatefulWidget {
   AddManager({
     Key? key,
     this.quarantineWard,
-    this.quarantineBuilding,
-    this.quarantineRoom,
-    this.quarantineFloor,
   }) : super(key: key);
 
   final KeyValue? quarantineWard;
-  final KeyValue? quarantineBuilding;
-  final KeyValue? quarantineFloor;
-  final KeyValue? quarantineRoom;
 
   @override
   _AddManagerState createState() => _AddManagerState();
@@ -60,6 +54,7 @@ class _AddManagerState extends State<AddManager> {
         body: ManagerForm(
           mode: Permission.add,
           infoFromIdentityCard: infoFromIdentityCard,
+          quarantineWard: widget.quarantineWard,
         ),
       ),
     );

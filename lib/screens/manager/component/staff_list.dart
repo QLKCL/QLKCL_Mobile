@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/custom_user.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
@@ -22,8 +23,8 @@ class StaffList extends StatefulWidget {
     Key? key,
     required this.quarrantine,
   }) : super(key: key);
-  final int quarrantine;
-  static var currentQuarrantine;
+  final KeyValue? quarrantine;
+  static KeyValue? currentQuarrantine;
 
   @override
   _StaffListState createState() => _StaffListState();
@@ -56,7 +57,7 @@ class _StaffListState extends State<StaffList>
     super.initState();
     fetch = fetchStaffList(data: {
       'page': 1,
-      'quarantine_ward_id': widget.quarrantine,
+      'quarantine_ward_id': widget.quarrantine?.id,
     });
   }
 
@@ -70,7 +71,7 @@ class _StaffListState extends State<StaffList>
     try {
       final newItems = await fetchStaffList(data: {
         'page': pageKey,
-        'quarantine_ward_id': widget.quarrantine,
+        'quarantine_ward_id': widget.quarrantine?.id,
       });
 
       final isLastPage = newItems.data.length < PAGE_SIZE;
@@ -320,7 +321,7 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchStaffList(data: {
         'page': newPageIndex + 1,
-        'quarantine_ward_id': StaffList.currentQuarrantine,
+        'quarantine_ward_id': StaffList.currentQuarrantine?.id,
       });
       if (newItems.currentPage <= newItems.totalPages) {
         paginatedDataSource = newItems.data;
@@ -339,7 +340,7 @@ class MemberDataSource extends DataGridSource {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchStaffList(data: {
       'page': currentPageIndex + 1,
-      'quarantine_ward_id': StaffList.currentQuarrantine
+      'quarantine_ward_id': StaffList.currentQuarrantine?.id
     });
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;

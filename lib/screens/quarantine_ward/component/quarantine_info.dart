@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/list_all_manager_screen.dart';
@@ -206,7 +207,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ListAllManager(
-                              currentQuarrantine: widget.quarantineInfo.id,
+                              tab: 1,
+                              currentQuarrantine: KeyValue(
+                                  name: widget.quarantineInfo.fullName,
+                                  id: widget.quarantineInfo.id),
                             ),
                           ),
                         );

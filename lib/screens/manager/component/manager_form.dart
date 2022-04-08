@@ -145,12 +145,13 @@ class _ManagerFormState extends State<ManagerForm> {
       quarantineBuildingController.text = widget.quarantineBuilding != null
           ? widget.quarantineBuilding!.id.toString()
           : "";
-      quarantineWardController.text = widget.quarantineWard != null
-          ? widget.quarantineWard!.id.toString()
-          : "";
-      getQuarantineWard().then((val) {
-        quarantineWardController.text = "$val";
-      });
+      if (widget.quarantineWard != null) {
+        quarantineWardController.text = widget.quarantineWard!.id.toString();
+      } else {
+        getQuarantineWard().then((val) {
+          quarantineWardController.text = "$val";
+        });
+      }
     }
     super.initState();
     fetchCountry().then((value) {
@@ -266,6 +267,57 @@ class _ManagerFormState extends State<ManagerForm> {
               label: 'Mã định danh',
               enabled: false,
               controller: codeController,
+            ),
+            DropdownInput<KeyValue>(
+              label: 'Khu cách ly',
+              hint: 'Chọn khu cách ly',
+              required: (widget.mode == Permission.view) ? false : true,
+              itemAsString: (KeyValue? u) => u!.name,
+              onFind: quarantineWardList.length == 0
+                  ? (String? filter) => fetchQuarantineWard({
+                        'page_size': PAGE_SIZE_MAX,
+                        'search': filter,
+                      })
+                  : null,
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemValue: quarantineWardList,
+              selectedItem: widget.quarantineWard ??
+                  (initQuarantineWard ??
+                      quarantineWardList.safeFirstWhere((type) =>
+                          type.id.toString() == quarantineWardController.text)),
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    quarantineWardController.text = "";
+                  } else {
+                    quarantineWardController.text = value.id.toString();
+                  }
+                  quarantineBuildingController.clear();
+                  quarantineFloorController.clear();
+                  quarantineBuildingList = [];
+                  quarantineFloorList = [];
+                  initQuarantineWard = null;
+                  initQuarantineBuilding = null;
+                  initQuarantineFloor = null;
+                });
+                fetchQuarantineBuilding({
+                  'quarantine_ward': quarantineWardController.text,
+                  'page_size': PAGE_SIZE_MAX,
+                }).then((data) => setState(() {
+                      quarantineBuildingList = data;
+                    }));
+              },
+              enabled: (widget.mode == Permission.add) ? true : false,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Khu cách ly',
             ),
             Input(
               label: 'Họ và tên',
@@ -577,57 +629,6 @@ class _ManagerFormState extends State<ManagerForm> {
                   : false,
               textCapitalization: TextCapitalization.characters,
               validatorFunction: passportValidator,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Khu cách ly',
-              hint: 'Chọn khu cách ly',
-              required: (widget.mode == Permission.view) ? false : true,
-              itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineWardList.length == 0
-                  ? (String? filter) => fetchQuarantineWard({
-                        'page_size': PAGE_SIZE_MAX,
-                        'search': filter,
-                      })
-                  : null,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemValue: quarantineWardList,
-              selectedItem: widget.quarantineWard ??
-                  (initQuarantineWard ??
-                      quarantineWardList.safeFirstWhere((type) =>
-                          type.id.toString() == quarantineWardController.text)),
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    quarantineWardController.text = "";
-                  } else {
-                    quarantineWardController.text = value.id.toString();
-                  }
-                  quarantineBuildingController.clear();
-                  quarantineFloorController.clear();
-                  quarantineBuildingList = [];
-                  quarantineFloorList = [];
-                  initQuarantineWard = null;
-                  initQuarantineBuilding = null;
-                  initQuarantineFloor = null;
-                });
-                fetchQuarantineBuilding({
-                  'quarantine_ward': quarantineWardController.text,
-                  'page_size': PAGE_SIZE_MAX,
-                }).then((data) => setState(() {
-                      quarantineBuildingList = data;
-                    }));
-              },
-              enabled: (widget.mode == Permission.add) ? true : false,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Khu cách ly',
             ),
             if (type == "staff")
               DropdownInput<KeyValue>(
