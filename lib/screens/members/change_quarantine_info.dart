@@ -62,11 +62,9 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
 
               newQuarantineWardController.text =
                   quarantineData?.quarantineWard != null
-                      ? quarantineData!.quarantineWard['id'].toString()
+                      ? quarantineData!.quarantineWard!.id.toString()
                       : "";
-              initQuarantineWard = (quarantineData?.quarantineWard != null)
-                  ? KeyValue.fromJson(quarantineData?.quarantineWard)
-                  : null;
+              initQuarantineWard = quarantineData?.quarantineWard;
             })
           });
     }
