@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/manager/add_manager_screen.dart';
 import 'package:qlkcl/screens/manager/component/staff_list.dart';
 import 'package:qlkcl/utils/app_theme.dart';
@@ -9,11 +10,11 @@ import 'package:qlkcl/utils/app_theme.dart';
 class ListAllManager extends StatefulWidget {
   static const String routeName = "/list_all_manager";
   final int tab;
-  final int currentQuarrantine;
+  final KeyValue? currentQuarrantine;
   ListAllManager({
     Key? key,
     this.tab = 0,
-    required this.currentQuarrantine,
+    this.currentQuarrantine,
   }) : super(key: key);
 
   @override
@@ -39,8 +40,10 @@ class _ListAllManagerState extends State<ListAllManager>
         onPressed: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
-              .pushNamed(
-            AddManager.routeName,
+              .push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    AddManager(quarantineWard: widget.currentQuarrantine)),
           );
         },
         child: Icon(Icons.add),
@@ -73,7 +76,11 @@ class _ListAllManagerState extends State<ListAllManager>
         body: TabBarView(
           controller: _tabController,
           children: [
-            Container(),
+            Container(
+              child: Center(
+                child: Text("Chức năng đang trong quá trình phát triển"),
+              ),
+            ),
             StaffList(
               quarrantine: widget.currentQuarrantine,
             ),
