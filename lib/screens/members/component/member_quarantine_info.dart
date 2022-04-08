@@ -105,7 +105,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               : "";
       quarantineWardController.text =
           widget.quarantineData?.quarantineWard != null
-              ? widget.quarantineData!.quarantineWard['id'].toString()
+              ? widget.quarantineData!.quarantineWard!.id.toString()
               : "";
       labelController.text = widget.quarantineData?.label ?? "";
       quarantinedAtController.text =
@@ -126,9 +126,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
-      initQuarantineWard = (widget.quarantineData?.quarantineWard != null)
-          ? KeyValue.fromJson(widget.quarantineData?.quarantineWard)
-          : null;
+      initQuarantineWard = widget.quarantineData?.quarantineWard;
       initQuarantineBuilding =
           (widget.quarantineData?.quarantineBuilding != null)
               ? KeyValue.fromJson(widget.quarantineData?.quarantineBuilding)

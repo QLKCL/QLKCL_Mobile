@@ -43,7 +43,7 @@ class Member {
   final dynamic quarantineRoom;
   final dynamic quarantineFloor;
   final dynamic quarantineBuilding;
-  dynamic quarantineWard;
+  KeyValue? quarantineWard;
   final String label;
   final bool? positiveTestedBefore;
   final bool? abroad;
@@ -65,7 +65,9 @@ class Member {
         quarantineRoom: json["quarantine_room"],
         quarantineFloor: json["quarantine_floor"],
         quarantineBuilding: json["quarantine_building"],
-        quarantineWard: json["quarantine_ward"],
+        quarantineWard: json["quarantine_ward"] != null
+            ? KeyValue.fromJson(json["quarantine_ward"])
+            : null,
         label: json["label"],
         positiveTestedBefore: json["positive_tested_before"],
         abroad: json["abroad"],

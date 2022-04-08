@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/manager/add_manager_screen.dart';
 import 'package:qlkcl/screens/manager/component/staff_list.dart';
-import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
@@ -55,19 +54,6 @@ class _ListAllManagerState extends State<ListAllManager>
               sliver: SliverAppBar(
                 title: Text("Danh sách quản lý, cán bộ"),
                 centerTitle: true,
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context,
-                              rootNavigator:
-                                  !Responsive.isDesktopLayout(context))
-                          .push(MaterialPageRoute(
-                              builder: (context) => SearchMember()));
-                    },
-                    icon: Icon(Icons.search),
-                    tooltip: "Tìm kiếm",
-                  ),
-                ],
                 pinned: true,
                 floating: !Responsive.isDesktopLayout(context),
                 forceElevated: innerBoxIsScrolled,
