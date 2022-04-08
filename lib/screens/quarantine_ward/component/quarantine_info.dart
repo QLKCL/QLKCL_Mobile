@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/manager/list_all_manager_screen.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'carousel.dart';
@@ -184,17 +185,39 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  margin: EdgeInsets.only(
-                    bottom: 10,
-                  ),
-                  child: Text(
-                    'Thông tin',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        'Thông tin',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ListAllManager(
+                              currentQuarrantine: widget.quarantineInfo.id,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text('Danh sách quản lý, cán bộ'),
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            CustomColors.primary),
+                      ),
+                    )
+                  ],
                 ),
                 buildInformation(
                     context,

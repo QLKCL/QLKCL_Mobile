@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -1168,4 +1169,178 @@ Widget cardLine(
       ],
     ),
   );
+}
+
+class ManagerCard extends StatefulWidget {
+  final bool? longPressEnabled;
+  final VoidCallback onTap;
+  final VoidCallback? onLongPress;
+  final Widget? menus;
+  final String? image;
+  final bool isThreeLine;
+  final FilterStaff manager;
+  const ManagerCard({
+    required this.onTap,
+    required this.manager,
+    this.onLongPress,
+    this.longPressEnabled,
+    this.menus,
+    this.image,
+    this.isThreeLine = true,
+  });
+
+  @override
+  _ManagerCardState createState() => _ManagerCardState();
+}
+
+class _ManagerCardState extends State<ManagerCard> {
+  bool _selected = false;
+  List<String> imageList = [
+    'Default/no_avatar',
+  ];
+
+  action() {
+    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
+      return Checkbox(
+        value: _selected,
+        onChanged: (newValue) {
+          setState(() {
+            _selected = newValue!;
+          });
+          widget.onLongPress!();
+        },
+      );
+    } else {
+      return widget.menus ?? Container();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.image != null && widget.image != "") {
+      imageList = widget.image!.split(',');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Container(
+        child: InkWell(
+          onTap: () {
+            if (widget.longPressEnabled != null &&
+                widget.longPressEnabled == true) {
+              setState(() {
+                _selected = !_selected;
+              });
+              widget.onLongPress!();
+            } else {
+              widget.onTap();
+            }
+          },
+          onLongPress: () {
+            if (widget.longPressEnabled != null) {
+              setState(() {
+                _selected = !_selected;
+              });
+              widget.onLongPress!();
+            }
+          },
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 56,
+                  width: 56,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    fit: StackFit.expand,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                            cloudinary.getImage(imageList[0]).toString()),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: widget.manager.fullName + " ",
+                              style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.normal,
+                                  color: CustomColors.primaryText),
+                            ),
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: widget.manager.gender == "MALE"
+                                  ? Icon(
+                                      Icons.male,
+                                      color: HexColor("#00BBD3"),
+                                    )
+                                  : Icon(
+                                      Icons.female,
+                                      color: HexColor("#FF4181"),
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Text(
+                        widget.manager.birthday,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: CustomColors.disableText,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          style: TextStyle(
+                            color: CustomColors.disableText,
+                          ),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: Icon(
+                                Icons.place_outlined,
+                                size: 16,
+                                color: CustomColors.disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " " + (widget.manager.quarantineWard.name),
+                            ),
+                          ],
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
+                      ),
+                    ],
+                  ),
+                ),
+                widget.menus != null ? action() : Container(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

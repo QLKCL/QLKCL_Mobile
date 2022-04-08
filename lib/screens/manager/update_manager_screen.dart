@@ -9,16 +9,14 @@ import 'package:qlkcl/utils/constant.dart';
 
 class UpdateManager extends StatefulWidget {
   static const String routeName = "/update_manager";
-  final String? code;
-  UpdateManager({Key? key, this.code}) : super(key: key);
+  final String code;
+  UpdateManager({Key? key, required this.code}) : super(key: key);
 
   @override
   _UpdateManagerState createState() => _UpdateManagerState();
 }
 
-class _UpdateManagerState extends State<UpdateManager>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
+class _UpdateManagerState extends State<UpdateManager> {
   late Future<dynamic> futureMember;
   late CustomUser personalData;
   late Member? quarantineData;
@@ -26,22 +24,7 @@ class _UpdateManagerState extends State<UpdateManager>
   @override
   void initState() {
     super.initState();
-    if (widget.code != null) {
-      futureMember = fetchCustomUser(data: {'code': widget.code});
-    } else {
-      futureMember = fetchCustomUser();
-    }
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
-    _tabController.addListener(_handleTabChange);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  _handleTabChange() {
-    setState(() {});
+    futureMember = fetchCustomUser(data: {'code': widget.code});
   }
 
   @override
@@ -69,9 +52,11 @@ class _UpdateManagerState extends State<UpdateManager>
               if (snapshot.hasData) {
                 personalData =
                     CustomUser.fromJson(snapshot.data["custom_user"]);
+                dynamic staffData = snapshot.data["staff"];
                 return ManagerForm(
                   personalData: personalData,
                   mode: Permission.edit,
+                  staffData: staffData,
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

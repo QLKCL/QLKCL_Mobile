@@ -93,7 +93,7 @@ final Map<String, WidgetBuilder> routes = {
   ListDestinationHistory.routeName: (context) => ListDestinationHistory(),
   DestinationHistoryScreen.routeName: (context) => DestinationHistoryScreen(),
   ListQuarantineHistory.routeName: (context) => ListQuarantineHistory(),
-  ListAllManager.routeName: (context) => ListAllManager(),
+  ListAllManager.routeName: (context) => ListAllManager(currentQuarrantine: -1),
   AddManager.routeName: (context) => AddManager(),
-  UpdateManager.routeName: (context) => UpdateManager(),
+  UpdateManager.routeName: (context) => UpdateManager(code: "-1"),
 };
