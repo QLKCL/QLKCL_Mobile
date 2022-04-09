@@ -4,6 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/utils/api.dart';
+
 Pandemic pandemicFromJson(String str) => Pandemic.fromJson(json.decode(str));
 
 String pandemicToJson(Pandemic data) => json.encode(data.toJson());
@@ -110,4 +114,14 @@ class Pandemic {
         "created_by": createdBy,
         "updated_by": updatedBy,
       };
+}
+
+Future<List<KeyValue>> fetchPandemic({data}) async {
+  ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterPandemic, data);
+  final dataResponse = response['data'];
+  if (dataResponse != null) {
+    return KeyValue.fromJsonList(dataResponse);
+  }
+  return [];
 }

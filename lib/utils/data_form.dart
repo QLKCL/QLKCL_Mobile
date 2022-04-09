@@ -264,6 +264,7 @@ Map<String, dynamic> createQuarantineDataForm({
   required int quarantineTime,
   required String mainManager,
   String? image,
+  String? pandemic,
 }) {
   var data = {
     "email": email,
@@ -281,6 +282,7 @@ Map<String, dynamic> createQuarantineDataForm({
     "main_manager": mainManager,
     "phone_number": phoneNumber,
     "image": image,
+    "pandemic_id": pandemic,
   };
   return prepareDataForm(data);
 }
@@ -315,6 +317,7 @@ Map<String, dynamic> updateQuarantineDataForm({
   String? mainManager,
   String? phoneNumber,
   String? image,
+  String? pandemic,
 }) {
   var data = {
     "id": id,
@@ -333,6 +336,7 @@ Map<String, dynamic> updateQuarantineDataForm({
     "quarantine_time": quarantineTime,
     "main_manager": mainManager,
     "image": image,
+    "pandemic_id": pandemic,
   };
   return prepareDataForm(data, exceptionField: ["image"]);
 }
@@ -767,26 +771,26 @@ Map<String, dynamic> updateStaffDataForm({
 Map<String, dynamic> filterStaffDataForm({
   required String keySearch,
   String? quarantineWard,
-  String? status,
+  String? statusList,
   String? isLastTested,
   String? careArea,
   String? quarantineAtMin,
   String? quarantineAtMax,
   String? pageSize,
-  String? healthStatus,
-  String? test,
+  String? healthStatusList,
+  String? positiveTestNowList,
   required int page,
 }) {
   var data = {
     "search": keySearch,
-    "status": status,
+    "status_list": statusList,
     "is_last_tested": isLastTested,
     "quarantine_ward_id": quarantineWard,
     "created_at_min": quarantineAtMin,
     "created_at_max": quarantineAtMax,
     "care_area": careArea,
-    "health_status_list": healthStatus,
-    "positive_test_now": test,
+    "health_status_list": healthStatusList,
+    "positive_test_now": positiveTestNowList,
     "page": page,
     "page_size": pageSize,
   };

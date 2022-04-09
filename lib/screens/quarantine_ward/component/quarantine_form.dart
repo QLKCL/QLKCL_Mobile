@@ -8,6 +8,7 @@ import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/pandemic.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -45,16 +46,19 @@ class _QuarantineFormState extends State<QuarantineForm> {
   // final longtitudeController = TextEditingController();
   final coordinateController = TextEditingController();
   TextEditingController imageController = TextEditingController();
+  final pandemicController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
   List<KeyValue> districtList = [];
   List<KeyValue> wardList = [];
+  List<KeyValue> pandemicList = [];
 
   KeyValue? initCountry;
   KeyValue? initCity;
   KeyValue? initDistrict;
   KeyValue? initWard;
+  KeyValue? initPandemic;
 
   @override
   void initState() {
@@ -95,6 +99,10 @@ class _QuarantineFormState extends State<QuarantineForm> {
 
       imageController.text = widget.quarantineInfo?.image ?? "";
 
+      pandemicController.text = widget.quarantineInfo?.pandemic != null
+          ? widget.quarantineInfo!.pandemic!.id.toString()
+          : "";
+
       initCountry = (widget.quarantineInfo?.country != null)
           ? KeyValue.fromJson(widget.quarantineInfo!.country)
           : null;
@@ -106,6 +114,11 @@ class _QuarantineFormState extends State<QuarantineForm> {
           : null;
       initWard = (widget.quarantineInfo?.ward != null)
           ? KeyValue.fromJson(widget.quarantineInfo!.ward)
+          : null;
+      initPandemic = (widget.quarantineInfo?.pandemic != null)
+          ? KeyValue(
+              id: widget.quarantineInfo!.pandemic!.id,
+              name: widget.quarantineInfo!.pandemic!.name)
           : null;
     } else {
       countryController.text = "VNM";
@@ -137,6 +150,12 @@ class _QuarantineFormState extends State<QuarantineForm> {
           wardList = value;
         });
     });
+    fetchPandemic().then((value) {
+      if (this.mounted)
+        setState(() {
+          pandemicList = value;
+        });
+    });
   }
 
   @override
@@ -165,6 +184,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           image: imageController.text,
           latitude: coordinateController.text.split(',')[0].trim(),
           longtitude: coordinateController.text.split(',')[1].trim(),
+          pandemic: pandemicController.text,
         ));
         cancel();
         showNotification(response);
@@ -186,6 +206,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           image: imageController.text,
           latitude: coordinateController.text.split(',')[0].trim(),
           longtitude: coordinateController.text.split(',')[1].trim(),
+          pandemic: pandemicController.text,
         ));
         cancel();
         showNotification(response);
@@ -484,6 +505,43 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   statusController.text = value.id;
                 }
               },
+            ),
+            DropdownInput<KeyValue>(
+              label: 'Dịch bệnh',
+              hint: 'Dịch bệnh',
+              itemValue: pandemicList,
+              selectedItem: pandemicList.length == 0
+                  ? initPandemic
+                  : pandemicList.safeFirstWhere(
+                      (type) => type.id.toString() == pandemicController.text),
+              enabled: (widget.mode == Permission.edit ||
+                      widget.mode == Permission.add)
+                  ? true
+                  : false,
+              onFind: pandemicList.length == 0
+                  ? (String? filter) => fetchPandemic()
+                  : null,
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    pandemicController.text = "";
+                  } else {
+                    pandemicController.text = value.id.toString();
+                  }
+                });
+              },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Dịch bệnh',
             ),
             Input(
               label: 'Thời gian cách ly (ngày)',
