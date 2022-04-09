@@ -117,9 +117,9 @@ class Pandemic {
 }
 
 Future<List<KeyValue>> fetchPandemic({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.filterPandemic, data);
-  var dataResponse = response['data'];
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterPandemic, data);
+  final dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
   }

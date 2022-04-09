@@ -544,8 +544,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         widget.quarantineData?.customUserCode != null)
                       OutlinedButton(
                         onPressed: () async {
-                          CancelFunc cancel = showLoading();
-                          var response = await denyMember({
+                          final CancelFunc cancel = showLoading();
+                          final response = await denyMember({
                             'member_codes':
                                 widget.quarantineData!.customUserCode.toString()
                           });
@@ -573,8 +573,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       if (widget.mode == Permission.changeStatus) {
-        CancelFunc cancel = showLoading();
-        var response = await acceptOneMember(acceptOneMemberDataForm(
+        final CancelFunc cancel = showLoading();
+        final response = await acceptOneMember(acceptOneMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: quarantineRoomController.text,
           quarantinedAt:
@@ -583,8 +583,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         cancel();
         showNotification(response);
       } else {
-        CancelFunc cancel = showLoading();
-        var updateResponse = await updateMember(updateMemberDataForm(
+        final CancelFunc cancel = showLoading();
+        final updateResponse = await updateMember(updateMemberDataForm(
           code: (widget.mode == Permission.add &&
                   MemberPersonalInfo.userCode != null &&
                   MemberPersonalInfo.userCode != "")

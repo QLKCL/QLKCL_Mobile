@@ -222,9 +222,9 @@ class _TestFormState extends State<TestForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
-        var response = await createTest(createTestDataForm(
+        final response = await createTest(createTestDataForm(
             userCode: userCodeController.text,
             status: stateController.text,
             type: typeController.text,
@@ -235,7 +235,7 @@ class _TestFormState extends State<TestForm> {
           Navigator.pop(context);
         }
       } else if (widget.mode == Permission.edit) {
-        var response = await updateTest(updateTestDataForm(
+        final response = await updateTest(updateTestDataForm(
             code: widget.testData!.code,
             status: stateController.text,
             type: typeController.text,

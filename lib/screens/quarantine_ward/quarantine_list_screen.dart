@@ -20,7 +20,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Các khu cách ly'),
       centerTitle: true,
       leading: IconButton(

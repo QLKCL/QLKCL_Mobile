@@ -41,8 +41,8 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await updateBuilding(updateBuildingDataForm(
+      final CancelFunc cancel = showLoading();
+      final response = await updateBuilding(updateBuildingDataForm(
         name: nameController.text,
         id: widget.currentBuilding!.id,
       ));
@@ -59,7 +59,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Sửa thông tin tòa'),
       centerTitle: true,
     );

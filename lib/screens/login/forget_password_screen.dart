@@ -116,8 +116,8 @@ class _ForgetFormState extends State<ForgetForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response =
+      final CancelFunc cancel = showLoading();
+      final response =
           await requestOtp(requestOtpDataForm(email: emailController.text));
       cancel();
       showNotification(response);

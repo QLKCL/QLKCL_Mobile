@@ -38,7 +38,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
       centerTitle: true,
       actions: [

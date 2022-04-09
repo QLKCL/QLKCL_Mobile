@@ -79,14 +79,14 @@ class Vaccine {
 }
 
 Future<dynamic> fetchVaccineDose({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getVaccineDose, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getVaccineDose, data);
   return response["data"];
 }
 
 Future<dynamic> fetchVaccineDoseList({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.filterVaccineDose, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterVaccineDose, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;

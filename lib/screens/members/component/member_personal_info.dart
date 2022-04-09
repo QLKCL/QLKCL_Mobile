@@ -502,9 +502,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     } else {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
-          var response = await createMember(createMemberDataForm(
+          final response = await createMember(createMemberDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -528,7 +528,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           }
         }
         if (widget.mode == Permission.edit) {
-          var response = await updateMember(updateMemberDataForm(
+          final response = await updateMember(updateMemberDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,

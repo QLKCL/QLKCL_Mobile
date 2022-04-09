@@ -51,7 +51,7 @@ class InfoManagerHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<InfoManagerHomeCard> listTest = [
+    final List<InfoManagerHomeCard> listTest = [
       InfoManagerHomeCard(
         title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
@@ -154,15 +154,15 @@ class InfoManagerHomePage extends StatelessWidget {
       ),
     ];
 
-    var _screenWidth = MediaQuery.of(context).size.width - 16;
-    var _crossAxisCount = _screenWidth <= maxMobileSize
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth <= maxMobileSize
         ? 1
-        : _screenWidth >= minDesktopSize
-            ? (_screenWidth - 230) ~/ (maxMobileSize - 64)
-            : _screenWidth ~/ (maxMobileSize - 32);
-    var _width = _screenWidth / _crossAxisCount;
-    var cellHeight = 128;
-    var _aspectRatio = _width / cellHeight;
+        : screenWidth >= minDesktopSize
+            ? (screenWidth - 230) ~/ (maxMobileSize - 64)
+            : screenWidth ~/ (maxMobileSize - 32);
+    final width = screenWidth / crossAxisCount;
+    final cellHeight = 128;
+    final aspectRatio = width / cellHeight;
 
     return Column(
       children: [
@@ -192,7 +192,7 @@ class InfoManagerHomePage extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
-                  width: _width < maxMobileSize ? _width + 100 : maxMobileSize,
+                  width: width < maxMobileSize ? width + 100 : maxMobileSize,
                   child: DropdownInput<KeyValue>(
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
@@ -231,10 +231,9 @@ class InfoManagerHomePage extends StatelessWidget {
           ResponsiveGridView.builder(
             padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
             gridDelegate: ResponsiveGridDelegate(
-              maxCrossAxisExtent: _width,
-              minCrossAxisExtent:
-                  _width < maxMobileSize ? _width : maxMobileSize,
-              childAspectRatio: _aspectRatio,
+              maxCrossAxisExtent: width,
+              minCrossAxisExtent: width < maxMobileSize ? width : maxMobileSize,
+              childAspectRatio: aspectRatio,
             ),
             itemCount: listTest.length,
             shrinkWrap: true,

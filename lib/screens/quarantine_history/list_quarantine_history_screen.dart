@@ -50,14 +50,14 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
   Future<void> _fetchPage(int pageKey) async {
     code = widget.code ?? await getCode();
     try {
-      var newItems = await fetchQuarantineHistoryList(
+      final newItems = await fetchQuarantineHistoryList(
           data: {'page': pageKey, 'user_code': code});
 
-      var isLastPage = newItems.length < pageSize;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {

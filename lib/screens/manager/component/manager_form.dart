@@ -751,10 +751,10 @@ class _ManagerFormState extends State<ManagerForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       if (type == "manager") {
         if (widget.mode == Permission.add) {
-          var response = await createManager(createManagerDataForm(
+          final response = await createManager(createManagerDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -774,7 +774,7 @@ class _ManagerFormState extends State<ManagerForm> {
           cancel();
           showNotification(response);
         } else if (widget.mode == Permission.edit) {
-          var response = await updateManager(updateManagerDataForm(
+          final response = await updateManager(updateManagerDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -796,7 +796,7 @@ class _ManagerFormState extends State<ManagerForm> {
         }
       } else {
         if (widget.mode == Permission.add) {
-          var response = await createStaff(createStaffDataForm(
+          final response = await createStaff(createStaffDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -818,7 +818,7 @@ class _ManagerFormState extends State<ManagerForm> {
           showNotification(response);
         }
         if (widget.mode == Permission.edit) {
-          var response = await updateStaff(updateStaffDataForm(
+          final response = await updateStaff(updateStaffDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,

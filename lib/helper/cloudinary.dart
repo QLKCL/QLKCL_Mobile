@@ -11,35 +11,35 @@ final cloudinary = CloudinaryPublic(
 );
 
 Future upLoadImages(
-  List<XFile> _imageFileList, {
+  List<XFile> imageFileList, {
   bool multi = false,
   int maxQuantity = 1,
   String type = "User",
   String folder = "",
   Map<String, dynamic>? context,
 }) async {
-  _imageFileList = [];
-  _imageFileList = await selectImages(_imageFileList, multi: multi);
-  if (_imageFileList.length > maxQuantity) {
+  imageFileList = [];
+  imageFileList = await selectImages(imageFileList, multi: multi);
+  if (imageFileList.length > maxQuantity) {
     showNotification("Chỉ có thể chọn tối đa $maxQuantity hình ảnh!",
         status: Status.error);
-    _imageFileList = _imageFileList.take(maxQuantity).toList();
+    imageFileList = imageFileList.take(maxQuantity).toList();
   }
-  return upload(_imageFileList, type: type, folder: folder, context: context);
+  return upload(imageFileList, type: type, folder: folder, context: context);
 }
 
 Future<List<XFile>> selectImages(
-  List<XFile> _imageFileList, {
+  List<XFile> imageFileList, {
   bool multi = false,
 }) async {
-  ImagePicker _picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
   List<XFile>? selectedImages = [];
   try {
     if (multi == true) {
-      selectedImages = await _picker.pickMultiImage();
+      selectedImages = await picker.pickMultiImage();
     } else {
-      XFile? selectedImage =
-          await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? selectedImage =
+          await picker.pickImage(source: ImageSource.gallery);
       selectedImages = selectedImage != null ? [selectedImage] : [];
     }
   } catch (error) {
@@ -47,23 +47,23 @@ Future<List<XFile>> selectImages(
   }
 
   if (selectedImages != null && selectedImages.isNotEmpty) {
-    _imageFileList.addAll(selectedImages.toList());
+    imageFileList.addAll(selectedImages.toList());
   } else {
     print('No image selected.');
   }
-  return _imageFileList;
+  return imageFileList;
 }
 
 Future<List<String>> upload(
-  List<XFile> _imageFileList, {
+  List<XFile> imageFileList, {
   String type = "User",
   String folder = "",
   Map<String, dynamic>? context,
 }) async {
   try {
-    CancelFunc cancel = showLoading();
-    List<CloudinaryResponse> response =
-        await cloudinary.uploadFiles(_imageFileList
+    final CancelFunc cancel = showLoading();
+    final List<CloudinaryResponse> response =
+        await cloudinary.uploadFiles(imageFileList
             .map(
               (image) => CloudinaryFile.fromFile(
                 image.path,

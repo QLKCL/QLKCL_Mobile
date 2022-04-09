@@ -51,7 +51,7 @@ class _UpdateManagerState extends State<UpdateManager> {
               if (snapshot.hasData) {
                 personalData =
                     CustomUser.fromJson(snapshot.data["custom_user"]);
-                dynamic staffData = snapshot.data["staff"];
+                final dynamic staffData = snapshot.data["staff"];
                 return ManagerForm(
                   personalData: personalData,
                   staffData: staffData,

@@ -6,7 +6,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 extension IterableX<T> on Iterable<T> {
   T? safeFirstWhere(bool Function(T) test) {
-    var sublist = where(test);
+    final sublist = where(test);
     return sublist.isEmpty ? null : sublist.first;
   }
 }
@@ -14,7 +14,7 @@ extension IterableX<T> on Iterable<T> {
 extension ListUtils<T> on List<T> {
   num sumBy(num Function(T element) f) {
     num sum = 0;
-    for (var item in this) {
+    for (final item in this) {
       sum += f(item);
     }
     return sum;
@@ -57,14 +57,14 @@ extension DateUtils on DateTime {
 /// * Positive:   (UK)   `2020-09-16T11:55:01.802248+00:00`
 /// * Negative: (Canada) `2020-09-16T11:55:01.802248-08:00`
 String formatISOTime(DateTime? dateTime) {
-  var date = dateTime ?? DateTime.now();
-  var duration = date.timeZoneOffset;
+  final date = dateTime ?? DateTime.now();
+  final duration = date.timeZoneOffset;
 
   /// If the user is in Canada the time zone is GMT-8 then the signal will need to be negative.
   /// Because we already get the minus from the hours in the string then we don't need to add it to the string.
   /// In the case the timezone is GMT-0 or higher then the sign will need to be positive.
-  var timezoneSignal = !duration.isNegative ? '+' : '';
-  var dateString =
+  final timezoneSignal = !duration.isNegative ? '+' : '';
+  final dateString =
       "${date.toIso8601String()}$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}";
   return dateString;
 }
@@ -80,15 +80,15 @@ dynamic prepareDataForm(data, {List<String> exceptionField = const []}) {
 String parseDateToDateTimeWithTimeZone(String date, {String? time}) {
   String outputDate = "";
   if (date != "") {
-    DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
+    final DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     if (time != null) {
-      int hour = int.parse(time.split(':').first);
-      int minute = int.parse(time.split(':').last);
+      final int hour = int.parse(time.split(':').first);
+      final int minute = int.parse(time.split(':').last);
       inputDate = inputDate.copyWith(hour: hour, minute: minute);
     }
     inputDate = DateTime.parse(formatISOTime(inputDate));
-    var outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    final outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     outputDate = outputFormat.format(inputDate);
   }
   return outputDate;
@@ -167,13 +167,13 @@ class Responsive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size _size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
     // If our width is more than 768 then we consider it a desktop
-    if (_size.width >= maxTabletSize) {
+    if (size.width >= maxTabletSize) {
       return desktop;
     }
     // If width it less then 768 and more then 480 we consider it as tablet
-    else if (_size.width >= maxMobileSize && tablet != null) {
+    else if (size.width >= maxMobileSize && tablet != null) {
       return tablet!;
     }
     // Or less then that we called it mobile
@@ -185,16 +185,16 @@ class Responsive extends StatelessWidget {
 
 String getAddress(data) {
   if (data != null) {
-    String address = data['detail_address'] != null
+    final String address = data['detail_address'] != null
         ? "${data['detail_address']}, "
         : (data['address']) != null
             ? "${data['address']}, "
             : "";
-    String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
-    String district =
+    final String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
+    final String district =
         data['district'] != null ? "${data['district']['name']}, " : "";
-    String city = data['city'] != null ? "${data['city']['name']}, " : "";
-    String country =
+    final String city = data['city'] != null ? "${data['city']['name']}, " : "";
+    final String country =
         data['country'] != null ? "${data['country']['name']}" : "";
     return address + ward + district + city + country;
   } else {
@@ -204,16 +204,16 @@ String getAddress(data) {
 
 String getRoom(data) {
   if (data != null) {
-    String room = data['quarantine_room'] != null
+    final String room = data['quarantine_room'] != null
         ? "${data['quarantine_room']['name']}, "
         : "";
-    String floor = data['quarantine_floor'] != null
+    final String floor = data['quarantine_floor'] != null
         ? "${data['quarantine_floor']['name']}, "
         : "";
-    String building = data['quarantine_building'] != null
+    final String building = data['quarantine_building'] != null
         ? "${data['quarantine_building']['name']}, "
         : "";
-    String ward = data['quarantine_ward'] != null
+    final String ward = data['quarantine_ward'] != null
         ? "${data['quarantine_ward']['full_name']}"
         : "";
     return room + floor + building + ward;

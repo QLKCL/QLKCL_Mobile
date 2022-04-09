@@ -9,7 +9,7 @@ class DismissKeyboard extends StatelessWidget {
     return GestureDetector(
       // tab out to unfocus current input
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
+        final FocusScopeNode currentFocus = FocusScope.of(context);
         if (!currentFocus.hasPrimaryFocus &&
             currentFocus.focusedChild != null) {
           FocusManager.instance.primaryFocus!.unfocus();

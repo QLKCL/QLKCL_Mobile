@@ -62,62 +62,60 @@ class _ImageFieldState extends State<ImageField> {
               return index == 0
                   ? Container(
                       padding: const EdgeInsets.all(5),
-                      child: Container(
-                        child: DottedBorder(
-                          borderType: BorderType.RRect,
-                          radius: Radius.circular(8),
-                          color: CustomColors.primary,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(Size.infinite),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              side: MaterialStateProperty.all(
-                                BorderSide(
-                                  color: CustomColors.primary,
-                                  style: BorderStyle.none,
-                                ),
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(8),
+                        color: CustomColors.primary,
+                        child: OutlinedButton(
+                          style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all(Size.infinite),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            onPressed: () {
-                              if (widget.maxQuantityImage < imageList.length) {
-                                showNotification(
-                                    "Chỉ có thể thêm tối đa ${widget.maxQuantityImage} hình ảnh!",
-                                    status: Status.error);
-                              } else {
-                                upLoadImages(
-                                  imageFileList,
-                                  multi: true,
-                                  maxQuantity: widget.maxQuantityImage -
-                                      imageList.length +
-                                      1,
-                                  type: widget.type,
-                                ).then((value) => setState(() {
-                                      imageList.addAll(value);
-                                      widget.controller.text =
-                                          imageList.sublist(1).join(',');
-                                    }));
-                              }
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.camera_alt_outlined,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Text(
-                                  'Thêm ảnh',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            side: MaterialStateProperty.all(
+                              BorderSide(
+                                color: CustomColors.primary,
+                                style: BorderStyle.none,
+                              ),
                             ),
+                          ),
+                          onPressed: () {
+                            if (widget.maxQuantityImage < imageList.length) {
+                              showNotification(
+                                  "Chỉ có thể thêm tối đa ${widget.maxQuantityImage} hình ảnh!",
+                                  status: Status.error);
+                            } else {
+                              upLoadImages(
+                                imageFileList,
+                                multi: true,
+                                maxQuantity: widget.maxQuantityImage -
+                                    imageList.length +
+                                    1,
+                                type: widget.type,
+                              ).then((value) => setState(() {
+                                    imageList.addAll(value);
+                                    widget.controller.text =
+                                        imageList.sublist(1).join(',');
+                                  }));
+                            }
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.camera_alt_outlined,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text(
+                                'Thêm ảnh',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                       ),

@@ -45,15 +45,15 @@ class Building {
 }
 
 Future<dynamic> fetchBuilding({id}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.getHTTP('${Api.getBuilding}?id=$id');
+  final ApiHelper api = ApiHelper();
+  final response = await api.getHTTP('${Api.getBuilding}?id=$id');
   return response["data"];
 }
 
 //fetchBuildingList is in quarantine.dart
 Future<Response> createBuilding(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.createBuilding, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createBuilding, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -69,8 +69,8 @@ Future<Response> createBuilding(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateBuilding(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.updateBuilding, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateBuilding, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {

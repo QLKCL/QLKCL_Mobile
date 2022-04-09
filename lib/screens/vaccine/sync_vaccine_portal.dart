@@ -149,9 +149,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       ),
                       Spacer(),
                       ElevatedButton(
-                        onPressed: enableNext
-                            ? _submit
-                            : null,
+                        onPressed: enableNext ? _submit : null,
                         child: const Text("Tra cứu"),
                       ),
                       Spacer(),
@@ -169,12 +167,12 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
   void _otp() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
 
-      RequestHelper _provider =
+      final RequestHelper provider =
           RequestHelper(baseUrl: "https://tiemchungcovid19.gov.vn");
 
-      var response = await _provider.get(
+      final response = await provider.get(
         "/api/vaccination/public/otp-search",
         params: syncVaccinePortalDataForm(
           birthday: DateFormat('dd/MM/yyyy')
@@ -205,12 +203,12 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
 
-      RequestHelper _provider =
+      final RequestHelper provider =
           RequestHelper(baseUrl: "https://tiemchungcovid19.gov.vn");
 
-      var response = await _provider.get(
+      final response = await provider.get(
         "/api/vaccination/public/patient-vaccinated",
         params: syncVaccinePortalDataForm(
           birthday: DateFormat('dd/MM/yyyy')
@@ -229,7 +227,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {
           showNotification(null);
-          VaccinationCertification vaccineCertification =
+          final VaccinationCertification vaccineCertification =
               VaccinationCertification.fromJson(response.data);
           if (mounted) {
             Navigator.of(context,

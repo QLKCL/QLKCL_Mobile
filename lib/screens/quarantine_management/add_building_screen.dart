@@ -38,8 +38,8 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await createBuilding(createBuildingDataForm(
+      final CancelFunc cancel = showLoading();
+      final response = await createBuilding(createBuildingDataForm(
         name: nameController.text,
         quarantineWard: widget.currentQuarrantine!.id,
       ));
@@ -53,7 +53,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Thêm tòa'),
       centerTitle: true,
     );

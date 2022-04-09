@@ -78,7 +78,7 @@ class _AppState extends State<App> {
         ? Splash()
         : WillPopScope(
             onWillPop: () async {
-              var isFirstRouteInCurrentTab =
+              final isFirstRouteInCurrentTab =
                   !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
               if (isFirstRouteInCurrentTab) {
                 // if not on the 'main' tab
@@ -91,8 +91,8 @@ class _AppState extends State<App> {
               }
 
               // let system handle back button if we're on the first route
-              DateTime now = DateTime.now();
-              int seconds = 2;
+              final DateTime now = DateTime.now();
+              final int seconds = 2;
               if (now.difference(currentBackPressTime) >
                   Duration(seconds: seconds)) {
                 currentBackPressTime = now;
@@ -226,16 +226,16 @@ class _AppState extends State<App> {
     // // Some examples of how to use Outcome Events public methods with OneSignal SDK
     // oneSignalOutcomeEventsExamples();
 
-    bool userProvidedPrivacyConsent =
+    final bool userProvidedPrivacyConsent =
         await OneSignal.shared.userProvidedPrivacyConsent();
     print("USER PROVIDED PRIVACY CONSENT: $userProvidedPrivacyConsent");
 
     handleSendTags("role", _role.toString());
 
-    int quarantineWardId = await getQuarantineWard();
+    final int quarantineWardId = await getQuarantineWard();
     handleSendTags("quarantine_ward_id", quarantineWardId.toString());
 
-    String code = await getCode();
+    final String code = await getCode();
     handleSetExternalUserId(code);
   }
 }

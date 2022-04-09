@@ -9,8 +9,8 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-    // bool lightMode =
-        // MediaQuery.of(context).platformBrightness == Brightness.light;
+  // bool lightMode =
+  // MediaQuery.of(context).platformBrightness == Brightness.light;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

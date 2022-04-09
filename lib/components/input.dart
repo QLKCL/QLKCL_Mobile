@@ -62,7 +62,7 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    List<TextInputFormatter> formater = <TextInputFormatter>[];
+    final List<TextInputFormatter> formater = <TextInputFormatter>[];
     if (widget.type == TextInputType.number) {
       formater.add(FilteringTextInputFormatter.singleLineFormatter);
     }
@@ -189,7 +189,7 @@ class TitleCaseInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String formattedText =
+    final String formattedText =
         newValue.text.split(' ').map(textToTitleCase).toList().join(' ');
     return TextEditingValue(
       text: formattedText,
@@ -201,17 +201,17 @@ class TitleCaseInputFormatter extends TextInputFormatter {
 class CapitalCaseTextFormatter extends TextInputFormatter {
   String capitalizeSentence(String text) {
     // Each sentence becomes an array element
-    var sentences = text.split('. ');
+    final sentences = text.split('. ');
     // Initialize string as empty string
     var output = '';
     // Loop through each sentence
     for (var x = 0; x < sentences.length; x++) {
       // Trim leading and trailing whitespace
       // var trimmed = sentences[x].trim();
-      var trimmed = sentences[x];
+      final trimmed = sentences[x];
       if (trimmed != "") {
         // Capitalize first letter of current sentence
-        var capitalized = trimmed[0].toUpperCase() + trimmed.substring(1);
+        final capitalized = trimmed[0].toUpperCase() + trimmed.substring(1);
         // Add current sentence to output with a period
         output += capitalized;
         if (x < sentences.length - 1) {
@@ -225,7 +225,7 @@ class CapitalCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String formattedText = capitalizeSentence(newValue.text);
+    final String formattedText = capitalizeSentence(newValue.text);
     return TextEditingValue(
       text: formattedText,
       selection: newValue.selection,

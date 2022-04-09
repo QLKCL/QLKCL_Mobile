@@ -35,8 +35,8 @@ void main() async {
 
   await Hive.initFlutter();
 
-  bool isLoggedIn = await getLoginState();
-  int role = await getRole();
+  final bool isLoggedIn = await getLoginState();
+  final int role = await getRole();
 
   HttpOverrides.global = MyHttpOverrides();
 
@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
     //       );
     //     } else {
     //       // Loading is done, return the app:
-    var botToastBuilder = BotToastInit();
+    final botToastBuilder = BotToastInit();
     return MaterialApp(
       title: 'Quản lý khu cách ly',
       debugShowCheckedModeBanner: false,

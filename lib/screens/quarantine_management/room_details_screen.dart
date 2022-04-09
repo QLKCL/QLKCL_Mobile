@@ -70,7 +70,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text("Thông tin chi tiết phòng"),
       centerTitle: true,
       actions: [
@@ -375,7 +375,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      List<Widget> stackChildren = [];
+      final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {

@@ -46,8 +46,8 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await updateRoom(updateRoomDataForm(
+      final CancelFunc cancel = showLoading();
+      final response = await updateRoom(updateRoomDataForm(
         name: nameController.text,
         id: widget.currentRoom!.id,
         quarantineFloor: widget.currentFloor!.id,
@@ -66,7 +66,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Sửa thông tin phòng'),
       centerTitle: true,
     );

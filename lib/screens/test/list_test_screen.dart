@@ -56,14 +56,14 @@ class _ListTestState extends State<ListTest> {
     code = widget.code ?? await getCode();
     name = widget.name ?? await getName();
     try {
-      var newItems =
+      final newItems =
           await fetchTestList(data: {'page': pageKey, 'user_code': code});
 
-      var isLastPage = newItems.length < pageSize;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {

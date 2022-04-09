@@ -9,7 +9,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
 
 Future<int> getRole() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
 
   if (infoBox.containsKey('role')) {
     return infoBox.get('role');
@@ -19,7 +19,7 @@ Future<int> getRole() async {
 }
 
 Future<String> getCode() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
 
   if (infoBox.containsKey('code')) {
     return infoBox.get('code');
@@ -29,7 +29,7 @@ Future<String> getCode() async {
 }
 
 Future<String> getName() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
 
   if (infoBox.containsKey('name')) {
     return infoBox.get('name');
@@ -39,54 +39,55 @@ Future<String> getName() async {
 }
 
 Future<int> getQuarantineWard() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
   return infoBox.get('quarantineWard');
 }
 
 Future<String> getQuarantineStatus() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
   return infoBox.get('quarantineStatus');
 }
 
 Future<String> getGender() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
   return infoBox.get('gender');
 }
 
 Future<String> getBirthday() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
   return infoBox.get('birthday');
 }
 
 Future<String> getPhoneNumber() async {
-  var infoBox = await Hive.openBox('myInfo');
+  final infoBox = await Hive.openBox('myInfo');
   return infoBox.get('phoneNumber');
 }
 
 Future<void> setInfo() async {
-  var infoBox = await Hive.openBox('myInfo');
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getMember, null);
-  int role = response['data']['custom_user']['role']['id'];
+  final infoBox = await Hive.openBox('myInfo');
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getMember, null);
+  final int role = response['data']['custom_user']['role']['id'];
   infoBox.put('role', role);
-  String name = response['data']['custom_user']['full_name'];
+  final String name = response['data']['custom_user']['full_name'];
   infoBox.put('name', name);
-  String gender = response['data']['custom_user']['gender'];
+  final String gender = response['data']['custom_user']['gender'];
   infoBox.put('gender', gender);
-  String birthday = response['data']['custom_user']['birthday'];
+  final String birthday = response['data']['custom_user']['birthday'];
   infoBox.put('birthday', birthday);
-  String phoneNumber = response['data']['custom_user']['phone_number'];
+  final String phoneNumber = response['data']['custom_user']['phone_number'];
   infoBox.put('phoneNumber', phoneNumber);
-  int quarantineWard = response['data']['custom_user']['quarantine_ward']['id'];
+  final int quarantineWard =
+      response['data']['custom_user']['quarantine_ward']['id'];
   infoBox.put('quarantineWard', quarantineWard);
-  String code = response['data']['custom_user']['code'];
+  final String code = response['data']['custom_user']['code'];
   infoBox.put('code', code);
-  String quarantineStatus = response['data']['custom_user']['status'];
+  final String quarantineStatus = response['data']['custom_user']['status'];
   infoBox.put('quarantineStatus', quarantineStatus);
 }
 
 Future<bool> getLoginState() async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
 
   if (authBox.containsKey('isLoggedIn')) {
     return authBox.get('isLoggedIn');
@@ -97,29 +98,29 @@ Future<bool> getLoginState() async {
 }
 
 Future<void> setLoginState(isLoggedIn) async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
 
   authBox.put('isLoggedIn', isLoggedIn);
 }
 
 Future<String?> getAccessToken() async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
   return authBox.get('accessToken');
 }
 
 Future<void> setAccessToken(String accessToken) async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
   authBox.put('accessToken', accessToken);
 }
 
 Future<String?> getRefreshToken() async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
 
   return authBox.get('refreshToken');
 }
 
 Future<void> setRefreshToken(String refreshToken) async {
-  var authBox = await Hive.openBox('auth');
+  final authBox = await Hive.openBox('auth');
 
   authBox.put('refreshToken', refreshToken);
 }
@@ -146,11 +147,11 @@ Future<Response> login(Map<String, String> loginDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body;
-    var data = jsonDecode(resp);
-    var accessToken = data['access'];
-    var refreshToken = data['refresh'];
-    bool status = await setToken(accessToken, refreshToken);
+    final resp = response.body;
+    final data = jsonDecode(resp);
+    final accessToken = data['access'];
+    final refreshToken = data['refresh'];
+    final bool status = await setToken(accessToken, refreshToken);
     if (status) {
       await setInfo();
       return Response(status: Status.success);
@@ -182,8 +183,8 @@ Future<Response> register(Map<String, dynamic> registerDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body;
-    var data = jsonDecode(resp);
+    final resp = response.body;
+    final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success);
     } else if (data['message']['phone_number'] == "Exist") {
@@ -205,8 +206,8 @@ Future<bool> logout() async {
   return true;
 }
 
-bool isTokenExpired(String _token) {
-  DateTime? expiryDate = Jwt.getExpiryDate(_token);
+bool isTokenExpired(String token) {
+  final DateTime? expiryDate = Jwt.getExpiryDate(token);
   return expiryDate!.compareTo(DateTime.now()) < 0;
 }
 
@@ -225,8 +226,8 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body;
-    var data = jsonDecode(resp);
+    final resp = response.body;
+    final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, message: "Gửi OTP thành công!");
     } else if (data['error_code'] == 400) {
@@ -261,8 +262,8 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body;
-    var data = jsonDecode(resp);
+    final resp = response.body;
+    final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, data: data["data"]['new_otp']);
     } else if (data['error_code'] == 400) {
@@ -291,8 +292,8 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body;
-    var data = jsonDecode(resp);
+    final resp = response.body;
+    final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(
           status: Status.success,
@@ -314,8 +315,8 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
 }
 
 Future<Response> changePass(Map<String, String> changePassDataForm) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.changePass, changePassDataForm);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.changePass, changePassDataForm);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -340,8 +341,8 @@ Future<Response> changePass(Map<String, String> changePassDataForm) async {
 }
 
 Future<Response> resetPass(Map<String, String> resetPassDataForm) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.resetPass, resetPassDataForm);
+  final api = ApiHelper();
+  final response = await api.postHTTP(Api.resetPass, resetPassDataForm);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {

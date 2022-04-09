@@ -27,7 +27,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Danh sách tòa'),
     );
     return Scaffold(

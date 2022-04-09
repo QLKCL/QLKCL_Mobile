@@ -28,7 +28,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Thông tin khu cách ly'),
       centerTitle: true,
       actions: [

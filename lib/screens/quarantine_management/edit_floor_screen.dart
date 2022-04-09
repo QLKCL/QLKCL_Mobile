@@ -43,8 +43,8 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await updateFloor(updateFloorDataForm(
+      final CancelFunc cancel = showLoading();
+      final response = await updateFloor(updateFloorDataForm(
         name: nameController.text,
         id: widget.currentFloor!.id,
       ));
@@ -60,7 +60,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Sửa thông tin tầng'),
       centerTitle: true,
     );

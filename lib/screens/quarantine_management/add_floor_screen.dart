@@ -57,8 +57,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
       } else {
         capacityController.text = "0";
       }
-      CancelFunc cancel = showLoading();
-      var response = await createFloor(
+      final CancelFunc cancel = showLoading();
+      final response = await createFloor(
         createFloorDataForm(
           name: nameController.text,
           quarantineBuilding: widget.currentBuilding!.id,
@@ -90,7 +90,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text('Thêm tầng'),
       centerTitle: true,
     );
@@ -202,19 +202,17 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                       itemCount: numOfAddedFloor,
                                     )
                                   else
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Input(
-                                              label: 'Tên tầng',
-                                              hint: 'Tên tầng',
-                                              required: true,
-                                              controller: nameController,
-                                            ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Input(
+                                            label: 'Tên tầng',
+                                            hint: 'Tên tầng',
+                                            required: true,
+                                            controller: nameController,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                 ],
                               ),

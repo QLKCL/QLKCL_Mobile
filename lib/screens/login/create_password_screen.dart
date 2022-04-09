@@ -116,8 +116,8 @@ class _CreatePasswordState extends State<CreatePassword> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        CancelFunc cancel = showLoading();
-        var response = await createPass(createPassDataForm(
+        final CancelFunc cancel = showLoading();
+        final response = await createPass(createPassDataForm(
             email: widget.email,
             otp: widget.otp,
             newPassword: passController.text,

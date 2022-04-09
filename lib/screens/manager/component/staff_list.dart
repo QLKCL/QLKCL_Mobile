@@ -32,7 +32,7 @@ class StaffList extends StatefulWidget {
 
 class _StaffListState extends State<StaffList>
     with AutomaticKeepAliveClientMixin<StaffList> {
-  final PagingController<int, FilterStaff> _pagingController =
+  final PagingController<int, FilterStaff> pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   MemberDataSource memberDataSource = MemberDataSource();
@@ -46,8 +46,8 @@ class _StaffListState extends State<StaffList>
   @override
   void initState() {
     StaffList.currentQuarrantine = widget.quarrantine;
-    _pagingController.addPageRequestListener(_fetchPage);
-    _pagingController.addStatusListener((status) {
+    pagingController.addPageRequestListener(_fetchPage);
+    pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         showNotification("Có lỗi xảy ra!", status: Status.error);
       }
@@ -61,26 +61,26 @@ class _StaffListState extends State<StaffList>
 
   @override
   void dispose() {
-    // _pagingController.dispose();
+    // pagingController.dispose();
     super.dispose();
   }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      var newItems = await fetchStaffList(data: {
+      final newItems = await fetchStaffList(data: {
         'page': pageKey,
         'quarantine_ward_id': widget.quarrantine?.id,
       });
 
-      var isLastPage = newItems.data.length < pageSize;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems.data);
+        pagingController.appendLastPage(newItems.data);
       } else {
-        var nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems.data, nextPageKey);
+        final nextPageKey = pageKey + 1;
+        pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
-      _pagingController.error = error;
+      pagingController.error = error;
     }
   }
 
@@ -122,17 +122,17 @@ class _StaffListState extends State<StaffList>
               );
             },
           )
-        : listCard(_pagingController);
+        : listCard(pagingController);
   }
 
-  Widget listCard(_pagingController) {
+  Widget listCard(pagingController) {
     return RefreshIndicator(
       onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
+        () => pagingController.refresh(),
       ),
       child: PagedListView<int, FilterStaff>(
         padding: const EdgeInsets.only(bottom: 70),
-        pagingController: _pagingController,
+        pagingController: pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterStaff>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
@@ -275,7 +275,7 @@ class _StaffListState extends State<StaffList>
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      List<Widget> stackChildren = [];
+      final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -311,7 +311,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      var newItems = await fetchStaffList(data: {
+      final newItems = await fetchStaffList(data: {
         'page': newPageIndex + 1,
         'quarantine_ward_id': StaffList.currentQuarrantine?.id,
       });
@@ -329,8 +329,8 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<void> handleRefresh() async {
-    int currentPageIndex = _dataPagerController.selectedPageIndex;
-    var newItems = await fetchStaffList(data: {
+    final int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchStaffList(data: {
       'page': currentPageIndex + 1,
       'quarantine_ward_id': StaffList.currentQuarrantine?.id
     });

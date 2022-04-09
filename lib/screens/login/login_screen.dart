@@ -163,8 +163,8 @@ class _LoginFormState extends State<LoginForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await login(loginDataForm(
+      final CancelFunc cancel = showLoading();
+      final response = await login(loginDataForm(
           phoneNumber: phoneController.text, password: passController.text));
       cancel();
       if (response.status == Status.success) {

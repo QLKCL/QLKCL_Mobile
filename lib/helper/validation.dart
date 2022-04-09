@@ -1,6 +1,6 @@
 String? phoneValidator(String? phone) {
-  String patttern = r'(^[0-9]{10}$)';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'(^[0-9]{10}$)';
+  final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return 'Số điện thoại không được để trống';
   } else if (phone.length != 10) {
@@ -23,9 +23,9 @@ String? passValidator(String? pass) {
 }
 
 String? emailValidator(String? email) {
-  String patttern =
+  final String patttern =
       r'^[a-zA-Z0-9](([.]{1}|[_]{1}|[-]{1}|[+]{1})?[a-zA-Z0-9])*[@]([a-z0-9]+([.]{1}|-)?)*[a-zA-Z0-9]+[.]{1}[a-z]{2,253}$';
-  RegExp regExp = RegExp(patttern);
+  final RegExp regExp = RegExp(patttern);
   if (email == null || email.isEmpty) {
     return null;
   } else if (!regExp.hasMatch(email)) {
@@ -36,8 +36,8 @@ String? emailValidator(String? email) {
 }
 
 String? passportValidator(String? passport) {
-  String patttern = r'(^[A-Z]{1}\d{7,8})$';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'(^[A-Z]{1}\d{7,8})$';
+  final RegExp regExp = RegExp(patttern);
   if (passport == null || passport.isEmpty) {
     return null;
   } else if (!regExp.hasMatch(passport)) {
@@ -48,8 +48,8 @@ String? passportValidator(String? passport) {
 }
 
 String? identityValidator(String? number) {
-  String patttern = r'(^[0-9]{9,12}$)';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'(^[0-9]{9,12}$)';
+  final RegExp regExp = RegExp(patttern);
   if (number == null || number.isEmpty) {
     return 'Số CMND/CCCD không được để trống';
   } else if (number.length < 9 || number.length > 12) {
@@ -62,8 +62,8 @@ String? identityValidator(String? number) {
 }
 
 String? quarantineTimeValidator(String? time) {
-  String patttern = r'^[0-9]+$';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return "Trường này là bắt buộc";
   } else if (!regExp.hasMatch(time)) {
@@ -73,8 +73,8 @@ String? quarantineTimeValidator(String? time) {
 }
 
 String? numberOfMemberValidator(String? time) {
-  String patttern = r'^[0-9]+$';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return "Trường này là bắt buộc";
   } else if (!regExp.hasMatch(time)) {
@@ -84,8 +84,8 @@ String? numberOfMemberValidator(String? time) {
 }
 
 String? intValidator(String? time) {
-  String patttern = r'^[0-9]+$';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return null;
   } else if (!regExp.hasMatch(time)) {
@@ -95,8 +95,8 @@ String? intValidator(String? time) {
 }
 
 String? phoneNullableValidator(String? phone) {
-  String patttern = r'(^[0-9]{10}$)';
-  RegExp regExp = RegExp(patttern);
+  final String patttern = r'(^[0-9]{10}$)';
+  final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return null;
   } else if (phone.length != 10) {

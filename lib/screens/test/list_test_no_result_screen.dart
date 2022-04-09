@@ -48,14 +48,14 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      var newItems =
+      final newItems =
           await fetchTestList(data: {'page': pageKey, 'status': 'WAITING'});
 
-      var isLastPage = newItems.length < pageSize;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {

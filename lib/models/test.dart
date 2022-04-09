@@ -99,22 +99,22 @@ class CreatedBy {
 }
 
 Future<dynamic> fetchTest({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getTest, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getTest, data);
   return response["data"];
 }
 
 Future<dynamic> fetchTestList({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getListTests, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getListTests, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
 }
 
 Future<Response> createTest(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.createTest, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createTest, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -128,8 +128,8 @@ Future<Response> createTest(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateTest(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.updateTest, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateTest, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {

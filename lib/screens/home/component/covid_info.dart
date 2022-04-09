@@ -80,7 +80,7 @@ class InfoCovidHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<InfoCovid> listInfo = [
+    final List<InfoCovid> listInfo = [
       InfoCovid(
         color: CustomColors.warning,
         title: "Nhiễm bệnh",
@@ -107,34 +107,34 @@ class InfoCovidHomePage extends StatelessWidget {
       ),
     ];
 
-    var _screenWidth = MediaQuery.of(context).size.width - 16;
-    var _crossAxisCount = _screenWidth >= minDesktopSize ? 4 : 2;
-    var _width = _screenWidth / _crossAxisCount;
-    var cellHeight = 148;
-    var _aspectRatio = _width / cellHeight;
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth >= minDesktopSize ? 4 : 2;
+    final width = screenWidth / crossAxisCount;
+    final cellHeight = 148;
+    final aspectRatio = width / cellHeight;
 
-    return Column(children: <Widget>[
-      ResponsiveGridView.builder(
-        padding: const EdgeInsets.only(top: 8),
-        gridDelegate: ResponsiveGridDelegate(
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          maxCrossAxisExtent: _width,
-          minCrossAxisExtent: _width < maxMobileSize ? _width : maxMobileSize,
-          childAspectRatio: _aspectRatio,
+    return Column(
+      children: <Widget>[
+        ResponsiveGridView.builder(
+          padding: const EdgeInsets.only(top: 8),
+          gridDelegate: ResponsiveGridDelegate(
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            maxCrossAxisExtent: width,
+            minCrossAxisExtent: width < maxMobileSize ? width : maxMobileSize,
+            childAspectRatio: aspectRatio,
+          ),
+          itemCount: listInfo.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return listInfo[index];
+          },
         ),
-        itemCount: listInfo.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return listInfo[index];
-        },
-      ),
-      const SizedBox(
-        height: 8,
-      ),
-      Container(
-        child: Row(
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
           children: [
             Text(
               "Cập nhật: $lastUpdate",
@@ -161,7 +161,7 @@ class InfoCovidHomePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

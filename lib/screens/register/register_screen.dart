@@ -217,13 +217,13 @@ class _RegisterFormState extends State<RegisterForm> {
           dupplicateError = "Mật khẩu không trùng khớp";
         });
       } else {
-        CancelFunc cancel = showLoading();
-        var registerResponse = await register(registerDataForm(
+        final CancelFunc cancel = showLoading();
+        final registerResponse = await register(registerDataForm(
             phoneNumber: phoneController.text,
             password: passController.text,
             quarantineWard: quarantineWardController.text));
         if (registerResponse.status == Status.success) {
-          var loginResponse = await login(loginDataForm(
+          final loginResponse = await login(loginDataForm(
               phoneNumber: phoneController.text,
               password: passController.text));
           cancel();

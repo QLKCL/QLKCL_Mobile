@@ -45,14 +45,14 @@ class Room {
 }
 
 Future<dynamic> fetchRoom({id}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.getHTTP('${Api.getRoom}?id=$id');
+  final ApiHelper api = ApiHelper();
+  final response = await api.getHTTP('${Api.getRoom}?id=$id');
   return response["data"];
 }
 
 Future<dynamic> createRoom(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.createRoom, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createRoom, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -68,8 +68,8 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
 }
 
 Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getListRoom, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getListRoom, data);
 
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -77,16 +77,16 @@ Future<dynamic> fetchRoomList(Map<String, dynamic> data) async {
 }
 
 Future<int> fetchNumOfRoom(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.getListRoom, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getListRoom, data);
   return response != null && response['data'] != null
       ? response['data']['totalRows']
       : null;
 }
 
 Future<Response> updateRoom(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.updateRoom, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateRoom, data);
 
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");

@@ -75,17 +75,17 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      var newItems = await fetchMemberList(data: {
+      final newItems = await fetchMemberList(data: {
         'page': pageKey,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
       });
 
-      var isLastPage = newItems.data.length < pageSize;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
@@ -131,17 +131,15 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
               );
             },
           )
-        : listMemberCard(_pagingController);
+        : listMemberCard();
   }
 
-  Widget listMemberCard(_pagingController) {
+  Widget listMemberCard() {
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
       child: RefreshIndicator(
-        onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
-        ),
+        onRefresh: () => Future.sync(_pagingController.refresh),
         child: PagedListView<int, FilterMember>(
           padding: const EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
@@ -320,7 +318,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      List<Widget> stackChildren = [];
+      final List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -356,7 +354,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      var newItems = await fetchMemberList(data: {
+      final newItems = await fetchMemberList(data: {
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
@@ -375,8 +373,8 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<void> handleRefresh() async {
-    int currentPageIndex = _dataPagerController.selectedPageIndex;
-    var newItems = await fetchMemberList(data: {
+    final int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"

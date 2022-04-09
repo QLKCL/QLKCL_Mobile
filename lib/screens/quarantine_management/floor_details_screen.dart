@@ -39,7 +39,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = AppBar(
+    final appBar = AppBar(
       title: const Text("Thông tin chi tiết tầng"),
       centerTitle: true,
       actions: [

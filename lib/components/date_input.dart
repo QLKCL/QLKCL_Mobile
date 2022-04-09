@@ -64,7 +64,7 @@ class _DateInputState extends State<DateInput> {
       child: TextFormField(
         onTap: () async {
           _focus = true;
-          DateTime? pickedDate = await showDatePicker(
+          final DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate:
                 (widget.controller != null && widget.controller!.text != "")
@@ -78,7 +78,8 @@ class _DateInputState extends State<DateInput> {
             confirmText: 'Chọn',
           );
           if (pickedDate != null) {
-            String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+            final String formattedDate =
+                DateFormat('dd/MM/yyyy').format(pickedDate);
             setState(() {
               if (widget.controller != null) {
                 widget.controller!.text = formattedDate;
@@ -191,7 +192,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
       child: TextFormField(
         onTap: () async {
           _focus = true;
-          DateTimeRange? pickedDate = await showDateRangePicker(
+          final DateTimeRange? pickedDate = await showDateRangePicker(
             context: context,
             initialDateRange: DateTimeRange(
                 start: (widget.controllerStart != null &&
@@ -211,9 +212,9 @@ class _DateRangeInputState extends State<DateRangeInput> {
             confirmText: 'Chọn',
           );
           if (pickedDate != null) {
-            String formattedStartDate =
+            final String formattedStartDate =
                 DateFormat('dd/MM/yyyy').format(pickedDate.start);
-            String formattedEndDate =
+            final String formattedEndDate =
                 DateFormat('dd/MM/yyyy').format(pickedDate.end);
             setState(() {
               if (widget.controllerStart != null) {

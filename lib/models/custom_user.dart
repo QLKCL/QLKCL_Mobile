@@ -135,8 +135,8 @@ class CustomUser {
 }
 
 Future<Response> createManager(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.createManager, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createManager, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -168,8 +168,8 @@ Future<Response> createManager(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateManager(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.updateManager, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateManager, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -220,8 +220,8 @@ Future<Response> updateManager(Map<String, dynamic> data) async {
 }
 
 Future<Response> createStaff(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.createStaff, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createStaff, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -253,8 +253,8 @@ Future<Response> createStaff(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateStaff(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.updateStaff, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.updateStaff, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -305,11 +305,11 @@ Future<Response> updateStaff(Map<String, dynamic> data) async {
 }
 
 Future<FilterResponse<FilterStaff>> fetchStaffList({data}) async {
-  ApiHelper api = ApiHelper();
-  var response = await api.postHTTP(Api.filterStaff, data);
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterStaff, data);
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
-      List<FilterStaff> itemList = response['data']['content']
+      final List<FilterStaff> itemList = response['data']['content']
           .map<FilterStaff>((json) => FilterStaff.fromJson(json))
           .toList();
       return FilterResponse<FilterStaff>(

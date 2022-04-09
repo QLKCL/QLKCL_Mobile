@@ -130,8 +130,8 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response = await createDestiantionHistory(
+      final CancelFunc cancel = showLoading();
+      final response = await createDestiantionHistory(
         createDestiantionHistoryDataForm(
           code: codeController.text,
           country: countryController.text,

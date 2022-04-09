@@ -60,7 +60,7 @@ class _SearchTestState extends State<SearchTest> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      var newItems = await fetchTestList(
+      final newItems = await fetchTestList(
           data: filterTestDataForm(
         page: pageKey,
         status: stateController.text,
@@ -72,11 +72,11 @@ class _SearchTestState extends State<SearchTest> {
         createAtMax:
             parseDateToDateTimeWithTimeZone(createAtMaxController.text),
       ));
-      var isLastPage = newItems.length < pageSize;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {

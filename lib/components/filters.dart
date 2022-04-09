@@ -65,7 +65,7 @@ Future memberFilter(
 }) {
   // Using Wrap makes the bottom sheet height the height of the content.
   // Otherwise, the height will be half the height of the screen.
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -334,8 +334,7 @@ Future memberFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -361,7 +360,7 @@ Future testFilter(
   required void Function()? onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -480,8 +479,7 @@ Future testFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -516,7 +514,7 @@ Future quarantineFilter(
       onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -730,8 +728,7 @@ Future quarantineFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,

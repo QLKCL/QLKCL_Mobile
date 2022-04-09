@@ -39,7 +39,7 @@ Map<String, dynamic> createMemberDataForm({
   String? backgroundDisease,
   String? otherBackgroundDisease,
 }) {
-  var data = {
+  final data = {
     "phone_number": phoneNumber,
     "full_name": fullName,
     "email": email,
@@ -89,7 +89,7 @@ Map<String, dynamic> updateMemberDataForm({
   String? backgroundDisease,
   String? otherBackgroundDisease,
 }) {
-  var data = {
+  final data = {
     "code": code,
     "full_name": fullName,
     "email": email,
@@ -131,7 +131,7 @@ Map<String, dynamic> filterMemberDataForm({
   String? careStaff,
   required int page,
 }) {
-  var data = {
+  final data = {
     "search": keySearch,
     "quarantine_ward_id": quarantineWard,
     "quarantine_building_id": quarantineBuilding,
@@ -155,7 +155,7 @@ Map<String, dynamic> createTestDataForm({
   String? type,
   String? result,
 }) {
-  var data = {
+  final data = {
     "user_code": userCode,
     "status": status,
     "type": type,
@@ -170,7 +170,7 @@ Map<String, dynamic> updateTestDataForm({
   String? type,
   String? result,
 }) {
-  var data = {
+  final data = {
     "code": code,
     "status": status,
     "type": type,
@@ -188,7 +188,7 @@ Map<String, dynamic> filterTestDataForm({
   String? createAtMax,
   required int page,
 }) {
-  var data = {
+  final data = {
     "search": keySearch,
     "status": status,
     "type": type,
@@ -203,7 +203,7 @@ Map<String, dynamic> filterTestDataForm({
 Map<String, String> requestOtpDataForm({
   required String email,
 }) {
-  var data = {
+  final data = {
     "email": email,
   };
   return prepareDataForm(data);
@@ -213,7 +213,7 @@ Map<String, String> sendOtpDataForm({
   required String email,
   required String otp,
 }) {
-  var data = {
+  final data = {
     "email": email,
     'otp': otp,
   };
@@ -226,7 +226,7 @@ Map<String, String> createPassDataForm({
   required String newPassword,
   required String confirmPassword,
 }) {
-  var data = {
+  final data = {
     "email": email,
     'confirm_otp': otp,
     'new_password': newPassword,
@@ -240,7 +240,7 @@ Map<String, String> changePassDataForm({
   required String newPassword,
   required String confirmPassword,
 }) {
-  var data = {
+  final data = {
     'old_password': oldPassword,
     'new_password': newPassword,
     'confirm_password': confirmPassword,
@@ -266,7 +266,7 @@ Map<String, dynamic> createQuarantineDataForm({
   String? image,
   String? pandemic,
 }) {
-  var data = {
+  final data = {
     "email": email,
     "full_name": fullName,
     "country": country,
@@ -292,7 +292,7 @@ Map<String, dynamic> createRoomDataForm({
   required int quarantineFloor,
   required String name,
 }) {
-  var data = {
+  final data = {
     "name": name,
     "quarantine_floor": quarantineFloor,
     "capacity": capacity,
@@ -319,7 +319,7 @@ Map<String, dynamic> updateQuarantineDataForm({
   String? image,
   String? pandemic,
 }) {
-  var data = {
+  final data = {
     "id": id,
     "email": email,
     "full_name": fullName,
@@ -352,7 +352,7 @@ Map<String, dynamic> filterQuarantineDataForm({
   String? ward,
   String? mainManager,
 }) {
-  var data = {
+  final data = {
     "search": keySearch,
     "created_at_min": createAtMin,
     "created_at_max": createAtMax,
@@ -371,7 +371,7 @@ Map<String, dynamic> createBuildingDataForm({
   required String name,
   required int quarantineWard,
 }) {
-  var data = {
+  final data = {
     "name": name,
     "quarantine_ward": quarantineWard,
   };
@@ -383,7 +383,7 @@ Map<String, dynamic> updateBuildingDataForm({
   int? quarantineWard,
   required int id,
 }) {
-  var data = {
+  final data = {
     "id": id,
     "quarantine_ward": quarantineWard,
     "name": name,
@@ -396,7 +396,7 @@ Map<String, dynamic> updateFloorDataForm({
   int? quarantineBuilding,
   required int id,
 }) {
-  var data = {
+  final data = {
     "id": id,
     "quarantine_building": quarantineBuilding,
     "name": name,
@@ -409,7 +409,7 @@ Map<String, dynamic> createFloorDataForm({
   required String name,
   required String roomQuantity,
 }) {
-  var data = {
+  final data = {
     "name": name,
     "quarantine_building": quarantineBuilding,
     "room_quantity": roomQuantity,
@@ -423,7 +423,7 @@ Map<String, dynamic> updateRoomDataForm({
   int? capacity,
   required int id,
 }) {
-  var data = {
+  final data = {
     "id": id,
     // "quarantine_floor": quarantineFloor,
     "name": name,
@@ -438,7 +438,7 @@ Map<String, dynamic> filterMemberByRoomDataForm({
   int? quarantineFloor,
   int? quarantineRoom,
 }) {
-  var data = {
+  final data = {
     "quarantine_ward_id": quarantineWard,
     "quarantine_building_id": quarantineBuilding,
     "quarantine_floor_id": quarantineFloor,
@@ -458,7 +458,7 @@ Map<String, dynamic> createMedDeclDataForm({
   String? extraSymtoms,
   String? otherSymtoms,
 }) {
-  var data = {
+  final data = {
     "phone_number": phoneNumber,
     "heartbeat": heartBeat,
     "temperature": temperature,
@@ -480,7 +480,7 @@ Map<String, dynamic> filterMedDeclDataForm({
   int? pageSize,
   String? search,
 }) {
-  var data = {
+  final data = {
     "user_code": userCode,
     "created_at_max": createAtMax,
     "created_at_min": createAtMin,
@@ -497,7 +497,7 @@ Map<String, dynamic> acceptOneMemberDataForm({
   String? quarantinedAt,
   String? staffCode,
 }) {
-  var data = {
+  final data = {
     "code": code,
     "quarantine_room_id": quarantineRoom,
     "quarantined_at": quarantinedAt,
@@ -512,7 +512,7 @@ Map<String, dynamic> changeRoomMemberDataForm({
   String? quarantineRoom,
   String? staffCode,
 }) {
-  var data = {
+  final data = {
     "custom_user_code": code,
     "quarantine_ward_id": quarantineWard,
     "quarantine_room_id": quarantineRoom,
@@ -532,7 +532,7 @@ Map<String, dynamic> createNotificationDataForm({
   String? url,
   String? type,
 }) {
-  var data = {
+  final data = {
     "title": title,
     "description": description,
     "receiver_type": receiverType,
@@ -557,7 +557,7 @@ Map<String, dynamic> createDestiantionHistoryDataForm({
   String? endTime,
   String? note,
 }) {
-  var data = {
+  final data = {
     "user_code": code,
     "country_code": country,
     "city_id": city,
@@ -582,7 +582,7 @@ Map<String, dynamic> getAddressWithMembersPassByDataForm({
   String? orderBy,
   String? search,
 }) {
-  var data = {
+  final data = {
     "address_type": addressType,
     "father_address_id": fatherAddressId,
     "quarantine_ward_id": quarantineWardId,
@@ -604,7 +604,7 @@ Map<String, String> syncVaccinePortalDataForm(
     String? identityNumber,
     String? healthInsuranceNumber,
     String? otpNumber}) {
-  var data = {
+  final data = {
     "fullname": fullName,
     "birthday": birthday,
     "genderId": gender,
@@ -633,7 +633,7 @@ Map<String, dynamic> createManagerDataForm({
   String? passport,
   required String quarantineWard,
 }) {
-  var data = {
+  final data = {
     "phone_number": phoneNumber,
     "full_name": fullName,
     "email": email,
@@ -670,7 +670,7 @@ Map<String, dynamic> updateManagerDataForm({
   String? passport,
   String? quarantineWard,
 }) {
-  var data = {
+  final data = {
     "code": code,
     "full_name": fullName,
     "email": email,
@@ -708,7 +708,7 @@ Map<String, dynamic> createStaffDataForm({
   required String quarantineWard,
   String? careArea,
 }) {
-  var data = {
+  final data = {
     "phone_number": phoneNumber,
     "full_name": fullName,
     "email": email,
@@ -747,7 +747,7 @@ Map<String, dynamic> updateStaffDataForm({
   String? quarantineWard,
   String? careArea,
 }) {
-  var data = {
+  final data = {
     "code": code,
     "full_name": fullName,
     "email": email,
@@ -781,7 +781,7 @@ Map<String, dynamic> filterStaffDataForm({
   String? positiveTestNowList,
   required int page,
 }) {
-  var data = {
+  final data = {
     "search": keySearch,
     "status_list": statusList,
     "is_last_tested": isLastTested,

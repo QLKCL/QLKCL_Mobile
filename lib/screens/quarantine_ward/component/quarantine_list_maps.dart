@@ -33,16 +33,16 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
   @override
   void initState() {
     fetchQuarantineList(data: {'page_size': pageSizeMax}).then((value) {
-      var itemList = value;
+      final itemList = value;
       if (mounted) {
         setState(() {
           _mapController.clearMarkers();
           quarantineWardList.clear();
 
-          for (var element in itemList.data) {
+          for (final element in itemList.data) {
             quarantineWardList.add(element);
 
-            int length = quarantineWardList.length;
+            final int length = quarantineWardList.length;
             if (length > 1) {
               _mapController.insertMarker(length - 1);
             } else {
@@ -79,7 +79,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData themeData = Theme.of(context);
+    final ThemeData themeData = Theme.of(context);
     _isDesktop = themeData.platform == TargetPlatform.macOS ||
         themeData.platform == TargetPlatform.windows ||
         themeData.platform == TargetPlatform.linux;
@@ -132,51 +132,54 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                       return ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child:
-                            Column(mainAxisSize: MainAxisSize.min, children: <
-                                Widget>[
-                          Container(
-                              width: 150,
-                              height: 80,
-                              color: Colors.grey,
-                              child: Image.network(
-                                  cloudinary
-                                      .getImage(quarantineWardList[index].image)
-                                      .toString(),
-                                  fit: BoxFit.cover)),
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 5, bottom: 5),
-                            width: 150,
-                            color: Colors.white,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    quarantineWardList[index].fullName,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      '${quarantineWardList[index].ward?.name}, ${quarantineWardList[index].district?.name}, ${quarantineWardList[index].city?.name}',
-                                      style: const TextStyle(
-                                          fontSize: 10, color: Colors.black),
-                                    ),
-                                  )
-                                ]),
-                          ),
-                        ]),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                                  width: 150,
+                                  height: 80,
+                                  color: Colors.grey,
+                                  child: Image.network(
+                                      cloudinary
+                                          .getImage(
+                                              quarantineWardList[index].image)
+                                          .toString(),
+                                      fit: BoxFit.cover)),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    left: 10, top: 5, bottom: 5),
+                                width: 150,
+                                color: Colors.white,
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        quarantineWardList[index].fullName,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          '${quarantineWardList[index].ward?.name}, ${quarantineWardList[index].district?.name}, ${quarantineWardList[index].city?.name}',
+                                          style: const TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black),
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                            ]),
                       );
                     }
 
                     return const SizedBox();
                   },
                   markerBuilder: (BuildContext context, int index) {
-                    double _markerSize =
+                    final double markerSize =
                         _currentSelectedIndex == index ? 40 : 25;
                     return MapMarker(
                       latitude: quarantineWardList[index].latitude,
@@ -196,14 +199,14 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
-                          height: _markerSize,
-                          width: _markerSize,
+                          height: markerSize,
+                          width: markerSize,
                           child: FittedBox(
                             child: Icon(Icons.location_on,
                                 color: _currentSelectedIndex == index
                                     ? Colors.blue
                                     : Colors.red,
-                                size: _markerSize),
+                                size: markerSize),
                           ),
                         ),
                       ),
@@ -224,7 +227,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                   onPageChanged: _handlePageChange,
                   controller: _pageViewController,
                   itemBuilder: (BuildContext context, int index) {
-                    var item = quarantineWardList[index];
+                    final item = quarantineWardList[index];
                     return Transform.scale(
                       scale: index == _currentSelectedIndex ? 1 : 0.85,
                       child: Stack(

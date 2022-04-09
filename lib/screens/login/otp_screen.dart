@@ -181,8 +181,8 @@ class _OtpState extends State<Otp> {
           hasError = false;
         },
       );
-      CancelFunc cancel = showLoading();
-      var response =
+      final CancelFunc cancel = showLoading();
+      final response =
           await sendOtp(sendOtpDataForm(email: widget.email, otp: otp));
       cancel();
       if (response.status == Status.success) {
@@ -208,8 +208,8 @@ class _OtpState extends State<Otp> {
   void _reSend() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
-      var response =
+      final CancelFunc cancel = showLoading();
+      final response =
           await requestOtp(requestOtpDataForm(email: widget.email));
       cancel();
       showNotification(response);

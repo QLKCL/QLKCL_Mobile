@@ -76,10 +76,8 @@ class _ListAllManagerState extends State<ListAllManager>
         body: TabBarView(
           controller: _tabController,
           children: [
-            Container(
-              child: Center(
-                child: const Text("Chức năng đang trong quá trình phát triển"),
-              ),
+            Center(
+              child: const Text("Chức năng đang trong quá trình phát triển"),
             ),
             StaffList(
               quarrantine: widget.currentQuarrantine,

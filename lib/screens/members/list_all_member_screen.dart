@@ -119,8 +119,8 @@ class _ListAllMemberState extends State<ListAllMember>
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
                             } else {
-                              CancelFunc cancel = showLoading();
-                              var response = await acceptManyMember(
+                              final CancelFunc cancel = showLoading();
+                              final response = await acceptManyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
                               if (response.status == Status.success) {
@@ -141,8 +141,8 @@ class _ListAllMemberState extends State<ListAllMember>
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
                             } else {
-                              CancelFunc cancel = showLoading();
-                              var response = await denyMember(
+                              final CancelFunc cancel = showLoading();
+                              final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
                               showNotification(response);

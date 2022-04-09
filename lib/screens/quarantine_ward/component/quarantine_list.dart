@@ -45,13 +45,13 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      var newItems = await fetchQuarantineList(data: {'page': pageKey});
+      final newItems = await fetchQuarantineList(data: {'page': pageKey});
 
-      var isLastPage = newItems.data.length < pageSize;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        var nextPageKey = pageKey + 1;
+        final nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {

@@ -89,8 +89,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
 
   Future<dynamic> fetch() async {
     await Future.delayed(const Duration(seconds: 1));
-    ApiHelper api = ApiHelper();
-    var response = await api.postHTTP(
+    final ApiHelper api = ApiHelper();
+    final response = await api.postHTTP(
         Api.homeManager,
         prepareDataForm({
           "number_of_days_in_out": 12,
@@ -227,7 +227,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         ),
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
-            ScrollDirection direction = notification.direction;
+            final ScrollDirection direction = notification.direction;
             setState(() {
               if (direction == ScrollDirection.reverse) {
                 _showFab = false;
@@ -253,7 +253,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   future: futureData,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      int numberDays = ResponsiveWrapper.of(context)
+                      final int numberDays = ResponsiveWrapper.of(context)
                               .isSmallerThan(MOBILE)
                           ? 4
                           : ResponsiveWrapper.of(context).isLargerThan(TABLET)

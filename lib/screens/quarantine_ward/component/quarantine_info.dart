@@ -129,7 +129,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         onPressed: (widget.quarantineInfo.latitude != null &&
                                 widget.quarantineInfo.longitude != null)
                             ? () async {
-                                String googleUrl =
+                                final String googleUrl =
                                     'https://www.google.com/maps/search/?api=1&query=${widget.quarantineInfo.latitude},${widget.quarantineInfo.longitude}';
                                 if (await canLaunch(googleUrl)) {
                                   await launch(googleUrl);

@@ -106,14 +106,12 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   itemCount: widget.data.length,
                   padding: const EdgeInsets.only(bottom: 16),
                   itemBuilder: (BuildContext context, int index) => Card(
-                    child: Container(
-                      child: BuildingItem(
-                        currentQuarantine: widget.currentQuarantine!,
-                        currentBuilding: Building.fromJson(widget.data[index]),
-                        buildingName: widget.data[index]['name'],
-                        maxMem: widget.data[index]['total_capacity'] ?? 0,
-                        currentMem: widget.data[index]['num_current_member'],
-                      ),
+                    child: BuildingItem(
+                      currentQuarantine: widget.currentQuarantine!,
+                      currentBuilding: Building.fromJson(widget.data[index]),
+                      buildingName: widget.data[index]['name'],
+                      maxMem: widget.data[index]['total_capacity'] ?? 0,
+                      currentMem: widget.data[index]['num_current_member'],
                     ),
                   ),
                 ),
