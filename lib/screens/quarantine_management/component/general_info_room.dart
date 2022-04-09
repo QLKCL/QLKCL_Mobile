@@ -41,11 +41,9 @@ class GeneralInfoRoom extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -83,7 +81,6 @@ class GeneralInfoRoom extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,

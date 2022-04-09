@@ -24,7 +24,6 @@ class FloorList extends StatelessWidget {
     return (data == null || data.isEmpty)
         ? Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(

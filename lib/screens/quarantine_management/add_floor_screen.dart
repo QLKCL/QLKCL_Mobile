@@ -72,7 +72,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
       );
       cancel();
       showNotification(response);
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -110,7 +112,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
@@ -135,13 +136,14 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                 children: [
                                   //Add multiple floors
                                   Container(
-                                    margin: const EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           flex: 55,
                                           child: ListTileTheme(
-                                            contentPadding: const EdgeInsets.all(0),
+                                            contentPadding: EdgeInsets.zero,
                                             child: CheckboxListTile(
                                               title:
                                                   const Text("Thêm nhiều tầng"),
@@ -176,8 +178,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        const EdgeInsets.symmetric(horizontal: 16),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: const Text(
                                       'Chỉnh sửa thông tin tầng',
                                       style: TextStyle(fontSize: 16),

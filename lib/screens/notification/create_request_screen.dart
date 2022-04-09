@@ -111,15 +111,12 @@ class _CreateRequestState extends State<CreateRequest> {
                 ),
                 ImageField(
                   controller: imageController,
-                  maxQuantityImage: 1,
                   type: "Request",
                 ),
                 Container(
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {
-                      _submit();
-                    },
+                    onPressed: _submit,
                     child: Text(
                       'Gửi',
                       style: TextStyle(color: CustomColors.white),

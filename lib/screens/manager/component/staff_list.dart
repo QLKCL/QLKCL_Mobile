@@ -46,9 +46,7 @@ class _StaffListState extends State<StaffList>
   @override
   void initState() {
     StaffList.currentQuarrantine = widget.quarrantine;
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         showNotification("Có lỗi xảy ra!", status: Status.error);
@@ -99,7 +97,6 @@ class _StaffListState extends State<StaffList>
                   if (snapshot.data!.data.isEmpty) {
                     return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
@@ -121,7 +118,6 @@ class _StaffListState extends State<StaffList>
                 }
               }
               return const Align(
-                alignment: Alignment.center,
                 child: CircularProgressIndicator(),
               );
             },
@@ -141,7 +137,6 @@ class _StaffListState extends State<StaffList>
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
@@ -191,7 +186,6 @@ class _StaffListState extends State<StaffList>
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
@@ -213,7 +207,6 @@ class _StaffListState extends State<StaffList>
       key: key,
       allowPullToRefresh: true,
       source: memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -291,7 +284,6 @@ class _StaffListState extends State<StaffList>
           width: constraints.maxWidth,
           height: constraints.maxHeight,
           child: const Align(
-            alignment: Alignment.center,
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -383,7 +375,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -444,7 +436,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? const SizedBox()

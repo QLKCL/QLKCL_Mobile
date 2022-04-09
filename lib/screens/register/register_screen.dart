@@ -233,13 +233,15 @@ class _RegisterFormState extends State<RegisterForm> {
               password: passController.text));
           cancel();
           if (loginResponse.status == Status.success) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, App.routeName, (Route<dynamic> route) => false);
-            Navigator.of(context,
-                    rootNavigator: !Responsive.isDesktopLayout(context))
-                .push(
-              MaterialPageRoute(builder: (context) => UpdateMember()),
-            );
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, App.routeName, (Route<dynamic> route) => false);
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(
+                MaterialPageRoute(builder: (context) => UpdateMember()),
+              );
+            }
           } else {
             showNotification(loginResponse.message, status: Status.error);
           }

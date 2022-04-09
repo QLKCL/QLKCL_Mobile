@@ -43,9 +43,7 @@ class _DeniedMemberState extends State<DeniedMember>
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +53,7 @@ class _DeniedMemberState extends State<DeniedMember>
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -101,7 +99,6 @@ class _DeniedMemberState extends State<DeniedMember>
                   if (snapshot.data!.data.isEmpty) {
                     return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
@@ -123,7 +120,6 @@ class _DeniedMemberState extends State<DeniedMember>
                 }
               }
               return const Align(
-                alignment: Alignment.center,
                 child: CircularProgressIndicator(),
               );
             },
@@ -143,7 +139,6 @@ class _DeniedMemberState extends State<DeniedMember>
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
@@ -192,7 +187,6 @@ class _DeniedMemberState extends State<DeniedMember>
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
@@ -214,7 +208,6 @@ class _DeniedMemberState extends State<DeniedMember>
       key: key,
       allowPullToRefresh: true,
       source: memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -308,7 +301,6 @@ class _DeniedMemberState extends State<DeniedMember>
           width: constraints.maxWidth,
           height: constraints.maxHeight,
           child: const Align(
-            alignment: Alignment.center,
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -403,7 +395,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -520,7 +512,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? const SizedBox()
@@ -578,6 +570,7 @@ Widget menus(BuildContext context, FilterMember item,
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
+          // ignore: use_build_context_synchronously
           if (Responsive.isDesktopLayout(context)) {
             key.currentState!.refresh();
           } else {

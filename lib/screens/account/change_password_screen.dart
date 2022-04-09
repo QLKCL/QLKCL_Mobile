@@ -110,9 +110,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () {
-                _submit();
-              },
+              onPressed: _submit,
               child: Text(
                 'Xác nhận',
                 style: TextStyle(color: CustomColors.white),
@@ -143,7 +141,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
-          Navigator.pop(context);
+          if (mounted) {
+            Navigator.pop(context);
+          }
         }
       }
     }

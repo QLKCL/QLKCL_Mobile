@@ -150,7 +150,9 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
+        }
       }
     }
   }
@@ -369,7 +371,6 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       ),
                     ),
                     Expanded(
-                      flex: 1,
                       child: TimeInput(
                         label: "Thời gian",
                         controller: startTimeController,
@@ -400,7 +401,6 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       ),
                     ),
                     Expanded(
-                      flex: 1,
                       child: TimeInput(
                         label: "Thời gian",
                         controller: endTimeController,

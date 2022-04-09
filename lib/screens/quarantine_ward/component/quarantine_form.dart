@@ -195,7 +195,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
         showNotification(response);
       } else if (widget.mode == Permission.edit) {
         final response = await updateQuarantine(updateQuarantineDataForm(
-          id: widget.quarantineInfo!.id.toInt(),
+          id: widget.quarantineInfo!.id,
           email: emailController.text,
           fullName: nameController.text,
           country: countryController.text,
@@ -227,8 +227,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
         key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: [
             Container(
               margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),

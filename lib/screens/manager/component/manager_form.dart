@@ -231,8 +231,6 @@ class _ManagerFormState extends State<ManagerForm> {
             Container(
               padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Radio<String>(
                     value: "manager",
@@ -740,9 +738,7 @@ class _ManagerFormState extends State<ManagerForm> {
             Container(
               margin: const EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: () {
-                  _submit();
-                },
+                onPressed: _submit,
                 child: const Text("Lưu"),
               ),
             ),

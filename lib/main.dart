@@ -80,7 +80,6 @@ class MyApp extends StatelessWidget {
         child = ResponsiveWrapper.builder(
             BouncingScrollWrapper.builder(context, child!),
             maxWidth: 2460,
-            minWidth: 450,
             defaultScale: true,
             breakpoints: [
               const ResponsiveBreakpoint.resize(maxMobileSize, name: MOBILE),

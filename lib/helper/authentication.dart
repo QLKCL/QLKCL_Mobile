@@ -96,10 +96,10 @@ Future<bool> getLoginState() async {
   }
 }
 
-Future<void> setLoginState(bool state) async {
+Future<void> setLoginState(isLoggedIn) async {
   var authBox = await Hive.openBox('auth');
 
-  authBox.put('isLoggedIn', state);
+  authBox.put('isLoggedIn', isLoggedIn);
 }
 
 Future<String?> getAccessToken() async {
@@ -146,7 +146,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
@@ -182,7 +182,7 @@ Future<Response> register(Map<String, dynamic> registerDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success);
@@ -206,10 +206,8 @@ Future<bool> logout() async {
 }
 
 bool isTokenExpired(String _token) {
-  bool isExpired = false;
   DateTime? expiryDate = Jwt.getExpiryDate(_token);
-  isExpired = expiryDate!.compareTo(DateTime.now()) < 0;
-  return isExpired;
+  return expiryDate!.compareTo(DateTime.now()) < 0;
 }
 
 Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
@@ -227,7 +225,7 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, message: "Gửi OTP thành công!");
@@ -263,7 +261,7 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, data: data["data"]['new_otp']);
@@ -293,7 +291,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(

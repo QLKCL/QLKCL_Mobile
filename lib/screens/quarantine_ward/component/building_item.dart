@@ -69,8 +69,6 @@ class BuildingItem extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.groups_rounded,

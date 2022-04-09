@@ -138,7 +138,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
                                   hint: 'SĐT người được khai báo',
                                   required: true,
                                   type: TextInputType.phone,
-                                  enabled: true,
                                   controller: phoneNumberController,
                                   validatorFunction: phoneValidator,
                                 )
@@ -153,7 +152,6 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     : Input(
                         label: 'Họ và tên',
                         controller: userNameController,
-                        required: false,
                         enabled: false,
                       ),
 

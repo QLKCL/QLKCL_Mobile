@@ -33,7 +33,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
     } else {
       futureMember = fetchCustomUser();
     }
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
   }
 

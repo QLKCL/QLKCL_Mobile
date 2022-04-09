@@ -7,7 +7,6 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
@@ -33,7 +32,7 @@ class _UpdateMemberState extends State<UpdateMember>
     } else {
       futureMember = fetchCustomUser();
     }
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -70,7 +69,7 @@ class _UpdateMemberState extends State<UpdateMember>
             ],
           ),
         ),
-        body: (FutureBuilder<dynamic>(
+        body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
             showLoading();
@@ -92,11 +91,9 @@ class _UpdateMemberState extends State<UpdateMember>
                     MemberPersonalInfo(
                       personalData: personalData,
                       tabController: _tabController,
-                      mode: Permission.edit,
                     ),
                     MemberQuarantineInfo(
                       quarantineData: quarantineData,
-                      mode: Permission.edit,
                     ),
                   ],
                 );
@@ -111,7 +108,7 @@ class _UpdateMemberState extends State<UpdateMember>
 
             return Container();
           },
-        )),
+        ),
       ),
     );
   }

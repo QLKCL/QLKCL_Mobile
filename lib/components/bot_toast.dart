@@ -33,7 +33,7 @@ class CustomAnimationWidget extends StatefulWidget {
 class _CustomAnimationWidgetState extends State<CustomAnimationWidget> {
   static final Tween<Offset> tweenOffset = Tween<Offset>(
     begin: const Offset(0, 40),
-    end: const Offset(0, 0),
+    end: Offset.zero,
   );
 
   static final Tween<double> tweenScale = Tween<double>(begin: 0.7, end: 1.0);
@@ -137,11 +137,11 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 }
 
 // Notification
-CancelFunc showNotification(dynamic data,
+CancelFunc showNotification(data,
     {Status status = Status.success, String? subTitle, int duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
-    align: const Alignment(1, -1),
+    align: Alignment.topRight,
     duration: Duration(seconds: duration),
     toastBuilder: (cancel) {
       return _CustomWidget(
@@ -228,7 +228,6 @@ class _CustomWidgetState extends State<_CustomWidget> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           widget.title,

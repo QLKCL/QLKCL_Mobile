@@ -144,7 +144,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
@@ -405,7 +404,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               tooltip: 'Tạo mới',
 
               animationSpeed: 200,
-              shape: const StadiumBorder(),
               childMargin:
                   const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               children: [
@@ -440,7 +438,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 SpeedDialChild(
                   child: const Icon(Icons.business_outlined),
                   label: 'Khu cách ly',
-                  visible: true,
                   onTap: () => Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(NewQuarantine.routeName),

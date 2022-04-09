@@ -11,7 +11,6 @@ import 'package:qlkcl/helper/authentication.dart';
 class ApiHelper {
   static BaseOptions opts = BaseOptions(
     baseUrl: Api.baseUrl,
-    responseType: ResponseType.json,
     connectTimeout: 15000,
     receiveTimeout: 12000,
   );
@@ -136,7 +135,7 @@ class ApiHelper {
     }
   }
 
-  Future<dynamic> postHTTP(String url, dynamic data) async {
+  Future<dynamic> postHTTP(String url, data) async {
     try {
       Response response = await baseAPI.post(url,
           data: data != null ? FormData.fromMap(data) : null);
@@ -147,7 +146,7 @@ class ApiHelper {
     }
   }
 
-  Future<dynamic> putHTTP(String url, dynamic data) async {
+  Future<dynamic> putHTTP(String url, data) async {
     try {
       Response response = await baseAPI.put(url,
           data: data != null ? FormData.fromMap(data) : null);

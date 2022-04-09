@@ -53,7 +53,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
                   child: FloatingActionButton(
                     backgroundColor: Colors.transparent,
                     elevation: 0,
-                    onPressed: () => _getPhotoByGallery(),
+                    onPressed: _getPhotoByGallery,
                     child: Column(
                       children: [
                         Container(

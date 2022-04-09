@@ -46,7 +46,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(

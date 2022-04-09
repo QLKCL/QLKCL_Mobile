@@ -80,14 +80,12 @@ class _InputState extends State<Input> {
         onTap: () {
           _focus = true;
         },
-        obscureText: _obscure != null ? _obscure! : false,
+        obscureText: _obscure ?? false,
         keyboardType: widget.type,
         onSaved: widget.onSavedFunction,
         initialValue: widget.initValue,
         onChanged: (value) {
-          if (widget.onChangedFunction != null) {
-            widget.onChangedFunction!(value);
-          }
+          widget.onChangedFunction?.call(value);
 
           if (widget.controller != null && widget.controller!.text != "") {
             setState(() {});
@@ -128,7 +126,9 @@ class _InputState extends State<Input> {
           suffixIcon: _obscure != null
               ? (IconButton(
                   icon: Icon(
-                    _obscure == true ? Icons.visibility : Icons.visibility_off,
+                    (_obscure ?? false)
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     _obscure = !_obscure!;
@@ -189,11 +189,8 @@ class TitleCaseInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String formattedText = newValue.text
-        .split(' ')
-        .map((element) => textToTitleCase(element))
-        .toList()
-        .join(' ');
+    String formattedText =
+        newValue.text.split(' ').map(textToTitleCase).toList().join(' ');
     return TextEditingValue(
       text: formattedText,
       selection: newValue.selection,
@@ -217,7 +214,9 @@ class CapitalCaseTextFormatter extends TextInputFormatter {
         var capitalized = trimmed[0].toUpperCase() + trimmed.substring(1);
         // Add current sentence to output with a period
         output += capitalized;
-        if (x < sentences.length - 1) output += ". ";
+        if (x < sentences.length - 1) {
+          output += ". ";
+        }
       }
     }
     return output;

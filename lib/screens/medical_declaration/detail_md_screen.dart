@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 import 'component/md_form.dart';
 
@@ -48,7 +47,6 @@ class _ViewMDState extends State<ViewMD> {
               if (snapshot.hasData) {
                 return MedDeclForm(
                   medicalDeclData: MedicalDecl.fromJson(snapshot.data),
-                  mode: Permission.view,
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

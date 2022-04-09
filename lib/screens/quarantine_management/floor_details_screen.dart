@@ -83,7 +83,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Container(

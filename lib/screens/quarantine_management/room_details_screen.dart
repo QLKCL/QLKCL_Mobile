@@ -85,9 +85,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => EditRoomScreen(
-                  currentBuilding: widget.currentBuilding!,
-                  currentQuarantine: widget.currentQuarantine!,
-                  currentFloor: widget.currentFloor!,
+                  currentBuilding: widget.currentBuilding,
+                  currentQuarantine: widget.currentQuarantine,
+                  currentFloor: widget.currentFloor,
                   currentRoom: currentRoom,
                 ),
               ),
@@ -181,7 +181,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget listMemberCard(
       PreferredSizeWidget appBar, FilterResponse<FilterMember> data) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
@@ -234,8 +233,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget listMemberTable(PreferredSizeWidget appBar) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
             height: (MediaQuery.of(context).size.height -
@@ -278,7 +275,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
       source: memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -394,7 +390,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
           width: constraints.maxWidth,
           height: constraints.maxHeight,
           child: const Align(
-            alignment: Alignment.center,
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -474,7 +469,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -614,7 +609,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(const Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? const SizedBox()

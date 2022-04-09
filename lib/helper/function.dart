@@ -52,7 +52,7 @@ extension DateUtils on DateTime {
 }
 
 // Cre: https://gist.github.com/apgapg/84d855e41c0134a34ff8b2cf034ad249
-/// converts [date] into into string format
+/// converts date into into string format
 /// Example:
 /// * Positive:   (UK)   `2020-09-16T11:55:01.802248+00:00`
 /// * Negative: (Canada) `2020-09-16T11:55:01.802248-08:00`
@@ -63,16 +63,15 @@ String formatISOTime(DateTime? dateTime) {
   /// If the user is in Canada the time zone is GMT-8 then the signal will need to be negative.
   /// Because we already get the minus from the hours in the string then we don't need to add it to the string.
   /// In the case the timezone is GMT-0 or higher then the sign will need to be positive.
-  var timezoneSignal = !(duration.isNegative) ? '+' : '';
-  var dateString = (date.toIso8601String() +
-      "$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}");
+  var timezoneSignal = !duration.isNegative ? '+' : '';
+  var dateString = date.toIso8601String() +
+      "$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}";
   return dateString;
 }
 
-dynamic prepareDataForm(dynamic data,
-    {List<String> exceptionField = const []}) {
+dynamic prepareDataForm(data, {List<String> exceptionField = const []}) {
   data.removeWhere((key, value) =>
-      ((key == "" || value == "") && (!exceptionField.contains(key))));
+      (key == "" || value == "") && (!exceptionField.contains(key)));
   data.removeWhere(
       (key, value) => (value == null) && (!exceptionField.contains(key)));
   return data;
@@ -186,11 +185,11 @@ class Responsive extends StatelessWidget {
 
 String getAddress(data) {
   if (data != null) {
-    String address = (data['detail_address'] != null
+    String address = data['detail_address'] != null
         ? "${data['detail_address']}, "
         : (data['address']) != null
             ? "${data['address']}, "
-            : "");
+            : "";
     String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
     String district =
         data['district'] != null ? "${data['district']['name']}, " : "";

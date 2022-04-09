@@ -40,9 +40,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +50,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -138,7 +136,6 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: Center(
               child: TextField(
-                maxLines: 1,
                 autofocus: true,
                 style: TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,

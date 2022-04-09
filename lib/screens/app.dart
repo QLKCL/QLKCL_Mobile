@@ -58,9 +58,9 @@ class _AppState extends State<App> {
     if (widget.role == null) {
       getRole().then((value) {
         if (mounted) {
-          setState((() {
+          setState(() {
             _role = value;
-          }));
+          });
         }
       });
     } else {
@@ -170,7 +170,9 @@ class _AppState extends State<App> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 

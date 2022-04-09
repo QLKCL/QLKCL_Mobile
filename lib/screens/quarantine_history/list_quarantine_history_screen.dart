@@ -22,9 +22,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +32,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -85,9 +83,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, QuarantineHistory>(
             padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
@@ -95,7 +91,6 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(

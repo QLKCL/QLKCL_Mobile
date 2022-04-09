@@ -138,7 +138,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
     print('Error: $e');
   }
   if (response != null) {
-    var resp = response.body.toString();
+    var resp = response.body;
     final dataResponse = jsonDecode(resp);
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse['data']);

@@ -57,7 +57,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.of(context).pop(response.data);
+        if (mounted) {
+          Navigator.of(context).pop(response.data);
+        }
       }
     }
   }
@@ -73,7 +75,6 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
         appBar: appBar,
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(

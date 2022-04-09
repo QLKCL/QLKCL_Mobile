@@ -122,10 +122,12 @@ class _ForgetFormState extends State<ForgetForm> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Otp(email: emailController.text)));
+        if (mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Otp(email: emailController.text)));
+        }
       }
     }
   }

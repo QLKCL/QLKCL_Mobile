@@ -302,9 +302,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                     child: Row(children: [
                       Spacer(),
                       ElevatedButton(
-                        onPressed: () {
-                          _submit();
-                        },
+                        onPressed: _submit,
                         child: const Text(
                           'Xác nhận',
                         ),

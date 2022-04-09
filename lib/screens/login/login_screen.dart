@@ -173,8 +173,10 @@ class _LoginFormState extends State<LoginForm> {
           phoneNumber: phoneController.text, password: passController.text));
       cancel();
       if (response.status == Status.success) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, App.routeName, (Route<dynamic> route) => false);
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, App.routeName, (Route<dynamic> route) => false);
+        }
       } else {
         showNotification(response.message, status: Status.error);
       }

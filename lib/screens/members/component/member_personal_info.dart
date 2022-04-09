@@ -488,9 +488,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               Container(
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
+                  onPressed: _submit,
                   child: (widget.mode == Permission.add ||
                           widget.mode == Permission.edit)
                       ? const Text("Lưu")

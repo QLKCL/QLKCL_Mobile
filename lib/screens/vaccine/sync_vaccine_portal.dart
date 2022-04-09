@@ -155,9 +155,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       Spacer(),
                       ElevatedButton(
                         onPressed: enableNext
-                            ? () {
-                                _submit();
-                              }
+                            ? _submit
                             : null,
                         child: const Text("Tra cứu"),
                       ),
@@ -238,11 +236,13 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
           showNotification(null);
           VaccinationCertification vaccineCertification =
               VaccinationCertification.fromJson(response.data);
-          Navigator.of(context,
-                  rootNavigator: !Responsive.isDesktopLayout(context))
-              .push(MaterialPageRoute(
-                  builder: (context) => VaccinationCertificationScreen(
-                      vaccineCertification: vaccineCertification)));
+          if (mounted) {
+            Navigator.of(context,
+                    rootNavigator: !Responsive.isDesktopLayout(context))
+                .push(MaterialPageRoute(
+                    builder: (context) => VaccinationCertificationScreen(
+                        vaccineCertification: vaccineCertification)));
+          }
         }
       } else {
         showNotification(response.data['errorResponse']['description'],

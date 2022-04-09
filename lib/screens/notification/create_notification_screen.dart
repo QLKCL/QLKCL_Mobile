@@ -204,15 +204,12 @@ class _CreateNotificationState extends State<CreateNotification> {
                 ),
                 ImageField(
                   controller: imageController,
-                  maxQuantityImage: 1,
                   type: "Notification",
                 ),
                 Container(
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {
-                      _submit();
-                    },
+                    onPressed: _submit,
                     child: Text(
                       'Gửi',
                       style: TextStyle(color: CustomColors.white),

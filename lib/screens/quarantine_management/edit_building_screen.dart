@@ -55,7 +55,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.of(context).pop(response.data);
+        if (mounted) {
+          Navigator.of(context).pop(response.data);
+        }
       }
     }
   }
@@ -78,7 +80,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(

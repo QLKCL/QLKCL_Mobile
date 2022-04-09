@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
@@ -74,8 +73,7 @@ class InfoManagerHomePage extends StatelessWidget {
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
-              .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 0)));
+              .push(MaterialPageRoute(builder: (context) => ListAllMember()));
         },
       ),
       InfoManagerHomeCard(
@@ -162,7 +160,7 @@ class InfoManagerHomePage extends StatelessWidget {
         : _screenWidth >= minDesktopSize
             ? (_screenWidth - 230) ~/ (maxMobileSize - 64)
             : _screenWidth ~/ (maxMobileSize - 32);
-    var _width = (_screenWidth) / _crossAxisCount;
+    var _width = _screenWidth / _crossAxisCount;
     var cellHeight = 128;
     var _aspectRatio = _width / cellHeight;
 
@@ -222,8 +220,6 @@ class InfoManagerHomePage extends StatelessWidget {
                       }
                       refresh();
                     },
-                    // showClearButton: true,
-                    mode: Mode.MENU,
                     maxHeight: 400,
                     showSearchBox: true,
                   ),
@@ -294,7 +290,6 @@ class InfoManagerHomeCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               icon,
               const SizedBox(

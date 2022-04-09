@@ -18,9 +18,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -30,7 +28,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -64,9 +62,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
+      onRefresh: () => Future.sync(_pagingController.refresh),
       child: PagedListView<int, FilterQuanrantineWard>(
         pagingController: _pagingController,
         padding: const EdgeInsets.only(bottom: 70),
@@ -74,7 +70,6 @@ class _QuanrantineListState extends State<QuanrantineList> {
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(

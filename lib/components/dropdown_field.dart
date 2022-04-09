@@ -111,9 +111,9 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 ),
               )
             : null,
-        emptyBuilder: (BuildContext context, t) => (Center(
+        emptyBuilder: (BuildContext context, t) => Center(
           child: const Text('Không có dữ liệu'),
-        )),
+        ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? Container(
                 height: 48,
@@ -261,9 +261,9 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             : null,
         dropdownBuilder: widget.dropdownBuilder,
         dropdownBuilderSupportsNullItem: true,
-        emptyBuilder: (BuildContext context, t) => (Center(
+        emptyBuilder: (BuildContext context, t) => Center(
           child: const Text('Không có dữ liệu'),
-        )),
+        ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? Container(
                 height: 48,

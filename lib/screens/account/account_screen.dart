@@ -31,9 +31,9 @@ class _AccountState extends State<Account> {
   void initState() {
     getRole().then((value) {
       if (mounted) {
-        setState((() {
+        setState(() {
           _role = value;
-        }));
+        });
       }
     });
     super.initState();
@@ -183,8 +183,11 @@ class _AccountState extends State<Account> {
                   handleRemoveExternalUserId();
                 }
                 await logout();
-                Navigator.of(context, rootNavigator: true)
-                    .pushNamedAndRemoveUntil(Login.routeName, (route) => false);
+                if (mounted) {
+                  Navigator.of(context, rootNavigator: true)
+                      .pushNamedAndRemoveUntil(
+                          Login.routeName, (route) => false);
+                }
               },
               title: Text('Đăng xuất',
                   style: TextStyle(color: CustomColors.error)),

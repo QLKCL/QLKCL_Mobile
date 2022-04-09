@@ -417,7 +417,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
               itemValue: labelList,
-              mode: Mode.MENU,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               selectedItem: labelList
@@ -557,9 +556,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       ),
                     Spacer(),
                     ElevatedButton(
-                      onPressed: () {
-                        _submit();
-                      },
+                      onPressed: _submit,
                       child: widget.mode == Permission.changeStatus
                           ? const Text("Xét duyệt")
                           : const Text('Lưu'),

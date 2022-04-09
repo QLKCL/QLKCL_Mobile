@@ -18,7 +18,9 @@ class RequestHelper {
     _baseUrl = baseUrl ?? _baseUrl;
     try {
       String query = '?';
-      if (params != null) query += queryString(params);
+      if (params != null) {
+        query += queryString(params);
+      }
       var response = await http.get(Uri.parse(_baseUrl + url + query));
       return _response(response);
     } catch (e) {

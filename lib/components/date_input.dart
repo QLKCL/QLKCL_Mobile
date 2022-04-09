@@ -342,17 +342,14 @@ class _NewDateInputState extends State<NewDateInput> {
                       child: const Text('Chọn'),
                       onPressed: () {
                         if (newDate == "" && widget.controller!.text == "") {
-                          widget.controller!.text = DateFormat('dd/MM/yyyy')
-                              .format(DateTime.now())
-                              .toString();
+                          widget.controller!.text =
+                              DateFormat('dd/MM/yyyy').format(DateTime.now());
                         } else if (newDate != "") {
                           setState(() {
                             widget.controller!.text = newDate;
                           });
                         }
-                        if (widget.onChangedFunction != null) {
-                          widget.onChangedFunction!();
-                        }
+                        widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
                     ),
@@ -364,7 +361,6 @@ class _NewDateInputState extends State<NewDateInput> {
                       onSelectionChanged: (data) {
                         newDate = DateFormat('dd/MM/yyyy').format(data.value);
                       },
-                      selectionMode: DateRangePickerSelectionMode.single,
                       monthViewSettings: DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
                         showTrailingAndLeadingDates: true,
@@ -519,9 +515,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               widget.controllerStart != null &&
                               widget.controllerStart!.text == "") {
                             widget.controllerStart?.text =
-                                DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.now())
-                                    .toString();
+                                DateFormat('dd/MM/yyyy').format(DateTime.now());
                           } else if (newStartDate != "") {
                             widget.controllerStart!.text = newStartDate;
                           }
@@ -529,9 +523,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               widget.controllerEnd != null &&
                               widget.controllerEnd!.text == "") {
                             widget.controllerEnd?.text =
-                                DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.now())
-                                    .toString();
+                                DateFormat('dd/MM/yyyy').format(DateTime.now());
                           } else if (newEndDate != "") {
                             widget.controllerEnd!.text = newEndDate;
                           }
@@ -539,9 +531,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           controller.text = '${widget.controllerStart!.text} -'
                               ' ${widget.controllerEnd!.text}';
                         });
-                        if (widget.onChangedFunction != null) {
-                          widget.onChangedFunction!();
-                        }
+                        widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
                     ),

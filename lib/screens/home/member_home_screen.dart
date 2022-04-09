@@ -96,7 +96,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
           tooltip: 'Tạo mới',
 
           animationSpeed: 200,
-          shape: const StadiumBorder(),
           childMargin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           children: [
             SpeedDialChild(
@@ -152,7 +151,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(

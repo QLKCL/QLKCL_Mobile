@@ -5,7 +5,6 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/manager/component/manager_form.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 class UpdateManager extends StatefulWidget {
   static const String routeName = "/update_manager";
@@ -43,7 +42,7 @@ class _UpdateManagerState extends State<UpdateManager> {
           //     ),
           // ],
         ),
-        body: (FutureBuilder<dynamic>(
+        body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
             showLoading();
@@ -55,7 +54,6 @@ class _UpdateManagerState extends State<UpdateManager> {
                 dynamic staffData = snapshot.data["staff"];
                 return ManagerForm(
                   personalData: personalData,
-                  mode: Permission.edit,
                   staffData: staffData,
                 );
               } else if (snapshot.hasError) {
@@ -69,7 +67,7 @@ class _UpdateManagerState extends State<UpdateManager> {
 
             return Container();
           },
-        )),
+        ),
       ),
     );
   }

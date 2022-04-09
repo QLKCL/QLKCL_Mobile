@@ -67,7 +67,6 @@ class _ImageFieldState extends State<ImageField> {
                           borderType: BorderType.RRect,
                           radius: Radius.circular(8),
                           color: CustomColors.primary,
-                          strokeWidth: 1,
                           child: OutlinedButton(
                             style: ButtonStyle(
                               minimumSize:
@@ -80,7 +79,6 @@ class _ImageFieldState extends State<ImageField> {
                               side: MaterialStateProperty.all(
                                 BorderSide(
                                   color: CustomColors.primary,
-                                  width: 1.0,
                                   style: BorderStyle.none,
                                 ),
                               ),

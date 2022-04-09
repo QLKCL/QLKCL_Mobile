@@ -303,7 +303,7 @@ class _MemberCardState extends State<MemberCard> {
   ];
 
   action() {
-    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
+    if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,
         onChanged: (newValue) {
@@ -332,8 +332,7 @@ class _MemberCardState extends State<MemberCard> {
       child: Container(
         child: InkWell(
           onTap: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
+            if (widget.longPressEnabled ?? false) {
               setState(() {
                 _selected = !_selected;
               });
@@ -461,7 +460,7 @@ class _MemberCardState extends State<MemberCard> {
                       ),
                       cardLine(
                         icon: Icons.history,
-                        content: (widget.member.positiveTestNow != null
+                        content: widget.member.positiveTestNow != null
                             ? (widget.member.positiveTestNow!
                                     ? "Dương tính"
                                     : "Âm tính") +
@@ -473,7 +472,7 @@ class _MemberCardState extends State<MemberCard> {
                                                 .toLocal()) +
                                         ")"
                                     : "")
-                            : "Chưa có kết quả xét nghiệm"),
+                            : "Chưa có kết quả xét nghiệm",
                       ),
                     ],
                   ),
@@ -510,12 +509,9 @@ class QuarantineRelatedCard extends StatelessWidget {
         onTap: onTap,
         title: Text(name),
         subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   Icons.groups_rounded,
@@ -533,7 +529,6 @@ class QuarantineRelatedCard extends StatelessWidget {
             )
           ],
         ),
-        isThreeLine: false,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[menus ?? Container()],
@@ -712,7 +707,6 @@ class QuarantineHome extends StatelessWidget {
             children: [
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
@@ -1200,7 +1194,7 @@ class _ManagerCardState extends State<ManagerCard> {
   ];
 
   action() {
-    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
+    if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,
         onChanged: (newValue) {
@@ -1229,8 +1223,7 @@ class _ManagerCardState extends State<ManagerCard> {
       child: Container(
         child: InkWell(
           onTap: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
+            if (widget.longPressEnabled ?? false) {
               setState(() {
                 _selected = !_selected;
               });

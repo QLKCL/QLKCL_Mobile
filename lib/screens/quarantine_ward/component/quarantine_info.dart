@@ -74,8 +74,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               left: 23,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              //Name
               children: [
                 Expanded(
                   child: Column(

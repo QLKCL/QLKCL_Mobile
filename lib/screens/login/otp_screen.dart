@@ -106,7 +106,8 @@ class _OtpState extends State<Otp> {
                                 activeFillColor: Colors.white,
                               ),
                               cursorColor: Colors.black,
-                              animationDuration: const Duration(milliseconds: 300),
+                              animationDuration:
+                                  const Duration(milliseconds: 300),
                               errorAnimationController: errorController,
                               controller: textEditingController,
                               keyboardType: TextInputType.number,
@@ -133,9 +134,7 @@ class _OtpState extends State<Otp> {
                         Container(
                           margin: const EdgeInsets.all(16),
                           child: ElevatedButton(
-                            onPressed: () {
-                              _submit();
-                            },
+                            onPressed: _submit,
                             child: Text(
                               'Xác nhận OTP',
                               style: TextStyle(color: CustomColors.white),
@@ -154,9 +153,7 @@ class _OtpState extends State<Otp> {
                                     color: CustomColors.primary,
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    _reSend();
-                                  },
+                                  ..onTap = _reSend,
                               )
                             ],
                           ),
@@ -189,13 +186,15 @@ class _OtpState extends State<Otp> {
           await sendOtp(sendOtpDataForm(email: widget.email, otp: otp));
       cancel();
       if (response.status == Status.success) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreatePassword(
-                      email: widget.email,
-                      otp: response.data,
-                    )));
+        if (mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreatePassword(
+                        email: widget.email,
+                        otp: response.data,
+                      )));
+        }
       } else {
         showNotification(response.message, status: Status.error);
       }

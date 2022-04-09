@@ -85,9 +85,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                           Container(
                             margin: const EdgeInsets.all(16),
                             child: ElevatedButton(
-                              onPressed: () {
-                                _submit();
-                              },
+                              onPressed: _submit,
                               child: Text(
                                 'Xác nhận',
                                 style: TextStyle(color: CustomColors.white),
@@ -127,7 +125,9 @@ class _CreatePasswordState extends State<CreatePassword> {
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
-          Navigator.popUntil(context, (route) => route.isFirst);
+          if (mounted) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          }
         }
       }
     }

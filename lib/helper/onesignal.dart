@@ -49,7 +49,9 @@ void handleGetDeviceState() async {
 void handleSendNotification() async {
   var deviceState = await OneSignal.shared.getDeviceState();
 
-  if (deviceState == null || deviceState.userId == null) return;
+  if (deviceState == null || deviceState.userId == null) {
+    return;
+  }
 
   var playerId = deviceState.userId!;
 

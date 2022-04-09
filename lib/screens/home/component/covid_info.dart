@@ -23,11 +23,10 @@ class InfoCovid extends StatelessWidget {
       height: 128,
       child: Card(
         color: color,
-        margin: const EdgeInsets.all(0),
+        margin: EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               title,
@@ -110,7 +109,7 @@ class InfoCovidHomePage extends StatelessWidget {
 
     var _screenWidth = MediaQuery.of(context).size.width - 16;
     var _crossAxisCount = _screenWidth >= minDesktopSize ? 4 : 2;
-    var _width = (_screenWidth) / _crossAxisCount;
+    var _width = _screenWidth / _crossAxisCount;
     var cellHeight = 148;
     var _aspectRatio = _width / cellHeight;
 

@@ -206,9 +206,7 @@ class _TestFormState extends State<TestForm> {
               Container(
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
+                  onPressed: _submit,
                   child: Text(
                     'Xác nhận',
                     style: TextStyle(color: CustomColors.white),

@@ -50,7 +50,9 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
       ));
       cancel();
       showNotification(response);
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -72,7 +74,6 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Container(
