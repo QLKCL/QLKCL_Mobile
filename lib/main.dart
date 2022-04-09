@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
     //       );
     //     } else {
     //       // Loading is done, return the app:
-    final botToastBuilder = BotToastInit();
+    var botToastBuilder = BotToastInit();
     return MaterialApp(
       title: 'Quản lý khu cách ly',
       debugShowCheckedModeBanner: false,

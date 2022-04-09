@@ -134,7 +134,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         });
       } else {
         CancelFunc cancel = showLoading();
-        final response = await changePass(changePassDataForm(
+        var response = await changePass(changePassDataForm(
             oldPassword: oldPassController.text,
             newPassword: passController.text,
             confirmPassword: secondPassController.text));

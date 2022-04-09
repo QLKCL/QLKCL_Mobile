@@ -63,7 +63,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         capacityController.text = "0";
       }
       CancelFunc cancel = showLoading();
-      final response = await createFloor(
+      var response = await createFloor(
         createFloorDataForm(
           name: nameController.text,
           quarantineBuilding: widget.currentBuilding!.id,
@@ -95,7 +95,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Thêm tầng'),
       centerTitle: true,
     );
@@ -114,7 +114,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -125,7 +125,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                             numberOfFloor: snapshot.data.length,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           //Input fields
                           child: SingleChildScrollView(
                             physics: ScrollPhysics(),

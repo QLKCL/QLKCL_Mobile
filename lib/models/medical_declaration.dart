@@ -104,13 +104,13 @@ class User {
 
 Future<dynamic> fetchMedDecl({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getMedDecl, data);
+  var response = await api.postHTTP(Api.getMedDecl, data);
   return response["data"];
 }
 
 Future<dynamic> fetchMedList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.filterMedDecl, data);
+  var response = await api.postHTTP(Api.filterMedDecl, data);
 
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -119,7 +119,7 @@ Future<dynamic> fetchMedList({data}) async {
 
 Future<Response> createMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.createMedDecl, data);
+  var response = await api.postHTTP(Api.createMedDecl, data);
 
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -134,7 +134,7 @@ Future<Response> createMedDecl(Map<String, dynamic> data) async {
 
 Future<Response> updateMedDecl(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.updateTest, data);
+  var response = await api.postHTTP(Api.updateTest, data);
 
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");

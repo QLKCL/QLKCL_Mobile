@@ -33,7 +33,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
   @override
   void initState() {
     fetchQuarantineList(data: {'page_size': pageSizeMax}).then((value) {
-      final itemList = value;
+      var itemList = value;
       if (mounted) {
         setState(() {
           _mapController.clearMarkers();
@@ -79,7 +79,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
+    ThemeData themeData = Theme.of(context);
     _isDesktop = themeData.platform == TargetPlatform.macOS ||
         themeData.platform == TargetPlatform.windows ||
         themeData.platform == TargetPlatform.linux;
@@ -176,7 +176,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                     return const SizedBox();
                   },
                   markerBuilder: (BuildContext context, int index) {
-                    final double _markerSize =
+                    double _markerSize =
                         _currentSelectedIndex == index ? 40 : 25;
                     return MapMarker(
                       latitude: quarantineWardList[index].latitude,
@@ -224,7 +224,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                   onPageChanged: _handlePageChange,
                   controller: _pageViewController,
                   itemBuilder: (BuildContext context, int index) {
-                    final item = quarantineWardList[index];
+                    var item = quarantineWardList[index];
                     return Transform.scale(
                       scale: index == _currentSelectedIndex ? 1 : 0.85,
                       child: Stack(

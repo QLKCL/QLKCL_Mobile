@@ -44,7 +44,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text("Thông tin chi tiết tầng"),
       centerTitle: true,
       actions: [
@@ -85,7 +85,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -97,7 +97,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                           numOfRoom: snapshot.data.length,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -

@@ -115,7 +115,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
           child: const Text('Không có dữ liệu'),
         ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
-            ? Container(
+            ? SizedBox(
                 height: 48,
                 child: Center(
                   child: Text(
@@ -265,7 +265,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
           child: const Text('Không có dữ liệu'),
         ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
-            ? Container(
+            ? SizedBox(
                 height: 48,
                 child: Center(
                   child: Text(

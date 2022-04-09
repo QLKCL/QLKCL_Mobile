@@ -102,13 +102,13 @@ class CreatedBy {
 
 Future<dynamic> fetchUserNotification({id}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Api.getUserNotification + '?id=' + id);
+  var response = await api.getHTTP(Api.getUserNotification + '?id=' + id);
   return response["data"];
 }
 
 Future<dynamic> fetchUserNotificationList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.filterUserNotification, data);
+  var response = await api.postHTTP(Api.filterUserNotification, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
@@ -116,7 +116,7 @@ Future<dynamic> fetchUserNotificationList({data}) async {
 
 Future<Response> changeStateUserNotification({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.changeStateUserNotification, data);
+  var response = await api.postHTTP(Api.changeStateUserNotification, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -131,7 +131,7 @@ Future<Response> changeStateUserNotification({data}) async {
 
 Future<Response> createNotification({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.createNotification, data);
+  var response = await api.postHTTP(Api.createNotification, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {

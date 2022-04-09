@@ -228,7 +228,7 @@ class _CreateNotificationState extends State<CreateNotification> {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final response = await createNotification(
+      var response = await createNotification(
         data: createNotificationDataForm(
           title: titleController.text,
           description: descriptionController.text,

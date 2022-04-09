@@ -302,7 +302,7 @@ class _MemberCardState extends State<MemberCard> {
     'Default/no_avatar',
   ];
 
-  action() {
+  Widget action() {
     if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,
@@ -599,7 +599,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //Image container
-                  Container(
+                  SizedBox(
                     height: 96,
                     width: 105,
                     child: ClipRRect(
@@ -1193,7 +1193,7 @@ class _ManagerCardState extends State<ManagerCard> {
     'Default/no_avatar',
   ];
 
-  action() {
+  Widget action() {
     if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,

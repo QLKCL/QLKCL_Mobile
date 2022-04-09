@@ -35,14 +35,14 @@ class RequestHelper {
       return Response(status: Status.error, message: "Lỗi kết nối!");
     } else if (response.statusCode == 200) {
       // var resp = response.body.toString();
-      // final data = jsonDecode(resp);
+      // var data = jsonDecode(resp);
 
       var resp = utf8.decode(response.bodyBytes);
-      final data = jsonDecode(resp);
+      var data = jsonDecode(resp);
       return Response(status: Status.success, data: data);
     } else if (response.statusCode == 400) {
       var resp = utf8.decode(response.bodyBytes);
-      final data = jsonDecode(resp);
+      var data = jsonDecode(resp);
       return Response(status: Status.error, data: data);
     } else if (response.statusCode == 401) {
       return Response(status: Status.error, message: "Lỗi xác thực!");

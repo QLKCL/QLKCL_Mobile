@@ -90,7 +90,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   Future<dynamic> fetch() async {
     await Future.delayed(const Duration(seconds: 1));
     ApiHelper api = ApiHelper();
-    final response = await api.postHTTP(
+    var response = await api.postHTTP(
         Api.homeManager,
         prepareDataForm({
           "number_of_days_in_out": 12,
@@ -228,7 +228,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         ),
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
-            final ScrollDirection direction = notification.direction;
+            ScrollDirection direction = notification.direction;
             setState(() {
               if (direction == ScrollDirection.reverse) {
                 _showFab = false;

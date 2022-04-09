@@ -157,16 +157,16 @@ linter:
     # - recursive_getters
     # - require_trailing_commas
     # - secure_pubspec_urls
-    # - sized_box_for_whitespace
-    # - sized_box_shrink_expand
-    # - slash_for_doc_comments
+    - sized_box_for_whitespace
+    - sized_box_shrink_expand
+    - slash_for_doc_comments
     # - sort_child_properties_last
     # - sort_constructors_first
     # - sort_pub_dependencies
-    # - sort_unnamed_constructors_first
+    - sort_unnamed_constructors_first
     - test_types_in_equals
     - throw_in_finally
-    # - tighten_type_of_initializing_formals
+    - tighten_type_of_initializing_formals
     # - type_annotate_public_apis
     - type_init_formals
     # - unawaited_futures
@@ -174,7 +174,7 @@ linter:
     - unnecessary_brace_in_string_interps
     - unnecessary_const
     - unnecessary_constructor_name
-    # - unnecessary_final
+    - unnecessary_final
     - unnecessary_getters_setters
     - unnecessary_lambdas
     - unnecessary_late

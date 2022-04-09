@@ -101,7 +101,7 @@ class QuarantineHistory {
 
 Future<List<QuarantineHistory>> fetchQuarantineHistoryList({data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.filterQuarantineHistory, data);
+  var response = await api.postHTTP(Api.filterQuarantineHistory, data);
 
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {

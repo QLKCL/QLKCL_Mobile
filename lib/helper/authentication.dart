@@ -66,7 +66,7 @@ Future<String> getPhoneNumber() async {
 Future<void> setInfo() async {
   var infoBox = await Hive.openBox('myInfo');
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getMember, null);
+  var response = await api.postHTTP(Api.getMember, null);
   int role = response['data']['custom_user']['role']['id'];
   infoBox.put('role', role);
   String name = response['data']['custom_user']['full_name'];
@@ -147,7 +147,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body;
-    final data = jsonDecode(resp);
+    var data = jsonDecode(resp);
     var accessToken = data['access'];
     var refreshToken = data['refresh'];
     bool status = await setToken(accessToken, refreshToken);
@@ -183,7 +183,7 @@ Future<Response> register(Map<String, dynamic> registerDataForm) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body;
-    final data = jsonDecode(resp);
+    var data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success);
     } else if (data['message']['phone_number'] == "Exist") {
@@ -226,7 +226,7 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body;
-    final data = jsonDecode(resp);
+    var data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, message: "Gửi OTP thành công!");
     } else if (data['error_code'] == 400) {
@@ -262,7 +262,7 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body;
-    final data = jsonDecode(resp);
+    var data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(status: Status.success, data: data["data"]['new_otp']);
     } else if (data['error_code'] == 400) {
@@ -292,7 +292,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else if (response.statusCode == 200) {
     var resp = response.body;
-    final data = jsonDecode(resp);
+    var data = jsonDecode(resp);
     if (data['error_code'] == 0) {
       return Response(
           status: Status.success,
@@ -315,7 +315,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
 
 Future<Response> changePass(Map<String, String> changePassDataForm) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.changePass, changePassDataForm);
+  var response = await api.postHTTP(Api.changePass, changePassDataForm);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -341,7 +341,7 @@ Future<Response> changePass(Map<String, String> changePassDataForm) async {
 
 Future<Response> resetPass(Map<String, String> resetPassDataForm) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.resetPass, resetPassDataForm);
+  var response = await api.postHTTP(Api.resetPass, resetPassDataForm);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {

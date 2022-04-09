@@ -75,7 +75,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text("Thông tin chi tiết phòng"),
       centerTitle: true,
       actions: [
@@ -183,7 +183,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
+        SizedBox(
             height: (MediaQuery.of(context).size.height -
                     appBar.preferredSize.height -
                     MediaQuery.of(context).padding.top) *
@@ -194,7 +194,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentQuarantine: widget.currentQuarantine!,
               currentRoom: currentRoom,
             )),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           height: (MediaQuery.of(context).size.height -
                   appBar.preferredSize.height -
@@ -234,7 +234,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget listMemberTable(PreferredSizeWidget appBar) {
     return Column(
       children: [
-        Container(
+        SizedBox(
             height: (MediaQuery.of(context).size.height -
                     appBar.preferredSize.height -
                     MediaQuery.of(context).padding.top) *
@@ -245,7 +245,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentQuarantine: widget.currentQuarantine!,
               currentRoom: currentRoom,
             )),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
@@ -381,7 +381,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
+      List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {

@@ -78,7 +78,7 @@ class _AppState extends State<App> {
         ? Splash()
         : WillPopScope(
             onWillPop: () async {
-              final isFirstRouteInCurrentTab =
+              var isFirstRouteInCurrentTab =
                   !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
               if (isFirstRouteInCurrentTab) {
                 // if not on the 'main' tab
@@ -133,7 +133,7 @@ class _AppState extends State<App> {
               ),
 
               bottomNavigationBar: MediaQuery.of(context).size.height > 600
-                  ? Container(
+                  ? SizedBox(
                       height: 60,
                       width: MediaQuery.of(context).size.width,
                       child: !Responsive.isDesktopLayout(context)

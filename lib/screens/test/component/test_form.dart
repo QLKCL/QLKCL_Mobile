@@ -224,7 +224,7 @@ class _TestFormState extends State<TestForm> {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
-        final response = await createTest(createTestDataForm(
+        var response = await createTest(createTestDataForm(
             userCode: userCodeController.text,
             status: stateController.text,
             type: typeController.text,
@@ -235,7 +235,7 @@ class _TestFormState extends State<TestForm> {
           Navigator.pop(context);
         }
       } else if (widget.mode == Permission.edit) {
-        final response = await updateTest(updateTestDataForm(
+        var response = await updateTest(updateTestDataForm(
             code: widget.testData!.code,
             status: stateController.text,
             type: typeController.text,

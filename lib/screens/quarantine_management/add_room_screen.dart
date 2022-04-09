@@ -66,7 +66,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         capacityController.text = capacityList.join(",");
       }
       CancelFunc cancel = showLoading();
-      final response = await createRoom(createRoomDataForm(
+      var response = await createRoom(createRoomDataForm(
         name: nameController.text,
         quarantineFloor: widget.currentFloor!.id,
         capacity: capacityController.text,
@@ -96,7 +96,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Thêm phòng'),
       centerTitle: true,
     );
@@ -115,7 +115,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *

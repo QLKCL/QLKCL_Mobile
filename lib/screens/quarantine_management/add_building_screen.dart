@@ -44,7 +44,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final response = await createBuilding(createBuildingDataForm(
+      var response = await createBuilding(createBuildingDataForm(
         name: nameController.text,
         quarantineWard: widget.currentQuarrantine!.id,
       ));
@@ -58,7 +58,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Thêm tòa'),
       centerTitle: true,
     );
@@ -76,7 +76,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -88,7 +88,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                         ),
                         Form(
                           key: _formKey,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Input(
                               label: 'Tên tòa',

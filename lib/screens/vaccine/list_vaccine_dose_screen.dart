@@ -52,14 +52,14 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
   Future<void> _fetchPage(int pageKey) async {
     code = widget.code ?? await getCode();
     try {
-      final newItems = await fetchVaccineDoseList(
+      var newItems = await fetchVaccineDoseList(
           data: {'page': pageKey, 'custom_user_code': code});
 
-      final isLastPage = newItems.length < pageSize;
+      var isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -95,7 +95,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),

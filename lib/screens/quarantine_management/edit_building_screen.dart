@@ -47,7 +47,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final response = await updateBuilding(updateBuildingDataForm(
+      var response = await updateBuilding(updateBuildingDataForm(
         name: nameController.text,
         id: widget.currentBuilding!.id,
       ));
@@ -64,7 +64,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Sửa thông tin tòa'),
       centerTitle: true,
     );
@@ -82,7 +82,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -95,7 +95,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                         ),
                         Form(
                           key: _formKey,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Input(
                               label: 'Tên tòa mới',

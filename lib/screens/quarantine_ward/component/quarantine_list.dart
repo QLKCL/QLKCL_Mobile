@@ -45,13 +45,13 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchQuarantineList(data: {'page': pageKey});
+      var newItems = await fetchQuarantineList(data: {'page': pageKey});
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
@@ -72,7 +72,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),

@@ -56,14 +56,14 @@ class _ListTestState extends State<ListTest> {
     code = widget.code ?? await getCode();
     name = widget.name ?? await getName();
     try {
-      final newItems =
+      var newItems =
           await fetchTestList(data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < pageSize;
+      var isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -121,7 +121,7 @@ class _ListTestState extends State<ListTest> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),

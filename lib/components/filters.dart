@@ -21,7 +21,7 @@ class FloatingModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Center(
-      child: Container(
+      child: SizedBox(
         width: maxMobileSize,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),

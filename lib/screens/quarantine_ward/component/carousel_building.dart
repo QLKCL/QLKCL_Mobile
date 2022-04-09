@@ -97,7 +97,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 170,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(

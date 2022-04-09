@@ -81,14 +81,14 @@ class _ConfirmMemberState extends State<ConfirmMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
+      var newItems = await fetchMemberList(
           data: {'page': pageKey, 'status_list': "WAITING"});
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
@@ -121,7 +121,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
@@ -168,7 +168,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                     child: Image.asset("assets/images/no_data.png"),
                   ),
@@ -220,7 +220,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   child: buildStack(constraints),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
@@ -360,7 +360,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
+      List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -396,7 +396,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(
+      var newItems = await fetchMemberList(
           data: {'page': newPageIndex + 1, 'status_list': "WAITING"});
       if (newItems.currentPage <= newItems.totalPages) {
         paginatedDataSource = newItems.data;
@@ -413,7 +413,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(
+    var newItems = await fetchMemberList(
         data: {'page': currentPageIndex + 1, 'status_list': "WAITING"});
     if (newItems.currentPage <= newItems.totalPages) {
       paginatedDataSource = newItems.data;
@@ -635,7 +635,7 @@ Widget menus(BuildContext context, FilterMember item,
         child: const Text('Chấp nhận'),
         onTap: () async {
           CancelFunc cancel = showLoading();
-          final response = await acceptOneMember({'code': item.code});
+          var response = await acceptOneMember({'code': item.code});
           cancel();
           showNotification(response);
           if (response.status == Status.success) {
@@ -652,7 +652,7 @@ Widget menus(BuildContext context, FilterMember item,
         child: const Text('Từ chối'),
         onTap: () async {
           CancelFunc cancel = showLoading();
-          final response = await denyMember({'member_codes': item.code});
+          var response = await denyMember({'member_codes': item.code});
           cancel();
           showNotification(response);
           if (response.status == Status.success) {

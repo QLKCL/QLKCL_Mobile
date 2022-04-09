@@ -49,7 +49,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final response = await updateFloor(updateFloorDataForm(
+      var response = await updateFloor(updateFloorDataForm(
         name: nameController.text,
         id: widget.currentFloor!.id,
       ));
@@ -65,7 +65,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Sửa thông tin tầng'),
       centerTitle: true,
     );
@@ -83,7 +83,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -97,7 +97,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                         ),
                         Form(
                           key: _formKey,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Input(
                               label: 'Tên tầng mới',

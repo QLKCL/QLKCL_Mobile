@@ -123,14 +123,14 @@ class Quarantine {
 
 Future<dynamic> fetchQuarantine(id) async {
   ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Api.getQuarantine + '?id=' + id);
+  var response = await api.getHTTP(Api.getQuarantine + '?id=' + id);
   return response["data"];
 }
 
 Future<FilterResponse<FilterQuanrantineWard>> fetchQuarantineList(
     {data}) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListQuarantine, data);
+  var response = await api.postHTTP(Api.getListQuarantine, data);
   if (response['error_code'] == 0 && response['data'] != null) {
     List<FilterQuanrantineWard> itemList = response['data']['content']
         .map<FilterQuanrantineWard>(
@@ -149,7 +149,7 @@ Future<FilterResponse<FilterQuanrantineWard>> fetchQuarantineList(
 
 Future<Response> createQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.createQuarantine, data);
+  var response = await api.postHTTP(Api.createQuarantine, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -166,7 +166,7 @@ Future<Response> createQuarantine(Map<String, dynamic> data) async {
 
 Future<Response> updateQuarantine(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.updateQuarantine, data);
+  var response = await api.postHTTP(Api.updateQuarantine, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -203,7 +203,7 @@ Future<Response> updateQuarantine(Map<String, dynamic> data) async {
 
 Future<dynamic> fetchBuildingList(Map<String, dynamic> data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListBuilding, data);
+  var response = await api.postHTTP(Api.getListBuilding, data);
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;

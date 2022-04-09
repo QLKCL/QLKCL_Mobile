@@ -32,7 +32,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Danh sách tòa'),
     );
     return Scaffold(
@@ -48,7 +48,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -58,7 +58,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                           numOfBuilding: snapshot.data.length,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *

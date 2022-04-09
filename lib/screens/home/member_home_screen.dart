@@ -62,7 +62,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   Future<dynamic> fetch() async {
     ApiHelper api = ApiHelper();
-    final response = await api.postHTTP(Api.homeMember, null);
+    var response = await api.postHTTP(Api.homeMember, null);
     return response != null && response['data'] != null
         ? response['data']
         : null;

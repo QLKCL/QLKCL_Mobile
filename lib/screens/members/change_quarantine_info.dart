@@ -321,7 +321,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final updateResponse = await changeRoomMember(changeRoomMemberDataForm(
+      var updateResponse = await changeRoomMember(changeRoomMemberDataForm(
         code: widget.code,
         quarantineWard: newQuarantineWardController.text,
         quarantineRoom: newQuarantineRoomController.text,

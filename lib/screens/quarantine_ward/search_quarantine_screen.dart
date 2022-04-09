@@ -96,7 +96,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchQuarantineList(
+      var newItems = await fetchQuarantineList(
         data: filterQuarantineDataForm(
           keySearch: keySearch.text,
           page: pageKey,
@@ -111,11 +111,11 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         ),
       );
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {

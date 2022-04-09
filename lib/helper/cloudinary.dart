@@ -32,7 +32,7 @@ Future<List<XFile>> selectImages(
   List<XFile> _imageFileList, {
   bool multi = false,
 }) async {
-  final ImagePicker _picker = ImagePicker();
+  ImagePicker _picker = ImagePicker();
   List<XFile>? selectedImages = [];
   try {
     if (multi == true) {

@@ -509,7 +509,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
       if (_formKey.currentState!.validate()) {
         CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
-          final response = await createMember(createMemberDataForm(
+          var response = await createMember(createMemberDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -533,7 +533,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           }
         }
         if (widget.mode == Permission.edit) {
-          final response = await updateMember(updateMemberDataForm(
+          var response = await updateMember(updateMemberDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,

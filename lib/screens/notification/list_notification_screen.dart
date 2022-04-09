@@ -50,13 +50,13 @@ class _ListNotificationState extends State<ListNotification> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchUserNotificationList(data: {'page': pageKey});
+      var newItems = await fetchUserNotificationList(data: {'page': pageKey});
 
-      final isLastPage = newItems.length < pageSize;
+      var isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -85,7 +85,7 @@ class _ListNotificationState extends State<ListNotification> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
@@ -106,7 +106,7 @@ class _ListNotificationState extends State<ListNotification> {
                 image: item['notification']['image'],
                 url: item['notification']['url'],
                 onTap: () async {
-                  final response = await changeStateUserNotification(
+                  var response = await changeStateUserNotification(
                       data: {'notification': item['notification']['id']});
                   if (response.status == Status.success) {
                     setState(() {

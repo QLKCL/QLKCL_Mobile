@@ -179,7 +179,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       RequestHelper _provider =
           RequestHelper(baseUrl: "https://tiemchungcovid19.gov.vn");
 
-      final response = await _provider.get(
+      var response = await _provider.get(
         "/api/vaccination/public/otp-search",
         params: syncVaccinePortalDataForm(
           birthday: DateFormat('dd/MM/yyyy')
@@ -215,7 +215,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       RequestHelper _provider =
           RequestHelper(baseUrl: "https://tiemchungcovid19.gov.vn");
 
-      final response = await _provider.get(
+      var response = await _provider.get(
         "/api/vaccination/public/patient-vaccinated",
         params: syncVaccinePortalDataForm(
           birthday: DateFormat('dd/MM/yyyy')

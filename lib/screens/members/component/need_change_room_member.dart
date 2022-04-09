@@ -72,16 +72,16 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(data: {
+      var newItems = await fetchMemberList(data: {
         'page': pageKey,
         'is_need_change_room_because_be_positive': true
       });
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
@@ -104,7 +104,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
@@ -144,7 +144,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
@@ -184,7 +184,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                   child: buildStack(constraints),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
@@ -317,7 +317,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
+      List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -353,7 +353,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(data: {
+      var newItems = await fetchMemberList(data: {
         'page': newPageIndex + 1,
         'is_need_change_room_because_be_positive': true
       });
@@ -372,7 +372,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(data: {
+    var newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
       'is_need_change_room_because_be_positive': true
     });

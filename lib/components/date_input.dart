@@ -354,7 +354,7 @@ class _NewDateInputState extends State<NewDateInput> {
                       },
                     ),
                   ],
-                  content: Container(
+                  content: SizedBox(
                     height: 300,
                     width: 300,
                     child: SfDateRangePicker(
@@ -536,7 +536,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                       },
                     ),
                   ],
-                  content: Container(
+                  content: SizedBox(
                     height: 300,
                     width: 300,
                     child: SfDateRangePicker(

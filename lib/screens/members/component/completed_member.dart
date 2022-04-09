@@ -74,17 +74,17 @@ class _CompletedMemberState extends State<CompletedMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(data: {
+      var newItems = await fetchMemberList(data: {
         'page': pageKey,
         'status_list': "LEAVE",
         'quarantined_status_list': "COMPLETED"
       });
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
@@ -107,7 +107,7 @@ class _CompletedMemberState extends State<CompletedMember>
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
@@ -150,7 +150,7 @@ class _CompletedMemberState extends State<CompletedMember>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                     child: Image.asset("assets/images/no_data.png"),
                   ),
@@ -193,7 +193,7 @@ class _CompletedMemberState extends State<CompletedMember>
                   child: buildStack(constraints),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
@@ -318,7 +318,7 @@ class _CompletedMemberState extends State<CompletedMember>
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
+      List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -354,7 +354,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(data: {
+      var newItems = await fetchMemberList(data: {
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
         'quarantined_status_list': "COMPLETED"
@@ -374,7 +374,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(data: {
+    var newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "COMPLETED"

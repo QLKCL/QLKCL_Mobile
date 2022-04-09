@@ -52,7 +52,7 @@ class _TimeInputState extends State<TimeInput> {
       child: TextFormField(
         onTap: () async {
           _focus = true;
-          final TimeOfDay? pickedTime = await showTimePicker(
+          TimeOfDay? pickedTime = await showTimePicker(
             context: context,
             initialTime: (widget.controller != null &&
                     widget.controller!.text != "")

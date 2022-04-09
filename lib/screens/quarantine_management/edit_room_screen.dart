@@ -47,7 +47,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
-      final response = await updateRoom(updateRoomDataForm(
+      var response = await updateRoom(updateRoomDataForm(
         name: nameController.text,
         id: widget.currentRoom!.id,
         quarantineFloor: widget.currentFloor!.id,
@@ -66,7 +66,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
+    var appBar = AppBar(
       title: const Text('Sửa thông tin phòng'),
       centerTitle: true,
     );
@@ -77,7 +77,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+              SizedBox(
                 height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
@@ -91,7 +91,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
               ),
               Form(
                 key: _formKey,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [

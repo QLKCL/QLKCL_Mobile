@@ -48,14 +48,14 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems =
+      var newItems =
           await fetchTestList(data: {'page': pageKey, 'status': 'WAITING'});
 
-      final isLastPage = newItems.length < pageSize;
+      var isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
@@ -95,7 +95,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),

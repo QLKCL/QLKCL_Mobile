@@ -6,7 +6,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 extension IterableX<T> on Iterable<T> {
   T? safeFirstWhere(bool Function(T) test) {
-    final sublist = where(test);
+    var sublist = where(test);
     return sublist.isEmpty ? null : sublist.first;
   }
 }
@@ -167,7 +167,7 @@ class Responsive extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size _size = MediaQuery.of(context).size;
+    Size _size = MediaQuery.of(context).size;
     // If our width is more than 768 then we consider it a desktop
     if (_size.width >= maxTabletSize) {
       return desktop;

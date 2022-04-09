@@ -223,12 +223,12 @@ class _RegisterFormState extends State<RegisterForm> {
         });
       } else {
         CancelFunc cancel = showLoading();
-        final registerResponse = await register(registerDataForm(
+        var registerResponse = await register(registerDataForm(
             phoneNumber: phoneController.text,
             password: passController.text,
             quarantineWard: quarantineWardController.text));
         if (registerResponse.status == Status.success) {
-          final loginResponse = await login(loginDataForm(
+          var loginResponse = await login(loginDataForm(
               phoneNumber: phoneController.text,
               password: passController.text));
           cancel();

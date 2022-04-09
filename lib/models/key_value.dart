@@ -35,8 +35,8 @@ class KeyValue {
 
 Future<List<KeyValue>> fetchCountry() async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListCountry, null);
-  final dataResponse = response['data'];
+  var response = await api.postHTTP(Api.getListCountry, null);
+  var dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
   }
@@ -45,8 +45,8 @@ Future<List<KeyValue>> fetchCountry() async {
 
 Future<List<KeyValue>> fetchCity(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListCity, data);
-  final dataResponse = response['data'];
+  var response = await api.postHTTP(Api.getListCity, data);
+  var dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
   }
@@ -55,8 +55,8 @@ Future<List<KeyValue>> fetchCity(data) async {
 
 Future<List<KeyValue>> fetchDistrict(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListDistrict, data);
-  final dataResponse = response['data'];
+  var response = await api.postHTTP(Api.getListDistrict, data);
+  var dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
   }
@@ -65,8 +65,8 @@ Future<List<KeyValue>> fetchDistrict(data) async {
 
 Future<List<KeyValue>> fetchWard(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListWard, data);
-  final dataResponse = response['data'];
+  var response = await api.postHTTP(Api.getListWard, data);
+  var dataResponse = response['data'];
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
   }
@@ -75,10 +75,10 @@ Future<List<KeyValue>> fetchWard(data) async {
 
 Future<List<KeyValue>> fetchQuarantineWard(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListQuarantine, data);
+  var response = await api.postHTTP(Api.getListQuarantine, data);
 
   if (response['data'] != null) {
-    final dataResponse = response['data']['content'];
+    var dataResponse = response['data']['content'];
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse);
     }
@@ -88,10 +88,10 @@ Future<List<KeyValue>> fetchQuarantineWard(data) async {
 
 Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListBuilding, data);
+  var response = await api.postHTTP(Api.getListBuilding, data);
 
   if (response['data'] != null) {
-    final dataResponse = response['data']['content'];
+    var dataResponse = response['data']['content'];
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse);
     }
@@ -101,10 +101,10 @@ Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
 
 Future<List<KeyValue>> fetchQuarantineFloor(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListFloor, data);
+  var response = await api.postHTTP(Api.getListFloor, data);
 
   if (response['data'] != null) {
-    final dataResponse = response['data']['content'];
+    var dataResponse = response['data']['content'];
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse);
     }
@@ -114,10 +114,10 @@ Future<List<KeyValue>> fetchQuarantineFloor(data) async {
 
 Future<List<KeyValue>> fetchQuarantineRoom(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListRoom, data);
+  var response = await api.postHTTP(Api.getListRoom, data);
 
   if (response['data'] != null) {
-    final dataResponse = response['data']['content'];
+    var dataResponse = response['data']['content'];
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse);
     }
@@ -139,7 +139,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   }
   if (response != null) {
     var resp = response.body;
-    final dataResponse = jsonDecode(resp);
+    var dataResponse = jsonDecode(resp);
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse['data']);
     }
@@ -149,8 +149,8 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
 
 Future<List<KeyValue>> fetchNotMemberList(data) async {
   ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getListNotMem, data);
-  final dataResponse = response['data'];
+  var response = await api.postHTTP(Api.getListNotMem, data);
+  var dataResponse = response['data'];
 
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);

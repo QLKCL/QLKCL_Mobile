@@ -152,7 +152,7 @@ class _SearchMemberState extends State<SearchMember> {
 
   Future<FilterResponse<FilterMember>> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
+      var newItems = await fetchMemberList(
         data: filterMemberDataForm(
           keySearch: keySearch.text,
           page: pageKey,
@@ -172,11 +172,11 @@ class _SearchMemberState extends State<SearchMember> {
         ),
       );
 
-      final isLastPage = newItems.data.length < pageSize;
+      var isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
-        final nextPageKey = pageKey + 1;
+        var nextPageKey = pageKey + 1;
         _pagingController.appendPage(newItems.data, nextPageKey);
       }
       return newItems;
@@ -338,7 +338,7 @@ class _SearchMemberState extends State<SearchMember> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.15,
                                     child: Image.asset(
@@ -427,7 +427,7 @@ class _SearchMemberState extends State<SearchMember> {
                       child: buildStack(constraints),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 60,
                     width: constraints.maxWidth,
                     child: SfDataPager(
@@ -562,7 +562,7 @@ class _SearchMemberState extends State<SearchMember> {
 
   Widget buildStack(BoxConstraints constraints) {
     List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
+      List<Widget> stackChildren = [];
       stackChildren.add(buildDataGrid(constraints));
 
       if (showLoadingIndicator) {
@@ -598,7 +598,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(
+      var newItems = await fetchMemberList(
         data: filterMemberDataForm(
           keySearch: keySearch.text,
           page: newPageIndex + 1,
@@ -631,7 +631,7 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(
+    var newItems = await fetchMemberList(
       data: filterMemberDataForm(
         keySearch: keySearch.text,
         page: currentPageIndex + 1,
@@ -938,7 +938,7 @@ Widget menus(BuildContext context, FilterMember item,
         child: const Text('Đặt lại mật khẩu'),
         onTap: () async {
           CancelFunc cancel = showLoading();
-          final response = await resetPass({'code': item.code});
+          var response = await resetPass({'code': item.code});
           cancel();
           showNotification(response, duration: 5);
         },

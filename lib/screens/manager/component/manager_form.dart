@@ -754,7 +754,7 @@ class _ManagerFormState extends State<ManagerForm> {
       CancelFunc cancel = showLoading();
       if (type == "manager") {
         if (widget.mode == Permission.add) {
-          final response = await createManager(createManagerDataForm(
+          var response = await createManager(createManagerDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -774,7 +774,7 @@ class _ManagerFormState extends State<ManagerForm> {
           cancel();
           showNotification(response);
         } else if (widget.mode == Permission.edit) {
-          final response = await updateManager(updateManagerDataForm(
+          var response = await updateManager(updateManagerDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -796,7 +796,7 @@ class _ManagerFormState extends State<ManagerForm> {
         }
       } else {
         if (widget.mode == Permission.add) {
-          final response = await createStaff(createStaffDataForm(
+          var response = await createStaff(createStaffDataForm(
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
@@ -818,7 +818,7 @@ class _ManagerFormState extends State<ManagerForm> {
           showNotification(response);
         }
         if (widget.mode == Permission.edit) {
-          final response = await updateStaff(updateStaffDataForm(
+          var response = await updateStaff(updateStaffDataForm(
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,

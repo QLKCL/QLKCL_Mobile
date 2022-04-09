@@ -173,7 +173,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
     if (_formKey.currentState!.validate()) {
       CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
-        final response = await createQuarantine(createQuarantineDataForm(
+        var response = await createQuarantine(createQuarantineDataForm(
           email: emailController.text,
           fullName: nameController.text,
           country: countryController.text,
@@ -194,7 +194,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
         cancel();
         showNotification(response);
       } else if (widget.mode == Permission.edit) {
-        final response = await updateQuarantine(updateQuarantineDataForm(
+        var response = await updateQuarantine(updateQuarantineDataForm(
           id: widget.quarantineInfo!.id,
           email: emailController.text,
           fullName: nameController.text,
