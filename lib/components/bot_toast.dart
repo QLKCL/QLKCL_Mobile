@@ -7,7 +7,7 @@ import 'package:qlkcl/networking/response.dart';
 CancelFunc showTextToast(String text) {
   return BotToast.showText(
     text: text,
-    textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14.0),
+    textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14),
     contentPadding: const EdgeInsets.all(16),
     contentColor: CustomColors.background,
     wrapToastAnimation: (controller, cancel, Widget child) =>
@@ -36,7 +36,7 @@ class _CustomAnimationWidgetState extends State<CustomAnimationWidget> {
     end: Offset.zero,
   );
 
-  static final Tween<double> tweenScale = Tween<double>(begin: 0.7, end: 1.0);
+  static final Tween<double> tweenScale = Tween<double>(begin: 0.7, end: 1);
   late Animation<double> animation;
 
   @override
@@ -125,7 +125,7 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
         children: <Widget>[
           const CircularProgressIndicator(),
           Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               widget.textLoading ?? "Loading",
             ),
@@ -189,7 +189,7 @@ class _CustomWidget extends StatefulWidget {
       this.subTitle,
       this.titleStyle = const TextStyle(
         color: Colors.white,
-        fontSize: 16.0,
+        fontSize: 16,
       ),
       this.subTitleStyle = const TextStyle(color: Colors.white),
       this.backgroundColor,

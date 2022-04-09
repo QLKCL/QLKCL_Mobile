@@ -46,7 +46,7 @@ class Floor {
 
 Future<dynamic> fetchFloor({id}) async {
   ApiHelper api = ApiHelper();
-  var response = await api.getHTTP(Api.getFloor + '?id=' + id);
+  var response = await api.getHTTP('${Api.getFloor}?id=$id');
   return response["data"];
 }
 

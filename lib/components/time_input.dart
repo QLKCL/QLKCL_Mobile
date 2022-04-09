@@ -88,7 +88,7 @@ class _TimeInputState extends State<TimeInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "HH:mm",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&

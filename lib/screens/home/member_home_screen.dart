@@ -103,7 +103,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
               label: 'Gọi cấp cứu',
               onTap: quarantineWardPhone != ""
                   ? () async {
-                      launch("tel://" + quarantineWardPhone);
+                      launch("tel://$quarantineWardPhone");
                     }
                   : () {
                       showNotification('Số điện thoại không tồn tại.',
@@ -120,7 +120,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           ],
         ),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.0), // here the desired height
+          preferredSize: Size.fromHeight(72), // here the desired height
           child: AppBar(
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
@@ -129,8 +129,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
               child: Row(
                 children: [
                   Container(
-                    width: 56.0,
-                    height: 56.0,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(cloudinary
@@ -139,10 +139,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         fit: BoxFit.cover,
                       ),
                       borderRadius:
-                          const BorderRadius.all(Radius.circular(50.0)),
+                          const BorderRadius.all(Radius.circular(50)),
                       border: Border.all(
                         color: CustomColors.secondary,
-                        width: 2.0,
+                        width: 2,
                       ),
                     ),
                   ),
@@ -167,7 +167,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               return Text(
                                 snapshot.data,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: CustomColors.primaryText),
                               );
@@ -182,7 +182,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
               ),
             ),
             titleTextStyle:
-                TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
+                TextStyle(fontSize: 16, color: CustomColors.primaryText),
             backgroundColor: CustomColors.background,
             centerTitle: false,
             actions: [
@@ -196,7 +196,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                  style: TextStyle(fontSize: 11, color: CustomColors.white),
                 ),
                 child: IconButton(
                   padding: const EdgeInsets.only(right: 24),
@@ -321,7 +321,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 title: Text(
                                   msg,
                                   style: TextStyle(
-                                      fontSize: 18.0,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.normal,
                                       color: CustomColors.primaryText),
                                 ),
@@ -384,23 +384,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                               content: snapshot.data[
                                                           'positive_test_now'] !=
                                                       null
-                                                  ? ((snapshot.data['positive_test_now'] ==
+                                                  ? ((snapshot.data[
+                                                                  'positive_test_now'] ==
                                                               false
                                                           ? "Âm tính"
                                                           : "Dương tính") +
                                                       (snapshot.data[
                                                                   'last_tested_had_result'] !=
                                                               null
-                                                          ? " (" +
-                                                              DateFormat(
-                                                                      "dd/MM/yyyy HH:mm:ss")
-                                                                  .format(DateTime.parse(
-                                                                          snapshot
-                                                                              .data['last_tested_had_result'])
-                                                                      .toLocal()) +
-                                                              ")"
-                                                          : "") +
-                                                      "")
+                                                          ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal())})"
+                                                          : ""))
                                                   : "Chưa có kết quả xét nghiệm",
                                               textColor:
                                                   CustomColors.primaryText,

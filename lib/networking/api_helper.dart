@@ -50,7 +50,7 @@ class ApiHelper {
             if (accessToken != null) {
               // Unlock error, response, request here
               var opts = Options(method: requestOptions.method);
-              dio.options.headers["Authorization"] = "Bearer " + accessToken;
+              dio.options.headers["Authorization"] = "Bearer $accessToken";
               dio.options.headers["Accept"] = "*/*";
               dio.interceptors.requestLock.unlock();
               dio.interceptors.responseLock.unlock();
@@ -92,7 +92,7 @@ class ApiHelper {
   static Future<String?> refreshToken() async {
     Response response;
     var dio = Dio();
-    Uri apiUrl = Uri.parse(Api.baseUrl + "/api/token/refresh");
+    Uri apiUrl = Uri.parse("${Api.baseUrl}/api/token/refresh");
     var refreshToken = await getRefreshToken();
     try {
       response = await dio.postUri(

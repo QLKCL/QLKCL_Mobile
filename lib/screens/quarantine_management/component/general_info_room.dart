@@ -65,7 +65,7 @@ class GeneralInfoRoom extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          currentBuilding.name + ' - ' + currentFloor.name,
+                          '${currentBuilding.name} - ${currentFloor.name}',
                           style: const TextStyle(
                             fontSize: 16,
                           ),

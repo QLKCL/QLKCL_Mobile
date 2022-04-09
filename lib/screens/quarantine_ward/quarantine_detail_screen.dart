@@ -27,11 +27,6 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
       title: const Text('Thông tin khu cách ly'),

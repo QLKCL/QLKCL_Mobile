@@ -49,12 +49,12 @@ class _CarouselState extends State<Carousel> {
                 builder: (BuildContext context) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                         // color: Colors.amber,
                         borderRadius: const BorderRadius.all(Radius.circular(5))),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5),
                       child: Image.network(
                           cloudinary.getImage(imgUrl).toString(),
                           fit: BoxFit.cover),

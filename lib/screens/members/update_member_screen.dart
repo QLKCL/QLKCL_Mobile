@@ -36,11 +36,6 @@ class _UpdateMemberState extends State<UpdateMember>
     _tabController.addListener(_handleTabChange);
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   _handleTabChange() {
     setState(() {});
   }

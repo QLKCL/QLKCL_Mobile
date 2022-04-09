@@ -36,11 +36,6 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(

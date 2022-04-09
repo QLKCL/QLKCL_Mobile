@@ -334,8 +334,8 @@ Future memberFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -480,8 +480,8 @@ Future testFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -730,8 +730,8 @@ Future quarantineFilter(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
             borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,

@@ -73,7 +73,7 @@ class _ImageFieldState extends State<ImageField> {
                                   MaterialStateProperty.all(Size.infinite),
                               shape: MaterialStateProperty.all(
                                 RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
                               ),
                               side: MaterialStateProperty.all(
@@ -128,7 +128,7 @@ class _ImageFieldState extends State<ImageField> {
                         fit: StackFit.expand,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8),
                             child: Image.network(
                                 cloudinary
                                     .getImage(imageList[index])

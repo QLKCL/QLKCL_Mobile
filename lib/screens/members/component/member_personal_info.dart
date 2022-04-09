@@ -148,11 +148,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
     if (widget.infoFromIdentityCard != null) {

@@ -66,7 +66,7 @@ class GeneralInfoFloor extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          currentBuilding.name + ' - ' + currentFloor.name,
+                          '${currentBuilding.name} - ${currentFloor.name}',
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -108,10 +108,7 @@ class GeneralInfoFloor extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              '${currentFloor.numCurrentMember}/' +
-                                  (currentFloor.totalCapacity == null
-                                      ? '0'
-                                      : currentFloor.totalCapacity.toString()),
+                              '${currentFloor.numCurrentMember}/${currentFloor.totalCapacity ?? 0}',
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

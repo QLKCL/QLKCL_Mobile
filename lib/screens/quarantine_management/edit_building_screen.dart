@@ -38,11 +38,6 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
     nameController.text = widget.currentBuilding!.name;
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {

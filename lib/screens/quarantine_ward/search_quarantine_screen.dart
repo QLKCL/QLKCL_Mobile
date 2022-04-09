@@ -128,7 +128,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          titleSpacing: 0.0,
+          titleSpacing: 0,
           title: Container(
             width: double.infinity,
             height: 36,

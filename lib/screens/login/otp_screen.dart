@@ -93,7 +93,7 @@ class _OtpState extends State<Otp> {
                           key: _formKey,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 70),
+                                vertical: 8, horizontal: 70),
                             child: PinCodeTextField(
                               appContext: context,
                               length: 4,

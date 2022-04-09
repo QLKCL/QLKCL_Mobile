@@ -162,7 +162,7 @@ Future<Response> login(Map<String, String> loginDataForm) async {
         status: Status.error,
         message: "Số điện thoại hoặc mật khẩu không hợp lệ!");
   } else {
-    print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
     return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
@@ -193,7 +193,7 @@ Future<Response> register(Map<String, dynamic> registerDataForm) async {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
-    print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
     return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
@@ -241,7 +241,7 @@ Future<Response> requestOtp(Map<String, String> requestOtpDataForm) async {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
-    print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
     return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
@@ -271,7 +271,7 @@ Future<Response> sendOtp(Map<String, String> sendOtpDataForm) async {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
-    print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
     return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }
@@ -308,7 +308,7 @@ Future<Response> createPass(Map<String, String> createPassDataForm) async {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   } else {
-    print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
     return Response(status: Status.error, message: "Có lỗi xảy ra!");
   }
 }

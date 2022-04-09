@@ -31,11 +31,6 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
         fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Input Controller
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();

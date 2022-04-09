@@ -113,47 +113,42 @@ class _MedDeclFormState extends State<MedDeclForm> {
               children: [
                 // Tên người khai hộ
 
-                (widget.mode == Permission.add)
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTileTheme(
-                            contentPadding: const EdgeInsets.only(left: 8),
-                            child: CheckboxListTile(
-                              title: const Text("Khai hộ"),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                });
-                              },
-                            ),
-                          ),
-
-                          // SĐT người khai hộ
-                          isChecked
-                              ? Input(
-                                  label: 'Số điện thoại',
-                                  hint: 'SĐT người được khai báo',
-                                  required: true,
-                                  type: TextInputType.phone,
-                                  controller: phoneNumberController,
-                                  validatorFunction: phoneValidator,
-                                )
-                              : Input(
-                                  label: 'Số điện thoại',
-                                  hint: 'SĐT người được khai báo',
-                                  type: TextInputType.phone,
-                                  enabled: false,
-                                ),
-                        ],
-                      )
-                    : Input(
-                        label: 'Họ và tên',
-                        controller: userNameController,
-                        enabled: false,
+                if (widget.mode == Permission.add)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTileTheme(
+                        contentPadding: const EdgeInsets.only(left: 8),
+                        child: CheckboxListTile(
+                          title: const Text("Khai hộ"),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
+                        ),
                       ),
+
+                      // SĐT người khai hộ
+                      Input(
+                        label: 'Số điện thoại',
+                        hint: 'SĐT người được khai báo',
+                        required: isChecked,
+                        type: TextInputType.phone,
+                        controller: phoneNumberController,
+                        validatorFunction: phoneValidator,
+                        enabled: !isChecked,
+                      )
+                    ],
+                  )
+                else
+                  Input(
+                    label: 'Họ và tên',
+                    controller: userNameController,
+                    enabled: false,
+                  ),
 
                 //Medical Declaration Info
                 Container(
@@ -295,7 +290,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         contentPadding: const EdgeInsets.only(left: 8),
                         child: CheckboxListTile(
                           title: Container(
-                              padding: const EdgeInsets.only(right: 16.0),
+                              padding: const EdgeInsets.only(right: 16),
                               child: const Text(
                                 "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
                               )),

@@ -102,7 +102,7 @@ class CreatedBy {
 
 Future<dynamic> fetchUserNotification({id}) async {
   ApiHelper api = ApiHelper();
-  var response = await api.getHTTP(Api.getUserNotification + '?id=' + id);
+  var response = await api.getHTTP('${Api.getUserNotification}?id=$id');
   return response["data"];
 }
 

@@ -64,8 +64,8 @@ String formatISOTime(DateTime? dateTime) {
   /// Because we already get the minus from the hours in the string then we don't need to add it to the string.
   /// In the case the timezone is GMT-0 or higher then the sign will need to be positive.
   var timezoneSignal = !duration.isNegative ? '+' : '';
-  var dateString = date.toIso8601String() +
-      "$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}";
+  var dateString =
+      "${date.toIso8601String()}$timezoneSignal${duration.inHours.toString().padLeft(2, '0')}:${(duration.inMinutes - (duration.inHours * 60)).toString().padLeft(2, '0')}";
   return dateString;
 }
 

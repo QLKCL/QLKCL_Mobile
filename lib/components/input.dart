@@ -116,7 +116,7 @@ class _InputState extends State<Input> {
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: widget.hint,
           prefixIcon: widget.prefixIcon != null
               ? Icon(

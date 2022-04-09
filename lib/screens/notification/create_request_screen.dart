@@ -48,11 +48,6 @@ class _CreateRequestState extends State<CreateRequest> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(

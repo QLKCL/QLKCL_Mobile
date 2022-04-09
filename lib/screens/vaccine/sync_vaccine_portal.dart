@@ -57,11 +57,6 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(

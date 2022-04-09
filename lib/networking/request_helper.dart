@@ -47,7 +47,7 @@ class RequestHelper {
     } else if (response.statusCode == 401) {
       return Response(status: Status.error, message: "Lỗi xác thực!");
     } else {
-      print("Response code: " + response.statusCode.toString());
+    print("Response code: ${response.statusCode}");
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }

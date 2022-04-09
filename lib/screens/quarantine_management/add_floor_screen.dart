@@ -44,11 +44,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
     super.dispose();
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final capacityController = TextEditingController();
@@ -162,18 +157,17 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                           ),
                                         ),
                                         // insert number of floor
-                                        addMultiple
-                                            ? Expanded(
-                                                flex: 45,
-                                                child: Input(
-                                                  label: 'Số tầng',
-                                                  hint: 'Số tầng',
-                                                  type: TextInputType.number,
-                                                  required: true,
-                                                  controller: myController,
-                                                ),
-                                              )
-                                            : Container(),
+                                        if (addMultiple)
+                                          Expanded(
+                                            flex: 45,
+                                            child: Input(
+                                              label: 'Số tầng',
+                                              hint: 'Số tầng',
+                                              type: TextInputType.number,
+                                              required: true,
+                                              controller: myController,
+                                            ),
+                                          )
                                       ],
                                     ),
                                   ),
@@ -185,43 +179,43 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                  addMultiple
-                                      ? ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (ctx, index) {
-                                            return Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Input(
-                                                    label: 'Tên tầng',
-                                                    hint: 'Tên tầng',
-                                                    required: true,
-                                                    onChangedFunction: (text) {
-                                                      nameList[index] = text;
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                          itemCount: numOfAddedFloor,
-                                        )
-                                      : Container(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Input(
-                                                  label: 'Tên tầng',
-                                                  hint: 'Tên tầng',
-                                                  required: true,
-                                                  controller: nameController,
-                                                ),
+                                  if (addMultiple)
+                                    ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (ctx, index) {
+                                        return Row(
+                                          children: [
+                                            Expanded(
+                                              child: Input(
+                                                label: 'Tên tầng',
+                                                hint: 'Tên tầng',
+                                                required: true,
+                                                onChangedFunction: (text) {
+                                                  nameList[index] = text;
+                                                },
                                               ),
-                                            ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: numOfAddedFloor,
+                                    )
+                                  else
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Input(
+                                              label: 'Tên tầng',
+                                              hint: 'Tên tầng',
+                                              required: true,
+                                              controller: nameController,
+                                            ),
                                           ),
-                                        ),
+                                        ],
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),

@@ -252,7 +252,7 @@ class InfoManagerHomePage extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: InOutChart(
                   inData: numberIn,
                   outData: numberOut,
@@ -305,7 +305,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 18,
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryText),
                     ),
@@ -328,7 +328,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: " " + subtitle,
+                            text: " $subtitle",
                           )
                         ],
                       ),

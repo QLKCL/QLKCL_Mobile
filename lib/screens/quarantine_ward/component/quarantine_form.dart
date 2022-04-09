@@ -163,11 +163,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
     });
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {

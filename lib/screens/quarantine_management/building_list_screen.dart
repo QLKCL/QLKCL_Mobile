@@ -26,11 +26,6 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
       title: const Text('Danh sách tòa'),

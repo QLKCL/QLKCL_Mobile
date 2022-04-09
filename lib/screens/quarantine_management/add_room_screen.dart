@@ -48,11 +48,6 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
     super.dispose();
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Input Controller
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
@@ -164,18 +159,17 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                           ),
                                         ),
                                         // insert number of floor
-                                        addMultiple
-                                            ? Expanded(
-                                                flex: 45,
-                                                child: Input(
-                                                  label: 'Số phòng',
-                                                  hint: 'Số phòng',
-                                                  type: TextInputType.number,
-                                                  required: true,
-                                                  controller: myController,
-                                                ),
-                                              )
-                                            : Container(),
+                                        if (addMultiple)
+                                          Expanded(
+                                            flex: 45,
+                                            child: Input(
+                                              label: 'Số phòng',
+                                              hint: 'Số phòng',
+                                              type: TextInputType.number,
+                                              required: true,
+                                              controller: myController,
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -187,69 +181,67 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                  addMultiple
-                                      ? ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (ctx, index) {
-                                            return Row(
-                                              children: [
-                                                Expanded(
-                                                  flex: 55,
-                                                  child: Input(
-                                                    label: 'Tên phòng',
-                                                    hint: 'Tên phòng',
-                                                    required: true,
-                                                    onChangedFunction: (text) {
-                                                      nameList[index] = text;
-                                                    },
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 45,
-                                                  child: Input(
-                                                    label: 'Số người tối đa',
-                                                    hint: 'Số người tối đa',
-                                                    required: true,
-                                                    type: TextInputType.number,
-                                                    onChangedFunction: (text) {
-                                                      capacityList[index] =
-                                                          text;
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                          itemCount: numOfAddedRoom,
-                                        )
-                                      : Container(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 55,
-                                                child: Input(
-                                                  label: 'Tên phòng',
-                                                  hint: 'Tên phòng',
-                                                  required: true,
-                                                  controller: nameController,
-                                                ),
+                                  if (addMultiple)
+                                    ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (ctx, index) {
+                                        return Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 55,
+                                              child: Input(
+                                                label: 'Tên phòng',
+                                                hint: 'Tên phòng',
+                                                required: true,
+                                                onChangedFunction: (text) {
+                                                  nameList[index] = text;
+                                                },
                                               ),
-                                              Expanded(
-                                                flex: 45,
-                                                child: Input(
-                                                  label: 'Số người tối đa',
-                                                  hint: 'Số người tối đa',
-                                                  required: true,
-                                                  type: TextInputType.number,
-                                                  controller:
-                                                      capacityController,
-                                                ),
+                                            ),
+                                            Expanded(
+                                              flex: 45,
+                                              child: Input(
+                                                label: 'Số người tối đa',
+                                                hint: 'Số người tối đa',
+                                                required: true,
+                                                type: TextInputType.number,
+                                                onChangedFunction: (text) {
+                                                  capacityList[index] = text;
+                                                },
                                               ),
-                                            ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: numOfAddedRoom,
+                                    )
+                                  else
+                                    Container(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 55,
+                                            child: Input(
+                                              label: 'Tên phòng',
+                                              hint: 'Tên phòng',
+                                              required: true,
+                                              controller: nameController,
+                                            ),
                                           ),
-                                        ),
+                                          Expanded(
+                                            flex: 45,
+                                            child: Input(
+                                              label: 'Số người tối đa',
+                                              hint: 'Số người tối đa',
+                                              required: true,
+                                              type: TextInputType.number,
+                                              controller: capacityController,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),

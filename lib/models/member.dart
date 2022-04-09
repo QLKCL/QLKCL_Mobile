@@ -223,7 +223,7 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Khổng thể chuyển người dương tính sang phòng này!");
+            message: "Không thể chuyển người dương tính sang phòng này!");
       } else if (response['message']['passport_number'] != null &&
           response['message']['passport_number'] == "Exist") {
         return Response(
@@ -359,7 +359,14 @@ Future<Response> changeRoomMember(data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Khổng thể chuyển người dương tính sang phòng này!");
+            message: "Không thể chuyển người dương tính sang phòng này!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room is close (not accept any more member)") {
+        return Response(
+            status: Status.error,
+            message:
+                "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }

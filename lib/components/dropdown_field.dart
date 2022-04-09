@@ -75,7 +75,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
             },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
@@ -212,7 +212,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
@@ -296,7 +296,7 @@ Widget customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(4),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           margin: const EdgeInsets.only(top: 4),

@@ -40,11 +40,6 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
     nameController.text = widget.currentFloor!.name;
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {

@@ -37,7 +37,7 @@ class InfoCovid extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "+ " + newCase,
+              "+ $newCase",
               textAlign: TextAlign.center,
               style: TextStyle(color: CustomColors.white),
             ),
@@ -137,7 +137,7 @@ class InfoCovidHomePage extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              "Cập nhật: " + lastUpdate,
+              "Cập nhật: $lastUpdate",
               textAlign: TextAlign.left,
             ),
             Spacer(),

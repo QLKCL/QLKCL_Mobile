@@ -220,15 +220,16 @@ class _SuspectMemberState extends State<SuspectMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
+            minimumWidth: 50,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
                 child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -236,7 +237,7 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'gender',
             columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text(
                   'Giới tính',
@@ -245,7 +246,7 @@ class _SuspectMemberState extends State<SuspectMember>
         GridColumn(
             columnName: 'phoneNumber',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -253,7 +254,7 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'quarantineWard',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
                 child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -261,7 +262,7 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'quarantineLocation',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
                 child: const Text('Phòng',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -269,21 +270,21 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'label',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Ngày cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedFinishExpectedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -291,7 +292,7 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'healthStatus',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -299,14 +300,14 @@ class _SuspectMemberState extends State<SuspectMember>
             columnName: 'positiveTestNow',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
@@ -439,7 +440,7 @@ class MemberDataSource extends DataGridSource {
           future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: () {
@@ -462,7 +463,7 @@ class MemberDataSource extends DataGridSource {
           },
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[1].value != null
@@ -471,36 +472,36 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child:
               Text(row.getCells()[2].value.toString() == "MALE" ? "Nam" : "Nữ"),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             alignment: Alignment.center,
             child: Text(
               row.getCells()[3].value.toString(),
             )),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(row.getCells()[5].value.toString()),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(row.getCells()[6].value.toString()),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[7].value != null
@@ -509,7 +510,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[8].value != null
@@ -518,7 +519,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,
@@ -547,7 +548,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,

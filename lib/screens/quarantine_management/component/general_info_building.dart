@@ -104,10 +104,7 @@ class GeneralInfoBuilding extends StatelessWidget {
                               width: 5,
                             ),
                             Text(
-                              '${currentBuilding.currentMem}' +
-                                  (currentBuilding.capacity != null
-                                      ? '/${currentBuilding.capacity}'
-                                      : '/0'),
+                              '${currentBuilding.currentMem}/${currentBuilding.capacity ?? 0}',
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

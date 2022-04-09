@@ -146,7 +146,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                                   fit: BoxFit.cover)),
                           Container(
                             padding: const EdgeInsets.only(
-                                left: 10.0, top: 5.0, bottom: 5.0),
+                                left: 10, top: 5, bottom: 5),
                             width: 150,
                             color: Colors.white,
                             child: Column(
@@ -160,7 +160,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
+                                    padding: const EdgeInsets.only(top: 5),
                                     child: Text(
                                       '${quarantineWardList[index].ward?.name}, ${quarantineWardList[index].district?.name}, ${quarantineWardList[index].city?.name}',
                                       style: const TextStyle(

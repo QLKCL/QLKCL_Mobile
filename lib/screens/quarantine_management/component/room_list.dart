@@ -56,7 +56,7 @@ class RoomList extends StatelessWidget {
                     numOfMem: data[index]['num_current_member'],
                     maxMem: data[index]['capacity'],
                   ),
-                  index == data.length - 1 ? const SizedBox(height: 70) : Container(),
+                  if (index == data.length - 1) const SizedBox(height: 70),
                 ],
               );
             },

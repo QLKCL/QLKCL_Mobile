@@ -34,7 +34,7 @@ class AppTheme with ChangeNotifier {
       // textTheme: TextTheme(
       //   subtitle2: TextStyle(color: CustomColors.secondary),
       // bodyText1: TextStyle(
-      //     fontSize: 16.0,
+      //     fontSize: 16,
       //     fontWeight: FontWeight.normal,
       //     color: CustomColors.primaryText),
       // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
@@ -53,7 +53,7 @@ class AppTheme with ChangeNotifier {
           primary: CustomColors.primary,
           fixedSize: const Size(241, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -61,12 +61,12 @@ class AppTheme with ChangeNotifier {
           primary: CustomColors.primary,
           minimumSize: Size(32, 48),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       cardTheme: CardTheme(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(8),
         ),
         // borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         color: CustomColors.white,
@@ -76,7 +76,7 @@ class AppTheme with ChangeNotifier {
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
         ),
         fillColor: CustomColors.white,
         filled: true, // dont forget this line
@@ -94,8 +94,8 @@ class AppTheme with ChangeNotifier {
         ),
       ),
       tabBarTheme: TabBarTheme(
-        labelStyle: TextStyle(fontSize: 16.0),
-        unselectedLabelStyle: TextStyle(fontSize: 16.0),
+        labelStyle: TextStyle(fontSize: 16),
+        unselectedLabelStyle: TextStyle(fontSize: 16),
       ),
       // Add the line below to get horizontal sliding transitions for routes.
       pageTransitionsTheme: PageTransitionsTheme(builders: {
@@ -137,7 +137,7 @@ class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {
     hexColor = hexColor.toUpperCase().replaceAll("#", "");
     if (hexColor.length == 6) {
-      hexColor = "FF" + hexColor;
+      hexColor = "FF$hexColor";
     }
     return int.parse(hexColor, radix: 16);
   }

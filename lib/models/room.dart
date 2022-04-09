@@ -46,7 +46,7 @@ class Room {
 
 Future<dynamic> fetchRoom({id}) async {
   ApiHelper api = ApiHelper();
-  var response = await api.getHTTP(Api.getRoom + '?id=' + id);
+  var response = await api.getHTTP('${Api.getRoom}?id=$id');
   return response["data"];
 }
 

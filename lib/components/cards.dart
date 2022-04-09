@@ -38,9 +38,9 @@ class MedicalDeclarationCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Mã tờ khai: " + code,
+                        "Mã tờ khai: $code",
                         style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -101,9 +101,9 @@ class TestCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Mã phiếu: " + code,
+                        "Mã phiếu: $code",
                         style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -222,9 +222,9 @@ class TestNoResultCard extends StatelessWidget {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: name + " ",
+                              text: "$name ",
                               style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.normal,
                                   color: CustomColors.primaryText),
                             ),
@@ -396,9 +396,9 @@ class _MemberCardState extends State<MemberCard> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.member.fullName + " ",
+                              text: "${widget.member.fullName} ",
                               style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.normal,
                                   color: CustomColors.primaryText),
                             ),
@@ -444,10 +444,7 @@ class _MemberCardState extends State<MemberCard> {
                                 ),
                               ),
                               TextSpan(
-                                text: " " +
-                                    (widget.member.quarantineLocation != null
-                                        ? widget.member.quarantineLocation!
-                                        : ""),
+                                text: " ${widget.member.quarantineLocation}",
                               ),
                             ],
                           ),
@@ -465,19 +462,14 @@ class _MemberCardState extends State<MemberCard> {
                                     ? "Dương tính"
                                     : "Âm tính") +
                                 (widget.member.lastTestedHadResult != null
-                                    ? " (" +
-                                        DateFormat("dd/MM/yyyy HH:mm:ss")
-                                            .format(DateTime.parse(widget.member
-                                                    .lastTestedHadResult!)
-                                                .toLocal()) +
-                                        ")"
+                                    ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(widget.member.lastTestedHadResult!).toLocal())})"
                                     : "")
                             : "Chưa có kết quả xét nghiệm",
                       ),
                     ],
                   ),
                 ),
-                widget.menus != null ? action() : Container(),
+                if (widget.menus != null) action(),
               ],
             ),
           ),
@@ -603,7 +595,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                     height: 96,
                     width: 105,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8),
                       child: Image.network(
                           cloudinary.getImage(imageList[0]).toString(),
                           fit: BoxFit.cover),
@@ -621,7 +613,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                         Text(
                           widget.name,
                           style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
                               color: CustomColors.primaryText),
                         ),
@@ -658,7 +650,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " " + widget.address!,
+                                  text: " ${widget.address}",
                                 ),
                               ],
                             ),
@@ -722,7 +714,7 @@ class QuarantineHome extends StatelessWidget {
                     Text(
                       name,
                       style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 18,
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryText),
                     ),
@@ -832,7 +824,7 @@ class NotificationCard extends StatelessWidget {
                       Text(
                         title,
                         style: TextStyle(
-                            fontSize: 16.0,
+                            fontSize: 16,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -855,7 +847,7 @@ class NotificationCard extends StatelessWidget {
                               ),
                             ),
                             TextSpan(
-                              text: " " + time + " ",
+                              text: " $time ",
                             ),
                             WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
@@ -935,7 +927,7 @@ class VaccineDoseCard extends StatelessWidget {
                       Text(
                         vaccine,
                         style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -1017,7 +1009,7 @@ class DestinationHistoryCard extends StatelessWidget {
                       Text(
                         name,
                         style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -1092,7 +1084,7 @@ class QuarantineHistoryCard extends StatelessWidget {
                       Text(
                         name,
                         style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 18,
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
@@ -1271,9 +1263,9 @@ class _ManagerCardState extends State<ManagerCard> {
                         TextSpan(
                           children: [
                             TextSpan(
-                              text: widget.manager.fullName + " ",
+                              text: "${widget.manager.fullName} ",
                               style: TextStyle(
-                                  fontSize: 18.0,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.normal,
                                   color: CustomColors.primaryText),
                             ),
@@ -1317,7 +1309,7 @@ class _ManagerCardState extends State<ManagerCard> {
                               ),
                             ),
                             TextSpan(
-                              text: " " + (widget.manager.quarantineWard.name),
+                              text: " ${widget.manager.quarantineWard.name}",
                             ),
                           ],
                         ),
@@ -1328,7 +1320,7 @@ class _ManagerCardState extends State<ManagerCard> {
                     ],
                   ),
                 ),
-                widget.menus != null ? action() : Container(),
+                if (widget.menus != null) action(),
               ],
             ),
           ),

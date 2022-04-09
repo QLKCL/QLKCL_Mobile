@@ -37,11 +37,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),

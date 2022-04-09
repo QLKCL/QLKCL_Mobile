@@ -58,9 +58,7 @@ class FloorList extends StatelessWidget {
                     numOfMem: data[index]['num_current_member'],
                     maxMem: data[index]['total_capacity'] ?? 0,
                   ),
-                  index == data.length - 1
-                      ? const SizedBox(height: 70)
-                      : Container(),
+                  if (index == data.length - 1) const SizedBox(height: 70),
                 ],
               );
             },

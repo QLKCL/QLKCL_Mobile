@@ -19,11 +19,6 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
       title: const Text('Các khu cách ly'),

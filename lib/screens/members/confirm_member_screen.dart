@@ -37,11 +37,6 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
     _tabController.addListener(_handleTabChange);
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   _handleTabChange() {
     setState(() {});
   }

@@ -8,7 +8,7 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double size = 20.0;
+    double size = 20;
 
     return InkResponse(
       onTap: onTap,

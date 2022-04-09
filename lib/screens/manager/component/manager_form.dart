@@ -245,7 +245,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   ),
                   const Text(
                     'Quản lý',
-                    style: TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 17),
                   ),
                   const SizedBox(
                     width: 8,
@@ -264,7 +264,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   const Text(
                     'Cán bộ',
                     style: TextStyle(
-                      fontSize: 17.0,
+                      fontSize: 17,
                     ),
                   ),
                 ],

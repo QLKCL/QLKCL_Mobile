@@ -46,7 +46,7 @@ class Building {
 
 Future<dynamic> fetchBuilding({id}) async {
   ApiHelper api = ApiHelper();
-  var response = await api.getHTTP(Api.getBuilding + '?id=' + id);
+  var response = await api.getHTTP('${Api.getBuilding}?id=$id');
   return response["data"];
 }
 

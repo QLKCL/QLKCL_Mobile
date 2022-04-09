@@ -123,7 +123,7 @@ class Quarantine {
 
 Future<dynamic> fetchQuarantine(id) async {
   ApiHelper api = ApiHelper();
-  var response = await api.getHTTP(Api.getQuarantine + '?id=' + id);
+  var response = await api.getHTTP('${Api.getQuarantine}?id=$id');
   return response["data"];
 }
 

@@ -95,7 +95,7 @@ class _DateInputState extends State<DateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
@@ -166,9 +166,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? widget.controllerStart!.text +
-                    " - " +
-                    widget.controllerEnd!.text
+                ? "${widget.controllerStart!.text} - ${widget.controllerEnd!.text}"
                 : widget.controllerStart!.text)
             : "");
   }
@@ -224,7 +222,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
               if (widget.controllerEnd != null) {
                 widget.controllerEnd!.text = formattedEndDate;
               }
-              controller.text = formattedStartDate + " - " + formattedEndDate;
+              controller.text = "$formattedStartDate - $formattedEndDate";
             });
           }
         },
@@ -237,7 +235,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&
@@ -393,7 +391,7 @@ class _NewDateInputState extends State<NewDateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
@@ -468,9 +466,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? widget.controllerStart!.text +
-                    " - " +
-                    widget.controllerEnd!.text
+                ? "${widget.controllerStart!.text} - ${widget.controllerEnd!.text}"
                 : widget.controllerStart!.text)
             : "");
   }
@@ -585,7 +581,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " *" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&
