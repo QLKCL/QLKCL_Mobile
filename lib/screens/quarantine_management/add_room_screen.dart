@@ -123,7 +123,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                           ),
                         ),
                         SingleChildScrollView(
-                          physics: ScrollPhysics(),
+                          physics: const ScrollPhysics(),
                           child: Form(
                             key: _formKey,
                             child: Column(
@@ -179,7 +179,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                 ),
                                 if (addMultiple)
                                   ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics: const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemBuilder: (ctx, index) {
                                       return Row(
@@ -244,12 +244,12 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                           margin: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
                                 child: const Text("Xác nhận"),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),

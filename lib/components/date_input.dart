@@ -113,7 +113,7 @@ class _DateInputState extends State<DateInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -254,7 +254,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -360,7 +360,7 @@ class _NewDateInputState extends State<NewDateInput> {
                       onSelectionChanged: (data) {
                         newDate = DateFormat('dd/MM/yyyy').format(data.value);
                       },
-                      monthViewSettings: DateRangePickerMonthViewSettings(
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
@@ -409,7 +409,7 @@ class _NewDateInputState extends State<NewDateInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -549,7 +549,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                             '$newStartDate -                             $newEndDate';
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
-                      monthViewSettings: DateRangePickerMonthViewSettings(
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
@@ -600,7 +600,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),

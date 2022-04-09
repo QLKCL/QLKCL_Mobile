@@ -137,7 +137,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                   margin: const EdgeInsets.all(16),
                   child: Row(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       OutlinedButton(
                         onPressed: () {
                           setState(() {
@@ -147,12 +147,12 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                         },
                         child: const Text("Nhận OTP"),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       ElevatedButton(
                         onPressed: enableNext ? _submit : null,
                         child: const Text("Tra cứu"),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   ),
                 ),

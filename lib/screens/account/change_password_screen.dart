@@ -23,9 +23,9 @@ class _ChangePasswordState extends State<ChangePassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -113,7 +113,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
               onPressed: _submit,
               child: Text(
                 'Xác nhận',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),

@@ -79,7 +79,7 @@ class _AccountState extends State<Account> {
                   title: const Text('Lịch sử khai báo y tế'),
                   trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                 ),
@@ -92,7 +92,7 @@ class _AccountState extends State<Account> {
                   title: const Text('Kết quả xét nghiệm'),
                   trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                 ),
@@ -105,7 +105,7 @@ class _AccountState extends State<Account> {
                   title: const Text('Thông tin tiêm chủng'),
                   trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                 ),
@@ -118,7 +118,7 @@ class _AccountState extends State<Account> {
                   title: const Text('Lịch sử di chuyển'),
                   trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                 ),
@@ -158,7 +158,7 @@ class _AccountState extends State<Account> {
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
                 if (_role == 5)
-                  Divider(
+                  const Divider(
                     indent: 16,
                     endIndent: 16,
                   ),
@@ -189,11 +189,10 @@ class _AccountState extends State<Account> {
                           Login.routeName, (route) => false);
                 }
               },
-              title: Text('Đăng xuất',
-                  style: TextStyle(color: CustomColors.error)),
+              title: Text('Đăng xuất', style: TextStyle(color: error)),
               trailing: Icon(
                 Icons.logout_outlined,
-                color: CustomColors.error,
+                color: error,
               ),
             ),
           ),

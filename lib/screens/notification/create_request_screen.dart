@@ -114,7 +114,7 @@ class _CreateRequestState extends State<CreateRequest> {
                     onPressed: _submit,
                     child: Text(
                       'Gửi',
-                      style: TextStyle(color: CustomColors.white),
+                      style: TextStyle(color: white),
                     ),
                   ),
                 ),

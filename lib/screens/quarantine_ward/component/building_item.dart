@@ -45,8 +45,8 @@ class BuildingItem extends StatelessWidget {
             //margin: const EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: SvgPicture.asset('assets/svg/building.svg'),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5),
                 topRight: Radius.circular(5),
               ),
@@ -61,7 +61,7 @@ class BuildingItem extends StatelessWidget {
               children: [
                 Text(
                   buildingName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
@@ -73,7 +73,7 @@ class BuildingItem extends StatelessWidget {
                       Icon(
                         Icons.groups_rounded,
                         size: 14,
-                        color: CustomColors.secondaryText,
+                        color: secondaryText,
                       ),
                       const SizedBox(
                         width: 5,

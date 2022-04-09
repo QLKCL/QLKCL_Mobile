@@ -83,8 +83,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
@@ -111,8 +110,8 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 ),
               )
             : null,
-        emptyBuilder: (BuildContext context, t) => Center(
-          child: const Text('Không có dữ liệu'),
+        emptyBuilder: (BuildContext context, t) => const Center(
+          child: Text('Không có dữ liệu'),
         ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? SizedBox(
@@ -127,13 +126,13 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
-                ? RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.only(
+                ? const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
-                : RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                : const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                   )
             : null,
         dialogMaxWidth: maxMobileSize,
@@ -220,8 +219,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
@@ -261,8 +259,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             : null,
         dropdownBuilder: widget.dropdownBuilder,
         dropdownBuilderSupportsNullItem: true,
-        emptyBuilder: (BuildContext context, t) => Center(
-          child: const Text('Không có dữ liệu'),
+        emptyBuilder: (BuildContext context, t) => const Center(
+          child: Text('Không có dữ liệu'),
         ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? SizedBox(
@@ -277,13 +275,13 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
-                ? RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.only(
+                ? const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
-                : RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                : const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                   )
             : null,
         dialogMaxWidth: maxMobileSize,

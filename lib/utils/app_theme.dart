@@ -13,35 +13,35 @@ class AppTheme with ChangeNotifier {
 
   static ThemeData get lightTheme {
     return ThemeData(
-      colorScheme: ColorScheme.fromSwatch(accentColor: CustomColors.primary),
-      primaryColor: CustomColors.primary,
-      disabledColor: CustomColors.disableText,
-      scaffoldBackgroundColor: CustomColors.background,
+      colorScheme: ColorScheme.fromSwatch(accentColor: primary),
+      primaryColor: primary,
+      disabledColor: disableText,
+      scaffoldBackgroundColor: background,
       fontFamily: 'Roboto',
       appBarTheme: AppBarTheme(
-        color: CustomColors.primary,
+        color: primary,
         elevation: 0,
         systemOverlayStyle: SystemUiOverlayStyle.light,
         centerTitle: true,
         iconTheme: IconThemeData(
-          color: CustomColors.white,
+          color: white,
         ),
         // textTheme: TextTheme(),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: CustomColors.white,
+        backgroundColor: white,
       ),
       // textTheme: TextTheme(
-      //   subtitle2: TextStyle(color: CustomColors.secondary),
+      //   subtitle2: TextStyle(color: secondary),
       // bodyText1: TextStyle(
       //     fontSize: 16,
       //     fontWeight: FontWeight.normal,
-      //     color: CustomColors.primaryText),
+      //     color: primaryText),
       // headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
       // ),
       // primaryTextTheme: TextTheme(
       //     bodyText1: TextStyle(color: Colors.white, fontFamily: "Roboto")),
-      // primaryIconTheme: IconThemeData(color: CustomColors.primaryText),
+      // primaryIconTheme: IconThemeData(color: primaryText),
 
       // textButtonTheme: TextButtonThemeData(
       //   style: TextButton.styleFrom(
@@ -50,18 +50,16 @@ class AppTheme with ChangeNotifier {
       // ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          primary: CustomColors.primary,
+          primary: primary,
           fixedSize: const Size(241, 48),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          primary: CustomColors.primary,
-          minimumSize: Size(32, 48),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          primary: primary,
+          minimumSize: const Size(32, 48),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
       cardTheme: CardTheme(
@@ -69,36 +67,36 @@ class AppTheme with ChangeNotifier {
           borderRadius: BorderRadius.circular(8),
         ),
         // borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
-        color: CustomColors.white,
-        shadowColor: CustomColors.shadow.withOpacity(0.2),
+        color: white,
+        shadowColor: shadow.withOpacity(0.2),
         elevation: 12,
         margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        border: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
-        fillColor: CustomColors.white,
+        fillColor: white,
         filled: true, // dont forget this line
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: CustomColors.secondary,
-        foregroundColor: CustomColors.white,
+        backgroundColor: secondary,
+        foregroundColor: white,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
-        color: CustomColors.secondary,
+        color: secondary,
       ),
       checkboxTheme: CheckboxThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
       ),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: const TabBarTheme(
         labelStyle: TextStyle(fontSize: 16),
         unselectedLabelStyle: TextStyle(fontSize: 16),
       ),
       // Add the line below to get horizontal sliding transitions for routes.
-      pageTransitionsTheme: PageTransitionsTheme(builders: {
+      pageTransitionsTheme: const PageTransitionsTheme(builders: {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
@@ -110,28 +108,25 @@ class AppTheme with ChangeNotifier {
   }
 }
 
-class CustomColors {
-  // Text color
-  static Color primaryText = HexColor("#262626");
-  static Color secondaryText = HexColor("#595959");
-  static Color disableText = HexColor("#8C8C8C");
+// Text color
+final Color primaryText = HexColor("#262626");
+final Color secondaryText = HexColor("#595959");
+final Color disableText = HexColor("#8C8C8C");
 
-  // Status color
-  static Color success = HexColor("#52C41A");
-  static Color active = HexColor("#18A0FB");
-  static Color warning = HexColor("#FAAD14");
-  static Color error = HexColor("#FF4852");
-  static Color disable = HexColor("#F0F0F0");
+// Status color
+final Color success = HexColor("#52C41A");
+final Color active = HexColor("#18A0FB");
+final Color warning = HexColor("#FAAD14");
+final Color error = HexColor("#FF4852");
+final Color disable = HexColor("#F0F0F0");
 
-  // App color
-  static Color primary = HexColor("#484F8F"); // For title and button
-  static Color secondary =
-      HexColor("#8792F2"); // For button and active navigation
-  static Color nonactive = HexColor("#ABAFD1"); // For non active tab layout
-  static Color white = HexColor("#FFFFFF");
-  static Color background = HexColor("#F0F2F5");
-  static Color shadow = HexColor("#22313F");
-}
+// App color
+final Color primary = HexColor("#484F8F"); // For title and button
+final Color secondary = HexColor("#8792F2"); // For button and active navigation
+final Color nonactive = HexColor("#ABAFD1"); // For non active tab layout
+final Color white = HexColor("#FFFFFF");
+final Color background = HexColor("#F0F2F5");
+final Color shadow = HexColor("#22313F");
 
 class HexColor extends Color {
   static int _getColorFromHex(String hexColor) {

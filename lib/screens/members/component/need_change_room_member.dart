@@ -150,8 +150,8 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
               ],
             ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => Center(
-            child: const Text('Có lỗi xảy ra'),
+          firstPageErrorIndicatorBuilder: (context) => const Center(
+            child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => MemberCard(
               member: item,
@@ -453,7 +453,7 @@ class MemberDataSource extends DataGridSource {
                 child: Text(
                   row.getCells()[0].value.toString(),
                   style: TextStyle(
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -526,23 +526,23 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
-                ? CustomColors.error.withOpacity(0.25)
+                ? error.withOpacity(0.25)
                 : row.getCells()[9].value.toString() == "UNWELL"
-                    ? CustomColors.warning.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? warning.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
-                    style: TextStyle(color: CustomColors.error),
+                    style: TextStyle(color: error),
                   )
                 : row.getCells()[9].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
-                        style: TextStyle(color: CustomColors.warning),
+                        style: TextStyle(color: warning),
                       )
                     : Text(
                         "Bình thường",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
@@ -555,23 +555,23 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[10].value == null
-                ? CustomColors.secondaryText.withOpacity(0.25)
+                ? secondaryText.withOpacity(0.25)
                 : row.getCells()[10].value == true
-                    ? CustomColors.error.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? error.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[10].value == null
                 ? Text(
                     "Chưa có",
-                    style: TextStyle(color: CustomColors.secondaryText),
+                    style: TextStyle(color: secondaryText),
                   )
                 : row.getCells()[10].value == true
                     ? Text(
                         "Dương tính",
-                        style: TextStyle(color: CustomColors.error),
+                        style: TextStyle(color: error),
                       )
                     : Text(
                         "Âm tính",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
@@ -596,7 +596,7 @@ Widget menus(BuildContext context, FilterMember item,
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
-      color: CustomColors.disableText,
+      color: disableText,
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
@@ -632,21 +632,21 @@ Widget menus(BuildContext context, FilterMember item,
                     )));
       }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
-        child: const Text('Cập nhật thông tin'),
+        child: Text('Cập nhật thông tin'),
         value: "update_info",
       ),
       PopupMenuItem(
-        child: const Text('Lịch sử khai báo y tế'),
+        child: Text('Lịch sử khai báo y tế'),
         value: "medical_declare_history",
       ),
       PopupMenuItem(
-        child: const Text('Lịch sử xét nghiệm'),
+        child: Text('Lịch sử xét nghiệm'),
         value: "test_history",
       ),
       PopupMenuItem(
-        child: const Text('Chuyển phòng'),
+        child: Text('Chuyển phòng'),
         value: "change_room",
       ),
     ],

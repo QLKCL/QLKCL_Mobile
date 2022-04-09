@@ -1,5 +1,5 @@
 String? phoneValidator(String? phone) {
-  final String patttern = r'(^[0-9]{10}$)';
+  const String patttern = r'(^[0-9]{10}$)';
   final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return 'Số điện thoại không được để trống';
@@ -23,7 +23,7 @@ String? passValidator(String? pass) {
 }
 
 String? emailValidator(String? email) {
-  final String patttern =
+  const String patttern =
       r'^[a-zA-Z0-9](([.]{1}|[_]{1}|[-]{1}|[+]{1})?[a-zA-Z0-9])*[@]([a-z0-9]+([.]{1}|-)?)*[a-zA-Z0-9]+[.]{1}[a-z]{2,253}$';
   final RegExp regExp = RegExp(patttern);
   if (email == null || email.isEmpty) {
@@ -36,7 +36,7 @@ String? emailValidator(String? email) {
 }
 
 String? passportValidator(String? passport) {
-  final String patttern = r'(^[A-Z]{1}\d{7,8})$';
+  const String patttern = r'(^[A-Z]{1}\d{7,8})$';
   final RegExp regExp = RegExp(patttern);
   if (passport == null || passport.isEmpty) {
     return null;
@@ -48,7 +48,7 @@ String? passportValidator(String? passport) {
 }
 
 String? identityValidator(String? number) {
-  final String patttern = r'(^[0-9]{9,12}$)';
+  const String patttern = r'(^[0-9]{9,12}$)';
   final RegExp regExp = RegExp(patttern);
   if (number == null || number.isEmpty) {
     return 'Số CMND/CCCD không được để trống';
@@ -62,7 +62,7 @@ String? identityValidator(String? number) {
 }
 
 String? quarantineTimeValidator(String? time) {
-  final String patttern = r'^[0-9]+$';
+  const String patttern = r'^[0-9]+$';
   final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return "Trường này là bắt buộc";
@@ -73,7 +73,7 @@ String? quarantineTimeValidator(String? time) {
 }
 
 String? numberOfMemberValidator(String? time) {
-  final String patttern = r'^[0-9]+$';
+  const String patttern = r'^[0-9]+$';
   final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return "Trường này là bắt buộc";
@@ -84,7 +84,7 @@ String? numberOfMemberValidator(String? time) {
 }
 
 String? intValidator(String? time) {
-  final String patttern = r'^[0-9]+$';
+  const String patttern = r'^[0-9]+$';
   final RegExp regExp = RegExp(patttern);
   if (time == null || time.isEmpty) {
     return null;
@@ -95,7 +95,7 @@ String? intValidator(String? time) {
 }
 
 String? phoneNullableValidator(String? phone) {
-  final String patttern = r'(^[0-9]{10}$)';
+  const String patttern = r'(^[0-9]{10}$)';
   final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return null;

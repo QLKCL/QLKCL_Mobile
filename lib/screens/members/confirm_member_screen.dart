@@ -58,8 +58,8 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
           // ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],

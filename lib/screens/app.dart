@@ -75,7 +75,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return _role == null
-        ? Splash()
+        ? const Splash()
         : WillPopScope(
             onWillPop: () async {
               final isFirstRouteInCurrentTab =
@@ -92,9 +92,9 @@ class _AppState extends State<App> {
 
               // let system handle back button if we're on the first route
               final DateTime now = DateTime.now();
-              final int seconds = 2;
+              const int seconds = 2;
               if (now.difference(currentBackPressTime) >
-                  Duration(seconds: seconds)) {
+                  const Duration(seconds: seconds)) {
                 currentBackPressTime = now;
                 showTextToast('Press "Back" button again to exit');
                 return false;

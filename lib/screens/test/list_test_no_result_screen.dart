@@ -74,7 +74,8 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
             onPressed: () {
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
-                  .push(MaterialPageRoute(builder: (context) => SearchTest()));
+                  .push(MaterialPageRoute(
+                      builder: (context) => const SearchTest()));
             },
             icon: const Icon(Icons.search),
             tooltip: "Tìm kiếm",
@@ -103,8 +104,8 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => TestNoResultCard(
                 name: item['user'] != null ? item['user']['full_name'] : "",

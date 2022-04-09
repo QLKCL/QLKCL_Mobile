@@ -123,7 +123,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                         SizedBox(
                           //Input fields
                           child: SingleChildScrollView(
-                            physics: ScrollPhysics(),
+                            physics: const ScrollPhysics(),
                             child: Form(
                               key: _formKey,
                               child: Column(
@@ -181,7 +181,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                   ),
                                   if (addMultiple)
                                     ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (ctx, index) {
                                         return Row(
@@ -223,12 +223,12 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                           margin: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
                                 child: const Text("Xác nhận"),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),

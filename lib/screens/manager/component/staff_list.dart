@@ -147,8 +147,8 @@ class _StaffListState extends State<StaffList>
               ],
             ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => Center(
-            child: const Text('Có lỗi xảy ra'),
+          firstPageErrorIndicatorBuilder: (context) => const Center(
+            child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => ManagerCard(
             manager: item,
@@ -392,7 +392,7 @@ class MemberDataSource extends DataGridSource {
                 child: Text(
                   row.getCells()[0].value.toString(),
                   style: TextStyle(
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -455,7 +455,7 @@ Widget menus(BuildContext context, FilterStaff item) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
-      color: CustomColors.disableText,
+      color: disableText,
     ),
     onSelected: (result) {
       if (result == 'update_info') {
@@ -467,9 +467,9 @@ Widget menus(BuildContext context, FilterStaff item) {
                     )));
       }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
-        child: const Text('Cập nhật thông tin'),
+        child: Text('Cập nhật thông tin'),
         value: "update_info",
       ),
     ],

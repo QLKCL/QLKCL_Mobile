@@ -59,8 +59,8 @@ class _UpdateManagerState extends State<UpdateManager> {
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               } else {
-                return Center(
-                  child: const Text('Có lỗi xảy ra!'),
+                return const Center(
+                  child: Text('Có lỗi xảy ra!'),
                 );
               }
             }

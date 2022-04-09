@@ -63,7 +63,7 @@ class _ListAllManagerState extends State<ListAllManager>
                 bottom: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: CustomColors.white,
+                  indicatorColor: white,
                   tabs: const [
                     Tab(text: "Quản lý"),
                     Tab(text: "Cán bộ"),
@@ -76,8 +76,8 @@ class _ListAllManagerState extends State<ListAllManager>
         body: TabBarView(
           controller: _tabController,
           children: [
-            Center(
-              child: const Text("Chức năng đang trong quá trình phát triển"),
+            const Center(
+              child: Text("Chức năng đang trong quá trình phát triển"),
             ),
             StaffList(
               quarrantine: widget.currentQuarrantine,

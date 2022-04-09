@@ -31,7 +31,7 @@ class InfoCovid extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: CustomColors.white),
+              style: TextStyle(color: white),
             ),
             const SizedBox(
               height: 8,
@@ -39,14 +39,14 @@ class InfoCovid extends StatelessWidget {
             Text(
               "+ $newCase",
               textAlign: TextAlign.center,
-              style: TextStyle(color: CustomColors.white),
+              style: TextStyle(color: white),
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
               totalCase,
-              style: TextStyle(color: CustomColors.white, fontSize: 20),
+              style: TextStyle(color: white, fontSize: 20),
             ),
           ],
         ),
@@ -82,25 +82,25 @@ class InfoCovidHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<InfoCovid> listInfo = [
       InfoCovid(
-        color: CustomColors.warning,
+        color: warning,
         title: "Nhiễm bệnh",
         newCase: increaseConfirmed,
         totalCase: confirmed,
       ),
       InfoCovid(
-        color: CustomColors.disableText,
+        color: disableText,
         title: "Tử vong",
         newCase: increaseDeaths,
         totalCase: deaths,
       ),
       InfoCovid(
-        color: CustomColors.success,
+        color: success,
         title: "Bình phục",
         newCase: increaseRecovered,
         totalCase: recovered,
       ),
       InfoCovid(
-        color: CustomColors.error,
+        color: error,
         title: "Đang điều trị",
         newCase: increaseActived,
         totalCase: actived,
@@ -110,7 +110,7 @@ class InfoCovidHomePage extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width - 16;
     final crossAxisCount = screenWidth >= minDesktopSize ? 4 : 2;
     final width = screenWidth / crossAxisCount;
-    final cellHeight = 148;
+    const cellHeight = 148;
     final aspectRatio = width / cellHeight;
 
     return Column(
@@ -140,17 +140,17 @@ class InfoCovidHomePage extends StatelessWidget {
               "Cập nhật: $lastUpdate",
               textAlign: TextAlign.left,
             ),
-            Spacer(),
+            const Spacer(),
             RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: 'Nguồn: ',
-                    style: TextStyle(color: CustomColors.primaryText),
+                    style: TextStyle(color: primaryText),
                   ),
                   TextSpan(
                     text: 'Dữ liệu Covid-19',
-                    style: TextStyle(color: CustomColors.primary),
+                    style: TextStyle(color: primary),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         launch('https://covid19.ncsc.gov.vn/dulieu');

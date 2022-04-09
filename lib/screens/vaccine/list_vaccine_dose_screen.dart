@@ -103,8 +103,8 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => VaccineDoseCard(
                 vaccine: item["vaccine"]["name"],
@@ -121,7 +121,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => SyncVaccinePortal()));
+                        builder: (context) => const SyncVaccinePortal()));
               },
               child: const Icon(Icons.cloud_sync),
               tooltip: "Thêm phiếu xét nghiệm",

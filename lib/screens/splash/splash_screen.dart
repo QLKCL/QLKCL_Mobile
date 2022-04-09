@@ -13,14 +13,14 @@ class _SplashState extends State<Splash> {
   // MediaQuery.of(context).platformBrightness == Brightness.light;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       // backgroundColor:
       // lightMode ? const Color(0xffe1f5fe) : const Color(0xff042a49),
       body: Center(
         // child: lightMode
         //     ? Image.asset('assets/images/Logo.png')
         //     : Image.asset('assets/images/Logo_dark.png')),
-        child: const CircularProgressIndicator(),
+        child: CircularProgressIndicator(),
       ),
     );
   }

@@ -73,7 +73,7 @@ class InfoManagerHomePage extends StatelessWidget {
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
-              .push(MaterialPageRoute(builder: (context) => ListAllMember()));
+              .pushNamed(ListAllMember.routeName);
         },
       ),
       InfoManagerHomeCard(
@@ -94,7 +94,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 1)));
+                  builder: (context) => const ListAllMember(tab: 1)));
         },
       ),
       InfoManagerHomeCard(
@@ -105,7 +105,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 2)));
+                  builder: (context) => const ListAllMember(tab: 2)));
         },
       ),
       InfoManagerHomeCard(
@@ -116,7 +116,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 3)));
+                  builder: (context) => const ListAllMember(tab: 3)));
         },
       ),
       InfoManagerHomeCard(
@@ -127,7 +127,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 6)));
+                  builder: (context) => const ListAllMember(tab: 6)));
         },
       ),
       InfoManagerHomeCard(
@@ -138,7 +138,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 5)));
+                  builder: (context) => const ListAllMember(tab: 5)));
         },
       ),
       InfoManagerHomeCard(
@@ -149,7 +149,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 9)));
+                  builder: (context) => const ListAllMember(tab: 9)));
         },
       ),
     ];
@@ -161,7 +161,7 @@ class InfoManagerHomePage extends StatelessWidget {
             ? (screenWidth - 230) ~/ (maxMobileSize - 64)
             : screenWidth ~/ (maxMobileSize - 32);
     final width = screenWidth / crossAxisCount;
-    final cellHeight = 128;
+    const cellHeight = 128;
     final aspectRatio = width / cellHeight;
 
     return Column(
@@ -306,7 +306,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -315,7 +315,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                       TextSpan(
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.disableText,
+                          color: disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -323,7 +323,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                             child: Icon(
                               Icons.groups_rounded,
                               size: 22,
-                              color: CustomColors.disableText,
+                              color: disableText,
                             ),
                           ),
                           TextSpan(
@@ -338,7 +338,7 @@ class InfoManagerHomeCard extends StatelessWidget {
               if (iconSuffix)
                 Icon(
                   Icons.keyboard_arrow_right,
-                  color: CustomColors.disableText,
+                  color: disableText,
                 ),
             ],
           ),

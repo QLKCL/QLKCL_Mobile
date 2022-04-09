@@ -137,14 +137,14 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             child: Center(
               child: TextField(
                 autofocus: true,
-                style: TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
-                    color: CustomColors.secondaryText,
+                    color: secondaryText,
                   ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear),
@@ -216,11 +216,11 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   builderDelegate:
                       PagedChildBuilderDelegate<FilterQuanrantineWard>(
                     animateTransitions: true,
-                    noItemsFoundIndicatorBuilder: (context) => Center(
-                      child: const Text('Không có kết quả tìm kiếm'),
+                    noItemsFoundIndicatorBuilder: (context) => const Center(
+                      child: Text('Không có kết quả tìm kiếm'),
                     ),
-                    firstPageErrorIndicatorBuilder: (context) => Center(
-                      child: const Text('Có lỗi xảy ra'),
+                    firstPageErrorIndicatorBuilder: (context) => const Center(
+                      child: Text('Có lỗi xảy ra'),
                     ),
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item.id.toString(),
@@ -241,8 +241,8 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   ),
                 ),
               )
-            : Center(
-                child: const Text('Tìm kiếm khu cách ly'),
+            : const Center(
+                child: Text('Tìm kiếm khu cách ly'),
               ),
       ),
     );

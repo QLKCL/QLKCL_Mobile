@@ -41,7 +41,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               child: Icon(
                 icon,
                 size: 16,
-                color: CustomColors.secondaryText,
+                color: secondaryText,
               ),
             ),
             TextSpan(
@@ -77,7 +77,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       Text(
                         widget.quarantineInfo.fullName,
                         //quarantineName!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
@@ -98,7 +98,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                             (widget.quarantineInfo.city != null
                                 ? "${widget.quarantineInfo.city['name']}"
                                 : ""),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                           color: Color.fromRGBO(138, 149, 158, 1),
@@ -212,7 +212,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       child: const Text('Danh sách quản lý, cán bộ'),
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                            primary),
                       ),
                     )
                   ],

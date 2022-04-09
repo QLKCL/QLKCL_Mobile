@@ -152,7 +152,7 @@ class _InputState extends State<Input> {
               ? widget.error
               : null,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
 

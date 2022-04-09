@@ -195,8 +195,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
-              required:
-                  (widget.mode == Permission.view || _role == 5) ? false : true,
+              required: widget.mode != Permission.view && _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineWardList.isEmpty
                   ? (String? filter) => fetchQuarantineWard({
@@ -236,8 +235,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineBuildingList = data;
                     }));
               },
-              enabled:
-                  (widget.mode == Permission.add && _role != 5) ? true : false,
+              enabled: widget.mode == Permission.add && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -252,11 +250,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Tòa',
               hint: 'Chọn tòa',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.changeStatus ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineBuildingList.isEmpty
                   ? (String? filter) => fetchQuarantineBuilding({
@@ -296,8 +292,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineFloorList = data;
                     }));
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -312,11 +307,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Tầng',
               hint: 'Chọn tầng',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.changeStatus ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineFloorList.isEmpty
                   ? (String? filter) => fetchQuarantineFloor({
@@ -354,8 +347,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       quarantineRoomList = data;
                     }));
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -370,11 +362,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Phòng',
               hint: 'Chọn phòng',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.changeStatus ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
               onFind: quarantineRoomList.isEmpty
                   ? (String? filter) => fetchQuarantineRoom({
@@ -400,8 +390,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineRoom = null;
                 });
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -428,23 +417,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.add ||
-                      (widget.mode == Permission.edit &&
-                          (_role != 5 || labelController.text == "")))
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.add ||
+                  (widget.mode == Permission.edit &&
+                      (_role != 5 || labelController.text == "")),
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
             ),
             NewDateInput(
               label: 'Thời gian dự kiến hoàn thành cách ly',
               controller: quarantinedFinishExpectedAtController,
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
             ),
             Input(
               label: "Tình trạng bệnh",
@@ -495,7 +480,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       value.map((e) => e.id).join(",");
                 }
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode != Permission.view,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
                   : Mode.BOTTOM_SHEET,
@@ -509,7 +494,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             Input(
               label: 'Bệnh nền khác',
               controller: otherBackgroundDiseaseController,
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode != Permission.view,
             ),
             if (widget.mode != Permission.view)
               Container(
@@ -521,7 +506,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       '(*)',
                       style: TextStyle(
                         fontSize: 16,
-                        color: CustomColors.error,
+                        color: error,
                       ),
                     ),
                     const Text(
@@ -539,7 +524,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   child: Row(children: [
                     if (widget.mode == Permission.changeStatus &&
                         widget.quarantineData?.customUserCode != null)
-                      Spacer(),
+                      const Spacer(),
                     if (widget.mode == Permission.changeStatus &&
                         widget.quarantineData?.customUserCode != null)
                       OutlinedButton(
@@ -554,14 +539,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         },
                         child: const Text("Từ chối"),
                       ),
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
                       onPressed: _submit,
                       child: widget.mode == Permission.changeStatus
                           ? const Text("Xét duyệt")
                           : const Text('Lưu'),
                     ),
-                    Spacer(),
+                    const Spacer(),
                   ])),
           ],
         ),

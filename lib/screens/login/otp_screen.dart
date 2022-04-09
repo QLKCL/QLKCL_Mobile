@@ -50,9 +50,9 @@ class _OtpState extends State<Otp> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -137,20 +137,20 @@ class _OtpState extends State<Otp> {
                             onPressed: _submit,
                             child: Text(
                               'Xác nhận OTP',
-                              style: TextStyle(color: CustomColors.white),
+                              style: TextStyle(color: white),
                             ),
                           ),
                         ),
                         Text.rich(
                           TextSpan(
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text: "Chưa nhận được mã? ",
                               ),
                               TextSpan(
                                 text: 'Gửi lại mã',
                                 style: TextStyle(
-                                    color: CustomColors.primary,
+                                    color: primary,
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = _reSend,

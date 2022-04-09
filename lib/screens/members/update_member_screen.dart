@@ -57,8 +57,8 @@ class _UpdateMemberState extends State<UpdateMember>
           // ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],
@@ -95,8 +95,8 @@ class _UpdateMemberState extends State<UpdateMember>
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               } else {
-                return Center(
-                  child: const Text('Có lỗi xảy ra!'),
+                return const Center(
+                  child: Text('Có lỗi xảy ra!'),
                 );
               }
             }

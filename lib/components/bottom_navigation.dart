@@ -48,7 +48,7 @@ class BottomNavigation extends StatelessWidget {
           : (isWebPlatform() && currentTab.index > 1)
               ? currentTab.index - 1
               : currentTab.index,
-      selectedItemColor: CustomColors.secondary,
+      selectedItemColor: secondary,
       onTap: (index) => {
         index = (role == 5)
             ? index * 4
@@ -59,7 +59,7 @@ class BottomNavigation extends StatelessWidget {
           {
             Navigator.of(context)
                 .push(
-                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                  MaterialPageRoute(builder: (context) => const QrCodeScan()),
                 )
                 .then((value) => value != null
                     ? Navigator.of(context,
@@ -110,7 +110,7 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideNavigationBar(
-      toggler: SideBarToggler(
+      toggler: const SideBarToggler(
           expandIcon: Icons.menu, shrinkIcon: Icons.chevron_left),
       selectedIndex: (role == 5)
           ? currentTab.index ~/ 4
@@ -118,14 +118,13 @@ class SideBar extends StatelessWidget {
               ? currentTab.index - 1
               : currentTab.index,
       theme: SideNavigationBarTheme(
-        backgroundColor: CustomColors.white,
+        backgroundColor: white,
         itemTheme: ItemTheme(
-            selectedItemColor: CustomColors.secondary,
-            unselectedItemColor: CustomColors.secondaryText),
+            selectedItemColor: secondary, unselectedItemColor: secondaryText),
         showFooterDivider: true,
         showHeaderDivider: true,
         showMainDivider: true,
-        togglerTheme: TogglerTheme(),
+        togglerTheme: const TogglerTheme(),
       ),
       header: SideNavigationBarHeader(
         image: Image.asset(
@@ -159,7 +158,7 @@ class SideBar extends StatelessWidget {
           {
             Navigator.of(context)
                 .push(
-                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                  MaterialPageRoute(builder: (context) => const QrCodeScan()),
                 )
                 .then((value) => value != null
                     ? Navigator.of(context,

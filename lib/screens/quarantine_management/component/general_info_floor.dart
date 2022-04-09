@@ -102,7 +102,7 @@ class GeneralInfoFloor extends StatelessWidget {
                             Icon(
                               Icons.groups_rounded,
                               size: 20,
-                              color: CustomColors.primaryText,
+                              color: primaryText,
                             ),
                             const SizedBox(
                               width: 5,

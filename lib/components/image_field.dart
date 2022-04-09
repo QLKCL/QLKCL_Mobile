@@ -53,9 +53,9 @@ class _ImageFieldState extends State<ImageField> {
         Container(
           margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
             ),
             itemBuilder: (BuildContext ctx, int index) {
@@ -64,8 +64,8 @@ class _ImageFieldState extends State<ImageField> {
                       padding: const EdgeInsets.all(5),
                       child: DottedBorder(
                         borderType: BorderType.RRect,
-                        radius: Radius.circular(8),
-                        color: CustomColors.primary,
+                        radius: const Radius.circular(8),
+                        color: primary,
                         child: OutlinedButton(
                           style: ButtonStyle(
                             minimumSize:
@@ -77,7 +77,7 @@ class _ImageFieldState extends State<ImageField> {
                             ),
                             side: MaterialStateProperty.all(
                               BorderSide(
-                                color: CustomColors.primary,
+                                color: primary,
                                 style: BorderStyle.none,
                               ),
                             ),
@@ -104,14 +104,14 @@ class _ImageFieldState extends State<ImageField> {
                           },
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
+                            children: const [
+                              Icon(
                                 Icons.camera_alt_outlined,
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 5,
                               ),
-                              const Text(
+                              Text(
                                 'Thêm ảnh',
                                 textAlign: TextAlign.center,
                               ),

@@ -113,7 +113,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
       },
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72), // here the desired height
+          preferredSize: const Size.fromHeight(72), // here the desired height
           child: AppBar(
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
@@ -133,7 +133,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(50)),
                       border: Border.all(
-                        color: CustomColors.secondary,
+                        color: secondary,
                         width: 2,
                       ),
                     ),
@@ -161,7 +161,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: CustomColors.primaryText),
+                                    color: primaryText),
                               );
                             }
                             return Container();
@@ -173,9 +173,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 ],
               ),
             ),
-            titleTextStyle:
-                TextStyle(fontSize: 16, color: CustomColors.primaryText),
-            backgroundColor: CustomColors.background,
+            titleTextStyle: TextStyle(fontSize: 16, color: primaryText),
+            backgroundColor: background,
             centerTitle: false,
             actions: [
               Badge(
@@ -188,13 +187,13 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11, color: CustomColors.white),
+                  style: TextStyle(fontSize: 11, color: white),
                 ),
                 child: IconButton(
                   padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                   ),
                   onPressed: () {
                     Navigator.of(context,
@@ -368,10 +367,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     return Container(
                       height: 400,
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Card(
+                      child: const Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: DestiantionChart(data: const []),
+                          padding: EdgeInsets.all(8),
+                          child: DestiantionChart(data: []),
                         ),
                       ),
                     );

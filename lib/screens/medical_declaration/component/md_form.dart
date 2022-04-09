@@ -164,21 +164,21 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   type: TextInputType.number,
                   controller: heartBeatController,
                   validatorFunction: intValidator,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nhiệt độ cơ thể (độ C)',
                   hint: 'Nhiệt độ cơ thể (độ C)',
                   type: TextInputType.number,
                   controller: temperatureController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nồng độ Oxi trong máu (%)',
                   hint: 'Nồng độ Oxi trong máu (%)',
                   type: TextInputType.number,
                   controller: spo2Controller,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nhịp thở (lần/phút)',
@@ -186,14 +186,14 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   type: TextInputType.number,
                   controller: breathingController,
                   validatorFunction: intValidator,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Huyết áp (mmHg)',
                   hint: 'Huyết áp (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -228,7 +228,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                           value.map((e) => e.id).join(",");
                     }
                   },
-                  enabled: widget.mode != Permission.view ? true : false,
+                  enabled: widget.mode != Permission.view,
                   maxHeight: MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
                       MediaQuery.of(context).padding.top -
@@ -264,7 +264,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                           value.map((e) => e.id).join(",");
                     }
                   },
-                  enabled: widget.mode != Permission.view ? true : false,
+                  enabled: widget.mode != Permission.view,
                   maxHeight: MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
                       MediaQuery.of(context).padding.top -
@@ -277,7 +277,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   label: 'Khác',
                   hint: 'Khác',
                   controller: otherController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 const SizedBox(height: 8),
 
@@ -311,7 +311,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                               '(*)',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: CustomColors.error,
+                                color: error,
                               ),
                             ),
                             const Text(
@@ -336,7 +336,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                                 },
                           child: Text(
                             "Khai báo",
-                            style: TextStyle(color: CustomColors.white),
+                            style: TextStyle(color: white),
                           ),
                         ),
                       ),

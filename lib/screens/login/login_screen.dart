@@ -114,7 +114,7 @@ class _LoginFormState extends State<LoginForm> {
             margin: const EdgeInsets.fromLTRB(0, 16, 16, 0),
             child: Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, ForgetPassword.routeName);
@@ -122,7 +122,7 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     "Quên mật khẩu",
                     style: TextStyle(
-                      color: CustomColors.primary,
+                      color: primary,
                       // decoration: TextDecoration.underline,
                     ),
                   ),
@@ -136,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: _submit,
               child: Text(
                 'Đăng nhập',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -147,7 +147,7 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               "Đăng ký cách ly",
               style: TextStyle(
-                color: CustomColors.primary,
+                color: primary,
                 // decoration: TextDecoration.underline,
               ),
             ),

@@ -55,7 +55,7 @@ void handleSendNotification() async {
 
   final playerId = deviceState.userId!;
 
-  final imgUrlString =
+  const imgUrlString =
       "http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-2.jpg";
 
   final notification = OSCreateNotification(

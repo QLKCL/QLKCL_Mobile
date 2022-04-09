@@ -93,8 +93,8 @@ class _ListNotificationState extends State<ListNotification> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => NotificationCard(
                 title: item['notification']['title'],
@@ -126,7 +126,7 @@ class _ListNotificationState extends State<ListNotification> {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => CreateNotification()));
+                        builder: (context) => const CreateNotification()));
               },
               child: const Icon(Icons.add),
               tooltip: "Tạo thông báo",

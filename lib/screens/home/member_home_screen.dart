@@ -120,7 +120,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           ],
         ),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72), // here the desired height
+          preferredSize: const Size.fromHeight(72), // here the desired height
           child: AppBar(
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
@@ -140,7 +140,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       ),
                       borderRadius: const BorderRadius.all(Radius.circular(50)),
                       border: Border.all(
-                        color: CustomColors.secondary,
+                        color: secondary,
                         width: 2,
                       ),
                     ),
@@ -168,7 +168,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: CustomColors.primaryText),
+                                    color: primaryText),
                               );
                             }
                             return Container();
@@ -180,9 +180,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 ],
               ),
             ),
-            titleTextStyle:
-                TextStyle(fontSize: 16, color: CustomColors.primaryText),
-            backgroundColor: CustomColors.background,
+            titleTextStyle: TextStyle(fontSize: 16, color: primaryText),
+            backgroundColor: background,
             centerTitle: false,
             actions: [
               Badge(
@@ -195,13 +194,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11, color: CustomColors.white),
+                  style: TextStyle(fontSize: 11, color: white),
                 ),
                 child: IconButton(
                   padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                   ),
                   onPressed: () {
                     Navigator.of(context,
@@ -276,7 +275,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
                               // By default, show a loading spinner.
                               // return const CircularProgressIndicator();
-                              return InfoCovidHomePage();
+                              return const InfoCovidHomePage();
                             },
                           ),
                         ],
@@ -322,13 +321,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.normal,
-                                      color: CustomColors.primaryText),
+                                      color: primaryText),
                                 ),
                                 leading: CircleAvatar(
-                                  backgroundColor: CustomColors.error,
+                                  backgroundColor: error,
                                   child: Icon(
                                     Icons.notification_important_outlined,
-                                    color: CustomColors.white,
+                                    color: white,
                                   ),
                                 ),
                               ),
@@ -369,7 +368,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                         "UNWELL"
                                                     ? "Nghi nhiễm"
                                                     : "Bình thường"),
-                                            textColor: CustomColors.primaryText,
+                                            textColor: primaryText,
                                           ),
                                           const SizedBox(
                                             height: 8,
@@ -391,7 +390,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                         ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal())})"
                                                         : ""))
                                                 : "Chưa có kết quả xét nghiệm",
-                                            textColor: CustomColors.primaryText,
+                                            textColor: primaryText,
                                           ),
                                           const SizedBox(
                                             height: 8,
@@ -403,7 +402,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                         'number_of_vaccine_doses'] +
                                                     " mũi") ??
                                                 "Chưa có dữ liệu",
-                                            textColor: CustomColors.primaryText,
+                                            textColor: primaryText,
                                           ),
                                         ],
                                       ),
@@ -454,21 +453,19 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 48),
-                      primary: CustomColors.secondary,
+                      minimumSize: const Size(double.infinity, 48),
+                      primary: secondary,
                     ),
                     onPressed: () {
                       Navigator.of(context,
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
-                          .push(MaterialPageRoute(
-                              builder: (context) =>
-                                  MedicalDeclarationScreen()));
+                          .pushNamed(MedicalDeclarationScreen.routeName);
                     },
                     child: Text(
                       'Khai báo y tế',
                       style: TextStyle(
-                        color: CustomColors.white,
+                        color: white,
                         fontSize: 20,
                       ),
                     ),

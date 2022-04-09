@@ -38,7 +38,8 @@ class _AddManagerState extends State<AddManager> {
               onPressed: () {
                 Navigator.of(context)
                     .push(
-                      MaterialPageRoute(builder: (context) => QrCodeScan()),
+                      MaterialPageRoute(
+                          builder: (context) => const QrCodeScan()),
                     )
                     .then((value) => setState(() {
                           if (value != null) {

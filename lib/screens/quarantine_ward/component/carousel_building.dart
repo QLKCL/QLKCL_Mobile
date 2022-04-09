@@ -52,8 +52,8 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                       },
                       child: const Text('Tạo tòa'),
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(primary),
                       ),
                     )
                   ],
@@ -72,7 +72,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   children: [
                     Text(
                       'Danh sách tòa (${widget.data.length})',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -90,8 +90,8 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                       },
                       child: const Text('Xem tất cả'),
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(primary),
                       ),
                     )
                   ],

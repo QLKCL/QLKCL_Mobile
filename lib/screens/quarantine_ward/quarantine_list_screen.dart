@@ -28,7 +28,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => QuanrantineListMaps()));
+                  builder: (context) => const QuanrantineListMaps()));
         },
         icon: const Icon(Icons.map_outlined),
         tooltip: "Bản đồ",
@@ -39,7 +39,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
                 .push(MaterialPageRoute(
-                    builder: (context) => SearchQuarantine()));
+                    builder: (context) => const SearchQuarantine()));
           },
           icon: const Icon(Icons.search),
           tooltip: "Tìm kiếm",
@@ -49,7 +49,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
 
     return Scaffold(
       appBar: appBar,
-      body: QuanrantineList(),
+      body: const QuanrantineList(),
       floatingActionButton: FloatingActionButton(
         heroTag: "quarantine_fab",
         child: const Icon(Icons.add),

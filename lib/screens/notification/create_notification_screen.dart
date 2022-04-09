@@ -118,7 +118,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                 ),
                 if (receiverTypeController.text == "1")
                   DropdownInput<KeyValue>(
-                    key: Key("quarantine"),
+                    key: const Key("quarantine"),
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
                     itemAsString: (KeyValue? u) => u!.name,
@@ -149,7 +149,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                   ),
                 if (receiverTypeController.text == "2")
                   MultiDropdownInput<KeyValue>(
-                    key: Key("user"),
+                    key: const Key("user"),
                     label: 'Gửi đến',
                     hint: 'Chọn người nhận',
                     required: true,
@@ -207,7 +207,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                     onPressed: _submit,
                     child: Text(
                       'Gửi',
-                      style: TextStyle(color: CustomColors.white),
+                      style: TextStyle(color: white),
                     ),
                   ),
                 ),

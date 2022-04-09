@@ -129,8 +129,8 @@ class _ListTestState extends State<ListTest> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => TestCard(
                 code: item['code'],

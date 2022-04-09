@@ -72,7 +72,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
                         Text(
                           "Chọn QR từ thư viện",
                           style: TextStyle(
-                            color: CustomColors.white,
+                            color: white,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -161,7 +161,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
     if (qrResult == null || qrResult.contains("...")) {
       await Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
-          return Error();
+          return const Error();
         },
       ));
     } else {

@@ -29,7 +29,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
+            content: const Text(
               'Có lỗi xảy ra!',
             ),
             action: SnackBarAction(
@@ -117,8 +117,8 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => DestinationHistoryCard(
                 name: item['user']['full_name'],

@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  const ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
+  const ListMedicalDeclaration({Key? key, this.code, this.phone})
+      : super(key: key);
   final String? code;
   final String? phone;
 
@@ -119,8 +120,8 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => MedicalDeclarationCard(
                 code: item['code'].toString(),

@@ -100,7 +100,7 @@ class _ListAllMemberState extends State<ListAllMember>
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
                           .push(MaterialPageRoute(
-                              builder: (context) => SearchMember()));
+                              builder: (context) => const SearchMember()));
                     },
                     icon: const Icon(Icons.search),
                     tooltip: "Tìm kiếm",
@@ -165,7 +165,7 @@ class _ListAllMemberState extends State<ListAllMember>
                 bottom: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: CustomColors.white,
+                  indicatorColor: white,
                   tabs: const [
                     Tab(text: "Đang cách ly"),
                     Tab(text: "Chờ xét duyệt"),
@@ -186,7 +186,7 @@ class _ListAllMemberState extends State<ListAllMember>
         body: TabBarView(
           controller: _tabController,
           children: [
-            ActiveMember(),
+            const ActiveMember(),
             ConfirmMember(
               longPressFlag: longPressFlag,
               indexList: indexList,
@@ -194,14 +194,14 @@ class _ListAllMemberState extends State<ListAllMember>
               onDone: onDone,
               onDoneCallback: onDoneCallback,
             ),
-            SuspectMember(),
-            NeedTestMember(),
-            NeedChangeRoomMember(),
-            PositiveMember(),
-            ExpectCompleteMember(),
-            DeniedMember(),
-            CompletedMember(),
-            HospitalizedMember(),
+            const SuspectMember(),
+            const NeedTestMember(),
+            const NeedChangeRoomMember(),
+            const PositiveMember(),
+            const ExpectCompleteMember(),
+            const DeniedMember(),
+            const CompletedMember(),
+            const HospitalizedMember(),
           ].map((e) {
             return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {

@@ -8,7 +8,7 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double size = 20;
+    const double size = 20;
 
     return InkResponse(
       onTap: onTap,
@@ -16,7 +16,7 @@ class CircleButton extends StatelessWidget {
         alignment: Alignment.center,
         width: size,
         height: size,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
         ),

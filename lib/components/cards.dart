@@ -41,7 +41,7 @@ class MedicalDeclarationCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -100,7 +100,7 @@ class TestCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -181,7 +181,7 @@ class TestNoResultCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                            color: CustomColors.white,
+                            color: white,
                             borderRadius: BorderRadius.circular(100)),
                         child: healthStatus == "SERIOUS"
                             ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
@@ -193,7 +193,7 @@ class TestNoResultCard extends StatelessWidget {
                       // RawMaterialButton(
                       //           onPressed: () {},
                       //           elevation: 2.0,
-                      //           fillColor: CustomColors.white,
+                      //           fillColor: white,
                       //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
                       //           shape: CircleBorder(),
                       //         ),
@@ -217,7 +217,7 @@ class TestNoResultCard extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryText),
+                                color: primaryText),
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
@@ -238,7 +238,7 @@ class TestNoResultCard extends StatelessWidget {
                       birthday,
                       style: TextStyle(
                         fontSize: 12,
-                        color: CustomColors.disableText,
+                        color: disableText,
                       ),
                     ),
                     const SizedBox(
@@ -360,7 +360,7 @@ class _MemberCardState extends State<MemberCard> {
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                            color: CustomColors.white,
+                            color: white,
                             borderRadius: BorderRadius.circular(100)),
                         child: widget.member.healthStatus == "SERIOUS"
                             ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
@@ -389,7 +389,7 @@ class _MemberCardState extends State<MemberCard> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryText),
+                                color: primaryText),
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
@@ -410,7 +410,7 @@ class _MemberCardState extends State<MemberCard> {
                       widget.member.birthday ?? "",
                       style: TextStyle(
                         fontSize: 12,
-                        color: CustomColors.disableText,
+                        color: disableText,
                       ),
                     ),
                     if (widget.member.quarantineLocation != null)
@@ -421,7 +421,7 @@ class _MemberCardState extends State<MemberCard> {
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
-                            color: CustomColors.disableText,
+                            color: disableText,
                           ),
                           children: [
                             WidgetSpan(
@@ -429,7 +429,7 @@ class _MemberCardState extends State<MemberCard> {
                               child: Icon(
                                 Icons.place_outlined,
                                 size: 16,
-                                color: CustomColors.disableText,
+                                color: disableText,
                               ),
                             ),
                             TextSpan(
@@ -496,14 +496,14 @@ class QuarantineRelatedCard extends StatelessWidget {
                 Icon(
                   Icons.groups_rounded,
                   size: 20,
-                  color: CustomColors.disableText,
+                  color: disableText,
                 ),
                 const SizedBox(
                   width: 8,
                 ),
                 Text(
                   " Đang cách ly $numOfMem/$maxMem",
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 )
               ],
             )
@@ -603,7 +603,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.normal,
-                              color: CustomColors.primaryText),
+                              color: primaryText),
                         ),
                         const SizedBox(
                           height: 8,
@@ -626,7 +626,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                           Text.rich(
                             TextSpan(
                               style: TextStyle(
-                                color: CustomColors.disableText,
+                                color: disableText,
                               ),
                               children: [
                                 WidgetSpan(
@@ -634,7 +634,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                                   child: Icon(
                                     Icons.place_outlined,
                                     size: 16,
-                                    color: CustomColors.disableText,
+                                    color: disableText,
                                   ),
                                 ),
                                 TextSpan(
@@ -704,7 +704,7 @@ class QuarantineHome extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 8,
@@ -713,7 +713,7 @@ class QuarantineHome extends StatelessWidget {
                       icon: Icons.phone,
                       title: "Liên hệ",
                       content: phone,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                     const SizedBox(
                       height: 8,
@@ -722,7 +722,7 @@ class QuarantineHome extends StatelessWidget {
                       icon: Icons.account_box_outlined,
                       title: "Quản lý",
                       content: manager,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                     const SizedBox(
                       height: 8,
@@ -732,7 +732,7 @@ class QuarantineHome extends StatelessWidget {
                       title: "Bắt đầu cách ly",
                       content: DateFormat("dd/MM/yyyy")
                           .format(DateTime.parse(quarantineAt)),
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                     const SizedBox(
                       height: 8,
@@ -742,7 +742,7 @@ class QuarantineHome extends StatelessWidget {
                       title: "Dự kiến hoàn thành cách ly",
                       content: DateFormat("dd/MM/yyyy")
                           .format(DateTime.parse(quarantineFinishExpect)),
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                     const SizedBox(
                       height: 8,
@@ -751,7 +751,7 @@ class QuarantineHome extends StatelessWidget {
                       icon: Icons.maps_home_work_outlined,
                       title: "Phòng cách ly",
                       content: room,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                     const SizedBox(
                       height: 8,
@@ -760,7 +760,7 @@ class QuarantineHome extends StatelessWidget {
                       icon: Icons.place_outlined,
                       title: "Địa chỉ",
                       content: address,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                   ],
                 ),
@@ -813,7 +813,7 @@ class NotificationCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 2,
@@ -822,7 +822,7 @@ class NotificationCard extends StatelessWidget {
                       TextSpan(
                         style: TextStyle(
                           fontSize: 12,
-                          color: CustomColors.disableText,
+                          color: disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -830,7 +830,7 @@ class NotificationCard extends StatelessWidget {
                             child: Icon(
                               Icons.history,
                               size: 16,
-                              color: CustomColors.disableText,
+                              color: disableText,
                             ),
                           ),
                           TextSpan(
@@ -841,7 +841,7 @@ class NotificationCard extends StatelessWidget {
                             child: Icon(
                               status ? Icons.done_all : null,
                               size: 16,
-                              color: CustomColors.disableText,
+                              color: disableText,
                             ),
                           ),
                         ],
@@ -867,8 +867,8 @@ class NotificationCard extends StatelessWidget {
                       description,
                       style: TextStyle(
                           color: status
-                              ? CustomColors.disableText
-                              : CustomColors.primaryText),
+                              ? disableText
+                              : primaryText),
                     ),
                   ],
                 ),
@@ -914,7 +914,7 @@ class VaccineDoseCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -927,7 +927,7 @@ class VaccineDoseCard extends StatelessWidget {
                     // Text.rich(
                     //   TextSpan(
                     //     style: TextStyle(
-                    //       color: CustomColors.disableText,
+                    //       color: disableText,
                     //     ),
                     //     children: [
                     //       WidgetSpan(
@@ -935,7 +935,7 @@ class VaccineDoseCard extends StatelessWidget {
                     //         child: const Icon(
                     //           Icons.description_outlined,
                     //           size: 16,
-                    //           color: CustomColors.disableText,
+                    //           color: disableText,
                     //         ),
                     //       ),
                     //       TextSpan(
@@ -992,7 +992,7 @@ class DestinationHistoryCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -1063,7 +1063,7 @@ class QuarantineHistoryCard extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
                     const SizedBox(
                       height: 4,
@@ -1111,7 +1111,7 @@ Widget cardLine(
   return Text.rich(
     TextSpan(
       style: TextStyle(
-        color: textColor ?? CustomColors.disableText,
+        color: textColor ?? disableText,
       ),
       children: [
         if (icon != null)
@@ -1120,7 +1120,7 @@ Widget cardLine(
             child: Icon(
               icon,
               size: 16,
-              color: CustomColors.disableText,
+              color: disableText,
             ),
           ),
         TextSpan(
@@ -1240,7 +1240,7 @@ class _ManagerCardState extends State<ManagerCard> {
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryText),
+                                color: primaryText),
                           ),
                           WidgetSpan(
                             alignment: PlaceholderAlignment.middle,
@@ -1261,7 +1261,7 @@ class _ManagerCardState extends State<ManagerCard> {
                       widget.manager.birthday,
                       style: TextStyle(
                         fontSize: 12,
-                        color: CustomColors.disableText,
+                        color: disableText,
                       ),
                     ),
                     const SizedBox(
@@ -1270,7 +1270,7 @@ class _ManagerCardState extends State<ManagerCard> {
                     Text.rich(
                       TextSpan(
                         style: TextStyle(
-                          color: CustomColors.disableText,
+                          color: disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -1278,7 +1278,7 @@ class _ManagerCardState extends State<ManagerCard> {
                             child: Icon(
                               Icons.place_outlined,
                               size: 16,
-                              color: CustomColors.disableText,
+                              color: disableText,
                             ),
                           ),
                           TextSpan(

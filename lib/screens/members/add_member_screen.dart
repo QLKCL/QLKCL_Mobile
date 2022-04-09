@@ -54,7 +54,8 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                 onPressed: () {
                   Navigator.of(context)
                       .push(
-                        MaterialPageRoute(builder: (context) => QrCodeScan()),
+                        MaterialPageRoute(
+                            builder: (context) => const QrCodeScan()),
                       )
                       .then((value) => setState(() {
                             if (value != null) {
@@ -68,8 +69,8 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
           ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],

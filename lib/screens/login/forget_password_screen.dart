@@ -24,9 +24,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -104,7 +104,7 @@ class _ForgetFormState extends State<ForgetForm> {
               onPressed: _submit,
               child: Text(
                 'Tiếp theo',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),

@@ -101,8 +101,8 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
-                child: const Text('Có lỗi xảy ra'),
+              firstPageErrorIndicatorBuilder: (context) => const Center(
+                child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => QuarantineHistoryCard(
                 name: item.user.name,

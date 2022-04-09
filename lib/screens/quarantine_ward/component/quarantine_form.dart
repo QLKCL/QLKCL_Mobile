@@ -217,7 +217,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       child: Form(
         key: _formKey,
         child: Column(
@@ -238,7 +238,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
             DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: countryList,
               selectedItem: countryList.isEmpty
                   ? initCountry
@@ -287,15 +287,13 @@ class _QuarantineFormState extends State<QuarantineForm> {
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               selectedItem: cityList.isEmpty
                   ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               onFind: cityList.isEmpty
                   ? (String? filter) =>
                       fetchCity({'country_code': countryController.text})
@@ -337,15 +335,13 @@ class _QuarantineFormState extends State<QuarantineForm> {
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               selectedItem: districtList.isEmpty
                   ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               onFind: districtList.isEmpty
                   ? (String? filter) =>
                       fetchDistrict({'city_id': cityController.text})
@@ -388,10 +384,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               onFind: wardList.isEmpty
                   ? (String? filter) =>
                       fetchWard({'district_id': districtController.text})
@@ -439,14 +433,12 @@ class _QuarantineFormState extends State<QuarantineForm> {
             DropdownInput<KeyValue>(
                 label: 'Người quản lý',
                 hint: 'Chọn người quản lý',
-                required: widget.mode == Permission.view ? false : true,
+                required: widget.mode != Permission.view,
                 selectedItem: (widget.quarantineInfo?.mainManager != null)
                     ? KeyValue.fromJson(widget.quarantineInfo!.mainManager)
                     : null,
-                enabled: (widget.mode == Permission.edit ||
-                        widget.mode == Permission.add)
-                    ? true
-                    : false,
+                enabled: widget.mode == Permission.edit ||
+                    widget.mode == Permission.add,
                 onFind: (String? filter) =>
                     fetchNotMemberList({'role_name_list': 'MANAGER'}),
                 onChanged: (value) {
@@ -512,10 +504,8 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   ? initPandemic
                   : pandemicList.safeFirstWhere(
                       (type) => type.id.toString() == pandemicController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               onFind: pandemicList.isEmpty
                   ? (String? filter) => fetchPandemic()
                   : null,

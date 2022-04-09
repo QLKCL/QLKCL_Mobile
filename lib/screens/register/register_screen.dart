@@ -54,9 +54,9 @@ class _RegisterState extends State<Register> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -182,7 +182,7 @@ class _RegisterFormState extends State<RegisterForm> {
               onPressed: _submit,
               child: Text(
                 'Đăng ký',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -193,7 +193,7 @@ class _RegisterFormState extends State<RegisterForm> {
             child: Text(
               "Đăng nhập",
               style: TextStyle(
-                color: CustomColors.primary,
+                color: primary,
                 // decoration: TextDecoration.underline,
               ),
             ),
@@ -234,7 +234,7 @@ class _RegisterFormState extends State<RegisterForm> {
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(
-                MaterialPageRoute(builder: (context) => UpdateMember()),
+                MaterialPageRoute(builder: (context) => const UpdateMember()),
               );
             }
           } else {

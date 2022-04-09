@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
       title: 'Quản lý khu cách ly',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: isLoggedIn ? App(role: role) : Login(),
+      home: isLoggedIn ? App(role: role) : const Login(),
       routes: routes,
       // initialRoute: isLoggedIn ? App.routeName : Login.routeName,
       builder: (context, child) {

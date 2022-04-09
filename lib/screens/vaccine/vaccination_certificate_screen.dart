@@ -55,7 +55,7 @@ class _VaccinationCertificationScreenState
                 const SizedBox(
                   height: 8,
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                   thickness: 2,
@@ -65,11 +65,11 @@ class _VaccinationCertificationScreenState
                             .isNotEmpty
                         ? "Bạn đã tiêm ${widget.vaccineCertification.patientInfo.vaccinatedInfoes.length} mũi vaccine"
                         : "Chưa tiêm vaccine",
-                    style: TextStyle(fontSize: 25)),
+                    style: const TextStyle(fontSize: 25)),
                 const SizedBox(
                   height: 8,
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                   thickness: 2,
@@ -94,15 +94,15 @@ class _VaccinationCertificationScreenState
                       children: [
                         Text(
                           "Họ và tên: ${widget.vaccineCertification.patientInfo.fullname}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                         Text(
                           "Ngày sinh: ${widget.vaccineCertification.patientInfo.birthday}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                         Text(
                           "Số CMND/CCCD: ${widget.vaccineCertification.patientInfo.identification}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ],
                     ),

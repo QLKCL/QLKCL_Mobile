@@ -98,14 +98,14 @@ class _SearchTestState extends State<SearchTest> {
             child: Center(
               child: TextField(
                 autofocus: true,
-                style: TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
-                    color: CustomColors.secondaryText,
+                    color: secondaryText,
                   ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.clear),
@@ -180,8 +180,8 @@ class _SearchTestState extends State<SearchTest> {
                           ],
                         ),
                       ),
-                      firstPageErrorIndicatorBuilder: (context) => Center(
-                        child: const Text('Có lỗi xảy ra'),
+                      firstPageErrorIndicatorBuilder: (context) => const Center(
+                        child: Text('Có lỗi xảy ra'),
                       ),
                       itemBuilder: (context, item, index) => TestNoResultCard(
                         name: item['user'] != null
@@ -210,8 +210,8 @@ class _SearchTestState extends State<SearchTest> {
                   ),
                 ),
               )
-            : Center(
-                child: const Text('Tìm kiếm phiếu xét nghiệm'),
+            : const Center(
+                child: Text('Tìm kiếm phiếu xét nghiệm'),
               ),
       ),
     );

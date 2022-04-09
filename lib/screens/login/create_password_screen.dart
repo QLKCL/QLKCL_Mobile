@@ -32,9 +32,9 @@ class _CreatePasswordState extends State<CreatePassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -88,7 +88,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                               onPressed: _submit,
                               child: Text(
                                 'Xác nhận',
-                                style: TextStyle(color: CustomColors.white),
+                                style: TextStyle(color: white),
                               ),
                             ),
                           ),

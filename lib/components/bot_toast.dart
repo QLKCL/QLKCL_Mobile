@@ -7,9 +7,9 @@ import 'package:qlkcl/networking/response.dart';
 CancelFunc showTextToast(String text) {
   return BotToast.showText(
     text: text,
-    textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14),
+    textStyle: TextStyle(color: primaryText, fontSize: 14),
     contentPadding: const EdgeInsets.all(16),
-    contentColor: CustomColors.background,
+    contentColor: background,
     wrapToastAnimation: (controller, cancel, Widget child) =>
         CustomAnimationWidget(
       controller: controller,
@@ -157,13 +157,13 @@ CancelFunc showNotification(data,
             (data.runtimeType == Response) ? (data as Response).message : data,
         backgroundColor: (data.runtimeType == Response)
             ? ((data as Response).status == Status.success
-                ? CustomColors.success
-                : CustomColors.error)
+                ? success
+                : error)
             : (status == Status.success
-                ? CustomColors.success
+                ? success
                 : (status == Status.warning
-                    ? CustomColors.warning
-                    : CustomColors.error)),
+                    ? warning
+                    : error)),
       );
     },
     onlyOne: false,
@@ -213,7 +213,7 @@ class _CustomWidgetState extends State<_CustomWidget> {
       child: Wrap(
         children: <Widget>[
           Card(
-            color: widget.backgroundColor ?? CustomColors.success,
+            color: widget.backgroundColor ?? success,
             shape: widget.borderRadius == null
                 ? null
                 : RoundedRectangleBorder(

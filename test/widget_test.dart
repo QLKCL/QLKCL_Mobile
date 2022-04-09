@@ -13,6 +13,6 @@ import 'package:qlkcl/main.dart';
 void main() {
   testWidgets('Test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(const MyApp());
   });
 }

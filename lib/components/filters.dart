@@ -289,7 +289,7 @@ Future memberFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -306,7 +306,7 @@ Future memberFilter(
                 },
                 child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
@@ -321,7 +321,7 @@ Future memberFilter(
                 },
                 child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -332,8 +332,8 @@ Future memberFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.only(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
@@ -442,7 +442,7 @@ Future testFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -457,7 +457,7 @@ Future testFilter(
                 },
                 child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
@@ -466,7 +466,7 @@ Future testFilter(
                 },
                 child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -477,8 +477,8 @@ Future testFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.only(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
@@ -688,7 +688,7 @@ Future quarantineFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -701,7 +701,7 @@ Future quarantineFilter(
                 },
                 child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
@@ -715,7 +715,7 @@ Future quarantineFilter(
                 },
                 child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -726,8 +726,8 @@ Future quarantineFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
-            borderRadius: const BorderRadius.only(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
