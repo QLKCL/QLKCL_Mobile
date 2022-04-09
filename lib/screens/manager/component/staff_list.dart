@@ -19,7 +19,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class StaffList extends StatefulWidget {
-  StaffList({
+  const StaffList({
     Key? key,
     required this.quarrantine,
   }) : super(key: key);
@@ -32,10 +32,10 @@ class StaffList extends StatefulWidget {
 
 class _StaffListState extends State<StaffList>
     with AutomaticKeepAliveClientMixin<StaffList> {
-  final PagingController<int, FilterStaff> _pagingController =
+  final PagingController<int, FilterStaff> pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -46,10 +46,8 @@ class _StaffListState extends State<StaffList>
   @override
   void initState() {
     StaffList.currentQuarrantine = widget.quarrantine;
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
-    _pagingController.addStatusListener((status) {
+    pagingController.addPageRequestListener(_fetchPage);
+    pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         showNotification("Có lỗi xảy ra!", status: Status.error);
       }
@@ -63,7 +61,7 @@ class _StaffListState extends State<StaffList>
 
   @override
   void dispose() {
-    // _pagingController.dispose();
+    // pagingController.dispose();
     super.dispose();
   }
 
@@ -74,15 +72,15 @@ class _StaffListState extends State<StaffList>
         'quarantine_ward_id': widget.quarrantine?.id,
       });
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems.data);
+        pagingController.appendLastPage(newItems.data);
       } else {
         final nextPageKey = pageKey + 1;
-        _pagingController.appendPage(newItems.data, nextPageKey);
+        pagingController.appendPage(newItems.data, nextPageKey);
       }
     } catch (error) {
-      _pagingController.error = error;
+      pagingController.error = error;
     }
   }
 
@@ -99,14 +97,13 @@ class _StaffListState extends State<StaffList>
                   if (snapshot.data!.data.isEmpty) {
                     return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
-                          Text('Không có dữ liệu'),
+                          const Text('Không có dữ liệu'),
                         ],
                       ),
                     );
@@ -114,45 +111,43 @@ class _StaffListState extends State<StaffList>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listTable();
                   }
                 }
               }
-              return Align(
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+              return const Align(
+                child: CircularProgressIndicator(),
               );
             },
           )
-        : listCard(_pagingController);
+        : listCard(pagingController);
   }
 
-  Widget listCard(_pagingController) {
+  Widget listCard(pagingController) {
     return RefreshIndicator(
       onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
+        () => pagingController.refresh(),
       ),
       child: PagedListView<int, FilterStaff>(
-        padding: EdgeInsets.only(bottom: 70),
-        pagingController: _pagingController,
+        padding: const EdgeInsets.only(bottom: 70),
+        pagingController: pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterStaff>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => Center(
+          firstPageErrorIndicatorBuilder: (context) => const Center(
             child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => ManagerCard(
@@ -185,17 +180,16 @@ class _StaffListState extends State<StaffList>
                   child: buildStack(constraints),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -212,8 +206,7 @@ class _StaffListState extends State<StaffList>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
+      source: memberDataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -225,56 +218,56 @@ class _StaffListState extends State<StaffList>
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
             columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
         GridColumn(
             columnName: 'phoneNumber',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'status',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Trạng thái tài khoản',
+                child: const Text('Trạng thái tài khoản',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -290,8 +283,7 @@ class _StaffListState extends State<StaffList>
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
-            alignment: Alignment.center,
+          child: const Align(
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -337,7 +329,7 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<void> handleRefresh() async {
-    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchStaffList(data: {
       'page': currentPageIndex + 1,
       'quarantine_ward_id': StaffList.currentQuarrantine?.id
@@ -383,10 +375,10 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: () {
@@ -400,7 +392,7 @@ class MemberDataSource extends DataGridSource {
                 child: Text(
                   row.getCells()[0].value.toString(),
                   style: TextStyle(
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -409,7 +401,7 @@ class MemberDataSource extends DataGridSource {
           },
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[1].value != null
@@ -418,36 +410,36 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child:
               Text(row.getCells()[2].value.toString() == "MALE" ? "Nam" : "Nữ"),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             alignment: Alignment.center,
             child: Text(
               row.getCells()[3].value.toString(),
             )),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[5].value.toString(),
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
@@ -463,7 +455,7 @@ Widget menus(BuildContext context, FilterStaff item) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
-      color: CustomColors.disableText,
+      color: disableText,
     ),
     onSelected: (result) {
       if (result == 'update_info') {
@@ -475,7 +467,7 @@ Widget menus(BuildContext context, FilterStaff item) {
                     )));
       }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
         child: Text('Cập nhật thông tin'),
         value: "update_info",

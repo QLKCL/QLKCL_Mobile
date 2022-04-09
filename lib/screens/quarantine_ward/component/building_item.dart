@@ -18,7 +18,6 @@ class BuildingItem extends StatelessWidget {
     required this.buildingName,
     this.maxMem = 0,
     required this.currentMem,
-
   });
 
   void selectBuilding(BuildContext context) {}
@@ -43,10 +42,10 @@ class BuildingItem extends StatelessWidget {
           Container(
             height: 87,
             width: 150,
-            //margin: EdgeInsets.symmetric(horizontal: 10),
+            //margin: const EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: SvgPicture.asset('assets/svg/building.svg'),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(5),
                 topRight: Radius.circular(5),
@@ -56,33 +55,31 @@ class BuildingItem extends StatelessWidget {
           ),
           Container(
             height: 55,
-            padding: EdgeInsets.fromLTRB(7, 6, 0, 3),
+            padding: const EdgeInsets.fromLTRB(7, 6, 0, 3),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   buildingName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 5),
+                  margin: const EdgeInsets.only(top: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.groups_rounded,
                         size: 14,
-                        color: CustomColors.secondaryText,
+                        color: secondaryText,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
-                        '$currentMem' + '/$maxMem',
+                        '$currentMem/$maxMem',
                         softWrap: true,
                         //overflow: TextOverflow.fade,
                       ),
@@ -97,4 +94,3 @@ class BuildingItem extends StatelessWidget {
     );
   }
 }
-

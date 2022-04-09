@@ -5,8 +5,7 @@ import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class QuanrantineList extends StatefulWidget {
-  // final data;
-  QuanrantineList({Key? key}) : super(key: key);
+  const QuanrantineList({Key? key}) : super(key: key);
 
   @override
   _QuanrantineListState createState() => _QuanrantineListState();
@@ -19,9 +18,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -31,7 +28,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -50,7 +47,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
     try {
       final newItems = await fetchQuarantineList(data: {'page': pageKey});
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -65,28 +62,25 @@ class _QuanrantineListState extends State<QuanrantineList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
-      ),
+      onRefresh: () => Future.sync(_pagingController.refresh),
       child: PagedListView<int, FilterQuanrantineWard>(
         pagingController: _pagingController,
-        padding: EdgeInsets.only(bottom: 70),
+        padding: const EdgeInsets.only(bottom: 70),
         builderDelegate: PagedChildBuilderDelegate<FilterQuanrantineWard>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           ),
-          firstPageErrorIndicatorBuilder: (context) => Center(
+          firstPageErrorIndicatorBuilder: (context) => const Center(
             child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => QuarantineItem(

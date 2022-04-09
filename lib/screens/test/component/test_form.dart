@@ -16,7 +16,7 @@ class TestForm extends StatefulWidget {
   final CreatedBy? userCode;
   final Test? testData;
   final Permission mode;
-  TestForm(
+  const TestForm(
       {Key? key, this.testData, this.mode = Permission.view, this.userCode})
       : super(key: key);
 
@@ -94,26 +94,20 @@ class _TestFormState extends State<TestForm> {
             Input(
               label: 'Mã người xét nghiệm',
               controller: userCodeController,
-              required: widget.mode == Permission.view ? false : true,
-              enabled:
-                  (widget.userCode == null && widget.mode == Permission.add)
-                      ? true
-                      : false,
+              required: widget.mode != Permission.view,
+              enabled: widget.userCode == null && widget.mode == Permission.add,
               type: TextInputType.number,
             ),
             Input(
               label: 'Họ và tên',
               hint: 'Nhập họ và tên',
               controller: userNameController,
-              enabled:
-                  (widget.userCode == null && widget.mode == Permission.add)
-                      ? true
-                      : false,
+              enabled: widget.userCode == null && widget.mode == Permission.add,
             ),
             DropdownInput<KeyValue>(
               label: 'Trạng thái',
               hint: 'Chọn trạng thái',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: testStateList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
@@ -127,15 +121,13 @@ class _TestFormState extends State<TestForm> {
                   stateController.text = value.id;
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             DropdownInput<KeyValue>(
               label: 'Kỹ thuật xét nghiệm',
               hint: 'Chọn kỹ thuật xét nghiệm',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: testTypeList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
@@ -149,12 +141,12 @@ class _TestFormState extends State<TestForm> {
                   typeController.text = value.id;
                 }
               },
-              enabled: (widget.mode == Permission.add) ? true : false,
+              enabled: widget.mode == Permission.add,
             ),
             DropdownInput<KeyValue>(
               label: 'Kết quả',
               hint: 'Chọn kết quả',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: testValueList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 168,
@@ -173,10 +165,8 @@ class _TestFormState extends State<TestForm> {
                   resultController.text = value.id;
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             if (widget.mode == Permission.view)
               Input(
@@ -206,12 +196,10 @@ class _TestFormState extends State<TestForm> {
               Container(
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
+                  onPressed: _submit,
                   child: Text(
                     'Xác nhận',
-                    style: TextStyle(color: CustomColors.white),
+                    style: TextStyle(color: white),
                   ),
                 ),
               ),
@@ -224,7 +212,7 @@ class _TestFormState extends State<TestForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
         final response = await createTest(createTestDataForm(
             userCode: userCodeController.text,

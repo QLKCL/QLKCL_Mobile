@@ -69,20 +69,20 @@ class DestinationHistory {
 }
 
 Future<dynamic> fetchDestiantionHistoryList({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.filterDestiantionHistory, data);
 
   return response != null && response['data'] != null ? response['data'] : null;
 }
 
 Future<dynamic> fetchDestiantionHistory({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getDestiantionHistory, data);
   return response["data"];
 }
 
 Future<Response> createDestiantionHistory(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createDestiantionHistory, data);
 
   if (response == null) {
@@ -113,7 +113,7 @@ Future<Response> createDestiantionHistory(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateDestiantionHistory(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateTest, data);
 
   if (response == null) {
@@ -129,7 +129,7 @@ Future<Response> updateDestiantionHistory(Map<String, dynamic> data) async {
 }
 
 Future<List<KeyValue>> getAddressWithMembersPassBy(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getAddressWithMembersPassBy, data);
 
   return response != null && response['data'] != null

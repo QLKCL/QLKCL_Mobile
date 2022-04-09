@@ -38,15 +38,10 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
     nameController.text = widget.currentBuilding!.name;
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await updateBuilding(updateBuildingDataForm(
         name: nameController.text,
         id: widget.currentBuilding!.id,
@@ -55,7 +50,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.of(context).pop(response.data);
+        if (mounted) {
+          Navigator.of(context).pop(response.data);
+        }
       }
     }
   }
@@ -63,7 +60,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin tòa'),
+      title: const Text('Sửa thông tin tòa'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -78,10 +75,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -94,7 +90,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                         ),
                         Form(
                           key: _formKey,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Input(
                               label: 'Tên tòa mới',
@@ -107,21 +103,21 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                           margin: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

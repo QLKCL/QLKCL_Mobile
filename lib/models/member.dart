@@ -108,11 +108,11 @@ class Member {
 }
 
 Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListMembers, data);
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
-      List<FilterMember> itemList = response['data']['content']
+      final List<FilterMember> itemList = response['data']['content']
           .map<FilterMember>((json) => FilterMember.fromJson(json))
           .toList();
       return FilterResponse<FilterMember>(
@@ -137,7 +137,7 @@ Future<FilterResponse<FilterMember>> fetchMemberList({data}) async {
 }
 
 Future<Response> createMember(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -171,7 +171,7 @@ Future<Response> createMember(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateMember(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -223,7 +223,7 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Khổng thể chuyển người dương tính sang phòng này!");
+            message: "Không thể chuyển người dương tính sang phòng này!");
       } else if (response['message']['passport_number'] != null &&
           response['message']['passport_number'] == "Exist") {
         return Response(
@@ -238,7 +238,7 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
 }
 
 Future<Response> denyMember(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.denyMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -261,7 +261,7 @@ Future<Response> denyMember(data) async {
 }
 
 Future<Response> acceptManyMember(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptManyMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -295,7 +295,7 @@ Future<Response> acceptManyMember(data) async {
 }
 
 Future<Response> acceptOneMember(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.acceptOneMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -324,7 +324,7 @@ Future<Response> acceptOneMember(data) async {
 }
 
 Future<Response> finishMember(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.finishMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -340,7 +340,7 @@ Future<Response> finishMember(data) async {
 }
 
 Future<Response> changeRoomMember(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.changeRoomMember, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -359,7 +359,14 @@ Future<Response> changeRoomMember(data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Khổng thể chuyển người dương tính sang phòng này!");
+            message: "Không thể chuyển người dương tính sang phòng này!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room is close (not accept any more member)") {
+        return Response(
+            status: Status.error,
+            message:
+                "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
@@ -484,12 +491,12 @@ class FilterMember {
 
   @override
   String toString() {
-    return "$code";
+    return code;
   }
 }
 
 Future<dynamic> fetchCustomUser({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getMember, data);
   if (response == null) {
     return null;

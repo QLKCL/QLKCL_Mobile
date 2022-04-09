@@ -23,7 +23,7 @@ import 'package:qlkcl/utils/app_theme.dart';
 class ListAllMember extends StatefulWidget {
   static const String routeName = "/list_all_member";
   final int tab;
-  ListAllMember({Key? key, this.tab = 0}) : super(key: key);
+  const ListAllMember({Key? key, this.tab = 0}) : super(key: key);
 
   @override
   _ListAllMemberState createState() => _ListAllMemberState();
@@ -79,7 +79,7 @@ class _ListAllMemberState extends State<ListAllMember>
                   AddMember.routeName,
                 );
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               tooltip: "Thêm người cách ly",
             )
           : null,
@@ -91,7 +91,7 @@ class _ListAllMemberState extends State<ListAllMember>
               sliver: SliverAppBar(
                 title: longPressFlag
                     ? Text('${indexList.length} đã chọn')
-                    : Text("Danh sách người cách ly"),
+                    : const Text("Danh sách người cách ly"),
                 centerTitle: true,
                 actions: [
                   IconButton(
@@ -100,26 +100,26 @@ class _ListAllMemberState extends State<ListAllMember>
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
                           .push(MaterialPageRoute(
-                              builder: (context) => SearchMember()));
+                              builder: (context) => const SearchMember()));
                     },
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     tooltip: "Tìm kiếm",
                   ),
                   if (_tabController.index == 1)
                     PopupMenuButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.more_vert,
                       ),
                       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                         PopupMenuItem(
-                          child: Text('Chấp nhận'),
+                          child: const Text('Chấp nhận'),
                           onTap: () async {
-                            if (indexList.length == 0) {
+                            if (indexList.isEmpty) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
                             } else {
-                              CancelFunc cancel = showLoading();
+                              final CancelFunc cancel = showLoading();
                               final response = await acceptManyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
@@ -134,14 +134,14 @@ class _ListAllMemberState extends State<ListAllMember>
                           },
                         ),
                         PopupMenuItem(
-                          child: Text('Từ chối'),
+                          child: const Text('Từ chối'),
                           onTap: () async {
-                            if (indexList.length == 0) {
+                            if (indexList.isEmpty) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
                             } else {
-                              CancelFunc cancel = showLoading();
+                              final CancelFunc cancel = showLoading();
                               final response = await denyMember(
                                   {'member_codes': indexList.join(",")});
                               cancel();
@@ -165,8 +165,8 @@ class _ListAllMemberState extends State<ListAllMember>
                 bottom: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: CustomColors.white,
-                  tabs: [
+                  indicatorColor: white,
+                  tabs: const [
                     Tab(text: "Đang cách ly"),
                     Tab(text: "Chờ xét duyệt"),
                     Tab(text: "Nghi nhiễm"),
@@ -186,7 +186,7 @@ class _ListAllMemberState extends State<ListAllMember>
         body: TabBarView(
           controller: _tabController,
           children: [
-            ActiveMember(),
+            const ActiveMember(),
             ConfirmMember(
               longPressFlag: longPressFlag,
               indexList: indexList,
@@ -194,14 +194,14 @@ class _ListAllMemberState extends State<ListAllMember>
               onDone: onDone,
               onDoneCallback: onDoneCallback,
             ),
-            SuspectMember(),
-            NeedTestMember(),
-            NeedChangeRoomMember(),
-            PositiveMember(),
-            ExpectCompleteMember(),
-            DeniedMember(),
-            CompletedMember(),
-            HospitalizedMember(),
+            const SuspectMember(),
+            const NeedTestMember(),
+            const NeedChangeRoomMember(),
+            const PositiveMember(),
+            const ExpectCompleteMember(),
+            const DeniedMember(),
+            const CompletedMember(),
+            const HospitalizedMember(),
           ].map((e) {
             return LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {

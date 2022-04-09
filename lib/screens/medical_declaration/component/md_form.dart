@@ -83,7 +83,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await createMedDecl(createMedDeclDataForm(
         phoneNumber: phoneNumberController.text,
         heartBeat: int.tryParse(heartBeatController.text),
@@ -113,53 +113,46 @@ class _MedDeclFormState extends State<MedDeclForm> {
               children: [
                 // Tên người khai hộ
 
-                (widget.mode == Permission.add)
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ListTileTheme(
-                            contentPadding: EdgeInsets.only(left: 8),
-                            child: CheckboxListTile(
-                              title: Text("Khai hộ"),
-                              controlAffinity: ListTileControlAffinity.leading,
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                });
-                              },
-                            ),
-                          ),
-
-                          // SĐT người khai hộ
-                          isChecked
-                              ? Input(
-                                  label: 'Số điện thoại',
-                                  hint: 'SĐT người được khai báo',
-                                  required: true,
-                                  type: TextInputType.phone,
-                                  enabled: true,
-                                  controller: phoneNumberController,
-                                  validatorFunction: phoneValidator,
-                                )
-                              : Input(
-                                  label: 'Số điện thoại',
-                                  hint: 'SĐT người được khai báo',
-                                  type: TextInputType.phone,
-                                  enabled: false,
-                                ),
-                        ],
-                      )
-                    : Input(
-                        label: 'Họ và tên',
-                        controller: userNameController,
-                        required: false,
-                        enabled: false,
+                if (widget.mode == Permission.add)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTileTheme(
+                        contentPadding: const EdgeInsets.only(left: 8),
+                        child: CheckboxListTile(
+                          title: const Text("Khai hộ"),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
+                        ),
                       ),
+
+                      // SĐT người khai hộ
+                      Input(
+                        label: 'Số điện thoại',
+                        hint: 'SĐT người được khai báo',
+                        required: isChecked,
+                        type: TextInputType.phone,
+                        controller: phoneNumberController,
+                        validatorFunction: phoneValidator,
+                        enabled: !isChecked,
+                      )
+                    ],
+                  )
+                else
+                  Input(
+                    label: 'Họ và tên',
+                    controller: userNameController,
+                    enabled: false,
+                  ),
 
                 //Medical Declaration Info
                 Container(
-                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: const Text(
                     'A/ Chỉ số sức khỏe:',
                     style: TextStyle(fontSize: 16),
@@ -171,21 +164,21 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   type: TextInputType.number,
                   controller: heartBeatController,
                   validatorFunction: intValidator,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nhiệt độ cơ thể (độ C)',
                   hint: 'Nhiệt độ cơ thể (độ C)',
                   type: TextInputType.number,
                   controller: temperatureController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nồng độ Oxi trong máu (%)',
                   hint: 'Nồng độ Oxi trong máu (%)',
                   type: TextInputType.number,
                   controller: spo2Controller,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Nhịp thở (lần/phút)',
@@ -193,17 +186,17 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   type: TextInputType.number,
                   controller: breathingController,
                   validatorFunction: intValidator,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: 'Huyết áp (mmHg)',
                   hint: 'Huyết áp (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: const Text('B/ Triệu chứng nghi nhiễm:',
                       style: TextStyle(fontSize: 16)),
                 ),
@@ -235,7 +228,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                           value.map((e) => e.id).join(",");
                     }
                   },
-                  enabled: widget.mode != Permission.view ? true : false,
+                  enabled: widget.mode != Permission.view,
                   maxHeight: MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
                       MediaQuery.of(context).padding.top -
@@ -271,7 +264,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                           value.map((e) => e.id).join(",");
                     }
                   },
-                  enabled: widget.mode != Permission.view ? true : false,
+                  enabled: widget.mode != Permission.view,
                   maxHeight: MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
                       MediaQuery.of(context).padding.top -
@@ -284,9 +277,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   label: 'Khác',
                   hint: 'Khác',
                   controller: otherController,
-                  enabled: (widget.mode == Permission.add) ? true : false,
+                  enabled: widget.mode == Permission.add,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
 
                 //Button add medical declaration
                 if (widget.mode == Permission.add)
@@ -294,11 +287,11 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTileTheme(
-                        contentPadding: EdgeInsets.only(left: 8),
+                        contentPadding: const EdgeInsets.only(left: 8),
                         child: CheckboxListTile(
                           title: Container(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: Text(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: const Text(
                                 "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
                               )),
                           value: agree,
@@ -311,17 +304,17 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           children: [
                             Text(
                               '(*)',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: CustomColors.error,
+                                color: error,
                               ),
                             ),
-                            Text(
+                            const Text(
                               ' Thông tin bắt buộc',
                               style: TextStyle(
                                 fontSize: 16,
@@ -343,7 +336,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                                 },
                           child: Text(
                             "Khai báo",
-                            style: TextStyle(color: CustomColors.white),
+                            style: TextStyle(color: white),
                           ),
                         ),
                       ),

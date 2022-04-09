@@ -41,7 +41,7 @@ class CovidData {
   }
 }
 
-RequestHelper _provider = RequestHelper(baseUrl: "https://covid19.ncsc.gov.vn");
+final RequestHelper _provider = RequestHelper(baseUrl: "https://covid19.ncsc.gov.vn");
 
 Future<CovidData> fetchCovidList() async {
   final response = await _provider.get("/api/v3/covid/national_total");

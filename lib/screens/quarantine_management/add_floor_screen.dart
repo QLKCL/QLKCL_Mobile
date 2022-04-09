@@ -44,11 +44,6 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
     super.dispose();
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   final _formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final capacityController = TextEditingController();
@@ -62,7 +57,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
       } else {
         capacityController.text = "0";
       }
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await createFloor(
         createFloorDataForm(
           name: nameController.text,
@@ -72,7 +67,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
       );
       cancel();
       showNotification(response);
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
@@ -94,7 +91,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thêm tầng'),
+      title: const Text('Thêm tầng'),
       centerTitle: true,
     );
 
@@ -110,10 +107,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -124,10 +120,10 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                             numberOfFloor: snapshot.data.length,
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           //Input fields
                           child: SingleChildScrollView(
-                            physics: ScrollPhysics(),
+                            physics: const ScrollPhysics(),
                             child: Form(
                               key: _formKey,
                               child: Column(
@@ -135,15 +131,17 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                 children: [
                                   //Add multiple floors
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           flex: 55,
                                           child: ListTileTheme(
-                                            contentPadding: EdgeInsets.all(0),
+                                            contentPadding: EdgeInsets.zero,
                                             child: CheckboxListTile(
-                                              title: Text("Thêm nhiều tầng"),
+                                              title:
+                                                  const Text("Thêm nhiều tầng"),
                                               controlAffinity:
                                                   ListTileControlAffinity
                                                       .leading,
@@ -159,66 +157,63 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                           ),
                                         ),
                                         // insert number of floor
-                                        addMultiple
-                                            ? Expanded(
-                                                flex: 45,
-                                                child: Input(
-                                                  label: 'Số tầng',
-                                                  hint: 'Số tầng',
-                                                  type: TextInputType.number,
-                                                  required: true,
-                                                  controller: myController,
-                                                ),
-                                              )
-                                            : Container(),
+                                        if (addMultiple)
+                                          Expanded(
+                                            flex: 45,
+                                            child: Input(
+                                              label: 'Số tầng',
+                                              hint: 'Số tầng',
+                                              type: TextInputType.number,
+                                              required: true,
+                                              controller: myController,
+                                            ),
+                                          )
                                       ],
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 16),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
                                     child: const Text(
                                       'Chỉnh sửa thông tin tầng',
                                       style: TextStyle(fontSize: 16),
                                     ),
                                   ),
-                                  addMultiple
-                                      ? ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemBuilder: (ctx, index) {
-                                            return Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Input(
-                                                    label: 'Tên tầng',
-                                                    hint: 'Tên tầng',
-                                                    required: true,
-                                                    onChangedFunction: (text) {
-                                                      nameList[index] = text;
-                                                    },
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                          itemCount: numOfAddedFloor,
-                                        )
-                                      : Container(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Input(
-                                                  label: 'Tên tầng',
-                                                  hint: 'Tên tầng',
-                                                  required: true,
-                                                  controller: nameController,
-                                                ),
+                                  if (addMultiple)
+                                    ListView.builder(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (ctx, index) {
+                                        return Row(
+                                          children: [
+                                            Expanded(
+                                              child: Input(
+                                                label: 'Tên tầng',
+                                                hint: 'Tên tầng',
+                                                required: true,
+                                                onChangedFunction: (text) {
+                                                  nameList[index] = text;
+                                                },
                                               ),
-                                            ],
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: numOfAddedFloor,
+                                    )
+                                  else
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Input(
+                                            label: 'Tên tầng',
+                                            hint: 'Tên tầng',
+                                            required: true,
+                                            controller: nameController,
                                           ),
                                         ),
+                                      ],
+                                    ),
                                 ],
                               ),
                             ),
@@ -228,21 +223,21 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                           margin: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

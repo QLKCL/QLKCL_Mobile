@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ListDestinationHistory extends StatefulWidget {
   static const String routeName = "/list_destination_history";
-  ListDestinationHistory({Key? key, this.code}) : super(key: key);
+  const ListDestinationHistory({Key? key, this.code}) : super(key: key);
   final String? code;
 
   @override
@@ -24,9 +24,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -36,7 +34,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -57,7 +55,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
       final newItems = await fetchDestiantionHistoryList(
           data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -83,16 +81,16 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                 (value) => _pagingController.refresh(),
               );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Thêm địa điểm",
       ),
       appBar: AppBar(
-        title: Text("Lịch sử di chuyển"),
+        title: const Text("Lịch sử di chuyển"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -101,34 +99,32 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
+              firstPageErrorIndicatorBuilder: (context) => const Center(
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => DestinationHistoryCard(
                 name: item['user']['full_name'],
                 time: (item['start_time'] != null
-                        ? "${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['start_time']).toLocal())}"
+                        ? DateFormat("dd/MM/yyyy HH:mm:ss").format(
+                            DateTime.parse(item['start_time']).toLocal())
                         : "") +
                     (item['end_time'] != null
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['end_time']).toLocal())}"

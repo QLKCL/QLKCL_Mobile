@@ -25,16 +25,11 @@ class _DestinationHistoryScreenState extends State<DestinationHistoryScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Khai báo di chuyển'),
+          title: const Text('Khai báo di chuyển'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

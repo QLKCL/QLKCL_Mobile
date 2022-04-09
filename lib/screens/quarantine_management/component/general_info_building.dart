@@ -10,7 +10,7 @@ class GeneralInfoBuilding extends StatelessWidget {
   final Building currentBuilding;
   final int numberOfFloor;
 
-  GeneralInfoBuilding({
+  const GeneralInfoBuilding({
     required this.currentQuarantine,
     required this.currentBuilding,
     required this.numberOfFloor,
@@ -38,11 +38,9 @@ class GeneralInfoBuilding extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +78,6 @@ class GeneralInfoBuilding extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -101,16 +98,13 @@ class GeneralInfoBuilding extends StatelessWidget {
                             Icon(
                               Icons.groups_rounded,
                               size: 20,
-                              color: CustomColors.primaryText,
+                              color: primaryText,
                             ),
                             const SizedBox(
                               width: 5,
                             ),
                             Text(
-                              '${currentBuilding.currentMem}' +
-                                  (currentBuilding.capacity != null
-                                      ? '/${currentBuilding.capacity}'
-                                      : '/0'),
+                              '${currentBuilding.currentMem}/${currentBuilding.capacity ?? 0}',
                               style: const TextStyle(
                                 fontSize: 16,
                               ),

@@ -4,19 +4,19 @@ import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/networking/response.dart';
 
 // TextToast
-CancelFunc Function(String) showTextToast = (text) {
+CancelFunc showTextToast(String text) {
   return BotToast.showText(
     text: text,
-    textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14.0),
-    contentPadding: EdgeInsets.all(16),
-    contentColor: CustomColors.background,
+    textStyle: TextStyle(color: primaryText, fontSize: 14),
+    contentPadding: const EdgeInsets.all(16),
+    contentColor: background,
     wrapToastAnimation: (controller, cancel, Widget child) =>
         CustomAnimationWidget(
       controller: controller,
       child: child,
     ),
   );
-};
+}
 
 class CustomAnimationWidget extends StatefulWidget {
   final AnimationController controller;
@@ -33,10 +33,10 @@ class CustomAnimationWidget extends StatefulWidget {
 class _CustomAnimationWidgetState extends State<CustomAnimationWidget> {
   static final Tween<Offset> tweenOffset = Tween<Offset>(
     begin: const Offset(0, 40),
-    end: const Offset(0, 0),
+    end: Offset.zero,
   );
 
-  static final Tween<double> tweenScale = Tween<double>(begin: 0.7, end: 1.0);
+  static final Tween<double> tweenScale = Tween<double>(begin: 0.7, end: 1);
   late Animation<double> animation;
 
   @override
@@ -68,11 +68,11 @@ class _CustomAnimationWidgetState extends State<CustomAnimationWidget> {
 }
 
 // Loading
-CancelFunc Function({String? textLoading}) showLoading = ({textLoading}) {
+CancelFunc showLoading({String? textLoading}) {
   return BotToast.showCustomLoading(toastBuilder: (cancelFunc) {
     return _CustomLoadWidget(cancelFunc: cancelFunc, textLoading: textLoading);
   });
-};
+}
 
 class _CustomLoadWidget extends StatefulWidget {
   final CancelFunc cancelFunc;
@@ -92,8 +92,8 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
 
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
@@ -125,7 +125,7 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
         children: <Widget>[
           const CircularProgressIndicator(),
           Padding(
-            padding: const EdgeInsets.only(top: 16.0),
+            padding: const EdgeInsets.only(top: 16),
             child: Text(
               widget.textLoading ?? "Loading",
             ),
@@ -137,12 +137,11 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 }
 
 // Notification
-CancelFunc Function(dynamic data,
-        {Status status, String? subTitle, int duration}) showNotification =
-    (data, {status = Status.success, subTitle, duration = 3}) {
+CancelFunc showNotification(data,
+    {Status status = Status.success, String? subTitle, int duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
-    align: Alignment(1, -1),
+    align: Alignment.topRight,
     duration: Duration(seconds: duration),
     toastBuilder: (cancel) {
       return _CustomWidget(
@@ -158,18 +157,18 @@ CancelFunc Function(dynamic data,
             (data.runtimeType == Response) ? (data as Response).message : data,
         backgroundColor: (data.runtimeType == Response)
             ? ((data as Response).status == Status.success
-                ? CustomColors.success
-                : CustomColors.error)
+                ? success
+                : error)
             : (status == Status.success
-                ? CustomColors.success
+                ? success
                 : (status == Status.warning
-                    ? CustomColors.warning
-                    : CustomColors.error)),
+                    ? warning
+                    : error)),
       );
     },
     onlyOne: false,
   );
-};
+}
 
 class _CustomWidget extends StatefulWidget {
   final CancelFunc cancelFunc;
@@ -190,7 +189,7 @@ class _CustomWidget extends StatefulWidget {
       this.subTitle,
       this.titleStyle = const TextStyle(
         color: Colors.white,
-        fontSize: 16.0,
+        fontSize: 16,
       ),
       this.subTitleStyle = const TextStyle(color: Colors.white),
       this.backgroundColor,
@@ -214,14 +213,14 @@ class _CustomWidgetState extends State<_CustomWidget> {
       child: Wrap(
         children: <Widget>[
           Card(
-            color: widget.backgroundColor ?? CustomColors.success,
+            color: widget.backgroundColor ?? success,
             shape: widget.borderRadius == null
                 ? null
                 : RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(widget.borderRadius!),
                   ),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -229,13 +228,12 @@ class _CustomWidgetState extends State<_CustomWidget> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
                           widget.title,
                           style: widget.titleStyle,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         if (widget.subTitle != null)

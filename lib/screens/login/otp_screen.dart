@@ -16,7 +16,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class Otp extends StatefulWidget {
   static const String routeName = "/otp";
-  Otp({Key? key, required this.email}) : super(key: key);
+  const Otp({Key? key, required this.email}) : super(key: key);
   final String email;
 
   @override
@@ -50,9 +50,9 @@ class _OtpState extends State<Otp> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -71,7 +71,7 @@ class _OtpState extends State<Otp> {
                   child: Card(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Container(
@@ -83,7 +83,7 @@ class _OtpState extends State<Otp> {
                         ),
                         Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Text(
                             "Mã xác nhận đã được gửi qua email",
                             style: Theme.of(context).textTheme.subtitle1,
@@ -93,7 +93,7 @@ class _OtpState extends State<Otp> {
                           key: _formKey,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 70),
+                                vertical: 8, horizontal: 70),
                             child: PinCodeTextField(
                               appContext: context,
                               length: 4,
@@ -106,7 +106,8 @@ class _OtpState extends State<Otp> {
                                 activeFillColor: Colors.white,
                               ),
                               cursorColor: Colors.black,
-                              animationDuration: Duration(milliseconds: 300),
+                              animationDuration:
+                                  const Duration(milliseconds: 300),
                               errorAnimationController: errorController,
                               controller: textEditingController,
                               keyboardType: TextInputType.number,
@@ -133,35 +134,31 @@ class _OtpState extends State<Otp> {
                         Container(
                           margin: const EdgeInsets.all(16),
                           child: ElevatedButton(
-                            onPressed: () {
-                              _submit();
-                            },
+                            onPressed: _submit,
                             child: Text(
                               'Xác nhận OTP',
-                              style: TextStyle(color: CustomColors.white),
+                              style: TextStyle(color: white),
                             ),
                           ),
                         ),
                         Text.rich(
                           TextSpan(
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text: "Chưa nhận được mã? ",
                               ),
                               TextSpan(
                                 text: 'Gửi lại mã',
                                 style: TextStyle(
-                                    color: CustomColors.primary,
+                                    color: primary,
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    _reSend();
-                                  },
+                                  ..onTap = _reSend,
                               )
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                       ],
@@ -184,18 +181,20 @@ class _OtpState extends State<Otp> {
           hasError = false;
         },
       );
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response =
           await sendOtp(sendOtpDataForm(email: widget.email, otp: otp));
       cancel();
       if (response.status == Status.success) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreatePassword(
-                      email: widget.email,
-                      otp: response.data,
-                    )));
+        if (mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreatePassword(
+                        email: widget.email,
+                        otp: response.data,
+                      )));
+        }
       } else {
         showNotification(response.message, status: Status.error);
       }
@@ -209,7 +208,7 @@ class _OtpState extends State<Otp> {
   void _reSend() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response =
           await requestOtp(requestOtpDataForm(email: widget.email));
       cancel();

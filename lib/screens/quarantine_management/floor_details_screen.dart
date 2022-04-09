@@ -38,11 +38,6 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tầng"),
@@ -67,7 +62,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                       fetchRoomList({'quarantine_floor': currentFloor.id});
                 }));
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],
@@ -83,10 +78,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -98,7 +92,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                           numOfRoom: snapshot.data.length,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
@@ -114,9 +108,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );

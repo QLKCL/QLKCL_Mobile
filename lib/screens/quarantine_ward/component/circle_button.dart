@@ -4,23 +4,23 @@ class CircleButton extends StatelessWidget {
   final GestureTapCallback onTap;
   final IconData iconData;
 
-  const CircleButton({ required this.onTap, required this.iconData}) : super();
+  const CircleButton({required this.onTap, required this.iconData}) : super();
 
   @override
   Widget build(BuildContext context) {
-    double size = 20.0;
+    const double size = 20;
 
-    return new InkResponse(
+    return InkResponse(
       onTap: onTap,
-      child: new Container(
+      child: Container(
         alignment: Alignment.center,
         width: size,
         height: size,
-        decoration: new BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.black,
           shape: BoxShape.circle,
         ),
-        child: new Icon(
+        child: Icon(
           iconData,
           color: Colors.white,
           size: 15,

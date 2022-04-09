@@ -8,8 +8,8 @@ KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
 String keyValueToJson(KeyValue data) => json.encode(data.toJson());
 
 class KeyValue {
-  var name;
-  var id;
+  dynamic name;
+  dynamic id;
   KeyValue({required this.name, required this.id});
   factory KeyValue.fromJson(Map<String, dynamic> json) => KeyValue(
         id: json["code"] ?? json["id"],
@@ -34,7 +34,7 @@ class KeyValue {
 }
 
 Future<List<KeyValue>> fetchCountry() async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListCountry, null);
   final dataResponse = response['data'];
   if (dataResponse != null) {
@@ -44,7 +44,7 @@ Future<List<KeyValue>> fetchCountry() async {
 }
 
 Future<List<KeyValue>> fetchCity(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListCity, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
@@ -54,7 +54,7 @@ Future<List<KeyValue>> fetchCity(data) async {
 }
 
 Future<List<KeyValue>> fetchDistrict(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListDistrict, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
@@ -64,7 +64,7 @@ Future<List<KeyValue>> fetchDistrict(data) async {
 }
 
 Future<List<KeyValue>> fetchWard(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListWard, data);
   final dataResponse = response['data'];
   if (dataResponse != null) {
@@ -74,7 +74,7 @@ Future<List<KeyValue>> fetchWard(data) async {
 }
 
 Future<List<KeyValue>> fetchQuarantineWard(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListQuarantine, data);
 
   if (response['data'] != null) {
@@ -87,7 +87,7 @@ Future<List<KeyValue>> fetchQuarantineWard(data) async {
 }
 
 Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListBuilding, data);
 
   if (response['data'] != null) {
@@ -100,7 +100,7 @@ Future<List<KeyValue>> fetchQuarantineBuilding(data) async {
 }
 
 Future<List<KeyValue>> fetchQuarantineFloor(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListFloor, data);
 
   if (response['data'] != null) {
@@ -113,7 +113,7 @@ Future<List<KeyValue>> fetchQuarantineFloor(data) async {
 }
 
 Future<List<KeyValue>> fetchQuarantineRoom(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListRoom, data);
 
   if (response['data'] != null) {
@@ -128,17 +128,17 @@ Future<List<KeyValue>> fetchQuarantineRoom(data) async {
 Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   http.Response? response;
   try {
-    response = await http.post(
-        Uri.parse(Api.baseUrl + Api.getListQuarantineNoToken),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: data);
+    response =
+        await http.post(Uri.parse(Api.baseUrl + Api.getListQuarantineNoToken),
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: data);
   } catch (e) {
     print('Error: $e');
   }
   if (response != null) {
-    var resp = response.body.toString();
+    final resp = response.body;
     final dataResponse = jsonDecode(resp);
     if (dataResponse != null) {
       return KeyValue.fromJsonList(dataResponse['data']);
@@ -148,7 +148,7 @@ Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
 }
 
 Future<List<KeyValue>> fetchNotMemberList(data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListNotMem, data);
   final dataResponse = response['data'];
 

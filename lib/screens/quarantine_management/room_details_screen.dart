@@ -47,7 +47,7 @@ class RoomDetailsScreen extends StatefulWidget {
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late Future<FilterResponse<FilterMember>> futureMemberList;
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  late MemberDataSource memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
   double pageCount = 0;
@@ -69,11 +69,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết phòng"),
@@ -85,9 +80,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) => EditRoomScreen(
-                  currentBuilding: widget.currentBuilding!,
-                  currentQuarantine: widget.currentQuarantine!,
-                  currentFloor: widget.currentFloor!,
+                  currentBuilding: widget.currentBuilding,
+                  currentQuarantine: widget.currentQuarantine,
+                  currentFloor: widget.currentFloor,
                   currentRoom: currentRoom,
                 ),
               ),
@@ -109,7 +104,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               ),
             );
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],
@@ -125,15 +120,15 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   showLoadingIndicator = false;
-                  _memberDataSource =
+                  memberDataSource =
                       MemberDataSource(data: snapshot.data!.data);
                   return Responsive.isDesktopLayout(context)
                       ? listMemberTable(appBar)
                       : listMemberCard(appBar, snapshot.data!);
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );
@@ -181,10 +176,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   Widget listMemberCard(
       PreferredSizeWidget appBar, FilterResponse<FilterMember> data) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Container(
+        SizedBox(
             height: (MediaQuery.of(context).size.height -
                     appBar.preferredSize.height -
                     MediaQuery.of(context).padding.top) *
@@ -195,7 +189,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentQuarantine: widget.currentQuarantine!,
               currentRoom: currentRoom,
             )),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           height: (MediaQuery.of(context).size.height -
                   appBar.preferredSize.height -
@@ -219,9 +213,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                                     )));
                       },
                       menus: menus(context, data.data[index])),
-                  index == data.data.length - 1
-                      ? SizedBox(height: 70)
-                      : Container(),
+                  if (index == data.data.length - 1) const SizedBox(height: 70),
                 ],
               );
             },
@@ -234,10 +226,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget listMemberTable(PreferredSizeWidget appBar) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
             height: (MediaQuery.of(context).size.height -
                     appBar.preferredSize.height -
                     MediaQuery.of(context).padding.top) *
@@ -248,7 +238,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               currentQuarantine: widget.currentQuarantine!,
               currentRoom: currentRoom,
             )),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           height: (MediaQuery.of(context).size.height -
                       appBar.preferredSize.height -
@@ -277,8 +267,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
-      source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
+      source: memberDataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -289,95 +278,96 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
+            minimumWidth: 50,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
             columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
         GridColumn(
             columnName: 'phoneNumber',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineLocation',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Phòng',
+                child: const Text('Phòng',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Diện cách ly',
+                child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày cách ly',
+                child: const Text('Ngày cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedFinishExpectedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày dự kiến hoàn thành',
+                child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Sức khỏe',
+                child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Xét nghiệm',
+                child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -393,8 +383,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
-            alignment: Alignment.center,
+          child: const Align(
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -474,10 +463,10 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: () {
@@ -491,7 +480,7 @@ class MemberDataSource extends DataGridSource {
                 child: Text(
                   row.getCells()[0].value.toString(),
                   style: TextStyle(
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -500,7 +489,7 @@ class MemberDataSource extends DataGridSource {
           },
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[1].value != null
@@ -509,36 +498,36 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child:
               Text(row.getCells()[2].value.toString() == "MALE" ? "Nam" : "Nữ"),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             alignment: Alignment.center,
             child: Text(
               row.getCells()[3].value.toString(),
             )),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(row.getCells()[5].value.toString()),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(row.getCells()[6].value.toString()),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[7].value != null
@@ -547,7 +536,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[8].value != null
@@ -556,7 +545,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,
@@ -564,28 +553,28 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
-                ? CustomColors.error.withOpacity(0.25)
+                ? error.withOpacity(0.25)
                 : row.getCells()[9].value.toString() == "UNWELL"
-                    ? CustomColors.warning.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? warning.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
-                    style: TextStyle(color: CustomColors.error),
+                    style: TextStyle(color: error),
                   )
                 : row.getCells()[9].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
-                        style: TextStyle(color: CustomColors.warning),
+                        style: TextStyle(color: warning),
                       )
                     : Text(
                         "Bình thường",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,
@@ -593,31 +582,31 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[10].value == null
-                ? CustomColors.secondaryText.withOpacity(0.25)
+                ? secondaryText.withOpacity(0.25)
                 : row.getCells()[10].value == true
-                    ? CustomColors.error.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? error.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[10].value == null
                 ? Text(
                     "Chưa có",
-                    style: TextStyle(color: CustomColors.secondaryText),
+                    style: TextStyle(color: secondaryText),
                   )
                 : row.getCells()[10].value == true
                     ? Text(
                         "Dương tính",
-                        style: TextStyle(color: CustomColors.error),
+                        style: TextStyle(color: error),
                       )
                     : Text(
                         "Âm tính",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     members.safeFirstWhere(
@@ -633,7 +622,7 @@ Widget menus(BuildContext context, FilterMember item) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
-      color: CustomColors.disableText,
+      color: disableText,
     ),
     onSelected: (result) {
       if (result == 'update_info') {
@@ -691,7 +680,7 @@ Widget menus(BuildContext context, FilterMember item) {
                     )));
       }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
         child: Text('Cập nhật thông tin'),
         value: "update_info",

@@ -100,12 +100,12 @@ class QuarantineHistory {
 }
 
 Future<List<QuarantineHistory>> fetchQuarantineHistoryList({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.filterQuarantineHistory, data);
 
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
-      List<QuarantineHistory> itemList = response['data']
+      final List<QuarantineHistory> itemList = response['data']
           .map<QuarantineHistory>((json) => QuarantineHistory.fromJson(json))
           .toList();
       return itemList;

@@ -9,7 +9,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddMember extends StatefulWidget {
   static const String routeName = "/add_member";
-  AddMember({
+  const AddMember({
     Key? key,
     this.quarantineWard,
     this.quarantineBuilding,
@@ -33,7 +33,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -46,7 +46,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thêm người cách ly"),
+          title: const Text("Thêm người cách ly"),
           centerTitle: true,
           actions: [
             if (_tabController.index == 0)
@@ -54,7 +54,8 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                 onPressed: () {
                   Navigator.of(context)
                       .push(
-                        MaterialPageRoute(builder: (context) => QrCodeScan()),
+                        MaterialPageRoute(
+                            builder: (context) => const QrCodeScan()),
                       )
                       .then((value) => setState(() {
                             if (value != null) {
@@ -62,14 +63,14 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                             }
                           }));
                 },
-                icon: Icon(Icons.photo_camera_front_outlined),
+                icon: const Icon(Icons.photo_camera_front_outlined),
                 tooltip: "Nhập dữ liệu từ CCCD",
               ),
           ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],

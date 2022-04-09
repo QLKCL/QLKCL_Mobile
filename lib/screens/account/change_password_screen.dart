@@ -11,7 +11,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class ChangePassword extends StatefulWidget {
   static const String routeName = "/change_password";
-  ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -23,9 +23,9 @@ class _ChangePasswordState extends State<ChangePassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -72,7 +72,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
@@ -110,12 +110,10 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           Container(
             margin: const EdgeInsets.all(16),
             child: ElevatedButton(
-              onPressed: () {
-                _submit();
-              },
+              onPressed: _submit,
               child: Text(
                 'Xác nhận',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -135,7 +133,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         final response = await changePass(changePassDataForm(
             oldPassword: oldPassController.text,
             newPassword: passController.text,
@@ -143,7 +141,9 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
-          Navigator.pop(context);
+          if (mounted) {
+            Navigator.pop(context);
+          }
         }
       }
     }

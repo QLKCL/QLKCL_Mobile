@@ -6,6 +6,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -22,7 +23,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class HospitalizedMember extends StatefulWidget {
-  HospitalizedMember({Key? key}) : super(key: key);
+  const HospitalizedMember({Key? key}) : super(key: key);
 
   @override
   _HospitalizedMemberState createState() => _HospitalizedMemberState();
@@ -33,7 +34,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,9 +44,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -55,7 +54,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -83,7 +82,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
         'quarantined_status_list': "HOSPITALIZE"
       });
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -108,14 +107,13 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                   if (snapshot.data!.data.isEmpty) {
                     return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
-                          Text('Không có dữ liệu'),
+                          const Text('Không có dữ liệu'),
                         ],
                       ),
                     );
@@ -123,48 +121,44 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
               }
-              return Align(
-                alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+              return const Align(
+                child: CircularProgressIndicator(),
               );
             },
           )
-        : listMemberCard(_pagingController);
+        : listMemberCard();
   }
 
-  Widget listMemberCard(_pagingController) {
+  Widget listMemberCard() {
     return MediaQuery.removePadding(
       context: context,
       removeTop: true,
       child: RefreshIndicator(
-        onRefresh: () => Future.sync(
-          () => _pagingController.refresh(),
-        ),
+        onRefresh: () => Future.sync(_pagingController.refresh),
         child: PagedListView<int, FilterMember>(
-          padding: EdgeInsets.only(bottom: 70),
+          padding: const EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
             noItemsFoundIndicatorBuilder: (context) => Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                     child: Image.asset("assets/images/no_data.png"),
                   ),
-                  Text('Không có dữ liệu'),
+                  const Text('Không có dữ liệu'),
                 ],
               ),
             ),
-            firstPageErrorIndicatorBuilder: (context) => Center(
+            firstPageErrorIndicatorBuilder: (context) => const Center(
               child: Text('Có lỗi xảy ra'),
             ),
             itemBuilder: (context, item, index) => MemberCard(
@@ -199,17 +193,16 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                   child: buildStack(constraints),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 60,
                 width: constraints.maxWidth,
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  direction: Axis.horizontal,
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -226,8 +219,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
-      columnWidthMode: ColumnWidthMode.none,
+      source: memberDataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -238,87 +230,88 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
+            minimumWidth: 50,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
             columnWidthMode: ColumnWidthMode.fitByCellValue,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
         GridColumn(
             columnName: 'phoneNumber',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Diện cách ly',
+                child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày cách ly',
+                child: const Text('Ngày cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedFinishExpectedAt',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Ngày dự kiến hoàn thành',
+                child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Sức khỏe',
+                child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Xét nghiệm',
+                child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -334,8 +327,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
-            alignment: Alignment.center,
+          child: const Align(
             child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
@@ -382,7 +374,7 @@ class MemberDataSource extends DataGridSource {
 
   @override
   Future<void> handleRefresh() async {
-    int currentPageIndex = _dataPagerController.selectedPageIndex;
+    final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
@@ -446,10 +438,10 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return Container(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               alignment: Alignment.centerLeft,
               child: GestureDetector(
                 onTap: () {
@@ -463,7 +455,7 @@ class MemberDataSource extends DataGridSource {
                 child: Text(
                   row.getCells()[0].value.toString(),
                   style: TextStyle(
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -472,7 +464,7 @@ class MemberDataSource extends DataGridSource {
           },
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[1].value != null
@@ -481,31 +473,31 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child:
               Text(row.getCells()[2].value.toString() == "MALE" ? "Nam" : "Nữ"),
         ),
         Container(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8),
             alignment: Alignment.center,
             child: Text(
               row.getCells()[3].value.toString(),
             )),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
             row.getCells()[4].value.toString(),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(row.getCells()[5].value.toString()),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[6].value != null
@@ -514,7 +506,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Text(
             row.getCells()[7].value != null
@@ -523,7 +515,7 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,
@@ -531,28 +523,28 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[8].value.toString() == "SERIOUS"
-                ? CustomColors.error.withOpacity(0.25)
+                ? error.withOpacity(0.25)
                 : row.getCells()[8].value.toString() == "UNWELL"
-                    ? CustomColors.warning.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? warning.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[8].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
-                    style: TextStyle(color: CustomColors.error),
+                    style: TextStyle(color: error),
                   )
                 : row.getCells()[8].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
-                        style: TextStyle(color: CustomColors.warning),
+                        style: TextStyle(color: warning),
                       )
                     : Text(
                         "Bình thường",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
         Container(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
           child: Badge(
             elevation: 0,
@@ -560,31 +552,31 @@ class MemberDataSource extends DataGridSource {
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             badgeColor: row.getCells()[9].value == null
-                ? CustomColors.secondaryText.withOpacity(0.25)
+                ? secondaryText.withOpacity(0.25)
                 : row.getCells()[9].value == true
-                    ? CustomColors.error.withOpacity(0.25)
-                    : CustomColors.success.withOpacity(0.25),
+                    ? error.withOpacity(0.25)
+                    : success.withOpacity(0.25),
             badgeContent: row.getCells()[9].value == null
                 ? Text(
                     "Chưa có",
-                    style: TextStyle(color: CustomColors.secondaryText),
+                    style: TextStyle(color: secondaryText),
                   )
                 : row.getCells()[9].value == true
                     ? Text(
                         "Dương tính",
-                        style: TextStyle(color: CustomColors.error),
+                        style: TextStyle(color: error),
                       )
                     : Text(
                         "Âm tính",
-                        style: TextStyle(color: CustomColors.success),
+                        style: TextStyle(color: success),
                       ),
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(Duration.zero, () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
@@ -600,7 +592,7 @@ Widget menus(BuildContext context, FilterMember item) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
-      color: CustomColors.disableText,
+      color: disableText,
     ),
     onSelected: (result) async {
       if (result == 'update_info') {
@@ -633,9 +625,17 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      } else if (result == 'move_hospital') {}
+      } else if (result == 'move_hospital') {
+      } else if (result == 'quarantine_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListQuarantineHistory(
+                      code: item.code,
+                    )));
+      }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
         child: Text('Cập nhật thông tin'),
         value: "update_info",
@@ -655,6 +655,10 @@ Widget menus(BuildContext context, FilterMember item) {
       PopupMenuItem(
         child: Text('Chuyển viện'),
         value: "move_hospital",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử cách ly'),
+        value: "quarantine_history",
       ),
     ],
   );

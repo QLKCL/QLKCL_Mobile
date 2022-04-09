@@ -140,43 +140,47 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     }
     super.initState();
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineBuildingList = value;
         });
+      }
     });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineFloorList = value;
         });
+      }
     });
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineRoomList = value;
         });
+      }
     });
   }
 
@@ -191,12 +195,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
-              required:
-                  (widget.mode == Permission.view || _role == 5) ? false : true,
+              required: widget.mode != Permission.view && _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineWardList.length == 0
+              onFind: quarantineWardList.isEmpty
                   ? (String? filter) => fetchQuarantineWard({
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'is_full': false,
                       })
                   : null,
@@ -226,14 +229,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 });
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
-                  'page_size': PAGE_SIZE_MAX,
+                  'page_size': pageSizeMax,
                   'is_full': false,
                 }).then((data) => setState(() {
                       quarantineBuildingList = data;
                     }));
               },
-              enabled:
-                  (widget.mode == Permission.add && _role != 5) ? true : false,
+              enabled: widget.mode == Permission.add && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -248,16 +250,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Tòa',
               hint: 'Chọn tòa',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineBuildingList.length == 0
+              onFind: quarantineBuildingList.isEmpty
                   ? (String? filter) => fetchQuarantineBuilding({
                         'quarantine_ward': quarantineWardController.text,
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'search': filter,
                         'is_full': false,
                       })
@@ -286,14 +286,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 });
                 fetchQuarantineFloor({
                   'quarantine_building': quarantineBuildingController.text,
-                  'page_size': PAGE_SIZE_MAX,
+                  'page_size': pageSizeMax,
                   'is_full': false,
                 }).then((data) => setState(() {
                       quarantineFloorList = data;
                     }));
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -308,17 +307,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Tầng',
               hint: 'Chọn tầng',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineFloorList.length == 0
+              onFind: quarantineFloorList.isEmpty
                   ? (String? filter) => fetchQuarantineFloor({
                         'quarantine_building':
                             quarantineBuildingController.text,
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'search': filter,
                         'is_full': false,
                       })
@@ -344,14 +341,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 });
                 fetchQuarantineRoom({
                   'quarantine_floor': quarantineFloorController.text,
-                  'page_size': PAGE_SIZE_MAX,
+                  'page_size': pageSizeMax,
                   'is_full': false,
                 }).then((data) => setState(() {
                       quarantineRoomList = data;
                     }));
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -366,16 +362,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             DropdownInput<KeyValue>(
               label: 'Phòng',
               hint: 'Chọn phòng',
-              required: (widget.mode == Permission.view ||
-                      widget.mode == Permission.change_status ||
-                      _role == 5)
-                  ? false
-                  : true,
+              required: widget.mode != Permission.view &&
+                  widget.mode != Permission.changeStatus &&
+                  _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineRoomList.length == 0
+              onFind: quarantineRoomList.isEmpty
                   ? (String? filter) => fetchQuarantineRoom({
                         'quarantine_floor': quarantineFloorController.text,
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'search': filter,
                         'is_full': false,
                       })
@@ -396,8 +390,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineRoom = null;
                 });
               },
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -413,7 +406,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
               itemValue: labelList,
-              mode: Mode.MENU,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
               selectedItem: labelList
@@ -425,23 +417,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   labelController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.add ||
-                      (widget.mode == Permission.edit &&
-                          (_role != 5 || labelController.text == "")))
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.add ||
+                  (widget.mode == Permission.edit &&
+                      (_role != 5 || labelController.text == "")),
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
               controller: quarantinedAtController,
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
             ),
             NewDateInput(
               label: 'Thời gian dự kiến hoàn thành cách ly',
               controller: quarantinedFinishExpectedAtController,
-              enabled:
-                  (widget.mode != Permission.view && _role != 5) ? true : false,
+              enabled: widget.mode != Permission.view && _role != 5,
             ),
             Input(
               label: "Tình trạng bệnh",
@@ -455,9 +443,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 8),
+                  contentPadding: const EdgeInsets.only(left: 8),
                   child: CheckboxListTile(
-                    title: Text("Đã từng nhiễm COVID-19"),
+                    title: const Text("Đã từng nhiễm COVID-19"),
                     controlAffinity: ListTileControlAffinity.leading,
                     value: _isPositiveTestedBefore,
                     onChanged: (bool? value) {
@@ -492,7 +480,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       value.map((e) => e.id).join(",");
                 }
               },
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode != Permission.view,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
                   : Mode.BOTTOM_SHEET,
@@ -506,7 +494,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             Input(
               label: 'Bệnh nền khác',
               controller: otherBackgroundDiseaseController,
-              enabled: widget.mode != Permission.view ? true : false,
+              enabled: widget.mode != Permission.view,
             ),
             if (widget.mode != Permission.view)
               Container(
@@ -518,10 +506,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       '(*)',
                       style: TextStyle(
                         fontSize: 16,
-                        color: CustomColors.error,
+                        color: error,
                       ),
                     ),
-                    Text(
+                    const Text(
                       ' Thông tin bắt buộc',
                       style: TextStyle(
                         fontSize: 16,
@@ -534,14 +522,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               Container(
                   margin: const EdgeInsets.all(16),
                   child: Row(children: [
-                    if (widget.mode == Permission.change_status &&
+                    if (widget.mode == Permission.changeStatus &&
                         widget.quarantineData?.customUserCode != null)
-                      Spacer(),
-                    if (widget.mode == Permission.change_status &&
+                      const Spacer(),
+                    if (widget.mode == Permission.changeStatus &&
                         widget.quarantineData?.customUserCode != null)
                       OutlinedButton(
                         onPressed: () async {
-                          CancelFunc cancel = showLoading();
+                          final CancelFunc cancel = showLoading();
                           final response = await denyMember({
                             'member_codes':
                                 widget.quarantineData!.customUserCode.toString()
@@ -549,18 +537,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           cancel();
                           showNotification(response);
                         },
-                        child: Text("Từ chối"),
+                        child: const Text("Từ chối"),
                       ),
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
-                      onPressed: () {
-                        _submit();
-                      },
-                      child: widget.mode == Permission.change_status
-                          ? Text("Xét duyệt")
-                          : Text('Lưu'),
+                      onPressed: _submit,
+                      child: widget.mode == Permission.changeStatus
+                          ? const Text("Xét duyệt")
+                          : const Text('Lưu'),
                     ),
-                    Spacer(),
+                    const Spacer(),
                   ])),
           ],
         ),
@@ -571,8 +557,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      if (widget.mode == Permission.change_status) {
-        CancelFunc cancel = showLoading();
+      if (widget.mode == Permission.changeStatus) {
+        final CancelFunc cancel = showLoading();
         final response = await acceptOneMember(acceptOneMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: quarantineRoomController.text,
@@ -582,11 +568,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         cancel();
         showNotification(response);
       } else {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         final updateResponse = await updateMember(updateMemberDataForm(
           code: (widget.mode == Permission.add &&
-                  MemberPersonalInfo.userCode != null)
-              ? MemberPersonalInfo.userCode
+                  MemberPersonalInfo.userCode != null &&
+                  MemberPersonalInfo.userCode != "")
+              ? MemberPersonalInfo.userCode!
               : ((widget.quarantineData != null &&
                       widget.quarantineData?.customUserCode != null)
                   ? widget.quarantineData!.customUserCode.toString()

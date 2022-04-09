@@ -21,10 +21,10 @@ class FloatingModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Center(
-      child: Container(
+      child: SizedBox(
         width: maxMobileSize,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Material(
             color: backgroundColor,
             clipBehavior: Clip.antiAlias,
@@ -65,7 +65,7 @@ Future memberFilter(
 }) {
   // Using Wrap makes the bottom sheet height the height of the content.
   // Otherwise, the height will be half the height of the screen.
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -84,9 +84,9 @@ Future memberFilter(
           itemValue: quarantineWardList,
           selectedItem: quarantineWardList.safeFirstWhere(
               (type) => type.id.toString() == quarantineWardController.text),
-          onFind: quarantineWardList.length == 0
+          onFind: quarantineWardList.isEmpty
               ? (String? filter) => fetchQuarantineWard({
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                   })
               : null,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
@@ -106,7 +106,7 @@ Future memberFilter(
             });
             fetchQuarantineBuilding({
               'quarantine_ward': quarantineWardController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineBuildingList = data;
                 }));
@@ -120,10 +120,10 @@ Future memberFilter(
           itemValue: quarantineBuildingList,
           selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
               type.id.toString() == quarantineBuildingController.text),
-          onFind: quarantineBuildingList.length == 0
+          onFind: quarantineBuildingList.isEmpty
               ? (String? filter) => fetchQuarantineBuilding({
                     'quarantine_ward': quarantineWardController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -142,7 +142,7 @@ Future memberFilter(
             });
             fetchQuarantineFloor({
               'quarantine_building': quarantineBuildingController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineFloorList = data;
                 }));
@@ -156,10 +156,10 @@ Future memberFilter(
           itemValue: quarantineFloorList,
           selectedItem: quarantineFloorList.safeFirstWhere(
               (type) => type.id.toString() == quarantineFloorController.text),
-          onFind: quarantineFloorList.length == 0
+          onFind: quarantineFloorList.isEmpty
               ? (String? filter) => fetchQuarantineFloor({
                     'quarantine_building': quarantineBuildingController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -176,7 +176,7 @@ Future memberFilter(
             });
             fetchQuarantineRoom({
               'quarantine_floor': quarantineFloorController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineRoomList = data;
                 }));
@@ -190,10 +190,10 @@ Future memberFilter(
           itemValue: quarantineRoomList,
           selectedItem: quarantineRoomList.safeFirstWhere(
               (type) => type.id.toString() == quarantineRoomController.text),
-          onFind: quarantineRoomList.length == 0
+          onFind: quarantineRoomList.isEmpty
               ? (String? filter) => fetchQuarantineRoom({
                     'quarantine_floor': quarantineFloorController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -223,7 +223,6 @@ Future memberFilter(
           label: 'Diện cách ly',
           hint: 'Chọn diện cách ly',
           itemValue: labelList,
-          mode: Mode.MENU,
           dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
@@ -246,7 +245,6 @@ Future memberFilter(
           label: 'Tình trạng sức khỏe',
           hint: 'Chọn tình trạng sức khỏe',
           itemValue: medDeclValueList,
-          mode: Mode.MENU,
           dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
@@ -269,7 +267,6 @@ Future memberFilter(
           label: 'Kết quả xét nghiệm',
           hint: 'Chọn kết quả xét nghiệm',
           itemValue: testValueWithBoolList,
-          mode: Mode.MENU,
           dropdownBuilder: customDropDown,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
           itemAsString: (KeyValue? u) => u!.name,
@@ -292,7 +289,7 @@ Future memberFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -307,9 +304,9 @@ Future memberFilter(
                   onSubmit!(quarantineWardList, [], [], [], false);
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
@@ -322,9 +319,9 @@ Future memberFilter(
                   );
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -335,10 +332,9 @@ Future memberFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -364,7 +360,7 @@ Future testFilter(
   required void Function()? onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -446,7 +442,7 @@ Future testFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -459,18 +455,18 @@ Future testFilter(
                   onSubmit!();
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
                   onSubmit!();
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -481,10 +477,9 @@ Future testFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,
@@ -519,7 +514,7 @@ Future quarantineFilter(
       onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
-  var filterContent = StatefulBuilder(builder:
+  final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
       children: <Widget>[
@@ -537,7 +532,7 @@ Future quarantineFilter(
           itemValue: cityList,
           selectedItem: cityList.safeFirstWhere(
               (type) => type.id.toString() == cityController.text),
-          onFind: cityList.length == 0
+          onFind: cityList.isEmpty
               ? (String? filter) => fetchCity({'country_code': 'VNM'})
               : null,
           onChanged: (value) {
@@ -577,7 +572,7 @@ Future quarantineFilter(
           itemValue: districtList,
           selectedItem: districtList.safeFirstWhere(
               (type) => type.id.toString() == districtController.text),
-          onFind: districtList.length == 0
+          onFind: districtList.isEmpty
               ? (String? filter) =>
                   fetchDistrict({'city_id': cityController.text})
               : null,
@@ -616,7 +611,7 @@ Future quarantineFilter(
           itemValue: wardList,
           selectedItem: wardList.safeFirstWhere(
               (type) => type.id.toString() == wardController.text),
-          onFind: wardList.length == 0
+          onFind: wardList.isEmpty
               ? (String? filter) =>
                   fetchWard({'district_id': districtController.text})
               : null,
@@ -649,7 +644,7 @@ Future quarantineFilter(
             itemValue: managerList,
             selectedItem: managerList.safeFirstWhere(
                 (type) => type.id == mainManagerController.text),
-            onFind: managerList.length == 0
+            onFind: managerList.isEmpty
                 ? (String? filter) =>
                     fetchNotMemberList({'role_name_list': 'MANAGER'})
                 : null,
@@ -677,9 +672,9 @@ Future quarantineFilter(
         //   crossAxisAlignment: CrossAxisAlignment.start,
         //   children: [
         //     ListTileTheme(
-        //       contentPadding: EdgeInsets.only(left: 8),
+        //       contentPadding: const EdgeInsets.only(left: 8),
         //       child: CheckboxListTile(
-        //         title: Text("Quản lý bởi tôi"),
+        //         title: const Text("Quản lý bởi tôi"),
         //         controlAffinity: ListTileControlAffinity.leading,
         //         value: myQuarantine,
         //         onChanged: (bool? value) {
@@ -693,7 +688,7 @@ Future quarantineFilter(
           margin: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Spacer(),
+              const Spacer(),
               OutlinedButton(
                 onPressed: () {
                   // Respond to button press
@@ -704,9 +699,9 @@ Future quarantineFilter(
                   onSubmit!(cityList, [], [], false);
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   // Respond to button press
@@ -718,9 +713,9 @@ Future quarantineFilter(
                   );
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -731,10 +726,9 @@ Future quarantineFilter(
   return !useCustomBottomSheetMode
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           useRootNavigator: !Responsive.isDesktopLayout(context),
           context: context,

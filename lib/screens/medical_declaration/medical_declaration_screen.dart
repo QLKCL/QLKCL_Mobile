@@ -25,16 +25,11 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Khai báo y tế'),
+          title: const Text('Khai báo y tế'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

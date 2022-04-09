@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/constant.dart';
 class ConfirmDetailMember extends StatefulWidget {
   static const String routeName = "/confirm_member";
   final String? code;
-  ConfirmDetailMember({Key? key, this.code}) : super(key: key);
+  const ConfirmDetailMember({Key? key, this.code}) : super(key: key);
 
   @override
   _ConfirmDetailMemberState createState() => _ConfirmDetailMemberState();
@@ -33,13 +33,8 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
     } else {
       futureMember = fetchCustomUser();
     }
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   _handleTabChange() {
@@ -51,20 +46,20 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Duyệt người cách ly"),
+          title: const Text("Duyệt người cách ly"),
           centerTitle: true,
           // actions: [
           //   if (_tabController.index == 0)
           //     IconButton(
           //       onPressed: () {},
-          //       icon: Icon(Icons.qr_code_scanner),
+          //       icon: const Icon(Icons.qr_code_scanner),
           //       tooltip: "Nhập dữ liệu từ CCCD",
           //     ),
           // ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],
@@ -96,7 +91,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
                     ),
                     MemberQuarantineInfo(
                       quarantineData: quarantineData,
-                      mode: Permission.change_status,
+                      mode: Permission.changeStatus,
                     ),
                   ],
                 );

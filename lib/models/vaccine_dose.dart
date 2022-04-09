@@ -79,13 +79,13 @@ class Vaccine {
 }
 
 Future<dynamic> fetchVaccineDose({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getVaccineDose, data);
   return response["data"];
 }
 
 Future<dynamic> fetchVaccineDoseList({data}) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.filterVaccineDose, data);
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -207,7 +207,7 @@ class VaccinatedInfoe {
         vaccineName: json["vaccineName"],
         injectionDate: json["injectionDate"],
         injectionPlace: json["injectionPlace"],
-        batchNumber: json["batchNumber"] == null ? null : json["batchNumber"],
+        batchNumber: json["batchNumber"],
       );
 
   Map<String, dynamic> toJson() => {

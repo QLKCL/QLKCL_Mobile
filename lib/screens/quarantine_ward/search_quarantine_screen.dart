@@ -40,9 +40,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +50,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -61,28 +59,32 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
     super.initState();
     fetchCity({'country_code': 'VNM'}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _wardList = value;
         });
+      }
     });
     fetchNotMemberList({'role_name_list': 'MANAGER'}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           managerList = value;
         });
+      }
     });
   }
 
@@ -109,7 +111,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         ),
       );
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -126,7 +128,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          titleSpacing: 0.0,
+          titleSpacing: 0,
           title: Container(
             width: double.infinity,
             height: 36,
@@ -134,19 +136,18 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: Center(
               child: TextField(
-                maxLines: 1,
                 autofocus: true,
-                style: TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
-                    color: CustomColors.secondaryText,
+                    color: secondaryText,
                   ),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       /* Clear the search field */
                       keySearch.clear();
@@ -200,7 +201,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
-              icon: Icon(Icons.filter_list_outlined),
+              icon: const Icon(Icons.filter_list_outlined),
               tooltip: "Lọc",
             )
           ],
@@ -210,15 +211,15 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 context: context,
                 removeTop: true,
                 child: PagedListView<int, FilterQuanrantineWard>(
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   pagingController: _pagingController,
                   builderDelegate:
                       PagedChildBuilderDelegate<FilterQuanrantineWard>(
                     animateTransitions: true,
-                    noItemsFoundIndicatorBuilder: (context) => Center(
+                    noItemsFoundIndicatorBuilder: (context) => const Center(
                       child: Text('Không có kết quả tìm kiếm'),
                     ),
-                    firstPageErrorIndicatorBuilder: (context) => Center(
+                    firstPageErrorIndicatorBuilder: (context) => const Center(
                       child: Text('Có lỗi xảy ra'),
                     ),
                     itemBuilder: (context, item, index) => QuarantineItem(
@@ -240,7 +241,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                   ),
                 ),
               )
-            : Center(
+            : const Center(
                 child: Text('Tìm kiếm khu cách ly'),
               ),
       ),

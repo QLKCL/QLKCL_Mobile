@@ -10,7 +10,7 @@ class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
   final String id;
 
-  QuarantineDetailScreen({Key? key, required this.id}) : super(key: key);
+  const QuarantineDetailScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   _QuarantineDetailScreenState createState() => _QuarantineDetailScreenState();
@@ -27,14 +27,9 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thông tin khu cách ly'),
+      title: const Text('Thông tin khu cách ly'),
       centerTitle: true,
       actions: [
         IconButton(
@@ -51,7 +46,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   futureQuarantine = fetchQuarantine(widget.id);
                 }));
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],

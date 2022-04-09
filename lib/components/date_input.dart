@@ -16,12 +16,12 @@ class DateInput extends StatefulWidget {
   final bool showClearButton;
   final EdgeInsets? margin;
 
-  DateInput({
+  const DateInput({
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controller,
     this.minDate,
@@ -60,11 +60,11 @@ class _DateInputState extends State<DateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
-          DateTime? pickedDate = await showDatePicker(
+          final DateTime? pickedDate = await showDatePicker(
             context: context,
             initialDate:
                 (widget.controller != null && widget.controller!.text != "")
@@ -78,10 +78,12 @@ class _DateInputState extends State<DateInput> {
             confirmText: 'Chọn',
           );
           if (pickedDate != null) {
-            String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
+            final String formattedDate =
+                DateFormat('dd/MM/yyyy').format(pickedDate);
             setState(() {
-              if (widget.controller != null)
+              if (widget.controller != null) {
                 widget.controller!.text = formattedDate;
+              }
             });
           }
         },
@@ -94,24 +96,24 @@ class _DateInputState extends State<DateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
                   widget.controller!.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller!.clear();
                     _focus = false;
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -132,12 +134,12 @@ class DateRangeInput extends StatefulWidget {
   final bool showClearButton;
   final EdgeInsets? margin;
 
-  DateRangeInput({
+  const DateRangeInput({
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controllerStart,
     this.controllerEnd,
@@ -160,14 +162,12 @@ class _DateRangeInputState extends State<DateRangeInput> {
   @override
   void initState() {
     super.initState();
-    controller = new TextEditingController(
+    controller = TextEditingController(
         text: (widget.controllerStart != null &&
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? widget.controllerStart!.text +
-                    " - " +
-                    widget.controllerEnd!.text
+                ? "${widget.controllerStart!.text} - ${widget.controllerEnd!.text}"
                 : widget.controllerStart!.text)
             : "");
   }
@@ -188,11 +188,11 @@ class _DateRangeInputState extends State<DateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
-          DateTimeRange? pickedDate = await showDateRangePicker(
+          final DateTimeRange? pickedDate = await showDateRangePicker(
             context: context,
             initialDateRange: DateTimeRange(
                 start: (widget.controllerStart != null &&
@@ -212,16 +212,18 @@ class _DateRangeInputState extends State<DateRangeInput> {
             confirmText: 'Chọn',
           );
           if (pickedDate != null) {
-            String formattedStartDate =
+            final String formattedStartDate =
                 DateFormat('dd/MM/yyyy').format(pickedDate.start);
-            String formattedEndDate =
+            final String formattedEndDate =
                 DateFormat('dd/MM/yyyy').format(pickedDate.end);
             setState(() {
-              if (widget.controllerStart != null)
+              if (widget.controllerStart != null) {
                 widget.controllerStart!.text = formattedStartDate;
-              if (widget.controllerEnd != null)
+              }
+              if (widget.controllerEnd != null) {
                 widget.controllerEnd!.text = formattedEndDate;
-              controller.text = formattedStartDate + " - " + formattedEndDate;
+              }
+              controller.text = "$formattedStartDate - $formattedEndDate";
             });
           }
         },
@@ -234,13 +236,13 @@ class _DateRangeInputState extends State<DateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     controller.clear();
                     widget.controllerStart!.clear();
@@ -249,10 +251,10 @@ class _DateRangeInputState extends State<DateRangeInput> {
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -273,12 +275,12 @@ class NewDateInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
 
-  NewDateInput({
+  const NewDateInput({
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controller,
     this.minDate,
@@ -319,7 +321,7 @@ class _NewDateInputState extends State<NewDateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -330,38 +332,35 @@ class _NewDateInputState extends State<NewDateInput> {
                   backgroundColor: Colors.white,
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Hủy'),
+                      child: const Text('Hủy'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Chọn'),
+                      child: const Text('Chọn'),
                       onPressed: () {
                         if (newDate == "" && widget.controller!.text == "") {
-                          widget.controller!.text = DateFormat('dd/MM/yyyy')
-                              .format(DateTime.now())
-                              .toString();
+                          widget.controller!.text =
+                              DateFormat('dd/MM/yyyy').format(DateTime.now());
                         } else if (newDate != "") {
                           setState(() {
                             widget.controller!.text = newDate;
                           });
                         }
-                        if (widget.onChangedFunction != null)
-                          widget.onChangedFunction!();
+                        widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
                     ),
                   ],
-                  content: Container(
+                  content: SizedBox(
                     height: 300,
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
                         newDate = DateFormat('dd/MM/yyyy').format(data.value);
                       },
-                      selectionMode: DateRangePickerSelectionMode.single,
-                      monthViewSettings: DateRangePickerMonthViewSettings(
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
@@ -393,24 +392,24 @@ class _NewDateInputState extends State<NewDateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
                   widget.controller!.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller!.clear();
                     _focus = false;
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -432,12 +431,12 @@ class NewDateRangeInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
 
-  NewDateRangeInput({
+  const NewDateRangeInput({
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controllerStart,
     this.controllerEnd,
@@ -463,14 +462,12 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   void initState() {
     super.initState();
-    controller = new TextEditingController(
+    controller = TextEditingController(
         text: (widget.controllerStart != null &&
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? widget.controllerStart!.text +
-                    " - " +
-                    widget.controllerEnd!.text
+                ? "${widget.controllerStart!.text} - ${widget.controllerEnd!.text}"
                 : widget.controllerStart!.text)
             : "");
   }
@@ -491,7 +488,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -502,22 +499,20 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                   backgroundColor: Colors.white,
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Hủy'),
+                      child: const Text('Hủy'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Chọn'),
+                      child: const Text('Chọn'),
                       onPressed: () {
                         setState(() {
                           if (newStartDate == "" &&
                               widget.controllerStart != null &&
                               widget.controllerStart!.text == "") {
                             widget.controllerStart?.text =
-                                DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.now())
-                                    .toString();
+                                DateFormat('dd/MM/yyyy').format(DateTime.now());
                           } else if (newStartDate != "") {
                             widget.controllerStart!.text = newStartDate;
                           }
@@ -525,9 +520,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               widget.controllerEnd != null &&
                               widget.controllerEnd!.text == "") {
                             widget.controllerEnd?.text =
-                                DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.now())
-                                    .toString();
+                                DateFormat('dd/MM/yyyy').format(DateTime.now());
                           } else if (newEndDate != "") {
                             widget.controllerEnd!.text = newEndDate;
                           }
@@ -535,13 +528,12 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           controller.text = '${widget.controllerStart!.text} -'
                               ' ${widget.controllerEnd!.text}';
                         });
-                        if (widget.onChangedFunction != null)
-                          widget.onChangedFunction!();
+                        widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
                     ),
                   ],
-                  content: Container(
+                  content: SizedBox(
                     height: 300,
                     width: 300,
                     child: SfDateRangePicker(
@@ -557,7 +549,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                             '$newStartDate -                             $newEndDate';
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
-                      monthViewSettings: DateRangePickerMonthViewSettings(
+                      monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
                         showTrailingAndLeadingDates: true,
                         dayFormat: 'EEE',
@@ -590,13 +582,13 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     controller.clear();
                     widget.controllerStart!.clear();
@@ -605,10 +597,10 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),

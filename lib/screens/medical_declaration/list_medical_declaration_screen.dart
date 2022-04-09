@@ -11,7 +11,8 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
+  const ListMedicalDeclaration({Key? key, this.code, this.phone})
+      : super(key: key);
   final String? code;
   final String? phone;
 
@@ -26,9 +27,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -38,7 +37,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -59,7 +58,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
       final newItems =
           await fetchMedList(data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -85,16 +84,16 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
                 (value) => _pagingController.refresh(),
               );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Thêm tờ khai",
       ),
       appBar: AppBar(
-        title: Text("Lịch sử khai báo y tế"),
+        title: const Text("Lịch sử khai báo y tế"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -103,28 +102,25 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
+              firstPageErrorIndicatorBuilder: (context) => const Center(
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => MedicalDeclarationCard(

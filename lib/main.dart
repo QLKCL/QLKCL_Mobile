@@ -35,8 +35,8 @@ void main() async {
 
   await Hive.initFlutter();
 
-  bool isLoggedIn = await getLoginState();
-  int role = await getRole();
+  final bool isLoggedIn = await getLoginState();
+  final int role = await getRole();
 
   HttpOverrides.global = MyHttpOverrides();
 
@@ -73,14 +73,13 @@ class MyApp extends StatelessWidget {
       title: 'Quản lý khu cách ly',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: isLoggedIn ? App(role: role) : Login(),
+      home: isLoggedIn ? App(role: role) : const Login(),
       routes: routes,
       // initialRoute: isLoggedIn ? App.routeName : Login.routeName,
       builder: (context, child) {
         child = ResponsiveWrapper.builder(
             BouncingScrollWrapper.builder(context, child!),
             maxWidth: 2460,
-            minWidth: 450,
             defaultScale: true,
             breakpoints: [
               const ResponsiveBreakpoint.resize(maxMobileSize, name: MOBILE),

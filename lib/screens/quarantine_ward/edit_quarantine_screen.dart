@@ -23,20 +23,16 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
   late Future<dynamic> futureQuarantine;
 
   final appBar = AppBar(
-    title: Text('Cập nhật khu cách ly'),
+    title: const Text('Cập nhật khu cách ly'),
     centerTitle: true,
   );
 
   @override
   void initState() {
     super.initState();
-    if ((widget.quarantineInfo != null))
+    if (widget.quarantineInfo != null) {
       futureQuarantine = fetchQuarantine(widget.id);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
+    }
   }
 
   @override

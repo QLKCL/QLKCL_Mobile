@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ListNotification extends StatefulWidget {
   static const String routeName = "/list_notification";
-  ListNotification({Key? key, this.role = 5}) : super(key: key);
+  const ListNotification({Key? key, this.role = 5}) : super(key: key);
   final int role;
 
   @override
@@ -23,9 +23,7 @@ class _ListNotificationState extends State<ListNotification> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -35,7 +33,7 @@ class _ListNotificationState extends State<ListNotification> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -54,7 +52,7 @@ class _ListNotificationState extends State<ListNotification> {
     try {
       final newItems = await fetchUserNotificationList(data: {'page': pageKey});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -70,35 +68,32 @@ class _ListNotificationState extends State<ListNotification> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thông báo"),
+        title: const Text("Thông báo"),
         centerTitle: true,
       ),
       body: MediaQuery.removePadding(
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
+              firstPageErrorIndicatorBuilder: (context) => const Center(
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => NotificationCard(
@@ -131,9 +126,9 @@ class _ListNotificationState extends State<ListNotification> {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => CreateNotification()));
+                        builder: (context) => const CreateNotification()));
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               tooltip: "Tạo thông báo",
             )
           : null,

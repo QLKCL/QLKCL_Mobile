@@ -101,4 +101,6 @@ class Api {
   static const String updateStaff = '/api/user/staff/update';
 
   static const String filterStaff = '/api/user/staff/filter';
+
+  static const String filterPandemic = '/api/form/pandemic/filter';
 }

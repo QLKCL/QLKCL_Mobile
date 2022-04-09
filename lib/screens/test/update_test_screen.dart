@@ -8,7 +8,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class UpdateTest extends StatefulWidget {
   static const String routeName = "/update_test";
-  UpdateTest({Key? key, required this.code, this.testData}) : super(key: key);
+  const UpdateTest({Key? key, required this.code, this.testData}) : super(key: key);
   final String code;
   final dynamic testData;
 
@@ -26,16 +26,11 @@ class _UpdateTestState extends State<UpdateTest> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Cập nhật phiếu xét nghiệm'),
+          title: const Text('Cập nhật phiếu xét nghiệm'),
           centerTitle: true,
         ),
         body: widget.testData != null

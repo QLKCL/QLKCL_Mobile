@@ -34,10 +34,10 @@ class _CarouselState extends State<Carousel> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 12),
+          margin: const EdgeInsets.symmetric(vertical: 12),
           child: CarouselSlider(
             options: CarouselOptions(
-              scrollPhysics: ScrollPhysics(),
+              scrollPhysics: const ScrollPhysics(),
               onPageChanged: (index, reason) =>
                   setState(() => _counter = index),
               aspectRatio: 2,
@@ -49,12 +49,12 @@ class _CarouselState extends State<Carousel> {
                 builder: (BuildContext context) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    decoration: const BoxDecoration(
                         // color: Colors.amber,
                         borderRadius: BorderRadius.all(Radius.circular(5))),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
+                      borderRadius: BorderRadius.circular(5),
                       child: Image.network(
                           cloudinary.getImage(imgUrl).toString(),
                           fit: BoxFit.cover),

@@ -40,15 +40,10 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
     nameController.text = widget.currentFloor!.name;
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await updateFloor(updateFloorDataForm(
         name: nameController.text,
         id: widget.currentFloor!.id,
@@ -56,7 +51,9 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.of(context).pop(response.data);
+        if (mounted) {
+          Navigator.of(context).pop(response.data);
+        }
       }
     }
   }
@@ -64,7 +61,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin tầng'),
+      title: const Text('Sửa thông tin tầng'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -79,10 +76,9 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                   BotToast.closeAllLoading();
                   if (snapshot.hasData) {
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Container(
+                        SizedBox(
                           height: (MediaQuery.of(context).size.height -
                                   appBar.preferredSize.height -
                                   MediaQuery.of(context).padding.top) *
@@ -96,7 +92,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                         ),
                         Form(
                           key: _formKey,
-                          child: Container(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: Input(
                               label: 'Tên tầng mới',
@@ -109,21 +105,21 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                           margin: const EdgeInsets.all(16),
                           child: Row(
                             children: [
-                              Spacer(),
+                              const Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
-                              Spacer(),
+                              const Spacer(),
                             ],
                           ),
                         ),
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

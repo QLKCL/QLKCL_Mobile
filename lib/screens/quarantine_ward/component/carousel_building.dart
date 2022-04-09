@@ -8,7 +8,7 @@ import './building_item.dart';
 
 class CarouselBuilding extends StatefulWidget {
   final Quarantine? currentQuarantine;
-  final data;
+  final dynamic data;
   const CarouselBuilding({
     Key? key,
     this.data,
@@ -26,12 +26,12 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
         ? Column(
             children: [
               Container(
-                margin:
-                    EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                margin: const EdgeInsets.only(
+                    left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Danh sách tòa',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -50,29 +50,29 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                           ),
                         ).then((value) => setState(() {}));
                       },
-                      child: Text('Tạo tòa'),
+                      child: const Text('Tạo tòa'),
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(primary),
                       ),
                     )
                   ],
                 ),
               ),
-              Text('Chưa có tòa nào được tạo'),
+              const Text('Chưa có tòa nào được tạo'),
             ],
           )
         : Column(
             children: [
               Container(
-                margin:
-                    EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                margin: const EdgeInsets.only(
+                    left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Danh sách tòa (' + widget.data.length.toString() + ')',
-                      style: TextStyle(
+                      'Danh sách tòa (${widget.data.length})',
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
@@ -88,34 +88,30 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                           ),
                         );
                       },
-                      child: Text('Xem tất cả'),
+                      child: const Text('Xem tất cả'),
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(primary),
                       ),
                     )
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 170,
                 width: MediaQuery.of(context).size.width,
                 child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.data.length,
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   itemBuilder: (BuildContext context, int index) => Card(
-                    child: Container(
-                      child: BuildingItem(
-                        currentQuarantine: widget.currentQuarantine!,
-                        currentBuilding: Building.fromJson(widget.data[index]),
-                        buildingName: widget.data[index]['name'],
-                        maxMem: widget.data[index]['total_capacity'] != null
-                            ? widget.data[index]['total_capacity']
-                            : 0,
-                        currentMem: widget.data[index]['num_current_member'],
-                      ),
+                    child: BuildingItem(
+                      currentQuarantine: widget.currentQuarantine!,
+                      currentBuilding: Building.fromJson(widget.data[index]),
+                      buildingName: widget.data[index]['name'],
+                      maxMem: widget.data[index]['total_capacity'] ?? 0,
+                      currentMem: widget.data[index]['num_current_member'],
                     ),
                   ),
                 ),

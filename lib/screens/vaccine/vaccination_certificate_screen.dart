@@ -25,16 +25,11 @@ class _VaccinationCertificationScreenState
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Tra cứu chứng nhận tiêm',
           ),
           centerTitle: true,
@@ -43,12 +38,11 @@ class _VaccinationCertificationScreenState
           child: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
-                if (widget.vaccineCertification.patientInfo.vaccinatedInfoes
-                        .length ==
-                    0)
+                if (widget
+                    .vaccineCertification.patientInfo.vaccinatedInfoes.isEmpty)
                   WebsafeSvg.asset("assets/svg/duong_tinh.svg", height: 100),
                 if (widget.vaccineCertification.patientInfo.vaccinatedInfoes
                         .length ==
@@ -58,58 +52,57 @@ class _VaccinationCertificationScreenState
                         .length >
                     1)
                   WebsafeSvg.asset("assets/svg/binh_thuong.svg", height: 100),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                   thickness: 2,
                 ),
                 Text(
                     widget.vaccineCertification.patientInfo.vaccinatedInfoes
-                                .length >
-                            0
+                            .isNotEmpty
                         ? "Bạn đã tiêm ${widget.vaccineCertification.patientInfo.vaccinatedInfoes.length} mũi vaccine"
                         : "Chưa tiêm vaccine",
-                    style: TextStyle(fontSize: 25)),
-                SizedBox(
+                    style: const TextStyle(fontSize: 25)),
+                const SizedBox(
                   height: 8,
                 ),
-                Divider(
+                const Divider(
                   indent: 16,
                   endIndent: 16,
                   thickness: 2,
                 ),
                 Card(
                   child: QrImage(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     data: widget.vaccineCertification.qrCode,
                     size: MediaQuery.of(context).size.width > maxMobileSize
                         ? MediaQuery.of(context).size.width * 0.5
                         : maxMobileSize * 0.5,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Card(
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Họ và tên: ${widget.vaccineCertification.patientInfo.fullname}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                         Text(
                           "Ngày sinh: ${widget.vaccineCertification.patientInfo.birthday}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                         Text(
                           "Số CMND/CCCD: ${widget.vaccineCertification.patientInfo.identification}",
-                          style: TextStyle(fontSize: 18),
+                          style: const TextStyle(fontSize: 18),
                         ),
                       ],
                     ),

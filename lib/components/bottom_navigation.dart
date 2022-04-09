@@ -30,7 +30,7 @@ import '../screens/members/update_member_screen.dart';
 // new: https://pub.dev/packages/persistent_bottom_nav_bar
 
 class BottomNavigation extends StatelessWidget {
-  BottomNavigation({
+  const BottomNavigation({
     required this.currentTab,
     required this.onSelectTab,
     required this.role,
@@ -48,18 +48,18 @@ class BottomNavigation extends StatelessWidget {
           : (isWebPlatform() && currentTab.index > 1)
               ? currentTab.index - 1
               : currentTab.index,
-      selectedItemColor: CustomColors.secondary,
+      selectedItemColor: secondary,
       onTap: (index) => {
         index = (role == 5)
             ? index * 4
             : (isWebPlatform() && index > 1)
                 ? index + 1
                 : index,
-        if (TabItem.values[index] == TabItem.qr_code_scan)
+        if (TabItem.values[index] == TabItem.qrCodeScan)
           {
             Navigator.of(context)
                 .push(
-                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                  MaterialPageRoute(builder: (context) => const QrCodeScan()),
                 )
                 .then((value) => value != null
                     ? Navigator.of(context,
@@ -79,9 +79,9 @@ class BottomNavigation extends StatelessWidget {
       },
       items: [
         _buildItem(TabItem.homepage),
-        if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
-        if (role != 5) _buildItem(TabItem.quarantine_ward),
+        if (role != 5) _buildItem(TabItem.quarantinePerson),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qrCodeScan),
+        if (role != 5) _buildItem(TabItem.quarantineWard),
         _buildItem(TabItem.account),
       ],
     );
@@ -98,7 +98,7 @@ class BottomNavigation extends StatelessWidget {
 }
 
 class SideBar extends StatelessWidget {
-  SideBar({
+  const SideBar({
     required this.currentTab,
     required this.onSelectTab,
     required this.role,
@@ -110,7 +110,7 @@ class SideBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SideNavigationBar(
-      toggler: SideBarToggler(
+      toggler: const SideBarToggler(
           expandIcon: Icons.menu, shrinkIcon: Icons.chevron_left),
       selectedIndex: (role == 5)
           ? currentTab.index ~/ 4
@@ -118,21 +118,20 @@ class SideBar extends StatelessWidget {
               ? currentTab.index - 1
               : currentTab.index,
       theme: SideNavigationBarTheme(
-        backgroundColor: CustomColors.white,
+        backgroundColor: white,
         itemTheme: ItemTheme(
-            selectedItemColor: CustomColors.secondary,
-            unselectedItemColor: CustomColors.secondaryText),
+            selectedItemColor: secondary, unselectedItemColor: secondaryText),
         showFooterDivider: true,
         showHeaderDivider: true,
         showMainDivider: true,
-        togglerTheme: TogglerTheme(),
+        togglerTheme: const TogglerTheme(),
       ),
       header: SideNavigationBarHeader(
         image: Image.asset(
           'assets/images/Logo.png',
           width: 36,
         ),
-        title: Padding(
+        title: const Padding(
           padding: EdgeInsets.only(right: 16),
           child: Text(
             "Hệ thống quản lý khu cách ly",
@@ -144,9 +143,9 @@ class SideBar extends StatelessWidget {
       ),
       items: [
         _buildItem(TabItem.homepage),
-        if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
-        if (role != 5) _buildItem(TabItem.quarantine_ward),
+        if (role != 5) _buildItem(TabItem.quarantinePerson),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qrCodeScan),
+        if (role != 5) _buildItem(TabItem.quarantineWard),
         _buildItem(TabItem.account),
       ],
       onTap: (index) => {
@@ -155,11 +154,11 @@ class SideBar extends StatelessWidget {
             : (isWebPlatform() && index > 1)
                 ? index + 1
                 : index,
-        if (TabItem.values[index] == TabItem.qr_code_scan)
+        if (TabItem.values[index] == TabItem.qrCodeScan)
           {
             Navigator.of(context)
                 .push(
-                  MaterialPageRoute(builder: (context) => QrCodeScan()),
+                  MaterialPageRoute(builder: (context) => const QrCodeScan()),
                 )
                 .then((value) => value != null
                     ? Navigator.of(context,
@@ -188,43 +187,37 @@ class SideBar extends StatelessWidget {
   }
 }
 
-enum TabItem {
-  homepage,
-  quarantine_person,
-  qr_code_scan,
-  quarantine_ward,
-  account
-}
+enum TabItem { homepage, quarantinePerson, qrCodeScan, quarantineWard, account }
 
 const Map<TabItem, String> tabName = {
   TabItem.homepage: 'Trang chủ',
-  TabItem.quarantine_person: 'Người cách ly',
-  TabItem.qr_code_scan: 'Quét mã',
-  TabItem.quarantine_ward: 'Khu cách ly',
+  TabItem.quarantinePerson: 'Người cách ly',
+  TabItem.qrCodeScan: 'Quét mã',
+  TabItem.quarantineWard: 'Khu cách ly',
   TabItem.account: 'Tài khoản',
 };
 
 const Map<TabItem, IconData> tabIcon = {
   TabItem.homepage: Icons.home_outlined,
-  TabItem.quarantine_person: Icons.groups_outlined,
-  TabItem.qr_code_scan: Icons.qr_code_scanner,
-  TabItem.quarantine_ward: Icons.apartment_outlined,
+  TabItem.quarantinePerson: Icons.groups_outlined,
+  TabItem.qrCodeScan: Icons.qr_code_scanner,
+  TabItem.quarantineWard: Icons.apartment_outlined,
   TabItem.account: Icons.person_outline,
 };
 
 const Map<TabItem, IconData> selectTabIcon = {
   TabItem.homepage: Icons.home,
-  TabItem.quarantine_person: Icons.groups,
-  TabItem.qr_code_scan: Icons.qr_code_scanner,
-  TabItem.quarantine_ward: Icons.apartment,
+  TabItem.quarantinePerson: Icons.groups,
+  TabItem.qrCodeScan: Icons.qr_code_scanner,
+  TabItem.quarantineWard: Icons.apartment,
   TabItem.account: Icons.person,
 };
 
 const Map<TabItem, String> tabRouteName = {
   TabItem.homepage: ManagerHomePage.routeName,
-  TabItem.quarantine_person: ListAllMember.routeName,
-  TabItem.qr_code_scan: QrCodeScan.routeName,
-  TabItem.quarantine_ward: QuarantineListScreen.routeName,
+  TabItem.quarantinePerson: ListAllMember.routeName,
+  TabItem.qrCodeScan: QrCodeScan.routeName,
+  TabItem.quarantineWard: QuarantineListScreen.routeName,
   TabItem.account: Account.routeName,
 };
 
@@ -262,7 +255,7 @@ class TabNavigator extends StatelessWidget {
         } else if (settings.name == "/") {
           return null;
         } else {
-          child = Error();
+          child = const Error();
         }
         return MaterialPageRoute(
           settings: settings,

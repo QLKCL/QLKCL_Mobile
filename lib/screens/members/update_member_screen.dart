@@ -7,12 +7,11 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
   final String? code;
-  UpdateMember({Key? key, this.code}) : super(key: key);
+  const UpdateMember({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateMemberState createState() => _UpdateMemberState();
@@ -33,13 +32,8 @@ class _UpdateMemberState extends State<UpdateMember>
     } else {
       futureMember = fetchCustomUser();
     }
-    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   _handleTabChange() {
@@ -51,26 +45,26 @@ class _UpdateMemberState extends State<UpdateMember>
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thông tin chi tiết"),
+          title: const Text("Thông tin chi tiết"),
           centerTitle: true,
           // actions: [
           //   if (_tabController.index == 0)
           //     IconButton(
           //       onPressed: () {},
-          //       icon: Icon(Icons.qr_code_scanner),
+          //       icon: const Icon(Icons.qr_code_scanner),
           //       tooltip: "Nhập dữ liệu từ CCCD",
           //     ),
           // ],
           bottom: TabBar(
             controller: _tabController,
-            indicatorColor: CustomColors.white,
-            tabs: [
+            indicatorColor: white,
+            tabs: const [
               Tab(text: "Thông tin cá nhân"),
               Tab(text: "Thông tin cách ly"),
             ],
           ),
         ),
-        body: (FutureBuilder<dynamic>(
+        body: FutureBuilder<dynamic>(
           future: futureMember,
           builder: (context, snapshot) {
             showLoading();
@@ -92,18 +86,16 @@ class _UpdateMemberState extends State<UpdateMember>
                     MemberPersonalInfo(
                       personalData: personalData,
                       tabController: _tabController,
-                      mode: Permission.edit,
                     ),
                     MemberQuarantineInfo(
                       quarantineData: quarantineData,
-                      mode: Permission.edit,
                     ),
                   ],
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               } else {
-                return Center(
+                return const Center(
                   child: Text('Có lỗi xảy ra!'),
                 );
               }
@@ -111,7 +103,7 @@ class _UpdateMemberState extends State<UpdateMember>
 
             return Container();
           },
-        )),
+        ),
       ),
     );
   }

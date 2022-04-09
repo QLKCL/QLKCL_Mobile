@@ -29,11 +29,11 @@ class DropdownInput<T> extends StatefulWidget {
   final String? popupTitle;
   final EdgeInsets? margin;
 
-  DropdownInput({
+  const DropdownInput({
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
+    this.required = false,
     this.itemValue,
     this.selectedItem,
     this.itemAsString,
@@ -63,29 +63,27 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: (widget.validator != null
-            ? widget.validator
-            : (value) {
-                return (widget.required == true && value == null)
-                    ? "Trường này là bắt buộc"
-                    : null;
-              }),
+        validator: widget.validator ??
+            (value) {
+              return (widget.required == true && value == null)
+                  ? "Trường này là bắt buộc"
+                  : null;
+            },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
@@ -104,7 +102,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       searchController.clear();
                     },
@@ -112,11 +110,11 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 ),
               )
             : null,
-        emptyBuilder: (BuildContext context, t) => (Center(
+        emptyBuilder: (BuildContext context, t) => const Center(
           child: Text('Không có dữ liệu'),
-        )),
+        ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
-            ? Container(
+            ? SizedBox(
                 height: 48,
                 child: Center(
                   child: Text(
@@ -128,12 +126,12 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
-                ? RoundedRectangleBorder(
+                ? const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
-                : RoundedRectangleBorder(
+                : const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   )
             : null,
@@ -166,11 +164,11 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String Function(T?)? itemAsString;
   final String? popupTitle;
 
-  MultiDropdownInput(
+  const MultiDropdownInput(
       {Key? key,
       required this.label,
       this.hint,
-      this.required: false,
+      this.required = false,
       this.itemValue,
       this.selectedItems,
       this.mode = Mode.MENU,
@@ -200,30 +198,28 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: (widget.validator != null
-            ? widget.validator
-            : (value) {
-                return (widget.required == true &&
-                        (value == null || value.isEmpty))
-                    ? "Trường này là bắt buộc"
-                    : null;
-              }),
+        validator: widget.validator ??
+            (value) {
+              return (widget.required == true &&
+                      (value == null || value.isEmpty))
+                  ? "Trường này là bắt buộc"
+                  : null;
+            },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
         mode: widget.mode,
@@ -240,8 +236,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         popupSelectionWidget: (context, T item, bool isSelected) {
           return isSelected
               ? Container(
-                  padding: EdgeInsets.only(right: 16),
-                  child: Icon(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: const Icon(
                     Icons.check,
                     color: Colors.blue,
                   ),
@@ -253,7 +249,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                 controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       searchController.clear();
                     },
@@ -263,11 +259,11 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             : null,
         dropdownBuilder: widget.dropdownBuilder,
         dropdownBuilderSupportsNullItem: true,
-        emptyBuilder: (BuildContext context, t) => (Center(
+        emptyBuilder: (BuildContext context, t) => const Center(
           child: Text('Không có dữ liệu'),
-        )),
+        ),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
-            ? Container(
+            ? SizedBox(
                 height: 48,
                 child: Center(
                   child: Text(
@@ -279,12 +275,12 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
             : null,
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
-                ? RoundedRectangleBorder(
+                ? const RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
-                : RoundedRectangleBorder(
+                : const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                   )
             : null,
@@ -298,10 +294,10 @@ Widget customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
   return Wrap(
     children: selectedItems.map((e) {
       return Padding(
-        padding: const EdgeInsets.all(4.0),
+        padding: const EdgeInsets.all(4),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          margin: EdgeInsets.only(top: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          margin: const EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Theme.of(context).primaryColorLight),

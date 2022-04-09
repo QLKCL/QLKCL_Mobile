@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 
 class ListTest extends StatefulWidget {
   static const String routeName = "/list_test";
-  ListTest({Key? key, this.code, this.name}) : super(key: key);
+  const ListTest({Key? key, this.code, this.name}) : super(key: key);
   final String? code;
   final String? name;
 
@@ -27,9 +27,7 @@ class _ListTestState extends State<ListTest> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -39,7 +37,7 @@ class _ListTestState extends State<ListTest> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -61,7 +59,7 @@ class _ListTestState extends State<ListTest> {
       final newItems =
           await fetchTestList(data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -90,7 +88,7 @@ class _ListTestState extends State<ListTest> {
                               builder: (context) =>
                                   AddTest(code: code, name: name)));
                     },
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     tooltip: "Thêm phiếu xét nghiệm",
                   )
                 : Container();
@@ -99,12 +97,12 @@ class _ListTestState extends State<ListTest> {
         },
       ),
       appBar: AppBar(
-        title: Text("Lịch sử xét nghiệm"),
+        title: const Text("Lịch sử xét nghiệm"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -113,28 +111,25 @@ class _ListTestState extends State<ListTest> {
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
+              firstPageErrorIndicatorBuilder: (context) => const Center(
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => TestCard(

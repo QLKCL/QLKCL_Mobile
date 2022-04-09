@@ -24,46 +24,42 @@ class MedicalDeclarationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Mã tờ khai: " + code,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          title: "Thời gian",
-                          content: time),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.description_outlined,
-                          title: "Tình trạng",
-                          content: status),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Mã tờ khai: $code",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history, title: "Thời gian", content: time),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.description_outlined,
+                        title: "Tình trạng",
+                        content: status),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -87,46 +83,42 @@ class TestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Mã phiếu: " + code,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          title: "Thời gian",
-                          content: time),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.description_outlined,
-                          title: "Kết quả",
-                          content: status),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Mã phiếu: $code",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history, title: "Thời gian", content: time),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.description_outlined,
+                        title: "Kết quả",
+                        content: status),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -165,108 +157,106 @@ class TestNoResultCard extends StatelessWidget {
       imageList = image!.split(',');
     }
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 56,
-                  width: 56,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            cloudinary.getImage(imageList[0]).toString()),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 56,
+                width: 56,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  fit: StackFit.expand,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          cloudinary.getImage(imageList[0]).toString()),
+                    ),
+                    Positioned(
+                      bottom: -5,
+                      right: -5,
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(100)),
+                        child: healthStatus == "SERIOUS"
+                            ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                            : healthStatus == "UNWELL"
+                                ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                                : WebsafeSvg.asset(
+                                    "assets/svg/binh_thuong.svg"),
                       ),
-                      Positioned(
-                        bottom: -5,
-                        right: -5,
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: CustomColors.white,
-                              borderRadius: BorderRadius.circular(100)),
-                          child: healthStatus == "SERIOUS"
-                              ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                              : healthStatus == "UNWELL"
-                                  ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
-                                  : WebsafeSvg.asset(
-                                      "assets/svg/binh_thuong.svg"),
-                        ),
-                        // RawMaterialButton(
-                        //           onPressed: () {},
-                        //           elevation: 2.0,
-                        //           fillColor: CustomColors.white,
-                        //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
-                        //           shape: CircleBorder(),
-                        //         ),
-                      ),
-                    ],
-                  ),
+                      // RawMaterialButton(
+                      //           onPressed: () {},
+                      //           elevation: 2.0,
+                      //           fillColor: white,
+                      //           child: WebsafeSvg.asset("assets/svg/binh_thuong.svg"),
+                      //           shape: CircleBorder(),
+                      //         ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 8,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "$name ",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: primaryText),
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: gender == "MALE"
+                                ? Icon(
+                                    Icons.male,
+                                    color: HexColor("#00BBD3"),
+                                  )
+                                : Icon(
+                                    Icons.female,
+                                    color: HexColor("#FF4181"),
+                                  ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      birthday,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: disableText,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(icon: Icons.qr_code, content: code),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history,
+                        content: DateFormat("dd/MM/yyyy HH:mm:ss")
+                            .format(DateTime.parse(time).toLocal())),
+                  ],
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: name + " ",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: CustomColors.primaryText),
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: gender == "MALE"
-                                  ? Icon(
-                                      Icons.male,
-                                      color: HexColor("#00BBD3"),
-                                    )
-                                  : Icon(
-                                      Icons.female,
-                                      color: HexColor("#FF4181"),
-                                    ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        birthday,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: CustomColors.disableText,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(icon: Icons.qr_code, content: code),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          content: DateFormat("dd/MM/yyyy HH:mm:ss")
-                              .format(DateTime.parse(time).toLocal())),
-                    ],
-                  ),
-                ),
-                menus ?? Container(),
-              ],
-            ),
+              ),
+              menus ?? Container(),
+            ],
           ),
         ),
       ),
@@ -302,8 +292,8 @@ class _MemberCardState extends State<MemberCard> {
     'Default/no_avatar',
   ];
 
-  action() {
-    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
+  Widget action() {
+    if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,
         onChanged: (newValue) {
@@ -329,158 +319,147 @@ class _MemberCardState extends State<MemberCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
-              setState(() {
-                _selected = !_selected;
-              });
-              widget.onLongPress!();
-            } else {
-              widget.onTap();
-            }
-          },
-          onLongPress: () {
-            if (widget.longPressEnabled != null) {
-              setState(() {
-                _selected = !_selected;
-              });
-              widget.onLongPress!();
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 56,
-                  width: 56,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            cloudinary.getImage(imageList[0]).toString()),
+      child: InkWell(
+        onTap: () {
+          if (widget.longPressEnabled ?? false) {
+            setState(() {
+              _selected = !_selected;
+            });
+            widget.onLongPress!();
+          } else {
+            widget.onTap();
+          }
+        },
+        onLongPress: () {
+          if (widget.longPressEnabled != null) {
+            setState(() {
+              _selected = !_selected;
+            });
+            widget.onLongPress!();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 56,
+                width: 56,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  fit: StackFit.expand,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          cloudinary.getImage(imageList[0]).toString()),
+                    ),
+                    Positioned(
+                      bottom: -5,
+                      right: -5,
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                            color: white,
+                            borderRadius: BorderRadius.circular(100)),
+                        child: widget.member.healthStatus == "SERIOUS"
+                            ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
+                            : widget.member.healthStatus == "UNWELL"
+                                ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
+                                : WebsafeSvg.asset(
+                                    "assets/svg/binh_thuong.svg"),
                       ),
-                      Positioned(
-                        bottom: -5,
-                        right: -5,
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                              color: CustomColors.white,
-                              borderRadius: BorderRadius.circular(100)),
-                          child: widget.member.healthStatus == "SERIOUS"
-                              ? WebsafeSvg.asset("assets/svg/duong_tinh.svg")
-                              : widget.member.healthStatus == "UNWELL"
-                                  ? WebsafeSvg.asset("assets/svg/nghi_ngo.svg")
-                                  : WebsafeSvg.asset(
-                                      "assets/svg/binh_thuong.svg"),
-                        ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "${widget.member.fullName} ",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: primaryText),
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: widget.member.gender == "MALE"
+                                ? Icon(
+                                    Icons.male,
+                                    color: HexColor("#00BBD3"),
+                                  )
+                                : Icon(
+                                    Icons.female,
+                                    color: HexColor("#FF4181"),
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    ),
+                    Text(
+                      widget.member.birthday ?? "",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: disableText,
+                      ),
+                    ),
+                    if (widget.member.quarantineLocation != null)
+                      const SizedBox(
+                        height: 4,
+                      ),
+                    if (widget.member.quarantineLocation != null)
                       Text.rich(
                         TextSpan(
+                          style: TextStyle(
+                            color: disableText,
+                          ),
                           children: [
-                            TextSpan(
-                              text: widget.member.fullName + " ",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: CustomColors.primaryText),
-                            ),
                             WidgetSpan(
                               alignment: PlaceholderAlignment.middle,
-                              child: widget.member.gender == "MALE"
-                                  ? Icon(
-                                      Icons.male,
-                                      color: HexColor("#00BBD3"),
-                                    )
-                                  : Icon(
-                                      Icons.female,
-                                      color: HexColor("#FF4181"),
-                                    ),
+                              child: Icon(
+                                Icons.place_outlined,
+                                size: 16,
+                                color: disableText,
+                              ),
+                            ),
+                            TextSpan(
+                              text: " ${widget.member.quarantineLocation}",
                             ),
                           ],
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        softWrap: false,
                       ),
-                      Text(
-                        widget.member.birthday ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: CustomColors.disableText,
-                        ),
-                      ),
-                      if (widget.member.quarantineLocation != null)
-                        SizedBox(
-                          height: 4,
-                        ),
-                      if (widget.member.quarantineLocation != null)
-                        Text.rich(
-                          TextSpan(
-                            style: TextStyle(
-                              color: CustomColors.disableText,
-                            ),
-                            children: [
-                              WidgetSpan(
-                                alignment: PlaceholderAlignment.middle,
-                                child: Icon(
-                                  Icons.place_outlined,
-                                  size: 16,
-                                  color: CustomColors.disableText,
-                                ),
-                              ),
-                              TextSpan(
-                                text: " " +
-                                    (widget.member.quarantineLocation != null
-                                        ? widget.member.quarantineLocation!
-                                        : ""),
-                              ),
-                            ],
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          softWrap: false,
-                        ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                        icon: Icons.history,
-                        content: (widget.member.positiveTestNow != null
-                            ? (widget.member.positiveTestNow!
-                                    ? "Dương tính"
-                                    : "Âm tính") +
-                                (widget.member.lastTestedHadResult != null
-                                    ? " (" +
-                                        DateFormat("dd/MM/yyyy HH:mm:ss")
-                                            .format(DateTime.parse(widget.member
-                                                    .lastTestedHadResult!)
-                                                .toLocal()) +
-                                        ")"
-                                    : "")
-                            : "Chưa có kết quả xét nghiệm"),
-                      ),
-                    ],
-                  ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                      icon: Icons.history,
+                      content: widget.member.positiveTestNow != null
+                          ? (widget.member.positiveTestNow!
+                                  ? "Dương tính"
+                                  : "Âm tính") +
+                              (widget.member.lastTestedHadResult != null
+                                  ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(widget.member.lastTestedHadResult!).toLocal())})"
+                                  : "")
+                          : "Chưa có kết quả xét nghiệm",
+                    ),
+                  ],
                 ),
-                widget.menus != null ? action() : Container(),
-              ],
-            ),
+              ),
+              if (widget.menus != null) action(),
+            ],
           ),
         ),
       ),
@@ -505,35 +484,31 @@ class QuarantineRelatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ListTile(
         onTap: onTap,
         title: Text(name),
         subtitle: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
                   Icons.groups_rounded,
                   size: 20,
-                  color: CustomColors.disableText,
+                  color: disableText,
                 ),
                 const SizedBox(
                   width: 8,
                 ),
                 Text(
-                  " Đang cách ly " + '$numOfMem' + '/$maxMem',
-                  style: TextStyle(fontSize: 12),
+                  " Đang cách ly $numOfMem/$maxMem",
+                  style: const TextStyle(fontSize: 12),
                 )
               ],
             )
           ],
         ),
-        isThreeLine: false,
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[menus ?? Container()],
@@ -585,7 +560,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
         .push(
       MaterialPageRoute(
         builder: (context) => QuarantineDetailScreen(
-          id: this.widget.id,
+          id: widget.id,
         ),
       ),
     );
@@ -599,22 +574,22 @@ class _QuarantineItemState extends State<QuarantineItem> {
           child: InkWell(
             onTap: () => selectQuarantine(context),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //Image container
-                  Container(
+                  SizedBox(
                     height: 96,
                     width: 105,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8),
                       child: Image.network(
                           cloudinary.getImage(imageList[0]).toString(),
                           fit: BoxFit.cover),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   //text
@@ -626,32 +601,32 @@ class _QuarantineItemState extends State<QuarantineItem> {
                         Text(
                           widget.name,
                           style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 18,
                               fontWeight: FontWeight.normal,
-                              color: CustomColors.primaryText),
+                              color: primaryText),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         cardLine(
                             icon: Icons.groups_rounded,
                             title: "Đang cách ly",
                             content: widget.currentMem.toString()),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         cardLine(
                             icon: Icons.account_box_outlined,
                             title: "Quản lý",
                             content: widget.manager),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         if (widget.address != null)
                           Text.rich(
                             TextSpan(
                               style: TextStyle(
-                                color: CustomColors.disableText,
+                                color: disableText,
                               ),
                               children: [
                                 WidgetSpan(
@@ -659,11 +634,11 @@ class _QuarantineItemState extends State<QuarantineItem> {
                                   child: Icon(
                                     Icons.place_outlined,
                                     size: 16,
-                                    color: CustomColors.disableText,
+                                    color: disableText,
                                   ),
                                 ),
                                 TextSpan(
-                                  text: " " + widget.address!,
+                                  text: " ${widget.address}",
                                 ),
                               ],
                             ),
@@ -706,13 +681,12 @@ class QuarantineHome extends StatelessWidget {
     return Card(
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
@@ -722,35 +696,35 @@ class QuarantineHome extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
                       name,
                       style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
                       icon: Icons.phone,
                       title: "Liên hệ",
                       content: phone,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
                       icon: Icons.account_box_outlined,
                       title: "Quản lý",
                       content: manager,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -758,9 +732,9 @@ class QuarantineHome extends StatelessWidget {
                       title: "Bắt đầu cách ly",
                       content: DateFormat("dd/MM/yyyy")
                           .format(DateTime.parse(quarantineAt)),
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -768,25 +742,25 @@ class QuarantineHome extends StatelessWidget {
                       title: "Dự kiến hoàn thành cách ly",
                       content: DateFormat("dd/MM/yyyy")
                           .format(DateTime.parse(quarantineFinishExpect)),
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
                       icon: Icons.maps_home_work_outlined,
                       title: "Phòng cách ly",
                       content: room,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
                       icon: Icons.place_outlined,
                       title: "Địa chỉ",
                       content: address,
-                      textColor: CustomColors.primaryText,
+                      textColor: primaryText,
                     ),
                   ],
                 ),
@@ -822,87 +796,85 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        title,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                    Text.rich(
+                      TextSpan(
                         style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: CustomColors.disableText,
+                          fontSize: 12,
+                          color: disableText,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Icon(
+                              Icons.history,
+                              size: 16,
+                              color: disableText,
+                            ),
                           ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.history,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
+                          TextSpan(
+                            text: " $time ",
+                          ),
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Icon(
+                              status ? Icons.done_all : null,
+                              size: 16,
+                              color: disableText,
                             ),
-                            TextSpan(
-                              text: " " + time + " ",
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                status ? Icons.done_all : null,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      if (image != null)
-                        SizedBox(
-                          height: 4,
-                        ),
-                      if (image != null)
-                        Image.network(
-                          image!,
-                          fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
-                            return Container();
-                          },
-                        ),
-                      SizedBox(
+                    ),
+                    if (image != null)
+                      const SizedBox(
                         height: 4,
                       ),
-                      Text(
-                        description,
-                        style: TextStyle(
-                            color: status
-                                ? CustomColors.disableText
-                                : CustomColors.primaryText),
+                    if (image != null)
+                      Image.network(
+                        image!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Container();
+                        },
                       ),
-                    ],
-                  ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      description,
+                      style: TextStyle(
+                          color: status
+                              ? disableText
+                              : primaryText),
+                    ),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -925,62 +897,58 @@ class VaccineDoseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        vaccine,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          title: "Thời gian",
-                          content: time),
-                      // SizedBox(
-                      //   height: 4,
-                      // ),
-                      // Text.rich(
-                      //   TextSpan(
-                      //     style: TextStyle(
-                      //       color: CustomColors.disableText,
-                      //     ),
-                      //     children: [
-                      //       WidgetSpan(
-                      //         alignment: PlaceholderAlignment.middle,
-                      //         child: Icon(
-                      //           Icons.description_outlined,
-                      //           size: 16,
-                      //           color: CustomColors.disableText,
-                      //         ),
-                      //       ),
-                      //       TextSpan(
-                      //         text: " Nơi tiêm: " ,
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      vaccine,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history, title: "Thời gian", content: time),
+                    // const SizedBox(
+                    //   height: 4,
+                    // ),
+                    // Text.rich(
+                    //   TextSpan(
+                    //     style: TextStyle(
+                    //       color: disableText,
+                    //     ),
+                    //     children: [
+                    //       WidgetSpan(
+                    //         alignment: PlaceholderAlignment.middle,
+                    //         child: const Icon(
+                    //           Icons.description_outlined,
+                    //           size: 16,
+                    //           color: disableText,
+                    //         ),
+                    //       ),
+                    //       TextSpan(
+                    //         text: " Nơi tiêm: " ,
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -1007,53 +975,49 @@ class DestinationHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          title: "Thời gian",
-                          content: time),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.location_on_outlined,
-                          title: "Địa điểm",
-                          content: address),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.note_outlined,
-                          title: "Ghi chú",
-                          content: note),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history, title: "Thời gian", content: time),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.location_on_outlined,
+                        title: "Địa điểm",
+                        content: address),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.note_outlined,
+                        title: "Ghi chú",
+                        content: note),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -1082,60 +1046,56 @@ class QuarantineHistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        name,
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.normal,
-                            color: CustomColors.primaryText),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.history,
-                          title: "Thời gian",
-                          content: time),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.location_on_outlined,
-                          title: "Đơn vị",
-                          content: room),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.medical_services_outlined,
-                          title: "Dịch bệnh",
-                          content: pademic),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      cardLine(
-                          icon: Icons.note_outlined,
-                          title: "Ghi chú",
-                          content: note),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      name,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: primaryText),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.history, title: "Thời gian", content: time),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.location_on_outlined,
+                        title: "Đơn vị",
+                        content: room),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.medical_services_outlined,
+                        title: "Dịch bệnh",
+                        content: pademic),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    cardLine(
+                        icon: Icons.note_outlined,
+                        title: "Ghi chú",
+                        content: note),
+                  ],
                 ),
-                menus ?? Container()
-              ],
-            ),
+              ),
+              menus ?? Container()
+            ],
           ),
         ),
       ),
@@ -1151,7 +1111,7 @@ Widget cardLine(
   return Text.rich(
     TextSpan(
       style: TextStyle(
-        color: textColor ?? CustomColors.disableText,
+        color: textColor ?? disableText,
       ),
       children: [
         if (icon != null)
@@ -1160,7 +1120,7 @@ Widget cardLine(
             child: Icon(
               icon,
               size: 16,
-              color: CustomColors.disableText,
+              color: disableText,
             ),
           ),
         TextSpan(
@@ -1199,8 +1159,8 @@ class _ManagerCardState extends State<ManagerCard> {
     'Default/no_avatar',
   ];
 
-  action() {
-    if (widget.longPressEnabled != null && widget.longPressEnabled == true) {
+  Widget action() {
+    if (widget.longPressEnabled ?? false) {
       return Checkbox(
         value: _selected,
         onChanged: (newValue) {
@@ -1226,118 +1186,115 @@ class _ManagerCardState extends State<ManagerCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Container(
-        child: InkWell(
-          onTap: () {
-            if (widget.longPressEnabled != null &&
-                widget.longPressEnabled == true) {
-              setState(() {
-                _selected = !_selected;
-              });
-              widget.onLongPress!();
-            } else {
-              widget.onTap();
-            }
-          },
-          onLongPress: () {
-            if (widget.longPressEnabled != null) {
-              setState(() {
-                _selected = !_selected;
-              });
-              widget.onLongPress!();
-            }
-          },
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 56,
-                  width: 56,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    fit: StackFit.expand,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            cloudinary.getImage(imageList[0]).toString()),
-                      ),
-                    ],
-                  ),
+      child: InkWell(
+        onTap: () {
+          if (widget.longPressEnabled ?? false) {
+            setState(() {
+              _selected = !_selected;
+            });
+            widget.onLongPress!();
+          } else {
+            widget.onTap();
+          }
+        },
+        onLongPress: () {
+          if (widget.longPressEnabled != null) {
+            setState(() {
+              _selected = !_selected;
+            });
+            widget.onLongPress!();
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 56,
+                width: 56,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  fit: StackFit.expand,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                          cloudinary.getImage(imageList[0]).toString()),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                          children: [
-                            TextSpan(
-                              text: widget.manager.fullName + " ",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.normal,
-                                  color: CustomColors.primaryText),
-                            ),
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: widget.manager.gender == "MALE"
-                                  ? Icon(
-                                      Icons.male,
-                                      color: HexColor("#00BBD3"),
-                                    )
-                                  : Icon(
-                                      Icons.female,
-                                      color: HexColor("#FF4181"),
-                                    ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        widget.manager.birthday,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: CustomColors.disableText,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          style: TextStyle(
-                            color: CustomColors.disableText,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "${widget.manager.fullName} ",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: primaryText),
                           ),
-                          children: [
-                            WidgetSpan(
-                              alignment: PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.place_outlined,
-                                size: 16,
-                                color: CustomColors.disableText,
-                              ),
-                            ),
-                            TextSpan(
-                              text: " " + (widget.manager.quarantineWard.name),
-                            ),
-                          ],
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        softWrap: false,
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: widget.manager.gender == "MALE"
+                                ? Icon(
+                                    Icons.male,
+                                    color: HexColor("#00BBD3"),
+                                  )
+                                : Icon(
+                                    Icons.female,
+                                    color: HexColor("#FF4181"),
+                                  ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      widget.manager.birthday,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: disableText,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          color: disableText,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Icon(
+                              Icons.place_outlined,
+                              size: 16,
+                              color: disableText,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " ${widget.manager.quarantineWard.name}",
+                          ),
+                        ],
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      softWrap: false,
+                    ),
+                  ],
                 ),
-                widget.menus != null ? action() : Container(),
-              ],
-            ),
+              ),
+              if (widget.menus != null) action(),
+            ],
           ),
         ),
       ),

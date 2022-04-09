@@ -11,7 +11,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class CreatePassword extends StatefulWidget {
   static const String routeName = "/create_password";
-  CreatePassword({Key? key, required this.email, required this.otp})
+  const CreatePassword({Key? key, required this.email, required this.otp})
       : super(key: key);
   final String email;
   final String otp;
@@ -32,9 +32,9 @@ class _CreatePasswordState extends State<CreatePassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -55,7 +55,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Container(
@@ -85,12 +85,10 @@ class _CreatePasswordState extends State<CreatePassword> {
                           Container(
                             margin: const EdgeInsets.all(16),
                             child: ElevatedButton(
-                              onPressed: () {
-                                _submit();
-                              },
+                              onPressed: _submit,
                               child: Text(
                                 'Xác nhận',
-                                style: TextStyle(color: CustomColors.white),
+                                style: TextStyle(color: white),
                               ),
                             ),
                           ),
@@ -118,7 +116,7 @@ class _CreatePasswordState extends State<CreatePassword> {
           error = "Mật khẩu không trùng khớp";
         });
       } else {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         final response = await createPass(createPassDataForm(
             email: widget.email,
             otp: widget.otp,
@@ -127,7 +125,9 @@ class _CreatePasswordState extends State<CreatePassword> {
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
-          Navigator.popUntil(context, (route) => route.isFirst);
+          if (mounted) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+          }
         }
       }
     }

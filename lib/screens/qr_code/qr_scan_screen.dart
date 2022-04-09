@@ -17,7 +17,7 @@ import 'package:rxdart/rxdart.dart';
 class QrCodeScan extends StatefulWidget {
   static const String routeName = "/qr_scan";
 
-  QrCodeScan({Key? key}) : super(key: key);
+  const QrCodeScan({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QrCodeScanState();
@@ -46,14 +46,14 @@ class _QrCodeScanState extends State<QrCodeScan> {
     return Scaffold(
         floatingActionButton: (isAndroidPlatform() || isIOSPlatform())
             ? Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: SizedBox(
                   height: 120,
                   width: 100,
                   child: FloatingActionButton(
                     backgroundColor: Colors.transparent,
                     elevation: 0,
-                    onPressed: () => _getPhotoByGallery(),
+                    onPressed: _getPhotoByGallery,
                     child: Column(
                       children: [
                         Container(
@@ -63,15 +63,16 @@ class _QrCodeScanState extends State<QrCodeScan> {
                             border: Border.all(color: Colors.white, width: 2),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(Icons.photo_library_outlined, size: 30),
+                          child: const Icon(Icons.photo_library_outlined,
+                              size: 30),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         Text(
                           "Chọn QR từ thư viện",
                           style: TextStyle(
-                            color: CustomColors.white,
+                            color: white,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -90,10 +91,11 @@ class _QrCodeScanState extends State<QrCodeScan> {
               icon: FutureBuilder(
                 future: controller?.getFlashStatus(),
                 builder: (context, snapshot) {
-                  if (snapshot.data == false)
+                  if (snapshot.data == false) {
                     return const Icon(Icons.flash_off);
-                  else
+                  } else {
                     return const Icon(Icons.flash_on);
+                  }
                 },
               ),
               tooltip: 'Toggle Flash',
@@ -109,7 +111,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
+    final scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 200.0
         : 300.0;
@@ -159,7 +161,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
     if (qrResult == null || qrResult.contains("...")) {
       await Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) {
-          return Error();
+          return const Error();
         },
       ));
     } else {
@@ -175,13 +177,13 @@ class _QrCodeScanState extends State<QrCodeScan> {
     }).listen((data) {
       Navigator.of(context).pop(data);
     }).onError((error, stackTrace) {
-      if (error.toString().contains("Not found data"))
+      if (error.toString().contains("Not found data")) {
         showDialog<String>(
           barrierDismissible: false,
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Lỗi'),
-            content: Text("Không tìm thấy dữ liệu từ hình ảnh"),
+            content: const Text("Không tìm thấy dữ liệu từ hình ảnh"),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -190,10 +192,10 @@ class _QrCodeScanState extends State<QrCodeScan> {
             ],
           ),
         ).then((value) => controller!.resumeCamera());
-      else {
+      } else {
         controller!.resumeCamera();
       }
-      print('${error.toString()}');
+      print(error.toString());
     });
   }
 }

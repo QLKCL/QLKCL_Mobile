@@ -6,7 +6,7 @@ import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart
 
 class BuildingList extends StatelessWidget {
   final Quarantine currentQuarantine;
-  final data;
+  final dynamic data;
   const BuildingList({Key? key, this.data, required this.currentQuarantine})
       : super(key: key);
 
@@ -15,14 +15,13 @@ class BuildingList extends StatelessWidget {
     return (data == null || data.isEmpty)
         ? Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           )
@@ -44,12 +43,10 @@ class BuildingList extends StatelessWidget {
                       );
                     },
                     name: data[index]['name'],
-                    numOfMem: data[index]['num_current_member'],
-                    maxMem: data[index]['total_capacity'] == null
-                        ? 0
-                        : data[index]['total_capacity'],
+                    numOfMem: data[index]['num_current_member'] ?? 0,
+                    maxMem: data[index]['total_capacity'],
                   ),
-                  index == data.length - 1 ? SizedBox(height: 70) : Container(),
+                  if (index == data.length - 1) const SizedBox(height: 70),
                 ],
               );
             },

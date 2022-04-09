@@ -8,7 +8,7 @@ import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 class ImageField extends StatefulWidget {
-  ImageField({
+  const ImageField({
     Key? key,
     required this.controller,
     this.maxQuantityImage = 1,
@@ -27,14 +27,15 @@ class _ImageFieldState extends State<ImageField> {
     'Default/no_image_available',
   ];
 
-  List<XFile> _imageFileList = [];
+  List<XFile> imageFileList = [];
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.controller.text != "")
+    if (widget.controller.text != "") {
       imageList.addAll(widget.controller.text.split(','));
+    }
   }
 
   @override
@@ -43,82 +44,78 @@ class _ImageFieldState extends State<ImageField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
             'Hình ảnh',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
+          margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           child: GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,
             ),
             itemBuilder: (BuildContext ctx, int index) {
               return index == 0
                   ? Container(
                       padding: const EdgeInsets.all(5),
-                      child: Container(
-                        child: DottedBorder(
-                          borderType: BorderType.RRect,
-                          radius: Radius.circular(8),
-                          color: CustomColors.primary,
-                          strokeWidth: 1,
-                          child: OutlinedButton(
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(Size.infinite),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
-                              ),
-                              side: MaterialStateProperty.all(
-                                BorderSide(
-                                  color: CustomColors.primary,
-                                  width: 1.0,
-                                  style: BorderStyle.none,
-                                ),
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(8),
+                        color: primary,
+                        child: OutlinedButton(
+                          style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all(Size.infinite),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
                               ),
                             ),
-                            onPressed: () {
-                              if (widget.maxQuantityImage < imageList.length) {
-                                showNotification(
-                                    "Chỉ có thể thêm tối đa ${widget.maxQuantityImage} hình ảnh!",
-                                    status: Status.error);
-                              } else {
-                                upLoadImages(
-                                  _imageFileList,
-                                  multi: true,
-                                  maxQuantity: widget.maxQuantityImage -
-                                      imageList.length +
-                                      1,
-                                  type: widget.type,
-                                ).then((value) => setState(() {
-                                      imageList.addAll(value);
-                                      widget.controller.text =
-                                          imageList.sublist(1).join(',');
-                                    }));
-                              }
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.camera_alt_outlined,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  'Thêm ảnh',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+                            side: MaterialStateProperty.all(
+                              BorderSide(
+                                color: primary,
+                                style: BorderStyle.none,
+                              ),
                             ),
+                          ),
+                          onPressed: () {
+                            if (widget.maxQuantityImage < imageList.length) {
+                              showNotification(
+                                  "Chỉ có thể thêm tối đa ${widget.maxQuantityImage} hình ảnh!",
+                                  status: Status.error);
+                            } else {
+                              upLoadImages(
+                                imageFileList,
+                                multi: true,
+                                maxQuantity: widget.maxQuantityImage -
+                                    imageList.length +
+                                    1,
+                                type: widget.type,
+                              ).then((value) => setState(() {
+                                    imageList.addAll(value);
+                                    widget.controller.text =
+                                        imageList.sublist(1).join(',');
+                                  }));
+                            }
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.camera_alt_outlined,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                'Thêm ảnh',
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -129,7 +126,7 @@ class _ImageFieldState extends State<ImageField> {
                         fit: StackFit.expand,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8),
                             child: Image.network(
                                 cloudinary
                                     .getImage(imageList[index])

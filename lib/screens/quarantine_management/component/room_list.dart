@@ -10,7 +10,7 @@ class RoomList extends StatelessWidget {
   final Quarantine currentQuarantine;
   final Building currentBuilding;
   final Floor currentFloor;
-  final data;
+  final dynamic data;
   const RoomList(
       {Key? key,
       this.data,
@@ -24,14 +24,13 @@ class RoomList extends StatelessWidget {
     return (data == null || data.isEmpty)
         ? Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           )
@@ -57,7 +56,7 @@ class RoomList extends StatelessWidget {
                     numOfMem: data[index]['num_current_member'],
                     maxMem: data[index]['capacity'],
                   ),
-                  index == data.length - 1 ? SizedBox(height: 70) : Container(),
+                  if (index == data.length - 1) const SizedBox(height: 70),
                 ],
               );
             },

@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class ForgetPassword extends StatefulWidget {
   static const String routeName = "/forget_password";
-  ForgetPassword({Key? key}) : super(key: key);
+  const ForgetPassword({Key? key}) : super(key: key);
 
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();
@@ -24,9 +24,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -70,7 +70,7 @@ class _ForgetFormState extends State<ForgetForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
@@ -82,7 +82,7 @@ class _ForgetFormState extends State<ForgetForm> {
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Text(
               "Nhập email khôi phục để đặt lại mật khẩu hoặc liên hệ người quản lý để hỗ trợ thêm.",
               textAlign: TextAlign.center,
@@ -104,7 +104,7 @@ class _ForgetFormState extends State<ForgetForm> {
               onPressed: _submit,
               child: Text(
                 'Tiếp theo',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -116,16 +116,18 @@ class _ForgetFormState extends State<ForgetForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response =
           await requestOtp(requestOtpDataForm(email: emailController.text));
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Otp(email: emailController.text)));
+        if (mounted) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Otp(email: emailController.text)));
+        }
       }
     }
   }

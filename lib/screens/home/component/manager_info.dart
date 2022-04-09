@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
@@ -30,7 +29,7 @@ class InfoManagerHomePage extends StatelessWidget {
   final VoidCallback refresh;
   final List<KeyValue> quarantineWardList;
   final int role;
-  InfoManagerHomePage({
+  const InfoManagerHomePage({
     this.totalUsers = 0,
     this.availableSlots = 0,
     this.activeUsers = 0,
@@ -52,7 +51,7 @@ class InfoManagerHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<InfoManagerHomeCard> listTest = [
+    final List<InfoManagerHomeCard> listTest = [
       InfoManagerHomeCard(
         title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
@@ -74,8 +73,7 @@ class InfoManagerHomePage extends StatelessWidget {
         onTap: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
-              .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 0)));
+              .pushNamed(ListAllMember.routeName);
         },
       ),
       InfoManagerHomeCard(
@@ -96,7 +94,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 1)));
+                  builder: (context) => const ListAllMember(tab: 1)));
         },
       ),
       InfoManagerHomeCard(
@@ -107,7 +105,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 2)));
+                  builder: (context) => const ListAllMember(tab: 2)));
         },
       ),
       InfoManagerHomeCard(
@@ -118,7 +116,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 3)));
+                  builder: (context) => const ListAllMember(tab: 3)));
         },
       ),
       InfoManagerHomeCard(
@@ -129,7 +127,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 6)));
+                  builder: (context) => const ListAllMember(tab: 6)));
         },
       ),
       InfoManagerHomeCard(
@@ -140,7 +138,7 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 5)));
+                  builder: (context) => const ListAllMember(tab: 5)));
         },
       ),
       InfoManagerHomeCard(
@@ -151,20 +149,20 @@ class InfoManagerHomePage extends StatelessWidget {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(MaterialPageRoute(
-                  builder: (context) => ListAllMember(tab: 9)));
+                  builder: (context) => const ListAllMember(tab: 9)));
         },
       ),
     ];
 
-    var _screenWidth = MediaQuery.of(context).size.width - 16;
-    var _crossAxisCount = _screenWidth <= maxMobileSize
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth <= maxMobileSize
         ? 1
-        : _screenWidth >= minDesktopSize
-            ? (_screenWidth - 230) ~/ (maxMobileSize - 64)
-            : _screenWidth ~/ (maxMobileSize - 32);
-    var _width = (_screenWidth) / _crossAxisCount;
-    var cellHeight = 128;
-    var _aspectRatio = _width / cellHeight;
+        : screenWidth >= minDesktopSize
+            ? (screenWidth - 230) ~/ (maxMobileSize - 64)
+            : screenWidth ~/ (maxMobileSize - 32);
+    final width = screenWidth / crossAxisCount;
+    const cellHeight = 128;
+    final aspectRatio = width / cellHeight;
 
     return Column(
       children: [
@@ -178,7 +176,7 @@ class InfoManagerHomePage extends StatelessWidget {
             ResponsiveRowColumnItem(
               rowFlex: 4,
               child: Container(
-                margin: EdgeInsets.only(left: 16),
+                margin: const EdgeInsets.only(left: 16),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Dữ liệu tổng hợp (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
@@ -194,7 +192,7 @@ class InfoManagerHomePage extends StatelessWidget {
                 child: Container(
                   margin: EdgeInsets.zero,
                   padding: EdgeInsets.zero,
-                  width: _width < maxMobileSize ? _width + 100 : maxMobileSize,
+                  width: width < maxMobileSize ? width + 100 : maxMobileSize,
                   child: DropdownInput<KeyValue>(
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
@@ -206,9 +204,9 @@ class InfoManagerHomePage extends StatelessWidget {
                         : quarantineWardList.safeFirstWhere((type) =>
                             type.id.toString() ==
                             quarantineWardController.text),
-                    onFind: quarantineWardList.length == 0
+                    onFind: quarantineWardList.isEmpty
                         ? (String? filter) => fetchQuarantineWard({
-                              "page_size": PAGE_SIZE_MAX,
+                              "page_size": pageSizeMax,
                               "search": filter,
                             })
                         : null,
@@ -222,8 +220,6 @@ class InfoManagerHomePage extends StatelessWidget {
                       }
                       refresh();
                     },
-                    // showClearButton: true,
-                    mode: Mode.MENU,
                     maxHeight: 400,
                     showSearchBox: true,
                   ),
@@ -233,12 +229,11 @@ class InfoManagerHomePage extends StatelessWidget {
         ),
         if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
           ResponsiveGridView.builder(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
             gridDelegate: ResponsiveGridDelegate(
-              maxCrossAxisExtent: _width,
-              minCrossAxisExtent:
-                  _width < maxMobileSize ? _width : maxMobileSize,
-              childAspectRatio: _aspectRatio,
+              maxCrossAxisExtent: width,
+              minCrossAxisExtent: width < maxMobileSize ? width : maxMobileSize,
+              childAspectRatio: aspectRatio,
             ),
             itemCount: listTest.length,
             shrinkWrap: true,
@@ -256,7 +251,7 @@ class InfoManagerHomePage extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 8),
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: InOutChart(
                   inData: numberIn,
                   outData: numberOut,
@@ -287,17 +282,16 @@ class InfoManagerHomeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: Responsive.isDesktopLayout(context)
-          ? EdgeInsets.fromLTRB(8, 8, 2, 0)
+          ? const EdgeInsets.fromLTRB(8, 8, 2, 0)
           : null,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               icon,
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
 
@@ -310,18 +304,18 @@ class InfoManagerHomeCard extends StatelessWidget {
                     Text(
                       title,
                       style: TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 18,
                           fontWeight: FontWeight.normal,
-                          color: CustomColors.primaryText),
+                          color: primaryText),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 4,
                     ),
                     Text.rich(
                       TextSpan(
                         style: TextStyle(
                           fontSize: 17,
-                          color: CustomColors.disableText,
+                          color: disableText,
                         ),
                         children: [
                           WidgetSpan(
@@ -329,11 +323,11 @@ class InfoManagerHomeCard extends StatelessWidget {
                             child: Icon(
                               Icons.groups_rounded,
                               size: 22,
-                              color: CustomColors.disableText,
+                              color: disableText,
                             ),
                           ),
                           TextSpan(
-                            text: " " + subtitle,
+                            text: " $subtitle",
                           )
                         ],
                       ),
@@ -344,7 +338,7 @@ class InfoManagerHomeCard extends StatelessWidget {
               if (iconSuffix)
                 Icon(
                   Icons.keyboard_arrow_right,
-                  color: CustomColors.disableText,
+                  color: disableText,
                 ),
             ],
           ),

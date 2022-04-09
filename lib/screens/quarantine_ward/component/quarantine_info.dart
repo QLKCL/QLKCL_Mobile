@@ -31,14 +31,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
         fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
   }
 
-  @override
-  void deactivate() {
-    super.deactivate();
-  }
-
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       child: Text.rich(
         TextSpan(
           children: [
@@ -46,7 +41,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
               child: Icon(
                 icon,
                 size: 16,
-                color: CustomColors.secondaryText,
+                color: secondaryText,
               ),
             ),
             TextSpan(
@@ -65,17 +60,15 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Carousel(image: widget.quarantineInfo.image),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           //Name and icon
           Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               left: 23,
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              //Name
               children: [
                 Expanded(
                   child: Column(
@@ -84,12 +77,12 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       Text(
                         widget.quarantineInfo.fullName,
                         //quarantineName!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Text(
@@ -105,7 +98,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                             (widget.quarantineInfo.city != null
                                 ? "${widget.quarantineInfo.city['name']}"
                                 : ""),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                           color: Color.fromRGBO(138, 149, 158, 1),
@@ -122,8 +115,8 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       iconSize: 38,
                       onPressed: widget.quarantineInfo.phoneNumber != null
                           ? () async {
-                              launch("tel://" +
-                                  widget.quarantineInfo.phoneNumber.toString());
+                              launch(
+                                  "tel://${widget.quarantineInfo.phoneNumber}");
                             }
                           : () {
                               showNotification('Số điện thoại không tồn tại.',
@@ -136,7 +129,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                         onPressed: (widget.quarantineInfo.latitude != null &&
                                 widget.quarantineInfo.longitude != null)
                             ? () async {
-                                String googleUrl =
+                                final String googleUrl =
                                     'https://www.google.com/maps/search/?api=1&query=${widget.quarantineInfo.latitude},${widget.quarantineInfo.longitude}';
                                 if (await canLaunch(googleUrl)) {
                                   await launch(googleUrl);
@@ -166,9 +159,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     currentQuarantine: widget.quarantineInfo,
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );
@@ -181,7 +174,8 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           //Information
           Container(
             width: MediaQuery.of(context).size.width * 1,
-            margin: EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
+            margin:
+                const EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,10 +184,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                         bottom: 10,
                       ),
-                      child: Text(
+                      child: const Text(
                         'Thông tin',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -215,69 +209,33 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           ),
                         );
                       },
-                      child: Text('Danh sách quản lý, cán bộ'),
+                      child: const Text('Danh sách quản lý, cán bộ'),
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
-                            CustomColors.primary),
+                            primary),
                       ),
                     )
                   ],
                 ),
-                buildInformation(
-                    context,
-                    Icons.medical_services_outlined,
-                    ' Dịch bệnh cách ly: ' +
-                        (widget.quarantineInfo.pandemic?.name ??
-                            "Chưa có thông tin")),
-                buildInformation(
-                    context,
-                    Icons.history,
-                    ' Thời gian cách ly: ' +
-                        widget.quarantineInfo.quarantineTime.toString() +
-                        ' ngày'),
-                buildInformation(
-                    context,
-                    Icons.hotel_outlined,
-                    ' Tổng số giường: ' +
-                        widget.quarantineInfo.capacity.toString() +
-                        ' giường'),
-                buildInformation(
-                    context,
-                    Icons.groups_outlined,
-                    ' Đang cách ly: ' +
-                        widget.quarantineInfo.currentMem.toString() +
-                        ' người'),
-                buildInformation(
-                    context,
-                    Icons.account_box_outlined,
-                    ' Quản lý: ' +
-                        widget.quarantineInfo.mainManager["full_name"]),
+                buildInformation(context, Icons.medical_services_outlined,
+                    ' Dịch bệnh cách ly: ${widget.quarantineInfo.pandemic?.name ?? "Chưa có thông tin"}'),
+                buildInformation(context, Icons.history,
+                    ' Thời gian cách ly: ${widget.quarantineInfo.quarantineTime} ngày'),
+                buildInformation(context, Icons.hotel_outlined,
+                    ' Tổng số giường: ${widget.quarantineInfo.capacity} giường'),
+                buildInformation(context, Icons.groups_outlined,
+                    ' Đang cách ly: ${widget.quarantineInfo.currentMem} người'),
+                buildInformation(context, Icons.account_box_outlined,
+                    ' Quản lý: ${widget.quarantineInfo.mainManager["full_name"]}'),
                 buildInformation(
                   context,
                   Icons.place_outlined,
-                  ' Địa chỉ: ' +
-                      (widget.quarantineInfo.address != null
-                          ? "${widget.quarantineInfo.address}, "
-                          : "") +
-                      (widget.quarantineInfo.ward != null
-                          ? "${widget.quarantineInfo.ward['name']}, "
-                          : "") +
-                      (widget.quarantineInfo.district != null
-                          ? "${widget.quarantineInfo.district['name']}, "
-                          : "") +
-                      (widget.quarantineInfo.city != null
-                          ? "${widget.quarantineInfo.city['name']}"
-                          : ""),
+                  ' Địa chỉ: ${widget.quarantineInfo.address != null ? "${widget.quarantineInfo.address}, " : ""}${widget.quarantineInfo.ward != null ? "${widget.quarantineInfo.ward['name']}, " : ""}${widget.quarantineInfo.district != null ? "${widget.quarantineInfo.district['name']}, " : ""}${widget.quarantineInfo.city != null ? "${widget.quarantineInfo.city['name']}" : ""}',
                 ),
-                buildInformation(
-                    context,
-                    Icons.phone,
-                    ' Số điện thoại: ' +
-                        (widget.quarantineInfo.phoneNumber != null
-                            ? widget.quarantineInfo.phoneNumber!
-                            : 'Chưa có')),
+                buildInformation(context, Icons.phone,
+                    ' Số điện thoại: ${widget.quarantineInfo.phoneNumber ?? "Chưa có"}'),
                 buildInformation(context, Icons.email_outlined,
-                    ' Email: ' + widget.quarantineInfo.email),
+                    ' Email: ${widget.quarantineInfo.email}'),
               ],
             ),
           ),

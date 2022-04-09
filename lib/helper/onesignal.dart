@@ -47,16 +47,18 @@ void handleGetDeviceState() async {
 }
 
 void handleSendNotification() async {
-  var deviceState = await OneSignal.shared.getDeviceState();
+  final deviceState = await OneSignal.shared.getDeviceState();
 
-  if (deviceState == null || deviceState.userId == null) return;
+  if (deviceState == null || deviceState.userId == null) {
+    return;
+  }
 
-  var playerId = deviceState.userId!;
+  final playerId = deviceState.userId!;
 
-  var imgUrlString =
+  const imgUrlString =
       "http://cdn1-www.dogtime.com/assets/uploads/gallery/30-impossibly-cute-puppies/impossibly-cute-puppy-2.jpg";
 
-  var notification = OSCreateNotification(
+  final notification = OSCreateNotification(
       playerIds: [playerId],
       content: "this is a test from OneSignal's Flutter SDK",
       heading: "Test Notification",
@@ -67,7 +69,7 @@ void handleSendNotification() async {
         OSActionButton(text: "test2", id: "id2")
       ]);
 
-  var response = await OneSignal.shared.postNotification(notification);
+  final response = await OneSignal.shared.postNotification(notification);
   print("Sent notification with response: $response");
 }
 
@@ -80,7 +82,7 @@ oneSignalInAppMessagingTriggerExamples() async {
   /// Example addTriggers call for IAM
   /// This will add 2 triggers so if there are any IAM satisfying these, they
   /// will be shown to the user
-  Map<String, Object> triggers = new Map<String, Object>();
+  final Map<String, Object> triggers = <String, Object>{};
   triggers["trigger_2"] = "two";
   triggers["trigger_3"] = "three";
   OneSignal.shared.addTriggers(triggers);
@@ -90,12 +92,12 @@ oneSignalInAppMessagingTriggerExamples() async {
   OneSignal.shared.removeTriggerForKey("trigger_2");
 
   // Get the value for a trigger by its key
-  Object? triggerValue =
+  final Object? triggerValue =
       await OneSignal.shared.getTriggerValueForKey("trigger_3");
   print("'trigger_3' key trigger value: ${triggerValue?.toString()}");
 
   // Create a list and bulk remove triggers based on keys supplied
-  List<String> keys = ["trigger_1", "trigger_3"];
+  final List<String> keys = ["trigger_1", "trigger_3"];
   OneSignal.shared.removeTriggersForKeys(keys);
 
   // Toggle pausing (displaying or not) of IAMs
@@ -126,6 +128,6 @@ oneSignalOutcomeEventsExamples() async {
 }
 
 Future<void> outcomeAwaitExample() async {
-  var outcomeEvent = await OneSignal.shared.sendOutcome("await_normal_1");
+  final outcomeEvent = await OneSignal.shared.sendOutcome("await_normal_1");
   print(outcomeEvent.jsonRepresentation());
 }

@@ -26,14 +26,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Danh sách tòa'),
+      title: const Text('Danh sách tòa'),
     );
     return Scaffold(
       appBar: appBar,
@@ -46,10 +41,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -59,7 +53,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                           numOfBuilding: snapshot.data.length,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -71,9 +65,9 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );

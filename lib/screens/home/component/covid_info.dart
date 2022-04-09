@@ -23,31 +23,30 @@ class InfoCovid extends StatelessWidget {
       height: 128,
       child: Card(
         color: color,
-        margin: EdgeInsets.all(0),
+        margin: EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: CustomColors.white),
+              style: TextStyle(color: white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
-              "+ " + newCase,
+              "+ $newCase",
               textAlign: TextAlign.center,
-              style: TextStyle(color: CustomColors.white),
+              style: TextStyle(color: white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
               totalCase,
-              style: TextStyle(color: CustomColors.white, fontSize: 20),
+              style: TextStyle(color: white, fontSize: 20),
             ),
           ],
         ),
@@ -68,91 +67,91 @@ class InfoCovidHomePage extends StatelessWidget {
   final String lastUpdate;
 
   const InfoCovidHomePage({
-    this.increaseConfirmed: "0",
-    this.confirmed: "0",
-    this.increaseDeaths: "0",
-    this.deaths: "0",
-    this.increaseRecovered: "0",
-    this.recovered: "0",
-    this.increaseActived: "0",
-    this.actived: "0",
-    this.lastUpdate: "dd/MM/yyyy HH:mm:ss",
+    this.increaseConfirmed = "0",
+    this.confirmed = "0",
+    this.increaseDeaths = "0",
+    this.deaths = "0",
+    this.increaseRecovered = "0",
+    this.recovered = "0",
+    this.increaseActived = "0",
+    this.actived = "0",
+    this.lastUpdate = "dd/MM/yyyy HH:mm:ss",
   });
 
   @override
   Widget build(BuildContext context) {
-    List<InfoCovid> listInfo = [
+    final List<InfoCovid> listInfo = [
       InfoCovid(
-        color: CustomColors.warning,
+        color: warning,
         title: "Nhiễm bệnh",
         newCase: increaseConfirmed,
         totalCase: confirmed,
       ),
       InfoCovid(
-        color: CustomColors.disableText,
+        color: disableText,
         title: "Tử vong",
         newCase: increaseDeaths,
         totalCase: deaths,
       ),
       InfoCovid(
-        color: CustomColors.success,
+        color: success,
         title: "Bình phục",
         newCase: increaseRecovered,
         totalCase: recovered,
       ),
       InfoCovid(
-        color: CustomColors.error,
+        color: error,
         title: "Đang điều trị",
         newCase: increaseActived,
         totalCase: actived,
       ),
     ];
 
-    var _screenWidth = MediaQuery.of(context).size.width - 16;
-    var _crossAxisCount = _screenWidth >= minDesktopSize ? 4 : 2;
-    var _width = (_screenWidth) / _crossAxisCount;
-    var cellHeight = 148;
-    var _aspectRatio = _width / cellHeight;
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth >= minDesktopSize ? 4 : 2;
+    final width = screenWidth / crossAxisCount;
+    const cellHeight = 148;
+    final aspectRatio = width / cellHeight;
 
-    return Column(children: <Widget>[
-      ResponsiveGridView.builder(
-        padding: EdgeInsets.only(top: 8),
-        gridDelegate: ResponsiveGridDelegate(
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          maxCrossAxisExtent: _width,
-          minCrossAxisExtent: _width < maxMobileSize ? _width : maxMobileSize,
-          childAspectRatio: _aspectRatio,
+    return Column(
+      children: <Widget>[
+        ResponsiveGridView.builder(
+          padding: const EdgeInsets.only(top: 8),
+          gridDelegate: ResponsiveGridDelegate(
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            maxCrossAxisExtent: width,
+            minCrossAxisExtent: width < maxMobileSize ? width : maxMobileSize,
+            childAspectRatio: aspectRatio,
+          ),
+          itemCount: listInfo.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return listInfo[index];
+          },
         ),
-        itemCount: listInfo.length,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemBuilder: (context, index) {
-          return listInfo[index];
-        },
-      ),
-      SizedBox(
-        height: 8,
-      ),
-      Container(
-        child: Row(
+        const SizedBox(
+          height: 8,
+        ),
+        Row(
           children: [
             Text(
-              "Cập nhật: " + lastUpdate,
+              "Cập nhật: $lastUpdate",
               textAlign: TextAlign.left,
             ),
-            Spacer(),
+            const Spacer(),
             RichText(
-              text: new TextSpan(
+              text: TextSpan(
                 children: [
-                  new TextSpan(
+                  TextSpan(
                     text: 'Nguồn: ',
-                    style: TextStyle(color: CustomColors.primaryText),
+                    style: TextStyle(color: primaryText),
                   ),
-                  new TextSpan(
+                  TextSpan(
                     text: 'Dữ liệu Covid-19',
-                    style: new TextStyle(color: CustomColors.primary),
-                    recognizer: new TapGestureRecognizer()
+                    style: TextStyle(color: primary),
+                    recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         launch('https://covid19.ncsc.gov.vn/dulieu');
                       },
@@ -162,7 +161,7 @@ class InfoCovidHomePage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }

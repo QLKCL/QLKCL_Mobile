@@ -37,11 +37,6 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: const Text("Thông tin chi tiết tòa"),
@@ -65,7 +60,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                       {'quarantine_building': currentBuilding.id});
                 }));
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],
@@ -81,10 +76,9 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   return Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -95,7 +89,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                           numberOfFloor: snapshot.data.length,
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: (MediaQuery.of(context).size.height -
                                 appBar.preferredSize.height -
                                 MediaQuery.of(context).padding.top) *
@@ -109,9 +103,9 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );

@@ -16,7 +16,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateRequest extends StatefulWidget {
   static const String routeName = "/create_request";
-  CreateRequest({Key? key}) : super(key: key);
+  const CreateRequest({Key? key}) : super(key: key);
 
   @override
   _CreateRequestState createState() => _CreateRequestState();
@@ -39,16 +39,12 @@ class _CreateRequestState extends State<CreateRequest> {
     super.initState();
     titleController.text = "Phản ánh";
     getQuarantineWard().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWard = value;
         });
+      }
     });
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -56,7 +52,7 @@ class _CreateRequestState extends State<CreateRequest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Gửi phản ánh/yêu cầu'),
+          title: const Text('Gửi phản ánh/yêu cầu'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -110,18 +106,15 @@ class _CreateRequestState extends State<CreateRequest> {
                 ),
                 ImageField(
                   controller: imageController,
-                  maxQuantityImage: 1,
                   type: "Request",
                 ),
                 Container(
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {
-                      _submit();
-                    },
+                    onPressed: _submit,
                     child: Text(
                       'Gửi',
-                      style: TextStyle(color: CustomColors.white),
+                      style: TextStyle(color: white),
                     ),
                   ),
                 ),
@@ -136,7 +129,7 @@ class _CreateRequestState extends State<CreateRequest> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await createNotification(
         data: createNotificationDataForm(
           title: titleController.text,

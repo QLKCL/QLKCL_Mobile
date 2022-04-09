@@ -46,7 +46,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   //Submit
   Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await updateRoom(updateRoomDataForm(
         name: nameController.text,
         id: widget.currentRoom!.id,
@@ -57,7 +57,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.of(context).pop(response.data);
+        if (mounted) {
+          Navigator.of(context).pop(response.data);
+        }
       }
     }
   }
@@ -65,7 +67,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin phòng'),
+      title: const Text('Sửa thông tin phòng'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -73,10 +75,9 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
         appBar: appBar,
         body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+              SizedBox(
                 height: (MediaQuery.of(context).size.height -
                         appBar.preferredSize.height -
                         MediaQuery.of(context).padding.top) *
@@ -90,7 +91,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
               ),
               Form(
                 key: _formKey,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     children: [
@@ -116,12 +117,12 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                 margin: const EdgeInsets.all(16),
                 child: Row(
                   children: [
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
                       onPressed: _submit,
-                      child: Text("Xác nhận"),
+                      child: const Text("Xác nhận"),
                     ),
-                    Spacer(),
+                    const Spacer(),
                   ],
                 ),
               ),

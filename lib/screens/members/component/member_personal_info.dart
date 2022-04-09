@@ -21,7 +21,7 @@ class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
   final CustomUser? personalData;
   final Permission mode;
-  static var userCode;
+  static String? userCode;
   final List<String>? infoFromIdentityCard;
 
   const MemberPersonalInfo(
@@ -118,34 +118,33 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     }
     super.initState();
     fetchCountry().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           countryList = value;
         });
+      }
     });
     fetchCity({'country_code': countryController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           wardList = value;
         });
+      }
     });
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -171,48 +170,42 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             ),
             Input(
               label: 'Họ và tên',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               textCapitalization: TextCapitalization.words,
               controller: fullNameController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Số điện thoại',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               type: TextInputType.phone,
               controller: phoneNumberController,
-              enabled: widget.mode == Permission.add ? true : false,
+              enabled: widget.mode == Permission.add,
               validatorFunction: phoneValidator,
             ),
             Input(
               label: 'Email',
               type: TextInputType.emailAddress,
               controller: emailController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               validatorFunction: emailValidator,
             ),
             Input(
               label: 'Số CMND/CCCD',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               type: TextInputType.number,
               controller: identityNumberController,
-              enabled: (widget.mode == Permission.add ||
-                      (widget.mode == Permission.edit &&
-                          identityNumberController.text == ""))
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.add ||
+                  (widget.mode == Permission.edit &&
+                      identityNumberController.text == ""),
               validatorFunction: identityValidator,
             ),
             DropdownInput<KeyValue>(
               label: 'Quốc tịch',
               hint: 'Quốc tịch',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: nationalityList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 66,
@@ -227,15 +220,13 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   nationalityController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             DropdownInput<KeyValue>(
               label: 'Giới tính',
               hint: 'Chọn giới tính',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: genderList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
@@ -249,35 +240,29 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   genderController.text = value.id;
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             NewDateInput(
               label: 'Ngày sinh',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               controller: birthdayController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             ),
             DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: countryList,
-              selectedItem: countryList.length == 0
+              selectedItem: countryList.isEmpty
                   ? initCountry
                   : countryList.safeFirstWhere(
                       (type) => type.id.toString() == countryController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: countryList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: countryList.isEmpty
                   ? (String? filter) => fetchCountry()
                   : null,
               onChanged: (value) {
@@ -320,16 +305,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: cityList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: cityList.isEmpty
                   ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: cityList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: cityList.isEmpty
                   ? (String? filter) =>
                       fetchCity({'country_code': countryController.text})
                   : null,
@@ -370,16 +353,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: districtList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: districtList.isEmpty
                   ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: districtList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: districtList.isEmpty
                   ? (String? filter) =>
                       fetchDistrict({'city_id': cityController.text})
                   : null,
@@ -417,16 +398,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: wardList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: wardList.isEmpty
                   ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: wardList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: wardList.isEmpty
                   ? (String? filter) =>
                       fetchWard({'district_id': districtController.text})
                   : null,
@@ -455,28 +434,22 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             ),
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               controller: detailAddressController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Mã số BHXH/Thẻ BHYT',
               controller: healthInsuranceNumberController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Số hộ chiếu',
               controller: passportNumberController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               textCapitalization: TextCapitalization.characters,
               validatorFunction: passportValidator,
             ),
@@ -484,13 +457,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               Container(
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _submit();
-                  },
+                  onPressed: _submit,
                   child: (widget.mode == Permission.add ||
                           widget.mode == Permission.edit)
-                      ? Text("Lưu")
-                      : Text('Tiếp theo'),
+                      ? const Text("Lưu")
+                      : const Text('Tiếp theo'),
                 ),
               ),
           ],
@@ -505,7 +476,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     } else {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
           final response = await createMember(createMemberDataForm(
             phoneNumber: phoneNumberController.text,

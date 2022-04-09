@@ -23,14 +23,14 @@ class _AppState extends State<App> {
   int? _role;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
-  bool _requireConsent = false;
+  bool requireConsent = false;
 
   var _currentTab = TabItem.homepage;
   final _navigatorKeys = {
     TabItem.homepage: GlobalKey<NavigatorState>(),
-    TabItem.quarantine_person: GlobalKey<NavigatorState>(),
-    TabItem.qr_code_scan: GlobalKey<NavigatorState>(),
-    TabItem.quarantine_ward: GlobalKey<NavigatorState>(),
+    TabItem.quarantinePerson: GlobalKey<NavigatorState>(),
+    TabItem.qrCodeScan: GlobalKey<NavigatorState>(),
+    TabItem.quarantineWard: GlobalKey<NavigatorState>(),
     TabItem.account: GlobalKey<NavigatorState>(),
   };
 
@@ -57,10 +57,11 @@ class _AppState extends State<App> {
     super.initState();
     if (widget.role == null) {
       getRole().then((value) {
-        if (this.mounted)
-          setState((() {
+        if (mounted) {
+          setState(() {
             _role = value;
-          }));
+          });
+        }
       });
     } else {
       _role = widget.role;
@@ -74,7 +75,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return _role == null
-        ? Splash()
+        ? const Splash()
         : WillPopScope(
             onWillPop: () async {
               final isFirstRouteInCurrentTab =
@@ -90,10 +91,10 @@ class _AppState extends State<App> {
               }
 
               // let system handle back button if we're on the first route
-              DateTime now = DateTime.now();
-              int seconds = 2;
+              final DateTime now = DateTime.now();
+              const int seconds = 2;
               if (now.difference(currentBackPressTime) >
-                  Duration(seconds: seconds)) {
+                  const Duration(seconds: seconds)) {
                 currentBackPressTime = now;
                 showTextToast('Press "Back" button again to exit');
                 return false;
@@ -122,9 +123,9 @@ class _AppState extends State<App> {
                     child: Stack(children: <Widget>[
                       _buildOffstageNavigator(TabItem.homepage),
                       if (_role != 5)
-                        _buildOffstageNavigator(TabItem.quarantine_person),
+                        _buildOffstageNavigator(TabItem.quarantinePerson),
                       if (_role != 5)
-                        _buildOffstageNavigator(TabItem.quarantine_ward),
+                        _buildOffstageNavigator(TabItem.quarantineWard),
                       _buildOffstageNavigator(TabItem.account),
                     ]),
                   )
@@ -132,7 +133,7 @@ class _AppState extends State<App> {
               ),
 
               bottomNavigationBar: MediaQuery.of(context).size.height > 600
-                  ? Container(
+                  ? SizedBox(
                       height: 60,
                       width: MediaQuery.of(context).size.width,
                       child: !Responsive.isDesktopLayout(context)
@@ -145,13 +146,13 @@ class _AppState extends State<App> {
                               color: Colors.white,
                               width: MediaQuery.of(context).size.width,
                               alignment: Alignment.center,
-                              child: Text(
+                              child: const Text(
                                 "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
                                 textAlign: TextAlign.center,
                               ),
                             ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ),
           );
   }
@@ -169,11 +170,13 @@ class _AppState extends State<App> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-    OneSignal.shared.setRequiresUserPrivacyConsent(_requireConsent);
+    OneSignal.shared.setRequiresUserPrivacyConsent(requireConsent);
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
@@ -210,7 +213,7 @@ class _AppState extends State<App> {
     });
 
     // NOTE: Replace with your own app ID from https://www.onesignal.com
-    await OneSignal.shared.setAppId(OneSignalId);
+    await OneSignal.shared.setAppId(oneSignalId);
 
     // Provide GDPR Consent
     OneSignal.shared.consentGranted(true);
@@ -223,16 +226,16 @@ class _AppState extends State<App> {
     // // Some examples of how to use Outcome Events public methods with OneSignal SDK
     // oneSignalOutcomeEventsExamples();
 
-    bool userProvidedPrivacyConsent =
+    final bool userProvidedPrivacyConsent =
         await OneSignal.shared.userProvidedPrivacyConsent();
     print("USER PROVIDED PRIVACY CONSENT: $userProvidedPrivacyConsent");
 
     handleSendTags("role", _role.toString());
 
-    int quarantineWardId = await getQuarantineWard();
+    final int quarantineWardId = await getQuarantineWard();
     handleSendTags("quarantine_ward_id", quarantineWardId.toString());
 
-    String code = await getCode();
+    final String code = await getCode();
     handleSetExternalUserId(code);
   }
 }

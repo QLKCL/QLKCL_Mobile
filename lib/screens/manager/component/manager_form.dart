@@ -155,54 +155,61 @@ class _ManagerFormState extends State<ManagerForm> {
     }
     super.initState();
     fetchCountry().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           countryList = value;
         });
+      }
     });
     fetchCity({'country_code': countryController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           wardList = value;
         });
+      }
     });
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineBuildingList = value;
         });
+      }
     });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineFloorList = value;
         });
+      }
     });
   }
 
@@ -222,42 +229,42 @@ class _ManagerFormState extends State<ManagerForm> {
         child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.fromLTRB(12, 8, 12, 0),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Radio<String>(
                     value: "manager",
                     groupValue: type,
                     onChanged: (value) {
-                      if (widget.mode == Permission.add)
+                      if (widget.mode == Permission.add) {
                         setState(() {
                           type = value!;
                         });
+                      }
                     },
                   ),
-                  Text(
+                  const Text(
                     'Quản lý',
-                    style: new TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 17),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Radio<String>(
                     value: "staff",
                     groupValue: type,
                     onChanged: (value) {
-                      if (widget.mode == Permission.add)
+                      if (widget.mode == Permission.add) {
                         setState(() {
                           type = value!;
                         });
+                      }
                     },
                   ),
-                  Text(
+                  const Text(
                     'Cán bộ',
-                    style: new TextStyle(
-                      fontSize: 17.0,
+                    style: TextStyle(
+                      fontSize: 17,
                     ),
                   ),
                 ],
@@ -271,11 +278,11 @@ class _ManagerFormState extends State<ManagerForm> {
             DropdownInput<KeyValue>(
               label: 'Khu cách ly',
               hint: 'Chọn khu cách ly',
-              required: (widget.mode == Permission.view) ? false : true,
+              required: widget.mode != Permission.view,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineWardList.length == 0
+              onFind: quarantineWardList.isEmpty
                   ? (String? filter) => fetchQuarantineWard({
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'search': filter,
                       })
                   : null,
@@ -302,12 +309,12 @@ class _ManagerFormState extends State<ManagerForm> {
                 });
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
-                  'page_size': PAGE_SIZE_MAX,
+                  'page_size': pageSizeMax,
                 }).then((data) => setState(() {
                       quarantineBuildingList = data;
                     }));
               },
-              enabled: (widget.mode == Permission.add) ? true : false,
+              enabled: widget.mode == Permission.add,
               showSearchBox: true,
               mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                   ? Mode.DIALOG
@@ -321,48 +328,42 @@ class _ManagerFormState extends State<ManagerForm> {
             ),
             Input(
               label: 'Họ và tên',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               textCapitalization: TextCapitalization.words,
               controller: fullNameController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Số điện thoại',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               type: TextInputType.phone,
               controller: phoneNumberController,
-              enabled: widget.mode == Permission.add ? true : false,
+              enabled: widget.mode == Permission.add,
               validatorFunction: phoneValidator,
             ),
             Input(
               label: 'Email',
               type: TextInputType.emailAddress,
               controller: emailController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               validatorFunction: emailValidator,
             ),
             Input(
               label: 'Số CMND/CCCD',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               type: TextInputType.number,
               controller: identityNumberController,
-              enabled: (widget.mode == Permission.add ||
-                      (widget.mode == Permission.edit &&
-                          identityNumberController.text == ""))
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.add ||
+                  (widget.mode == Permission.edit &&
+                      identityNumberController.text == ""),
               validatorFunction: identityValidator,
             ),
             DropdownInput<KeyValue>(
               label: 'Quốc tịch',
               hint: 'Quốc tịch',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: nationalityList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 66,
@@ -377,15 +378,13 @@ class _ManagerFormState extends State<ManagerForm> {
                   nationalityController.text = value.id.toString();
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             DropdownInput<KeyValue>(
               label: 'Giới tính',
               hint: 'Chọn giới tính',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: genderList,
               itemAsString: (KeyValue? u) => u!.name,
               maxHeight: 112,
@@ -399,35 +398,29 @@ class _ManagerFormState extends State<ManagerForm> {
                   genderController.text = value.id;
                 }
               },
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             NewDateInput(
               label: 'Ngày sinh',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               controller: birthdayController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
             ),
             DropdownInput<KeyValue>(
               label: 'Quốc gia',
               hint: 'Quốc gia',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               itemValue: countryList,
-              selectedItem: countryList.length == 0
+              selectedItem: countryList.isEmpty
                   ? initCountry
                   : countryList.safeFirstWhere(
                       (type) => type.id.toString() == countryController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: countryList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: countryList.isEmpty
                   ? (String? filter) => fetchCountry()
                   : null,
               onChanged: (value) {
@@ -470,16 +463,14 @@ class _ManagerFormState extends State<ManagerForm> {
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: cityList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: cityList.isEmpty
                   ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: cityList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: cityList.isEmpty
                   ? (String? filter) =>
                       fetchCity({'country_code': countryController.text})
                   : null,
@@ -520,16 +511,14 @@ class _ManagerFormState extends State<ManagerForm> {
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: districtList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: districtList.isEmpty
                   ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: districtList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: districtList.isEmpty
                   ? (String? filter) =>
                       fetchDistrict({'city_id': cityController.text})
                   : null,
@@ -567,16 +556,14 @@ class _ManagerFormState extends State<ManagerForm> {
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
-              required: widget.mode == Permission.view ? false : true,
-              selectedItem: wardList.length == 0
+              required: widget.mode != Permission.view,
+              selectedItem: wardList.isEmpty
                   ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
-              onFind: wardList.length == 0
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
+              onFind: wardList.isEmpty
                   ? (String? filter) =>
                       fetchWard({'district_id': districtController.text})
                   : null,
@@ -605,28 +592,22 @@ class _ManagerFormState extends State<ManagerForm> {
             ),
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
-              required: widget.mode == Permission.view ? false : true,
+              required: widget.mode != Permission.view,
               controller: detailAddressController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Mã số BHXH/Thẻ BHYT',
               controller: healthInsuranceNumberController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
             ),
             Input(
               label: 'Số hộ chiếu',
               controller: passportNumberController,
-              enabled: (widget.mode == Permission.edit ||
-                      widget.mode == Permission.add)
-                  ? true
-                  : false,
+              enabled: widget.mode == Permission.edit ||
+                  widget.mode == Permission.add,
               textCapitalization: TextCapitalization.characters,
               validatorFunction: passportValidator,
             ),
@@ -634,12 +615,12 @@ class _ManagerFormState extends State<ManagerForm> {
               DropdownInput<KeyValue>(
                 label: 'Tòa',
                 hint: 'Chọn tòa',
-                required: (widget.mode == Permission.view) ? false : true,
+                required: widget.mode != Permission.view,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineBuildingList.length == 0
+                onFind: quarantineBuildingList.isEmpty
                     ? (String? filter) => fetchQuarantineBuilding({
                           'quarantine_ward': quarantineWardController.text,
-                          'page_size': PAGE_SIZE_MAX,
+                          'page_size': pageSizeMax,
                           'search': filter,
                         })
                     : null,
@@ -664,12 +645,12 @@ class _ManagerFormState extends State<ManagerForm> {
                   });
                   fetchQuarantineFloor({
                     'quarantine_building': quarantineBuildingController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                   }).then((data) => setState(() {
                         quarantineFloorList = data;
                       }));
                 },
-                enabled: (widget.mode != Permission.view) ? true : false,
+                enabled: widget.mode != Permission.view,
                 showSearchBox: true,
                 mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                     ? Mode.DIALOG
@@ -685,14 +666,14 @@ class _ManagerFormState extends State<ManagerForm> {
               MultiDropdownInput<KeyValue>(
                 label: 'Tầng',
                 hint: 'Chọn tầng',
-                required: (widget.mode == Permission.view) ? false : true,
+                required: widget.mode != Permission.view,
                 dropdownBuilder: customDropDown,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineFloorList.length == 0
+                onFind: quarantineFloorList.isEmpty
                     ? (String? filter) => fetchQuarantineFloor({
                           'quarantine_building':
                               quarantineBuildingController.text,
-                          'page_size': PAGE_SIZE_MAX,
+                          'page_size': pageSizeMax,
                           'search': filter,
                         })
                     : null,
@@ -716,7 +697,7 @@ class _ManagerFormState extends State<ManagerForm> {
                     initQuarantineFloor = null;
                   });
                 },
-                enabled: (widget.mode != Permission.view) ? true : false,
+                enabled: widget.mode != Permission.view,
                 showSearchBox: true,
                 mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                     ? Mode.DIALOG
@@ -731,10 +712,8 @@ class _ManagerFormState extends State<ManagerForm> {
             Container(
               margin: const EdgeInsets.all(16),
               child: ElevatedButton(
-                onPressed: () {
-                  _submit();
-                },
-                child: Text("Lưu"),
+                onPressed: _submit,
+                child: const Text("Lưu"),
               ),
             ),
           ],
@@ -746,7 +725,7 @@ class _ManagerFormState extends State<ManagerForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       if (type == "manager") {
         if (widget.mode == Permission.add) {
           final response = await createManager(createManagerDataForm(

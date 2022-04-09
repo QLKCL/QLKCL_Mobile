@@ -31,7 +31,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
   final int role;
-  ManagerHomePage({
+  const ManagerHomePage({
     Key? key,
     this.role = 4, // Staff
   }) : super(key: key);
@@ -64,8 +64,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
       addressType: "city",
     ));
     notifications.fetchUserNotificationList(
-        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
-      if (this.mounted)
+        data: {'page_size': pageSizeMax}).then((value) {
+      if (mounted) {
         setState(() {
           listNotification = value;
           unreadNotifications = listNotification
@@ -74,20 +74,22 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               .toList()
               .length;
         });
+      }
     });
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
   }
 
   Future<dynamic> fetch() async {
     await Future.delayed(const Duration(seconds: 1));
-    ApiHelper api = ApiHelper();
+    final ApiHelper api = ApiHelper();
     final response = await api.postHTTP(
         Api.homeManager,
         prepareDataForm({
@@ -111,17 +113,17 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
       },
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.0), // here the desired height
+          preferredSize: const Size.fromHeight(72), // here the desired height
           child: AppBar(
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
             title: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
                   Container(
-                    width: 56.0,
-                    height: 56.0,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(cloudinary
@@ -129,25 +131,24 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             .toString()),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
                       border: Border.all(
-                        color: CustomColors.secondary,
-                        width: 2.0,
+                        color: secondary,
+                        width: 2,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Xin chào,",
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         FutureBuilder(
@@ -158,9 +159,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               return Text(
                                 snapshot.data,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: CustomColors.primaryText),
+                                    color: primaryText),
                               );
                             }
                             return Container();
@@ -172,28 +173,27 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 ],
               ),
             ),
-            titleTextStyle:
-                TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
-            backgroundColor: CustomColors.background,
+            titleTextStyle: TextStyle(fontSize: 16, color: primaryText),
+            backgroundColor: background,
             centerTitle: false,
             actions: [
               Badge(
                 showBadge: unreadNotifications != 0,
                 position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 shape: BadgeShape.square,
                 borderRadius: BorderRadius.circular(8),
-                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                  style: TextStyle(fontSize: 11, color: white),
                 ),
                 child: IconButton(
-                  padding: EdgeInsets.only(right: 24),
+                  padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                   ),
                   onPressed: () {
                     Navigator.of(context,
@@ -204,7 +204,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 )))
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
-                                'page_size': PAGE_SIZE_MAX
+                                'page_size': pageSizeMax
                               }).then((value) => setState(() {
                                     listNotification = value;
                                     unreadNotifications = listNotification
@@ -252,7 +252,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   future: futureData,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      int numberDays = ResponsiveWrapper.of(context)
+                      final int numberDays = ResponsiveWrapper.of(context)
                               .isSmallerThan(MOBILE)
                           ? 4
                           : ResponsiveWrapper.of(context).isLargerThan(TABLET)
@@ -355,7 +355,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Card(
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8),
                             child: DestiantionChart(data: snapshot.data!),
                           ),
                         ),
@@ -367,9 +367,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                     return Container(
                       height: 400,
                       padding: const EdgeInsets.only(bottom: 8),
-                      child: Card(
+                      child: const Card(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: EdgeInsets.all(8),
                           child: DestiantionChart(data: []),
                         ),
                       ),
@@ -381,10 +381,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           ),
         ),
         floatingActionButton: AnimatedSlide(
-          duration: Duration(milliseconds: 300),
-          offset: _showFab ? Offset.zero : Offset(0, 2),
+          duration: const Duration(milliseconds: 300),
+          offset: _showFab ? Offset.zero : const Offset(0, 2),
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             opacity: _showFab ? 1 : 0,
             child: SpeedDial(
               icon: Icons.add,
@@ -402,8 +402,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               tooltip: 'Tạo mới',
 
               animationSpeed: 200,
-              shape: const StadiumBorder(),
-              childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              childMargin:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               children: [
                 SpeedDialChild(
                   child: const Icon(Icons.edit_outlined),
@@ -436,7 +436,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 SpeedDialChild(
                   child: const Icon(Icons.business_outlined),
                   label: 'Khu cách ly',
-                  visible: true,
                   onTap: () => Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .pushNamed(NewQuarantine.routeName),

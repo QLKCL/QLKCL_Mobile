@@ -22,7 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
-  MemberHomePage({Key? key}) : super(key: key);
+  const MemberHomePage({Key? key}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();
@@ -46,8 +46,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
     futureCovid = fetchCovidList();
     futureData = fetch();
     notifications.fetchUserNotificationList(
-        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
-      if (this.mounted)
+        data: {'page_size': pageSizeMax}).then((value) {
+      if (mounted) {
         setState(() {
           listNotification = value;
           unreadNotifications = listNotification
@@ -56,11 +56,12 @@ class _MemberHomePageState extends State<MemberHomePage> {
               .toList()
               .length;
         });
+      }
     });
   }
 
   Future<dynamic> fetch() async {
-    ApiHelper api = ApiHelper();
+    final ApiHelper api = ApiHelper();
     final response = await api.postHTTP(Api.homeMember, null);
     return response != null && response['data'] != null
         ? response['data']
@@ -95,15 +96,14 @@ class _MemberHomePageState extends State<MemberHomePage> {
           tooltip: 'Tạo mới',
 
           animationSpeed: 200,
-          shape: const StadiumBorder(),
-          childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          childMargin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           children: [
             SpeedDialChild(
               child: const Icon(Icons.phone),
               label: 'Gọi cấp cứu',
               onTap: quarantineWardPhone != ""
                   ? () async {
-                      launch("tel://" + quarantineWardPhone);
+                      launch("tel://$quarantineWardPhone");
                     }
                   : () {
                       showNotification('Số điện thoại không tồn tại.',
@@ -120,17 +120,17 @@ class _MemberHomePageState extends State<MemberHomePage> {
           ],
         ),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(72.0), // here the desired height
+          preferredSize: const Size.fromHeight(72), // here the desired height
           child: AppBar(
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
             title: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
                   Container(
-                    width: 56.0,
-                    height: 56.0,
+                    width: 56,
+                    height: 56,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: NetworkImage(cloudinary
@@ -138,25 +138,24 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             .toString()),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50)),
                       border: Border.all(
-                        color: CustomColors.secondary,
-                        width: 2.0,
+                        color: secondary,
+                        width: 2,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Xin chào,",
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         FutureBuilder(
@@ -167,9 +166,9 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               return Text(
                                 snapshot.data,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: CustomColors.primaryText),
+                                    color: primaryText),
                               );
                             }
                             return Container();
@@ -181,28 +180,27 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 ],
               ),
             ),
-            titleTextStyle:
-                TextStyle(fontSize: 16.0, color: CustomColors.primaryText),
-            backgroundColor: CustomColors.background,
+            titleTextStyle: TextStyle(fontSize: 16, color: primaryText),
+            backgroundColor: background,
             centerTitle: false,
             actions: [
               Badge(
                 showBadge: unreadNotifications != 0,
                 position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 shape: BadgeShape.square,
                 borderRadius: BorderRadius.circular(8),
-                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11.0, color: CustomColors.white),
+                  style: TextStyle(fontSize: 11, color: white),
                 ),
                 child: IconButton(
-                  padding: EdgeInsets.only(right: 24),
+                  padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
-                    color: CustomColors.primaryText,
+                    color: primaryText,
                   ),
                   onPressed: () {
                     Navigator.of(context,
@@ -210,7 +208,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         .pushNamed(ListNotification.routeName)
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
-                                'page_size': PAGE_SIZE_MAX
+                                'page_size': pageSizeMax
                               }).then((value) => setState(() {
                                     listNotification = value;
                                     unreadNotifications = listNotification
@@ -243,7 +241,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 if (!isWebPlatform())
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           Container(
@@ -277,7 +275,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
                               // By default, show a loading spinner.
                               // return const CircularProgressIndicator();
-                              return InfoCovidHomePage();
+                              return const InfoCovidHomePage();
                             },
                           ),
                         ],
@@ -317,112 +315,99 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           if (msg != "")
                             Card(
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(8),
+                                contentPadding: const EdgeInsets.all(8),
                                 title: Text(
                                   msg,
                                   style: TextStyle(
-                                      fontSize: 18.0,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.normal,
-                                      color: CustomColors.primaryText),
+                                      color: primaryText),
                                 ),
                                 leading: CircleAvatar(
-                                  backgroundColor: CustomColors.error,
+                                  backgroundColor: error,
                                   child: Icon(
                                     Icons.notification_important_outlined,
-                                    color: CustomColors.white,
+                                    color: white,
                                   ),
                                 ),
                               ),
                             ),
                           Card(
-                            child: Container(
-                              child: InkWell(
-                                child: Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              alignment: Alignment.centerLeft,
-                                              child: Text(
-                                                "Thông tin sức khỏe",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6,
-                                              ),
+                            child: InkWell(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Thông tin sức khỏe",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline6,
                                             ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            cardLine(
-                                              icon: Icons.history,
-                                              title: "Sức khỏe",
-                                              content: snapshot.data[
-                                                          'health_status'] ==
-                                                      "SERIOUS"
-                                                  ? "Nguy hiểm"
-                                                  : (snapshot.data[
-                                                              'health_status'] ==
-                                                          "UNWELL"
-                                                      ? "Nghi nhiễm"
-                                                      : "Bình thường"),
-                                              textColor:
-                                                  CustomColors.primaryText,
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            cardLine(
-                                              icon: Icons.description_outlined,
-                                              title: "Xét nghiệm",
-                                              content: snapshot.data[
-                                                          'positive_test_now'] !=
-                                                      null
-                                                  ? ((snapshot.data['positive_test_now'] ==
-                                                              false
-                                                          ? "Âm tính"
-                                                          : "Dương tính") +
-                                                      (snapshot.data[
-                                                                  'last_tested_had_result'] !=
-                                                              null
-                                                          ? " (" +
-                                                              DateFormat(
-                                                                      "dd/MM/yyyy HH:mm:ss")
-                                                                  .format(DateTime.parse(
-                                                                          snapshot
-                                                                              .data['last_tested_had_result'])
-                                                                      .toLocal()) +
-                                                              ")"
-                                                          : "") +
-                                                      "")
-                                                  : "Chưa có kết quả xét nghiệm",
-                                              textColor:
-                                                  CustomColors.primaryText,
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            cardLine(
-                                              icon: Icons.vaccines_outlined,
-                                              title: "Số mũi vaccine",
-                                              content: (snapshot.data[
-                                                          'number_of_vaccine_doses'] +
-                                                      " mũi") ??
-                                                  "Chưa có dữ liệu",
-                                              textColor:
-                                                  CustomColors.primaryText,
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          cardLine(
+                                            icon: Icons.history,
+                                            title: "Sức khỏe",
+                                            content: snapshot.data[
+                                                        'health_status'] ==
+                                                    "SERIOUS"
+                                                ? "Nguy hiểm"
+                                                : (snapshot.data[
+                                                            'health_status'] ==
+                                                        "UNWELL"
+                                                    ? "Nghi nhiễm"
+                                                    : "Bình thường"),
+                                            textColor: primaryText,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          cardLine(
+                                            icon: Icons.description_outlined,
+                                            title: "Xét nghiệm",
+                                            content: snapshot.data[
+                                                        'positive_test_now'] !=
+                                                    null
+                                                ? ((snapshot.data[
+                                                                'positive_test_now'] ==
+                                                            false
+                                                        ? "Âm tính"
+                                                        : "Dương tính") +
+                                                    (snapshot.data[
+                                                                'last_tested_had_result'] !=
+                                                            null
+                                                        ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal())})"
+                                                        : ""))
+                                                : "Chưa có kết quả xét nghiệm",
+                                            textColor: primaryText,
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          cardLine(
+                                            icon: Icons.vaccines_outlined,
+                                            title: "Số mũi vaccine",
+                                            content: (snapshot.data[
+                                                        'number_of_vaccine_doses'] +
+                                                    " mũi") ??
+                                                "Chưa có dữ liệu",
+                                            textColor: primaryText,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -448,15 +433,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                       ['phone_number']
                                   : "Chưa có",
                               quarantineAt:
-                                  snapshot.data['quarantined_at'] != null
-                                      ? snapshot.data['quarantined_at']
-                                      : "",
-                              quarantineFinishExpect: snapshot.data[
-                                          'quarantined_finish_expected_at'] !=
-                                      null
-                                  ? snapshot
-                                      .data['quarantined_finish_expected_at']
-                                  : "",
+                                  snapshot.data['quarantined_at'] ?? "",
+                              quarantineFinishExpect: snapshot
+                                      .data['quarantined_finish_expected_at'] ??
+                                  "",
                             ),
                         ],
                       );
@@ -473,21 +453,19 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 48),
-                      primary: CustomColors.secondary,
+                      minimumSize: const Size(double.infinity, 48),
+                      primary: secondary,
                     ),
                     onPressed: () {
                       Navigator.of(context,
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
-                          .push(MaterialPageRoute(
-                              builder: (context) =>
-                                  MedicalDeclarationScreen()));
+                          .pushNamed(MedicalDeclarationScreen.routeName);
                     },
                     child: Text(
                       'Khai báo y tế',
                       style: TextStyle(
-                        color: CustomColors.white,
+                        color: white,
                         fontSize: 20,
                       ),
                     ),

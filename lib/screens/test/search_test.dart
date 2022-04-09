@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchTest extends StatefulWidget {
-  SearchTest({Key? key}) : super(key: key);
+  const SearchTest({Key? key}) : super(key: key);
 
   @override
   _SearchTestState createState() => _SearchTestState();
@@ -33,9 +33,7 @@ class _SearchTestState extends State<SearchTest> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -45,7 +43,7 @@ class _SearchTestState extends State<SearchTest> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -74,7 +72,7 @@ class _SearchTestState extends State<SearchTest> {
         createAtMax:
             parseDateToDateTimeWithTimeZone(createAtMaxController.text),
       ));
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -91,7 +89,7 @@ class _SearchTestState extends State<SearchTest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          titleSpacing: 0.0,
+          titleSpacing: 0,
           title: Container(
             width: double.infinity,
             height: 36,
@@ -99,19 +97,18 @@ class _SearchTestState extends State<SearchTest> {
                 color: Colors.white, borderRadius: BorderRadius.circular(30)),
             child: Center(
               child: TextField(
-                maxLines: 1,
                 autofocus: true,
-                style: TextStyle(fontSize: 17),
+                style: const TextStyle(fontSize: 17),
                 textAlignVertical: TextAlignVertical.center,
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.search,
-                    color: CustomColors.secondaryText,
+                    color: secondaryText,
                   ),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       /* Clear the search field */
                       keySearch.clear();
@@ -155,7 +152,7 @@ class _SearchTestState extends State<SearchTest> {
                       ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
-              icon: Icon(Icons.filter_list_outlined),
+              icon: const Icon(Icons.filter_list_outlined),
               tooltip: "Lọc",
             )
           ],
@@ -165,28 +162,25 @@ class _SearchTestState extends State<SearchTest> {
                 context: context,
                 removeTop: true,
                 child: RefreshIndicator(
-                  onRefresh: () => Future.sync(
-                    () => _pagingController.refresh(),
-                  ),
+                  onRefresh: () => Future.sync(_pagingController.refresh),
                   child: PagedListView<int, dynamic>(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     pagingController: _pagingController,
                     builderDelegate: PagedChildBuilderDelegate<dynamic>(
                       animateTransitions: true,
                       noItemsFoundIndicatorBuilder: (context) => Center(
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
+                            SizedBox(
                               height: MediaQuery.of(context).size.height * 0.15,
                               child: Image.asset("assets/images/no_data.png"),
                             ),
-                            Text('Không có dữ liệu'),
+                            const Text('Không có dữ liệu'),
                           ],
                         ),
                       ),
-                      firstPageErrorIndicatorBuilder: (context) => Center(
+                      firstPageErrorIndicatorBuilder: (context) => const Center(
                         child: Text('Có lỗi xảy ra'),
                       ),
                       itemBuilder: (context, item, index) => TestNoResultCard(
@@ -216,7 +210,7 @@ class _SearchTestState extends State<SearchTest> {
                   ),
                 ),
               )
-            : Center(
+            : const Center(
                 child: Text('Tìm kiếm phiếu xét nghiệm'),
               ),
       ),

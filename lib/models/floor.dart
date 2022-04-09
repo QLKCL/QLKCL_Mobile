@@ -45,13 +45,13 @@ class Floor {
 }
 
 Future<dynamic> fetchFloor({id}) async {
-  ApiHelper api = ApiHelper();
-  final response = await api.getHTTP(Api.getFloor + '?id=' + id);
+  final ApiHelper api = ApiHelper();
+  final response = await api.getHTTP('${Api.getFloor}?id=$id');
   return response["data"];
 }
 
 Future<Response> createFloor(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createFloor, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
@@ -68,7 +68,7 @@ Future<Response> createFloor(Map<String, dynamic> data) async {
 }
 
 Future<dynamic> fetchFloorList(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListFloor, data);
   return response != null && response['data'] != null
       ? response['data']['content']
@@ -76,7 +76,7 @@ Future<dynamic> fetchFloorList(Map<String, dynamic> data) async {
 }
 
 Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getListFloor, data);
   return response != null && response['data'] != null
       ? response['data']['totalRows']
@@ -84,7 +84,7 @@ Future<int> fetchNumOfFloor(Map<String, dynamic> data) async {
 }
 
 Future<Response> updateFloor(Map<String, dynamic> data) async {
-  ApiHelper api = ApiHelper();
+  final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.updateFloor, data);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");

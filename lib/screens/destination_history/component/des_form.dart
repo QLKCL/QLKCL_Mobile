@@ -97,28 +97,32 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
     }
     super.initState();
     fetchCountry().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           countryList = value;
         });
+      }
     });
     fetchCity({'country_code': countryController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           wardList = value;
         });
+      }
     });
   }
 
@@ -126,7 +130,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await createDestiantionHistory(
         createDestiantionHistoryDataForm(
           code: codeController.text,
@@ -146,7 +150,9 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
       cancel();
       showNotification(response);
       if (response.status == Status.success) {
-        Navigator.pop(context);
+        if (mounted) {
+          Navigator.pop(context);
+        }
       }
     }
   }
@@ -164,14 +170,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                 DropdownInput<KeyValue>(
                   label: 'Quốc gia',
                   hint: 'Quốc gia',
-                  required: widget.mode == Permission.view ? false : true,
+                  required: widget.mode != Permission.view,
                   itemValue: countryList,
-                  selectedItem: countryList.length == 0
+                  selectedItem: countryList.isEmpty
                       ? initCountry
                       : countryList.safeFirstWhere((type) =>
                           type.id.toString() == countryController.text),
-                  enabled: widget.mode != Permission.view ? true : false,
-                  onFind: countryList.length == 0
+                  enabled: widget.mode != Permission.view,
+                  onFind: countryList.isEmpty
                       ? (String? filter) => fetchCountry()
                       : null,
                   onChanged: (value) {
@@ -215,13 +221,13 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   label: 'Tỉnh/thành',
                   hint: 'Tỉnh/thành',
                   itemValue: cityList,
-                  required: widget.mode == Permission.view ? false : true,
-                  selectedItem: cityList.length == 0
+                  required: widget.mode != Permission.view,
+                  selectedItem: cityList.isEmpty
                       ? initCity
                       : cityList.safeFirstWhere(
                           (type) => type.id.toString() == cityController.text),
-                  enabled: widget.mode != Permission.view ? true : false,
-                  onFind: cityList.length == 0
+                  enabled: widget.mode != Permission.view,
+                  onFind: cityList.isEmpty
                       ? (String? filter) =>
                           fetchCity({'country_code': countryController.text})
                       : null,
@@ -263,13 +269,13 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   label: 'Quận/huyện',
                   hint: 'Quận/huyện',
                   itemValue: districtList,
-                  required: widget.mode == Permission.view ? false : true,
-                  selectedItem: districtList.length == 0
+                  required: widget.mode != Permission.view,
+                  selectedItem: districtList.isEmpty
                       ? initDistrict
                       : districtList.safeFirstWhere((type) =>
                           type.id.toString() == districtController.text),
-                  enabled: widget.mode != Permission.view ? true : false,
-                  onFind: districtList.length == 0
+                  enabled: widget.mode != Permission.view,
+                  onFind: districtList.isEmpty
                       ? (String? filter) =>
                           fetchDistrict({'city_id': cityController.text})
                       : null,
@@ -308,11 +314,11 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   label: 'Phường/xã',
                   hint: 'Phường/xã',
                   itemValue: wardList,
-                  selectedItem: wardList.length == 0
+                  selectedItem: wardList.isEmpty
                       ? initWard
                       : wardList.safeFirstWhere(
                           (type) => type.id.toString() == wardController.text),
-                  onFind: wardList.length == 0
+                  onFind: wardList.isEmpty
                       ? (String? filter) =>
                           fetchWard({'district_id': districtController.text})
                       : null,
@@ -351,7 +357,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       child: NewDateInput(
                         label: 'Từ ngày',
                         controller: startDateController,
-                        required: widget.mode == Permission.view ? false : true,
+                        required: widget.mode != Permission.view,
                         onChangedFunction: () {
                           if (startTimeController.text == "") {
                             startTimeController.text =
@@ -361,15 +367,14 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         },
                         maxDate:
                             DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),
                     Expanded(
-                      flex: 1,
                       child: TimeInput(
                         label: "Thời gian",
                         controller: startTimeController,
-                        enabled: startDateController.text != "" ? true : false,
+                        enabled: startDateController.text != "",
                       ),
                     ),
                   ],
@@ -388,22 +393,19 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                           }
                           setState(() {});
                         },
-                        enabled: startDateController.text != "" ? true : false,
+                        enabled: startDateController.text != "",
                         minDate: startDateController.text,
                         maxDate:
                             DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),
                     Expanded(
-                      flex: 1,
                       child: TimeInput(
                         label: "Thời gian",
                         controller: endTimeController,
-                        enabled: (startDateController.text != "" &&
-                                endTimeController.text != "")
-                            ? true
-                            : false,
+                        enabled: startDateController.text != "" &&
+                            endTimeController.text != "",
                       ),
                     ),
                   ],
@@ -420,7 +422,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                     onPressed: _submit,
                     child: Text(
                       "Lưu",
-                      style: TextStyle(color: CustomColors.white),
+                      style: TextStyle(color: white),
                     ),
                   ),
                 ),

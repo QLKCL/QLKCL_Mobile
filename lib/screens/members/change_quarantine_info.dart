@@ -70,23 +70,25 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
     }
     super.initState();
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     fetchQuarantineBuilding({
       'quarantine_ward': newQuarantineWardController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
       'is_full': false,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineBuildingList = value;
         });
+      }
     });
   }
 
@@ -95,7 +97,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Chuyển phòng"),
+          title: const Text("Chuyển phòng"),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -108,9 +110,9 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn khu cách ly mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineWardList.length == 0
+                  onFind: quarantineWardList.isEmpty
                       ? (String? filter) => fetchQuarantineWard({
-                            'page_size': PAGE_SIZE_MAX,
+                            'page_size': pageSizeMax,
                             'is_full': false,
                           })
                       : null,
@@ -139,7 +141,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                     });
                     fetchQuarantineBuilding({
                       'quarantine_ward': newQuarantineWardController.text,
-                      'page_size': PAGE_SIZE_MAX,
+                      'page_size': pageSizeMax,
                       'is_full': false,
                     }).then((data) => setState(() {
                           quarantineBuildingList = data;
@@ -161,10 +163,10 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn tòa mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineBuildingList.length == 0
+                  onFind: quarantineBuildingList.isEmpty
                       ? (String? filter) => fetchQuarantineBuilding({
                             'quarantine_ward': newQuarantineWardController.text,
-                            'page_size': PAGE_SIZE_MAX,
+                            'page_size': pageSizeMax,
                             'search': filter,
                             'is_full': false,
                           })
@@ -191,7 +193,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                     fetchQuarantineFloor({
                       'quarantine_building':
                           newQuarantineBuildingController.text,
-                      'page_size': PAGE_SIZE_MAX,
+                      'page_size': pageSizeMax,
                       'is_full': false,
                     }).then((data) => setState(() {
                           quarantineFloorList = data;
@@ -213,11 +215,11 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn tầng mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineFloorList.length == 0
+                  onFind: quarantineFloorList.isEmpty
                       ? (String? filter) => fetchQuarantineFloor({
                             'quarantine_building':
                                 newQuarantineBuildingController.text,
-                            'page_size': PAGE_SIZE_MAX,
+                            'page_size': pageSizeMax,
                             'search': filter,
                             'is_full': false,
                           })
@@ -239,7 +241,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                     });
                     fetchQuarantineRoom({
                       'quarantine_floor': newQuarantineFloorController.text,
-                      'page_size': PAGE_SIZE_MAX,
+                      'page_size': pageSizeMax,
                       'is_full': false,
                     }).then((data) => setState(() {
                           quarantineRoomList = data;
@@ -261,11 +263,11 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn phòng mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineRoomList.length == 0
+                  onFind: quarantineRoomList.isEmpty
                       ? (String? filter) => fetchQuarantineRoom({
                             'quarantine_floor':
                                 newQuarantineFloorController.text,
-                            'page_size': PAGE_SIZE_MAX,
+                            'page_size': pageSizeMax,
                             'search': filter,
                             'is_full': false,
                           })
@@ -298,16 +300,14 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                 Container(
                     margin: const EdgeInsets.all(16),
                     child: Row(children: [
-                      Spacer(),
+                      const Spacer(),
                       ElevatedButton(
-                        onPressed: () {
-                          _submit();
-                        },
-                        child: Text(
+                        onPressed: _submit,
+                        child: const Text(
                           'Xác nhận',
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                     ])),
               ],
             ),
@@ -320,7 +320,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final updateResponse = await changeRoomMember(changeRoomMemberDataForm(
         code: widget.code,
         quarantineWard: newQuarantineWardController.text,

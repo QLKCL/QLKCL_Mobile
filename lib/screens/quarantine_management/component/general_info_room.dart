@@ -13,7 +13,7 @@ class GeneralInfoRoom extends StatelessWidget {
   final Floor currentFloor;
   final Room currentRoom;
 
-  GeneralInfoRoom({
+  const GeneralInfoRoom({
     required this.currentRoom,
     required this.currentQuarantine,
     required this.currentBuilding,
@@ -41,11 +41,9 @@ class GeneralInfoRoom extends StatelessWidget {
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.7,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -67,7 +65,7 @@ class GeneralInfoRoom extends StatelessWidget {
                           height: 5,
                         ),
                         Text(
-                          currentBuilding.name + ' - ' + currentFloor.name,
+                          '${currentBuilding.name} - ${currentFloor.name}',
                           style: const TextStyle(
                             fontSize: 16,
                           ),
@@ -83,7 +81,6 @@ class GeneralInfoRoom extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 1,
                     child: Column(
                       //mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +101,7 @@ class GeneralInfoRoom extends StatelessWidget {
                             Icon(
                               Icons.groups_rounded,
                               size: 20,
-                              color: CustomColors.primaryText,
+                              color: primaryText,
                             ),
                             const SizedBox(
                               width: 5,

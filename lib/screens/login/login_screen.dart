@@ -14,7 +14,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class Login extends StatefulWidget {
   static const String routeName = "/login";
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -32,11 +32,6 @@ class _LoginState extends State<Login> {
         });
       }
     });
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -87,12 +82,12 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Text(
               "Đăng nhập",
               style: Theme.of(context).textTheme.headline6,
@@ -119,7 +114,7 @@ class _LoginFormState extends State<LoginForm> {
             margin: const EdgeInsets.fromLTRB(0, 16, 16, 0),
             child: Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, ForgetPassword.routeName);
@@ -127,7 +122,7 @@ class _LoginFormState extends State<LoginForm> {
                   child: Text(
                     "Quên mật khẩu",
                     style: TextStyle(
-                      color: CustomColors.primary,
+                      color: primary,
                       // decoration: TextDecoration.underline,
                     ),
                   ),
@@ -141,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: _submit,
               child: Text(
                 'Đăng nhập',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -152,12 +147,12 @@ class _LoginFormState extends State<LoginForm> {
             child: Text(
               "Đăng ký cách ly",
               style: TextStyle(
-                color: CustomColors.primary,
+                color: primary,
                 // decoration: TextDecoration.underline,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
         ],
@@ -168,13 +163,15 @@ class _LoginFormState extends State<LoginForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await login(loginDataForm(
           phoneNumber: phoneController.text, password: passController.text));
       cancel();
       if (response.status == Status.success) {
-        Navigator.pushNamedAndRemoveUntil(
-            context, App.routeName, (Route<dynamic> route) => false);
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, App.routeName, (Route<dynamic> route) => false);
+        }
       } else {
         showNotification(response.message, status: Status.error);
       }

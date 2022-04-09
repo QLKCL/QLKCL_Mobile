@@ -7,7 +7,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddManager extends StatefulWidget {
   static const String routeName = "/add_manager";
-  AddManager({
+  const AddManager({
     Key? key,
     this.quarantineWard,
   }) : super(key: key);
@@ -31,14 +31,15 @@ class _AddManagerState extends State<AddManager> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thêm quản lý, cán bộ"),
+          title: const Text("Thêm quản lý, cán bộ"),
           centerTitle: true,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context)
                     .push(
-                      MaterialPageRoute(builder: (context) => QrCodeScan()),
+                      MaterialPageRoute(
+                          builder: (context) => const QrCodeScan()),
                     )
                     .then((value) => setState(() {
                           if (value != null) {
@@ -46,7 +47,7 @@ class _AddManagerState extends State<AddManager> {
                           }
                         }));
               },
-              icon: Icon(Icons.photo_camera_front_outlined),
+              icon: const Icon(Icons.photo_camera_front_outlined),
               tooltip: "Nhập dữ liệu từ CCCD",
             ),
           ],

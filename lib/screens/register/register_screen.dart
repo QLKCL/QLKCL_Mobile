@@ -18,7 +18,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class Register extends StatefulWidget {
   static const String routeName = "/register";
-  Register({Key? key}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -41,16 +41,12 @@ class _RegisterState extends State<Register> {
     fetchQuarantineWardNoToken({
       'is_full': "false",
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -58,9 +54,9 @@ class _RegisterState extends State<Register> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: CustomColors.background,
+          backgroundColor: background,
           iconTheme: IconThemeData(
-            color: CustomColors.primaryText,
+            color: primaryText,
           ),
         ),
         body: SingleChildScrollView(
@@ -91,7 +87,7 @@ class _RegisterState extends State<Register> {
 
 class RegisterForm extends StatefulWidget {
   final List<KeyValue> quarantineWardList;
-  RegisterForm({
+  const RegisterForm({
     Key? key,
     this.quarantineWardList = const [],
   }) : super(key: key);
@@ -114,12 +110,12 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Text(
               "Đăng ký cách ly",
               style: Theme.of(context).textTheme.headline6,
@@ -154,7 +150,7 @@ class _RegisterFormState extends State<RegisterForm> {
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: widget.quarantineWardList.length == 0
+            onFind: widget.quarantineWardList.isEmpty
                 ? (String? filter) => fetchQuarantineWardNoToken({
                       'is_full': "false",
                     })
@@ -186,7 +182,7 @@ class _RegisterFormState extends State<RegisterForm> {
               onPressed: _submit,
               child: Text(
                 'Đăng ký',
-                style: TextStyle(color: CustomColors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),
@@ -197,12 +193,12 @@ class _RegisterFormState extends State<RegisterForm> {
             child: Text(
               "Đăng nhập",
               style: TextStyle(
-                color: CustomColors.primary,
+                color: primary,
                 // decoration: TextDecoration.underline,
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
         ],
@@ -221,7 +217,7 @@ class _RegisterFormState extends State<RegisterForm> {
           dupplicateError = "Mật khẩu không trùng khớp";
         });
       } else {
-        CancelFunc cancel = showLoading();
+        final CancelFunc cancel = showLoading();
         final registerResponse = await register(registerDataForm(
             phoneNumber: phoneController.text,
             password: passController.text,
@@ -232,13 +228,15 @@ class _RegisterFormState extends State<RegisterForm> {
               password: passController.text));
           cancel();
           if (loginResponse.status == Status.success) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, App.routeName, (Route<dynamic> route) => false);
-            Navigator.of(context,
-                    rootNavigator: !Responsive.isDesktopLayout(context))
-                .push(
-              MaterialPageRoute(builder: (context) => UpdateMember()),
-            );
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, App.routeName, (Route<dynamic> route) => false);
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(
+                MaterialPageRoute(builder: (context) => const UpdateMember()),
+              );
+            }
           } else {
             showNotification(loginResponse.message, status: Status.error);
           }

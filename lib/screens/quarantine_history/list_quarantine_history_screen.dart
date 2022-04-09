@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 class ListQuarantineHistory extends StatefulWidget {
   static const String routeName = "/list_quarantine_history";
-  ListQuarantineHistory({Key? key, this.code}) : super(key: key);
+  const ListQuarantineHistory({Key? key, this.code}) : super(key: key);
   final String? code;
 
   @override
@@ -22,9 +22,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      _fetchPage(pageKey);
-    });
+    _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -34,7 +32,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
             ),
             action: SnackBarAction(
               label: 'Thử lại',
-              onPressed: () => _pagingController.retryLastFailedRequest(),
+              onPressed: _pagingController.retryLastFailedRequest,
             ),
           ),
         );
@@ -55,7 +53,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
       final newItems = await fetchQuarantineHistoryList(
           data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -71,12 +69,12 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lịch sử cách ly"),
+        title: const Text("Lịch sử cách ly"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -85,33 +83,31 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
         context: context,
         removeTop: true,
         child: RefreshIndicator(
-          onRefresh: () => Future.sync(
-            () => _pagingController.refresh(),
-          ),
+          onRefresh: () => Future.sync(_pagingController.refresh),
           child: PagedListView<int, QuarantineHistory>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<QuarantineHistory>(
               animateTransitions: true,
               noItemsFoundIndicatorBuilder: (context) => Center(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
-              firstPageErrorIndicatorBuilder: (context) => Center(
+              firstPageErrorIndicatorBuilder: (context) => const Center(
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => QuarantineHistoryCard(
                 name: item.user.name,
-                time: ("${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.startDate).toLocal())}") +
+                time: (DateFormat("dd/MM/yyyy HH:mm:ss")
+                        .format(DateTime.parse(item.startDate).toLocal())) +
                     (item.endDate != null
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.endDate).toLocal())}"
                         : " - Hiện tại"),

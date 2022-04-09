@@ -11,7 +11,7 @@ class ListAllManager extends StatefulWidget {
   static const String routeName = "/list_all_manager";
   final int tab;
   final KeyValue? currentQuarrantine;
-  ListAllManager({
+  const ListAllManager({
     Key? key,
     this.tab = 0,
     this.currentQuarrantine,
@@ -46,7 +46,7 @@ class _ListAllManagerState extends State<ListAllManager>
                     AddManager(quarantineWard: widget.currentQuarrantine)),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Thêm quản lý, cán bộ",
       ),
       body: NestedScrollView(
@@ -55,7 +55,7 @@ class _ListAllManagerState extends State<ListAllManager>
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
-                title: Text("Danh sách quản lý, cán bộ"),
+                title: const Text("Danh sách quản lý, cán bộ"),
                 centerTitle: true,
                 pinned: true,
                 floating: !Responsive.isDesktopLayout(context),
@@ -63,8 +63,8 @@ class _ListAllManagerState extends State<ListAllManager>
                 bottom: TabBar(
                   controller: _tabController,
                   isScrollable: true,
-                  indicatorColor: CustomColors.white,
-                  tabs: [
+                  indicatorColor: white,
+                  tabs: const [
                     Tab(text: "Quản lý"),
                     Tab(text: "Cán bộ"),
                   ],
@@ -76,10 +76,8 @@ class _ListAllManagerState extends State<ListAllManager>
         body: TabBarView(
           controller: _tabController,
           children: [
-            Container(
-              child: Center(
-                child: Text("Chức năng đang trong quá trình phát triển"),
-              ),
+            const Center(
+              child: Text("Chức năng đang trong quá trình phát triển"),
             ),
             StaffList(
               quarrantine: widget.currentQuarrantine,

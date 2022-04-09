@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/utils/constant.dart';
 import './component/quarantine_form.dart';
 
 class NewQuarantine extends StatefulWidget {
@@ -10,9 +9,8 @@ class NewQuarantine extends StatefulWidget {
 }
 
 class _NewQuarantineState extends State<StatefulWidget> {
-
   final appBar = AppBar(
-    title: Text('Thêm khu cách ly'),
+    title: const Text('Thêm khu cách ly'),
     centerTitle: true,
   );
   @override
@@ -20,11 +18,8 @@ class _NewQuarantineState extends State<StatefulWidget> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: appBar,
-        body: QuarantineForm(
-          mode: Permission.add,
-        ),
+        body:const  QuarantineForm(),
       ),
     );
   }
-
 }

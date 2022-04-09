@@ -6,11 +6,10 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/test.dart';
 import 'package:qlkcl/screens/test/component/test_form.dart';
 import 'package:qlkcl/screens/test/update_test_screen.dart';
-import 'package:qlkcl/utils/constant.dart';
 
 class DetailTest extends StatefulWidget {
   static const String routeName = "/detail_test";
-  DetailTest({Key? key, required this.code}) : super(key: key);
+  const DetailTest({Key? key, required this.code}) : super(key: key);
   final String code;
 
   @override
@@ -29,16 +28,11 @@ class _DetailTestState extends State<DetailTest> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Thông tin phiếu xét nghiệm'),
+          title: const Text('Thông tin phiếu xét nghiệm'),
           centerTitle: true,
           actions: [
             FutureBuilder(
@@ -55,7 +49,7 @@ class _DetailTestState extends State<DetailTest> {
                                         code: widget.code,
                                         testData: testData)));
                           },
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           tooltip: "Cập nhật",
                         )
                       : Container();
@@ -74,7 +68,6 @@ class _DetailTestState extends State<DetailTest> {
               if (snapshot.hasData) {
                 return TestForm(
                   testData: Test.fromJson(snapshot.data),
-                  mode: Permission.view,
                 );
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');

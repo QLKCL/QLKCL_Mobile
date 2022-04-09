@@ -7,8 +7,7 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 
 class QuanrantineListMaps extends StatefulWidget {
-  // final data;
-  QuanrantineListMaps({Key? key}) : super(key: key);
+  const QuanrantineListMaps({Key? key}) : super(key: key);
   @override
   _QuanrantineListMapsState createState() => _QuanrantineListMapsState();
 }
@@ -33,24 +32,25 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
   @override
   void initState() {
-    fetchQuarantineList(data: {'page_size': PAGE_SIZE_MAX}).then((value) {
+    fetchQuarantineList(data: {'page_size': pageSizeMax}).then((value) {
       final itemList = value;
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _mapController.clearMarkers();
           quarantineWardList.clear();
 
-          itemList.data.forEach((element) {
+          for (final element in itemList.data) {
             quarantineWardList.add(element);
 
-            int length = quarantineWardList.length;
+            final int length = quarantineWardList.length;
             if (length > 1) {
               _mapController.insertMarker(length - 1);
             } else {
               _mapController.insertMarker(0);
             }
-          });
+          }
         });
+      }
     });
     _canUpdateFocalLatLng = true;
     _canUpdateZoomLevel = true;
@@ -99,7 +99,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Bản đồ các khu cách ly'),
+          title: const Text('Bản đồ các khu cách ly'),
           centerTitle: true,
         ),
         body: Stack(
@@ -132,53 +132,54 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                       return ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),
-                        child:
-                            Column(mainAxisSize: MainAxisSize.min, children: <
-                                Widget>[
-                          Container(
-                              width: 150,
-                              height: 80,
-                              color: Colors.grey,
-                              child: Image.network(
-                                  cloudinary
-                                      .getImage(quarantineWardList[index].image)
-                                      .toString(),
-                                  fit: BoxFit.cover)),
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 10.0, top: 5.0, bottom: 5.0),
-                            width: 150,
-                            color: Colors.white,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    quarantineWardList[index].fullName,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      '${quarantineWardList[index].ward?.name}, ' +
-                                          '${quarantineWardList[index].district?.name}, ' +
-                                          '${quarantineWardList[index].city?.name}',
-                                      style: const TextStyle(
-                                          fontSize: 10, color: Colors.black),
-                                    ),
-                                  )
-                                ]),
-                          ),
-                        ]),
+                        child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Container(
+                                  width: 150,
+                                  height: 80,
+                                  color: Colors.grey,
+                                  child: Image.network(
+                                      cloudinary
+                                          .getImage(
+                                              quarantineWardList[index].image)
+                                          .toString(),
+                                      fit: BoxFit.cover)),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    left: 10, top: 5, bottom: 5),
+                                width: 150,
+                                color: Colors.white,
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        quarantineWardList[index].fullName,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          '${quarantineWardList[index].ward?.name}, ${quarantineWardList[index].district?.name}, ${quarantineWardList[index].city?.name}',
+                                          style: const TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.black),
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                            ]),
                       );
                     }
 
                     return const SizedBox();
                   },
                   markerBuilder: (BuildContext context, int index) {
-                    final double _markerSize =
+                    final double markerSize =
                         _currentSelectedIndex == index ? 40 : 25;
                     return MapMarker(
                       latitude: quarantineWardList[index].latitude,
@@ -198,14 +199,14 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                         },
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
-                          height: _markerSize,
-                          width: _markerSize,
+                          height: markerSize,
+                          width: markerSize,
                           child: FittedBox(
                             child: Icon(Icons.location_on,
                                 color: _currentSelectedIndex == index
                                     ? Colors.blue
                                     : Colors.red,
-                                size: _markerSize),
+                                size: markerSize),
                           ),
                         ),
                       ),

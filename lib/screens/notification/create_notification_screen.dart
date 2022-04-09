@@ -17,7 +17,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateNotification extends StatefulWidget {
   static const String routeName = "/create_notification";
-  CreateNotification({Key? key}) : super(key: key);
+  const CreateNotification({Key? key}) : super(key: key);
 
   @override
   _CreateNotificationState createState() => _CreateNotificationState();
@@ -53,18 +53,14 @@ class _CreateNotificationState extends State<CreateNotification> {
   void initState() {
     super.initState();
     fetchQuarantineWardNoToken(null).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     receiverTypeController.text = "0";
     roleController.text = "0";
-  }
-
-  @override
-  void deactivate() {
-    super.deactivate();
   }
 
   @override
@@ -72,7 +68,7 @@ class _CreateNotificationState extends State<CreateNotification> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tạo thông báo'),
+          title: const Text('Tạo thông báo'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -122,11 +118,11 @@ class _CreateNotificationState extends State<CreateNotification> {
                 ),
                 if (receiverTypeController.text == "1")
                   DropdownInput<KeyValue>(
-                    key: Key("quarantine"),
+                    key: const Key("quarantine"),
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
                     itemAsString: (KeyValue? u) => u!.name,
-                    onFind: quarantineWardList.length == 0
+                    onFind: quarantineWardList.isEmpty
                         ? (String? filter) => fetchQuarantineWardNoToken(null)
                         : null,
                     compareFn: (item, selectedItem) =>
@@ -153,7 +149,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                   ),
                 if (receiverTypeController.text == "2")
                   MultiDropdownInput<KeyValue>(
-                    key: Key("user"),
+                    key: const Key("user"),
                     label: 'Gửi đến',
                     hint: 'Chọn người nhận',
                     required: true,
@@ -203,18 +199,15 @@ class _CreateNotificationState extends State<CreateNotification> {
                 ),
                 ImageField(
                   controller: imageController,
-                  maxQuantityImage: 1,
                   type: "Notification",
                 ),
                 Container(
                   margin: const EdgeInsets.all(16),
                   child: ElevatedButton(
-                    onPressed: () {
-                      _submit();
-                    },
+                    onPressed: _submit,
                     child: Text(
                       'Gửi',
-                      style: TextStyle(color: CustomColors.white),
+                      style: TextStyle(color: white),
                     ),
                   ),
                 ),
@@ -229,7 +222,7 @@ class _CreateNotificationState extends State<CreateNotification> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      CancelFunc cancel = showLoading();
+      final CancelFunc cancel = showLoading();
       final response = await createNotification(
         data: createNotificationDataForm(
           title: titleController.text,

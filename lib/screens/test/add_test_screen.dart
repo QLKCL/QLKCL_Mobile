@@ -6,7 +6,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddTest extends StatefulWidget {
   static const String routeName = "/add_test";
-  AddTest({Key? key, this.code, this.name}) : super(key: key);
+  const AddTest({Key? key, this.code, this.name}) : super(key: key);
   final String? code;
   final String? name;
 
@@ -21,16 +21,11 @@ class _AddTestState extends State<AddTest> {
   }
 
   @override
-  void deactivate() {
-    super.deactivate();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tạo phiếu xét nghiệm'),
+          title: const Text('Tạo phiếu xét nghiệm'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

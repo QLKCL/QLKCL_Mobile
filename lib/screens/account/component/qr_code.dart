@@ -15,7 +15,6 @@ class GenerateQrCode extends StatelessWidget {
       child: InkWell(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             QrImage(
@@ -28,7 +27,7 @@ class GenerateQrCode extends StatelessWidget {
                 if (snapshot.hasData) {
                   return Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Text(
                       snapshot.data,
                       style: Theme.of(context).textTheme.headline6,

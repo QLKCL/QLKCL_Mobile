@@ -23,14 +23,14 @@ class Input extends StatefulWidget {
   final IconData? prefixIcon;
   final EdgeInsets? margin;
 
-  Input({
+  const Input({
     Key? key,
     required this.label,
     this.hint,
     this.obscure,
-    this.required: false,
-    this.type: TextInputType.text,
-    this.enabled: true,
+    this.required = false,
+    this.type = TextInputType.text,
+    this.enabled = true,
     this.initValue,
     this.helper,
     this.showClearButton = true,
@@ -62,31 +62,34 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    List<TextInputFormatter> formater = <TextInputFormatter>[];
-    if (widget.type == TextInputType.number)
+    final List<TextInputFormatter> formater = <TextInputFormatter>[];
+    if (widget.type == TextInputType.number) {
       formater.add(FilteringTextInputFormatter.singleLineFormatter);
-    if (widget.textCapitalization == TextCapitalization.characters)
+    }
+    if (widget.textCapitalization == TextCapitalization.characters) {
       formater.add(UpperCaseTextFormatter());
-    else if (widget.textCapitalization == TextCapitalization.words)
+    } else if (widget.textCapitalization == TextCapitalization.words) {
       formater.add(TitleCaseInputFormatter());
-    else if (widget.textCapitalization == TextCapitalization.sentences)
+    } else if (widget.textCapitalization == TextCapitalization.sentences) {
       formater.add(CapitalCaseTextFormatter());
+    }
 
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () {
           _focus = true;
         },
-        obscureText: _obscure != null ? _obscure! : false,
+        obscureText: _obscure ?? false,
         keyboardType: widget.type,
         onSaved: widget.onSavedFunction,
         initialValue: widget.initValue,
         onChanged: (value) {
-          if (widget.onChangedFunction != null)
-            widget.onChangedFunction!(value);
-          if (widget.controller != null && widget.controller!.text != "")
+          widget.onChangedFunction?.call(value);
+
+          if (widget.controller != null && widget.controller!.text != "") {
             setState(() {});
+          }
         },
         validator: (value) {
           String? Function(String?)? valid = widget.validatorFunction;
@@ -113,7 +116,7 @@ class _InputState extends State<Input> {
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: widget.hint,
           prefixIcon: widget.prefixIcon != null
               ? Icon(
@@ -123,7 +126,9 @@ class _InputState extends State<Input> {
           suffixIcon: _obscure != null
               ? (IconButton(
                   icon: Icon(
-                    _obscure == true ? Icons.visibility : Icons.visibility_off,
+                    (_obscure ?? false)
+                        ? Icons.visibility
+                        : Icons.visibility_off,
                   ),
                   onPressed: () {
                     _obscure = !_obscure!;
@@ -135,7 +140,7 @@ class _InputState extends State<Input> {
                       widget.controller!.text != "" &&
                       _focus == true)
                   ? IconButton(
-                      icon: Icon(Icons.clear),
+                      icon: const Icon(Icons.clear),
                       onPressed: () {
                         widget.controller!.clear();
                         setState(() {});
@@ -147,7 +152,7 @@ class _InputState extends State<Input> {
               ? widget.error
               : null,
           fillColor:
-              !widget.enabled ? CustomColors.disable : CustomColors.white,
+              !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
 
@@ -184,11 +189,8 @@ class TitleCaseInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String formattedText = newValue.text
-        .split(' ')
-        .map((element) => textToTitleCase(element))
-        .toList()
-        .join(' ');
+    final String formattedText =
+        newValue.text.split(' ').map(textToTitleCase).toList().join(' ');
     return TextEditingValue(
       text: formattedText,
       selection: newValue.selection,
@@ -199,20 +201,22 @@ class TitleCaseInputFormatter extends TextInputFormatter {
 class CapitalCaseTextFormatter extends TextInputFormatter {
   String capitalizeSentence(String text) {
     // Each sentence becomes an array element
-    var sentences = text.split('. ');
+    final sentences = text.split('. ');
     // Initialize string as empty string
     var output = '';
     // Loop through each sentence
     for (var x = 0; x < sentences.length; x++) {
       // Trim leading and trailing whitespace
       // var trimmed = sentences[x].trim();
-      var trimmed = sentences[x];
+      final trimmed = sentences[x];
       if (trimmed != "") {
         // Capitalize first letter of current sentence
-        var capitalized = "${trimmed[0].toUpperCase() + trimmed.substring(1)}";
+        final capitalized = trimmed[0].toUpperCase() + trimmed.substring(1);
         // Add current sentence to output with a period
         output += capitalized;
-        if (x < sentences.length - 1) output += ". ";
+        if (x < sentences.length - 1) {
+          output += ". ";
+        }
       }
     }
     return output;
@@ -221,7 +225,7 @@ class CapitalCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    String formattedText = capitalizeSentence(newValue.text);
+    final String formattedText = capitalizeSentence(newValue.text);
     return TextEditingValue(
       text: formattedText,
       selection: newValue.selection,
