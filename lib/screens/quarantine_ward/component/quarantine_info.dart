@@ -38,7 +38,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
 
   Widget buildInformation(BuildContext context, IconData icon, String info) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       child: Text.rich(
         TextSpan(
           children: [
@@ -65,12 +65,12 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Carousel(image: widget.quarantineInfo.image),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           //Name and icon
           Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               left: 23,
             ),
             child: Row(
@@ -89,7 +89,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           fontSize: 20,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Text(
@@ -166,9 +166,9 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                     currentQuarantine: widget.quarantineInfo,
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );
@@ -181,7 +181,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           //Information
           Container(
             width: MediaQuery.of(context).size.width * 1,
-            margin: EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
+            margin: const EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,10 +190,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(
+                      margin: const EdgeInsets.only(
                         bottom: 10,
                       ),
-                      child: Text(
+                      child: const Text(
                         'Thông tin',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -215,7 +215,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           ),
                         );
                       },
-                      child: Text('Danh sách quản lý, cán bộ'),
+                      child: const Text('Danh sách quản lý, cán bộ'),
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
                             CustomColors.primary),

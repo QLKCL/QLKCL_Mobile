@@ -116,7 +116,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
             title: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
                   Container(
@@ -129,14 +129,15 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             .toString()),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: CustomColors.secondary,
                         width: 2.0,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Expanded(
@@ -144,10 +145,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Xin chào,",
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         FutureBuilder(
@@ -180,17 +181,17 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               Badge(
                 showBadge: unreadNotifications != 0,
                 position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 shape: BadgeShape.square,
                 borderRadius: BorderRadius.circular(8),
-                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
                   style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
-                  padding: EdgeInsets.only(right: 24),
+                  padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
                     color: CustomColors.primaryText,
@@ -370,7 +371,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       child: Card(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: DestiantionChart(data: []),
+                          child: DestiantionChart(data: const []),
                         ),
                       ),
                     );
@@ -381,10 +382,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
           ),
         ),
         floatingActionButton: AnimatedSlide(
-          duration: Duration(milliseconds: 300),
-          offset: _showFab ? Offset.zero : Offset(0, 2),
+          duration: const Duration(milliseconds: 300),
+          offset: _showFab ? Offset.zero : const Offset(0, 2),
           child: AnimatedOpacity(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             opacity: _showFab ? 1 : 0,
             child: SpeedDial(
               icon: Icons.add,
@@ -403,7 +404,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
 
               animationSpeed: 200,
               shape: const StadiumBorder(),
-              childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              childMargin:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               children: [
                 SpeedDialChild(
                   child: const Icon(Icons.edit_outlined),

@@ -63,7 +63,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
@@ -78,7 +78,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
@@ -104,7 +104,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
                 controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       searchController.clear();
                     },
@@ -113,7 +113,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
               )
             : null,
         emptyBuilder: (BuildContext context, t) => (Center(
-          child: Text('Không có dữ liệu'),
+          child: const Text('Không có dữ liệu'),
         )),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? Container(
@@ -129,12 +129,12 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
                 ? RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
                 : RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   )
             : null,
         dialogMaxWidth: maxMobileSize,
@@ -200,7 +200,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
@@ -216,7 +216,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
           hintText: widget.hint,
           labelText: widget.required ? widget.label + " \*" : widget.label,
           helperText: widget.helper,
-          contentPadding: EdgeInsets.fromLTRB(12, 4, 0, 4),
+          contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&
                   widget.error!.isNotEmpty)
@@ -240,8 +240,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         popupSelectionWidget: (context, T item, bool isSelected) {
           return isSelected
               ? Container(
-                  padding: EdgeInsets.only(right: 16),
-                  child: Icon(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: const Icon(
                     Icons.check,
                     color: Colors.blue,
                   ),
@@ -253,7 +253,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
                 controller: searchController,
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       searchController.clear();
                     },
@@ -264,7 +264,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         dropdownBuilder: widget.dropdownBuilder,
         dropdownBuilderSupportsNullItem: true,
         emptyBuilder: (BuildContext context, t) => (Center(
-          child: Text('Không có dữ liệu'),
+          child: const Text('Không có dữ liệu'),
         )),
         popupTitle: (widget.popupTitle != null && widget.popupTitle != "")
             ? Container(
@@ -280,12 +280,12 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
         popupShape: (widget.popupTitle != null && widget.popupTitle != "")
             ? widget.mode == Mode.BOTTOM_SHEET
                 ? RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
                   ))
                 : RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
                   )
             : null,
         dialogMaxWidth: maxMobileSize,
@@ -300,8 +300,8 @@ Widget customDropDown(BuildContext context, List<KeyValue?> selectedItems) {
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          margin: EdgeInsets.only(top: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          margin: const EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: Theme.of(context).primaryColorLight),

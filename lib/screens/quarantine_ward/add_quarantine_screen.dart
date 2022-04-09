@@ -10,9 +10,8 @@ class NewQuarantine extends StatefulWidget {
 }
 
 class _NewQuarantineState extends State<StatefulWidget> {
-
   final appBar = AppBar(
-    title: Text('Thêm khu cách ly'),
+    title: const Text('Thêm khu cách ly'),
     centerTitle: true,
   );
   @override
@@ -26,5 +25,4 @@ class _NewQuarantineState extends State<StatefulWidget> {
       ),
     );
   }
-
 }

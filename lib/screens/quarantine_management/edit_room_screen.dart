@@ -65,7 +65,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin phòng'),
+      title: const Text('Sửa thông tin phòng'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -119,7 +119,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                     Spacer(),
                     ElevatedButton(
                       onPressed: _submit,
-                      child: Text("Xác nhận"),
+                      child: const Text("Xác nhận"),
                     ),
                     Spacer(),
                   ],

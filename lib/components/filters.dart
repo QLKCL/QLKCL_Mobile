@@ -24,7 +24,7 @@ class FloatingModal extends StatelessWidget {
       child: Container(
         width: maxMobileSize,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Material(
             color: backgroundColor,
             clipBehavior: Clip.antiAlias,
@@ -307,7 +307,7 @@ Future memberFilter(
                   onSubmit!(quarantineWardList, [], [], [], false);
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
               Spacer(),
               ElevatedButton(
@@ -322,7 +322,7 @@ Future memberFilter(
                   );
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
               Spacer(),
             ],
@@ -336,7 +336,7 @@ Future memberFilter(
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)),
           ),
@@ -459,7 +459,7 @@ Future testFilter(
                   onSubmit!();
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
               Spacer(),
               ElevatedButton(
@@ -468,7 +468,7 @@ Future testFilter(
                   onSubmit!();
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
               Spacer(),
             ],
@@ -482,7 +482,7 @@ Future testFilter(
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)),
           ),
@@ -677,9 +677,9 @@ Future quarantineFilter(
         //   crossAxisAlignment: CrossAxisAlignment.start,
         //   children: [
         //     ListTileTheme(
-        //       contentPadding: EdgeInsets.only(left: 8),
+        //       contentPadding: const EdgeInsets.only(left: 8),
         //       child: CheckboxListTile(
-        //         title: Text("Quản lý bởi tôi"),
+        //         title: const Text("Quản lý bởi tôi"),
         //         controlAffinity: ListTileControlAffinity.leading,
         //         value: myQuarantine,
         //         onChanged: (bool? value) {
@@ -704,7 +704,7 @@ Future quarantineFilter(
                   onSubmit!(cityList, [], [], false);
                   Navigator.pop(context);
                 },
-                child: Text("Đặt lại"),
+                child: const Text("Đặt lại"),
               ),
               Spacer(),
               ElevatedButton(
@@ -718,7 +718,7 @@ Future quarantineFilter(
                   );
                   Navigator.pop(context);
                 },
-                child: Text("Tìm kiếm"),
+                child: const Text("Tìm kiếm"),
               ),
               Spacer(),
             ],
@@ -732,7 +732,7 @@ Future quarantineFilter(
       ? showBarModalBottomSheet(
           barrierColor: Colors.black54,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(10.0),
                 topRight: Radius.circular(10.0)),
           ),

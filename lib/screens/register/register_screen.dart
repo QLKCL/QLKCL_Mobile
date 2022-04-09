@@ -114,12 +114,12 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(left: 16),
             child: Text(
               "Đăng ký cách ly",
               style: Theme.of(context).textTheme.headline6,
@@ -202,7 +202,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
         ],

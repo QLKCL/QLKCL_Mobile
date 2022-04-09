@@ -34,7 +34,7 @@ class _VaccinationCertificationScreenState
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Tra cứu chứng nhận tiêm',
           ),
           centerTitle: true,
@@ -43,7 +43,7 @@ class _VaccinationCertificationScreenState
           child: Center(
             child: Column(
               children: <Widget>[
-                SizedBox(
+                const SizedBox(
                   height: 16,
                 ),
                 if (widget.vaccineCertification.patientInfo.vaccinatedInfoes
@@ -58,7 +58,7 @@ class _VaccinationCertificationScreenState
                         .length >
                     1)
                   WebsafeSvg.asset("assets/svg/binh_thuong.svg", height: 100),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Divider(
@@ -73,7 +73,7 @@ class _VaccinationCertificationScreenState
                         ? "Bạn đã tiêm ${widget.vaccineCertification.patientInfo.vaccinatedInfoes.length} mũi vaccine"
                         : "Chưa tiêm vaccine",
                     style: TextStyle(fontSize: 25)),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Divider(
@@ -83,19 +83,19 @@ class _VaccinationCertificationScreenState
                 ),
                 Card(
                   child: QrImage(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     data: widget.vaccineCertification.qrCode,
                     size: MediaQuery.of(context).size.width > maxMobileSize
                         ? MediaQuery.of(context).size.width * 0.5
                         : maxMobileSize * 0.5,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Card(
                   child: Container(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

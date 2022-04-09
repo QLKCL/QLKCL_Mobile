@@ -489,8 +489,8 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   },
                   child: (widget.mode == Permission.add ||
                           widget.mode == Permission.edit)
-                      ? Text("Lưu")
-                      : Text('Tiếp theo'),
+                      ? const Text("Lưu")
+                      : const Text('Tiếp theo'),
                 ),
               ),
           ],

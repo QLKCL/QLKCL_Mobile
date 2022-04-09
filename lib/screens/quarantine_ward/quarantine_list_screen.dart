@@ -26,7 +26,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Các khu cách ly'),
+      title: const Text('Các khu cách ly'),
       centerTitle: true,
       leading: IconButton(
         onPressed: () {
@@ -35,7 +35,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
               .push(MaterialPageRoute(
                   builder: (context) => QuanrantineListMaps()));
         },
-        icon: Icon(Icons.map_outlined),
+        icon: const Icon(Icons.map_outlined),
         tooltip: "Bản đồ",
       ),
       actions: [
@@ -46,7 +46,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
                 .push(MaterialPageRoute(
                     builder: (context) => SearchQuarantine()));
           },
-          icon: Icon(Icons.search),
+          icon: const Icon(Icons.search),
           tooltip: "Tìm kiếm",
         ),
       ],
@@ -57,7 +57,7 @@ class _QuarantineListScreenState extends State<QuarantineListScreen> {
       body: QuanrantineList(),
       floatingActionButton: FloatingActionButton(
         heroTag: "quarantine_fab",
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.of(context,
                   rootNavigator: !Responsive.isDesktopLayout(context))

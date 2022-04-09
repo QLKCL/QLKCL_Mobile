@@ -43,14 +43,14 @@ class _ImageFieldState extends State<ImageField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          margin: const EdgeInsets.fromLTRB(16, 16, 16, 8),
           child: Text(
             'Hình ảnh',
             style: Theme.of(context).textTheme.bodyText1,
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(12, 0, 12, 0),
+          margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
           child: GridView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -107,13 +107,13 @@ class _ImageFieldState extends State<ImageField> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
+                                const Icon(
                                   Icons.camera_alt_outlined,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
-                                Text(
+                                const Text(
                                   'Thêm ảnh',
                                   textAlign: TextAlign.center,
                                 ),

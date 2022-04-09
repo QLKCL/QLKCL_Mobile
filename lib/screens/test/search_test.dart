@@ -111,7 +111,7 @@ class _SearchTestState extends State<SearchTest> {
                     color: CustomColors.secondaryText,
                   ),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       /* Clear the search field */
                       keySearch.clear();
@@ -155,7 +155,7 @@ class _SearchTestState extends State<SearchTest> {
                       ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
-              icon: Icon(Icons.filter_list_outlined),
+              icon: const Icon(Icons.filter_list_outlined),
               tooltip: "Lọc",
             )
           ],
@@ -169,7 +169,7 @@ class _SearchTestState extends State<SearchTest> {
                     () => _pagingController.refresh(),
                   ),
                   child: PagedListView<int, dynamic>(
-                    padding: EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.only(bottom: 16),
                     pagingController: _pagingController,
                     builderDelegate: PagedChildBuilderDelegate<dynamic>(
                       animateTransitions: true,
@@ -182,12 +182,12 @@ class _SearchTestState extends State<SearchTest> {
                               height: MediaQuery.of(context).size.height * 0.15,
                               child: Image.asset("assets/images/no_data.png"),
                             ),
-                            Text('Không có dữ liệu'),
+                            const Text('Không có dữ liệu'),
                           ],
                         ),
                       ),
                       firstPageErrorIndicatorBuilder: (context) => Center(
-                        child: Text('Có lỗi xảy ra'),
+                        child: const Text('Có lỗi xảy ra'),
                       ),
                       itemBuilder: (context, item, index) => TestNoResultCard(
                         name: item['user'] != null
@@ -217,7 +217,7 @@ class _SearchTestState extends State<SearchTest> {
                 ),
               )
             : Center(
-                child: Text('Tìm kiếm phiếu xét nghiệm'),
+                child: const Text('Tìm kiếm phiếu xét nghiệm'),
               ),
       ),
     );

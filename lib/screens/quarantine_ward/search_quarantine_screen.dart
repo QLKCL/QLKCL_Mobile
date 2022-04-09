@@ -146,7 +146,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     color: CustomColors.secondaryText,
                   ),
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.clear),
+                    icon: const Icon(Icons.clear),
                     onPressed: () {
                       /* Clear the search field */
                       keySearch.clear();
@@ -200,7 +200,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                       ResponsiveWrapper.of(context).isLargerThan(MOBILE),
                 );
               },
-              icon: Icon(Icons.filter_list_outlined),
+              icon: const Icon(Icons.filter_list_outlined),
               tooltip: "Lọc",
             )
           ],
@@ -210,16 +210,16 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 context: context,
                 removeTop: true,
                 child: PagedListView<int, FilterQuanrantineWard>(
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   pagingController: _pagingController,
                   builderDelegate:
                       PagedChildBuilderDelegate<FilterQuanrantineWard>(
                     animateTransitions: true,
                     noItemsFoundIndicatorBuilder: (context) => Center(
-                      child: Text('Không có kết quả tìm kiếm'),
+                      child: const Text('Không có kết quả tìm kiếm'),
                     ),
                     firstPageErrorIndicatorBuilder: (context) => Center(
-                      child: Text('Có lỗi xảy ra'),
+                      child: const Text('Có lỗi xảy ra'),
                     ),
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item.id.toString(),
@@ -241,7 +241,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                 ),
               )
             : Center(
-                child: Text('Tìm kiếm khu cách ly'),
+                child: const Text('Tìm kiếm khu cách ly'),
               ),
       ),
     );

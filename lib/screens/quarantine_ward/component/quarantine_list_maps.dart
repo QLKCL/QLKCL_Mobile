@@ -99,7 +99,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Bản đồ các khu cách ly'),
+          title: const Text('Bản đồ các khu cách ly'),
           centerTitle: true,
         ),
         body: Stack(

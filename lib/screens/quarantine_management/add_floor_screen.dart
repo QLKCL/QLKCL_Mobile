@@ -94,7 +94,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thêm tầng'),
+      title: const Text('Thêm tầng'),
       centerTitle: true,
     );
 
@@ -135,15 +135,16 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                 children: [
                                   //Add multiple floors
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    margin: const EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           flex: 55,
                                           child: ListTileTheme(
-                                            contentPadding: EdgeInsets.all(0),
+                                            contentPadding: const EdgeInsets.all(0),
                                             child: CheckboxListTile(
-                                              title: Text("Thêm nhiều tầng"),
+                                              title:
+                                                  const Text("Thêm nhiều tầng"),
                                               controlAffinity:
                                                   ListTileControlAffinity
                                                       .leading,
@@ -176,7 +177,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                   ),
                                   Container(
                                     margin:
-                                        EdgeInsets.symmetric(horizontal: 16),
+                                        const EdgeInsets.symmetric(horizontal: 16),
                                     child: const Text(
                                       'Chỉnh sửa thông tin tầng',
                                       style: TextStyle(fontSize: 16),
@@ -231,7 +232,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                               Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
                               Spacer(),
                             ],
@@ -240,9 +241,9 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

@@ -31,7 +31,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
       if (status == PagingStatus.subsequentPageError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text(
+            content: Text(
               'Có lỗi xảy ra!',
             ),
             action: SnackBarAction(
@@ -83,16 +83,16 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                 (value) => _pagingController.refresh(),
               );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Thêm địa điểm",
       ),
       appBar: AppBar(
-        title: Text("Lịch sử di chuyển"),
+        title: const Text("Lịch sử di chuyển"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -105,7 +105,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
@@ -118,12 +118,12 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => DestinationHistoryCard(
                 name: item['user']['full_name'],

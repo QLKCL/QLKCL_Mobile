@@ -73,12 +73,12 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lịch sử tiêm chủng"),
+        title: const Text("Lịch sử tiêm chủng"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -91,7 +91,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
@@ -104,12 +104,12 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => VaccineDoseCard(
                 vaccine: item["vaccine"]["name"],
@@ -128,7 +128,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                     .push(MaterialPageRoute(
                         builder: (context) => SyncVaccinePortal()));
               },
-              child: Icon(Icons.cloud_sync),
+              child: const Icon(Icons.cloud_sync),
               tooltip: "Thêm phiếu xét nghiệm",
             )
           : null,

@@ -79,7 +79,7 @@ class _ListAllMemberState extends State<ListAllMember>
                   AddMember.routeName,
                 );
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               tooltip: "Thêm người cách ly",
             )
           : null,
@@ -91,7 +91,7 @@ class _ListAllMemberState extends State<ListAllMember>
               sliver: SliverAppBar(
                 title: longPressFlag
                     ? Text('${indexList.length} đã chọn')
-                    : Text("Danh sách người cách ly"),
+                    : const Text("Danh sách người cách ly"),
                 centerTitle: true,
                 actions: [
                   IconButton(
@@ -102,17 +102,17 @@ class _ListAllMemberState extends State<ListAllMember>
                           .push(MaterialPageRoute(
                               builder: (context) => SearchMember()));
                     },
-                    icon: Icon(Icons.search),
+                    icon: const Icon(Icons.search),
                     tooltip: "Tìm kiếm",
                   ),
                   if (_tabController.index == 1)
                     PopupMenuButton(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.more_vert,
                       ),
                       itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                         PopupMenuItem(
-                          child: Text('Chấp nhận'),
+                          child: const Text('Chấp nhận'),
                           onTap: () async {
                             if (indexList.length == 0) {
                               showNotification(
@@ -134,7 +134,7 @@ class _ListAllMemberState extends State<ListAllMember>
                           },
                         ),
                         PopupMenuItem(
-                          child: Text('Từ chối'),
+                          child: const Text('Từ chối'),
                           onTap: () async {
                             if (indexList.length == 0) {
                               showNotification(

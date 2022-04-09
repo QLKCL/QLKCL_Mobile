@@ -18,7 +18,6 @@ class BuildingItem extends StatelessWidget {
     required this.buildingName,
     this.maxMem = 0,
     required this.currentMem,
-
   });
 
   void selectBuilding(BuildContext context) {}
@@ -43,11 +42,11 @@ class BuildingItem extends StatelessWidget {
           Container(
             height: 87,
             width: 150,
-            //margin: EdgeInsets.symmetric(horizontal: 10),
+            //margin: const EdgeInsets.symmetric(horizontal: 10),
             alignment: Alignment.center,
             child: SvgPicture.asset('assets/svg/building.svg'),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(5),
                 topRight: Radius.circular(5),
               ),
@@ -56,7 +55,7 @@ class BuildingItem extends StatelessWidget {
           ),
           Container(
             height: 55,
-            padding: EdgeInsets.fromLTRB(7, 6, 0, 3),
+            padding: const EdgeInsets.fromLTRB(7, 6, 0, 3),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -68,7 +67,7 @@ class BuildingItem extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 5),
+                  margin: const EdgeInsets.only(top: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,7 +77,7 @@ class BuildingItem extends StatelessWidget {
                         size: 14,
                         color: CustomColors.secondaryText,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Text(
@@ -97,4 +96,3 @@ class BuildingItem extends StatelessWidget {
     );
   }
 }
-

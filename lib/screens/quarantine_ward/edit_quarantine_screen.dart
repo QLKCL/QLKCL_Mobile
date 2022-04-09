@@ -23,7 +23,7 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
   late Future<dynamic> futureQuarantine;
 
   final appBar = AppBar(
-    title: Text('Cập nhật khu cách ly'),
+    title: const Text('Cập nhật khu cách ly'),
     centerTitle: true,
   );
 

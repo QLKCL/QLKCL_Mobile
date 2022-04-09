@@ -66,7 +66,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tra cứu chứng nhận tiêm'),
+          title: const Text('Tra cứu chứng nhận tiêm'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -150,7 +150,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                           });
                           _otp();
                         },
-                        child: Text("Nhận OTP"),
+                        child: const Text("Nhận OTP"),
                       ),
                       Spacer(),
                       ElevatedButton(
@@ -159,7 +159,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                                 _submit();
                               }
                             : null,
-                        child: Text("Tra cứu"),
+                        child: const Text("Tra cứu"),
                       ),
                       Spacer(),
                     ],

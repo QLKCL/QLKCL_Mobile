@@ -27,11 +27,11 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
             children: [
               Container(
                 margin:
-                    EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                    const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Danh sách tòa',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -50,7 +50,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                           ),
                         ).then((value) => setState(() {}));
                       },
-                      child: Text('Tạo tòa'),
+                      child: const Text('Tạo tòa'),
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
                             CustomColors.primary),
@@ -59,14 +59,14 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   ],
                 ),
               ),
-              Text('Chưa có tòa nào được tạo'),
+              const Text('Chưa có tòa nào được tạo'),
             ],
           )
         : Column(
             children: [
               Container(
                 margin:
-                    EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                    const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -88,7 +88,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                           ),
                         );
                       },
-                      child: Text('Xem tất cả'),
+                      child: const Text('Xem tất cả'),
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
                             CustomColors.primary),
@@ -104,7 +104,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.data.length,
-                  padding: EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.only(bottom: 16),
                   itemBuilder: (BuildContext context, int index) => Card(
                     child: Container(
                       child: BuildingItem(

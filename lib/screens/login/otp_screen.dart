@@ -71,7 +71,7 @@ class _OtpState extends State<Otp> {
                   child: Card(
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         Container(
@@ -83,7 +83,7 @@ class _OtpState extends State<Otp> {
                         ),
                         Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Text(
                             "Mã xác nhận đã được gửi qua email",
                             style: Theme.of(context).textTheme.subtitle1,
@@ -106,7 +106,7 @@ class _OtpState extends State<Otp> {
                                 activeFillColor: Colors.white,
                               ),
                               cursorColor: Colors.black,
-                              animationDuration: Duration(milliseconds: 300),
+                              animationDuration: const Duration(milliseconds: 300),
                               errorAnimationController: errorController,
                               controller: textEditingController,
                               keyboardType: TextInputType.number,
@@ -161,7 +161,7 @@ class _OtpState extends State<Otp> {
                             ],
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                       ],

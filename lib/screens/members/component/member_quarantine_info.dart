@@ -455,9 +455,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ListTileTheme(
-                  contentPadding: EdgeInsets.only(left: 8),
+                  contentPadding: const EdgeInsets.only(left: 8),
                   child: CheckboxListTile(
-                    title: Text("Đã từng nhiễm COVID-19"),
+                    title: const Text("Đã từng nhiễm COVID-19"),
                     controlAffinity: ListTileControlAffinity.leading,
                     value: _isPositiveTestedBefore,
                     onChanged: (bool? value) {
@@ -521,7 +521,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         color: CustomColors.error,
                       ),
                     ),
-                    Text(
+                    const Text(
                       ' Thông tin bắt buộc',
                       style: TextStyle(
                         fontSize: 16,
@@ -549,7 +549,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           cancel();
                           showNotification(response);
                         },
-                        child: Text("Từ chối"),
+                        child: const Text("Từ chối"),
                       ),
                     Spacer(),
                     ElevatedButton(
@@ -557,8 +557,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         _submit();
                       },
                       child: widget.mode == Permission.change_status
-                          ? Text("Xét duyệt")
-                          : Text('Lưu'),
+                          ? const Text("Xét duyệt")
+                          : const Text('Lưu'),
                     ),
                     Spacer(),
                   ])),

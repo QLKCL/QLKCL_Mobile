@@ -132,9 +132,9 @@ class SideBar extends StatelessWidget {
           'assets/images/Logo.png',
           width: 36,
         ),
-        title: Padding(
-          padding: EdgeInsets.only(right: 16),
-          child: Text(
+        title: const Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: const Text(
             "Hệ thống quản lý khu cách ly",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 17),
@@ -262,7 +262,7 @@ class TabNavigator extends StatelessWidget {
         } else if (settings.name == "/") {
           return null;
         } else {
-          child = Error();
+          child = const Error();
         }
         return MaterialPageRoute(
           settings: settings,

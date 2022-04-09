@@ -95,7 +95,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thêm phòng'),
+      title: const Text('Thêm phòng'),
       centerTitle: true,
     );
 
@@ -137,15 +137,16 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                 children: [
                                   // Add multiple floors
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    margin: const EdgeInsets.fromLTRB(6, 0, 0, 0),
                                     child: Row(
                                       children: [
                                         Expanded(
                                           flex: 55,
                                           child: ListTileTheme(
-                                            contentPadding: EdgeInsets.all(0),
+                                            contentPadding: const EdgeInsets.all(0),
                                             child: CheckboxListTile(
-                                              title: Text("Thêm nhiều phòng"),
+                                              title: const Text(
+                                                  "Thêm nhiều phòng"),
                                               controlAffinity:
                                                   ListTileControlAffinity
                                                       .leading,
@@ -178,7 +179,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                   ),
                                   Container(
                                     margin:
-                                        EdgeInsets.symmetric(horizontal: 16),
+                                        const EdgeInsets.symmetric(horizontal: 16),
                                     child: const Text(
                                       'Chỉnh sửa thông tin phòng',
                                       style: TextStyle(fontSize: 16),
@@ -259,7 +260,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                               Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
                               Spacer(),
                             ],
@@ -268,9 +269,9 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

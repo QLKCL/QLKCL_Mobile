@@ -72,7 +72,7 @@ class _CreateNotificationState extends State<CreateNotification> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tạo thông báo'),
+          title: const Text('Tạo thông báo'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

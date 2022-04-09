@@ -31,7 +31,7 @@ class RoomList extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           )
@@ -57,7 +57,7 @@ class RoomList extends StatelessWidget {
                     numOfMem: data[index]['num_current_member'],
                     maxMem: data[index]['capacity'],
                   ),
-                  index == data.length - 1 ? SizedBox(height: 70) : Container(),
+                  index == data.length - 1 ? const SizedBox(height: 70) : Container(),
                 ],
               );
             },

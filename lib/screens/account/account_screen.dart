@@ -42,7 +42,7 @@ class _AccountState extends State<Account> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Quản lý tài khoản"),
+        title: const Text("Quản lý tài khoản"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -75,8 +75,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListMedicalDeclaration.routeName);
                   },
-                  title: Text('Lịch sử khai báo y tế'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Lịch sử khai báo y tế'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
                 Divider(
                   indent: 16,
@@ -88,8 +88,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListTest.routeName);
                   },
-                  title: Text('Kết quả xét nghiệm'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Kết quả xét nghiệm'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
                 Divider(
                   indent: 16,
@@ -101,8 +101,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListVaccineDose.routeName);
                   },
-                  title: Text('Thông tin tiêm chủng'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Thông tin tiêm chủng'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
                 Divider(
                   indent: 16,
@@ -114,8 +114,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListDestinationHistory.routeName);
                   },
-                  title: Text('Lịch sử di chuyển'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Lịch sử di chuyển'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
                 Divider(
                   indent: 16,
@@ -127,8 +127,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ListQuarantineHistory.routeName);
                   },
-                  title: Text('Lịch sử cách ly'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Lịch sử cách ly'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
               ],
             ),
@@ -153,8 +153,8 @@ class _AccountState extends State<Account> {
                                   !Responsive.isDesktopLayout(context))
                           .pushNamed(UpdateMember.routeName);
                     },
-                    title: Text('Thông tin cá nhân'),
-                    trailing: Icon(Icons.keyboard_arrow_right),
+                    title: const Text('Thông tin cá nhân'),
+                    trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
                 if (_role == 5)
                   Divider(
@@ -167,8 +167,8 @@ class _AccountState extends State<Account> {
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .pushNamed(ChangePassword.routeName);
                   },
-                  title: Text('Đổi mật khẩu'),
-                  trailing: Icon(Icons.keyboard_arrow_right),
+                  title: const Text('Đổi mật khẩu'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
               ],
             ),
@@ -193,7 +193,7 @@ class _AccountState extends State<Account> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           )
         ],

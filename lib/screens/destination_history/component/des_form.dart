@@ -361,7 +361,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         },
                         maxDate:
                             DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),
                     Expanded(
@@ -392,7 +392,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         minDate: startDateController.text,
                         maxDate:
                             DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),
                     Expanded(

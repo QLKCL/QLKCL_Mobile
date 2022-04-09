@@ -70,7 +70,7 @@ class _ForgetFormState extends State<ForgetForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
@@ -82,7 +82,7 @@ class _ForgetFormState extends State<ForgetForm> {
           ),
           Container(
             alignment: Alignment.center,
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Text(
               "Nhập email khôi phục để đặt lại mật khẩu hoặc liên hệ người quản lý để hỗ trợ thêm.",
               textAlign: TextAlign.center,

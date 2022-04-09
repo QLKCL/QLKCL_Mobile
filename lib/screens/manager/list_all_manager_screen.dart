@@ -46,7 +46,7 @@ class _ListAllManagerState extends State<ListAllManager>
                     AddManager(quarantineWard: widget.currentQuarrantine)),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         tooltip: "Thêm quản lý, cán bộ",
       ),
       body: NestedScrollView(
@@ -55,7 +55,7 @@ class _ListAllManagerState extends State<ListAllManager>
             SliverOverlapAbsorber(
               handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
               sliver: SliverAppBar(
-                title: Text("Danh sách quản lý, cán bộ"),
+                title: const Text("Danh sách quản lý, cán bộ"),
                 centerTitle: true,
                 pinned: true,
                 floating: !Responsive.isDesktopLayout(context),
@@ -78,7 +78,7 @@ class _ListAllManagerState extends State<ListAllManager>
           children: [
             Container(
               child: Center(
-                child: Text("Chức năng đang trong quá trình phát triển"),
+                child: const Text("Chức năng đang trong quá trình phát triển"),
               ),
             ),
             StaffList(

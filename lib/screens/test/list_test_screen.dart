@@ -90,7 +90,7 @@ class _ListTestState extends State<ListTest> {
                               builder: (context) =>
                                   AddTest(code: code, name: name)));
                     },
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                     tooltip: "Thêm phiếu xét nghiệm",
                   )
                 : Container();
@@ -99,12 +99,12 @@ class _ListTestState extends State<ListTest> {
         },
       ),
       appBar: AppBar(
-        title: Text("Lịch sử xét nghiệm"),
+        title: const Text("Lịch sử xét nghiệm"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -117,7 +117,7 @@ class _ListTestState extends State<ListTest> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
@@ -130,12 +130,12 @@ class _ListTestState extends State<ListTest> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => TestCard(
                 code: item['code'],

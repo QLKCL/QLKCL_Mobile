@@ -30,7 +30,7 @@ class _AddTestState extends State<AddTest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tạo phiếu xét nghiệm'),
+          title: const Text('Tạo phiếu xét nghiệm'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

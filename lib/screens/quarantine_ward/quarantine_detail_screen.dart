@@ -34,7 +34,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Thông tin khu cách ly'),
+      title: const Text('Thông tin khu cách ly'),
       centerTitle: true,
       actions: [
         IconButton(
@@ -51,7 +51,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
                   futureQuarantine = fetchQuarantine(widget.id);
                 }));
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],

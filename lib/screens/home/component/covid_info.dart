@@ -23,7 +23,7 @@ class InfoCovid extends StatelessWidget {
       height: 128,
       child: Card(
         color: color,
-        margin: EdgeInsets.all(0),
+        margin: const EdgeInsets.all(0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,7 +34,7 @@ class InfoCovid extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(color: CustomColors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -42,7 +42,7 @@ class InfoCovid extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(color: CustomColors.white),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Text(
@@ -116,7 +116,7 @@ class InfoCovidHomePage extends StatelessWidget {
 
     return Column(children: <Widget>[
       ResponsiveGridView.builder(
-        padding: EdgeInsets.only(top: 8),
+        padding: const EdgeInsets.only(top: 8),
         gridDelegate: ResponsiveGridDelegate(
           mainAxisSpacing: 8,
           crossAxisSpacing: 8,
@@ -131,7 +131,7 @@ class InfoCovidHomePage extends StatelessWidget {
           return listInfo[index];
         },
       ),
-      SizedBox(
+      const SizedBox(
         height: 8,
       ),
       Container(

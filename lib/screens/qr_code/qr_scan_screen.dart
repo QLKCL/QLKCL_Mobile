@@ -46,7 +46,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
     return Scaffold(
         floatingActionButton: (isAndroidPlatform() || isIOSPlatform())
             ? Padding(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: SizedBox(
                   height: 120,
                   width: 100,
@@ -63,9 +63,9 @@ class _QrCodeScanState extends State<QrCodeScan> {
                             border: Border.all(color: Colors.white, width: 2),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(Icons.photo_library_outlined, size: 30),
+                          child: const Icon(Icons.photo_library_outlined, size: 30),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         Text(
@@ -181,7 +181,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
           context: context,
           builder: (BuildContext context) => AlertDialog(
             title: const Text('Lỗi'),
-            content: Text("Không tìm thấy dữ liệu từ hình ảnh"),
+            content: const Text("Không tìm thấy dữ liệu từ hình ảnh"),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),

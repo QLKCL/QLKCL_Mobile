@@ -128,7 +128,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
-                          Text('Không có dữ liệu'),
+                          const Text('Không có dữ liệu'),
                         ],
                       ),
                     );
@@ -142,7 +142,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   }
                 }
               }
-              return Align(
+              return const Align(
                 alignment: Alignment.center,
                 child: const CircularProgressIndicator(),
               );
@@ -164,7 +164,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
           },
         ),
         child: PagedListView<int, FilterMember>(
-          padding: EdgeInsets.only(bottom: 70),
+          padding: const EdgeInsets.only(bottom: 70),
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
@@ -177,12 +177,12 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     height: MediaQuery.of(context).size.height * 0.15,
                     child: Image.asset("assets/images/no_data.png"),
                   ),
-                  Text('Không có dữ liệu'),
+                  const Text('Không có dữ liệu'),
                 ],
               ),
             ),
             firstPageErrorIndicatorBuilder: (context) => Center(
-              child: Text('Có lỗi xảy ra'),
+              child: const Text('Có lỗi xảy ra'),
             ),
             itemBuilder: (context, item, index) => MemberCard(
                 member: item,
@@ -279,14 +279,14 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
@@ -294,7 +294,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
@@ -303,7 +303,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
@@ -311,7 +311,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
@@ -319,21 +319,21 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Diện cách ly',
+                child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedAt',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày cách ly',
+                child: const Text('Ngày cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedFinishExpectedAt',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày dự kiến hoàn thành',
+                child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -341,7 +341,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Sức khỏe',
+                child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
@@ -349,14 +349,14 @@ class _ConfirmMemberState extends State<ConfirmMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Xét nghiệm',
+                child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -372,9 +372,9 @@ class _ConfirmMemberState extends State<ConfirmMember>
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
+          child: const Align(
             alignment: Alignment.center,
-            child: CircularProgressIndicator(
+            child: const CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),
@@ -478,7 +478,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -613,10 +613,10 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
@@ -637,7 +637,7 @@ Widget menus(BuildContext context, FilterMember item,
     ),
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
       PopupMenuItem(
-        child: Text('Chấp nhận'),
+        child: const Text('Chấp nhận'),
         onTap: () async {
           CancelFunc cancel = showLoading();
           final response = await acceptOneMember({'code': item.code});
@@ -653,7 +653,7 @@ Widget menus(BuildContext context, FilterMember item,
         },
       ),
       PopupMenuItem(
-        child: Text('Từ chối'),
+        child: const Text('Từ chối'),
         onTap: () async {
           CancelFunc cancel = showLoading();
           final response = await denyMember({'member_codes': item.code});

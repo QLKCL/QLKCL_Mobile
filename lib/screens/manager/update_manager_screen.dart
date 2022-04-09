@@ -32,13 +32,13 @@ class _UpdateManagerState extends State<UpdateManager> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thông tin chi tiết"),
+          title: const Text("Thông tin chi tiết"),
           centerTitle: true,
           // actions: [
           //   if (_tabController.index == 0)
           //     IconButton(
           //       onPressed: () {},
-          //       icon: Icon(Icons.qr_code_scanner),
+          //       icon: const Icon(Icons.qr_code_scanner),
           //       tooltip: "Nhập dữ liệu từ CCCD",
           //     ),
           // ],
@@ -62,7 +62,7 @@ class _UpdateManagerState extends State<UpdateManager> {
                 return Text('${snapshot.error}');
               } else {
                 return Center(
-                  child: Text('Có lỗi xảy ra!'),
+                  child: const Text('Có lỗi xảy ra!'),
                 );
               }
             }

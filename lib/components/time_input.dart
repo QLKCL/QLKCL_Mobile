@@ -48,7 +48,7 @@ class _TimeInputState extends State<TimeInput> {
       minute = widget.controller!.text.split(':').last;
     }
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -94,14 +94,14 @@ class _TimeInputState extends State<TimeInput> {
                   widget.controller!.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller!.clear();
                     _focus = false;
                     setState(() {});
                   },
                 )
-              : Icon(Icons.access_time),
+              : const Icon(Icons.access_time),
           helperText: widget.helper,
           fillColor:
               !widget.enabled ? CustomColors.disable : CustomColors.white,

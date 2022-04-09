@@ -70,7 +70,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
       ),
       child: PagedListView<int, FilterQuanrantineWard>(
         pagingController: _pagingController,
-        padding: EdgeInsets.only(bottom: 70),
+        padding: const EdgeInsets.only(bottom: 70),
         builderDelegate: PagedChildBuilderDelegate<FilterQuanrantineWard>(
           animateTransitions: true,
           noItemsFoundIndicatorBuilder: (context) => Center(
@@ -82,12 +82,12 @@ class _QuanrantineListState extends State<QuanrantineList> {
                   height: MediaQuery.of(context).size.height * 0.15,
                   child: Image.asset("assets/images/no_data.png"),
                 ),
-                Text('Không có dữ liệu'),
+                const Text('Không có dữ liệu'),
               ],
             ),
           ),
           firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('Có lỗi xảy ra'),
+            child: const Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => QuarantineItem(
             id: item.id.toString(),

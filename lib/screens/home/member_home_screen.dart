@@ -96,7 +96,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
           animationSpeed: 200,
           shape: const StadiumBorder(),
-          childMargin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          childMargin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           children: [
             SpeedDialChild(
               child: const Icon(Icons.phone),
@@ -125,7 +125,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
             toolbarHeight: 64, // Set this height
             automaticallyImplyLeading: false,
             title: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Row(
                 children: [
                   Container(
@@ -138,14 +138,14 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             .toString()),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: CustomColors.secondary,
                         width: 2.0,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Expanded(
@@ -153,10 +153,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Xin chào,",
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         FutureBuilder(
@@ -189,17 +189,17 @@ class _MemberHomePageState extends State<MemberHomePage> {
               Badge(
                 showBadge: unreadNotifications != 0,
                 position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: Duration(milliseconds: 300),
+                animationDuration: const Duration(milliseconds: 300),
                 animationType: BadgeAnimationType.scale,
                 shape: BadgeShape.square,
                 borderRadius: BorderRadius.circular(8),
-                padding: EdgeInsets.fromLTRB(4, 2, 4, 2),
+                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
                 badgeContent: Text(
                   unreadNotifications.toString(),
                   style: TextStyle(fontSize: 11.0, color: CustomColors.white),
                 ),
                 child: IconButton(
-                  padding: EdgeInsets.only(right: 24),
+                  padding: const EdgeInsets.only(right: 24),
                   icon: Icon(
                     Icons.notifications_none_outlined,
                     color: CustomColors.primaryText,
@@ -243,7 +243,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 if (!isWebPlatform())
                   Card(
                     child: Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           Container(
@@ -317,7 +317,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           if (msg != "")
                             Card(
                               child: ListTile(
-                                contentPadding: EdgeInsets.all(8),
+                                contentPadding: const EdgeInsets.all(8),
                                 title: Text(
                                   msg,
                                   style: TextStyle(
@@ -338,7 +338,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             child: Container(
                               child: InkWell(
                                 child: Padding(
-                                  padding: EdgeInsets.all(16),
+                                  padding: const EdgeInsets.all(16),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -357,7 +357,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                                     .headline6,
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 8,
                                             ),
                                             cardLine(
@@ -375,7 +375,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                               textColor:
                                                   CustomColors.primaryText,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 8,
                                             ),
                                             cardLine(
@@ -405,7 +405,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                               textColor:
                                                   CustomColors.primaryText,
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 8,
                                             ),
                                             cardLine(

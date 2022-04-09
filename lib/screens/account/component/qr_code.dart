@@ -28,7 +28,7 @@ class GenerateQrCode extends StatelessWidget {
                 if (snapshot.hasData) {
                   return Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Text(
                       snapshot.data,
                       style: Theme.of(context).textTheme.headline6,

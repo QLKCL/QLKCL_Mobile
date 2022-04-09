@@ -31,7 +31,7 @@ class _AddManagerState extends State<AddManager> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thêm quản lý, cán bộ"),
+          title: const Text("Thêm quản lý, cán bộ"),
           centerTitle: true,
           actions: [
             IconButton(
@@ -46,7 +46,7 @@ class _AddManagerState extends State<AddManager> {
                           }
                         }));
               },
-              icon: Icon(Icons.photo_camera_front_outlined),
+              icon: const Icon(Icons.photo_camera_front_outlined),
               tooltip: "Nhập dữ liệu từ CCCD",
             ),
           ],

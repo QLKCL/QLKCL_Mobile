@@ -67,7 +67,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                       fetchRoomList({'quarantine_floor': currentFloor.id});
                 }));
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],
@@ -114,9 +114,9 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                     ],
                   );
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );

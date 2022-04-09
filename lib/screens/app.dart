@@ -145,13 +145,13 @@ class _AppState extends State<App> {
                               color: Colors.white,
                               width: MediaQuery.of(context).size.width,
                               alignment: Alignment.center,
-                              child: Text(
+                              child: const Text(
                                 "Copyright \u00a9 2022 Le Trung Son. All rights reserved.\nMade with \u2665", // https://unicode-table.com/en/
                                 textAlign: TextAlign.center,
                               ),
                             ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ),
           );
   }

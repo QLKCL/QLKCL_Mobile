@@ -178,7 +178,7 @@ class InfoManagerHomePage extends StatelessWidget {
             ResponsiveRowColumnItem(
               rowFlex: 4,
               child: Container(
-                margin: EdgeInsets.only(left: 16),
+                margin: const EdgeInsets.only(left: 16),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Dữ liệu tổng hợp (${DateFormat("dd/MM/yyyy HH:mm").format(DateTime.now())})",
@@ -233,7 +233,7 @@ class InfoManagerHomePage extends StatelessWidget {
         ),
         if (ResponsiveWrapper.of(context).isLargerThan(MOBILE))
           ResponsiveGridView.builder(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 16),
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 16),
             gridDelegate: ResponsiveGridDelegate(
               maxCrossAxisExtent: _width,
               minCrossAxisExtent:
@@ -287,17 +287,17 @@ class InfoManagerHomeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: Responsive.isDesktopLayout(context)
-          ? EdgeInsets.fromLTRB(8, 8, 2, 0)
+          ? const EdgeInsets.fromLTRB(8, 8, 2, 0)
           : null,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               icon,
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
 
@@ -314,7 +314,7 @@ class InfoManagerHomeCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryText),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 4,
                     ),
                     Text.rich(

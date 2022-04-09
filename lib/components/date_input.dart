@@ -60,7 +60,7 @@ class _DateInputState extends State<DateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -101,14 +101,14 @@ class _DateInputState extends State<DateInput> {
                   widget.controller!.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller!.clear();
                     _focus = false;
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
               !widget.enabled ? CustomColors.disable : CustomColors.white,
@@ -188,7 +188,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -240,7 +240,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
                   controller.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     controller.clear();
                     widget.controllerStart!.clear();
@@ -249,7 +249,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
               !widget.enabled ? CustomColors.disable : CustomColors.white,
@@ -319,7 +319,7 @@ class _NewDateInputState extends State<NewDateInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -330,13 +330,13 @@ class _NewDateInputState extends State<NewDateInput> {
                   backgroundColor: Colors.white,
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Hủy'),
+                      child: const Text('Hủy'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Chọn'),
+                      child: const Text('Chọn'),
                       onPressed: () {
                         if (newDate == "" && widget.controller!.text == "") {
                           widget.controller!.text = DateFormat('dd/MM/yyyy')
@@ -400,14 +400,14 @@ class _NewDateInputState extends State<NewDateInput> {
                   widget.controller!.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     widget.controller!.clear();
                     _focus = false;
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
               !widget.enabled ? CustomColors.disable : CustomColors.white,
@@ -491,7 +491,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () async {
           _focus = true;
@@ -502,13 +502,13 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                   backgroundColor: Colors.white,
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Hủy'),
+                      child: const Text('Hủy'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Chọn'),
+                      child: const Text('Chọn'),
                       onPressed: () {
                         setState(() {
                           if (newStartDate == "" &&
@@ -596,7 +596,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                   controller.text != "" &&
                   _focus == true)
               ? IconButton(
-                  icon: Icon(Icons.clear),
+                  icon: const Icon(Icons.clear),
                   onPressed: () {
                     controller.clear();
                     widget.controllerStart!.clear();
@@ -605,7 +605,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     setState(() {});
                   },
                 )
-              : Icon(Icons.calendar_today),
+              : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           fillColor:
               !widget.enabled ? CustomColors.disable : CustomColors.white,

@@ -109,7 +109,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               ),
             );
           },
-          icon: Icon(Icons.edit),
+          icon: const Icon(Icons.edit),
           tooltip: "Cập nhật",
         ),
       ],
@@ -131,9 +131,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       ? listMemberTable(appBar)
                       : listMemberCard(appBar, snapshot.data!);
                 } else if (snapshot.hasError) {
-                  return Text('Snapshot has error');
+                  return const Text('Snapshot has error');
                 } else {
-                  return Text(
+                  return const Text(
                     'Không có dữ liệu',
                     textAlign: TextAlign.center,
                   );
@@ -220,7 +220,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       },
                       menus: menus(context, data.data[index])),
                   index == data.data.length - 1
-                      ? SizedBox(height: 70)
+                      ? const SizedBox(height: 70)
                       : Container(),
                 ],
               );
@@ -292,14 +292,14 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
@@ -307,7 +307,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
@@ -316,7 +316,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
@@ -324,7 +324,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineLocation',
@@ -332,7 +332,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Phòng',
+                child: const Text('Phòng',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
@@ -340,21 +340,21 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Diện cách ly',
+                child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedAt',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày cách ly',
+                child: const Text('Ngày cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantinedFinishExpectedAt',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày dự kiến hoàn thành',
+                child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -362,7 +362,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Sức khỏe',
+                child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
@@ -370,14 +370,14 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Xét nghiệm',
+                child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -393,9 +393,9 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
+          child: const Align(
             alignment: Alignment.center,
-            child: CircularProgressIndicator(
+            child: const CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),
@@ -474,7 +474,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -614,10 +614,10 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     members.safeFirstWhere(
@@ -693,31 +693,31 @@ Widget menus(BuildContext context, FilterMember item) {
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
       PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
+        child: const Text('Cập nhật thông tin'),
         value: "update_info",
       ),
       PopupMenuItem(
-        child: Text('Khai báo y tế'),
+        child: const Text('Khai báo y tế'),
         value: "create_medical_declaration",
       ),
       PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
+        child: const Text('Lịch sử khai báo y tế'),
         value: "medical_declare_history",
       ),
       PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
+        child: const Text('Tạo phiếu xét nghiệm'),
         value: "create_test",
       ),
       PopupMenuItem(
-        child: Text('Lịch sử xét nghiệm'),
+        child: const Text('Lịch sử xét nghiệm'),
         value: "test_history",
       ),
       PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
+        child: const Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
       ),
       PopupMenuItem(
-        child: Text('Chuyển phòng'),
+        child: const Text('Chuyển phòng'),
         value: "change_room",
       ),
     ],

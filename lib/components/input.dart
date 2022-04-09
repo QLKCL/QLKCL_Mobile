@@ -73,7 +73,7 @@ class _InputState extends State<Input> {
       formater.add(CapitalCaseTextFormatter());
 
     return Container(
-      margin: widget.margin ?? EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
         onTap: () {
           _focus = true;
@@ -135,7 +135,7 @@ class _InputState extends State<Input> {
                       widget.controller!.text != "" &&
                       _focus == true)
                   ? IconButton(
-                      icon: Icon(Icons.clear),
+                      icon: const Icon(Icons.clear),
                       onPressed: () {
                         widget.controller!.clear();
                         setState(() {});

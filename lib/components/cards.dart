@@ -28,7 +28,7 @@ class MedicalDeclarationCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,14 +44,14 @@ class MedicalDeclarationCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.history,
                           title: "Thời gian",
                           content: time),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -91,7 +91,7 @@ class TestCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -107,14 +107,14 @@ class TestCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.history,
                           title: "Thời gian",
                           content: time),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -169,7 +169,7 @@ class TestNoResultCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -188,7 +188,7 @@ class TestNoResultCard extends StatelessWidget {
                         bottom: -5,
                         right: -5,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
                               color: CustomColors.white,
                               borderRadius: BorderRadius.circular(100)),
@@ -210,7 +210,7 @@ class TestNoResultCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(
@@ -250,11 +250,11 @@ class TestNoResultCard extends StatelessWidget {
                           color: CustomColors.disableText,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(icon: Icons.qr_code, content: code),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -351,7 +351,7 @@ class _MemberCardState extends State<MemberCard> {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -370,7 +370,7 @@ class _MemberCardState extends State<MemberCard> {
                         bottom: -5,
                         right: -5,
                         child: Container(
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           decoration: BoxDecoration(
                               color: CustomColors.white,
                               borderRadius: BorderRadius.circular(100)),
@@ -385,7 +385,7 @@ class _MemberCardState extends State<MemberCard> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(
@@ -426,7 +426,7 @@ class _MemberCardState extends State<MemberCard> {
                         ),
                       ),
                       if (widget.member.quarantineLocation != null)
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                       if (widget.member.quarantineLocation != null)
@@ -456,7 +456,7 @@ class _MemberCardState extends State<MemberCard> {
                           maxLines: 1,
                           softWrap: false,
                         ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -505,7 +505,7 @@ class QuarantineRelatedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
       child: ListTile(
         onTap: onTap,
         title: Text(name),
@@ -599,7 +599,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
           child: InkWell(
             onTap: () => selectQuarantine(context),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -614,7 +614,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
                           fit: BoxFit.cover),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   //text
@@ -630,21 +630,21 @@ class _QuarantineItemState extends State<QuarantineItem> {
                               fontWeight: FontWeight.normal,
                               color: CustomColors.primaryText),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 8,
                         ),
                         cardLine(
                             icon: Icons.groups_rounded,
                             title: "Đang cách ly",
                             content: widget.currentMem.toString()),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         cardLine(
                             icon: Icons.account_box_outlined,
                             title: "Quản lý",
                             content: widget.manager),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         if (widget.address != null)
@@ -706,7 +706,7 @@ class QuarantineHome extends StatelessWidget {
     return Card(
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -722,7 +722,7 @@ class QuarantineHome extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
@@ -732,7 +732,7 @@ class QuarantineHome extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryText),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -741,7 +741,7 @@ class QuarantineHome extends StatelessWidget {
                       content: phone,
                       textColor: CustomColors.primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -750,7 +750,7 @@ class QuarantineHome extends StatelessWidget {
                       content: manager,
                       textColor: CustomColors.primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -760,7 +760,7 @@ class QuarantineHome extends StatelessWidget {
                           .format(DateTime.parse(quarantineAt)),
                       textColor: CustomColors.primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -770,7 +770,7 @@ class QuarantineHome extends StatelessWidget {
                           .format(DateTime.parse(quarantineFinishExpect)),
                       textColor: CustomColors.primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -779,7 +779,7 @@ class QuarantineHome extends StatelessWidget {
                       content: room,
                       textColor: CustomColors.primaryText,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     cardLine(
@@ -826,7 +826,7 @@ class NotificationCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -842,7 +842,7 @@ class NotificationCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2,
                       ),
                       Text.rich(
@@ -875,7 +875,7 @@ class NotificationCard extends StatelessWidget {
                         ),
                       ),
                       if (image != null)
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                       if (image != null)
@@ -887,7 +887,7 @@ class NotificationCard extends StatelessWidget {
                             return Container();
                           },
                         ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       Text(
@@ -929,7 +929,7 @@ class VaccineDoseCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -945,14 +945,14 @@ class VaccineDoseCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.history,
                           title: "Thời gian",
                           content: time),
-                      // SizedBox(
+                      // const SizedBox(
                       //   height: 4,
                       // ),
                       // Text.rich(
@@ -963,7 +963,7 @@ class VaccineDoseCard extends StatelessWidget {
                       //     children: [
                       //       WidgetSpan(
                       //         alignment: PlaceholderAlignment.middle,
-                      //         child: Icon(
+                      //         child: const Icon(
                       //           Icons.description_outlined,
                       //           size: 16,
                       //           color: CustomColors.disableText,
@@ -1011,7 +1011,7 @@ class DestinationHistoryCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1027,21 +1027,21 @@ class DestinationHistoryCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.history,
                           title: "Thời gian",
                           content: time),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.location_on_outlined,
                           title: "Địa điểm",
                           content: address),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -1086,7 +1086,7 @@ class QuarantineHistoryCard extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1102,28 +1102,28 @@ class QuarantineHistoryCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: CustomColors.primaryText),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.history,
                           title: "Thời gian",
                           content: time),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.location_on_outlined,
                           title: "Đơn vị",
                           content: room),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
                           icon: Icons.medical_services_outlined,
                           title: "Dịch bệnh",
                           content: pademic),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       cardLine(
@@ -1248,7 +1248,7 @@ class _ManagerCardState extends State<ManagerCard> {
             }
           },
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -1266,7 +1266,7 @@ class _ManagerCardState extends State<ManagerCard> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Expanded(
@@ -1306,7 +1306,7 @@ class _ManagerCardState extends State<ManagerCard> {
                           color: CustomColors.disableText,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 4,
                       ),
                       Text.rich(

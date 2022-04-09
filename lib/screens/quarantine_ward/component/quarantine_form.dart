@@ -226,7 +226,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(16, 16, 0, 0),
+              margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
               child: Text(
                 'Thông tin chung',
                 style: Theme.of(context).textTheme.bodyText1,

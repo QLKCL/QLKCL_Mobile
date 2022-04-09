@@ -108,7 +108,7 @@ class _DeniedMemberState extends State<DeniedMember>
                             height: MediaQuery.of(context).size.height * 0.15,
                             child: Image.asset("assets/images/no_data.png"),
                           ),
-                          Text('Không có dữ liệu'),
+                          const Text('Không có dữ liệu'),
                         ],
                       ),
                     );
@@ -122,7 +122,7 @@ class _DeniedMemberState extends State<DeniedMember>
                   }
                 }
               }
-              return Align(
+              return const Align(
                 alignment: Alignment.center,
                 child: const CircularProgressIndicator(),
               );
@@ -137,7 +137,7 @@ class _DeniedMemberState extends State<DeniedMember>
         () => _pagingController.refresh(),
       ),
       child: PagedListView<int, FilterMember>(
-        padding: EdgeInsets.only(bottom: 70),
+        padding: const EdgeInsets.only(bottom: 70),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
             animateTransitions: true,
@@ -150,12 +150,12 @@ class _DeniedMemberState extends State<DeniedMember>
                         height: MediaQuery.of(context).size.height * 0.15,
                         child: Image.asset("assets/images/no_data.png"),
                       ),
-                      Text('Không có dữ liệu'),
+                      const Text('Không có dữ liệu'),
                     ],
                   ),
                 ),
             firstPageErrorIndicatorBuilder: (context) => Center(
-                  child: Text('Có lỗi xảy ra'),
+                  child: const Text('Có lỗi xảy ra'),
                 ),
             itemBuilder: (context, item, index) => MemberCard(
                   member: item,
@@ -228,14 +228,14 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Họ và tên',
+                child: const Text('Họ và tên',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'birthday',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Ngày sinh',
+                child: const Text('Ngày sinh',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'gender',
@@ -243,7 +243,7 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text(
+                child: const Text(
                   'Giới tính',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ))),
@@ -252,7 +252,7 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('SDT',
+                child: const Text('SDT',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'quarantineWard',
@@ -260,7 +260,7 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.centerLeft,
-                child: Text('Khu cách ly',
+                child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
@@ -268,7 +268,7 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Diện cách ly',
+                child: const Text('Diện cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -276,7 +276,7 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Sức khỏe',
+                child: const Text('Sức khỏe',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'positiveTestNow',
@@ -284,14 +284,14 @@ class _DeniedMemberState extends State<DeniedMember>
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Xét nghiệm',
+                child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'action',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 alignment: Alignment.center,
-                child: Text('Hành động',
+                child: const Text('Hành động',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
       ],
     );
@@ -307,9 +307,9 @@ class _DeniedMemberState extends State<DeniedMember>
           color: Colors.black12,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
-          child: Align(
+          child: const Align(
             alignment: Alignment.center,
-            child: CircularProgressIndicator(
+            child: const CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),
@@ -403,7 +403,7 @@ class MemberDataSource extends DataGridSource {
     return DataGridRowAdapter(
       cells: <Widget>[
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return Container(
               padding: const EdgeInsets.all(8.0),
@@ -520,10 +520,10 @@ class MemberDataSource extends DataGridSource {
           ),
         ),
         FutureBuilder(
-          future: Future.delayed(Duration(milliseconds: 0), () => true),
+          future: Future.delayed(const Duration(milliseconds: 0), () => true),
           builder: (context, snapshot) {
             return !snapshot.hasData
-                ? SizedBox()
+                ? const SizedBox()
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
@@ -588,23 +588,23 @@ Widget menus(BuildContext context, FilterMember item,
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
       PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
+        child: const Text('Cập nhật thông tin'),
         value: "update_info",
       ),
       PopupMenuItem(
-        child: Text('Khai báo y tế'),
+        child: const Text('Khai báo y tế'),
         value: "create_medical_declaration",
       ),
       PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
+        child: const Text('Lịch sử khai báo y tế'),
         value: "medical_declare_history",
       ),
       PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
+        child: const Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
       ),
       PopupMenuItem(
-        child: Text('Chấp nhận'),
+        child: const Text('Chấp nhận'),
         value: "accept_one",
       ),
     ],

@@ -69,7 +69,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Xét nghiệm cần cập nhật"),
+        title: const Text("Xét nghiệm cần cập nhật"),
         centerTitle: true,
         actions: [
           IconButton(
@@ -78,7 +78,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(MaterialPageRoute(builder: (context) => SearchTest()));
             },
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             tooltip: "Tìm kiếm",
           ),
         ],
@@ -91,7 +91,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
@@ -104,12 +104,12 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => TestNoResultCard(
                 name: item['user'] != null ? item['user']['full_name'] : "",

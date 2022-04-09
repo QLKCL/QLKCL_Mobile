@@ -64,7 +64,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin tầng'),
+      title: const Text('Sửa thông tin tầng'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -112,7 +112,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                               Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
                               Spacer(),
                             ],
@@ -121,9 +121,9 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

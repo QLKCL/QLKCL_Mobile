@@ -95,7 +95,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Chuyển phòng"),
+          title: const Text("Chuyển phòng"),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -303,7 +303,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                         onPressed: () {
                           _submit();
                         },
-                        child: Text(
+                        child: const Text(
                           'Xác nhận',
                         ),
                       ),

@@ -56,7 +56,7 @@ class _CreateRequestState extends State<CreateRequest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Gửi phản ánh/yêu cầu'),
+          title: const Text('Gửi phản ánh/yêu cầu'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

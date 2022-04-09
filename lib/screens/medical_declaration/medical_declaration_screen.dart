@@ -34,7 +34,7 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Khai báo y tế'),
+          title: const Text('Khai báo y tế'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

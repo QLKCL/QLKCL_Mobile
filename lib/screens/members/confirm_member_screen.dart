@@ -51,13 +51,13 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Duyệt người cách ly"),
+          title: const Text("Duyệt người cách ly"),
           centerTitle: true,
           // actions: [
           //   if (_tabController.index == 0)
           //     IconButton(
           //       onPressed: () {},
-          //       icon: Icon(Icons.qr_code_scanner),
+          //       icon: const Icon(Icons.qr_code_scanner),
           //       tooltip: "Nhập dữ liệu từ CCCD",
           //     ),
           // ],

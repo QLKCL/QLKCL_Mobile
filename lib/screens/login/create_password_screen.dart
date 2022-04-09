@@ -55,7 +55,7 @@ class _CreatePasswordState extends State<CreatePassword> {
                       key: _formKey,
                       child: Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           Container(

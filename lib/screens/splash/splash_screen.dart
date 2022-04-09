@@ -20,7 +20,7 @@ class _SplashState extends State<Splash> {
         // child: lightMode
         //     ? Image.asset('assets/images/Logo.png')
         //     : Image.asset('assets/images/Logo_dark.png')),
-        child: CircularProgressIndicator(),
+        child: const CircularProgressIndicator(),
       ),
     );
   }

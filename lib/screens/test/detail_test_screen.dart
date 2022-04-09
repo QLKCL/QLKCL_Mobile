@@ -38,7 +38,7 @@ class _DetailTestState extends State<DetailTest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Thông tin phiếu xét nghiệm'),
+          title: const Text('Thông tin phiếu xét nghiệm'),
           centerTitle: true,
           actions: [
             FutureBuilder(
@@ -55,7 +55,7 @@ class _DetailTestState extends State<DetailTest> {
                                         code: widget.code,
                                         testData: testData)));
                           },
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           tooltip: "Cập nhật",
                         )
                       : Container();

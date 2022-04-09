@@ -8,7 +8,7 @@ CancelFunc Function(String) showTextToast = (text) {
   return BotToast.showText(
     text: text,
     textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14.0),
-    contentPadding: EdgeInsets.all(16),
+    contentPadding: const EdgeInsets.all(16),
     contentColor: CustomColors.background,
     wrapToastAnimation: (controller, cancel, Widget child) =>
         CustomAnimationWidget(
@@ -92,8 +92,8 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 
   @override
   void initState() {
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
 
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
@@ -119,7 +119,7 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(8))),
+          borderRadius: const BorderRadius.all(Radius.circular(8))),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -142,7 +142,7 @@ CancelFunc Function(dynamic data,
     (data, {status = Status.success, subTitle, duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
-    align: Alignment(1, -1),
+    align: const Alignment(1, -1),
     duration: Duration(seconds: duration),
     toastBuilder: (cancel) {
       return _CustomWidget(
@@ -221,7 +221,7 @@ class _CustomWidgetState extends State<_CustomWidget> {
                     borderRadius: BorderRadius.circular(widget.borderRadius!),
                   ),
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -235,7 +235,7 @@ class _CustomWidgetState extends State<_CustomWidget> {
                           widget.title,
                           style: widget.titleStyle,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         if (widget.subTitle != null)

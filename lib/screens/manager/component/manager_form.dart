@@ -222,7 +222,7 @@ class _ManagerFormState extends State<ManagerForm> {
         child: Column(
           children: <Widget>[
             Container(
-              padding: EdgeInsets.fromLTRB(12, 8, 12, 0),
+              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -241,7 +241,7 @@ class _ManagerFormState extends State<ManagerForm> {
                     'Quản lý',
                     style: new TextStyle(fontSize: 17.0),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   Radio<String>(
@@ -734,7 +734,7 @@ class _ManagerFormState extends State<ManagerForm> {
                 onPressed: () {
                   _submit();
                 },
-                child: Text("Lưu"),
+                child: const Text("Lưu"),
               ),
             ),
           ],

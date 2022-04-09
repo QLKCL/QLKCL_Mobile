@@ -46,7 +46,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Thêm người cách ly"),
+          title: const Text("Thêm người cách ly"),
           centerTitle: true,
           actions: [
             if (_tabController.index == 0)
@@ -62,7 +62,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                             }
                           }));
                 },
-                icon: Icon(Icons.photo_camera_front_outlined),
+                icon: const Icon(Icons.photo_camera_front_outlined),
                 tooltip: "Nhập dữ liệu từ CCCD",
               ),
           ],

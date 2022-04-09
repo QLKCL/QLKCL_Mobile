@@ -35,7 +35,7 @@ class _ViewMDState extends State<ViewMD> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Thông tin tờ khai'),
+          title: const Text('Thông tin tờ khai'),
           centerTitle: true,
         ),
         body: FutureBuilder<dynamic>(

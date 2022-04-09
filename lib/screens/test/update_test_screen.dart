@@ -35,7 +35,7 @@ class _UpdateTestState extends State<UpdateTest> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Cập nhật phiếu xét nghiệm'),
+          title: const Text('Cập nhật phiếu xét nghiệm'),
           centerTitle: true,
         ),
         body: widget.testData != null

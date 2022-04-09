@@ -63,7 +63,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Sửa thông tin tòa'),
+      title: const Text('Sửa thông tin tòa'),
       centerTitle: true,
     );
     return DismissKeyboard(
@@ -110,7 +110,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                               Spacer(),
                               ElevatedButton(
                                 onPressed: _submit,
-                                child: Text("Xác nhận"),
+                                child: const Text("Xác nhận"),
                               ),
                               Spacer(),
                             ],
@@ -119,9 +119,9 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                       ],
                     );
                   } else if (snapshot.hasError) {
-                    return Text('Snapshot has error');
+                    return const Text('Snapshot has error');
                   } else {
-                    return Text(
+                    return const Text(
                       'Không có dữ liệu',
                       textAlign: TextAlign.center,
                     );

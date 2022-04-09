@@ -72,7 +72,7 @@ class _ChangePasswordFormState extends State<ChangePasswordForm> {
       key: _formKey,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(

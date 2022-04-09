@@ -118,9 +118,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           ListTileTheme(
-                            contentPadding: EdgeInsets.only(left: 8),
+                            contentPadding: const EdgeInsets.only(left: 8),
                             child: CheckboxListTile(
-                              title: Text("Khai hộ"),
+                              title: const Text("Khai hộ"),
                               controlAffinity: ListTileControlAffinity.leading,
                               value: isChecked,
                               onChanged: (bool? value) {
@@ -159,7 +159,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
 
                 //Medical Declaration Info
                 Container(
-                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: const Text(
                     'A/ Chỉ số sức khỏe:',
                     style: TextStyle(fontSize: 16),
@@ -203,7 +203,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: const Text('B/ Triệu chứng nghi nhiễm:',
                       style: TextStyle(fontSize: 16)),
                 ),
@@ -286,7 +286,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   controller: otherController,
                   enabled: (widget.mode == Permission.add) ? true : false,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
 
                 //Button add medical declaration
                 if (widget.mode == Permission.add)
@@ -294,11 +294,11 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTileTheme(
-                        contentPadding: EdgeInsets.only(left: 8),
+                        contentPadding: const EdgeInsets.only(left: 8),
                         child: CheckboxListTile(
                           title: Container(
                               padding: const EdgeInsets.only(right: 16.0),
-                              child: Text(
+                              child: const Text(
                                 "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
                               )),
                           value: agree,
@@ -311,7 +311,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           children: [
                             Text(
@@ -321,7 +321,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                                 color: CustomColors.error,
                               ),
                             ),
-                            Text(
+                            const Text(
                               ' Thông tin bắt buộc',
                               style: TextStyle(
                                 fontSize: 16,

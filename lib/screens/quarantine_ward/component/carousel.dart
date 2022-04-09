@@ -34,7 +34,7 @@ class _CarouselState extends State<Carousel> {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 12),
+          margin: const EdgeInsets.symmetric(vertical: 12),
           child: CarouselSlider(
             options: CarouselOptions(
               scrollPhysics: ScrollPhysics(),
@@ -49,10 +49,10 @@ class _CarouselState extends State<Carousel> {
                 builder: (BuildContext context) {
                   return Container(
                     width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(horizontal: 5.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
                     decoration: BoxDecoration(
                         // color: Colors.amber,
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                        borderRadius: const BorderRadius.all(Radius.circular(5))),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(5.0),
                       child: Image.network(

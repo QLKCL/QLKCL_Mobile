@@ -71,12 +71,12 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lịch sử cách ly"),
+        title: const Text("Lịch sử cách ly"),
         centerTitle: true,
         // actions: [
         //   IconButton(
         //     onPressed: () {},
-        //     icon: Icon(Icons.search),
+        //     icon: const Icon(Icons.search),
         //     tooltip: "Tìm kiếm",
         //   ),
         // ],
@@ -89,7 +89,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, QuarantineHistory>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<QuarantineHistory>(
               animateTransitions: true,
@@ -102,12 +102,12 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => QuarantineHistoryCard(
                 name: item.user.name,

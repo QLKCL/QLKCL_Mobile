@@ -70,7 +70,7 @@ class _ListNotificationState extends State<ListNotification> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Thông báo"),
+        title: const Text("Thông báo"),
         centerTitle: true,
       ),
       body: MediaQuery.removePadding(
@@ -81,7 +81,7 @@ class _ListNotificationState extends State<ListNotification> {
             () => _pagingController.refresh(),
           ),
           child: PagedListView<int, dynamic>(
-            padding: EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: 16),
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
               animateTransitions: true,
@@ -94,12 +94,12 @@ class _ListNotificationState extends State<ListNotification> {
                       height: MediaQuery.of(context).size.height * 0.15,
                       child: Image.asset("assets/images/no_data.png"),
                     ),
-                    Text('Không có dữ liệu'),
+                    const Text('Không có dữ liệu'),
                   ],
                 ),
               ),
               firstPageErrorIndicatorBuilder: (context) => Center(
-                child: Text('Có lỗi xảy ra'),
+                child: const Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => NotificationCard(
                 title: item['notification']['title'],
@@ -133,7 +133,7 @@ class _ListNotificationState extends State<ListNotification> {
                     .push(MaterialPageRoute(
                         builder: (context) => CreateNotification()));
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               tooltip: "Tạo thông báo",
             )
           : null,
