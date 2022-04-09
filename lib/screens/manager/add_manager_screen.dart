@@ -7,7 +7,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddManager extends StatefulWidget {
   static const String routeName = "/add_manager";
-  AddManager({
+  const AddManager({
     Key? key,
     this.quarantineWard,
   }) : super(key: key);

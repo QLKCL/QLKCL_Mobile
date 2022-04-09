@@ -18,7 +18,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class Register extends StatefulWidget {
   static const String routeName = "/register";
-  Register({Key? key}) : super(key: key);
+  const Register({Key? key}) : super(key: key);
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -92,7 +92,7 @@ class _RegisterState extends State<Register> {
 
 class RegisterForm extends StatefulWidget {
   final List<KeyValue> quarantineWardList;
-  RegisterForm({
+  const RegisterForm({
     Key? key,
     this.quarantineWardList = const [],
   }) : super(key: key);

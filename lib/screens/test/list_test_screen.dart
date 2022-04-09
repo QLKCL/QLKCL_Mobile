@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 
 class ListTest extends StatefulWidget {
   static const String routeName = "/list_test";
-  ListTest({Key? key, this.code, this.name}) : super(key: key);
+  const ListTest({Key? key, this.code, this.name}) : super(key: key);
   final String? code;
   final String? name;
 

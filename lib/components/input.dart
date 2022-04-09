@@ -23,7 +23,7 @@ class Input extends StatefulWidget {
   final IconData? prefixIcon;
   final EdgeInsets? margin;
 
-  Input({
+  const Input({
     Key? key,
     required this.label,
     this.hint,

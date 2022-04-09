@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ListVaccineDose extends StatefulWidget {
   static const String routeName = "/list_vaccine_dose";
-  ListVaccineDose({Key? key, this.code}) : super(key: key);
+  const ListVaccineDose({Key? key, this.code}) : super(key: key);
   final String? code;
 
   @override

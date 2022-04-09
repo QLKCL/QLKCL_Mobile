@@ -10,7 +10,7 @@ class QuarantineDetailScreen extends StatefulWidget {
   static const routeName = '/quarantine-details';
   final String id;
 
-  QuarantineDetailScreen({Key? key, required this.id}) : super(key: key);
+  const QuarantineDetailScreen({Key? key, required this.id}) : super(key: key);
 
   @override
   _QuarantineDetailScreenState createState() => _QuarantineDetailScreenState();

@@ -9,7 +9,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class ListTestNoResult extends StatefulWidget {
   static const String routeName = "/list_test_no_result";
-  ListTestNoResult({Key? key}) : super(key: key);
+  const ListTestNoResult({Key? key}) : super(key: key);
 
   @override
   _ListTestNoResultState createState() => _ListTestNoResultState();

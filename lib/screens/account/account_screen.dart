@@ -18,7 +18,7 @@ import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 class Account extends StatefulWidget {
   static const String routeName = "/account";
 
-  Account({Key? key}) : super(key: key);
+  const Account({Key? key}) : super(key: key);
 
   @override
   _AccountState createState() => _AccountState();

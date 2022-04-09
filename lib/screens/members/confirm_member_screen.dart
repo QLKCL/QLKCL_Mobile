@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/constant.dart';
 class ConfirmDetailMember extends StatefulWidget {
   static const String routeName = "/confirm_member";
   final String? code;
-  ConfirmDetailMember({Key? key, this.code}) : super(key: key);
+  const ConfirmDetailMember({Key? key, this.code}) : super(key: key);
 
   @override
   _ConfirmDetailMemberState createState() => _ConfirmDetailMemberState();

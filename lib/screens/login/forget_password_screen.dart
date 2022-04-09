@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class ForgetPassword extends StatefulWidget {
   static const String routeName = "/forget_password";
-  ForgetPassword({Key? key}) : super(key: key);
+  const ForgetPassword({Key? key}) : super(key: key);
 
   @override
   _ForgetPasswordState createState() => _ForgetPasswordState();

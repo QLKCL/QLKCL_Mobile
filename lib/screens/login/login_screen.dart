@@ -14,7 +14,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class Login extends StatefulWidget {
   static const String routeName = "/login";
-  Login({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();

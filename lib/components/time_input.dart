@@ -13,7 +13,7 @@ class TimeInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
 
-  TimeInput({
+  const TimeInput({
     Key? key,
     required this.label,
     this.hint,

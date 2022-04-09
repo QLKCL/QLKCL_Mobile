@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
+  const ListMedicalDeclaration({Key? key, this.code, this.phone}) : super(key: key);
   final String? code;
   final String? phone;
 

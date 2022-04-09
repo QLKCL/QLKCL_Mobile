@@ -17,7 +17,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateNotification extends StatefulWidget {
   static const String routeName = "/create_notification";
-  CreateNotification({Key? key}) : super(key: key);
+  const CreateNotification({Key? key}) : super(key: key);
 
   @override
   _CreateNotificationState createState() => _CreateNotificationState();

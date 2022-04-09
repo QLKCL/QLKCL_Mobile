@@ -22,7 +22,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class NeedTestMember extends StatefulWidget {
-  NeedTestMember({Key? key}) : super(key: key);
+  const NeedTestMember({Key? key}) : super(key: key);
 
   @override
   _NeedTestMemberState createState() => _NeedTestMemberState();

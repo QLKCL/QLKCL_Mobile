@@ -8,7 +8,7 @@ import 'package:qlkcl/screens/quarantine_ward/component/circle_button.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 class ImageField extends StatefulWidget {
-  ImageField({
+  const ImageField({
     Key? key,
     required this.controller,
     this.maxQuantityImage = 1,

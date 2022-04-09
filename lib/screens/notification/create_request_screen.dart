@@ -16,7 +16,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateRequest extends StatefulWidget {
   static const String routeName = "/create_request";
-  CreateRequest({Key? key}) : super(key: key);
+  const CreateRequest({Key? key}) : super(key: key);
 
   @override
   _CreateRequestState createState() => _CreateRequestState();

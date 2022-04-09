@@ -8,7 +8,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class UpdateTest extends StatefulWidget {
   static const String routeName = "/update_test";
-  UpdateTest({Key? key, required this.code, this.testData}) : super(key: key);
+  const UpdateTest({Key? key, required this.code, this.testData}) : super(key: key);
   final String code;
   final dynamic testData;
 

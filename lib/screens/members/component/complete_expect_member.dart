@@ -22,7 +22,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ExpectCompleteMember extends StatefulWidget {
-  ExpectCompleteMember({Key? key}) : super(key: key);
+  const ExpectCompleteMember({Key? key}) : super(key: key);
 
   @override
   _ExpectCompleteMemberState createState() => _ExpectCompleteMemberState();

@@ -22,7 +22,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class DeniedMember extends StatefulWidget {
-  DeniedMember({Key? key}) : super(key: key);
+  const DeniedMember({Key? key}) : super(key: key);
 
   @override
   _DeniedMemberState createState() => _DeniedMemberState();

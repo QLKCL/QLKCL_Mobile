@@ -16,7 +16,7 @@ class TestForm extends StatefulWidget {
   final CreatedBy? userCode;
   final Test? testData;
   final Permission mode;
-  TestForm(
+  const TestForm(
       {Key? key, this.testData, this.mode = Permission.view, this.userCode})
       : super(key: key);
 

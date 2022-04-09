@@ -6,7 +6,7 @@ class InOutChart extends StatelessWidget {
   final List<KeyValue> inData;
   final List<KeyValue> outData;
   final List<KeyValue> hospitalizeData;
-  InOutChart({
+  const InOutChart({
     required this.inData,
     required this.outData,
     required this.hospitalizeData,
@@ -85,7 +85,7 @@ class InOutChart extends StatelessWidget {
 
 class DestiantionChart extends StatelessWidget {
   final List<KeyValue> data;
-  DestiantionChart({
+  const DestiantionChart({
     required this.data,
   });
 

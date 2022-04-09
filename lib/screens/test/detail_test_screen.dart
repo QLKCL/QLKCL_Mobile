@@ -10,7 +10,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class DetailTest extends StatefulWidget {
   static const String routeName = "/detail_test";
-  DetailTest({Key? key, required this.code}) : super(key: key);
+  const DetailTest({Key? key, required this.code}) : super(key: key);
   final String code;
 
   @override

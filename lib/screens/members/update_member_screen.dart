@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/constant.dart';
 class UpdateMember extends StatefulWidget {
   static const String routeName = "/update_member";
   final String? code;
-  UpdateMember({Key? key, this.code}) : super(key: key);
+  const UpdateMember({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateMemberState createState() => _UpdateMemberState();

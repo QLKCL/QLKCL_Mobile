@@ -31,7 +31,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 class ManagerHomePage extends StatefulWidget {
   static const String routeName = "/manager_home";
   final int role;
-  ManagerHomePage({
+  const ManagerHomePage({
     Key? key,
     this.role = 4, // Staff
   }) : super(key: key);

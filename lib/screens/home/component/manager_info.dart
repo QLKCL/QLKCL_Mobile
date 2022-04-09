@@ -30,7 +30,7 @@ class InfoManagerHomePage extends StatelessWidget {
   final VoidCallback refresh;
   final List<KeyValue> quarantineWardList;
   final int role;
-  InfoManagerHomePage({
+  const InfoManagerHomePage({
     this.totalUsers = 0,
     this.availableSlots = 0,
     this.activeUsers = 0,

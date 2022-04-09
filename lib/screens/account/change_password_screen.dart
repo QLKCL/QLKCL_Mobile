@@ -11,7 +11,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class ChangePassword extends StatefulWidget {
   static const String routeName = "/change_password";
-  ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();

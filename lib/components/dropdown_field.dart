@@ -29,7 +29,7 @@ class DropdownInput<T> extends StatefulWidget {
   final String? popupTitle;
   final EdgeInsets? margin;
 
-  DropdownInput({
+  const DropdownInput({
     Key? key,
     required this.label,
     this.hint,
@@ -165,7 +165,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String Function(T?)? itemAsString;
   final String? popupTitle;
 
-  MultiDropdownInput(
+  const MultiDropdownInput(
       {Key? key,
       required this.label,
       this.hint,

@@ -16,7 +16,7 @@ class DateInput extends StatefulWidget {
   final bool showClearButton;
   final EdgeInsets? margin;
 
-  DateInput({
+  const DateInput({
     Key? key,
     required this.label,
     this.hint,
@@ -133,7 +133,7 @@ class DateRangeInput extends StatefulWidget {
   final bool showClearButton;
   final EdgeInsets? margin;
 
-  DateRangeInput({
+  const DateRangeInput({
     Key? key,
     required this.label,
     this.hint,
@@ -276,7 +276,7 @@ class NewDateInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
 
-  NewDateInput({
+  const NewDateInput({
     Key? key,
     required this.label,
     this.hint,
@@ -436,7 +436,7 @@ class NewDateRangeInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
 
-  NewDateRangeInput({
+  const NewDateRangeInput({
     Key? key,
     required this.label,
     this.hint,

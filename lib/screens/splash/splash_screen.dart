@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Splash extends StatefulWidget {
   static const String routeName = "/splash";
-  Splash({Key? key}) : super(key: key);
+  const Splash({Key? key}) : super(key: key);
 
   @override
   _SplashState createState() => _SplashState();

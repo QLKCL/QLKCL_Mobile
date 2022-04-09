@@ -22,7 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class MemberHomePage extends StatefulWidget {
   static const String routeName = "/member_home";
-  MemberHomePage({Key? key}) : super(key: key);
+  const MemberHomePage({Key? key}) : super(key: key);
 
   @override
   _MemberHomePageState createState() => _MemberHomePageState();

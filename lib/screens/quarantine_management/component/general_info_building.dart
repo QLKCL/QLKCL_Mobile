@@ -10,7 +10,7 @@ class GeneralInfoBuilding extends StatelessWidget {
   final Building currentBuilding;
   final int numberOfFloor;
 
-  GeneralInfoBuilding({
+  const GeneralInfoBuilding({
     required this.currentQuarantine,
     required this.currentBuilding,
     required this.numberOfFloor,

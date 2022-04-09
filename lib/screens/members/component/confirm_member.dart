@@ -19,7 +19,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ConfirmMember extends StatefulWidget {
-  ConfirmMember(
+  const ConfirmMember(
       {Key? key,
       required this.longPressFlag,
       required this.indexList,

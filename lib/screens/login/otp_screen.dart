@@ -16,7 +16,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class Otp extends StatefulWidget {
   static const String routeName = "/otp";
-  Otp({Key? key, required this.email}) : super(key: key);
+  const Otp({Key? key, required this.email}) : super(key: key);
   final String email;
 
   @override

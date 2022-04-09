@@ -30,7 +30,7 @@ import '../screens/members/update_member_screen.dart';
 // new: https://pub.dev/packages/persistent_bottom_nav_bar
 
 class BottomNavigation extends StatelessWidget {
-  BottomNavigation({
+  const BottomNavigation({
     required this.currentTab,
     required this.onSelectTab,
     required this.role,
@@ -98,7 +98,7 @@ class BottomNavigation extends StatelessWidget {
 }
 
 class SideBar extends StatelessWidget {
-  SideBar({
+  const SideBar({
     required this.currentTab,
     required this.onSelectTab,
     required this.role,

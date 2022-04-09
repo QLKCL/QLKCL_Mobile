@@ -11,7 +11,7 @@ import 'package:qlkcl/utils/data_form.dart';
 
 class CreatePassword extends StatefulWidget {
   static const String routeName = "/create_password";
-  CreatePassword({Key? key, required this.email, required this.otp})
+  const CreatePassword({Key? key, required this.email, required this.otp})
       : super(key: key);
   final String email;
   final String otp;

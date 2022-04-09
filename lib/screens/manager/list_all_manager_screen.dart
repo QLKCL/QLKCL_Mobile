@@ -11,7 +11,7 @@ class ListAllManager extends StatefulWidget {
   static const String routeName = "/list_all_manager";
   final int tab;
   final KeyValue? currentQuarrantine;
-  ListAllManager({
+  const ListAllManager({
     Key? key,
     this.tab = 0,
     this.currentQuarrantine,

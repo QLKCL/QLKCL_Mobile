@@ -5,8 +5,7 @@ import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/utils/constant.dart';
 
 class QuanrantineList extends StatefulWidget {
-  // final data;
-  QuanrantineList({Key? key}) : super(key: key);
+  const QuanrantineList({Key? key}) : super(key: key);
 
   @override
   _QuanrantineListState createState() => _QuanrantineListState();

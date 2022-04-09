@@ -24,7 +24,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class PositiveMember extends StatefulWidget {
-  PositiveMember({Key? key}) : super(key: key);
+  const PositiveMember({Key? key}) : super(key: key);
 
   @override
   _PositiveMemberState createState() => _PositiveMemberState();

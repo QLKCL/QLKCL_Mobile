@@ -7,8 +7,7 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 
 class QuanrantineListMaps extends StatefulWidget {
-  // final data;
-  QuanrantineListMaps({Key? key}) : super(key: key);
+  const QuanrantineListMaps({Key? key}) : super(key: key);
   @override
   _QuanrantineListMapsState createState() => _QuanrantineListMapsState();
 }

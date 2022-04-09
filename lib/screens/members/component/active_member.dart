@@ -28,7 +28,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ActiveMember extends StatefulWidget {
-  ActiveMember({Key? key}) : super(key: key);
+  const ActiveMember({Key? key}) : super(key: key);
 
   @override
   _ActiveMemberState createState() => _ActiveMemberState();

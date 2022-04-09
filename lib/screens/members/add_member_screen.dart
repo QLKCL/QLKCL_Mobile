@@ -9,7 +9,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddMember extends StatefulWidget {
   static const String routeName = "/add_member";
-  AddMember({
+  const AddMember({
     Key? key,
     this.quarantineWard,
     this.quarantineBuilding,

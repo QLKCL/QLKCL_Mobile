@@ -13,7 +13,7 @@ class GeneralInfoRoom extends StatelessWidget {
   final Floor currentFloor;
   final Room currentRoom;
 
-  GeneralInfoRoom({
+  const GeneralInfoRoom({
     required this.currentRoom,
     required this.currentQuarantine,
     required this.currentBuilding,

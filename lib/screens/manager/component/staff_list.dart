@@ -19,7 +19,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class StaffList extends StatefulWidget {
-  StaffList({
+  const StaffList({
     Key? key,
     required this.quarrantine,
   }) : super(key: key);

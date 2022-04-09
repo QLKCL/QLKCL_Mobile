@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 
 class ListQuarantineHistory extends StatefulWidget {
   static const String routeName = "/list_quarantine_history";
-  ListQuarantineHistory({Key? key, this.code}) : super(key: key);
+  const ListQuarantineHistory({Key? key, this.code}) : super(key: key);
   final String? code;
 
   @override

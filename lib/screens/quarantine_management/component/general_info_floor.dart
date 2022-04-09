@@ -13,7 +13,7 @@ class GeneralInfoFloor extends StatelessWidget {
 
   final int numOfRoom;
 
-  GeneralInfoFloor({
+  const GeneralInfoFloor({
     required this.numOfRoom,
     required this.currentQuarantine,
     required this.currentBuilding,

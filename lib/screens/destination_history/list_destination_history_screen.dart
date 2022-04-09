@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ListDestinationHistory extends StatefulWidget {
   static const String routeName = "/list_destination_history";
-  ListDestinationHistory({Key? key, this.code}) : super(key: key);
+  const ListDestinationHistory({Key? key, this.code}) : super(key: key);
   final String? code;
 
   @override

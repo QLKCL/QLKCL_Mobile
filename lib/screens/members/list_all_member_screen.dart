@@ -23,7 +23,7 @@ import 'package:qlkcl/utils/app_theme.dart';
 class ListAllMember extends StatefulWidget {
   static const String routeName = "/list_all_member";
   final int tab;
-  ListAllMember({Key? key, this.tab = 0}) : super(key: key);
+  const ListAllMember({Key? key, this.tab = 0}) : super(key: key);
 
   @override
   _ListAllMemberState createState() => _ListAllMemberState();

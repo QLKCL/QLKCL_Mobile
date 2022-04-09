@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 class ListNotification extends StatefulWidget {
   static const String routeName = "/list_notification";
-  ListNotification({Key? key, this.role = 5}) : super(key: key);
+  const ListNotification({Key? key, this.role = 5}) : super(key: key);
   final int role;
 
   @override

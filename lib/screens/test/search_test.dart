@@ -12,7 +12,7 @@ import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class SearchTest extends StatefulWidget {
-  SearchTest({Key? key}) : super(key: key);
+  const SearchTest({Key? key}) : super(key: key);
 
   @override
   _SearchTestState createState() => _SearchTestState();

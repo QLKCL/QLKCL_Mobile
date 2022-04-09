@@ -22,7 +22,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class HospitalizedMember extends StatefulWidget {
-  HospitalizedMember({Key? key}) : super(key: key);
+  const HospitalizedMember({Key? key}) : super(key: key);
 
   @override
   _HospitalizedMemberState createState() => _HospitalizedMemberState();

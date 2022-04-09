@@ -22,7 +22,7 @@ final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class NeedChangeRoomMember extends StatefulWidget {
-  NeedChangeRoomMember({Key? key}) : super(key: key);
+  const NeedChangeRoomMember({Key? key}) : super(key: key);
 
   @override
   _NeedChangeRoomMemberState createState() => _NeedChangeRoomMemberState();

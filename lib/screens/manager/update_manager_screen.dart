@@ -10,7 +10,7 @@ import 'package:qlkcl/utils/constant.dart';
 class UpdateManager extends StatefulWidget {
   static const String routeName = "/update_manager";
   final String code;
-  UpdateManager({Key? key, required this.code}) : super(key: key);
+  const UpdateManager({Key? key, required this.code}) : super(key: key);
 
   @override
   _UpdateManagerState createState() => _UpdateManagerState();

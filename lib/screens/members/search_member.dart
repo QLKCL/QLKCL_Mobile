@@ -42,7 +42,7 @@ TextEditingController healthStatusController = TextEditingController();
 TextEditingController testController = TextEditingController();
 
 class SearchMember extends StatefulWidget {
-  SearchMember({Key? key}) : super(key: key);
+  const SearchMember({Key? key}) : super(key: key);
 
   @override
   _SearchMemberState createState() => _SearchMemberState();

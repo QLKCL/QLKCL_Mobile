@@ -17,7 +17,7 @@ import 'package:rxdart/rxdart.dart';
 class QrCodeScan extends StatefulWidget {
   static const String routeName = "/qr_scan";
 
-  QrCodeScan({Key? key}) : super(key: key);
+  const QrCodeScan({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QrCodeScanState();

@@ -6,7 +6,7 @@ import 'package:qlkcl/utils/constant.dart';
 
 class AddTest extends StatefulWidget {
   static const String routeName = "/add_test";
-  AddTest({Key? key, this.code, this.name}) : super(key: key);
+  const AddTest({Key? key, this.code, this.name}) : super(key: key);
   final String? code;
   final String? name;
 
