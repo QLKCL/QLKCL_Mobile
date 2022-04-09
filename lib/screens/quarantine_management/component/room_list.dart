@@ -10,7 +10,7 @@ class RoomList extends StatelessWidget {
   final Quarantine currentQuarantine;
   final Building currentBuilding;
   final Floor currentFloor;
-  final data;
+  final dynamic data;
   const RoomList(
       {Key? key,
       this.data,

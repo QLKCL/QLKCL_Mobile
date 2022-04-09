@@ -41,10 +41,11 @@ class _RegisterState extends State<Register> {
     fetchQuarantineWardNoToken({
       'is_full': "false",
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
   }
 
@@ -154,7 +155,7 @@ class _RegisterFormState extends State<RegisterForm> {
             label: 'Khu cách ly',
             hint: 'Chọn khu cách ly',
             itemAsString: (KeyValue? u) => u!.name,
-            onFind: widget.quarantineWardList.length == 0
+            onFind: widget.quarantineWardList.isEmpty
                 ? (String? filter) => fetchQuarantineWardNoToken({
                       'is_full': "false",
                     })

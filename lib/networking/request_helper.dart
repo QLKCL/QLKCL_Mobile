@@ -16,19 +16,19 @@ class RequestHelper {
 
   Future<Response> get(String url, {Map<String, dynamic>? params}) async {
     _baseUrl = baseUrl ?? _baseUrl;
-    var response;
     try {
       String query = '?';
       if (params != null) query += queryString(params);
-      response = await http.get(Uri.parse(_baseUrl + url + query));
+      var response = await http.get(Uri.parse(_baseUrl + url + query));
+      return _response(response);
     } catch (e) {
       print('Error: $e');
     }
 
-    return _response(response);
+    return _response(null);
   }
 
-  _response(response) {
+  Response _response(response) {
     if (response == null) {
       return Response(status: Status.error, message: "Lỗi kết nối!");
     } else if (response.statusCode == 200) {

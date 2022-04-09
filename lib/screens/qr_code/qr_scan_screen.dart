@@ -63,7 +63,8 @@ class _QrCodeScanState extends State<QrCodeScan> {
                             border: Border.all(color: Colors.white, width: 2),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.photo_library_outlined, size: 30),
+                          child: const Icon(Icons.photo_library_outlined,
+                              size: 30),
                         ),
                         const SizedBox(
                           height: 8,
@@ -90,10 +91,11 @@ class _QrCodeScanState extends State<QrCodeScan> {
               icon: FutureBuilder(
                 future: controller?.getFlashStatus(),
                 builder: (context, snapshot) {
-                  if (snapshot.data == false)
+                  if (snapshot.data == false) {
                     return const Icon(Icons.flash_off);
-                  else
+                  } else {
                     return const Icon(Icons.flash_on);
+                  }
                 },
               ),
               tooltip: 'Toggle Flash',
@@ -175,7 +177,7 @@ class _QrCodeScanState extends State<QrCodeScan> {
     }).listen((data) {
       Navigator.of(context).pop(data);
     }).onError((error, stackTrace) {
-      if (error.toString().contains("Not found data"))
+      if (error.toString().contains("Not found data")) {
         showDialog<String>(
           barrierDismissible: false,
           context: context,
@@ -190,10 +192,10 @@ class _QrCodeScanState extends State<QrCodeScan> {
             ],
           ),
         ).then((value) => controller!.resumeCamera());
-      else {
+      } else {
         controller!.resumeCamera();
       }
-      print('${error.toString()}');
+      print(error.toString());
     });
   }
 }

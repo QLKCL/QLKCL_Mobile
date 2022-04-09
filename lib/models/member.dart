@@ -484,7 +484,7 @@ class FilterMember {
 
   @override
   String toString() {
-    return "$code";
+    return code;
   }
 }
 

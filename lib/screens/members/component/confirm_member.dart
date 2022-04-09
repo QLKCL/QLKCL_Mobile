@@ -43,7 +43,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   final DataGridController _dataGridController = DataGridController();
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -86,7 +86,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       final newItems = await fetchMemberList(
           data: {'page': pageKey, 'status_list': "WAITING"});
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -136,15 +136,15 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
               }
               return const Align(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               );
             },
           )
@@ -235,7 +235,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -252,7 +252,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -263,14 +263,17 @@ class _ConfirmMemberState extends State<ConfirmMember>
       controller: _dataGridController,
       onSelectionChanged:
           (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-        addedRows.forEach((element) {
-          if (!widget.indexList.contains(element.getCells()[10].value))
+        for (var element in addedRows) {
+          if (!widget.indexList.contains(element.getCells()[10].value)) {
             widget.indexList.add(element.getCells()[10].value);
-        });
-        removedRows.forEach((element) {
-          if (widget.indexList.contains(element.getCells()[10].value))
+          }
+        }
+
+        for (var element in removedRows) {
+          if (widget.indexList.contains(element.getCells()[10].value)) {
             widget.indexList.remove(element.getCells()[10].value);
-        });
+          }
+        }
       },
       columns: <GridColumn>[
         GridColumn(
@@ -374,7 +377,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

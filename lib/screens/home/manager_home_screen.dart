@@ -64,8 +64,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
       addressType: "city",
     ));
     notifications.fetchUserNotificationList(
-        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
-      if (this.mounted)
+        data: {'page_size': pageSizeMax}).then((value) {
+      if (mounted) {
         setState(() {
           listNotification = value;
           unreadNotifications = listNotification
@@ -74,14 +74,16 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
               .toList()
               .length;
         });
+      }
     });
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
   }
 
@@ -205,7 +207,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                                 )))
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
-                                'page_size': PAGE_SIZE_MAX
+                                'page_size': pageSizeMax
                               }).then((value) => setState(() {
                                     listNotification = value;
                                     unreadNotifications = listNotification

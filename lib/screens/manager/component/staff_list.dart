@@ -35,7 +35,7 @@ class _StaffListState extends State<StaffList>
   final PagingController<int, FilterStaff> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -74,7 +74,7 @@ class _StaffListState extends State<StaffList>
         'quarantine_ward_id': widget.quarrantine?.id,
       });
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -114,15 +114,15 @@ class _StaffListState extends State<StaffList>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listTable();
                   }
                 }
               }
               return const Align(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               );
             },
           )
@@ -195,7 +195,7 @@ class _StaffListState extends State<StaffList>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -212,7 +212,7 @@ class _StaffListState extends State<StaffList>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -292,7 +292,7 @@ class _StaffListState extends State<StaffList>
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

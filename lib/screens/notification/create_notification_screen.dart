@@ -53,10 +53,11 @@ class _CreateNotificationState extends State<CreateNotification> {
   void initState() {
     super.initState();
     fetchQuarantineWardNoToken(null).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     receiverTypeController.text = "0";
     roleController.text = "0";
@@ -126,7 +127,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                     label: 'Khu cách ly',
                     hint: 'Chọn khu cách ly',
                     itemAsString: (KeyValue? u) => u!.name,
-                    onFind: quarantineWardList.length == 0
+                    onFind: quarantineWardList.isEmpty
                         ? (String? filter) => fetchQuarantineWardNoToken(null)
                         : null,
                     compareFn: (item, selectedItem) =>

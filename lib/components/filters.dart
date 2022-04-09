@@ -84,9 +84,9 @@ Future memberFilter(
           itemValue: quarantineWardList,
           selectedItem: quarantineWardList.safeFirstWhere(
               (type) => type.id.toString() == quarantineWardController.text),
-          onFind: quarantineWardList.length == 0
+          onFind: quarantineWardList.isEmpty
               ? (String? filter) => fetchQuarantineWard({
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                   })
               : null,
           compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
@@ -106,7 +106,7 @@ Future memberFilter(
             });
             fetchQuarantineBuilding({
               'quarantine_ward': quarantineWardController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineBuildingList = data;
                 }));
@@ -120,10 +120,10 @@ Future memberFilter(
           itemValue: quarantineBuildingList,
           selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
               type.id.toString() == quarantineBuildingController.text),
-          onFind: quarantineBuildingList.length == 0
+          onFind: quarantineBuildingList.isEmpty
               ? (String? filter) => fetchQuarantineBuilding({
                     'quarantine_ward': quarantineWardController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -142,7 +142,7 @@ Future memberFilter(
             });
             fetchQuarantineFloor({
               'quarantine_building': quarantineBuildingController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineFloorList = data;
                 }));
@@ -156,10 +156,10 @@ Future memberFilter(
           itemValue: quarantineFloorList,
           selectedItem: quarantineFloorList.safeFirstWhere(
               (type) => type.id.toString() == quarantineFloorController.text),
-          onFind: quarantineFloorList.length == 0
+          onFind: quarantineFloorList.isEmpty
               ? (String? filter) => fetchQuarantineFloor({
                     'quarantine_building': quarantineBuildingController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -176,7 +176,7 @@ Future memberFilter(
             });
             fetchQuarantineRoom({
               'quarantine_floor': quarantineFloorController.text,
-              'page_size': PAGE_SIZE_MAX,
+              'page_size': pageSizeMax,
             }).then((data) => setState(() {
                   quarantineRoomList = data;
                 }));
@@ -190,10 +190,10 @@ Future memberFilter(
           itemValue: quarantineRoomList,
           selectedItem: quarantineRoomList.safeFirstWhere(
               (type) => type.id.toString() == quarantineRoomController.text),
-          onFind: quarantineRoomList.length == 0
+          onFind: quarantineRoomList.isEmpty
               ? (String? filter) => fetchQuarantineRoom({
                     'quarantine_floor': quarantineFloorController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                     'search': filter
                   })
               : null,
@@ -537,7 +537,7 @@ Future quarantineFilter(
           itemValue: cityList,
           selectedItem: cityList.safeFirstWhere(
               (type) => type.id.toString() == cityController.text),
-          onFind: cityList.length == 0
+          onFind: cityList.isEmpty
               ? (String? filter) => fetchCity({'country_code': 'VNM'})
               : null,
           onChanged: (value) {
@@ -577,7 +577,7 @@ Future quarantineFilter(
           itemValue: districtList,
           selectedItem: districtList.safeFirstWhere(
               (type) => type.id.toString() == districtController.text),
-          onFind: districtList.length == 0
+          onFind: districtList.isEmpty
               ? (String? filter) =>
                   fetchDistrict({'city_id': cityController.text})
               : null,
@@ -616,7 +616,7 @@ Future quarantineFilter(
           itemValue: wardList,
           selectedItem: wardList.safeFirstWhere(
               (type) => type.id.toString() == wardController.text),
-          onFind: wardList.length == 0
+          onFind: wardList.isEmpty
               ? (String? filter) =>
                   fetchWard({'district_id': districtController.text})
               : null,
@@ -649,7 +649,7 @@ Future quarantineFilter(
             itemValue: managerList,
             selectedItem: managerList.safeFirstWhere(
                 (type) => type.id == mainManagerController.text),
-            onFind: managerList.length == 0
+            onFind: managerList.isEmpty
                 ? (String? filter) =>
                     fetchNotMemberList({'role_name_list': 'MANAGER'})
                 : null,

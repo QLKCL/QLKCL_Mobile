@@ -32,7 +32,7 @@ Future<List<XFile>> selectImages(
   List<XFile> _imageFileList, {
   bool multi = false,
 }) async {
-  final ImagePicker _picker = new ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   List<XFile>? selectedImages = [];
   try {
     if (multi == true) {
@@ -67,7 +67,7 @@ Future<List<String>> upload(
             .map(
               (image) => CloudinaryFile.fromFile(
                 image.path,
-                folder: '$type' + (folder != "" ? '/$folder' : ""),
+                folder: type + (folder != "" ? '/$folder' : ""),
                 context: context,
               ),
             )

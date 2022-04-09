@@ -61,28 +61,32 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
 
     super.initState();
     fetchCity({'country_code': 'VNM'}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _wardList = value;
         });
+      }
     });
     fetchNotMemberList({'role_name_list': 'MANAGER'}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           managerList = value;
         });
+      }
     });
   }
 
@@ -109,7 +113,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         ),
       );
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {

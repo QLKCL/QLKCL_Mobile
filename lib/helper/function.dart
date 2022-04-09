@@ -12,7 +12,7 @@ extension IterableX<T> on Iterable<T> {
 }
 
 extension ListUtils<T> on List<T> {
-  num sumBy(num f(T element)) {
+  num sumBy(num Function(T element) f) {
     num sum = 0;
     for (var item in this) {
       sum += f(item);
@@ -23,7 +23,7 @@ extension ListUtils<T> on List<T> {
 
 extension StringExtension on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }
 }
 
@@ -81,7 +81,7 @@ dynamic prepareDataForm(dynamic data,
 String parseDateToDateTimeWithTimeZone(String date, {String? time}) {
   String outputDate = "";
   if (date != "") {
-    DateTime parseDate = new DateFormat("dd/MM/yyyy").parse(date);
+    DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
     var inputDate = DateTime.parse(parseDate.toString());
     if (time != null) {
       int hour = int.parse(time.split(':').first);

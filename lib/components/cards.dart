@@ -526,7 +526,7 @@ class QuarantineRelatedCard extends StatelessWidget {
                   width: 8,
                 ),
                 Text(
-                  " Đang cách ly " + '$numOfMem' + '/$maxMem',
+                  " Đang cách ly $numOfMem/$maxMem",
                   style: TextStyle(fontSize: 12),
                 )
               ],
@@ -585,7 +585,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
         .push(
       MaterialPageRoute(
         builder: (context) => QuarantineDetailScreen(
-          id: this.widget.id,
+          id: widget.id,
         ),
       ),
     );

@@ -23,14 +23,14 @@ class _AppState extends State<App> {
   int? _role;
 
   // CHANGE THIS parameter to true if you want to test GDPR privacy consent
-  bool _requireConsent = false;
+  bool requireConsent = false;
 
   var _currentTab = TabItem.homepage;
   final _navigatorKeys = {
     TabItem.homepage: GlobalKey<NavigatorState>(),
-    TabItem.quarantine_person: GlobalKey<NavigatorState>(),
-    TabItem.qr_code_scan: GlobalKey<NavigatorState>(),
-    TabItem.quarantine_ward: GlobalKey<NavigatorState>(),
+    TabItem.quarantinePerson: GlobalKey<NavigatorState>(),
+    TabItem.qrCodeScan: GlobalKey<NavigatorState>(),
+    TabItem.quarantineWard: GlobalKey<NavigatorState>(),
     TabItem.account: GlobalKey<NavigatorState>(),
   };
 
@@ -57,10 +57,11 @@ class _AppState extends State<App> {
     super.initState();
     if (widget.role == null) {
       getRole().then((value) {
-        if (this.mounted)
+        if (mounted) {
           setState((() {
             _role = value;
           }));
+        }
       });
     } else {
       _role = widget.role;
@@ -122,9 +123,9 @@ class _AppState extends State<App> {
                     child: Stack(children: <Widget>[
                       _buildOffstageNavigator(TabItem.homepage),
                       if (_role != 5)
-                        _buildOffstageNavigator(TabItem.quarantine_person),
+                        _buildOffstageNavigator(TabItem.quarantinePerson),
                       if (_role != 5)
-                        _buildOffstageNavigator(TabItem.quarantine_ward),
+                        _buildOffstageNavigator(TabItem.quarantineWard),
                       _buildOffstageNavigator(TabItem.account),
                     ]),
                   )
@@ -173,7 +174,7 @@ class _AppState extends State<App> {
 
     // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
 
-    OneSignal.shared.setRequiresUserPrivacyConsent(_requireConsent);
+    OneSignal.shared.setRequiresUserPrivacyConsent(requireConsent);
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
@@ -210,7 +211,7 @@ class _AppState extends State<App> {
     });
 
     // NOTE: Replace with your own app ID from https://www.onesignal.com
-    await OneSignal.shared.setAppId(OneSignalId);
+    await OneSignal.shared.setAppId(oneSignalId);
 
     // Provide GDPR Consent
     OneSignal.shared.consentGranted(true);

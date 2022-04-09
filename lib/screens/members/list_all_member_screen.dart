@@ -114,7 +114,7 @@ class _ListAllMemberState extends State<ListAllMember>
                         PopupMenuItem(
                           child: const Text('Chấp nhận'),
                           onTap: () async {
-                            if (indexList.length == 0) {
+                            if (indexList.isEmpty) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
@@ -136,7 +136,7 @@ class _ListAllMemberState extends State<ListAllMember>
                         PopupMenuItem(
                           child: const Text('Từ chối'),
                           onTap: () async {
-                            if (indexList.length == 0) {
+                            if (indexList.isEmpty) {
                               showNotification(
                                   "Vui lòng chọn tài khoản cần xét duyệt!",
                                   status: Status.error);
@@ -166,7 +166,7 @@ class _ListAllMemberState extends State<ListAllMember>
                   controller: _tabController,
                   isScrollable: true,
                   indicatorColor: CustomColors.white,
-                  tabs: [
+                  tabs: const [
                     Tab(text: "Đang cách ly"),
                     Tab(text: "Chờ xét duyệt"),
                     Tab(text: "Nghi nhiễm"),

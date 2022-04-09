@@ -64,7 +64,7 @@ class _ListAllManagerState extends State<ListAllManager>
                   controller: _tabController,
                   isScrollable: true,
                   indicatorColor: CustomColors.white,
-                  tabs: [
+                  tabs: const [
                     Tab(text: "Quản lý"),
                     Tab(text: "Cán bộ"),
                   ],

@@ -33,14 +33,14 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
 
   @override
   void initState() {
-    fetchQuarantineList(data: {'page_size': PAGE_SIZE_MAX}).then((value) {
+    fetchQuarantineList(data: {'page_size': pageSizeMax}).then((value) {
       final itemList = value;
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _mapController.clearMarkers();
           quarantineWardList.clear();
 
-          itemList.data.forEach((element) {
+          for (var element in itemList.data) {
             quarantineWardList.add(element);
 
             int length = quarantineWardList.length;
@@ -49,8 +49,9 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
             } else {
               _mapController.insertMarker(0);
             }
-          });
+          }
         });
+      }
     });
     _canUpdateFocalLatLng = true;
     _canUpdateZoomLevel = true;
@@ -162,9 +163,7 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 5.0),
                                     child: Text(
-                                      '${quarantineWardList[index].ward?.name}, ' +
-                                          '${quarantineWardList[index].district?.name}, ' +
-                                          '${quarantineWardList[index].city?.name}',
+                                      '${quarantineWardList[index].ward?.name}, ${quarantineWardList[index].district?.name}, ${quarantineWardList[index].city?.name}',
                                       style: const TextStyle(
                                           fontSize: 10, color: Colors.black),
                                     ),

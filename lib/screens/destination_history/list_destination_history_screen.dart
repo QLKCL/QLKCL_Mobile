@@ -57,7 +57,7 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
       final newItems = await fetchDestiantionHistoryList(
           data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -128,7 +128,8 @@ class _ListDestinationHistoryState extends State<ListDestinationHistory> {
               itemBuilder: (context, item, index) => DestinationHistoryCard(
                 name: item['user']['full_name'],
                 time: (item['start_time'] != null
-                        ? "${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['start_time']).toLocal())}"
+                        ? DateFormat("dd/MM/yyyy HH:mm:ss").format(
+                            DateTime.parse(item['start_time']).toLocal())
                         : "") +
                     (item['end_time'] != null
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item['end_time']).toLocal())}"

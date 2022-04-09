@@ -53,7 +53,7 @@ class _ListTestNoResultState extends State<ListTestNoResult> {
       final newItems =
           await fetchTestList(data: {'page': pageKey, 'status': 'WAITING'});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

@@ -55,7 +55,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
       final newItems = await fetchQuarantineHistoryList(
           data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {
@@ -111,7 +111,8 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
               ),
               itemBuilder: (context, item, index) => QuarantineHistoryCard(
                 name: item.user.name,
-                time: ("${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.startDate).toLocal())}") +
+                time: (DateFormat("dd/MM/yyyy HH:mm:ss")
+                        .format(DateTime.parse(item.startDate).toLocal())) +
                     (item.endDate != null
                         ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(item.endDate).toLocal())}"
                         : " - Hiện tại"),

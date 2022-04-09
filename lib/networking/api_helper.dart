@@ -50,7 +50,7 @@ class ApiHelper {
             var accessToken = await refreshToken();
             if (accessToken != null) {
               // Unlock error, response, request here
-              final opts = new Options(method: requestOptions.method);
+              final opts = Options(method: requestOptions.method);
               dio.options.headers["Authorization"] = "Bearer " + accessToken;
               dio.options.headers["Accept"] = "*/*";
               dio.interceptors.requestLock.unlock();
@@ -84,8 +84,9 @@ class ApiHelper {
   static dynamic requestInterceptor(RequestOptions options) async {
     // Get your JWT accessToken
     String? accessToken = await getAccessToken();
-    if (accessToken != null && accessToken != '')
+    if (accessToken != null && accessToken != '') {
       options.headers.addAll({"Authorization": "Bearer $accessToken"});
+    }
     return options;
   }
 

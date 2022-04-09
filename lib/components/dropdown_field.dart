@@ -33,7 +33,7 @@ class DropdownInput<T> extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
+    this.required = false,
     this.itemValue,
     this.selectedItem,
     this.itemAsString,
@@ -67,16 +67,15 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
       child: DropdownSearch<T>(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: (widget.validator != null
-            ? widget.validator
-            : (value) {
-                return (widget.required == true && value == null)
-                    ? "Trường này là bắt buộc"
-                    : null;
-              }),
+        validator: widget.validator ??
+            (value) {
+              return (widget.required == true && value == null)
+                  ? "Trường này là bắt buộc"
+                  : null;
+            },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           helperText: widget.helper,
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
@@ -170,7 +169,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
       {Key? key,
       required this.label,
       this.hint,
-      this.required: false,
+      this.required = false,
       this.itemValue,
       this.selectedItems,
       this.mode = Mode.MENU,
@@ -204,17 +203,16 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
       child: DropdownSearch<T>.multiSelection(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
-        validator: (widget.validator != null
-            ? widget.validator
-            : (value) {
-                return (widget.required == true &&
-                        (value == null || value.isEmpty))
-                    ? "Trường này là bắt buộc"
-                    : null;
-              }),
+        validator: widget.validator ??
+            (value) {
+              return (widget.required == true &&
+                      (value == null || value.isEmpty))
+                  ? "Trường này là bắt buộc"
+                  : null;
+            },
         dropdownSearchDecoration: InputDecoration(
           hintText: widget.hint,
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           helperText: widget.helper,
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&

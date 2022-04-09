@@ -207,7 +207,7 @@ class VaccinatedInfoe {
         vaccineName: json["vaccineName"],
         injectionDate: json["injectionDate"],
         injectionPlace: json["injectionPlace"],
-        batchNumber: json["batchNumber"] == null ? null : json["batchNumber"],
+        batchNumber: json["batchNumber"],
       );
 
   Map<String, dynamic> toJson() => {

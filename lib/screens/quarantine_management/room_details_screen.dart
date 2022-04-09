@@ -47,7 +47,7 @@ class RoomDetailsScreen extends StatefulWidget {
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late Future<FilterResponse<FilterMember>> futureMemberList;
 
-  late MemberDataSource _memberDataSource = MemberDataSource();
+  late MemberDataSource memberDataSource = MemberDataSource();
 
   bool showLoadingIndicator = true;
   double pageCount = 0;
@@ -125,7 +125,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   showLoadingIndicator = false;
-                  _memberDataSource =
+                  memberDataSource =
                       MemberDataSource(data: snapshot.data!.data);
                   return Responsive.isDesktopLayout(context)
                       ? listMemberTable(appBar)
@@ -277,7 +277,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -395,7 +395,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

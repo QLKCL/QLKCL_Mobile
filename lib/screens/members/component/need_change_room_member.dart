@@ -33,7 +33,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -79,7 +79,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
         'is_need_change_room_because_be_positive': true
       });
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -119,15 +119,15 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
               }
               return const Align(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               );
             },
           )
@@ -199,7 +199,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -216,7 +216,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -334,7 +334,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

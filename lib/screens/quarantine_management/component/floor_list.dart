@@ -10,7 +10,7 @@ import '../floor_details_screen.dart';
 class FloorList extends StatelessWidget {
   final Quarantine currentQuarantine;
   final Building currentBuilding;
-  final data;
+  final dynamic data;
 
   const FloorList(
       {Key? key,
@@ -57,11 +57,11 @@ class FloorList extends StatelessWidget {
                     },
                     name: data[index]['name'],
                     numOfMem: data[index]['num_current_member'],
-                    maxMem: data[index]['total_capacity'] == null
-                        ? 0
-                        : data[index]['total_capacity'],
+                    maxMem: data[index]['total_capacity'] ?? 0,
                   ),
-                  index == data.length - 1 ? const SizedBox(height: 70) : Container(),
+                  index == data.length - 1
+                      ? const SizedBox(height: 70)
+                      : Container(),
                 ],
               );
             },

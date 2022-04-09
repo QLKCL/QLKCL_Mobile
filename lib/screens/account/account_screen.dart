@@ -30,10 +30,11 @@ class _AccountState extends State<Account> {
   @override
   void initState() {
     getRole().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState((() {
           _role = value;
         }));
+      }
     });
     super.initState();
   }

@@ -206,9 +206,9 @@ class InfoManagerHomePage extends StatelessWidget {
                         : quarantineWardList.safeFirstWhere((type) =>
                             type.id.toString() ==
                             quarantineWardController.text),
-                    onFind: quarantineWardList.length == 0
+                    onFind: quarantineWardList.isEmpty
                         ? (String? filter) => fetchQuarantineWard({
-                              "page_size": PAGE_SIZE_MAX,
+                              "page_size": pageSizeMax,
                               "search": filter,
                             })
                         : null,

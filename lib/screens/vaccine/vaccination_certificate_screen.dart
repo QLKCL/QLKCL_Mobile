@@ -46,9 +46,8 @@ class _VaccinationCertificationScreenState
                 const SizedBox(
                   height: 16,
                 ),
-                if (widget.vaccineCertification.patientInfo.vaccinatedInfoes
-                        .length ==
-                    0)
+                if (widget
+                    .vaccineCertification.patientInfo.vaccinatedInfoes.isEmpty)
                   WebsafeSvg.asset("assets/svg/duong_tinh.svg", height: 100),
                 if (widget.vaccineCertification.patientInfo.vaccinatedInfoes
                         .length ==
@@ -68,8 +67,7 @@ class _VaccinationCertificationScreenState
                 ),
                 Text(
                     widget.vaccineCertification.patientInfo.vaccinatedInfoes
-                                .length >
-                            0
+                            .isNotEmpty
                         ? "Bạn đã tiêm ${widget.vaccineCertification.patientInfo.vaccinatedInfoes.length} mũi vaccine"
                         : "Chưa tiêm vaccine",
                     style: TextStyle(fontSize: 25)),

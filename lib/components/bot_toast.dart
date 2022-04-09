@@ -4,7 +4,7 @@ import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/networking/response.dart';
 
 // TextToast
-CancelFunc Function(String) showTextToast = (text) {
+CancelFunc showTextToast(String text) {
   return BotToast.showText(
     text: text,
     textStyle: TextStyle(color: CustomColors.primaryText, fontSize: 14.0),
@@ -16,7 +16,7 @@ CancelFunc Function(String) showTextToast = (text) {
       child: child,
     ),
   );
-};
+}
 
 class CustomAnimationWidget extends StatefulWidget {
   final AnimationController controller;
@@ -68,11 +68,11 @@ class _CustomAnimationWidgetState extends State<CustomAnimationWidget> {
 }
 
 // Loading
-CancelFunc Function({String? textLoading}) showLoading = ({textLoading}) {
+CancelFunc showLoading({String? textLoading}) {
   return BotToast.showCustomLoading(toastBuilder: (cancelFunc) {
     return _CustomLoadWidget(cancelFunc: cancelFunc, textLoading: textLoading);
   });
-};
+}
 
 class _CustomLoadWidget extends StatefulWidget {
   final CancelFunc cancelFunc;
@@ -119,7 +119,7 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(8))),
+          borderRadius: BorderRadius.all(Radius.circular(8))),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -137,9 +137,8 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
 }
 
 // Notification
-CancelFunc Function(dynamic data,
-        {Status status, String? subTitle, int duration}) showNotification =
-    (data, {status = Status.success, subTitle, duration = 3}) {
+CancelFunc showNotification(dynamic data,
+    {Status status = Status.success, String? subTitle, int duration = 3}) {
   return BotToast.showCustomNotification(
     dismissDirections: [DismissDirection.horizontal, DismissDirection.vertical],
     align: const Alignment(1, -1),
@@ -169,7 +168,7 @@ CancelFunc Function(dynamic data,
     },
     onlyOne: false,
   );
-};
+}
 
 class _CustomWidget extends StatefulWidget {
   final CancelFunc cancelFunc;

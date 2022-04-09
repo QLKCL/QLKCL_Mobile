@@ -50,7 +50,7 @@ class _QuanrantineListState extends State<QuanrantineList> {
     try {
       final newItems = await fetchQuarantineList(data: {'page': pageKey});
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {

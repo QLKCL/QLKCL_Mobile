@@ -6,7 +6,7 @@ import 'package:qlkcl/screens/quarantine_management/building_details_screen.dart
 
 class BuildingList extends StatelessWidget {
   final Quarantine currentQuarantine;
-  final data;
+  final dynamic data;
   const BuildingList({Key? key, this.data, required this.currentQuarantine})
       : super(key: key);
 
@@ -44,12 +44,12 @@ class BuildingList extends StatelessWidget {
                       );
                     },
                     name: data[index]['name'],
-                    numOfMem: data[index]['num_current_member'],
-                    maxMem: data[index]['total_capacity'] == null
-                        ? 0
-                        : data[index]['total_capacity'],
+                    numOfMem: data[index]['num_current_member'] ?? 0,
+                    maxMem: data[index]['total_capacity'],
                   ),
-                  index == data.length - 1 ? const SizedBox(height: 70) : Container(),
+                  index == data.length - 1
+                      ? const SizedBox(height: 70)
+                      : Container(),
                 ],
               );
             },

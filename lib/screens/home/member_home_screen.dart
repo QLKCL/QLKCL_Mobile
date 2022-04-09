@@ -46,8 +46,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
     futureCovid = fetchCovidList();
     futureData = fetch();
     notifications.fetchUserNotificationList(
-        data: {'page_size': PAGE_SIZE_MAX}).then((value) {
-      if (this.mounted)
+        data: {'page_size': pageSizeMax}).then((value) {
+      if (mounted) {
         setState(() {
           listNotification = value;
           unreadNotifications = listNotification
@@ -56,6 +56,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
               .toList()
               .length;
         });
+      }
     });
   }
 
@@ -138,7 +139,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             .toString()),
                         fit: BoxFit.cover,
                       ),
-                      borderRadius: const BorderRadius.all(Radius.circular(50.0)),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(50.0)),
                       border: Border.all(
                         color: CustomColors.secondary,
                         width: 2.0,
@@ -210,7 +212,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         .pushNamed(ListNotification.routeName)
                         .then((value) => {
                               notifications.fetchUserNotificationList(data: {
-                                'page_size': PAGE_SIZE_MAX
+                                'page_size': pageSizeMax
                               }).then((value) => setState(() {
                                     listNotification = value;
                                     unreadNotifications = listNotification
@@ -448,15 +450,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                       ['phone_number']
                                   : "Chưa có",
                               quarantineAt:
-                                  snapshot.data['quarantined_at'] != null
-                                      ? snapshot.data['quarantined_at']
-                                      : "",
-                              quarantineFinishExpect: snapshot.data[
-                                          'quarantined_finish_expected_at'] !=
-                                      null
-                                  ? snapshot
-                                      .data['quarantined_finish_expected_at']
-                                  : "",
+                                  snapshot.data['quarantined_at'] ?? "",
+                              quarantineFinishExpect: snapshot
+                                      .data['quarantined_finish_expected_at'] ??
+                                  "",
                             ),
                         ],
                       );

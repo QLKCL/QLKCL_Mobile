@@ -8,8 +8,8 @@ KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
 String keyValueToJson(KeyValue data) => json.encode(data.toJson());
 
 class KeyValue {
-  var name;
-  var id;
+  dynamic name;
+  dynamic id;
   KeyValue({required this.name, required this.id});
   factory KeyValue.fromJson(Map<String, dynamic> json) => KeyValue(
         id: json["code"] ?? json["id"],
@@ -128,12 +128,12 @@ Future<List<KeyValue>> fetchQuarantineRoom(data) async {
 Future<List<KeyValue>> fetchQuarantineWardNoToken(data) async {
   http.Response? response;
   try {
-    response = await http.post(
-        Uri.parse(Api.baseUrl + Api.getListQuarantineNoToken),
-        headers: {
-          'Accept': 'application/json',
-        },
-        body: data);
+    response =
+        await http.post(Uri.parse(Api.baseUrl + Api.getListQuarantineNoToken),
+            headers: {
+              'Accept': 'application/json',
+            },
+            body: data);
   } catch (e) {
     print('Error: $e');
   }

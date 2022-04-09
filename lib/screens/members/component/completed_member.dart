@@ -32,7 +32,7 @@ class _CompletedMemberState extends State<CompletedMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -82,7 +82,7 @@ class _CompletedMemberState extends State<CompletedMember>
         'quarantined_status_list': "COMPLETED"
       });
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -122,15 +122,15 @@ class _CompletedMemberState extends State<CompletedMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    _memberDataSource.buildDataGridRows();
-                    _memberDataSource.updateDataGridSource();
+                    memberDataSource.buildDataGridRows();
+                    memberDataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
               }
               return const Align(
                 alignment: Alignment.center,
-                child: const CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               );
             },
           )
@@ -208,7 +208,7 @@ class _CompletedMemberState extends State<CompletedMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: _memberDataSource,
+                  delegate: memberDataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -225,7 +225,7 @@ class _CompletedMemberState extends State<CompletedMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -335,7 +335,7 @@ class _CompletedMemberState extends State<CompletedMember>
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

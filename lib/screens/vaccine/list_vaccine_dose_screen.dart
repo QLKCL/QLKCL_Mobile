@@ -57,7 +57,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
       final newItems = await fetchVaccineDoseList(
           data: {'page': pageKey, 'custom_user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

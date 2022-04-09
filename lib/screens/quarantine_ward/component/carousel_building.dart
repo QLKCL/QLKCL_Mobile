@@ -8,7 +8,7 @@ import './building_item.dart';
 
 class CarouselBuilding extends StatefulWidget {
   final Quarantine? currentQuarantine;
-  final data;
+  final dynamic data;
   const CarouselBuilding({
     Key? key,
     this.data,
@@ -26,8 +26,8 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
         ? Column(
             children: [
               Container(
-                margin:
-                    const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                margin: const EdgeInsets.only(
+                    left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -65,8 +65,8 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
         : Column(
             children: [
               Container(
-                margin:
-                    const EdgeInsets.only(left: 23, right: 23, top: 21, bottom: 8),
+                margin: const EdgeInsets.only(
+                    left: 23, right: 23, top: 21, bottom: 8),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -111,9 +111,7 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
                         currentQuarantine: widget.currentQuarantine!,
                         currentBuilding: Building.fromJson(widget.data[index]),
                         buildingName: widget.data[index]['name'],
-                        maxMem: widget.data[index]['total_capacity'] != null
-                            ? widget.data[index]['total_capacity']
-                            : 0,
+                        maxMem: widget.data[index]['total_capacity'] ?? 0,
                         currentMem: widget.data[index]['num_current_member'],
                       ),
                     ),

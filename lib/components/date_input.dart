@@ -20,8 +20,8 @@ class DateInput extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controller,
     this.minDate,
@@ -80,8 +80,9 @@ class _DateInputState extends State<DateInput> {
           if (pickedDate != null) {
             String formattedDate = DateFormat('dd/MM/yyyy').format(pickedDate);
             setState(() {
-              if (widget.controller != null)
+              if (widget.controller != null) {
                 widget.controller!.text = formattedDate;
+              }
             });
           }
         },
@@ -94,7 +95,7 @@ class _DateInputState extends State<DateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
@@ -136,8 +137,8 @@ class DateRangeInput extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controllerStart,
     this.controllerEnd,
@@ -160,7 +161,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
   @override
   void initState() {
     super.initState();
-    controller = new TextEditingController(
+    controller = TextEditingController(
         text: (widget.controllerStart != null &&
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
@@ -217,10 +218,12 @@ class _DateRangeInputState extends State<DateRangeInput> {
             String formattedEndDate =
                 DateFormat('dd/MM/yyyy').format(pickedDate.end);
             setState(() {
-              if (widget.controllerStart != null)
+              if (widget.controllerStart != null) {
                 widget.controllerStart!.text = formattedStartDate;
-              if (widget.controllerEnd != null)
+              }
+              if (widget.controllerEnd != null) {
                 widget.controllerEnd!.text = formattedEndDate;
+              }
               controller.text = formattedStartDate + " - " + formattedEndDate;
             });
           }
@@ -234,7 +237,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&
@@ -277,8 +280,8 @@ class NewDateInput extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controller,
     this.minDate,
@@ -347,8 +350,9 @@ class _NewDateInputState extends State<NewDateInput> {
                             widget.controller!.text = newDate;
                           });
                         }
-                        if (widget.onChangedFunction != null)
+                        if (widget.onChangedFunction != null) {
                           widget.onChangedFunction!();
+                        }
                         Navigator.of(context).pop();
                       },
                     ),
@@ -393,7 +397,7 @@ class _NewDateInputState extends State<NewDateInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&
@@ -436,8 +440,8 @@ class NewDateRangeInput extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controllerStart,
     this.controllerEnd,
@@ -463,7 +467,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   void initState() {
     super.initState();
-    controller = new TextEditingController(
+    controller = TextEditingController(
         text: (widget.controllerStart != null &&
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
@@ -535,8 +539,9 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           controller.text = '${widget.controllerStart!.text} -'
                               ' ${widget.controllerEnd!.text}';
                         });
-                        if (widget.onChangedFunction != null)
+                        if (widget.onChangedFunction != null) {
                           widget.onChangedFunction!();
+                        }
                         Navigator.of(context).pop();
                       },
                     ),
@@ -590,7 +595,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
         enabled: widget.enabled,
         controller: controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
                   controller.text != "" &&

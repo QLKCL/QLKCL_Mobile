@@ -55,7 +55,7 @@ class BottomNavigation extends StatelessWidget {
             : (isWebPlatform() && index > 1)
                 ? index + 1
                 : index,
-        if (TabItem.values[index] == TabItem.qr_code_scan)
+        if (TabItem.values[index] == TabItem.qrCodeScan)
           {
             Navigator.of(context)
                 .push(
@@ -79,9 +79,9 @@ class BottomNavigation extends StatelessWidget {
       },
       items: [
         _buildItem(TabItem.homepage),
-        if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
-        if (role != 5) _buildItem(TabItem.quarantine_ward),
+        if (role != 5) _buildItem(TabItem.quarantinePerson),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qrCodeScan),
+        if (role != 5) _buildItem(TabItem.quarantineWard),
         _buildItem(TabItem.account),
       ],
     );
@@ -133,8 +133,8 @@ class SideBar extends StatelessWidget {
           width: 36,
         ),
         title: const Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: const Text(
+          padding: EdgeInsets.only(right: 16),
+          child: Text(
             "Hệ thống quản lý khu cách ly",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 17),
@@ -144,9 +144,9 @@ class SideBar extends StatelessWidget {
       ),
       items: [
         _buildItem(TabItem.homepage),
-        if (role != 5) _buildItem(TabItem.quarantine_person),
-        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qr_code_scan),
-        if (role != 5) _buildItem(TabItem.quarantine_ward),
+        if (role != 5) _buildItem(TabItem.quarantinePerson),
+        if (role != 5 && !isWebPlatform()) _buildItem(TabItem.qrCodeScan),
+        if (role != 5) _buildItem(TabItem.quarantineWard),
         _buildItem(TabItem.account),
       ],
       onTap: (index) => {
@@ -155,7 +155,7 @@ class SideBar extends StatelessWidget {
             : (isWebPlatform() && index > 1)
                 ? index + 1
                 : index,
-        if (TabItem.values[index] == TabItem.qr_code_scan)
+        if (TabItem.values[index] == TabItem.qrCodeScan)
           {
             Navigator.of(context)
                 .push(
@@ -188,43 +188,37 @@ class SideBar extends StatelessWidget {
   }
 }
 
-enum TabItem {
-  homepage,
-  quarantine_person,
-  qr_code_scan,
-  quarantine_ward,
-  account
-}
+enum TabItem { homepage, quarantinePerson, qrCodeScan, quarantineWard, account }
 
 const Map<TabItem, String> tabName = {
   TabItem.homepage: 'Trang chủ',
-  TabItem.quarantine_person: 'Người cách ly',
-  TabItem.qr_code_scan: 'Quét mã',
-  TabItem.quarantine_ward: 'Khu cách ly',
+  TabItem.quarantinePerson: 'Người cách ly',
+  TabItem.qrCodeScan: 'Quét mã',
+  TabItem.quarantineWard: 'Khu cách ly',
   TabItem.account: 'Tài khoản',
 };
 
 const Map<TabItem, IconData> tabIcon = {
   TabItem.homepage: Icons.home_outlined,
-  TabItem.quarantine_person: Icons.groups_outlined,
-  TabItem.qr_code_scan: Icons.qr_code_scanner,
-  TabItem.quarantine_ward: Icons.apartment_outlined,
+  TabItem.quarantinePerson: Icons.groups_outlined,
+  TabItem.qrCodeScan: Icons.qr_code_scanner,
+  TabItem.quarantineWard: Icons.apartment_outlined,
   TabItem.account: Icons.person_outline,
 };
 
 const Map<TabItem, IconData> selectTabIcon = {
   TabItem.homepage: Icons.home,
-  TabItem.quarantine_person: Icons.groups,
-  TabItem.qr_code_scan: Icons.qr_code_scanner,
-  TabItem.quarantine_ward: Icons.apartment,
+  TabItem.quarantinePerson: Icons.groups,
+  TabItem.qrCodeScan: Icons.qr_code_scanner,
+  TabItem.quarantineWard: Icons.apartment,
   TabItem.account: Icons.person,
 };
 
 const Map<TabItem, String> tabRouteName = {
   TabItem.homepage: ManagerHomePage.routeName,
-  TabItem.quarantine_person: ListAllMember.routeName,
-  TabItem.qr_code_scan: QrCodeScan.routeName,
-  TabItem.quarantine_ward: QuarantineListScreen.routeName,
+  TabItem.quarantinePerson: ListAllMember.routeName,
+  TabItem.qrCodeScan: QrCodeScan.routeName,
+  TabItem.quarantineWard: QuarantineListScreen.routeName,
   TabItem.account: Account.routeName,
 };
 

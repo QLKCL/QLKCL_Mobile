@@ -5,7 +5,7 @@ enum Permission {
   edit,
   view,
   delete,
-  change_status,
+  changeStatus,
 }
 
 List<KeyValue> genderList = [
@@ -109,11 +109,11 @@ List<KeyValue> labelList = [
   KeyValue(id: "FROM_EPIDEMIC_AREA", name: "Về từ vùng dịch"),
 ];
 
-const int PAGE_SIZE = 10;
-const int PAGE_SIZE_MAX = 0;
-const int ROWS_PER_PAGE = 10;
+const int pageSize = 10;
+const int pageSizeMax = 0;
+const int rowsPerPage = 10;
 
-const String OneSignalId = "3def0255-600c-4376-bece-77202ef908e5";
+const String oneSignalId = "3def0255-600c-4376-bece-77202ef908e5";
 
 const double maxMobileSize = 480;
 const double maxTabletSize = 768;

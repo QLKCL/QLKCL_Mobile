@@ -59,7 +59,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
       final newItems =
           await fetchMedList(data: {'page': pageKey, 'user_code': code});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

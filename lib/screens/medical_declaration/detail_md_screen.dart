@@ -20,6 +20,7 @@ class ViewMD extends StatefulWidget {
 class _ViewMDState extends State<ViewMD> {
   late Future<dynamic> futureMD;
 
+  @override
   void initState() {
     super.initState();
     futureMD = fetchMedDecl(data: {'id': widget.id});

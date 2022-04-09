@@ -17,8 +17,8 @@ class TimeInput extends StatefulWidget {
     Key? key,
     required this.label,
     this.hint,
-    this.required: false,
-    this.enabled: true,
+    this.required = false,
+    this.enabled = true,
     this.helper,
     this.controller,
     this.maxDate,
@@ -72,9 +72,10 @@ class _TimeInputState extends State<TimeInput> {
           );
           if (pickedTime != null) {
             setState(() {
-              if (widget.controller != null)
+              if (widget.controller != null) {
                 widget.controller!.text =
                     '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}';
+              }
             });
           }
         },
@@ -87,7 +88,7 @@ class _TimeInputState extends State<TimeInput> {
         enabled: widget.enabled,
         controller: widget.controller,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: "HH:mm",
           suffixIcon: (widget.showClearButton &&
                   widget.controller != null &&

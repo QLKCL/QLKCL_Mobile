@@ -81,7 +81,7 @@ class BuildingItem extends StatelessWidget {
                         width: 5,
                       ),
                       Text(
-                        '$currentMem' + '/$maxMem',
+                        '$currentMem/$maxMem',
                         softWrap: true,
                         //overflow: TextOverflow.fade,
                       ),

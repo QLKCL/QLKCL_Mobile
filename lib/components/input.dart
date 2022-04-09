@@ -28,9 +28,9 @@ class Input extends StatefulWidget {
     required this.label,
     this.hint,
     this.obscure,
-    this.required: false,
-    this.type: TextInputType.text,
-    this.enabled: true,
+    this.required = false,
+    this.type = TextInputType.text,
+    this.enabled = true,
     this.initValue,
     this.helper,
     this.showClearButton = true,
@@ -63,14 +63,16 @@ class _InputState extends State<Input> {
   @override
   Widget build(BuildContext context) {
     List<TextInputFormatter> formater = <TextInputFormatter>[];
-    if (widget.type == TextInputType.number)
+    if (widget.type == TextInputType.number) {
       formater.add(FilteringTextInputFormatter.singleLineFormatter);
-    if (widget.textCapitalization == TextCapitalization.characters)
+    }
+    if (widget.textCapitalization == TextCapitalization.characters) {
       formater.add(UpperCaseTextFormatter());
-    else if (widget.textCapitalization == TextCapitalization.words)
+    } else if (widget.textCapitalization == TextCapitalization.words) {
       formater.add(TitleCaseInputFormatter());
-    else if (widget.textCapitalization == TextCapitalization.sentences)
+    } else if (widget.textCapitalization == TextCapitalization.sentences) {
       formater.add(CapitalCaseTextFormatter());
+    }
 
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
@@ -83,10 +85,13 @@ class _InputState extends State<Input> {
         onSaved: widget.onSavedFunction,
         initialValue: widget.initValue,
         onChanged: (value) {
-          if (widget.onChangedFunction != null)
+          if (widget.onChangedFunction != null) {
             widget.onChangedFunction!(value);
-          if (widget.controller != null && widget.controller!.text != "")
+          }
+
+          if (widget.controller != null && widget.controller!.text != "") {
             setState(() {});
+          }
         },
         validator: (value) {
           String? Function(String?)? valid = widget.validatorFunction;
@@ -113,7 +118,7 @@ class _InputState extends State<Input> {
         maxLength: widget.maxLength,
         maxLines: widget.maxLines,
         decoration: InputDecoration(
-          labelText: widget.required ? widget.label + " \*" : widget.label,
+          labelText: widget.required ? widget.label + " *" : widget.label,
           hintText: widget.hint,
           prefixIcon: widget.prefixIcon != null
               ? Icon(
@@ -209,7 +214,7 @@ class CapitalCaseTextFormatter extends TextInputFormatter {
       var trimmed = sentences[x];
       if (trimmed != "") {
         // Capitalize first letter of current sentence
-        var capitalized = "${trimmed[0].toUpperCase() + trimmed.substring(1)}";
+        var capitalized = trimmed[0].toUpperCase() + trimmed.substring(1);
         // Add current sentence to output with a period
         output += capitalized;
         if (x < sentences.length - 1) output += ". ";

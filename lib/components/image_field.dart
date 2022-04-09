@@ -27,14 +27,15 @@ class _ImageFieldState extends State<ImageField> {
     'Default/no_image_available',
   ];
 
-  List<XFile> _imageFileList = [];
+  List<XFile> imageFileList = [];
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.controller.text != "")
+    if (widget.controller.text != "") {
       imageList.addAll(widget.controller.text.split(','));
+    }
   }
 
   @override
@@ -91,7 +92,7 @@ class _ImageFieldState extends State<ImageField> {
                                     status: Status.error);
                               } else {
                                 upLoadImages(
-                                  _imageFileList,
+                                  imageFileList,
                                   multi: true,
                                   maxQuantity: widget.maxQuantityImage -
                                       imageList.length +

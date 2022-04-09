@@ -68,15 +68,15 @@ class InfoCovidHomePage extends StatelessWidget {
   final String lastUpdate;
 
   const InfoCovidHomePage({
-    this.increaseConfirmed: "0",
-    this.confirmed: "0",
-    this.increaseDeaths: "0",
-    this.deaths: "0",
-    this.increaseRecovered: "0",
-    this.recovered: "0",
-    this.increaseActived: "0",
-    this.actived: "0",
-    this.lastUpdate: "dd/MM/yyyy HH:mm:ss",
+    this.increaseConfirmed = "0",
+    this.confirmed = "0",
+    this.increaseDeaths = "0",
+    this.deaths = "0",
+    this.increaseRecovered = "0",
+    this.recovered = "0",
+    this.increaseActived = "0",
+    this.actived = "0",
+    this.lastUpdate = "dd/MM/yyyy HH:mm:ss",
   });
 
   @override
@@ -143,16 +143,16 @@ class InfoCovidHomePage extends StatelessWidget {
             ),
             Spacer(),
             RichText(
-              text: new TextSpan(
+              text: TextSpan(
                 children: [
-                  new TextSpan(
+                  TextSpan(
                     text: 'Nguồn: ',
                     style: TextStyle(color: CustomColors.primaryText),
                   ),
-                  new TextSpan(
+                  TextSpan(
                     text: 'Dữ liệu Covid-19',
-                    style: new TextStyle(color: CustomColors.primary),
-                    recognizer: new TapGestureRecognizer()
+                    style: TextStyle(color: CustomColors.primary),
+                    recognizer: TapGestureRecognizer()
                       ..onTap = () {
                         launch('https://covid19.ncsc.gov.vn/dulieu');
                       },

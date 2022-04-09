@@ -54,7 +54,7 @@ class _ListNotificationState extends State<ListNotification> {
     try {
       final newItems = await fetchUserNotificationList(data: {'page': pageKey});
 
-      final isLastPage = newItems.length < PAGE_SIZE;
+      final isLastPage = newItems.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
       } else {

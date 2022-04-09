@@ -97,28 +97,32 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
     }
     super.initState();
     fetchCountry().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           countryList = value;
         });
+      }
     });
     fetchCity({'country_code': countryController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           wardList = value;
         });
+      }
     });
   }
 
@@ -166,12 +170,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   hint: 'Quốc gia',
                   required: widget.mode == Permission.view ? false : true,
                   itemValue: countryList,
-                  selectedItem: countryList.length == 0
+                  selectedItem: countryList.isEmpty
                       ? initCountry
                       : countryList.safeFirstWhere((type) =>
                           type.id.toString() == countryController.text),
                   enabled: widget.mode != Permission.view ? true : false,
-                  onFind: countryList.length == 0
+                  onFind: countryList.isEmpty
                       ? (String? filter) => fetchCountry()
                       : null,
                   onChanged: (value) {
@@ -216,12 +220,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   hint: 'Tỉnh/thành',
                   itemValue: cityList,
                   required: widget.mode == Permission.view ? false : true,
-                  selectedItem: cityList.length == 0
+                  selectedItem: cityList.isEmpty
                       ? initCity
                       : cityList.safeFirstWhere(
                           (type) => type.id.toString() == cityController.text),
                   enabled: widget.mode != Permission.view ? true : false,
-                  onFind: cityList.length == 0
+                  onFind: cityList.isEmpty
                       ? (String? filter) =>
                           fetchCity({'country_code': countryController.text})
                       : null,
@@ -264,12 +268,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   hint: 'Quận/huyện',
                   itemValue: districtList,
                   required: widget.mode == Permission.view ? false : true,
-                  selectedItem: districtList.length == 0
+                  selectedItem: districtList.isEmpty
                       ? initDistrict
                       : districtList.safeFirstWhere((type) =>
                           type.id.toString() == districtController.text),
                   enabled: widget.mode != Permission.view ? true : false,
-                  onFind: districtList.length == 0
+                  onFind: districtList.isEmpty
                       ? (String? filter) =>
                           fetchDistrict({'city_id': cityController.text})
                       : null,
@@ -308,11 +312,11 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   label: 'Phường/xã',
                   hint: 'Phường/xã',
                   itemValue: wardList,
-                  selectedItem: wardList.length == 0
+                  selectedItem: wardList.isEmpty
                       ? initWard
                       : wardList.safeFirstWhere(
                           (type) => type.id.toString() == wardController.text),
-                  onFind: wardList.length == 0
+                  onFind: wardList.isEmpty
                       ? (String? filter) =>
                           fetchWard({'district_id': districtController.text})
                       : null,

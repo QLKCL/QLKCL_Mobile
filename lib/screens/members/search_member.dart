@@ -59,7 +59,7 @@ class _SearchMemberState extends State<SearchMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource _memberDataSource = MemberDataSource();
+  MemberDataSource memberDataSource = MemberDataSource();
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -87,39 +87,43 @@ class _SearchMemberState extends State<SearchMember> {
 
     super.initState();
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _quarantineWardList = value;
         });
+      }
     });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _quarantineBuildingList = value;
         });
+      }
     });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _quarantineFloorList = value;
         });
+      }
     });
     fetchQuarantineRoom({
       'quarantine_floor': quarantineFloorController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           _quarantineRoomList = value;
         });
+      }
     });
     fetch = fetchMemberList(
       data: filterMemberDataForm(
@@ -170,7 +174,7 @@ class _SearchMemberState extends State<SearchMember> {
         ),
       );
 
-      final isLastPage = newItems.data.length < PAGE_SIZE;
+      final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems.data);
       } else {
@@ -351,15 +355,15 @@ class _SearchMemberState extends State<SearchMember> {
                             showLoadingIndicator = false;
                             paginatedDataSource = snapshot.data!.data;
                             pageCount = snapshot.data!.totalPages.toDouble();
-                            _memberDataSource.buildDataGridRows();
-                            _memberDataSource.updateDataGridSource();
+                            memberDataSource.buildDataGridRows();
+                            memberDataSource.updateDataGridSource();
                             return listMemberTable();
                           }
                         }
                       }
                       return const Align(
                         alignment: Alignment.center,
-                        child: const CircularProgressIndicator(),
+                        child: CircularProgressIndicator(),
                       );
                     },
                   )
@@ -437,7 +441,7 @@ class _SearchMemberState extends State<SearchMember> {
                       onPageNavigationStart: (int pageIndex) {
                         showLoading();
                       },
-                      delegate: _memberDataSource,
+                      delegate: memberDataSource,
                       onPageNavigationEnd: (int pageIndex) {
                         BotToast.closeAllLoading();
                       },
@@ -456,7 +460,7 @@ class _SearchMemberState extends State<SearchMember> {
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: _memberDataSource,
+      source: memberDataSource,
       columnWidthMode: ColumnWidthMode.none,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
@@ -574,7 +578,7 @@ class _SearchMemberState extends State<SearchMember> {
           height: constraints.maxHeight,
           child: const Align(
             alignment: Alignment.center,
-            child: const CircularProgressIndicator(
+            child: CircularProgressIndicator(
               strokeWidth: 3,
             ),
           ),

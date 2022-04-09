@@ -155,54 +155,61 @@ class _ManagerFormState extends State<ManagerForm> {
     }
     super.initState();
     fetchCountry().then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           countryList = value;
         });
+      }
     });
     fetchCity({'country_code': countryController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           cityList = value;
         });
+      }
     });
     fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           districtList = value;
         });
+      }
     });
     fetchWard({'district_id': districtController.text}).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           wardList = value;
         });
+      }
     });
     fetchQuarantineWard({
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineWardList = value;
         });
+      }
     });
     fetchQuarantineBuilding({
       'quarantine_ward': quarantineWardController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineBuildingList = value;
         });
+      }
     });
     fetchQuarantineFloor({
       'quarantine_building': quarantineBuildingController.text,
-      'page_size': PAGE_SIZE_MAX,
+      'page_size': pageSizeMax,
     }).then((value) {
-      if (this.mounted)
+      if (mounted) {
         setState(() {
           quarantineFloorList = value;
         });
+      }
     });
   }
 
@@ -231,15 +238,16 @@ class _ManagerFormState extends State<ManagerForm> {
                     value: "manager",
                     groupValue: type,
                     onChanged: (value) {
-                      if (widget.mode == Permission.add)
+                      if (widget.mode == Permission.add) {
                         setState(() {
                           type = value!;
                         });
+                      }
                     },
                   ),
-                  Text(
+                  const Text(
                     'Quản lý',
-                    style: new TextStyle(fontSize: 17.0),
+                    style: TextStyle(fontSize: 17.0),
                   ),
                   const SizedBox(
                     width: 8,
@@ -248,15 +256,16 @@ class _ManagerFormState extends State<ManagerForm> {
                     value: "staff",
                     groupValue: type,
                     onChanged: (value) {
-                      if (widget.mode == Permission.add)
+                      if (widget.mode == Permission.add) {
                         setState(() {
                           type = value!;
                         });
+                      }
                     },
                   ),
-                  Text(
+                  const Text(
                     'Cán bộ',
-                    style: new TextStyle(
+                    style: TextStyle(
                       fontSize: 17.0,
                     ),
                   ),
@@ -273,9 +282,9 @@ class _ManagerFormState extends State<ManagerForm> {
               hint: 'Chọn khu cách ly',
               required: (widget.mode == Permission.view) ? false : true,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineWardList.length == 0
+              onFind: quarantineWardList.isEmpty
                   ? (String? filter) => fetchQuarantineWard({
-                        'page_size': PAGE_SIZE_MAX,
+                        'page_size': pageSizeMax,
                         'search': filter,
                       })
                   : null,
@@ -302,7 +311,7 @@ class _ManagerFormState extends State<ManagerForm> {
                 });
                 fetchQuarantineBuilding({
                   'quarantine_ward': quarantineWardController.text,
-                  'page_size': PAGE_SIZE_MAX,
+                  'page_size': pageSizeMax,
                 }).then((data) => setState(() {
                       quarantineBuildingList = data;
                     }));
@@ -419,7 +428,7 @@ class _ManagerFormState extends State<ManagerForm> {
               hint: 'Quốc gia',
               required: widget.mode == Permission.view ? false : true,
               itemValue: countryList,
-              selectedItem: countryList.length == 0
+              selectedItem: countryList.isEmpty
                   ? initCountry
                   : countryList.safeFirstWhere(
                       (type) => type.id.toString() == countryController.text),
@@ -427,7 +436,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
-              onFind: countryList.length == 0
+              onFind: countryList.isEmpty
                   ? (String? filter) => fetchCountry()
                   : null,
               onChanged: (value) {
@@ -471,7 +480,7 @@ class _ManagerFormState extends State<ManagerForm> {
               hint: 'Tỉnh/thành',
               itemValue: cityList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: cityList.length == 0
+              selectedItem: cityList.isEmpty
                   ? initCity
                   : cityList.safeFirstWhere(
                       (type) => type.id.toString() == cityController.text),
@@ -479,7 +488,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
-              onFind: cityList.length == 0
+              onFind: cityList.isEmpty
                   ? (String? filter) =>
                       fetchCity({'country_code': countryController.text})
                   : null,
@@ -521,7 +530,7 @@ class _ManagerFormState extends State<ManagerForm> {
               hint: 'Quận/huyện',
               itemValue: districtList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: districtList.length == 0
+              selectedItem: districtList.isEmpty
                   ? initDistrict
                   : districtList.safeFirstWhere(
                       (type) => type.id.toString() == districtController.text),
@@ -529,7 +538,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
-              onFind: districtList.length == 0
+              onFind: districtList.isEmpty
                   ? (String? filter) =>
                       fetchDistrict({'city_id': cityController.text})
                   : null,
@@ -568,7 +577,7 @@ class _ManagerFormState extends State<ManagerForm> {
               hint: 'Phường/xã',
               itemValue: wardList,
               required: widget.mode == Permission.view ? false : true,
-              selectedItem: wardList.length == 0
+              selectedItem: wardList.isEmpty
                   ? initWard
                   : wardList.safeFirstWhere(
                       (type) => type.id.toString() == wardController.text),
@@ -576,7 +585,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       widget.mode == Permission.add)
                   ? true
                   : false,
-              onFind: wardList.length == 0
+              onFind: wardList.isEmpty
                   ? (String? filter) =>
                       fetchWard({'district_id': districtController.text})
                   : null,
@@ -636,10 +645,10 @@ class _ManagerFormState extends State<ManagerForm> {
                 hint: 'Chọn tòa',
                 required: (widget.mode == Permission.view) ? false : true,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineBuildingList.length == 0
+                onFind: quarantineBuildingList.isEmpty
                     ? (String? filter) => fetchQuarantineBuilding({
                           'quarantine_ward': quarantineWardController.text,
-                          'page_size': PAGE_SIZE_MAX,
+                          'page_size': pageSizeMax,
                           'search': filter,
                         })
                     : null,
@@ -664,7 +673,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   });
                   fetchQuarantineFloor({
                     'quarantine_building': quarantineBuildingController.text,
-                    'page_size': PAGE_SIZE_MAX,
+                    'page_size': pageSizeMax,
                   }).then((data) => setState(() {
                         quarantineFloorList = data;
                       }));
@@ -688,11 +697,11 @@ class _ManagerFormState extends State<ManagerForm> {
                 required: (widget.mode == Permission.view) ? false : true,
                 dropdownBuilder: customDropDown,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineFloorList.length == 0
+                onFind: quarantineFloorList.isEmpty
                     ? (String? filter) => fetchQuarantineFloor({
                           'quarantine_building':
                               quarantineBuildingController.text,
-                          'page_size': PAGE_SIZE_MAX,
+                          'page_size': pageSizeMax,
                           'search': filter,
                         })
                     : null,
