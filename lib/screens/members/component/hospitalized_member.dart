@@ -6,6 +6,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/screens/test/list_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -624,7 +625,15 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      } else if (result == 'move_hospital') {}
+      } else if (result == 'move_hospital') {
+      } else if (result == 'quarantine_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListQuarantineHistory(
+                      code: item.code,
+                    )));
+      }
     },
     itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
@@ -646,6 +655,10 @@ Widget menus(BuildContext context, FilterMember item) {
       PopupMenuItem(
         child: Text('Chuyển viện'),
         value: "move_hospital",
+      ),
+      PopupMenuItem(
+        child: Text('Lịch sử cách ly'),
+        value: "quarantine_history",
       ),
     ],
   );

@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -631,6 +632,16 @@ Widget menus(BuildContext context, FilterMember item,
       Icons.more_vert,
       color: disableText,
     ),
+    onSelected: (result) {
+      if (result == 'quarantine_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListQuarantineHistory(
+                      code: item.code,
+                    )));
+      }
+    },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
       PopupMenuItem(
         child: const Text('Chấp nhận'),
@@ -665,6 +676,10 @@ Widget menus(BuildContext context, FilterMember item,
             }
           }
         },
+      ),
+      const PopupMenuItem(
+        child: Text('Lịch sử cách ly'),
+        value: "quarantine_history",
       ),
     ],
   );
