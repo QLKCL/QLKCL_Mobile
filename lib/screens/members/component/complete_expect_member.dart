@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ExpectCompleteMember extends StatefulWidget {
@@ -33,7 +32,8 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,20 +43,11 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Có lỗi xảy ra!',
-            ),
-            action: SnackBarAction(
-              label: 'Thử lại',
-              onPressed: _pagingController.retryLastFailedRequest,
-            ),
-          ),
-        );
+        showNotification("Có lỗi xảy ra!", status: Status.error);
       }
     });
     super.initState();
@@ -217,7 +208,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -340,7 +331,8 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -577,7 +569,8 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!,
+                    tableKey: key);
           },
         ),
       ],
@@ -586,7 +579,8 @@ class MemberDataSource extends DataGridSource {
 }
 
 Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+    {GlobalKey<SfDataGridState>? tableKey,
+    PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
@@ -652,7 +646,7 @@ Widget menus(BuildContext context, FilterMember item,
           if (response.status == Status.success) {
             // ignore: use_build_context_synchronously
             if (Responsive.isDesktopLayout(context)) {
-              key.currentState!.refresh();
+              tableKey?.currentState!.refresh();
             } else {
               pagingController!.refresh();
             }

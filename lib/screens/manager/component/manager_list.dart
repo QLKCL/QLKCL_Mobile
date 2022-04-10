@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 
 List<FilterStaff> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ManagerList extends StatefulWidget {
@@ -35,7 +34,8 @@ class _ManagerListState extends State<ManagerList>
   final PagingController<int, FilterStaff> pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource dataSource;
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -45,6 +45,7 @@ class _ManagerListState extends State<ManagerList>
 
   @override
   void initState() {
+    dataSource = MemberDataSource(key);
     ManagerList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -111,8 +112,8 @@ class _ManagerListState extends State<ManagerList>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listTable();
                   }
                 }
@@ -189,7 +190,7 @@ class _ManagerListState extends State<ManagerList>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -206,7 +207,7 @@ class _ManagerListState extends State<ManagerList>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -301,7 +302,8 @@ class _ManagerListState extends State<ManagerList>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 

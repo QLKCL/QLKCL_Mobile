@@ -104,11 +104,10 @@ class AppTheme with ChangeNotifier {
         padding: const EdgeInsets.all(12),
         textStyle: TextStyle(
           color: white,
-          // fontFamily: "Questrial",
-          // fontWeight: FontWeight.bold,
+          fontSize: 13,
         ),
         decoration: BoxDecoration(
-          color: disableText,
+          color: secondaryText,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

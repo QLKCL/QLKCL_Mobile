@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class NeedChangeRoomMember extends StatefulWidget {
@@ -33,7 +32,8 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,6 +43,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -219,7 +220,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -342,7 +343,8 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -592,7 +594,8 @@ class MemberDataSource extends DataGridSource {
 }
 
 Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+    {GlobalKey<SfDataGridState>? tableKey,
+    PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,

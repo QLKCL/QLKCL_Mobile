@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class NeedTestMember extends StatefulWidget {
@@ -33,7 +32,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,6 +43,7 @@ class _NeedTestMemberState extends State<NeedTestMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -216,7 +217,7 @@ class _NeedTestMemberState extends State<NeedTestMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -339,7 +340,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -585,7 +587,8 @@ class MemberDataSource extends DataGridSource {
 }
 
 Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+    {GlobalKey<SfDataGridState>? tableKey,
+    PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
@@ -618,7 +621,7 @@ Widget menus(BuildContext context, FilterMember item,
             .then(
           (value) {
             if (Responsive.isDesktopLayout(context)) {
-              key.currentState!.refresh();
+              tableKey?.currentState!.refresh();
             } else {
               pagingController!.refresh();
             }
