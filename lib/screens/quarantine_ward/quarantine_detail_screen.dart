@@ -70,7 +70,7 @@ class _QuarantineDetailScreenState extends State<QuarantineDetailScreen> {
               return Text('${snapshot.error}');
             }
           }
-          return Container();
+          return const SizedBox();
         },
       ),
     );

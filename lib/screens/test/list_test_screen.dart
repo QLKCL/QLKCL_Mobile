@@ -93,7 +93,7 @@ class _ListTestState extends State<ListTest> {
                   )
                 : Container();
           }
-          return Container();
+          return const SizedBox();
         },
       ),
       appBar: AppBar(

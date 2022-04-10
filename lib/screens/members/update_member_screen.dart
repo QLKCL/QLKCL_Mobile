@@ -101,7 +101,7 @@ class _UpdateMemberState extends State<UpdateMember>
               }
             }
 
-            return Container();
+            return const SizedBox();
           },
         ),
       ),

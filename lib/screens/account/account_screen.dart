@@ -55,7 +55,7 @@ class _AccountState extends State<Account> {
               if (snapshot.hasData) {
                 return GenerateQrCode(qrData: snapshot.data);
               }
-              return Container();
+              return const SizedBox();
             },
           ),
           Container(

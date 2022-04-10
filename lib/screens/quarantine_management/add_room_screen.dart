@@ -264,7 +264,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                     );
                   }
                 }
-                return Container();
+                return const SizedBox();
               }),
         ),
       ),

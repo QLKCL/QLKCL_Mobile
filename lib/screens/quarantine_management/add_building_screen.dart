@@ -116,7 +116,7 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
                     );
                   }
                 }
-                return Container();
+                return const SizedBox();
               }),
         ),
       ),

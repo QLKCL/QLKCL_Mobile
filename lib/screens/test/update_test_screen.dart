@@ -54,7 +54,7 @@ class _UpdateTestState extends State<UpdateTest> {
                     }
                   }
 
-                  return Container();
+                  return const SizedBox();
                 },
               ),
       ),

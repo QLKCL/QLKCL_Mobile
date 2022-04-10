@@ -243,7 +243,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                     );
                   }
                 }
-                return Container();
+                return const SizedBox();
               }),
         ),
       ),

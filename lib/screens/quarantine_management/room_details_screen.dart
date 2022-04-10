@@ -135,7 +135,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             }),
       ),
       floatingActionButton: FloatingActionButton(

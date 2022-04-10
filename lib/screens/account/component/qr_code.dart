@@ -34,7 +34,7 @@ class GenerateQrCode extends StatelessWidget {
                     ),
                   );
                 }
-                return Container();
+                return const SizedBox();
               },
             ),
           ],

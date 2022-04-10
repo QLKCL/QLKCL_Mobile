@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/destination_history.dart';
+import 'package:qlkcl/screens/home/component/app_bar.dart';
 import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/screens/manager/add_manager_screen.dart';
 import 'package:qlkcl/utils/api.dart';
-import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/helper/authentication.dart';
-import 'package:qlkcl/helper/cloudinary.dart';
-import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
-import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/home/component/manager_info.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/add_quarantine_screen.dart';
 import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
-import 'package:badges/badges.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -41,8 +36,6 @@ class ManagerHomePage extends StatefulWidget {
 }
 
 class _ManagerHomePageState extends State<ManagerHomePage> {
-  late int unreadNotifications = 0;
-  late dynamic listNotification = [];
   bool _showFab = true;
 
   late Future<dynamic> futureData;
@@ -63,19 +56,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         getAddressWithMembersPassBy(getAddressWithMembersPassByDataForm(
       addressType: "city",
     ));
-    notifications.fetchUserNotificationList(
-        data: {'page_size': pageSizeMax}).then((value) {
-      if (mounted) {
-        setState(() {
-          listNotification = value;
-          unreadNotifications = listNotification
-              .where((element) =>
-                  notifications.Notification.fromJson(element).isRead == false)
-              .toList()
-              .length;
-        });
-      }
-    });
     fetchQuarantineWard({
       'page_size': pageSizeMax,
     }).then((value) {
@@ -112,118 +92,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         return true;
       },
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(72), // here the desired height
-          child: AppBar(
-            toolbarHeight: 64, // Set this height
-            automaticallyImplyLeading: false,
-            title: Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Row(
-                children: [
-                  Container(
-                    width: 56,
-                    height: 56,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(cloudinary
-                            .getImage('Default/no_avatar')
-                            .toString()),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: const BorderRadius.all(Radius.circular(50)),
-                      border: Border.all(
-                        color: secondary,
-                        width: 2,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Xin chào,",
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        FutureBuilder(
-                          future: getName(),
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            if (snapshot.hasData) {
-                              return Text(
-                                snapshot.data,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: primaryText),
-                              );
-                            }
-                            return Container();
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            titleTextStyle: TextStyle(fontSize: 16, color: primaryText),
-            backgroundColor: background,
-            centerTitle: false,
-            actions: [
-              Badge(
-                showBadge: unreadNotifications != 0,
-                position: BadgePosition.topEnd(top: 10, end: 16),
-                animationDuration: const Duration(milliseconds: 300),
-                animationType: BadgeAnimationType.scale,
-                shape: BadgeShape.square,
-                borderRadius: BorderRadius.circular(8),
-                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-                badgeContent: Text(
-                  unreadNotifications.toString(),
-                  style: TextStyle(fontSize: 11, color: white),
-                ),
-                child: IconButton(
-                  padding: const EdgeInsets.only(right: 24),
-                  icon: Icon(
-                    Icons.notifications_none_outlined,
-                    color: primaryText,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context,
-                            rootNavigator: !Responsive.isDesktopLayout(context))
-                        .push(MaterialPageRoute(
-                            builder: (context) => ListNotification(
-                                  role: widget.role,
-                                )))
-                        .then((value) => {
-                              notifications.fetchUserNotificationList(data: {
-                                'page_size': pageSizeMax
-                              }).then((value) => setState(() {
-                                    listNotification = value;
-                                    unreadNotifications = listNotification
-                                        .where((element) =>
-                                            notifications.Notification.fromJson(
-                                                    element)
-                                                .isRead ==
-                                            false)
-                                        .toList()
-                                        .length;
-                                  }))
-                            });
-                  },
-                  tooltip: "Thông báo",
-                ),
-              ),
-            ],
-          ),
-        ),
+        appBar: HomeAppBar(),
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
             final ScrollDirection direction = notification.direction;

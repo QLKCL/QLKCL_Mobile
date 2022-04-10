@@ -111,7 +111,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             }),
       ),
       floatingActionButton: FloatingActionButton(

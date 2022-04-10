@@ -167,7 +167,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             },
           ),
 

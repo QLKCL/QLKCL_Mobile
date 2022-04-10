@@ -857,7 +857,7 @@ class NotificationCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (BuildContext context, Object exception,
                             StackTrace? stackTrace) {
-                          return Container();
+                          return const SizedBox();
                         },
                       ),
                     const SizedBox(

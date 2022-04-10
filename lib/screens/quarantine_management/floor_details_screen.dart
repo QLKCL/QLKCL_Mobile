@@ -116,7 +116,7 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             }),
       ),
       floatingActionButton: FloatingActionButton(

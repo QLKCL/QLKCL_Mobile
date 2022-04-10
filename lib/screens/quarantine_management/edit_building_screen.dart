@@ -123,7 +123,7 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
                     );
                   }
                 }
-                return Container();
+                return const SizedBox();
               }),
         ),
       ),
