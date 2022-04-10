@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/manager/add_manager_screen.dart';
+import 'package:qlkcl/screens/manager/component/manager_list.dart';
 import 'package:qlkcl/screens/manager/component/staff_list.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
@@ -76,8 +77,8 @@ class _ListAllManagerState extends State<ListAllManager>
         body: TabBarView(
           controller: _tabController,
           children: [
-            const Center(
-              child: Text("Chức năng đang trong quá trình phát triển"),
+            ManagerList(
+              quarrantine: widget.currentQuarrantine,
             ),
             StaffList(
               quarrantine: widget.currentQuarrantine,

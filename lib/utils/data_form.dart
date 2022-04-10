@@ -790,7 +790,7 @@ Map<String, dynamic> filterStaffDataForm({
     "created_at_max": quarantineAtMax,
     "care_area": careArea,
     "health_status_list": healthStatusList,
-    "positive_test_now": positiveTestNowList,
+    "positive_test_now_list": positiveTestNowList,
     "page": page,
     "page_size": pageSize,
   };
