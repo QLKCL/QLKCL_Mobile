@@ -625,7 +625,6 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      } else if (result == 'move_hospital') {
       } else if (result == 'quarantine_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
@@ -651,10 +650,6 @@ Widget menus(BuildContext context, FilterMember item) {
       PopupMenuItem(
         child: Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Chuyển viện'),
-        value: "move_hospital",
       ),
       PopupMenuItem(
         child: Text('Lịch sử cách ly'),

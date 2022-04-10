@@ -648,12 +648,16 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      }
+      } else if (result == 'move_hospital') {}
     },
     itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
       PopupMenuItem(
         child: Text('Cập nhật thông tin'),
         value: "update_info",
+      ),
+      PopupMenuItem(
+        child: Text('Chuyển viện'),
+        value: "move_hospital",
       ),
       PopupMenuItem(
         child: Text('Khai báo y tế'),

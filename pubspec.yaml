@@ -58,7 +58,10 @@ dependencies:
   flutter_speed_dial: ^5.0.0+1
   bot_toast: ^4.0.1
   responsive_framework: ^0.1.7
-  side_navigation: ^0.0.7
+  side_navigation:
+    git:
+      url: https://github.com/lesonlhld/side_navigation
+      ref: main
   syncfusion_flutter_datagrid: ^19.4.55
   syncfusion_flutter_charts: ^19.4.56
   syncfusion_flutter_maps: ^19.4.56-beta
