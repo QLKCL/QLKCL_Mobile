@@ -100,7 +100,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
               }
             }
 
-            return Container();
+            return const SizedBox();
           },
         ),
       ),

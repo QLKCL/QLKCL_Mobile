@@ -48,7 +48,7 @@ class _ViewMDState extends State<ViewMD> {
               }
             }
 
-            return Container();
+            return const SizedBox();
           },
         ),
       ),

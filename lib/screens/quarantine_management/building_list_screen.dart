@@ -73,7 +73,7 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             }),
       ),
       floatingActionButton: FloatingActionButton(

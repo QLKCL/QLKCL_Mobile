@@ -167,7 +167,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             },
           ),
 
@@ -201,7 +201,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ListAllManager(
-                              tab: 1,
                               currentQuarrantine: KeyValue(
                                   name: widget.quarantineInfo.fullName,
                                   id: widget.quarantineInfo.id),

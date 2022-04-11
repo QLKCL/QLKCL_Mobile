@@ -333,6 +333,35 @@ Future<FilterResponse<FilterStaff>> fetchStaffList({data}) async {
   return FilterResponse<FilterStaff>();
 }
 
+Future<FilterResponse<FilterStaff>> fetchManagerList({data}) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterManager, data);
+  if (response != null) {
+    if (response['error_code'] == 0 && response['data'] != null) {
+      final List<FilterStaff> itemList = response['data']['content']
+          .map<FilterStaff>((json) => FilterStaff.fromJson(json))
+          .toList();
+      return FilterResponse<FilterStaff>(
+          data: itemList,
+          totalPages: response['data']['totalPages'],
+          totalRows: response['data']['totalRows'],
+          currentPage: response['data']['currentPage']);
+    } else if (response['error_code'] == 401) {
+      if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Permission denied") {
+        showNotification('Không có quyền thực hiện chức năng này!',
+            status: Status.error);
+      }
+      return FilterResponse<FilterStaff>();
+    } else {
+      showNotification('Có lỗi xảy ra!', status: Status.error);
+      return FilterResponse<FilterStaff>();
+    }
+  }
+
+  return FilterResponse<FilterStaff>();
+}
+
 // To parse this JSON data, do
 //
 //     final filterStaff = filterStaffFromJson(jsonString);

@@ -18,7 +18,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class DeniedMember extends StatefulWidget {
@@ -33,7 +32,8 @@ class _DeniedMemberState extends State<DeniedMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,6 +43,7 @@ class _DeniedMemberState extends State<DeniedMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -216,7 +217,7 @@ class _DeniedMemberState extends State<DeniedMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -317,7 +318,8 @@ class _DeniedMemberState extends State<DeniedMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -329,13 +331,10 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(
           data: {'page': newPageIndex + 1, 'status_list': "REFUSED"});
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -346,13 +345,9 @@ class MemberDataSource extends DataGridSource {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
         data: {'page': currentPageIndex + 1, 'status_list': "REFUSED"});
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 
@@ -518,7 +513,8 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[8].value.toString())!);
+                        (e) => e.code == row.getCells()[8].value.toString())!,
+                    tableKey: key);
           },
         ),
       ],
@@ -527,7 +523,8 @@ class MemberDataSource extends DataGridSource {
 }
 
 Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+    {GlobalKey<SfDataGridState>? tableKey,
+    PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
@@ -571,7 +568,7 @@ Widget menus(BuildContext context, FilterMember item,
         if (response.status == Status.success) {
           // ignore: use_build_context_synchronously
           if (Responsive.isDesktopLayout(context)) {
-            key.currentState!.refresh();
+            tableKey?.currentState!.refresh();
           } else {
             pagingController!.refresh();
           }

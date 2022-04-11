@@ -125,7 +125,7 @@ class _EditFloorScreenState extends State<EditFloorScreen> {
                     );
                   }
                 }
-                return Container();
+                return const SizedBox();
               }),
         ),
       ),

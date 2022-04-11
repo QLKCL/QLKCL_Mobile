@@ -25,7 +25,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class ActiveMember extends StatefulWidget {
@@ -40,7 +39,8 @@ class _ActiveMemberState extends State<ActiveMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -50,6 +50,7 @@ class _ActiveMemberState extends State<ActiveMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -213,7 +214,7 @@ class _ActiveMemberState extends State<ActiveMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -336,7 +337,8 @@ class _ActiveMemberState extends State<ActiveMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -347,13 +349,10 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {'page': newPageIndex + 1});
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -364,13 +363,9 @@ class MemberDataSource extends DataGridSource {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems =
         await fetchMemberList(data: {'page': currentPageIndex + 1});
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 

@@ -63,7 +63,7 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
                     }
                   }
 
-                  return Container();
+                  return const SizedBox();
                 },
               )),
       ),

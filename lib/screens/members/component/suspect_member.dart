@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class SuspectMember extends StatefulWidget {
@@ -34,7 +33,8 @@ class _SuspectMemberState extends State<SuspectMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -44,6 +44,7 @@ class _SuspectMemberState extends State<SuspectMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -218,7 +219,7 @@ class _SuspectMemberState extends State<SuspectMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -341,7 +342,8 @@ class _SuspectMemberState extends State<SuspectMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -355,13 +357,10 @@ class MemberDataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'health_status_list': "UNWELL,SERIOUS"
       });
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -374,13 +373,9 @@ class MemberDataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'health_status_list': "UNWELL,SERIOUS"
     });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 
@@ -582,7 +577,8 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!,
+                    tableKey: key);
           },
         ),
       ],
@@ -591,7 +587,8 @@ class MemberDataSource extends DataGridSource {
 }
 
 Widget menus(BuildContext context, FilterMember item,
-    {PagingController<int, FilterMember>? pagingController}) {
+    {GlobalKey<SfDataGridState>? tableKey,
+    PagingController<int, FilterMember>? pagingController}) {
   return PopupMenuButton(
     icon: Icon(
       Icons.more_vert,
@@ -615,7 +612,7 @@ Widget menus(BuildContext context, FilterMember item,
             .then(
           (value) {
             if (Responsive.isDesktopLayout(context)) {
-              key.currentState!.refresh();
+              tableKey?.currentState!.refresh();
             } else {
               pagingController!.refresh();
             }

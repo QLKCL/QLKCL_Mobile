@@ -19,7 +19,6 @@ import 'package:intl/intl.dart';
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 1;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class HospitalizedMember extends StatefulWidget {
@@ -34,7 +33,8 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -44,6 +44,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -230,7 +231,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
@@ -345,7 +346,8 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -360,13 +362,10 @@ class MemberDataSource extends DataGridSource {
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
       });
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -380,13 +379,9 @@ class MemberDataSource extends DataGridSource {
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"
     });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 
@@ -625,7 +620,6 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
-      } else if (result == 'move_hospital') {
       } else if (result == 'quarantine_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
@@ -651,10 +645,6 @@ Widget menus(BuildContext context, FilterMember item) {
       PopupMenuItem(
         child: Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Chuyển viện'),
-        value: "move_hospital",
       ),
       PopupMenuItem(
         child: Text('Lịch sử cách ly'),

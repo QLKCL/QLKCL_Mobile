@@ -65,7 +65,7 @@ class _UpdateManagerState extends State<UpdateManager> {
               }
             }
 
-            return Container();
+            return const SizedBox();
           },
         ),
       ),

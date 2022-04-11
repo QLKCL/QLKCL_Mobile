@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 
 List<FilterStaff> paginatedDataSource = [];
 double pageCount = 0;
-final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
 DataPagerController _dataPagerController = DataPagerController();
 
 class StaffList extends StatefulWidget {
@@ -35,7 +34,8 @@ class _StaffListState extends State<StaffList>
   final PagingController<int, FilterStaff> pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
-  MemberDataSource memberDataSource = MemberDataSource();
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late MemberDataSource memberDataSource;
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -45,6 +45,7 @@ class _StaffListState extends State<StaffList>
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource(key);
     StaffList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -301,7 +302,8 @@ class _StaffListState extends State<StaffList>
 }
 
 class MemberDataSource extends DataGridSource {
-  MemberDataSource();
+  MemberDataSource(this.key);
+  GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
 
@@ -315,13 +317,10 @@ class MemberDataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'quarantine_ward_id': StaffList.currentQuarrantine?.id,
       });
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -334,13 +333,9 @@ class MemberDataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'quarantine_ward_id': StaffList.currentQuarrantine?.id
     });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 

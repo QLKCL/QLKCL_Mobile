@@ -100,6 +100,17 @@ class AppTheme with ChangeNotifier {
         TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         TargetPlatform.android: CupertinoPageTransitionsBuilder(),
       }),
+      tooltipTheme: TooltipThemeData(
+        padding: const EdgeInsets.all(12),
+        textStyle: TextStyle(
+          color: white,
+          fontSize: 13,
+        ),
+        decoration: BoxDecoration(
+          color: secondaryText,
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
     );
   }
 

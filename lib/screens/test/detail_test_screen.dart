@@ -54,7 +54,7 @@ class _DetailTestState extends State<DetailTest> {
                         )
                       : Container();
                 }
-                return Container();
+                return const SizedBox();
               },
             ),
           ],
@@ -74,7 +74,7 @@ class _DetailTestState extends State<DetailTest> {
               }
             }
 
-            return Container();
+            return const SizedBox();
           },
         ),
       ),

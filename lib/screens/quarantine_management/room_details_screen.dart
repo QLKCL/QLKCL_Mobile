@@ -47,7 +47,7 @@ class RoomDetailsScreen extends StatefulWidget {
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late Future<FilterResponse<FilterMember>> futureMemberList;
 
-  late MemberDataSource memberDataSource = MemberDataSource();
+  late MemberDataSource memberDataSource;
 
   bool showLoadingIndicator = true;
   double pageCount = 0;
@@ -56,6 +56,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   void initState() {
+    memberDataSource = MemberDataSource();
     super.initState();
     currentRoom = widget.currentRoom!;
     futureMemberList = fetchMemberList(
@@ -134,7 +135,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                   );
                 }
               }
-              return Container();
+              return const SizedBox();
             }),
       ),
       floatingActionButton: FloatingActionButton(
@@ -278,7 +279,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
         GridColumn(
             columnName: 'fullName',
             columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 50,
+            minimumWidth: 150,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
