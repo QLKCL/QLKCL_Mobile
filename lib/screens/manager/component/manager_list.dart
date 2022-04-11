@@ -317,13 +317,10 @@ class MemberDataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'quarantine_ward_id': ManagerList.currentQuarrantine?.id,
       });
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -336,13 +333,9 @@ class MemberDataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'quarantine_ward_id': ManagerList.currentQuarrantine?.id
     });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 

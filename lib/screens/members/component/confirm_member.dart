@@ -402,13 +402,10 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(
           data: {'page': newPageIndex + 1, 'status_list': "WAITING"});
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -419,13 +416,9 @@ class MemberDataSource extends DataGridSource {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(
         data: {'page': currentPageIndex + 1, 'status_list': "WAITING"});
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 
@@ -619,7 +612,8 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[10].value.toString())!);
+                        (e) => e.code == row.getCells()[10].value.toString())!,
+                    tableKey: key);
           },
         ),
       ],

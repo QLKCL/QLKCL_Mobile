@@ -358,13 +358,10 @@ class MemberDataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'is_need_change_room_because_be_positive': true
       });
-      if (newItems.currentPage <= newItems.totalPages) {
-        paginatedDataSource = newItems.data;
-        buildDataGridRows();
-        notifyListeners();
-      } else {
-        paginatedDataSource = [];
-      }
+      paginatedDataSource = newItems.data;
+      pageCount = newItems.totalPages.toDouble();
+      buildDataGridRows();
+      notifyListeners();
       return true;
     }
     return false;
@@ -377,13 +374,9 @@ class MemberDataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'is_need_change_room_because_be_positive': true
     });
-    if (newItems.currentPage <= newItems.totalPages) {
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
-      buildDataGridRows();
-    } else {
-      paginatedDataSource = [];
-    }
+    paginatedDataSource = newItems.data;
+    pageCount = newItems.totalPages.toDouble();
+    buildDataGridRows();
     notifyListeners();
   }
 
@@ -585,7 +578,8 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!,
+                    tableKey: key);
           },
         ),
       ],
