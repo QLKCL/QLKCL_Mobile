@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:intl/intl.dart';
 
@@ -90,6 +91,33 @@ Future<dynamic> fetchVaccineDoseList({data}) async {
   return response != null && response['data'] != null
       ? response['data']['content']
       : null;
+}
+
+Future<Response> createVaccineDose({data}) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createVaccineDose, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success,
+          message: "Tạo mũi tiêm thành công!",
+          data: response['data']);
+    } else if (response['error_code'] == 400) {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    } else if (response['error_code'] == 401) {
+      if (response['message']['main'] != null &&
+          response['message']['main'] == "Permission denied") {
+        return Response(
+            status: Status.error,
+            message: 'Không có quyền thực hiện chức năng này!');
+      }
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
 }
 
 // To parse this JSON data, do
@@ -217,4 +245,14 @@ class VaccinatedInfoe {
         "injectionPlace": injectionPlace,
         "batchNumber": batchNumber,
       };
+}
+
+Future<List<KeyValue>> fetchVaccineList({data}) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.filterVaccine, data);
+  final dataResponse = response['data'];
+  if (dataResponse != null) {
+    return KeyValue.fromJsonList(dataResponse);
+  }
+  return [];
 }

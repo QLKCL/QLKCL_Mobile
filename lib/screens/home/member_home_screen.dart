@@ -252,21 +252,20 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               minimumSize: const Size(double.infinity, 48),
                               primary: success,
                             ),
-                            onPressed: (snapshot.data['quarantine_ward']
-                                            ['phone_number'] !=
-                                        null &&
-                                    snapshot.data['quarantine_ward']
-                                            ['phone_number'] !=
-                                        "")
-                                ? () async {
-                                    launch(
-                                        "tel://${snapshot.data['quarantine_ward']['phone_number']}");
-                                  }
-                                : () {
-                                    showNotification(
-                                        'Số điện thoại không tồn tại.',
-                                        status: Status.error);
-                                  },
+                            onPressed:
+                                (snapshot.data['quarantine_ward'] != null &&
+                                        snapshot.data['quarantine_ward']
+                                                ['phone_number'] !=
+                                            "")
+                                    ? () async {
+                                        launch(
+                                            "tel://${snapshot.data['quarantine_ward']['phone_number']}");
+                                      }
+                                    : () {
+                                        showNotification(
+                                            'Số điện thoại không tồn tại.',
+                                            status: Status.error);
+                                      },
                             child: Text(
                               'Gọi cấp cứu',
                               style: TextStyle(

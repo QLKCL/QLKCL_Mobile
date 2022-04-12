@@ -373,7 +373,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         onChangedFunction: () {
                           if (startTimeController.text == "") {
                             startTimeController.text =
-                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}";
+                                "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
                           }
                           setState(() {});
                         },
@@ -401,7 +401,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                         onChangedFunction: () {
                           if (endTimeController.text == "") {
                             endTimeController.text =
-                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}";
+                                "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
                           }
                           setState(() {});
                         },

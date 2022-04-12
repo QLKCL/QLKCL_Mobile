@@ -817,3 +817,22 @@ Map<String, dynamic> getSuitableRoomDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> createVaccineDoseDataForm({
+  required String vaccineId,
+  required String userCode,
+  required String injectionDate,
+  String? injectionPlace,
+  String? batchNumber,
+  String? symptomAfterInjected,
+}) {
+  final data = {
+    "vaccine_id": vaccineId,
+    "custom_user_code": userCode,
+    "injection_date": injectionDate,
+    "injection_place": injectionPlace,
+    "batch_number": batchNumber,
+    "symptom_after_injected": symptomAfterInjected,
+  };
+  return prepareDataForm(data);
+}

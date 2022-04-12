@@ -4,6 +4,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/vaccine_dose.dart';
+import 'package:qlkcl/screens/vaccine/create_vaccine_dose_screen.dart';
 import 'package:qlkcl/screens/vaccine/sync_vaccine_portal.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
@@ -124,9 +125,18 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                         builder: (context) => const SyncVaccinePortal()));
               },
               child: const Icon(Icons.cloud_sync),
-              tooltip: "Thêm phiếu xét nghiệm",
+              tooltip: "Tra cứu chứng nhận tiêm",
             )
-          : null,
+          : FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
+                    .push(MaterialPageRoute(
+                        builder: (context) => const CreateVaccineDose()));
+              },
+              child: const Icon(Icons.add),
+              tooltip: "Khai báo tiêm vaccine",
+            ),
     );
   }
 }
