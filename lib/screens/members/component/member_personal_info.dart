@@ -118,27 +118,33 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         });
       }
     });
-    fetchCity({'country_code': state.countryController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          cityList = value;
-        });
-      }
-    });
-    fetchDistrict({'city_id': state.cityController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          districtList = value;
-        });
-      }
-    });
-    fetchWard({'district_id': state.districtController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          wardList = value;
-        });
-      }
-    });
+    if (state.countryController.text != "") {
+      fetchCity({'country_code': state.countryController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            cityList = value;
+          });
+        }
+      });
+    }
+    if (state.cityController.text != "") {
+      fetchDistrict({'city_id': state.cityController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            districtList = value;
+          });
+        }
+      });
+    }
+    if (state.districtController.text != "") {
+      fetchWard({'district_id': state.districtController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            wardList = value;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -279,10 +285,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchCity({'country_code': state.countryController.text})
-                    .then((data) => setState(() {
-                          cityList = data;
-                        }));
+                if (state.countryController.text != "") {
+                  fetchCity({'country_code': state.countryController.text})
+                      .then((data) => setState(() {
+                            cityList = data;
+                          }));
+                }
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
@@ -308,7 +316,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                       type.id.toString() == state.cityController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
-              onFind: cityList.isEmpty
+              onFind: cityList.isEmpty && state.countryController.text != ""
                   ? (String? filter) =>
                       fetchCity({'country_code': state.countryController.text})
                   : null,
@@ -327,10 +335,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchDistrict({'city_id': state.cityController.text})
-                    .then((data) => setState(() {
-                          districtList = data;
-                        }));
+                if (state.cityController.text != "") {
+                  fetchDistrict({'city_id': state.cityController.text})
+                      .then((data) => setState(() {
+                            districtList = data;
+                          }));
+                }
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
@@ -356,7 +366,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                       type.id.toString() == state.districtController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
-              onFind: districtList.isEmpty
+              onFind: districtList.isEmpty && state.cityController.text != ""
                   ? (String? filter) =>
                       fetchDistrict({'city_id': state.cityController.text})
                   : null,
@@ -372,10 +382,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchWard({'district_id': state.districtController.text})
-                    .then((data) => setState(() {
-                          wardList = data;
-                        }));
+                if (state.districtController.text != "") {
+                  fetchWard({'district_id': state.districtController.text})
+                      .then((data) => setState(() {
+                            wardList = data;
+                          }));
+                }
               },
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               itemAsString: (KeyValue? u) => u!.name,
@@ -401,7 +413,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                       type.id.toString() == state.wardController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
-              onFind: wardList.isEmpty
+              onFind: wardList.isEmpty && state.districtController.text != ""
                   ? (String? filter) =>
                       fetchWard({'district_id': state.districtController.text})
                   : null,

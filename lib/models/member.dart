@@ -267,14 +267,16 @@ Future<Response> acceptManyMember(data) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0 && response['data'] == {}) {
-      showNotification("Chấp nhận thành công!");
-      return Response(status: Status.success, message: "Chấp nhận thành công!");
+      showNotification("Xét duyệt thành công!");
+      return Response(status: Status.success, message: "Xét duyệt thành công!");
     } else if (response['error_code'] == 0 && response['data'] != {}) {
-      showNotification("Một số tài khoản không thể xét duyệt!",
+      showNotification(
+          "Một số tài khoản không thể xét duyệt. Vui lòng kiểm tra lại thông tin!",
           status: Status.warning);
       return Response(
           status: Status.success,
-          message: "Một số tài khoản không thể xét duyệt!");
+          message:
+              "Một số tài khoản không thể xét duyệt. Vui lòng kiểm tra lại thông tin!");
     } else if (response['error_code'] == 400) {
       if (response['message']['member_codes'] != null &&
           response['message']['member_codes'] == "empty") {
@@ -315,7 +317,10 @@ Future<Response> acceptOneMember(data) async {
             status: Status.error,
             message: "Khu cách ly này đã hết giường trống!");
       } else {
-        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+        return Response(
+            status: Status.error,
+            message:
+                "Không thể xét duyệt tài khoản này. Vui lòng kiểm tra lại thông tin!");
       }
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
@@ -379,7 +384,6 @@ Future<Response> changeRoomMember(data) async {
 Future<dynamic> getSuitableRoom(data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getSuitableRoom, data);
-  print(response);
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
@@ -390,9 +394,9 @@ Future<dynamic> getSuitableRoom(data) async {
     } else if (response['error_code'] == 0 &&
         response['data']['warning'] ==
             "All rooms are not accept any more member") {
-      showNotification("Không còn phòng phù hợp!", status: Status.error);
+      showNotification("Không tìm thấy phòng thích hợp!", status: Status.error);
     } else if (response['error_code'] == 400) {
-      showNotification("Có lỗi xảy ra!", status: Status.error);
+      showNotification("Không tìm thấy phòng thích hợp!", status: Status.error);
     } else {
       showNotification("Có lỗi xảy ra!", status: Status.error);
     }

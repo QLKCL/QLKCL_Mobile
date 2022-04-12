@@ -124,7 +124,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       state.otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
       state.positiveTestNowController.text =
-          widget.quarantineData?.positiveTest.toString() ?? "";
+          widget.quarantineData?.positiveTest.toString() ?? "Null";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
@@ -150,39 +150,45 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         });
       }
     });
-    fetchQuarantineBuilding({
-      'quarantine_ward': state.quarantineWardController.text,
-      'page_size': pageSizeMax,
-      'is_full': false,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          quarantineBuildingList = value;
-        });
-      }
-    });
-    fetchQuarantineFloor({
-      'quarantine_building': state.quarantineBuildingController.text,
-      'page_size': pageSizeMax,
-      'is_full': false,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          quarantineFloorList = value;
-        });
-      }
-    });
-    fetchQuarantineRoom({
-      'quarantine_floor': state.quarantineFloorController.text,
-      'page_size': pageSizeMax,
-      'is_full': false,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          quarantineRoomList = value;
-        });
-      }
-    });
+    if (state.quarantineWardController.text != "") {
+      fetchQuarantineBuilding({
+        'quarantine_ward': state.quarantineWardController.text,
+        'page_size': pageSizeMax,
+        'is_full': false,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            quarantineBuildingList = value;
+          });
+        }
+      });
+    }
+    if (state.quarantineBuildingController.text != "") {
+      fetchQuarantineFloor({
+        'quarantine_building': state.quarantineBuildingController.text,
+        'page_size': pageSizeMax,
+        'is_full': false,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            quarantineFloorList = value;
+          });
+        }
+      });
+    }
+    if (state.quarantineFloorController.text != "") {
+      fetchQuarantineRoom({
+        'quarantine_floor': state.quarantineFloorController.text,
+        'page_size': pageSizeMax,
+        'is_full': false,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            quarantineRoomList = value;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -231,13 +237,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineFloor = null;
                   initQuarantineRoom = null;
                 });
-                fetchQuarantineBuilding({
-                  'quarantine_ward': state.quarantineWardController.text,
-                  'page_size': pageSizeMax,
-                  'is_full': false,
-                }).then((data) => setState(() {
-                      quarantineBuildingList = data;
-                    }));
+                if (state.quarantineWardController.text != "") {
+                  fetchQuarantineBuilding({
+                    'quarantine_ward': state.quarantineWardController.text,
+                    'page_size': pageSizeMax,
+                    'is_full': false,
+                  }).then((data) => setState(() {
+                        quarantineBuildingList = data;
+                      }));
+                }
               },
               enabled: widget.mode == Permission.add && _role != 5,
               showSearchBox: true,
@@ -258,7 +266,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   widget.mode != Permission.changeStatus &&
                   _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineBuildingList.isEmpty
+              onFind: quarantineBuildingList.isEmpty &&
+                      state.quarantineWardController.text != ""
                   ? (String? filter) => fetchQuarantineBuilding({
                         'quarantine_ward': state.quarantineWardController.text,
                         'page_size': pageSizeMax,
@@ -289,14 +298,16 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineFloor = null;
                   initQuarantineRoom = null;
                 });
-                fetchQuarantineFloor({
-                  'quarantine_building':
-                      state.quarantineBuildingController.text,
-                  'page_size': pageSizeMax,
-                  'is_full': false,
-                }).then((data) => setState(() {
-                      quarantineFloorList = data;
-                    }));
+                if (state.quarantineBuildingController.text != "") {
+                  fetchQuarantineFloor({
+                    'quarantine_building':
+                        state.quarantineBuildingController.text,
+                    'page_size': pageSizeMax,
+                    'is_full': false,
+                  }).then((data) => setState(() {
+                        quarantineFloorList = data;
+                      }));
+                }
               },
               enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
@@ -317,7 +328,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   widget.mode != Permission.changeStatus &&
                   _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineFloorList.isEmpty
+              onFind: quarantineFloorList.isEmpty &&
+                      state.quarantineBuildingController.text != ""
                   ? (String? filter) => fetchQuarantineFloor({
                         'quarantine_building':
                             state.quarantineBuildingController.text,
@@ -345,13 +357,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   initQuarantineFloor = null;
                   initQuarantineRoom = null;
                 });
-                fetchQuarantineRoom({
-                  'quarantine_floor': state.quarantineFloorController.text,
-                  'page_size': pageSizeMax,
-                  'is_full': false,
-                }).then((data) => setState(() {
-                      quarantineRoomList = data;
-                    }));
+                if (state.quarantineFloorController.text != "") {
+                  fetchQuarantineRoom({
+                    'quarantine_floor': state.quarantineFloorController.text,
+                    'page_size': pageSizeMax,
+                    'is_full': false,
+                  }).then((data) => setState(() {
+                        quarantineRoomList = data;
+                      }));
+                }
               },
               enabled: widget.mode != Permission.view && _role != 5,
               showSearchBox: true,
@@ -372,7 +386,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   widget.mode != Permission.changeStatus &&
                   _role != 5,
               itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineRoomList.isEmpty
+              onFind: quarantineRoomList.isEmpty &&
+                      state.quarantineFloorController.text != ""
                   ? (String? filter) => fetchQuarantineRoom({
                         'quarantine_floor':
                             state.quarantineFloorController.text,
@@ -438,7 +453,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           KeyValue.fromJson(data['quarantine_floor']);
                       initQuarantineRoom =
                           KeyValue.fromJson(data['quarantine_room']);
-                      print(initQuarantineRoom.toString());
                       // state.updateField();
                       setState(() {});
                     },
