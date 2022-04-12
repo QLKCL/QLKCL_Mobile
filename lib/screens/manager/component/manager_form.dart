@@ -370,7 +370,7 @@ class _ManagerFormState extends State<ManagerForm> {
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.personalData?.nationality != null)
                   ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : KeyValue(id: 1, name: 'Việt Nam'),
+                  : KeyValue(id: "VNM", name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
                   nationalityController.text = "";

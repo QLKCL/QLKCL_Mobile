@@ -12,6 +12,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -39,21 +40,7 @@ class MemberPersonalInfo extends StatefulWidget {
 class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     with AutomaticKeepAliveClientMixin<MemberPersonalInfo> {
   final _formKey = GlobalKey<FormState>();
-  final codeController = TextEditingController();
-  final nationalityController = TextEditingController();
-  final countryController = TextEditingController();
-  final cityController = TextEditingController();
-  final districtController = TextEditingController();
-  final wardController = TextEditingController();
-  final detailAddressController = TextEditingController();
-  final fullNameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneNumberController = TextEditingController();
-  final birthdayController = TextEditingController();
-  final genderController = TextEditingController();
-  final identityNumberController = TextEditingController();
-  final healthInsuranceNumberController = TextEditingController();
-  final passportNumberController = TextEditingController();
+  late MemberShareDataState state;
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -70,34 +57,46 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
 
   @override
   void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    state = MemberShareData.of(context);
     if (widget.personalData != null) {
-      codeController.text =
+      state.codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";
-      nationalityController.text = widget.personalData?.nationality != null
-          ? widget.personalData!.nationality['code']
-          : "";
-      countryController.text = widget.personalData?.country != null
+      state.nationalityController.text =
+          widget.personalData?.nationality != null
+              ? widget.personalData!.nationality['code']
+              : "";
+      state.countryController.text = widget.personalData?.country != null
           ? widget.personalData!.country['code']
           : "VNM";
-      cityController.text = widget.personalData?.city != null
+      state.cityController.text = widget.personalData?.city != null
           ? widget.personalData!.city['id'].toString()
           : "";
-      districtController.text = widget.personalData?.district != null
+      state.districtController.text = widget.personalData?.district != null
           ? widget.personalData!.district['id'].toString()
           : "";
-      wardController.text = widget.personalData?.ward != null
+      state.wardController.text = widget.personalData?.ward != null
           ? widget.personalData!.ward['id'].toString()
           : "";
-      detailAddressController.text = widget.personalData?.detailAddress ?? "";
-      fullNameController.text = widget.personalData?.fullName ?? "";
-      emailController.text = widget.personalData?.email ?? "";
-      phoneNumberController.text = widget.personalData!.phoneNumber;
-      birthdayController.text = widget.personalData?.birthday ?? "";
-      genderController.text = widget.personalData?.gender ?? "";
-      identityNumberController.text = widget.personalData?.identityNumber ?? "";
-      healthInsuranceNumberController.text =
+      state.detailAddressController.text =
+          widget.personalData?.detailAddress ?? "";
+      state.fullNameController.text = widget.personalData?.fullName ?? "";
+      state.emailController.text = widget.personalData?.email ?? "";
+      state.phoneNumberController.text = widget.personalData!.phoneNumber;
+      state.birthdayController.text = widget.personalData?.birthday ?? "";
+      state.genderController.text = widget.personalData?.gender ?? "";
+      state.identityNumberController.text =
+          widget.personalData?.identityNumber ?? "";
+      state.healthInsuranceNumberController.text =
           widget.personalData?.healthInsuranceNumber ?? "";
-      passportNumberController.text = widget.personalData?.passportNumber ?? "";
+      state.passportNumberController.text =
+          widget.personalData?.passportNumber ?? "";
 
       initCountry = (widget.personalData?.country != null)
           ? KeyValue.fromJson(widget.personalData!.country)
@@ -111,12 +110,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
       initWard = (widget.personalData?.ward != null)
           ? KeyValue.fromJson(widget.personalData!.ward)
           : null;
-    } else {
-      nationalityController.text = "VNM";
-      countryController.text = "VNM";
-      genderController.text = "MALE";
     }
-    super.initState();
     fetchCountry().then((value) {
       if (mounted) {
         setState(() {
@@ -124,21 +118,21 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         });
       }
     });
-    fetchCity({'country_code': countryController.text}).then((value) {
+    fetchCity({'country_code': state.countryController.text}).then((value) {
       if (mounted) {
         setState(() {
           cityList = value;
         });
       }
     });
-    fetchDistrict({'city_id': cityController.text}).then((value) {
+    fetchDistrict({'city_id': state.cityController.text}).then((value) {
       if (mounted) {
         setState(() {
           districtList = value;
         });
       }
     });
-    fetchWard({'district_id': districtController.text}).then((value) {
+    fetchWard({'district_id': state.districtController.text}).then((value) {
       if (mounted) {
         setState(() {
           wardList = value;
@@ -151,14 +145,16 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   Widget build(BuildContext context) {
     super.build(context);
     if (widget.infoFromIdentityCard != null) {
-      fullNameController.text = widget.infoFromIdentityCard![2];
-      identityNumberController.text = widget.infoFromIdentityCard![0];
-      genderController.text = genderList
+      state.fullNameController.text = widget.infoFromIdentityCard![2];
+      state.identityNumberController.text = widget.infoFromIdentityCard![0];
+      state.genderController.text = genderList
           .safeFirstWhere(
               (gender) => gender.name == widget.infoFromIdentityCard![4])
           ?.id;
     }
     return SingleChildScrollView(
+      controller: ScrollController(),
+      primary: false,
       child: Form(
         key: _formKey,
         child: Column(
@@ -166,13 +162,13 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             Input(
               label: 'Mã định danh',
               enabled: false,
-              controller: codeController,
+              controller: state.codeController,
             ),
             Input(
               label: 'Họ và tên',
               required: widget.mode != Permission.view,
               textCapitalization: TextCapitalization.words,
-              controller: fullNameController,
+              controller: state.fullNameController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
             ),
@@ -180,14 +176,14 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               label: 'Số điện thoại',
               required: widget.mode != Permission.view,
               type: TextInputType.phone,
-              controller: phoneNumberController,
+              controller: state.phoneNumberController,
               enabled: widget.mode == Permission.add,
               validatorFunction: phoneValidator,
             ),
             Input(
               label: 'Email',
               type: TextInputType.emailAddress,
-              controller: emailController,
+              controller: state.emailController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               validatorFunction: emailValidator,
@@ -196,10 +192,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               label: 'Số CMND/CCCD',
               required: widget.mode != Permission.view,
               type: TextInputType.number,
-              controller: identityNumberController,
+              controller: state.identityNumberController,
               enabled: widget.mode == Permission.add ||
                   (widget.mode == Permission.edit &&
-                      identityNumberController.text == ""),
+                      state.identityNumberController.text == ""),
               validatorFunction: identityValidator,
             ),
             DropdownInput<KeyValue>(
@@ -212,12 +208,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.personalData?.nationality != null)
                   ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : KeyValue(id: 1, name: 'Việt Nam'),
+                  : KeyValue(id: "VNM", name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
-                  nationalityController.text = "";
+                  state.nationalityController.text = "";
                 } else {
-                  nationalityController.text = value.id.toString();
+                  state.nationalityController.text = value.id.toString();
                 }
               },
               enabled: widget.mode == Permission.edit ||
@@ -232,12 +228,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               maxHeight: 112,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: genderList.safeFirstWhere(
-                  (gender) => gender.id == genderController.text),
+                  (gender) => gender.id == state.genderController.text),
               onChanged: (value) {
                 if (value == null) {
-                  genderController.text = "";
+                  state.genderController.text = "";
                 } else {
-                  genderController.text = value.id;
+                  state.genderController.text = value.id;
                 }
               },
               enabled: widget.mode == Permission.edit ||
@@ -246,7 +242,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             NewDateInput(
               label: 'Ngày sinh',
               required: widget.mode != Permission.view,
-              controller: birthdayController,
+              controller: state.birthdayController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
@@ -258,8 +254,8 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               itemValue: countryList,
               selectedItem: countryList.isEmpty
                   ? initCountry
-                  : countryList.safeFirstWhere(
-                      (type) => type.id.toString() == countryController.text),
+                  : countryList.safeFirstWhere((type) =>
+                      type.id.toString() == state.countryController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: countryList.isEmpty
@@ -268,13 +264,13 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               onChanged: (value) {
                 setState(() {
                   if (value == null) {
-                    countryController.text = "";
+                    state.countryController.text = "";
                   } else {
-                    countryController.text = value.id;
+                    state.countryController.text = value.id;
                   }
-                  cityController.clear();
-                  districtController.clear();
-                  wardController.clear();
+                  state.cityController.clear();
+                  state.districtController.clear();
+                  state.wardController.clear();
                   cityList = [];
                   districtList = [];
                   wardList = [];
@@ -283,7 +279,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchCity({'country_code': countryController.text})
+                fetchCity({'country_code': state.countryController.text})
                     .then((data) => setState(() {
                           cityList = data;
                         }));
@@ -308,30 +304,30 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               required: widget.mode != Permission.view,
               selectedItem: cityList.isEmpty
                   ? initCity
-                  : cityList.safeFirstWhere(
-                      (type) => type.id.toString() == cityController.text),
+                  : cityList.safeFirstWhere((type) =>
+                      type.id.toString() == state.cityController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: cityList.isEmpty
                   ? (String? filter) =>
-                      fetchCity({'country_code': countryController.text})
+                      fetchCity({'country_code': state.countryController.text})
                   : null,
               onChanged: (value) {
                 setState(() {
                   if (value == null) {
-                    cityController.text = "";
+                    state.cityController.text = "";
                   } else {
-                    cityController.text = value.id.toString();
+                    state.cityController.text = value.id.toString();
                   }
-                  districtController.clear();
-                  wardController.clear();
+                  state.districtController.clear();
+                  state.wardController.clear();
                   districtList = [];
                   wardList = [];
                   initCity = null;
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchDistrict({'city_id': cityController.text})
+                fetchDistrict({'city_id': state.cityController.text})
                     .then((data) => setState(() {
                           districtList = data;
                         }));
@@ -356,27 +352,27 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               required: widget.mode != Permission.view,
               selectedItem: districtList.isEmpty
                   ? initDistrict
-                  : districtList.safeFirstWhere(
-                      (type) => type.id.toString() == districtController.text),
+                  : districtList.safeFirstWhere((type) =>
+                      type.id.toString() == state.districtController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: districtList.isEmpty
                   ? (String? filter) =>
-                      fetchDistrict({'city_id': cityController.text})
+                      fetchDistrict({'city_id': state.cityController.text})
                   : null,
               onChanged: (value) {
                 setState(() {
                   if (value == null) {
-                    districtController.text = "";
+                    state.districtController.text = "";
                   } else {
-                    districtController.text = value.id.toString();
+                    state.districtController.text = value.id.toString();
                   }
-                  wardController.clear();
+                  state.wardController.clear();
                   wardList = [];
                   initDistrict = null;
                   initWard = null;
                 });
-                fetchWard({'district_id': districtController.text})
+                fetchWard({'district_id': state.districtController.text})
                     .then((data) => setState(() {
                           wardList = data;
                         }));
@@ -401,20 +397,20 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               required: widget.mode != Permission.view,
               selectedItem: wardList.isEmpty
                   ? initWard
-                  : wardList.safeFirstWhere(
-                      (type) => type.id.toString() == wardController.text),
+                  : wardList.safeFirstWhere((type) =>
+                      type.id.toString() == state.wardController.text),
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: wardList.isEmpty
                   ? (String? filter) =>
-                      fetchWard({'district_id': districtController.text})
+                      fetchWard({'district_id': state.districtController.text})
                   : null,
               onChanged: (value) {
                 setState(() {
                   if (value == null) {
-                    wardController.text = "";
+                    state.wardController.text = "";
                   } else {
-                    wardController.text = value.id.toString();
+                    state.wardController.text = value.id.toString();
                   }
                   initWard = null;
                 });
@@ -435,19 +431,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             Input(
               label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
               required: widget.mode != Permission.view,
-              controller: detailAddressController,
+              controller: state.detailAddressController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
             ),
             Input(
               label: 'Mã số BHXH/Thẻ BHYT',
-              controller: healthInsuranceNumberController,
+              controller: state.healthInsuranceNumberController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
             ),
             Input(
               label: 'Số hộ chiếu',
-              controller: passportNumberController,
+              controller: state.passportNumberController,
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               textCapitalization: TextCapitalization.characters,
@@ -479,20 +475,20 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         final CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
           final response = await createMember(createMemberDataForm(
-            phoneNumber: phoneNumberController.text,
-            fullName: fullNameController.text,
-            email: emailController.text,
-            birthday: birthdayController.text,
-            gender: genderController.text,
+            phoneNumber: state.phoneNumberController.text,
+            fullName: state.fullNameController.text,
+            email: state.emailController.text,
+            birthday: state.birthdayController.text,
+            gender: state.genderController.text,
             nationality: "VNM",
-            country: countryController.text,
-            city: cityController.text,
-            district: districtController.text,
-            ward: wardController.text,
-            address: detailAddressController.text,
-            healthInsurance: healthInsuranceNumberController.text,
-            identity: identityNumberController.text,
-            passport: passportNumberController.text,
+            country: state.countryController.text,
+            city: state.cityController.text,
+            district: state.districtController.text,
+            ward: state.wardController.text,
+            address: state.detailAddressController.text,
+            healthInsurance: state.healthInsuranceNumberController.text,
+            identity: state.identityNumberController.text,
+            passport: state.passportNumberController.text,
             quarantineWard: (await getQuarantineWard()).toString(),
           ));
           cancel();
@@ -504,19 +500,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         if (widget.mode == Permission.edit) {
           final response = await updateMember(updateMemberDataForm(
             code: widget.personalData!.code,
-            fullName: fullNameController.text,
-            email: emailController.text,
-            birthday: birthdayController.text,
-            gender: genderController.text,
+            fullName: state.fullNameController.text,
+            email: state.emailController.text,
+            birthday: state.birthdayController.text,
+            gender: state.genderController.text,
             nationality: "VNM",
-            country: countryController.text,
-            city: cityController.text,
-            district: districtController.text,
-            ward: wardController.text,
-            address: detailAddressController.text,
-            healthInsurance: healthInsuranceNumberController.text,
-            identity: identityNumberController.text,
-            passport: passportNumberController.text,
+            country: state.countryController.text,
+            city: state.cityController.text,
+            district: state.districtController.text,
+            ward: state.wardController.text,
+            address: state.detailAddressController.text,
+            healthInsurance: state.healthInsuranceNumberController.text,
+            identity: state.identityNumberController.text,
+            passport: state.passportNumberController.text,
           ));
           cancel();
           showNotification(response);

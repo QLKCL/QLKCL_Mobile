@@ -50,7 +50,7 @@ List<KeyValue> roleList = [
 ];
 
 List<KeyValue> nationalityList = [
-  KeyValue(id: 1, name: 'Việt Nam'),
+  KeyValue(id: "VNM", name: 'Việt Nam'),
 ];
 
 List<KeyValue> backgroundDiseaseList = [
