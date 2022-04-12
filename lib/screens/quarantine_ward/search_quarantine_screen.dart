@@ -65,20 +65,24 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         });
       }
     });
-    fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          _districtList = value;
-        });
-      }
-    });
-    fetchWard({'district_id': districtController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          _wardList = value;
-        });
-      }
-    });
+    if (cityController.text != "") {
+      fetchDistrict({'city_id': cityController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            _districtList = value;
+          });
+        }
+      });
+    }
+    if (districtController.text != "") {
+      fetchWard({'district_id': districtController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            _wardList = value;
+          });
+        }
+      });
+    }
     fetchNotMemberList({'role_name_list': 'MANAGER'}).then((value) {
       if (mounted) {
         setState(() {

@@ -7,6 +7,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -94,55 +95,42 @@ class _SearchMemberState extends State<SearchMember> {
         });
       }
     });
-    fetchQuarantineBuilding({
-      'quarantine_ward': quarantineWardController.text,
-      'page_size': pageSizeMax,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          _quarantineBuildingList = value;
-        });
-      }
-    });
-    fetchQuarantineFloor({
-      'quarantine_building': quarantineBuildingController.text,
-      'page_size': pageSizeMax,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          _quarantineFloorList = value;
-        });
-      }
-    });
-    fetchQuarantineRoom({
-      'quarantine_floor': quarantineFloorController.text,
-      'page_size': pageSizeMax,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          _quarantineRoomList = value;
-        });
-      }
-    });
-    fetch = fetchMemberList(
-      data: filterMemberDataForm(
-        keySearch: keySearch.text,
-        page: 1,
-        quarantineWard: quarantineWardController.text,
-        quarantineBuilding: quarantineBuildingController.text,
-        quarantineFloor: quarantineFloorController.text,
-        quarantineRoom: quarantineRoomController.text,
-        quarantineAtMin:
-            parseDateToDateTimeWithTimeZone(quarantineAtMinController.text),
-        quarantineAtMax:
-            parseDateToDateTimeWithTimeZone(quarantineAtMaxController.text),
-        quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
-            quarantinedFinishExpectedAtController.text),
-        label: labelController.text,
-        healthStatus: healthStatusController.text,
-        test: testController.text,
-      ),
-    );
+    if (quarantineWardController.text != "") {
+      fetchQuarantineBuilding({
+        'quarantine_ward': quarantineWardController.text,
+        'page_size': pageSizeMax,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            _quarantineBuildingList = value;
+          });
+        }
+      });
+    }
+    if (quarantineBuildingController.text != "") {
+      fetchQuarantineFloor({
+        'quarantine_building': quarantineBuildingController.text,
+        'page_size': pageSizeMax,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            _quarantineFloorList = value;
+          });
+        }
+      });
+    }
+    if (quarantineFloorController.text != "") {
+      fetchQuarantineRoom({
+        'quarantine_floor': quarantineFloorController.text,
+        'page_size': pageSizeMax,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            _quarantineRoomList = value;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -907,6 +895,13 @@ Widget menus(BuildContext context, FilterMember item,
                       code: item.code,
                       name: item.fullName,
                     )));
+      } else if (result == 'quarantine_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListQuarantineHistory(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -938,6 +933,10 @@ Widget menus(BuildContext context, FilterMember item,
           cancel();
           showNotification(response, duration: 5);
         },
+      ),
+      const PopupMenuItem(
+        child: Text('Lịch sử cách ly'),
+        value: "quarantine_history",
       ),
     ],
   );

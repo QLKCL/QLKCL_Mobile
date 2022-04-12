@@ -139,13 +139,15 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       quarantineRoomList = [];
                       initQuarantineWard = null;
                     });
-                    fetchQuarantineBuilding({
-                      'quarantine_ward': newQuarantineWardController.text,
-                      'page_size': pageSizeMax,
-                      'is_full': false,
-                    }).then((data) => setState(() {
-                          quarantineBuildingList = data;
-                        }));
+                    if (newQuarantineWardController.text != "") {
+                      fetchQuarantineBuilding({
+                        'quarantine_ward': newQuarantineWardController.text,
+                        'page_size': pageSizeMax,
+                        'is_full': false,
+                      }).then((data) => setState(() {
+                            quarantineBuildingList = data;
+                          }));
+                    }
                   },
                   showSearchBox: true,
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
@@ -163,7 +165,8 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn tòa mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineBuildingList.isEmpty
+                  onFind: quarantineBuildingList.isEmpty &&
+                          newQuarantineWardController.text != ""
                       ? (String? filter) => fetchQuarantineBuilding({
                             'quarantine_ward': newQuarantineWardController.text,
                             'page_size': pageSizeMax,
@@ -190,14 +193,16 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       quarantineFloorList = [];
                       quarantineRoomList = [];
                     });
-                    fetchQuarantineFloor({
-                      'quarantine_building':
-                          newQuarantineBuildingController.text,
-                      'page_size': pageSizeMax,
-                      'is_full': false,
-                    }).then((data) => setState(() {
-                          quarantineFloorList = data;
-                        }));
+                    if (newQuarantineBuildingController.text != "") {
+                      fetchQuarantineFloor({
+                        'quarantine_building':
+                            newQuarantineBuildingController.text,
+                        'page_size': pageSizeMax,
+                        'is_full': false,
+                      }).then((data) => setState(() {
+                            quarantineFloorList = data;
+                          }));
+                    }
                   },
                   showSearchBox: true,
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
@@ -215,7 +220,8 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn tầng mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineFloorList.isEmpty
+                  onFind: quarantineFloorList.isEmpty &&
+                          newQuarantineBuildingController.text != ""
                       ? (String? filter) => fetchQuarantineFloor({
                             'quarantine_building':
                                 newQuarantineBuildingController.text,
@@ -239,13 +245,15 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       newQuarantineRoomController.clear();
                       quarantineRoomList = [];
                     });
-                    fetchQuarantineRoom({
-                      'quarantine_floor': newQuarantineFloorController.text,
-                      'page_size': pageSizeMax,
-                      'is_full': false,
-                    }).then((data) => setState(() {
-                          quarantineRoomList = data;
-                        }));
+                    if (newQuarantineFloorController.text != "") {
+                      fetchQuarantineRoom({
+                        'quarantine_floor': newQuarantineFloorController.text,
+                        'page_size': pageSizeMax,
+                        'is_full': false,
+                      }).then((data) => setState(() {
+                            quarantineRoomList = data;
+                          }));
+                    }
                   },
                   showSearchBox: true,
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
@@ -263,7 +271,8 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   hint: 'Chọn phòng mới',
                   required: true,
                   itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineRoomList.isEmpty
+                  onFind: quarantineRoomList.isEmpty &&
+                          newQuarantineFloorController.text != ""
                       ? (String? filter) => fetchQuarantineRoom({
                             'quarantine_floor':
                                 newQuarantineFloorController.text,

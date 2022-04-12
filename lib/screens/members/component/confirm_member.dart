@@ -637,9 +637,20 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListQuarantineHistory(
                       code: item.code,
                     )));
+      } else if (result == 'viewinfo') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ConfirmDetailMember(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+      const PopupMenuItem(
+        child: Text('Xem thông tin'),
+        value: "viewinfo",
+      ),
       PopupMenuItem(
         child: const Text('Chấp nhận'),
         onTap: () async {

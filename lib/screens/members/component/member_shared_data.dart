@@ -38,7 +38,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
   final quarantinedFinishExpectedAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
-  final positiveTestNowController = TextEditingController();
+  final positiveTestNowController = TextEditingController(text: "Null");
 
   void updateField() {
     setState(() {});

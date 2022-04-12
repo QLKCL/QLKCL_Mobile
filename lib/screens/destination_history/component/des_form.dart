@@ -103,27 +103,33 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
         });
       }
     });
-    fetchCity({'country_code': countryController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          cityList = value;
-        });
-      }
-    });
-    fetchDistrict({'city_id': cityController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          districtList = value;
-        });
-      }
-    });
-    fetchWard({'district_id': districtController.text}).then((value) {
-      if (mounted) {
-        setState(() {
-          wardList = value;
-        });
-      }
-    });
+    if (countryController.text != "") {
+      fetchCity({'country_code': countryController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            cityList = value;
+          });
+        }
+      });
+    }
+    if (cityController.text != "") {
+      fetchDistrict({'city_id': cityController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            districtList = value;
+          });
+        }
+      });
+    }
+    if (districtController.text != "") {
+      fetchWard({'district_id': districtController.text}).then((value) {
+        if (mounted) {
+          setState(() {
+            wardList = value;
+          });
+        }
+      });
+    }
   }
 
   //submit
@@ -198,10 +204,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       initDistrict = null;
                       initWard = null;
                     });
-                    fetchCity({'country_code': countryController.text})
-                        .then((data) => setState(() {
-                              cityList = data;
-                            }));
+                    if (countryController.text != "") {
+                      fetchCity({'country_code': countryController.text})
+                          .then((data) => setState(() {
+                                cityList = data;
+                              }));
+                    }
                   },
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -227,7 +235,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       : cityList.safeFirstWhere(
                           (type) => type.id.toString() == cityController.text),
                   enabled: widget.mode != Permission.view,
-                  onFind: cityList.isEmpty
+                  onFind: cityList.isEmpty && countryController.text != ""
                       ? (String? filter) =>
                           fetchCity({'country_code': countryController.text})
                       : null,
@@ -246,10 +254,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       initDistrict = null;
                       initWard = null;
                     });
-                    fetchDistrict({'city_id': cityController.text})
-                        .then((data) => setState(() {
-                              districtList = data;
-                            }));
+                    if (cityController.text != "") {
+                      fetchDistrict({'city_id': cityController.text})
+                          .then((data) => setState(() {
+                                districtList = data;
+                              }));
+                    }
                   },
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -275,7 +285,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       : districtList.safeFirstWhere((type) =>
                           type.id.toString() == districtController.text),
                   enabled: widget.mode != Permission.view,
-                  onFind: districtList.isEmpty
+                  onFind: districtList.isEmpty && cityController.text != ""
                       ? (String? filter) =>
                           fetchDistrict({'city_id': cityController.text})
                       : null,
@@ -291,10 +301,12 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       initDistrict = null;
                       initWard = null;
                     });
-                    fetchWard({'district_id': districtController.text})
-                        .then((data) => setState(() {
-                              wardList = data;
-                            }));
+                    if (districtController.text != "") {
+                      fetchWard({'district_id': districtController.text})
+                          .then((data) => setState(() {
+                                wardList = data;
+                              }));
+                    }
                   },
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -318,7 +330,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       ? initWard
                       : wardList.safeFirstWhere(
                           (type) => type.id.toString() == wardController.text),
-                  onFind: wardList.isEmpty
+                  onFind: wardList.isEmpty && districtController.text != ""
                       ? (String? filter) =>
                           fetchWard({'district_id': districtController.text})
                       : null,

@@ -146,24 +146,21 @@ CancelFunc showNotification(data,
     toastBuilder: (cancel) {
       return _CustomWidget(
         cancelFunc: cancel,
-        title: (data.runtimeType == Response)
-            ? ((data as Response).status == Status.success
+        title: (data is Response)
+            ? (data.status == Status.success
                 ? "Thành công"
-                : "Lỗi")
+                : (data.status == Status.warning ? "Cảnh báo" : "Lỗi"))
             : (status == Status.success
                 ? "Thành công"
                 : (status == Status.warning ? "Cảnh báo" : "Lỗi")),
-        subTitle:
-            (data.runtimeType == Response) ? (data as Response).message : data,
-        backgroundColor: (data.runtimeType == Response)
-            ? ((data as Response).status == Status.success
+        subTitle: (data is Response) ? data.message : data,
+        backgroundColor: (data is Response)
+            ? (data.status == Status.success
                 ? success
-                : error)
+                : (data.status == Status.warning ? warning : error))
             : (status == Status.success
                 ? success
-                : (status == Status.warning
-                    ? warning
-                    : error)),
+                : (status == Status.warning ? warning : error)),
       );
     },
     onlyOne: false,
