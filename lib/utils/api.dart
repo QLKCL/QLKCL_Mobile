@@ -14,6 +14,7 @@ class Api {
   static const String finishMember = '/api/user/member/finish_quarantine';
   static const String changeRoomMember =
       '/api/user/member/change_quarantine_ward_and_room';
+  static const String getSuitableRoom = '/api/user/member/get_suitable_room';
 
   static const String homeManager = '/api/user/home/manager';
   static const String homeMember = '/api/user/home/member';

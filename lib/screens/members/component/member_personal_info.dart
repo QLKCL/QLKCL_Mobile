@@ -12,7 +12,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -40,7 +40,7 @@ class MemberPersonalInfo extends StatefulWidget {
 class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     with AutomaticKeepAliveClientMixin<MemberPersonalInfo> {
   final _formKey = GlobalKey<FormState>();
-  late MemberShareDataState state;
+  late MemberSharedDataState state;
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -64,7 +64,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    state = MemberShareData.of(context);
+    state = MemberSharedData.of(context);
     if (widget.personalData != null) {
       state.codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";

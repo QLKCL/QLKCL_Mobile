@@ -5,7 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
+import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -42,7 +42,7 @@ class MemberQuarantineInfo extends StatefulWidget {
 class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     with AutomaticKeepAliveClientMixin<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
-  late MemberShareDataState state;
+  late MemberSharedDataState state;
 
   bool _isPositiveTestedBefore = false;
 
@@ -69,7 +69,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    state = MemberShareData.of(context);
+    state = MemberSharedData.of(context);
     getRole().then((value) => setState(() {
           _role = value;
         }));
@@ -410,6 +410,47 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   100,
               popupTitle: 'Phòng',
             ),
+            if (state.quarantineRoomController.text == "")
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 8, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () async {
+                      final data = await getSuitableRoom(
+                        getSuitableRoomDataForm(
+                          gender: state.genderController.text,
+                          label: state.labelController.text,
+                          numberOfVaccineDoses: "0",
+                          quarantineWard: state.quarantineWardController.text,
+                        ),
+                      );
+                      state.quarantineBuildingController.text =
+                          data['quarantine_building']['id'].toString();
+                      state.quarantineFloorController.text =
+                          data['quarantine_floor']['id'].toString();
+                      state.quarantineRoomController.text =
+                          data['quarantine_room']['id'].toString();
+                      initQuarantineBuilding =
+                          KeyValue.fromJson(data['quarantine_building']);
+                      initQuarantineFloor =
+                          KeyValue.fromJson(data['quarantine_floor']);
+                      initQuarantineRoom =
+                          KeyValue.fromJson(data['quarantine_room']);
+                      print(initQuarantineRoom.toString());
+                      // state.updateField();
+                      setState(() {});
+                    },
+                    child: Text(
+                      "Gợi ý chọn phòng",
+                      style: TextStyle(
+                        color: primary,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             DropdownInput<KeyValue>(
               label: 'Diện cách ly',
               hint: 'Chọn diện cách ly',
@@ -469,6 +510,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             MultiDropdownInput<KeyValue>(
               label: 'Bệnh nền',
               hint: 'Chọn bệnh nền',
+              margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               itemValue: backgroundDiseaseList,
               dropdownBuilder: customDropDown,
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,

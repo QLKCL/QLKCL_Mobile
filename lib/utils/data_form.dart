@@ -796,3 +796,24 @@ Map<String, dynamic> filterStaffDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> getSuitableRoomDataForm({
+  required String quarantineWard,
+  required String gender,
+  required String label,
+  required String numberOfVaccineDoses,
+  String? positiveTestNow,
+  String? oldQuarantineRoomId,
+  String? notQuarantineRoomIds,
+}) {
+  final data = {
+    "quarantine_ward_id": quarantineWard,
+    "gender": gender,
+    "label": label,
+    "number_of_vaccine_doses": numberOfVaccineDoses,
+    "positive_test_now": positiveTestNow,
+    "old_quarantine_room_id": oldQuarantineRoomId,
+    "not_quarantine_room_ids": notQuarantineRoomIds,
+  };
+  return prepareDataForm(data);
+}

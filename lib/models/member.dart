@@ -376,6 +376,29 @@ Future<Response> changeRoomMember(data) async {
   }
 }
 
+Future<dynamic> getSuitableRoom(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getSuitableRoom, data);
+  print(response);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0 &&
+        (response['data']['warning'] == null ||
+            response['data']['warning'] == "")) {
+      return response['data'];
+    } else if (response['error_code'] == 0 &&
+        response['data']['warning'] ==
+            "All rooms are not accept any more member") {
+      showNotification("Không còn phòng phù hợp!", status: Status.error);
+    } else if (response['error_code'] == 400) {
+      showNotification("Có lỗi xảy ra!", status: Status.error);
+    } else {
+      showNotification("Có lỗi xảy ra!", status: Status.error);
+    }
+  }
+}
+
 // To parse this JSON data, do
 //
 //     final filterMember = filterMemberFromJson(jsonString);
@@ -495,7 +518,7 @@ class FilterMember {
   }
 }
 
-Future<dynamic> fetchCustomUser({data}) async {
+Future<dynamic> fetchMember({data}) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getMember, data);
   if (response == null) {
