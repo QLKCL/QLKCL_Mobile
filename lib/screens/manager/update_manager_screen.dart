@@ -23,7 +23,7 @@ class _UpdateManagerState extends State<UpdateManager> {
   @override
   void initState() {
     super.initState();
-    futureMember = fetchCustomUser(data: {'code': widget.code});
+    futureMember = fetchMember(data: {'code': widget.code});
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
+import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 class UpdateMember extends StatefulWidget {
@@ -28,9 +29,9 @@ class _UpdateMemberState extends State<UpdateMember>
   void initState() {
     super.initState();
     if (widget.code != null) {
-      futureMember = fetchCustomUser(data: {'code': widget.code});
+      futureMember = fetchMember(data: {'code': widget.code});
     } else {
-      futureMember = fetchCustomUser();
+      futureMember = fetchMember();
     }
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
@@ -42,7 +43,8 @@ class _UpdateMemberState extends State<UpdateMember>
 
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
+    return MemberSharedData(
+        child: DismissKeyboard(
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Thông tin chi tiết"),
@@ -105,6 +107,6 @@ class _UpdateMemberState extends State<UpdateMember>
           },
         ),
       ),
-    );
+    ));
   }
 }

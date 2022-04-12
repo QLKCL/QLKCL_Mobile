@@ -163,31 +163,33 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final Widget Function(BuildContext, List<T>)? dropdownBuilder;
   final String Function(T?)? itemAsString;
   final String? popupTitle;
+  final EdgeInsets? margin;
 
-  const MultiDropdownInput(
-      {Key? key,
-      required this.label,
-      this.hint,
-      this.required = false,
-      this.itemValue,
-      this.selectedItems,
-      this.mode = Mode.MENU,
-      this.helper,
-      this.showSearchBox = false,
-      this.showClearButton = false,
-      this.maxHeight,
-      this.controller,
-      this.enabled = true,
-      this.validator,
-      this.onChanged,
-      this.onSaved,
-      this.onFind,
-      this.error,
-      this.dropdownBuilder,
-      this.compareFn,
-      this.itemAsString,
-      this.popupTitle})
-      : super(key: key);
+  const MultiDropdownInput({
+    Key? key,
+    required this.label,
+    this.hint,
+    this.required = false,
+    this.itemValue,
+    this.selectedItems,
+    this.mode = Mode.MENU,
+    this.helper,
+    this.showSearchBox = false,
+    this.showClearButton = false,
+    this.maxHeight,
+    this.controller,
+    this.enabled = true,
+    this.validator,
+    this.onChanged,
+    this.onSaved,
+    this.onFind,
+    this.error,
+    this.dropdownBuilder,
+    this.compareFn,
+    this.itemAsString,
+    this.popupTitle,
+    this.margin,
+  }) : super(key: key);
 
   @override
   State<MultiDropdownInput<T>> createState() => _MultiDropdownInputState<T>();
@@ -198,7 +200,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+      margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
