@@ -226,6 +226,31 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
           response['message']['passport_number'] == "Exist") {
         return Response(
             status: Status.error, message: "Số hộ chiếu đã tồn tại!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room is close (not accept any more member)") {
+        return Response(
+            status: Status.error,
+            message:
+                "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room has member that is positive") {
+        return Response(
+            status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['label'] != null &&
+          response['message']['label'] == "Permission denied") {
+        return Response(
+            status: Status.error,
+            message: "Không có quyền cập nhật diện cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          (response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history not exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "Many PRESENT quarantine history exist")) {
+        return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
@@ -314,6 +339,13 @@ Future<Response> acceptOneMember(data) async {
         return Response(
             status: Status.error,
             message: "Khu cách ly này đã hết giường trống!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] == "PRESENT quarantine history exist" ||
+              response['message']['main'] ==
+                  "PRESENT quarantine history not exist" ||
+              response['message']['main'] ==
+                  "Many PRESENT quarantine history exist")) {
+        return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else {
         return Response(
             status: Status.error,
@@ -332,12 +364,14 @@ Future<Response> finishMember(data) async {
   if (response == null) {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
-    if (response['error_code'] == 0) {
+    if (response['error_code'] == 0 && response['data'] != {}) {
+      return Response(
+          status: Status.error, message: "Không thể hoàn thành cách ly!");
+    } else if (response['error_code'] == 0 && response['data'] == {}) {
       return Response(
           status: Status.success, message: "Đã hoàn thành cách ly!");
     } else {
-      return Response(
-          status: Status.error, message: "Không thể hoàn thành cách ly!");
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
@@ -370,6 +404,18 @@ Future<Response> changeRoomMember(data) async {
             status: Status.error,
             message:
                 "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room has member that is positive") {
+        return Response(
+            status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] == "PRESENT quarantine history exist" ||
+              response['message']['main'] ==
+                  "PRESENT quarantine history not exist" ||
+              response['message']['main'] ==
+                  "Many PRESENT quarantine history exist")) {
+        return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
