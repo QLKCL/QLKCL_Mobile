@@ -238,11 +238,6 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               "This room has member that is positive") {
         return Response(
             status: Status.error, message: "Phòng này có người dương tính!");
-      } else if (response['message']['label'] != null &&
-          response['message']['label'] == "Permission denied") {
-        return Response(
-            status: Status.error,
-            message: "Không có quyền cập nhật diện cách ly!");
       } else if (response['message']['quarantine_room_id'] != null &&
           (response['message']['quarantine_room_id'] ==
                   "PRESENT quarantine history exist" ||
@@ -251,6 +246,20 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               response['message']['quarantine_room_id'] ==
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else if (response['error_code'] == 401) {
+      if (response['message'] != null &&
+          response['message'] == "Permission denied") {
+        return Response(
+            status: Status.error,
+            message: 'Không có quyền thực hiện chức năng này!');
+      } else if (response['message']['label'] != null &&
+          response['message']['label'] == "Permission denied") {
+        return Response(
+            status: Status.error,
+            message: "Không có quyền cập nhật diện cách ly!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
