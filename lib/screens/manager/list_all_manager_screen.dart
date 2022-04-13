@@ -43,8 +43,10 @@ class _ListAllManagerState extends State<ListAllManager>
                   rootNavigator: !Responsive.isDesktopLayout(context))
               .push(
             MaterialPageRoute(
-                builder: (context) =>
-                    AddManager(quarantineWard: widget.currentQuarrantine)),
+                builder: (context) => AddManager(
+                      quarantineWard: widget.currentQuarrantine,
+                      type: _tabController.index == 0 ? "manager" : "staff",
+                    )),
           );
         },
         child: const Icon(Icons.add),

@@ -23,6 +23,7 @@ class ManagerForm extends StatefulWidget {
   final KeyValue? quarantineBuilding;
   final List<KeyValue>? quarantineFloor;
   final dynamic staffData;
+  final String? type;
 
   const ManagerForm({
     Key? key,
@@ -33,6 +34,7 @@ class ManagerForm extends StatefulWidget {
     this.quarantineBuilding,
     this.quarantineFloor,
     this.staffData,
+    this.type,
   }) : super(key: key);
 
   @override
@@ -86,11 +88,12 @@ class _ManagerFormState extends State<ManagerForm> {
   KeyValue? initQuarantineBuilding;
   List<KeyValue>? initQuarantineFloor;
 
-  String type = "manager";
+  late String type;
 
   @override
   void initState() {
     super.initState();
+    type = widget.type ?? "manager";
     if (widget.personalData != null) {
       codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";

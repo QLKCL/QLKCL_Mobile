@@ -10,9 +10,11 @@ class AddManager extends StatefulWidget {
   const AddManager({
     Key? key,
     this.quarantineWard,
+    this.type,
   }) : super(key: key);
 
   final KeyValue? quarantineWard;
+  final String? type;
 
   @override
   _AddManagerState createState() => _AddManagerState();
@@ -56,6 +58,7 @@ class _AddManagerState extends State<AddManager> {
           mode: Permission.add,
           infoFromIdentityCard: infoFromIdentityCard,
           quarantineWard: widget.quarantineWard,
+          type: widget.type,
         ),
       ),
     );
