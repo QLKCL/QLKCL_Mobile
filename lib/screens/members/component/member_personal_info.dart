@@ -22,7 +22,6 @@ class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
   final CustomUser? personalData;
   final Permission mode;
-  static String? userCode;
   final List<String>? infoFromIdentityCard;
 
   const MemberPersonalInfo(
@@ -63,7 +62,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     state = MemberSharedData.of(context);
     if (widget.personalData != null) {
       state.codeController.text =
@@ -466,10 +464,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: _submit,
-                  child: (widget.mode == Permission.add ||
-                          widget.mode == Permission.edit)
-                      ? const Text("Lưu")
-                      : const Text('Tiếp theo'),
+                  child: widget.mode == Permission.add
+                      ? const Text("Tạo")
+                      : widget.mode == Permission.edit
+                          ? const Text('Lưu')
+                          : const Text('Tiếp theo'),
                 ),
               ),
           ],
@@ -506,6 +505,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           cancel();
           showNotification(response);
           if (response.status == Status.success) {
+            state.codeController.text = response.data['custom_user']['code'];
             widget.tabController!.animateTo(1);
           }
         }

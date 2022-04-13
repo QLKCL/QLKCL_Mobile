@@ -143,7 +143,6 @@ Future<Response> createMember(Map<String, dynamic> data) async {
     return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      MemberPersonalInfo.userCode = response['data']['custom_user']["code"];
       return Response(
           status: Status.success,
           message: "Tạo người cách ly thành công!",

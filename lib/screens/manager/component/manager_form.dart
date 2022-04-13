@@ -83,6 +83,7 @@ class _ManagerFormState extends State<ManagerForm> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.personalData != null) {
       codeController.text =
           widget.personalData?.code != null ? widget.personalData!.code : "";
@@ -149,11 +150,12 @@ class _ManagerFormState extends State<ManagerForm> {
         quarantineWardController.text = widget.quarantineWard!.id.toString();
       } else {
         getQuarantineWard().then((val) {
-          quarantineWardController.text = "$val";
+          setState(() {
+            quarantineWardController.text = "$val";
+          });
         });
       }
     }
-    super.initState();
     fetchCountry().then((value) {
       if (mounted) {
         setState(() {
@@ -197,26 +199,30 @@ class _ManagerFormState extends State<ManagerForm> {
         });
       }
     });
-    fetchQuarantineBuilding({
-      'quarantine_ward': quarantineWardController.text,
-      'page_size': pageSizeMax,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          quarantineBuildingList = value;
-        });
-      }
-    });
-    fetchQuarantineFloor({
-      'quarantine_building': quarantineBuildingController.text,
-      'page_size': pageSizeMax,
-    }).then((value) {
-      if (mounted) {
-        setState(() {
-          quarantineFloorList = value;
-        });
-      }
-    });
+    if (quarantineWardController.text != "") {
+      fetchQuarantineBuilding({
+        'quarantine_ward': quarantineWardController.text,
+        'page_size': pageSizeMax,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            quarantineBuildingList = value;
+          });
+        }
+      });
+    }
+    if (quarantineBuildingController.text != "") {
+      fetchQuarantineFloor({
+        'quarantine_building': quarantineBuildingController.text,
+        'page_size': pageSizeMax,
+      }).then((value) {
+        if (mounted) {
+          setState(() {
+            quarantineFloorList = value;
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -313,12 +319,14 @@ class _ManagerFormState extends State<ManagerForm> {
                   initQuarantineBuilding = null;
                   initQuarantineFloor = null;
                 });
-                fetchQuarantineBuilding({
-                  'quarantine_ward': quarantineWardController.text,
-                  'page_size': pageSizeMax,
-                }).then((data) => setState(() {
-                      quarantineBuildingList = data;
-                    }));
+                if (quarantineWardController.text != "") {
+                  fetchQuarantineBuilding({
+                    'quarantine_ward': quarantineWardController.text,
+                    'page_size': pageSizeMax,
+                  }).then((data) => setState(() {
+                        quarantineBuildingList = data;
+                      }));
+                }
               },
               enabled: widget.mode == Permission.add,
               showSearchBox: true,
@@ -629,7 +637,8 @@ class _ManagerFormState extends State<ManagerForm> {
                 hint: 'Chọn tòa',
                 required: widget.mode != Permission.view,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineBuildingList.isEmpty
+                onFind: quarantineBuildingList.isEmpty &&
+                        quarantineWardController.text != ""
                     ? (String? filter) => fetchQuarantineBuilding({
                           'quarantine_ward': quarantineWardController.text,
                           'page_size': pageSizeMax,
@@ -655,12 +664,14 @@ class _ManagerFormState extends State<ManagerForm> {
                     initQuarantineBuilding = null;
                     initQuarantineFloor = null;
                   });
-                  fetchQuarantineFloor({
-                    'quarantine_building': quarantineBuildingController.text,
-                    'page_size': pageSizeMax,
-                  }).then((data) => setState(() {
-                        quarantineFloorList = data;
-                      }));
+                  if (quarantineBuildingController.text != "") {
+                    fetchQuarantineFloor({
+                      'quarantine_building': quarantineBuildingController.text,
+                      'page_size': pageSizeMax,
+                    }).then((data) => setState(() {
+                          quarantineFloorList = data;
+                        }));
+                  }
                 },
                 enabled: widget.mode != Permission.view,
                 showSearchBox: true,
@@ -681,7 +692,8 @@ class _ManagerFormState extends State<ManagerForm> {
                 required: widget.mode != Permission.view,
                 dropdownBuilder: customDropDown,
                 itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineFloorList.isEmpty
+                onFind: quarantineFloorList.isEmpty &&
+                        quarantineBuildingController.text != ""
                     ? (String? filter) => fetchQuarantineFloor({
                           'quarantine_building':
                               quarantineBuildingController.text,

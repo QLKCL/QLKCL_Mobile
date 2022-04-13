@@ -11,7 +11,6 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:intl/intl.dart';
@@ -64,15 +63,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   @override
   void initState() {
     super.initState();
+    getRole().then((value) => setState(() {
+          _role = value;
+        }));
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = MemberSharedData.of(context);
-    getRole().then((value) => setState(() {
-          _role = value;
-        }));
     if (widget.mode == Permission.add) {
       state.quarantineRoomController.text = widget.quarantineRoom != null
           ? widget.quarantineRoom!.id.toString()
@@ -84,13 +83,17 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineBuilding != null
               ? widget.quarantineBuilding!.id.toString()
               : "";
-      state.quarantineWardController.text = widget.quarantineWard != null
-          ? widget.quarantineWard!.id.toString()
-          : "";
+      if (widget.quarantineWard != null) {
+        state.quarantineWardController.text =
+            widget.quarantineWard!.id.toString();
+      } else {
+        getQuarantineWard().then((val) {
+          setState(() {
+            state.quarantineWardController.text = "$val";
+          });
+        });
+      }
       state.backgroundDiseaseController.text = "";
-      getQuarantineWard().then((val) {
-        state.quarantineWardController.text = "$val";
-      });
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -635,14 +638,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       } else {
         final CancelFunc cancel = showLoading();
         final updateResponse = await updateMember(updateMemberDataForm(
-          code: (widget.mode == Permission.add &&
-                  MemberPersonalInfo.userCode != null &&
-                  MemberPersonalInfo.userCode != "")
-              ? MemberPersonalInfo.userCode!
-              : ((widget.quarantineData != null &&
-                      widget.quarantineData?.customUserCode != null)
-                  ? widget.quarantineData!.customUserCode.toString()
-                  : ""),
+          code:
+              (widget.mode == Permission.add && state.codeController.text != "")
+                  ? state.codeController.text
+                  : ((widget.quarantineData != null &&
+                          widget.quarantineData?.customUserCode != null)
+                      ? widget.quarantineData!.customUserCode.toString()
+                      : ""),
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,

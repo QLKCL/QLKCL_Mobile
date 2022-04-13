@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/helper/authentication.dart';
 
 class MemberSharedData extends StatefulWidget {
   final Widget child;
@@ -42,6 +43,17 @@ class MemberSharedDataState extends State<MemberSharedData> {
 
   void updateField() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    getQuarantineWard().then((val) {
+      setState(() {
+        quarantineWardController.text = "$val";
+      });
+    });
   }
 
   @override
