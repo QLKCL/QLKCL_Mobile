@@ -245,36 +245,39 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     .data['quarantined_finish_expected_at'] ??
                                 "",
                           ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              primary: success,
-                            ),
-                            onPressed:
-                                (snapshot.data['quarantine_ward'] != null &&
-                                        snapshot.data['quarantine_ward']
-                                                ['phone_number'] !=
-                                            "")
-                                    ? () async {
-                                        launch(
-                                            "tel://${snapshot.data['quarantine_ward']['phone_number']}");
-                                      }
-                                    : () {
-                                        showNotification(
-                                            'Số điện thoại không tồn tại.',
-                                            status: Status.error);
-                                      },
-                            child: Text(
-                              'Gọi cấp cứu',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 20,
+                        if (snapshot.data['quarantine_ward'] != null &&
+                            snapshot.data['quarantine_ward']['phone_number'] !=
+                                "")
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                                primary: success,
+                              ),
+                              onPressed:
+                                  (snapshot.data['quarantine_ward'] != null &&
+                                          snapshot.data['quarantine_ward']
+                                                  ['phone_number'] !=
+                                              "")
+                                      ? () async {
+                                          launch(
+                                              "tel://${snapshot.data['quarantine_ward']['phone_number']}");
+                                        }
+                                      : () {
+                                          showNotification(
+                                              'Số điện thoại không tồn tại.',
+                                              status: Status.error);
+                                        },
+                              child: Text(
+                                'Gọi cấp cứu',
+                                style: TextStyle(
+                                  color: white,
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         Container(
                           margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                           child: ElevatedButton(
