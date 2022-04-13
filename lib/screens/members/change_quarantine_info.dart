@@ -195,7 +195,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                     });
                     if (newQuarantineBuildingController.text != "") {
                       fetchQuarantineFloor({
-                        'quarantine_building':
+                        'quarantine_building_id_list':
                             newQuarantineBuildingController.text,
                         'page_size': pageSizeMax,
                         'is_full': false,
@@ -223,7 +223,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                   onFind: quarantineFloorList.isEmpty &&
                           newQuarantineBuildingController.text != ""
                       ? (String? filter) => fetchQuarantineFloor({
-                            'quarantine_building':
+                            'quarantine_building_id_list':
                                 newQuarantineBuildingController.text,
                             'page_size': pageSizeMax,
                             'search': filter,

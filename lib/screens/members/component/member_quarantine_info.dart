@@ -173,7 +173,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     }
     if (state.quarantineBuildingController.text != "") {
       fetchQuarantineFloor({
-        'quarantine_building': state.quarantineBuildingController.text,
+        'quarantine_building_id_list': state.quarantineBuildingController.text,
         'page_size': pageSizeMax,
         'is_full': false,
       }).then((value) {
@@ -310,7 +310,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 });
                 if (state.quarantineBuildingController.text != "") {
                   fetchQuarantineFloor({
-                    'quarantine_building':
+                    'quarantine_building_id_list':
                         state.quarantineBuildingController.text,
                     'page_size': pageSizeMax,
                     'is_full': false,
@@ -343,7 +343,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               onFind: quarantineFloorList.isEmpty &&
                       state.quarantineBuildingController.text != ""
                   ? (String? filter) => fetchQuarantineFloor({
-                        'quarantine_building':
+                        'quarantine_building_id_list':
                             state.quarantineBuildingController.text,
                         'page_size': pageSizeMax,
                         'search': filter,

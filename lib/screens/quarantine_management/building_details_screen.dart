@@ -33,7 +33,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
     super.initState();
     currentBuilding = widget.currentBuilding!;
     futureFloorList =
-        fetchFloorList({'quarantine_building': currentBuilding.id});
+        fetchFloorList({'quarantine_building_id_list': currentBuilding.id});
   }
 
   @override
@@ -57,7 +57,7 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                     currentBuilding = value;
                   }
                   futureFloorList = fetchFloorList(
-                      {'quarantine_building': currentBuilding.id});
+                      {'quarantine_building_id_list': currentBuilding.id});
                 }));
           },
           icon: const Icon(Icons.edit),
@@ -125,8 +125,8 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
               ),
             ),
           ).then((value) => setState(() {
-                futureFloorList =
-                    fetchFloorList({'quarantine_building': currentBuilding.id});
+                futureFloorList = fetchFloorList(
+                    {'quarantine_building_id_list': currentBuilding.id});
               }));
         },
         tooltip: 'Thêm tầng',

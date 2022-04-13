@@ -110,7 +110,7 @@ class _SearchMemberState extends State<SearchMember> {
     }
     if (quarantineBuildingController.text != "") {
       fetchQuarantineFloor({
-        'quarantine_building': quarantineBuildingController.text,
+        'quarantine_building_id_list': quarantineBuildingController.text,
         'page_size': pageSizeMax,
       }).then((value) {
         if (mounted) {

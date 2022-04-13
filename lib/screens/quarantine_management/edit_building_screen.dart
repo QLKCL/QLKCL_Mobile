@@ -33,8 +33,8 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
   @override
   void initState() {
     super.initState();
-    numOfFloor =
-        fetchNumOfFloor({'quarantine_building': widget.currentBuilding!.id});
+    numOfFloor = fetchNumOfFloor(
+        {'quarantine_building_id_list': widget.currentBuilding!.id});
     nameController.text = widget.currentBuilding!.name;
   }
 

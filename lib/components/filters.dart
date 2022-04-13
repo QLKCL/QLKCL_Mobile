@@ -150,7 +150,7 @@ Future memberFilter(
             });
             if (quarantineBuildingController.text != "") {
               fetchQuarantineFloor({
-                'quarantine_building': quarantineBuildingController.text,
+                'quarantine_building_id_list': quarantineBuildingController.text,
                 'page_size': pageSizeMax,
               }).then((data) => setState(() {
                     quarantineFloorList = data;
@@ -171,7 +171,7 @@ Future memberFilter(
           onFind: quarantineFloorList.isEmpty &&
                   quarantineBuildingController.text != ""
               ? (String? filter) => fetchQuarantineFloor({
-                    'quarantine_building':
+                    'quarantine_building_id_list':
                         quarantineBuildingController.text,
                     'page_size': pageSizeMax,
                     'search': filter

@@ -223,7 +223,7 @@ class _ManagerFormState extends State<ManagerForm> {
     }
     if (quarantineBuildingController.text != "") {
       fetchQuarantineFloor({
-        'quarantine_building': quarantineBuildingController.text,
+        'quarantine_building_id_list': quarantineBuildingController.text,
         'page_size': pageSizeMax,
       }).then((value) {
         if (mounted) {
@@ -649,11 +649,12 @@ class _ManagerFormState extends State<ManagerForm> {
               validatorFunction: passportValidator,
             ),
             if (type == "staff")
-              DropdownInput<KeyValue>(
+              MultiDropdownInput<KeyValue>(
                 widgetKey: buildingKey,
                 label: 'Tòa',
                 hint: 'Chọn tòa',
                 required: widget.mode != Permission.view,
+                dropdownBuilder: customDropDown,
                 itemAsString: (KeyValue? u) => u!.name,
                 onFind: quarantineBuildingList.isEmpty &&
                         quarantineWardController.text != ""
@@ -665,17 +666,25 @@ class _ManagerFormState extends State<ManagerForm> {
                     : null,
                 compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                 itemValue: quarantineBuildingList,
-                selectedItem: widget.quarantineBuilding ??
-                    (initQuarantineBuilding ??
-                        quarantineBuildingList.safeFirstWhere((type) =>
-                            type.id.toString() ==
-                            quarantineBuildingController.text)),
+                selectedItems: widget.quarantineBuilding != null
+                    ? [widget.quarantineBuilding!]
+                    : initQuarantineBuilding != null
+                        ? [initQuarantineBuilding!]
+                        : (quarantineBuildingController.text != ""
+                            ? quarantineBuildingController.text
+                                .split(',')
+                                .map((e) =>
+                                    quarantineBuildingList.safeFirstWhere(
+                                        (result) => result.id == e)!)
+                                .toList()
+                            : null),
                 onChanged: (value) {
                   setState(() {
                     if (value == null) {
                       quarantineBuildingController.text = "";
                     } else {
-                      quarantineBuildingController.text = value.id.toString();
+                      quarantineBuildingController.text =
+                          value.map((e) => e.id).join(",");
                     }
                     quarantineFloorController.clear();
                     quarantineFloorList = [];
@@ -684,7 +693,8 @@ class _ManagerFormState extends State<ManagerForm> {
                   });
                   if (quarantineBuildingController.text != "") {
                     fetchQuarantineFloor({
-                      'quarantine_building': quarantineBuildingController.text,
+                      'quarantine_building_id_list':
+                          quarantineBuildingController.text,
                       'page_size': pageSizeMax,
                     }).then((data) => setState(() {
                           quarantineFloorList = data;
@@ -715,7 +725,7 @@ class _ManagerFormState extends State<ManagerForm> {
                 onFind: quarantineFloorList.isEmpty &&
                         quarantineBuildingController.text != ""
                     ? (String? filter) => fetchQuarantineFloor({
-                          'quarantine_building':
+                          'quarantine_building_id_list':
                               quarantineBuildingController.text,
                           'page_size': pageSizeMax,
                           'search': filter,
