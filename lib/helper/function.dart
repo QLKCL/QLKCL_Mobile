@@ -185,11 +185,12 @@ class Responsive extends StatelessWidget {
 
 String getAddress(data) {
   if (data != null) {
-    final String address = data['detail_address'] != null
-        ? "${data['detail_address']}, "
-        : (data['address']) != null
-            ? "${data['address']}, "
-            : "";
+    final String address =
+        data['detail_address'] != null && data['detail_address'] != ""
+            ? "${data['detail_address']}, "
+            : (data['address'] != null && data['address'] != "")
+                ? "${data['address']}, "
+                : "";
     final String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
     final String district =
         data['district'] != null ? "${data['district']['name']}, " : "";

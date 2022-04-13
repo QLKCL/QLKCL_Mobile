@@ -7,6 +7,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
 import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -902,6 +903,13 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListQuarantineHistory(
                       code: item.code,
                     )));
+      } else if (result == 'détination_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListDestinationHistory(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -933,6 +941,10 @@ Widget menus(BuildContext context, FilterMember item,
           cancel();
           showNotification(response, duration: 5);
         },
+      ),
+      const PopupMenuItem(
+        child: Text('Lịch sử di chuyển'),
+        value: "détination_history",
       ),
       const PopupMenuItem(
         child: Text('Lịch sử cách ly'),
