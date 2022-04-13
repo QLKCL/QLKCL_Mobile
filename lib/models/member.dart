@@ -383,7 +383,7 @@ Future<dynamic> getSuitableRoom(data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getSuitableRoom, data);
   if (response == null) {
-    return Response(status: Status.error, message: "Lỗi kết nối!");
+    showNotification("Lỗi kết nối!", status: Status.error);
   } else {
     if (response['error_code'] == 0 &&
         (response['data']['warning'] == null ||
@@ -394,7 +394,13 @@ Future<dynamic> getSuitableRoom(data) async {
             "All rooms are not accept any more member") {
       showNotification("Không tìm thấy phòng thích hợp!", status: Status.error);
     } else if (response['error_code'] == 400) {
-      showNotification("Không tìm thấy phòng thích hợp!", status: Status.error);
+      if (response['message']['label'] != null &&
+          response['message']['label'] == "empty") {
+        showNotification("Vui lòng chọn diện cách ly!", status: Status.error);
+      } else {
+        showNotification("Không tìm thấy phòng thích hợp!",
+            status: Status.error);
+      }
     } else {
       showNotification("Có lỗi xảy ra!", status: Status.error);
     }

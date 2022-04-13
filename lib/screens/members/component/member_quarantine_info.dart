@@ -494,9 +494,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   state.labelController.text = value.id.toString();
                 }
               },
-              enabled: widget.mode == Permission.add ||
-                  (widget.mode == Permission.edit &&
-                      (_role != 5 || state.labelController.text == "")),
+              enabled: widget.mode != Permission.view,
+              required: widget.mode != Permission.view,
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
