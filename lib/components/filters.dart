@@ -63,6 +63,9 @@ Future memberFilter(
       onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
+  final buildingKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final floorKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final roomKey = GlobalKey<DropdownSearchState<KeyValue>>();
   // Using Wrap makes the bottom sheet height the height of the content.
   // Otherwise, the height will be half the height of the screen.
   final filterContent = StatefulBuilder(builder:
@@ -110,12 +113,14 @@ Future memberFilter(
                 'page_size': pageSizeMax,
               }).then((data) => setState(() {
                     quarantineBuildingList = data;
+                    buildingKey.currentState?.openDropDownSearch();
                   }));
             }
           },
           showClearButton: true,
         ),
         DropdownInput<KeyValue>(
+          widgetKey: buildingKey,
           label: 'Tòa',
           hint: 'Chọn tòa',
           itemAsString: (KeyValue? u) => u!.name,
@@ -145,16 +150,18 @@ Future memberFilter(
             });
             if (quarantineBuildingController.text != "") {
               fetchQuarantineFloor({
-                'quarantine_building': quarantineBuildingController.text,
+                'quarantine_building_id_list': quarantineBuildingController.text,
                 'page_size': pageSizeMax,
               }).then((data) => setState(() {
                     quarantineFloorList = data;
+                    floorKey.currentState?.openDropDownSearch();
                   }));
             }
           },
           showClearButton: true,
         ),
         DropdownInput<KeyValue>(
+          widgetKey: floorKey,
           label: 'Tầng',
           hint: 'Chọn tầng',
           itemAsString: (KeyValue? u) => u!.name,
@@ -164,7 +171,8 @@ Future memberFilter(
           onFind: quarantineFloorList.isEmpty &&
                   quarantineBuildingController.text != ""
               ? (String? filter) => fetchQuarantineFloor({
-                    'quarantine_building': quarantineBuildingController.text,
+                    'quarantine_building_id_list':
+                        quarantineBuildingController.text,
                     'page_size': pageSizeMax,
                     'search': filter
                   })
@@ -186,6 +194,7 @@ Future memberFilter(
                 'page_size': pageSizeMax,
               }).then((data) => setState(() {
                     quarantineRoomList = data;
+                    roomKey.currentState?.openDropDownSearch();
                   }));
             }
           },
@@ -523,6 +532,8 @@ Future quarantineFilter(
       onSubmit,
   bool useCustomBottomSheetMode = false,
 }) {
+  final districtKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
   final filterContent = StatefulBuilder(builder:
       (BuildContext context, StateSetter setState /*You can rename this!*/) {
     return Wrap(
@@ -560,6 +571,7 @@ Future quarantineFilter(
               fetchDistrict({'city_id': cityController.text})
                   .then((data) => setState(() {
                         districtList = data;
+                        districtKey.currentState?.openDropDownSearch();
                       }));
             }
           },
@@ -578,6 +590,7 @@ Future quarantineFilter(
           showClearButton: true,
         ),
         DropdownInput<KeyValue>(
+          widgetKey: districtKey,
           label: 'Quận/huyện',
           hint: 'Quận/huyện',
           itemValue: districtList,
@@ -601,6 +614,7 @@ Future quarantineFilter(
               fetchWard({'district_id': districtController.text})
                   .then((data) => setState(() {
                         wardList = data;
+                        wardKey.currentState?.openDropDownSearch();
                       }));
             }
           },
@@ -619,6 +633,7 @@ Future quarantineFilter(
           showClearButton: true,
         ),
         DropdownInput<KeyValue>(
+          widgetKey: wardKey,
           label: 'Phường/xã',
           hint: 'Phường/xã',
           itemValue: wardList,

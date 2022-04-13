@@ -30,8 +30,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   void initState() {
     super.initState();
-    futureFloorList =
-        fetchFloorList({'quarantine_building': widget.currentBuilding!.id});
+    futureFloorList = fetchFloorList(
+        {'quarantine_building_id_list': widget.currentBuilding!.id});
 
     myController.addListener(_updateLatestValue);
   }
@@ -181,7 +181,8 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                   ),
                                   if (addMultiple)
                                     ListView.builder(
-                                      physics: const NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder: (ctx, index) {
                                         return Row(

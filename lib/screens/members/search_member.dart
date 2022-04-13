@@ -7,6 +7,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
 import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
@@ -109,7 +110,7 @@ class _SearchMemberState extends State<SearchMember> {
     }
     if (quarantineBuildingController.text != "") {
       fetchQuarantineFloor({
-        'quarantine_building': quarantineBuildingController.text,
+        'quarantine_building_id_list': quarantineBuildingController.text,
         'page_size': pageSizeMax,
       }).then((value) {
         if (mounted) {
@@ -665,12 +666,12 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<DateTime?>(
                   columnName: 'quarantinedAt',
                   value: e.quarantinedAt != null
-                      ? DateTime.parse(e.quarantinedAt!)
+                      ? DateTime.parse(e.quarantinedAt!).toLocal()
                       : null),
               DataGridCell<DateTime?>(
                   columnName: 'quarantinedFinishExpectedAt',
                   value: e.quarantinedFinishExpectedAt != null
-                      ? DateTime.parse(e.quarantinedFinishExpectedAt!)
+                      ? DateTime.parse(e.quarantinedFinishExpectedAt!).toLocal()
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
@@ -902,6 +903,13 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListQuarantineHistory(
                       code: item.code,
                     )));
+      } else if (result == 'détination_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListDestinationHistory(
+                      code: item.code,
+                    )));
       }
     },
     itemBuilder: (BuildContext context) => <PopupMenuEntry>[
@@ -933,6 +941,10 @@ Widget menus(BuildContext context, FilterMember item,
           cancel();
           showNotification(response, duration: 5);
         },
+      ),
+      const PopupMenuItem(
+        child: Text('Lịch sử di chuyển'),
+        value: "détination_history",
       ),
       const PopupMenuItem(
         child: Text('Lịch sử cách ly'),

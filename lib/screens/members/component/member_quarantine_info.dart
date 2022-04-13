@@ -11,7 +11,6 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +41,11 @@ class MemberQuarantineInfo extends StatefulWidget {
 class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     with AutomaticKeepAliveClientMixin<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
+
+  final buildingKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final floorKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final roomKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   late MemberSharedDataState state;
 
   bool _isPositiveTestedBefore = false;
@@ -64,15 +68,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   @override
   void initState() {
     super.initState();
+    getRole().then((value) => setState(() {
+          _role = value;
+        }));
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = MemberSharedData.of(context);
-    getRole().then((value) => setState(() {
-          _role = value;
-        }));
     if (widget.mode == Permission.add) {
       state.quarantineRoomController.text = widget.quarantineRoom != null
           ? widget.quarantineRoom!.id.toString()
@@ -84,13 +88,17 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineBuilding != null
               ? widget.quarantineBuilding!.id.toString()
               : "";
-      state.quarantineWardController.text = widget.quarantineWard != null
-          ? widget.quarantineWard!.id.toString()
-          : "";
+      if (widget.quarantineWard != null) {
+        state.quarantineWardController.text =
+            widget.quarantineWard!.id.toString();
+      } else {
+        getQuarantineWard().then((val) {
+          setState(() {
+            state.quarantineWardController.text = "$val";
+          });
+        });
+      }
       state.backgroundDiseaseController.text = "";
-      getQuarantineWard().then((val) {
-        state.quarantineWardController.text = "$val";
-      });
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -109,16 +117,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               ? widget.quarantineData!.quarantineWard!.id.toString()
               : "";
       state.labelController.text = widget.quarantineData?.label ?? "";
-      state.quarantinedAtController.text =
-          widget.quarantineData?.quarantinedAt != null
-              ? DateFormat("dd/MM/yyyy")
-                  .format(DateTime.parse(widget.quarantineData?.quarantinedAt))
-              : "";
-      state.quarantinedFinishExpectedAtController.text =
-          widget.quarantineData?.quarantinedFinishExpectedAt != null
-              ? DateFormat("dd/MM/yyyy").format(DateTime.parse(
-                  widget.quarantineData?.quarantinedFinishExpectedAt))
-              : "";
+      state.quarantinedAtController.text = widget
+                  .quarantineData?.quarantinedAt !=
+              null
+          ? DateFormat("dd/MM/yyyy").format(
+              DateTime.parse(widget.quarantineData?.quarantinedAt).toLocal())
+          : "";
+      state.quarantinedFinishExpectedAtController.text = widget
+                  .quarantineData?.quarantinedFinishExpectedAt !=
+              null
+          ? DateFormat("dd/MM/yyyy").format(
+              DateTime.parse(widget.quarantineData?.quarantinedFinishExpectedAt)
+                  .toLocal())
+          : "";
       state.backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
@@ -165,7 +176,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     }
     if (state.quarantineBuildingController.text != "") {
       fetchQuarantineFloor({
-        'quarantine_building': state.quarantineBuildingController.text,
+        'quarantine_building_id_list': state.quarantineBuildingController.text,
         'page_size': pageSizeMax,
         'is_full': false,
       }).then((value) {
@@ -244,6 +255,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineBuildingList = data;
+                        buildingKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -260,6 +272,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Khu cách ly',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: buildingKey,
               label: 'Tòa',
               hint: 'Chọn tòa',
               required: widget.mode != Permission.view &&
@@ -300,12 +313,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 });
                 if (state.quarantineBuildingController.text != "") {
                   fetchQuarantineFloor({
-                    'quarantine_building':
+                    'quarantine_building_id_list':
                         state.quarantineBuildingController.text,
                     'page_size': pageSizeMax,
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineFloorList = data;
+                        floorKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -322,6 +336,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Tòa',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: floorKey,
               label: 'Tầng',
               hint: 'Chọn tầng',
               required: widget.mode != Permission.view &&
@@ -331,7 +346,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               onFind: quarantineFloorList.isEmpty &&
                       state.quarantineBuildingController.text != ""
                   ? (String? filter) => fetchQuarantineFloor({
-                        'quarantine_building':
+                        'quarantine_building_id_list':
                             state.quarantineBuildingController.text,
                         'page_size': pageSizeMax,
                         'search': filter,
@@ -364,6 +379,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineRoomList = data;
+                        roomKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -380,6 +396,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Tầng',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: roomKey,
               label: 'Phòng',
               hint: 'Chọn phòng',
               required: widget.mode != Permission.view &&
@@ -480,9 +497,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   state.labelController.text = value.id.toString();
                 }
               },
-              enabled: widget.mode == Permission.add ||
-                  (widget.mode == Permission.edit &&
-                      (_role != 5 || state.labelController.text == "")),
+              enabled: widget.mode != Permission.view,
+              required: widget.mode != Permission.view,
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
@@ -635,14 +651,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       } else {
         final CancelFunc cancel = showLoading();
         final updateResponse = await updateMember(updateMemberDataForm(
-          code: (widget.mode == Permission.add &&
-                  MemberPersonalInfo.userCode != null &&
-                  MemberPersonalInfo.userCode != "")
-              ? MemberPersonalInfo.userCode!
-              : ((widget.quarantineData != null &&
-                      widget.quarantineData?.customUserCode != null)
-                  ? widget.quarantineData!.customUserCode.toString()
-                  : ""),
+          code:
+              (widget.mode == Permission.add && state.codeController.text != "")
+                  ? state.codeController.text
+                  : ((widget.quarantineData != null &&
+                          widget.quarantineData?.customUserCode != null)
+                      ? widget.quarantineData!.customUserCode.toString()
+                      : ""),
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,

@@ -81,13 +81,13 @@ String parseDateToDateTimeWithTimeZone(String date, {String? time}) {
   String outputDate = "";
   if (date != "") {
     final DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString());
+    var inputDate = DateTime.parse(parseDate.toString()).toLocal();
     if (time != null) {
       final int hour = int.parse(time.split(':').first);
       final int minute = int.parse(time.split(':').last);
       inputDate = inputDate.copyWith(hour: hour, minute: minute);
     }
-    inputDate = DateTime.parse(formatISOTime(inputDate));
+    inputDate = DateTime.parse(formatISOTime(inputDate)).toLocal();
     final outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     outputDate = outputFormat.format(inputDate);
   }
@@ -185,11 +185,12 @@ class Responsive extends StatelessWidget {
 
 String getAddress(data) {
   if (data != null) {
-    final String address = data['detail_address'] != null
-        ? "${data['detail_address']}, "
-        : (data['address']) != null
-            ? "${data['address']}, "
-            : "";
+    final String address =
+        data['detail_address'] != null && data['detail_address'] != ""
+            ? "${data['detail_address']}, "
+            : (data['address'] != null && data['address'] != "")
+                ? "${data['address']}, "
+                : "";
     final String ward = data['ward'] != null ? "${data['ward']['name']}, " : "";
     final String district =
         data['district'] != null ? "${data['district']['name']}, " : "";

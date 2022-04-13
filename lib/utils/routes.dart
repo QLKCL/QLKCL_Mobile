@@ -44,6 +44,7 @@ import 'package:qlkcl/screens/quarantine_management/add_floor_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/edit_floor_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/edit_room_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/add_room_screen.dart';
+import 'package:qlkcl/screens/vaccine/create_vaccine_dose_screen.dart';
 import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 
 // We use name route
@@ -92,6 +93,7 @@ final Map<String, WidgetBuilder> routes = {
   ListNotification.routeName: (context) => const ListNotification(),
   CreateRequest.routeName: (context) => const CreateRequest(),
   ListVaccineDose.routeName: (context) => const ListVaccineDose(),
+  CreateVaccineDose.routeName: (context) => const CreateVaccineDose(),
   ListDestinationHistory.routeName: (context) => const ListDestinationHistory(),
   DestinationHistoryScreen.routeName: (context) =>
       const DestinationHistoryScreen(),

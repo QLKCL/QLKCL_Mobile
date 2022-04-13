@@ -179,7 +179,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                 ),
                                 if (addMultiple)
                                   ListView.builder(
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemBuilder: (ctx, index) {
                                       return Row(
@@ -193,6 +194,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                               onChangedFunction: (text) {
                                                 nameList[index] = text;
                                               },
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  16, 16, 8, 0),
                                             ),
                                           ),
                                           Expanded(
@@ -205,6 +208,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                               onChangedFunction: (text) {
                                                 capacityList[index] = text;
                                               },
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  8, 16, 16, 0),
                                             ),
                                           ),
                                         ],
@@ -222,6 +227,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                           hint: 'Tên phòng',
                                           required: true,
                                           controller: nameController,
+                                          margin: const EdgeInsets.fromLTRB(
+                                              16, 16, 8, 0),
                                         ),
                                       ),
                                       Expanded(
@@ -232,6 +239,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                           required: true,
                                           type: TextInputType.number,
                                           controller: capacityController,
+                                          margin: const EdgeInsets.fromLTRB(
+                                              8, 16, 16, 0),
                                         ),
                                       ),
                                     ],

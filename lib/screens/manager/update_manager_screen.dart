@@ -18,7 +18,6 @@ class UpdateManager extends StatefulWidget {
 class _UpdateManagerState extends State<UpdateManager> {
   late Future<dynamic> futureMember;
   late CustomUser personalData;
-  late Member? quarantineData;
 
   @override
   void initState() {

@@ -22,7 +22,6 @@ class MemberPersonalInfo extends StatefulWidget {
   final TabController? tabController;
   final CustomUser? personalData;
   final Permission mode;
-  static String? userCode;
   final List<String>? infoFromIdentityCard;
 
   const MemberPersonalInfo(
@@ -40,6 +39,11 @@ class MemberPersonalInfo extends StatefulWidget {
 class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     with AutomaticKeepAliveClientMixin<MemberPersonalInfo> {
   final _formKey = GlobalKey<FormState>();
+
+  final cityKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final districtKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   late MemberSharedDataState state;
 
   List<KeyValue> countryList = [];
@@ -63,7 +67,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     state = MemberSharedData.of(context);
     if (widget.personalData != null) {
       state.codeController.text =
@@ -289,6 +292,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   fetchCity({'country_code': state.countryController.text})
                       .then((data) => setState(() {
                             cityList = data;
+                            cityKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -306,6 +310,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: cityKey,
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
@@ -339,6 +344,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   fetchDistrict({'city_id': state.cityController.text})
                       .then((data) => setState(() {
                             districtList = data;
+                            districtKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -356,6 +362,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               popupTitle: 'Tỉnh/thành',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: districtKey,
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
@@ -386,6 +393,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   fetchWard({'district_id': state.districtController.text})
                       .then((data) => setState(() {
                             wardList = data;
+                            wardKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -403,6 +411,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               popupTitle: 'Quận/huyện',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: wardKey,
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
@@ -466,10 +475,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: _submit,
-                  child: (widget.mode == Permission.add ||
-                          widget.mode == Permission.edit)
-                      ? const Text("Lưu")
-                      : const Text('Tiếp theo'),
+                  child: widget.mode == Permission.add
+                      ? const Text("Tạo")
+                      : widget.mode == Permission.edit
+                          ? const Text('Lưu')
+                          : const Text('Tiếp theo'),
                 ),
               ),
           ],
@@ -506,6 +516,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           cancel();
           showNotification(response);
           if (response.status == Status.success) {
+            state.codeController.text = response.data['custom_user']['code'];
             widget.tabController!.animateTo(1);
           }
         }

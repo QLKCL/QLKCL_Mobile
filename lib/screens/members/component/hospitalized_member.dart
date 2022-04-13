@@ -406,12 +406,12 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<DateTime?>(
                   columnName: 'quarantinedAt',
                   value: e.quarantinedAt != null
-                      ? DateTime.parse(e.quarantinedAt!)
+                      ? DateTime.parse(e.quarantinedAt!).toLocal()
                       : null),
               DataGridCell<DateTime?>(
                   columnName: 'quarantinedFinishExpectedAt',
                   value: e.quarantinedFinishExpectedAt != null
-                      ? DateTime.parse(e.quarantinedFinishExpectedAt!)
+                      ? DateTime.parse(e.quarantinedFinishExpectedAt!).toLocal()
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),

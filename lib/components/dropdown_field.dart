@@ -28,6 +28,7 @@ class DropdownInput<T> extends StatefulWidget {
   final bool Function(T?, T?)? compareFn;
   final String? popupTitle;
   final EdgeInsets? margin;
+  final Key? widgetKey;
 
   const DropdownInput({
     Key? key,
@@ -52,6 +53,7 @@ class DropdownInput<T> extends StatefulWidget {
     this.compareFn,
     this.popupTitle,
     this.margin,
+    this.widgetKey,
   }) : super(key: key);
 
   @override
@@ -65,6 +67,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
+        key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
         validator: widget.validator ??
@@ -164,6 +167,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String Function(T?)? itemAsString;
   final String? popupTitle;
   final EdgeInsets? margin;
+  final Key? widgetKey;
 
   const MultiDropdownInput({
     Key? key,
@@ -189,6 +193,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
     this.itemAsString,
     this.popupTitle,
     this.margin,
+    this.widgetKey,
   }) : super(key: key);
 
   @override
@@ -202,6 +207,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
+        key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
         validator: widget.validator ??

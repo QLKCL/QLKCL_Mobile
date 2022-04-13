@@ -29,6 +29,11 @@ class QuarantineForm extends StatefulWidget {
 class _QuarantineFormState extends State<QuarantineForm> {
   //Input Controller
   final _formKey = GlobalKey<FormState>();
+
+  final cityKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final districtKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   final idController = TextEditingController();
   final nameController = TextEditingController();
   final countryController = TextEditingController();
@@ -275,6 +280,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   fetchCity({'country_code': countryController.text})
                       .then((data) => setState(() {
                             cityList = data;
+                            cityKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -292,6 +298,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: cityKey,
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
@@ -325,6 +332,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   fetchDistrict({'city_id': cityController.text})
                       .then((data) => setState(() {
                             districtList = data;
+                            districtKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -342,6 +350,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               popupTitle: 'Tỉnh thành',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: districtKey,
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
@@ -372,6 +381,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                   fetchWard({'district_id': districtController.text})
                       .then((data) => setState(() {
                             wardList = data;
+                            wardKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -389,6 +399,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
               popupTitle: 'Quận huyện',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: wardKey,
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
