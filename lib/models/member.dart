@@ -8,7 +8,6 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/utils/api.dart';
 
 Member memberFromJson(String str) => Member.fromJson(json.decode(str));

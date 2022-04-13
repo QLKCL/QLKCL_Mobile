@@ -33,6 +33,11 @@ class DestinationHistoryForm extends StatefulWidget {
 
 class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
   final _formKey = GlobalKey<FormState>();
+
+  final cityKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final districtKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   final codeController = TextEditingController();
   final countryController = TextEditingController();
   final cityController = TextEditingController();
@@ -208,6 +213,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       fetchCity({'country_code': countryController.text})
                           .then((data) => setState(() {
                                 cityList = data;
+                                cityKey.currentState?.openDropDownSearch();
                               }));
                     }
                   },
@@ -226,6 +232,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   popupTitle: 'Quốc gia',
                 ),
                 DropdownInput<KeyValue>(
+                  widgetKey: cityKey,
                   label: 'Tỉnh/thành',
                   hint: 'Tỉnh/thành',
                   itemValue: cityList,
@@ -258,6 +265,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       fetchDistrict({'city_id': cityController.text})
                           .then((data) => setState(() {
                                 districtList = data;
+                                districtKey.currentState?.openDropDownSearch();
                               }));
                     }
                   },
@@ -276,6 +284,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   popupTitle: 'Tỉnh/thành',
                 ),
                 DropdownInput<KeyValue>(
+                  widgetKey: districtKey,
                   label: 'Quận/huyện',
                   hint: 'Quận/huyện',
                   itemValue: districtList,
@@ -305,6 +314,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       fetchWard({'district_id': districtController.text})
                           .then((data) => setState(() {
                                 wardList = data;
+                                wardKey.currentState?.openDropDownSearch();
                               }));
                     }
                   },
@@ -323,6 +333,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                   popupTitle: 'Quận/huyện',
                 ),
                 DropdownInput<KeyValue>(
+                  widgetKey: wardKey,
                   label: 'Phường/xã',
                   hint: 'Phường/xã',
                   itemValue: wardList,

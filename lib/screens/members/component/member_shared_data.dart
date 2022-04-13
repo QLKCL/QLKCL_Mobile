@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/authentication.dart';
 
+//cre: https://petercoding.com/flutter/2021/07/04/using-inherited-widget-in-flutter/
+
 class MemberSharedData extends StatefulWidget {
   final Widget child;
   const MemberSharedData({Key? key, required this.child}) : super(key: key);

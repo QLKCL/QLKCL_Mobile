@@ -41,6 +41,11 @@ class MemberQuarantineInfo extends StatefulWidget {
 class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     with AutomaticKeepAliveClientMixin<MemberQuarantineInfo> {
   final _formKey = GlobalKey<FormState>();
+
+  final buildingKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final floorKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final roomKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   late MemberSharedDataState state;
 
   bool _isPositiveTestedBefore = false;
@@ -247,6 +252,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineBuildingList = data;
+                        buildingKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -263,6 +269,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Khu cách ly',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: buildingKey,
               label: 'Tòa',
               hint: 'Chọn tòa',
               required: widget.mode != Permission.view &&
@@ -309,6 +316,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineFloorList = data;
+                        floorKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -325,6 +333,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Tòa',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: floorKey,
               label: 'Tầng',
               hint: 'Chọn tầng',
               required: widget.mode != Permission.view &&
@@ -367,6 +376,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'is_full': false,
                   }).then((data) => setState(() {
                         quarantineRoomList = data;
+                        roomKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -383,6 +393,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               popupTitle: 'Tầng',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: roomKey,
               label: 'Phòng',
               hint: 'Chọn phòng',
               required: widget.mode != Permission.view &&

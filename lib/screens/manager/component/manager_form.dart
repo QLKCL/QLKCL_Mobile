@@ -41,6 +41,13 @@ class ManagerForm extends StatefulWidget {
 
 class _ManagerFormState extends State<ManagerForm> {
   final _formKey = GlobalKey<FormState>();
+
+  final buildingKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final floorKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final cityKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final districtKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   final codeController = TextEditingController();
   final nationalityController = TextEditingController();
   final countryController = TextEditingController();
@@ -325,6 +332,7 @@ class _ManagerFormState extends State<ManagerForm> {
                     'page_size': pageSizeMax,
                   }).then((data) => setState(() {
                         quarantineBuildingList = data;
+                        buildingKey.currentState?.openDropDownSearch();
                       }));
                 }
               },
@@ -459,6 +467,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   fetchCity({'country_code': countryController.text})
                       .then((data) => setState(() {
                             cityList = data;
+                            cityKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -476,6 +485,7 @@ class _ManagerFormState extends State<ManagerForm> {
               popupTitle: 'Quốc gia',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: cityKey,
               label: 'Tỉnh/thành',
               hint: 'Tỉnh/thành',
               itemValue: cityList,
@@ -509,6 +519,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   fetchDistrict({'city_id': cityController.text})
                       .then((data) => setState(() {
                             districtList = data;
+                            districtKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -526,6 +537,7 @@ class _ManagerFormState extends State<ManagerForm> {
               popupTitle: 'Tỉnh/thành',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: districtKey,
               label: 'Quận/huyện',
               hint: 'Quận/huyện',
               itemValue: districtList,
@@ -556,6 +568,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   fetchWard({'district_id': districtController.text})
                       .then((data) => setState(() {
                             wardList = data;
+                            wardKey.currentState?.openDropDownSearch();
                           }));
                 }
               },
@@ -573,6 +586,7 @@ class _ManagerFormState extends State<ManagerForm> {
               popupTitle: 'Quận/huyện',
             ),
             DropdownInput<KeyValue>(
+              widgetKey: wardKey,
               label: 'Phường/xã',
               hint: 'Phường/xã',
               itemValue: wardList,
@@ -633,6 +647,7 @@ class _ManagerFormState extends State<ManagerForm> {
             ),
             if (type == "staff")
               DropdownInput<KeyValue>(
+                widgetKey: buildingKey,
                 label: 'Tòa',
                 hint: 'Chọn tòa',
                 required: widget.mode != Permission.view,
@@ -670,6 +685,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       'page_size': pageSizeMax,
                     }).then((data) => setState(() {
                           quarantineFloorList = data;
+                          floorKey.currentState?.openDropDownSearch();
                         }));
                   }
                 },
@@ -687,6 +703,7 @@ class _ManagerFormState extends State<ManagerForm> {
               ),
             if (type == "staff")
               MultiDropdownInput<KeyValue>(
+                widgetKey: floorKey,
                 label: 'Tầng',
                 hint: 'Chọn tầng',
                 required: widget.mode != Permission.view,
