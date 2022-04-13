@@ -149,8 +149,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             snapshot.data['number_of_hospitalized_members'],
                         numberIn: snapshot.data['in'].entries
                             .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy")
-                                    .format(DateTime.parse(entry.key)),
+                                id: DateFormat("dd/MM/yyyy").format(
+                                    DateTime.parse(entry.key).toLocal()),
                                 name: entry.value))
                             .toList()
                             .cast<KeyValue>()
@@ -161,8 +161,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             .toList(),
                         numberOut: snapshot.data['out'].entries
                             .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy")
-                                    .format(DateTime.parse(entry.key)),
+                                id: DateFormat("dd/MM/yyyy").format(
+                                    DateTime.parse(entry.key).toLocal()),
                                 name: entry.value))
                             .toList()
                             .cast<KeyValue>()
@@ -173,8 +173,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             .toList(),
                         hospitalize: snapshot.data['hospitalize'].entries
                             .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy")
-                                    .format(DateTime.parse(entry.key)),
+                                id: DateFormat("dd/MM/yyyy").format(
+                                    DateTime.parse(entry.key).toLocal()),
                                 name: entry.value))
                             .toList()
                             .cast<KeyValue>()

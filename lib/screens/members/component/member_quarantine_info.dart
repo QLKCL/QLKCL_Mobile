@@ -117,16 +117,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               ? widget.quarantineData!.quarantineWard!.id.toString()
               : "";
       state.labelController.text = widget.quarantineData?.label ?? "";
-      state.quarantinedAtController.text =
-          widget.quarantineData?.quarantinedAt != null
-              ? DateFormat("dd/MM/yyyy")
-                  .format(DateTime.parse(widget.quarantineData?.quarantinedAt))
-              : "";
-      state.quarantinedFinishExpectedAtController.text =
-          widget.quarantineData?.quarantinedFinishExpectedAt != null
-              ? DateFormat("dd/MM/yyyy").format(DateTime.parse(
-                  widget.quarantineData?.quarantinedFinishExpectedAt))
-              : "";
+      state.quarantinedAtController.text = widget
+                  .quarantineData?.quarantinedAt !=
+              null
+          ? DateFormat("dd/MM/yyyy").format(
+              DateTime.parse(widget.quarantineData?.quarantinedAt).toLocal())
+          : "";
+      state.quarantinedFinishExpectedAtController.text = widget
+                  .quarantineData?.quarantinedFinishExpectedAt !=
+              null
+          ? DateFormat("dd/MM/yyyy").format(
+              DateTime.parse(widget.quarantineData?.quarantinedFinishExpectedAt)
+                  .toLocal())
+          : "";
       state.backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =

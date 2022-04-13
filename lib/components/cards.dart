@@ -731,7 +731,7 @@ class QuarantineHome extends StatelessWidget {
                       icon: Icons.date_range_outlined,
                       title: "Bắt đầu cách ly",
                       content: DateFormat("dd/MM/yyyy")
-                          .format(DateTime.parse(quarantineAt)),
+                          .format(DateTime.parse(quarantineAt).toLocal()),
                       textColor: primaryText,
                     ),
                     const SizedBox(
@@ -740,8 +740,8 @@ class QuarantineHome extends StatelessWidget {
                     cardLine(
                       icon: Icons.date_range_outlined,
                       title: "Dự kiến hoàn thành cách ly",
-                      content: DateFormat("dd/MM/yyyy")
-                          .format(DateTime.parse(quarantineFinishExpect)),
+                      content: DateFormat("dd/MM/yyyy").format(
+                          DateTime.parse(quarantineFinishExpect).toLocal()),
                       textColor: primaryText,
                     ),
                     const SizedBox(
@@ -865,10 +865,8 @@ class NotificationCard extends StatelessWidget {
                     ),
                     Text(
                       description,
-                      style: TextStyle(
-                          color: status
-                              ? disableText
-                              : primaryText),
+                      style:
+                          TextStyle(color: status ? disableText : primaryText),
                     ),
                   ],
                 ),
