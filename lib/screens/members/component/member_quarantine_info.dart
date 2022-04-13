@@ -442,7 +442,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   100,
               popupTitle: 'Phòng',
             ),
-            if (state.quarantineRoomController.text == "")
+            if (state.quarantineRoomController.text == "" && _role != 5)
               Container(
                 margin: const EdgeInsets.fromLTRB(16, 8, 0, 0),
                 alignment: Alignment.centerLeft,
