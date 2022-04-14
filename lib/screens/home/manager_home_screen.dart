@@ -48,6 +48,12 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   final quarantineWardController = TextEditingController();
   List<KeyValue> quarantineWardList = [];
 
+  final startTimeMinController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy')
+          .format(DateTime.now().subtract(const Duration(days: 14))));
+  final startTimeMaxController = TextEditingController(
+      text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +61,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     futurePassBy =
         getAddressWithMembersPassBy(getAddressWithMembersPassByDataForm(
       addressType: "city",
+      startTimeMin:
+          parseDateToDateTimeWithTimeZone(startTimeMinController.text),
+      startTimeMax:
+          parseDateToDateTimeWithTimeZone(startTimeMaxController.text),
     ));
     fetchQuarantineWard({
       'page_size': pageSizeMax,
@@ -112,6 +122,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 futurePassBy = getAddressWithMembersPassBy(
                     getAddressWithMembersPassByDataForm(
                   addressType: "city",
+                  startTimeMin: parseDateToDateTimeWithTimeZone(
+                      startTimeMinController.text),
+                  startTimeMax: parseDateToDateTimeWithTimeZone(
+                      startTimeMaxController.text),
                 ));
               });
             }),
@@ -219,29 +233,46 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       //     .map((e) =>
                       //         KeyValue(id: e.id, name: (e.name * 100 / sum)))
                       //     .toList();
-                      return Container(
+                      return DestinationChartCard(
+                        data: snapshot.data!,
+                        startTimeMaxController: startTimeMaxController,
+                        startTimeMinController: startTimeMinController,
+                        role: widget.role,
                         height: 600,
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: DestiantionChart(data: snapshot.data!),
-                          ),
-                        ),
+                        refresh: () {
+                          setState(() {
+                            futurePassBy = getAddressWithMembersPassBy(
+                                getAddressWithMembersPassByDataForm(
+                              addressType: "city",
+                              startTimeMin: parseDateToDateTimeWithTimeZone(
+                                  startTimeMinController.text),
+                              startTimeMax: parseDateToDateTimeWithTimeZone(
+                                  startTimeMaxController.text),
+                            ));
+                          });
+                        },
                       );
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');
                     }
 
-                    return Container(
-                      height: 400,
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: const Card(
-                        child: Padding(
-                          padding: EdgeInsets.all(8),
-                          child: DestiantionChart(data: []),
-                        ),
-                      ),
+                    return DestinationChartCard(
+                      data: const [],
+                      startTimeMaxController: startTimeMaxController,
+                      startTimeMinController: startTimeMinController,
+                      role: widget.role,
+                      refresh: () {
+                        setState(() {
+                          futurePassBy = getAddressWithMembersPassBy(
+                              getAddressWithMembersPassByDataForm(
+                            addressType: "city",
+                            startTimeMin: parseDateToDateTimeWithTimeZone(
+                                startTimeMinController.text),
+                            startTimeMax: parseDateToDateTimeWithTimeZone(
+                                startTimeMaxController.text),
+                          ));
+                        });
+                      },
                     );
                   },
                 ),
