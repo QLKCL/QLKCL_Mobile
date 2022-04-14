@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/utils/constant.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:intl/intl.dart';
 
 class InOutChart extends StatelessWidget {
   final List<KeyValue> inData;
@@ -110,7 +114,7 @@ class DestiantionChart extends StatelessWidget {
       ),
       primaryYAxis: NumericAxis(
         minimum: 0,
-        interval: 1,
+        // interval: 1,
         // labelFormat: '{value}%',
         axisLine: const AxisLine(width: 0),
         majorTickLines: const MajorTickLines(size: 0),
@@ -150,5 +154,89 @@ class DestiantionChart extends StatelessWidget {
         // ),
       ),
     ];
+  }
+}
+
+class DestinationChartCard extends StatelessWidget {
+  const DestinationChartCard({
+    Key? key,
+    required this.data,
+    required this.startTimeMinController,
+    required this.startTimeMaxController,
+    required this.role,
+    this.height = 400,
+    required this.refresh,
+  }) : super(key: key);
+  final List<KeyValue> data;
+  final TextEditingController startTimeMinController;
+  final TextEditingController startTimeMaxController;
+  final int role;
+  final double height;
+  final VoidCallback refresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth <= maxMobileSize
+        ? 1
+        : screenWidth >= minDesktopSize
+            ? (screenWidth - 230) ~/ (maxMobileSize - 64)
+            : screenWidth ~/ (maxMobileSize - 32);
+    final width = screenWidth / crossAxisCount;
+
+    return Column(
+      children: [
+        ResponsiveRowColumn(
+          layout: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
+              ? ResponsiveRowColumnType.COLUMN
+              : ResponsiveRowColumnType.ROW,
+          rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+          rowCrossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ResponsiveRowColumnItem(
+              rowFlex: 4,
+              child: Container(
+                margin: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Thống kê dữ liệu toàn quốc",
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+              ),
+            ),
+            if (role < 3)
+              ResponsiveRowColumnItem(
+                rowFlex: 6,
+                rowFit: FlexFit.loose,
+                child: Container(
+                  margin: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
+                  width: width < maxMobileSize ? width + 100 : maxMobileSize,
+                  child: NewDateRangeInput(
+                    label: 'Thời gian',
+                    controllerStart: startTimeMinController,
+                    controllerEnd: startTimeMaxController,
+                    maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                    // minDate: DateFormat('dd/MM/yyyy').format(
+                    //     DateTime.now().subtract(const Duration(days: 14))),
+                    onChangedFunction: refresh,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        Container(
+          height: height,
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: DestiantionChart(data: data),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

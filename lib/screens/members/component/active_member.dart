@@ -643,7 +643,7 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListQuarantineHistory(
                       code: item.code,
                     )));
-      } else if (result == 'détination_history') {
+      } else if (result == 'destination_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
@@ -683,7 +683,7 @@ Widget menus(BuildContext context, FilterMember item) {
       ),
       PopupMenuItem(
         child: Text('Lịch sử di chuyển'),
-        value: "détination_history",
+        value: "destination_history",
       ),
       PopupMenuItem(
         child: Text('Lịch sử cách ly'),

@@ -132,7 +132,9 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => const CreateVaccineDose()));
+                        builder: (context) => CreateVaccineDose(
+                              code: widget.code,
+                            )));
               },
               child: const Icon(Icons.add),
               tooltip: "Khai báo tiêm vaccine",
