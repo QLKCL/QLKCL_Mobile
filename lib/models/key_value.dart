@@ -25,8 +25,6 @@ class KeyValue {
     return list.map((item) => KeyValue.fromJson(item)).toList();
   }
 
-  toList() {}
-
   @override
   String toString() {
     return '$id - $name';
@@ -154,6 +152,42 @@ Future<List<KeyValue>> fetchNotMemberList(data) async {
 
   if (dataResponse != null) {
     return KeyValue.fromJsonList(dataResponse);
+  }
+  return [];
+}
+
+class CustomKeyValue {
+  dynamic name;
+  dynamic id;
+  CustomKeyValue({required this.name, required this.id});
+  factory CustomKeyValue.fromJson(Map<String, dynamic> json) => CustomKeyValue(
+        id: json["id"],
+        name: '${json["name"]} - ${json["quarantine_building"]["name"]}',
+      );
+
+  static List<KeyValue> fromJsonList(List list) {
+    return list
+        .map((item) => KeyValue(
+            name: CustomKeyValue.fromJson(item).name,
+            id: CustomKeyValue.fromJson(item).id))
+        .toList();
+  }
+
+  @override
+  String toString() {
+    return '$id - $name';
+  }
+}
+
+Future<List<KeyValue>> fetchCustomQuarantineFloor(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getListFloor, data);
+
+  if (response['data'] != null) {
+    final dataResponse = response['data']['content'];
+    if (dataResponse != null) {
+      return CustomKeyValue.fromJsonList(dataResponse);
+    }
   }
   return [];
 }

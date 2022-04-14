@@ -222,7 +222,7 @@ class _ManagerFormState extends State<ManagerForm> {
       });
     }
     if (quarantineBuildingController.text != "") {
-      fetchQuarantineFloor({
+      fetchCustomQuarantineFloor({
         'quarantine_building_id_list': quarantineBuildingController.text,
         'page_size': pageSizeMax,
       }).then((value) {
@@ -674,9 +674,9 @@ class _ManagerFormState extends State<ManagerForm> {
                             ? (quarantineBuildingList.isNotEmpty
                                 ? quarantineBuildingController.text
                                     .split(',')
-                                    .map((e) =>
-                                        quarantineBuildingList.safeFirstWhere(
-                                            (result) => result.id == e)!)
+                                    .map((e) => quarantineBuildingList
+                                        .safeFirstWhere((result) =>
+                                            result.id.toString() == e)!)
                                     .toList()
                                 : null)
                             : null),
@@ -694,7 +694,7 @@ class _ManagerFormState extends State<ManagerForm> {
                     initQuarantineFloor = null;
                   });
                   if (quarantineBuildingController.text != "") {
-                    fetchQuarantineFloor({
+                    fetchCustomQuarantineFloor({
                       'quarantine_building_id_list':
                           quarantineBuildingController.text,
                       'page_size': pageSizeMax,
@@ -726,7 +726,7 @@ class _ManagerFormState extends State<ManagerForm> {
                 itemAsString: (KeyValue? u) => u!.name,
                 onFind: quarantineFloorList.isEmpty &&
                         quarantineBuildingController.text != ""
-                    ? (String? filter) => fetchQuarantineFloor({
+                    ? (String? filter) => fetchCustomQuarantineFloor({
                           'quarantine_building_id_list':
                               quarantineBuildingController.text,
                           'page_size': pageSizeMax,
