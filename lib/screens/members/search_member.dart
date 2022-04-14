@@ -9,6 +9,7 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
 import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
+import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -903,11 +904,18 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListQuarantineHistory(
                       code: item.code,
                     )));
-      } else if (result == 'détination_history') {
+      } else if (result == 'destination_history') {
         Navigator.of(context,
                 rootNavigator: !Responsive.isDesktopLayout(context))
             .push(MaterialPageRoute(
                 builder: (context) => ListDestinationHistory(
+                      code: item.code,
+                    )));
+      } else if (result == 'vaccine_dose_history') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
       }
@@ -933,6 +941,10 @@ Widget menus(BuildContext context, FilterMember item,
         child: Text('Lịch sử xét nghiệm'),
         value: "test_history",
       ),
+      const PopupMenuItem(
+        child: Text('Thông tin tiêm chủng'),
+        value: "vaccine_dose_history",
+      ),
       PopupMenuItem(
         child: const Text('Đặt lại mật khẩu'),
         onTap: () async {
@@ -944,7 +956,7 @@ Widget menus(BuildContext context, FilterMember item,
       ),
       const PopupMenuItem(
         child: Text('Lịch sử di chuyển'),
-        value: "détination_history",
+        value: "destination_history",
       ),
       const PopupMenuItem(
         child: Text('Lịch sử cách ly'),
