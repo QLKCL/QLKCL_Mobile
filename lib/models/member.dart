@@ -580,19 +580,3 @@ class FilterMember {
     return code;
   }
 }
-
-Future<dynamic> fetchMember({data}) async {
-  final ApiHelper api = ApiHelper();
-  final response = await api.postHTTP(Api.getMember, data);
-  if (response == null) {
-    return null;
-  } else {
-    if (response['error_code'] == 0) {
-      return response["data"];
-    } else if (response['error_code'] == 400) {
-      return null;
-    } else {
-      return null;
-    }
-  }
-}

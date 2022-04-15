@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -49,7 +50,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
       initQuarantineWard = widget.quarantineWard;
     } else {
       showLoading();
-      fetchMember(data: {'code': widget.code}).then((value) => {
+      fetchUser(data: {'code': widget.code}).then((value) => {
             setState(() {
               BotToast.closeAllLoading();
               quarantineData = value["member"] != null
