@@ -322,8 +322,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: cityList.isEmpty && state.countryController.text != ""
-                  ? (String? filter) =>
-                      fetchCity({'country_code': state.countryController.text})
+                  ? (String? filter) => fetchCity({
+                        'country_code': state.countryController.text,
+                        'search': filter
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -374,8 +376,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: districtList.isEmpty && state.cityController.text != ""
-                  ? (String? filter) =>
-                      fetchDistrict({'city_id': state.cityController.text})
+                  ? (String? filter) => fetchDistrict({
+                        'city_id': state.cityController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -423,8 +427,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: wardList.isEmpty && state.districtController.text != ""
-                  ? (String? filter) =>
-                      fetchWard({'district_id': state.districtController.text})
+                  ? (String? filter) => fetchWard({
+                        'district_id': state.districtController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {

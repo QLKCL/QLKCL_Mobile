@@ -513,8 +513,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: cityList.isEmpty && countryController.text != ""
-                  ? (String? filter) =>
-                      fetchCity({'country_code': countryController.text})
+                  ? (String? filter) => fetchCity({
+                        'country_code': countryController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -565,8 +567,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: districtList.isEmpty && cityController.text != ""
-                  ? (String? filter) =>
-                      fetchDistrict({'city_id': cityController.text})
+                  ? (String? filter) => fetchDistrict({
+                        'city_id': cityController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -614,8 +618,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: wardList.isEmpty && districtController.text != ""
-                  ? (String? filter) =>
-                      fetchWard({'district_id': districtController.text})
+                  ? (String? filter) => fetchWard({
+                        'district_id': districtController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {

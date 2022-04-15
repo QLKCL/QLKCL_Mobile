@@ -27,7 +27,7 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   int _role = 5;
-  late String code;
+  String code = "";
 
   @override
   void initState() {

@@ -243,8 +243,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                           (type) => type.id.toString() == cityController.text),
                   enabled: widget.mode != Permission.view,
                   onFind: cityList.isEmpty && countryController.text != ""
-                      ? (String? filter) =>
-                          fetchCity({'country_code': countryController.text})
+                      ? (String? filter) => fetchCity({
+                            'country_code': countryController.text,
+                            'search': filter,
+                          })
                       : null,
                   onChanged: (value) {
                     setState(() {
@@ -295,8 +297,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                           type.id.toString() == districtController.text),
                   enabled: widget.mode != Permission.view,
                   onFind: districtList.isEmpty && cityController.text != ""
-                      ? (String? filter) =>
-                          fetchDistrict({'city_id': cityController.text})
+                      ? (String? filter) => fetchDistrict({
+                            'city_id': cityController.text,
+                            'search': filter,
+                          })
                       : null,
                   onChanged: (value) {
                     setState(() {
@@ -342,8 +346,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                       : wardList.safeFirstWhere(
                           (type) => type.id.toString() == wardController.text),
                   onFind: wardList.isEmpty && districtController.text != ""
-                      ? (String? filter) =>
-                          fetchWard({'district_id': districtController.text})
+                      ? (String? filter) => fetchWard({
+                            'district_id': districtController.text,
+                            'search': filter,
+                          })
                       : null,
                   onChanged: (value) {
                     setState(() {

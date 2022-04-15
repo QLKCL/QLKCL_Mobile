@@ -115,6 +115,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       ? (String? filter) => fetchQuarantineWard({
                             'page_size': pageSizeMax,
                             'is_full': false,
+                            'search': filter,
                           })
                       : null,
                   compareFn: (item, selectedItem) =>
