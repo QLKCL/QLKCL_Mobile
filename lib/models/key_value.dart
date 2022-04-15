@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';
@@ -7,10 +8,11 @@ KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
 
 String keyValueToJson(KeyValue data) => json.encode(data.toJson());
 
+@immutable
 class KeyValue {
-  dynamic name;
-  dynamic id;
-  KeyValue({required this.name, required this.id});
+  final dynamic name;
+  final dynamic id;
+  const KeyValue({required this.name, required this.id});
   factory KeyValue.fromJson(Map<String, dynamic> json) => KeyValue(
         id: json["code"] ?? json["id"],
         name: json["name"] ?? json["full_name"] ?? "",
@@ -29,6 +31,14 @@ class KeyValue {
   String toString() {
     return '$id - $name';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is KeyValue && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => name.hashCode & id.hashCode;
 }
 
 Future<List<KeyValue>> fetchCountry() async {

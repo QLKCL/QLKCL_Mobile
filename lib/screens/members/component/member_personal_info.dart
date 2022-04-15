@@ -217,7 +217,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.personalData?.nationality != null)
                   ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : KeyValue(id: "VNM", name: 'Việt Nam'),
+                  : const KeyValue(id: "VNM", name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
                   state.nationalityController.text = "";
