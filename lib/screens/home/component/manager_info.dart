@@ -56,14 +56,12 @@ class InfoManagerHomePage extends StatelessWidget {
         title: "Tổng số người cách ly",
         subtitle: totalUsers.toString(),
         icon: WebsafeSvg.asset("assets/svg/total.svg"),
-        onTap: () {},
         iconSuffix: false,
       ),
       InfoManagerHomeCard(
         title: "Số giường trống",
         subtitle: availableSlots.toString(),
         icon: WebsafeSvg.asset("assets/svg/giuong_trong.svg"),
-        onTap: () {},
         iconSuffix: false,
       ),
       InfoManagerHomeCard(
@@ -265,13 +263,13 @@ class InfoManagerHomePage extends StatelessWidget {
 }
 
 class InfoManagerHomeCard extends StatelessWidget {
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final Widget icon;
   final String title;
   final String subtitle;
   final bool iconSuffix;
   const InfoManagerHomeCard({
-    required this.onTap,
+    this.onTap,
     required this.icon,
     required this.title,
     required this.subtitle,
@@ -285,6 +283,7 @@ class InfoManagerHomeCard extends StatelessWidget {
           ? const EdgeInsets.fromLTRB(8, 8, 2, 0)
           : null,
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),

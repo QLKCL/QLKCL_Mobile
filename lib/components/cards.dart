@@ -25,6 +25,7 @@ class MedicalDeclarationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -84,6 +85,7 @@ class TestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -158,6 +160,7 @@ class TestNoResultCard extends StatelessWidget {
     }
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -320,6 +323,7 @@ class _MemberCardState extends State<MemberCard> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: () {
           if (widget.longPressEnabled ?? false) {
             setState(() {
@@ -572,6 +576,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
       children: [
         Card(
           child: InkWell(
+            borderRadius: BorderRadius.circular(8),
             onTap: () => selectQuarantine(context),
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -680,6 +685,7 @@ class QuarantineHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -797,6 +803,7 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -896,6 +903,7 @@ class VaccineDoseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -974,6 +982,7 @@ class DestinationHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -1045,6 +1054,7 @@ class QuarantineHistoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -1185,6 +1195,7 @@ class _ManagerCardState extends State<ManagerCard> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        borderRadius: BorderRadius.circular(8),
         onTap: () {
           if (widget.longPressEnabled ?? false) {
             setState(() {
