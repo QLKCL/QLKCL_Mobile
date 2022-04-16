@@ -164,7 +164,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp tim (lần/phút)',
                   type: TextInputType.number,
                   controller: heartBeatController,
-                  validatorFunction: intValidator,
+                  validatorFunction: intNullableValidator,
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -186,7 +186,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp thở (lần/phút)',
                   type: TextInputType.number,
                   controller: breathingController,
-                  validatorFunction: intValidator,
+                  validatorFunction: intNullableValidator,
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(

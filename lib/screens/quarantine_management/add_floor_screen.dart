@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -78,11 +81,13 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   List<String> nameList = [];
   List<String> capacityList = [];
 
+  int maxNum = 10;
+
   final myController = TextEditingController();
 
   void _updateLatestValue() {
     setState(() {
-      numOfAddedFloor = int.tryParse(myController.text) ?? 1;
+      numOfAddedFloor = min(int.tryParse(myController.text) ?? 1, maxNum);
       nameList = []..length = numOfAddedFloor;
       capacityList = List<String>.filled(numOfAddedFloor, "0");
     });
@@ -169,6 +174,11 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                               type: TextInputType.number,
                                               required: true,
                                               controller: myController,
+                                              validatorFunction:
+                                                  (String? value) {
+                                                return maxNumberValidator(
+                                                    value, maxNum);
+                                              },
                                             ),
                                           )
                                       ],

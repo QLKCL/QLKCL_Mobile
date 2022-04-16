@@ -209,7 +209,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
-        autoValidateMode: AutovalidateMode.onUserInteraction,
+        // autoValidateMode: AutovalidateMode.onUserInteraction,
         isFilteredOnline: true,
         key: widget.widgetKey,
         onSaved: widget.onSaved,

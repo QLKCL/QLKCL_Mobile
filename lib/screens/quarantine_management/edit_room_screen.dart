@@ -113,7 +113,7 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                               required: true,
                               type: TextInputType.number,
                               controller: capacityController,
-                              validatorFunction: numberOfMemberValidator,
+                              validatorFunction: intValidator,
                             ),
                           ],
                         ),

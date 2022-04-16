@@ -72,23 +72,39 @@ String? quarantineTimeValidator(String? time) {
   return null;
 }
 
-String? numberOfMemberValidator(String? time) {
+String? maxNumberValidator(String? num, int maxNum) {
   const String patttern = r'^[0-9]+$';
   final RegExp regExp = RegExp(patttern);
-  if (time == null || time.isEmpty) {
+  if (num == null || num.isEmpty) {
     return "Trường này là bắt buộc";
-  } else if (!regExp.hasMatch(time)) {
-    return 'Số người không hợp lệ';
+  } else if (!regExp.hasMatch(num)) {
+    return 'Số lượng không hợp lệ';
+  } else {
+    final t = int.parse(num);
+    if (t <= 0 || t > maxNum) {
+      return "Số lượng phải lớn hơn 0 và nhỏ hơn ${maxNum + 1}";
+    }
   }
   return null;
 }
 
-String? intValidator(String? time) {
+String? intValidator(String? num) {
   const String patttern = r'^[0-9]+$';
   final RegExp regExp = RegExp(patttern);
-  if (time == null || time.isEmpty) {
+  if (num == null || num.isEmpty) {
+    return "Trường này là bắt buộc";
+  } else if (!regExp.hasMatch(num)) {
+    return 'Số không hợp lệ';
+  }
+  return null;
+}
+
+String? intNullableValidator(String? num) {
+  const String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
+  if (num == null || num.isEmpty) {
     return null;
-  } else if (!regExp.hasMatch(time)) {
+  } else if (!regExp.hasMatch(num)) {
     return 'Số không hợp lệ';
   }
   return null;
