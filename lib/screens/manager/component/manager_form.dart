@@ -702,16 +702,12 @@ class _ManagerFormState extends State<ManagerForm> {
                         ? [widget.quarantineBuilding!]
                         : initQuarantineBuilding.isNotEmpty
                             ? initQuarantineBuilding
-                            : (quarantineBuildingController.text != ""
-                                ? (quarantineBuildingList.isNotEmpty
-                                    ? quarantineBuildingController.text
-                                        .split(',')
-                                        .map((e) => quarantineBuildingList
-                                            .safeFirstWhere((result) =>
-                                                result.id.toString() == e)!)
-                                        .toList()
-                                    : null)
-                                : null),
+                            : quarantineBuildingList
+                                .where((element) => quarantineBuildingController
+                                    .text
+                                    .split(',')
+                                    .contains(element.id.toString()))
+                                .toList(),
                     onChanged: (value) {
                       setState(() {
                         if (value == null) {

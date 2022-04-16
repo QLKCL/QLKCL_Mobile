@@ -479,6 +479,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                             setState(() {
                               getRoomError = null;
                             });
+                            final CancelFunc cancel = showLoading();
                             final data = await getSuitableRoom(
                               getSuitableRoomDataForm(
                                 gender: state.genderController.text,
@@ -488,6 +489,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                                     state.quarantineWardController.text,
                               ),
                             );
+                            cancel();
                             state.quarantineBuildingController.text =
                                 data['quarantine_building']['id'].toString();
                             state.quarantineFloorController.text =
