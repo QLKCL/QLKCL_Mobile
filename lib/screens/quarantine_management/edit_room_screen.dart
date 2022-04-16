@@ -89,27 +89,36 @@ class _EditRoomScreenState extends State<EditRoomScreen> {
                   currentRoom: widget.currentRoom!,
                 ),
               ),
-              Form(
-                key: _formKey,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: [
-                      Input(
-                        label: 'Tên',
-                        hint: 'Tên phòng mới',
-                        required: true,
-                        controller: nameController,
+              SingleChildScrollView(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    constraints:
+                        const BoxConstraints(minWidth: 100, maxWidth: 800),
+                    child: Form(
+                      key: _formKey,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            Input(
+                              label: 'Tên',
+                              hint: 'Tên phòng mới',
+                              required: true,
+                              controller: nameController,
+                            ),
+                            Input(
+                              label: 'Số người tối đa',
+                              hint: 'Số người tối đa',
+                              required: true,
+                              type: TextInputType.number,
+                              controller: capacityController,
+                              validatorFunction: numberOfMemberValidator,
+                            ),
+                          ],
+                        ),
                       ),
-                      Input(
-                        label: 'Số người tối đa',
-                        hint: 'Số người tối đa',
-                        required: true,
-                        type: TextInputType.number,
-                        controller: capacityController,
-                        validatorFunction: numberOfMemberValidator,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

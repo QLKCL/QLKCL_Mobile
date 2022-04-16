@@ -72,146 +72,153 @@ class _CreateNotificationState extends State<CreateNotification> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                DropdownInput<KeyValue>(
-                  label: 'Kiểu người nhận',
-                  hint: 'Chọn kiểu',
-                  required: true,
-                  itemValue: types,
-                  onChanged: (value) {
-                    if (value == null) {
-                      receiverTypeController.text = "";
-                    } else {
-                      receiverTypeController.text = value.id;
-                    }
-                    setState(() {
-                      quarantineWardController.text = "";
-                      receiverUserController.text = "";
-                    });
-                  },
-                  itemAsString: (KeyValue? u) => u!.name,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  selectedItem: types.safeFirstWhere(
-                      (e) => e.id == receiverTypeController.text),
-                ),
-                DropdownInput<KeyValue>(
-                  label: 'Đối tượng',
-                  hint: 'Chọn đối tượng',
-                  required: true,
-                  onChanged: (value) {
-                    if (value == null) {
-                      roleController.text = "";
-                    } else {
-                      roleController.text = value.id;
-                    }
-                  },
-                  itemValue: roles,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  selectedItem:
-                      roles.safeFirstWhere((e) => e.id == roleController.text),
-                ),
-                if (receiverTypeController.text == "1")
-                  DropdownInput<KeyValue>(
-                    key: const Key("quarantine"),
-                    label: 'Khu cách ly',
-                    hint: 'Chọn khu cách ly',
-                    itemAsString: (KeyValue? u) => u!.name,
-                    onFind: quarantineWardList.isEmpty
-                        ? (String? filter) => fetchQuarantineWardNoToken(null)
-                        : null,
-                    compareFn: (item, selectedItem) =>
-                        item?.id == selectedItem?.id,
-                    itemValue: quarantineWardList,
-                    onChanged: (value) {
-                      if (value == null) {
-                        quarantineWardController.text = "";
-                      } else {
-                        quarantineWardController.text = value.id.toString();
-                      }
-                    },
-                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                        ? Mode.DIALOG
-                        : Mode.BOTTOM_SHEET,
-                    maxHeight: MediaQuery.of(context).size.height -
-                        AppBar().preferredSize.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom -
-                        100,
-                    showSearchBox: true,
-                    required: true,
-                    popupTitle: 'Khu cách ly',
-                  ),
-                if (receiverTypeController.text == "2")
-                  MultiDropdownInput<KeyValue>(
-                    key: const Key("user"),
-                    label: 'Gửi đến',
-                    hint: 'Chọn người nhận',
-                    required: true,
-                    dropdownBuilder: customDropDown,
-                    onFind: (String? filter) => fetchNotMemberList({
-                      'role_name_list': roleController.text == "0"
-                          ? 'MEMBER,SUPER_MANAGER,MANAGER,ADMINISTRATOR,STAFF'
-                          : roleList
-                              .safeFirstWhere(
-                                  (p0) => p0.id == roleController.text)
-                              ?.name,
-                    }),
-                    onChanged: (value) {
-                      if (value == null) {
-                        receiverUserController.text = "";
-                      } else {
-                        receiverUserController.text =
-                            value.map((e) => e.id).join(",");
-                      }
-                    },
-                    itemAsString: (KeyValue? u) => u!.name,
-                    compareFn: (item, selectedItem) =>
-                        item?.id == selectedItem?.id,
-                    showSearchBox: true,
-                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                        ? Mode.DIALOG
-                        : Mode.BOTTOM_SHEET,
-                    maxHeight: MediaQuery.of(context).size.height -
-                        AppBar().preferredSize.height -
-                        MediaQuery.of(context).padding.top -
-                        MediaQuery.of(context).padding.bottom -
-                        100,
-                    popupTitle: 'Người nhận',
-                  ),
-                Input(
-                  label: 'Tiêu đề',
-                  controller: titleController,
-                  showClearButton: false,
-                  required: true,
-                ),
-                Input(
-                  label: 'Nội dung',
-                  maxLines: 15,
-                  controller: descriptionController,
-                  showClearButton: false,
-                  required: true,
-                ),
-                ImageField(
-                  controller: imageController,
-                  type: "Notification",
-                ),
-                Container(
-                  margin: const EdgeInsets.all(16),
-                  child: ElevatedButton(
-                    onPressed: _submit,
-                    child: Text(
-                      'Gửi',
-                      style: TextStyle(color: white),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    DropdownInput<KeyValue>(
+                      label: 'Kiểu người nhận',
+                      hint: 'Chọn kiểu',
+                      required: true,
+                      itemValue: types,
+                      onChanged: (value) {
+                        if (value == null) {
+                          receiverTypeController.text = "";
+                        } else {
+                          receiverTypeController.text = value.id;
+                        }
+                        setState(() {
+                          quarantineWardController.text = "";
+                          receiverUserController.text = "";
+                        });
+                      },
+                      itemAsString: (KeyValue? u) => u!.name,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      selectedItem: types.safeFirstWhere(
+                          (e) => e.id == receiverTypeController.text),
                     ),
-                  ),
+                    DropdownInput<KeyValue>(
+                      label: 'Đối tượng',
+                      hint: 'Chọn đối tượng',
+                      required: true,
+                      onChanged: (value) {
+                        if (value == null) {
+                          roleController.text = "";
+                        } else {
+                          roleController.text = value.id;
+                        }
+                      },
+                      itemValue: roles,
+                      itemAsString: (KeyValue? u) => u!.name,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      selectedItem: roles
+                          .safeFirstWhere((e) => e.id == roleController.text),
+                    ),
+                    if (receiverTypeController.text == "1")
+                      DropdownInput<KeyValue>(
+                        key: const Key("quarantine"),
+                        label: 'Khu cách ly',
+                        hint: 'Chọn khu cách ly',
+                        itemAsString: (KeyValue? u) => u!.name,
+                        onFind: quarantineWardList.isEmpty
+                            ? (String? filter) =>
+                                fetchQuarantineWardNoToken(null)
+                            : null,
+                        compareFn: (item, selectedItem) =>
+                            item?.id == selectedItem?.id,
+                        itemValue: quarantineWardList,
+                        onChanged: (value) {
+                          if (value == null) {
+                            quarantineWardController.text = "";
+                          } else {
+                            quarantineWardController.text = value.id.toString();
+                          }
+                        },
+                        mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                            ? Mode.DIALOG
+                            : Mode.BOTTOM_SHEET,
+                        maxHeight: MediaQuery.of(context).size.height -
+                            AppBar().preferredSize.height -
+                            MediaQuery.of(context).padding.top -
+                            MediaQuery.of(context).padding.bottom -
+                            100,
+                        showSearchBox: true,
+                        required: true,
+                        popupTitle: 'Khu cách ly',
+                      ),
+                    if (receiverTypeController.text == "2")
+                      MultiDropdownInput<KeyValue>(
+                        key: const Key("user"),
+                        label: 'Gửi đến',
+                        hint: 'Chọn người nhận',
+                        required: true,
+                        dropdownBuilder: customDropDown,
+                        onFind: (String? filter) => fetchNotMemberList({
+                          'role_name_list': roleController.text == "0"
+                              ? 'MEMBER,SUPER_MANAGER,MANAGER,ADMINISTRATOR,STAFF'
+                              : roleList
+                                  .safeFirstWhere(
+                                      (p0) => p0.id == roleController.text)
+                                  ?.name,
+                        }),
+                        onChanged: (value) {
+                          if (value == null) {
+                            receiverUserController.text = "";
+                          } else {
+                            receiverUserController.text =
+                                value.map((e) => e.id).join(",");
+                          }
+                        },
+                        itemAsString: (KeyValue? u) => u!.name,
+                        compareFn: (item, selectedItem) =>
+                            item?.id == selectedItem?.id,
+                        showSearchBox: true,
+                        mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                            ? Mode.DIALOG
+                            : Mode.BOTTOM_SHEET,
+                        maxHeight: MediaQuery.of(context).size.height -
+                            AppBar().preferredSize.height -
+                            MediaQuery.of(context).padding.top -
+                            MediaQuery.of(context).padding.bottom -
+                            100,
+                        popupTitle: 'Người nhận',
+                      ),
+                    Input(
+                      label: 'Tiêu đề',
+                      controller: titleController,
+                      showClearButton: false,
+                      required: true,
+                    ),
+                    Input(
+                      label: 'Nội dung',
+                      maxLines: 15,
+                      controller: descriptionController,
+                      showClearButton: false,
+                      required: true,
+                    ),
+                    ImageField(
+                      controller: imageController,
+                      type: "Notification",
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      child: ElevatedButton(
+                        onPressed: _submit,
+                        child: Text(
+                          'Gửi',
+                          style: TextStyle(color: white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),

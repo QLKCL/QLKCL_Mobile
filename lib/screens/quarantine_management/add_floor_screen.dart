@@ -100,30 +100,33 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
         appBar: appBar,
         body: SingleChildScrollView(
           child: FutureBuilder<dynamic>(
-              future: futureFloorList,
-              builder: (context, snapshot) {
-                showLoading();
-                if (snapshot.connectionState == ConnectionState.done) {
-                  BotToast.closeAllLoading();
-                  if (snapshot.hasData) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.25,
-                          child: GeneralInfoBuilding(
-                            currentQuarantine: widget.currentQuarantine!,
-                            currentBuilding: widget.currentBuilding!,
-                            numberOfFloor: snapshot.data.length,
-                          ),
+            future: futureFloorList,
+            builder: (context, snapshot) {
+              showLoading();
+              if (snapshot.connectionState == ConnectionState.done) {
+                BotToast.closeAllLoading();
+                if (snapshot.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: GeneralInfoBuilding(
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentBuilding: widget.currentBuilding!,
+                          numberOfFloor: snapshot.data.length,
                         ),
-                        SizedBox(
-                          //Input fields
-                          child: SingleChildScrollView(
-                            physics: const ScrollPhysics(),
+                      ),
+                      SingleChildScrollView(
+                        physics: const ScrollPhysics(),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 100, maxWidth: 800),
                             child: Form(
                               key: _formKey,
                               child: Column(
@@ -220,32 +223,34 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              ElevatedButton(
-                                onPressed: _submit,
-                                child: const Text("Xác nhận"),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: const Text("Xác nhận"),
+                            ),
+                            const Spacer(),
+                          ],
                         ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Text('Snapshot has error');
-                  } else {
-                    return const Text(
-                      'Không có dữ liệu',
-                      textAlign: TextAlign.center,
-                    );
-                  }
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text('Snapshot has error');
+                } else {
+                  return const Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
                 }
-                return const SizedBox();
-              }),
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

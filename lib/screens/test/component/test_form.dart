@@ -82,128 +82,140 @@ class _TestFormState extends State<TestForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Input(
-              label: 'Mã phiếu',
-              enabled: false,
-              controller: testCodeController,
-            ),
-            Input(
-              label: 'Mã người xét nghiệm',
-              controller: userCodeController,
-              required: widget.mode != Permission.view,
-              enabled: widget.userCode == null && widget.mode == Permission.add,
-              type: TextInputType.number,
-            ),
-            Input(
-              label: 'Họ và tên',
-              hint: 'Nhập họ và tên',
-              controller: userNameController,
-              enabled: widget.userCode == null && widget.mode == Permission.add,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Trạng thái',
-              hint: 'Chọn trạng thái',
-              required: widget.mode != Permission.view,
-              itemValue: testStateList,
-              itemAsString: (KeyValue? u) => u!.name,
-              maxHeight: 112,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: testStateList
-                  .safeFirstWhere((state) => state.id == stateController.text),
-              onChanged: (value) {
-                if (value == null) {
-                  stateController.text = "";
-                } else {
-                  stateController.text = value.id;
-                }
-              },
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Kỹ thuật xét nghiệm',
-              hint: 'Chọn kỹ thuật xét nghiệm',
-              required: widget.mode != Permission.view,
-              itemValue: testTypeList,
-              itemAsString: (KeyValue? u) => u!.name,
-              maxHeight: 112,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: testTypeList
-                  .safeFirstWhere((type) => type.id == typeController.text),
-              onChanged: (value) {
-                if (value == null) {
-                  typeController.text = "";
-                } else {
-                  typeController.text = value.id;
-                }
-              },
-              enabled: widget.mode == Permission.add,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Kết quả',
-              hint: 'Chọn kết quả',
-              required: widget.mode != Permission.view,
-              itemValue: testValueList,
-              itemAsString: (KeyValue? u) => u!.name,
-              maxHeight: 168,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: testValueList.safeFirstWhere(
-                  (result) => result.id == resultController.text),
-              onChanged: (value) {
-                if (value == null) {
-                  resultController.text = "";
-                } else {
-                  if (value.id == "NEGATIVE" || value.id == "POSITIVE") {
-                    stateController.text = "DONE";
-                  } else {
-                    stateController.text = "WAITING";
-                  }
-                  resultController.text = value.id;
-                }
-              },
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            if (widget.mode == Permission.view)
-              Input(
-                label: 'Thời gian tạo',
-                controller: createAtController,
-                enabled: false,
-              ),
-            if (widget.mode == Permission.view)
-              Input(
-                label: 'Người tạo',
-                controller: createByController,
-                enabled: false,
-              ),
-            if (widget.mode == Permission.view)
-              Input(
-                label: 'Cập nhật lần cuối',
-                controller: updateAtController,
-                enabled: false,
-              ),
-            if (widget.mode == Permission.view)
-              Input(
-                label: 'Người cập nhật',
-                controller: updateByController,
-                enabled: false,
-              ),
-            if (widget.mode == Permission.edit || widget.mode == Permission.add)
-              Container(
-                margin: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  onPressed: _submit,
-                  child: Text(
-                    'Xác nhận',
-                    style: TextStyle(color: white),
-                  ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Input(
+                  label: 'Mã phiếu',
+                  enabled: false,
+                  controller: testCodeController,
                 ),
-              ),
-          ],
+                Input(
+                  label: 'Mã người xét nghiệm',
+                  controller: userCodeController,
+                  required: widget.mode != Permission.view,
+                  enabled:
+                      widget.userCode == null && widget.mode == Permission.add,
+                  type: TextInputType.number,
+                ),
+                Input(
+                  label: 'Họ và tên',
+                  hint: 'Nhập họ và tên',
+                  controller: userNameController,
+                  enabled:
+                      widget.userCode == null && widget.mode == Permission.add,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Trạng thái',
+                  hint: 'Chọn trạng thái',
+                  required: widget.mode != Permission.view,
+                  itemValue: testStateList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 112,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testStateList.safeFirstWhere(
+                      (state) => state.id == stateController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      stateController.text = "";
+                    } else {
+                      stateController.text = value.id;
+                    }
+                  },
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Kỹ thuật xét nghiệm',
+                  hint: 'Chọn kỹ thuật xét nghiệm',
+                  required: widget.mode != Permission.view,
+                  itemValue: testTypeList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 112,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testTypeList
+                      .safeFirstWhere((type) => type.id == typeController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      typeController.text = "";
+                    } else {
+                      typeController.text = value.id;
+                    }
+                  },
+                  enabled: widget.mode == Permission.add,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Kết quả',
+                  hint: 'Chọn kết quả',
+                  required: widget.mode != Permission.view,
+                  itemValue: testValueList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 168,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testValueList.safeFirstWhere(
+                      (result) => result.id == resultController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      resultController.text = "";
+                    } else {
+                      if (value.id == "NEGATIVE" || value.id == "POSITIVE") {
+                        stateController.text = "DONE";
+                      } else {
+                        stateController.text = "WAITING";
+                      }
+                      resultController.text = value.id;
+                    }
+                  },
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                if (widget.mode == Permission.view)
+                  Input(
+                    label: 'Thời gian tạo',
+                    controller: createAtController,
+                    enabled: false,
+                  ),
+                if (widget.mode == Permission.view)
+                  Input(
+                    label: 'Người tạo',
+                    controller: createByController,
+                    enabled: false,
+                  ),
+                if (widget.mode == Permission.view)
+                  Input(
+                    label: 'Cập nhật lần cuối',
+                    controller: updateAtController,
+                    enabled: false,
+                  ),
+                if (widget.mode == Permission.view)
+                  Input(
+                    label: 'Người cập nhật',
+                    controller: updateByController,
+                    enabled: false,
+                  ),
+                if (widget.mode == Permission.edit ||
+                    widget.mode == Permission.add)
+                  Container(
+                    margin: const EdgeInsets.all(16),
+                    child: ElevatedButton(
+                      onPressed: _submit,
+                      child: Text(
+                        'Xác nhận',
+                        style: TextStyle(color: white),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );
