@@ -62,6 +62,7 @@ class _DateInputState extends State<DateInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () async {
           _focus = true;
           final DateTime? pickedDate = await showDatePicker(
@@ -112,8 +113,7 @@ class _DateInputState extends State<DateInput> {
                 )
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -190,6 +190,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () async {
           _focus = true;
           final DateTimeRange? pickedDate = await showDateRangePicker(
@@ -253,8 +254,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
                 )
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -323,6 +323,7 @@ class _NewDateInputState extends State<NewDateInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () async {
           _focus = true;
           showDialog(
@@ -408,8 +409,7 @@ class _NewDateInputState extends State<NewDateInput> {
                 )
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),
@@ -490,6 +490,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () async {
           _focus = true;
           showDialog(
@@ -599,8 +600,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                 )
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),

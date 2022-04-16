@@ -50,6 +50,7 @@ class _TimeInputState extends State<TimeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () async {
           _focus = true;
           final TimeOfDay? pickedTime = await showTimePicker(
@@ -104,8 +105,7 @@ class _TimeInputState extends State<TimeInput> {
                 )
               : const Icon(Icons.access_time),
           helperText: widget.helper,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
       ),

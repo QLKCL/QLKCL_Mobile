@@ -8,40 +8,40 @@ enum Permission {
   changeStatus,
 }
 
-List<KeyValue> genderList = [
+List<KeyValue> genderList = const [
   KeyValue(id: "MALE", name: "Nam"),
   KeyValue(id: "FEMALE", name: "Nữ")
 ];
 
-List<KeyValue> testStateList = [
+List<KeyValue> testStateList = const [
   KeyValue(id: "WAITING", name: "Đang chờ kết quả"),
   KeyValue(id: "DONE", name: "Đã có kết quả")
 ];
 
-List<KeyValue> testTypeList = [
+List<KeyValue> testTypeList = const [
   KeyValue(id: "QUICK", name: "Test nhanh"),
   KeyValue(id: "RT-PCR", name: "Real time PCR")
 ];
 
-List<KeyValue> testValueList = [
+List<KeyValue> testValueList = const [
   KeyValue(id: "NONE", name: "Chưa có kết quả"),
   KeyValue(id: "NEGATIVE", name: "Âm tính"),
   KeyValue(id: "POSITIVE", name: "Dương tính")
 ];
 
-List<KeyValue> testValueWithBoolList = [
+List<KeyValue> testValueWithBoolList = const [
   KeyValue(id: "Null", name: "Chưa có kết quả"),
   KeyValue(id: "False", name: "Âm tính"),
   KeyValue(id: "True", name: "Dương tính")
 ];
 
-List<KeyValue> medDeclValueList = [
+List<KeyValue> medDeclValueList = const [
   KeyValue(id: "NORMAL", name: "Bình thường"),
   KeyValue(id: "UNWELL", name: "Có dấu hiệu nghi nhiễm"),
   KeyValue(id: "SERIOUS", name: "Nghi nhiễm")
 ];
 
-List<KeyValue> roleList = [
+List<KeyValue> roleList = const [
   KeyValue(id: "1", name: "ADMINISTRATOR"),
   KeyValue(id: "2", name: "SUPER_MANAGER"),
   KeyValue(id: "3", name: "MANAGER"),
@@ -49,11 +49,11 @@ List<KeyValue> roleList = [
   KeyValue(id: "5", name: "MEMBER"),
 ];
 
-List<KeyValue> nationalityList = [
+List<KeyValue> nationalityList = const [
   KeyValue(id: "VNM", name: 'Việt Nam'),
 ];
 
-List<KeyValue> backgroundDiseaseList = [
+List<KeyValue> backgroundDiseaseList = const [
   KeyValue(id: 1, name: "Tiểu đường"),
   KeyValue(id: 2, name: "Ung thư"),
   KeyValue(id: 3, name: "Tăng huyết áp"),
@@ -64,25 +64,25 @@ List<KeyValue> backgroundDiseaseList = [
   KeyValue(id: 8, name: "Bệnh lý mạch máu não"),
 ];
 
-List<KeyValue> quarantineStatusList = [
+List<KeyValue> quarantineStatusList = const [
   KeyValue(id: "RUNNING", name: "Đang hoạt động"),
   KeyValue(id: "LOCKED", name: "Khóa"),
   KeyValue(id: "UNKNOWN", name: "Chưa rõ"),
 ];
 
-List<KeyValue> quarantineTypeList = [
+List<KeyValue> quarantineTypeList = const [
   KeyValue(id: "CONCENTRATE", name: "Tập trung"),
   KeyValue(id: "PRIVATE", name: "Tư nhân"),
 ];
 
-List<KeyValue> symptomMainList = [
+List<KeyValue> symptomMainList = const [
   KeyValue(id: 1, name: "Ho ra máu"),
   KeyValue(id: 2, name: "Thở dốc, khó thở"),
   KeyValue(id: 3, name: "Đau tức ngực kéo dài"),
   KeyValue(id: 4, name: "Lơ mơ, không tỉnh táo"),
 ];
 
-List<KeyValue> symptomExtraList = [
+List<KeyValue> symptomExtraList = const [
   KeyValue(id: 5, name: "Mệt mỏi"),
   KeyValue(id: 6, name: "Ho"),
   KeyValue(id: 7, name: "Ho có đờm"),
@@ -100,7 +100,7 @@ List<KeyValue> symptomExtraList = [
   KeyValue(id: 19, name: "Đau nhức cơ"),
 ];
 
-List<KeyValue> labelList = [
+List<KeyValue> labelList = const [
   KeyValue(id: "F0", name: "F0"),
   KeyValue(id: "F1", name: "F1"),
   KeyValue(id: "F2", name: "F2"),

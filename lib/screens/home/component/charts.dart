@@ -205,25 +205,24 @@ class DestinationChartCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (role < 3)
-              ResponsiveRowColumnItem(
-                rowFlex: 6,
-                rowFit: FlexFit.loose,
-                child: Container(
-                  margin: EdgeInsets.zero,
-                  padding: EdgeInsets.zero,
-                  width: width < maxMobileSize ? width + 100 : maxMobileSize,
-                  child: NewDateRangeInput(
-                    label: 'Thời gian',
-                    controllerStart: startTimeMinController,
-                    controllerEnd: startTimeMaxController,
-                    maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                    // minDate: DateFormat('dd/MM/yyyy').format(
-                    //     DateTime.now().subtract(const Duration(days: 14))),
-                    onChangedFunction: refresh,
-                  ),
+            ResponsiveRowColumnItem(
+              rowFlex: 6,
+              rowFit: FlexFit.loose,
+              child: Container(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                width: width < maxMobileSize ? width + 100 : maxMobileSize,
+                child: NewDateRangeInput(
+                  label: 'Thời gian',
+                  controllerStart: startTimeMinController,
+                  controllerEnd: startTimeMaxController,
+                  maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                  // minDate: DateFormat('dd/MM/yyyy').format(
+                  //     DateTime.now().subtract(const Duration(days: 14))),
+                  onChangedFunction: refresh,
                 ),
               ),
+            ),
           ],
         ),
         Container(

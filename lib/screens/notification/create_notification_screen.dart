@@ -35,7 +35,7 @@ class _CreateNotificationState extends State<CreateNotification> {
   late List<String> users;
   List<KeyValue> quarantineWardList = [];
 
-  List<KeyValue> roles = [
+  List<KeyValue> roles = const [
     KeyValue(id: "0", name: "Tất cả"),
     KeyValue(id: "1", name: "Admin"),
     KeyValue(id: "2", name: "Tổng quản lý"),
@@ -43,7 +43,7 @@ class _CreateNotificationState extends State<CreateNotification> {
     KeyValue(id: "4", name: "Cán bộ"),
     KeyValue(id: "5", name: "Người cách ly"),
   ];
-  List<KeyValue> types = [
+  List<KeyValue> types = const [
     KeyValue(name: "Tất cả", id: "0"),
     KeyValue(name: "Theo khu cách ly", id: "1"),
     KeyValue(name: "Cá nhân", id: "2")

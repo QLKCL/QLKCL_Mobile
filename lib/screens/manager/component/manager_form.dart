@@ -85,8 +85,8 @@ class _ManagerFormState extends State<ManagerForm> {
   List<KeyValue> quarantineFloorList = [];
 
   KeyValue? initQuarantineWard;
-  KeyValue? initQuarantineBuilding;
-  List<KeyValue>? initQuarantineFloor;
+  List<KeyValue> initQuarantineBuilding = [];
+  List<KeyValue> initQuarantineFloor = [];
 
   late String type;
 
@@ -144,6 +144,19 @@ class _ManagerFormState extends State<ManagerForm> {
 
       if (widget.staffData != null) {
         type = "staff";
+        widget.staffData['care_area'].forEach((e) {
+          if (!initQuarantineBuilding
+              .contains(KeyValue.fromJson(e['quarantine_building']))) {
+            initQuarantineBuilding
+                .add(KeyValue.fromJson(e['quarantine_building']));
+          }
+          if (!initQuarantineFloor
+              .contains(KeyValue.fromJson(e['quarantine_floor']))) {
+            initQuarantineFloor.add(KeyValue.fromJson(e['quarantine_floor']));
+          }
+        });
+        quarantineBuildingController.text =
+            initQuarantineBuilding.map((e) => e.id).join(',');
       }
     } else {
       nationalityController.text = "VNM";
@@ -326,8 +339,8 @@ class _ManagerFormState extends State<ManagerForm> {
                   quarantineBuildingList = [];
                   quarantineFloorList = [];
                   initQuarantineWard = null;
-                  initQuarantineBuilding = null;
-                  initQuarantineFloor = null;
+                  initQuarantineBuilding = [];
+                  initQuarantineFloor = [];
                 });
                 if (quarantineWardController.text != "") {
                   fetchQuarantineBuilding({
@@ -395,7 +408,7 @@ class _ManagerFormState extends State<ManagerForm> {
               compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
               selectedItem: (widget.personalData?.nationality != null)
                   ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : KeyValue(id: "VNM", name: 'Việt Nam'),
+                  : const KeyValue(id: "VNM", name: 'Việt Nam'),
               onChanged: (value) {
                 if (value == null) {
                   nationalityController.text = "";
@@ -500,8 +513,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: cityList.isEmpty && countryController.text != ""
-                  ? (String? filter) =>
-                      fetchCity({'country_code': countryController.text})
+                  ? (String? filter) => fetchCity({
+                        'country_code': countryController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -552,8 +567,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: districtList.isEmpty && cityController.text != ""
-                  ? (String? filter) =>
-                      fetchDistrict({'city_id': cityController.text})
+                  ? (String? filter) => fetchDistrict({
+                        'city_id': cityController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -601,8 +618,10 @@ class _ManagerFormState extends State<ManagerForm> {
               enabled: widget.mode == Permission.edit ||
                   widget.mode == Permission.add,
               onFind: wardList.isEmpty && districtController.text != ""
-                  ? (String? filter) =>
-                      fetchWard({'district_id': districtController.text})
+                  ? (String? filter) => fetchWard({
+                        'district_id': districtController.text,
+                        'search': filter,
+                      })
                   : null,
               onChanged: (value) {
                 setState(() {
@@ -668,8 +687,8 @@ class _ManagerFormState extends State<ManagerForm> {
                 itemValue: quarantineBuildingList,
                 selectedItems: widget.quarantineBuilding != null
                     ? [widget.quarantineBuilding!]
-                    : initQuarantineBuilding != null
-                        ? [initQuarantineBuilding!]
+                    : initQuarantineBuilding.isNotEmpty
+                        ? initQuarantineBuilding
                         : (quarantineBuildingController.text != ""
                             ? (quarantineBuildingList.isNotEmpty
                                 ? quarantineBuildingController.text
@@ -690,8 +709,8 @@ class _ManagerFormState extends State<ManagerForm> {
                     }
                     quarantineFloorController.clear();
                     quarantineFloorList = [];
-                    initQuarantineBuilding = null;
-                    initQuarantineFloor = null;
+                    initQuarantineBuilding = [];
+                    initQuarantineFloor = [];
                   });
                   if (quarantineBuildingController.text != "") {
                     fetchCustomQuarantineFloor({
@@ -736,8 +755,9 @@ class _ManagerFormState extends State<ManagerForm> {
                 compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                 itemValue: quarantineFloorList,
                 selectedItems: widget.quarantineFloor ??
-                    (initQuarantineFloor ??
-                        quarantineFloorList
+                    (initQuarantineFloor.isNotEmpty
+                        ? initQuarantineFloor
+                        : quarantineFloorList
                             .where((element) => quarantineFloorController.text
                                 .split(',')
                                 .contains(element.id.toString()))
@@ -750,7 +770,7 @@ class _ManagerFormState extends State<ManagerForm> {
                       quarantineFloorController.text =
                           value.map((e) => e.id).join(",");
                     }
-                    initQuarantineFloor = null;
+                    initQuarantineFloor = [];
                   });
                 },
                 enabled: widget.mode != Permission.view,

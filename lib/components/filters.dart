@@ -150,7 +150,8 @@ Future memberFilter(
             });
             if (quarantineBuildingController.text != "") {
               fetchQuarantineFloor({
-                'quarantine_building_id_list': quarantineBuildingController.text,
+                'quarantine_building_id_list':
+                    quarantineBuildingController.text,
                 'page_size': pageSizeMax,
               }).then((data) => setState(() {
                     quarantineFloorList = data;
@@ -553,7 +554,10 @@ Future quarantineFilter(
           selectedItem: cityList.safeFirstWhere(
               (type) => type.id.toString() == cityController.text),
           onFind: cityList.isEmpty
-              ? (String? filter) => fetchCity({'country_code': 'VNM'})
+              ? (String? filter) => fetchCity({
+                    'country_code': 'VNM',
+                    'search': filter,
+                  })
               : null,
           onChanged: (value) {
             setState(() {
@@ -597,8 +601,10 @@ Future quarantineFilter(
           selectedItem: districtList.safeFirstWhere(
               (type) => type.id.toString() == districtController.text),
           onFind: districtList.isEmpty && cityController.text != ""
-              ? (String? filter) =>
-                  fetchDistrict({'city_id': cityController.text})
+              ? (String? filter) => fetchDistrict({
+                    'city_id': cityController.text,
+                    'search': filter,
+                  })
               : null,
           onChanged: (value) {
             setState(() {
@@ -640,8 +646,10 @@ Future quarantineFilter(
           selectedItem: wardList.safeFirstWhere(
               (type) => type.id.toString() == wardController.text),
           onFind: wardList.isEmpty && districtController.text != ""
-              ? (String? filter) =>
-                  fetchWard({'district_id': districtController.text})
+              ? (String? filter) => fetchWard({
+                    'district_id': districtController.text,
+                    'search': filter,
+                  })
               : null,
           onChanged: (value) {
             setState(() {

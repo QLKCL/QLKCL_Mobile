@@ -174,283 +174,279 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            DropdownInput<KeyValue>(
+              label: 'Quốc gia',
+              hint: 'Quốc gia',
+              required: widget.mode != Permission.view,
+              itemValue: countryList,
+              selectedItem: countryList.isEmpty
+                  ? initCountry
+                  : countryList.safeFirstWhere(
+                      (type) => type.id.toString() == countryController.text),
+              enabled: widget.mode != Permission.view,
+              onFind: countryList.isEmpty
+                  ? (String? filter) => fetchCountry()
+                  : null,
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    countryController.text = "";
+                  } else {
+                    countryController.text = value.id;
+                  }
+                  cityController.clear();
+                  districtController.clear();
+                  wardController.clear();
+                  cityList = [];
+                  districtList = [];
+                  wardList = [];
+                  initCountry = null;
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
+                });
+                if (countryController.text != "") {
+                  fetchCity({'country_code': countryController.text})
+                      .then((data) => setState(() {
+                            cityList = data;
+                            cityKey.currentState?.openDropDownSearch();
+                          }));
+                }
+              },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Quốc gia',
+            ),
+            DropdownInput<KeyValue>(
+              widgetKey: cityKey,
+              label: 'Tỉnh/thành',
+              hint: 'Tỉnh/thành',
+              itemValue: cityList,
+              required: widget.mode != Permission.view,
+              selectedItem: cityList.isEmpty
+                  ? initCity
+                  : cityList.safeFirstWhere(
+                      (type) => type.id.toString() == cityController.text),
+              enabled: widget.mode != Permission.view,
+              onFind: cityList.isEmpty && countryController.text != ""
+                  ? (String? filter) => fetchCity({
+                        'country_code': countryController.text,
+                        'search': filter,
+                      })
+                  : null,
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    cityController.text = "";
+                  } else {
+                    cityController.text = value.id.toString();
+                  }
+                  districtController.clear();
+                  wardController.clear();
+                  districtList = [];
+                  wardList = [];
+                  initCity = null;
+                  initDistrict = null;
+                  initWard = null;
+                });
+                if (cityController.text != "") {
+                  fetchDistrict({'city_id': cityController.text})
+                      .then((data) => setState(() {
+                            districtList = data;
+                            districtKey.currentState?.openDropDownSearch();
+                          }));
+                }
+              },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Tỉnh/thành',
+            ),
+            DropdownInput<KeyValue>(
+              widgetKey: districtKey,
+              label: 'Quận/huyện',
+              hint: 'Quận/huyện',
+              itemValue: districtList,
+              required: widget.mode != Permission.view,
+              selectedItem: districtList.isEmpty
+                  ? initDistrict
+                  : districtList.safeFirstWhere(
+                      (type) => type.id.toString() == districtController.text),
+              enabled: widget.mode != Permission.view,
+              onFind: districtList.isEmpty && cityController.text != ""
+                  ? (String? filter) => fetchDistrict({
+                        'city_id': cityController.text,
+                        'search': filter,
+                      })
+                  : null,
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    districtController.text = "";
+                  } else {
+                    districtController.text = value.id.toString();
+                  }
+                  wardController.clear();
+                  wardList = [];
+                  initDistrict = null;
+                  initWard = null;
+                });
+                if (districtController.text != "") {
+                  fetchWard({'district_id': districtController.text})
+                      .then((data) => setState(() {
+                            wardList = data;
+                            wardKey.currentState?.openDropDownSearch();
+                          }));
+                }
+              },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Quận/huyện',
+            ),
+            DropdownInput<KeyValue>(
+              widgetKey: wardKey,
+              label: 'Phường/xã',
+              hint: 'Phường/xã',
+              itemValue: wardList,
+              selectedItem: wardList.isEmpty
+                  ? initWard
+                  : wardList.safeFirstWhere(
+                      (type) => type.id.toString() == wardController.text),
+              onFind: wardList.isEmpty && districtController.text != ""
+                  ? (String? filter) => fetchWard({
+                        'district_id': districtController.text,
+                        'search': filter,
+                      })
+                  : null,
+              onChanged: (value) {
+                setState(() {
+                  if (value == null) {
+                    wardController.text = "";
+                  } else {
+                    wardController.text = value.id.toString();
+                  }
+                  initWard = null;
+                });
+              },
+              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+              itemAsString: (KeyValue? u) => u!.name,
+              showSearchBox: true,
+              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                  ? Mode.DIALOG
+                  : Mode.BOTTOM_SHEET,
+              maxHeight: MediaQuery.of(context).size.height -
+                  AppBar().preferredSize.height -
+                  MediaQuery.of(context).padding.top -
+                  MediaQuery.of(context).padding.bottom -
+                  100,
+              popupTitle: 'Phường/xã',
+            ),
+            Input(
+              label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
+              controller: detailAddressController,
+            ),
+            Row(
               children: [
-                DropdownInput<KeyValue>(
-                  label: 'Quốc gia',
-                  hint: 'Quốc gia',
-                  required: widget.mode != Permission.view,
-                  itemValue: countryList,
-                  selectedItem: countryList.isEmpty
-                      ? initCountry
-                      : countryList.safeFirstWhere((type) =>
-                          type.id.toString() == countryController.text),
-                  enabled: widget.mode != Permission.view,
-                  onFind: countryList.isEmpty
-                      ? (String? filter) => fetchCountry()
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        countryController.text = "";
-                      } else {
-                        countryController.text = value.id;
+                Expanded(
+                  flex: 2,
+                  child: NewDateInput(
+                    label: 'Từ ngày',
+                    controller: startDateController,
+                    required: widget.mode != Permission.view,
+                    onChangedFunction: () {
+                      if (startTimeController.text == "") {
+                        startTimeController.text =
+                            "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
                       }
-                      cityController.clear();
-                      districtController.clear();
-                      wardController.clear();
-                      cityList = [];
-                      districtList = [];
-                      wardList = [];
-                      initCountry = null;
-                      initCity = null;
-                      initDistrict = null;
-                      initWard = null;
-                    });
-                    if (countryController.text != "") {
-                      fetchCity({'country_code': countryController.text})
-                          .then((data) => setState(() {
-                                cityList = data;
-                                cityKey.currentState?.openDropDownSearch();
-                              }));
-                    }
-                  },
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Quốc gia',
+                      setState(() {});
+                    },
+                    maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                    margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                  ),
                 ),
-                DropdownInput<KeyValue>(
-                  widgetKey: cityKey,
-                  label: 'Tỉnh/thành',
-                  hint: 'Tỉnh/thành',
-                  itemValue: cityList,
-                  required: widget.mode != Permission.view,
-                  selectedItem: cityList.isEmpty
-                      ? initCity
-                      : cityList.safeFirstWhere(
-                          (type) => type.id.toString() == cityController.text),
-                  enabled: widget.mode != Permission.view,
-                  onFind: cityList.isEmpty && countryController.text != ""
-                      ? (String? filter) =>
-                          fetchCity({'country_code': countryController.text})
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        cityController.text = "";
-                      } else {
-                        cityController.text = value.id.toString();
-                      }
-                      districtController.clear();
-                      wardController.clear();
-                      districtList = [];
-                      wardList = [];
-                      initCity = null;
-                      initDistrict = null;
-                      initWard = null;
-                    });
-                    if (cityController.text != "") {
-                      fetchDistrict({'city_id': cityController.text})
-                          .then((data) => setState(() {
-                                districtList = data;
-                                districtKey.currentState?.openDropDownSearch();
-                              }));
-                    }
-                  },
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Tỉnh/thành',
-                ),
-                DropdownInput<KeyValue>(
-                  widgetKey: districtKey,
-                  label: 'Quận/huyện',
-                  hint: 'Quận/huyện',
-                  itemValue: districtList,
-                  required: widget.mode != Permission.view,
-                  selectedItem: districtList.isEmpty
-                      ? initDistrict
-                      : districtList.safeFirstWhere((type) =>
-                          type.id.toString() == districtController.text),
-                  enabled: widget.mode != Permission.view,
-                  onFind: districtList.isEmpty && cityController.text != ""
-                      ? (String? filter) =>
-                          fetchDistrict({'city_id': cityController.text})
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        districtController.text = "";
-                      } else {
-                        districtController.text = value.id.toString();
-                      }
-                      wardController.clear();
-                      wardList = [];
-                      initDistrict = null;
-                      initWard = null;
-                    });
-                    if (districtController.text != "") {
-                      fetchWard({'district_id': districtController.text})
-                          .then((data) => setState(() {
-                                wardList = data;
-                                wardKey.currentState?.openDropDownSearch();
-                              }));
-                    }
-                  },
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Quận/huyện',
-                ),
-                DropdownInput<KeyValue>(
-                  widgetKey: wardKey,
-                  label: 'Phường/xã',
-                  hint: 'Phường/xã',
-                  itemValue: wardList,
-                  selectedItem: wardList.isEmpty
-                      ? initWard
-                      : wardList.safeFirstWhere(
-                          (type) => type.id.toString() == wardController.text),
-                  onFind: wardList.isEmpty && districtController.text != ""
-                      ? (String? filter) =>
-                          fetchWard({'district_id': districtController.text})
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        wardController.text = "";
-                      } else {
-                        wardController.text = value.id.toString();
-                      }
-                      initWard = null;
-                    });
-                  },
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Phường/xã',
-                ),
-                Input(
-                  label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
-                  controller: detailAddressController,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: NewDateInput(
-                        label: 'Từ ngày',
-                        controller: startDateController,
-                        required: widget.mode != Permission.view,
-                        onChangedFunction: () {
-                          if (startTimeController.text == "") {
-                            startTimeController.text =
-                                "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
-                          }
-                          setState(() {});
-                        },
-                        maxDate:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                      ),
-                    ),
-                    Expanded(
-                      child: TimeInput(
-                        label: "Thời gian",
-                        controller: startTimeController,
-                        enabled: startDateController.text != "",
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: NewDateInput(
-                        label: 'Đến thời gian',
-                        controller: endDateController,
-                        onChangedFunction: () {
-                          if (endTimeController.text == "") {
-                            endTimeController.text =
-                                "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
-                          }
-                          setState(() {});
-                        },
-                        enabled: startDateController.text != "",
-                        minDate: startDateController.text,
-                        maxDate:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                      ),
-                    ),
-                    Expanded(
-                      child: TimeInput(
-                        label: "Thời gian",
-                        controller: endTimeController,
-                        enabled: startDateController.text != "" &&
-                            endTimeController.text != "",
-                      ),
-                    ),
-                  ],
-                ),
-                Input(
-                  label: "Ghi chú",
-                  controller: noteController,
-                  maxLines: 5,
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.all(16),
-                  child: ElevatedButton(
-                    onPressed: _submit,
-                    child: Text(
-                      "Lưu",
-                      style: TextStyle(color: white),
-                    ),
+                Expanded(
+                  child: TimeInput(
+                    label: "Thời gian",
+                    controller: startTimeController,
+                    enabled: startDateController.text != "",
                   ),
                 ),
               ],
-            )
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: NewDateInput(
+                    label: 'Đến thời gian',
+                    controller: endDateController,
+                    onChangedFunction: () {
+                      if (endTimeController.text == "") {
+                        endTimeController.text =
+                            "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
+                      }
+                      setState(() {});
+                    },
+                    enabled: startDateController.text != "",
+                    minDate: startDateController.text,
+                    maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                    margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                  ),
+                ),
+                Expanded(
+                  child: TimeInput(
+                    label: "Thời gian",
+                    controller: endTimeController,
+                    enabled: startDateController.text != "" &&
+                        endTimeController.text != "",
+                  ),
+                ),
+              ],
+            ),
+            Input(
+              label: "Ghi chú",
+              controller: noteController,
+              maxLines: 5,
+            ),
+            Container(
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                onPressed: _submit,
+                child: Text(
+                  "Lưu",
+                  style: TextStyle(color: white),
+                ),
+              ),
+            ),
           ],
         ),
       ),

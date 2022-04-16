@@ -67,6 +67,8 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
+        autoValidateMode: AutovalidateMode.onUserInteraction,
+        isFilteredOnline: true,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
@@ -207,6 +209,8 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
+        autoValidateMode: AutovalidateMode.onUserInteraction,
+        isFilteredOnline: true,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,

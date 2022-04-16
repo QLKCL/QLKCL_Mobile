@@ -5,6 +5,7 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/account/change_password_screen.dart';
 import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
+import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
@@ -26,6 +27,7 @@ class Account extends StatefulWidget {
 
 class _AccountState extends State<Account> {
   int _role = 5;
+  String code = "";
 
   @override
   void initState() {
@@ -36,6 +38,9 @@ class _AccountState extends State<Account> {
         });
       }
     });
+    getCode().then((value) => setState(() {
+          code = value;
+        }));
     super.initState();
   }
 
@@ -49,15 +54,7 @@ class _AccountState extends State<Account> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          FutureBuilder(
-            future: getCode(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return GenerateQrCode(qrData: snapshot.data);
-              }
-              return const SizedBox();
-            },
-          ),
+          GenerateQrCode(qrData: code),
           Container(
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.only(left: 16),
@@ -71,6 +68,10 @@ class _AccountState extends State<Account> {
             child: Column(
               children: <Widget>[
                 ListTile(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8))),
                   onTap: () {
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
@@ -123,6 +124,10 @@ class _AccountState extends State<Account> {
                   endIndent: 16,
                 ),
                 ListTile(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8))),
                   onTap: () {
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
@@ -146,23 +151,29 @@ class _AccountState extends State<Account> {
           Card(
             child: Column(
               children: <Widget>[
-                if (_role == 5)
+                if (_role > 1)
                   ListTile(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
                     onTap: () {
                       Navigator.of(context,
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
-                          .pushNamed(UpdateMember.routeName);
+                          .pushNamed(_role == 5
+                              ? UpdateMember.routeName
+                              : UpdateManager.routeName);
                     },
                     title: const Text('Thông tin cá nhân'),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),
-                if (_role == 5)
+                if (_role > 1)
                   const Divider(
                     indent: 16,
                     endIndent: 16,
                   ),
                 ListTile(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
                   onTap: () {
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
@@ -176,6 +187,8 @@ class _AccountState extends State<Account> {
           ),
           Card(
             child: ListTile(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8)),
               onTap: () async {
                 if (isAndroidPlatform() || isIOSPlatform()) {
                   handleDeleteTag("role");

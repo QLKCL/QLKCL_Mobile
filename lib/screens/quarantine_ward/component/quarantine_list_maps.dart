@@ -248,31 +248,24 @@ class _QuanrantineListMapsState extends State<QuanrantineListMaps> {
                                     : "") +
                                 (item.city != null
                                     ? "${item.city?.name}, "
-                                    : "")
-                            //      +
-                            // (item.country != null
-                            //     ? "${item.country?.name}"
-                            //     : ""
-                            // )
-                            ,
+                                    : "") +
+                                (item.country != null
+                                    ? "${item.country?.name}"
+                                    : ""),
                             image: item.image,
                           ),
                           // Adding splash to card while tapping.
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              borderRadius: const BorderRadius.all(
-                                  Radius.elliptical(10, 10)),
-                              onTap: () {
-                                if (_currentSelectedIndex != index) {
-                                  _pageViewController.animateToPage(
-                                    index,
-                                    duration: const Duration(milliseconds: 500),
-                                    curve: Curves.easeInOut,
-                                  );
-                                }
-                              },
-                            ),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(8),
+                            onTap: () {
+                              if (_currentSelectedIndex != index) {
+                                _pageViewController.animateToPage(
+                                  index,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                              }
+                            },
                           ),
                         ],
                       ),

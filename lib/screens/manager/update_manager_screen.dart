@@ -3,26 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/custom_user.dart';
-import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/manager/component/manager_form.dart';
 
 class UpdateManager extends StatefulWidget {
   static const String routeName = "/update_manager";
-  final String code;
-  const UpdateManager({Key? key, required this.code}) : super(key: key);
+  final String? code;
+  const UpdateManager({Key? key, this.code}) : super(key: key);
 
   @override
   _UpdateManagerState createState() => _UpdateManagerState();
 }
 
 class _UpdateManagerState extends State<UpdateManager> {
-  late Future<dynamic> futureMember;
+  late Future<dynamic> future;
   late CustomUser personalData;
 
   @override
   void initState() {
     super.initState();
-    futureMember = fetchMember(data: {'code': widget.code});
+    if (widget.code != null) {
+      future = fetchUser(data: {'code': widget.code});
+    } else {
+      future = fetchUser();
+    }
   }
 
   @override
@@ -42,7 +45,7 @@ class _UpdateManagerState extends State<UpdateManager> {
           // ],
         ),
         body: FutureBuilder<dynamic>(
-          future: futureMember,
+          future: future,
           builder: (context, snapshot) {
             showLoading();
             if (snapshot.connectionState == ConnectionState.done) {

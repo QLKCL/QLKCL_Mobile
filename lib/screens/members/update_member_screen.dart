@@ -29,9 +29,9 @@ class _UpdateMemberState extends State<UpdateMember>
   void initState() {
     super.initState();
     if (widget.code != null) {
-      futureMember = fetchMember(data: {'code': widget.code});
+      futureMember = fetchUser(data: {'code': widget.code});
     } else {
-      futureMember = fetchMember();
+      futureMember = fetchUser();
     }
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
