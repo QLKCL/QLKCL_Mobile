@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
@@ -51,7 +52,7 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
             title: const Text("Thêm người cách ly"),
             centerTitle: true,
             actions: [
-              if (_tabController.index == 0)
+              if (_tabController.index == 0 && !isWebPlatform())
                 IconButton(
                   onPressed: () {
                     Navigator.of(context)
@@ -71,6 +72,11 @@ class _AddMemberState extends State<AddMember> with TickerProviderStateMixin {
                 ),
             ],
             bottom: TabBar(
+              onTap: (index) {
+                if (index == 1 && index != _tabController.previousIndex) {
+                  _tabController.index = _tabController.previousIndex;
+                }
+              },
               controller: _tabController,
               indicatorColor: white,
               tabs: const [

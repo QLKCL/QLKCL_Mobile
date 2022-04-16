@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -61,6 +62,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   KeyValue? initQuarantineRoom;
 
   int _role = 5;
+
+  String? getRoomError;
 
   @override
   bool get wantKeepAlive => true;
@@ -451,28 +454,41 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () async {
-                      final data = await getSuitableRoom(
-                        getSuitableRoomDataForm(
-                          gender: state.genderController.text,
-                          label: state.labelController.text,
-                          numberOfVaccineDoses: "0",
-                          quarantineWard: state.quarantineWardController.text,
-                        ),
-                      );
-                      state.quarantineBuildingController.text =
-                          data['quarantine_building']['id'].toString();
-                      state.quarantineFloorController.text =
-                          data['quarantine_floor']['id'].toString();
-                      state.quarantineRoomController.text =
-                          data['quarantine_room']['id'].toString();
-                      initQuarantineBuilding =
-                          KeyValue.fromJson(data['quarantine_building']);
-                      initQuarantineFloor =
-                          KeyValue.fromJson(data['quarantine_floor']);
-                      initQuarantineRoom =
-                          KeyValue.fromJson(data['quarantine_room']);
-                      // state.updateField();
-                      setState(() {});
+                      if (!labelList
+                          .map((element) => element.id.toString())
+                          .toList()
+                          .cast<String>()
+                          .contains(state.labelController.text)) {
+                        setState(() {
+                          getRoomError = "Vui lòng chọn diện cách ly!";
+                        });
+                      } else {
+                        setState(() {
+                          getRoomError = null;
+                        });
+                        final data = await getSuitableRoom(
+                          getSuitableRoomDataForm(
+                            gender: state.genderController.text,
+                            label: state.labelController.text,
+                            numberOfVaccineDoses: "0",
+                            quarantineWard: state.quarantineWardController.text,
+                          ),
+                        );
+                        state.quarantineBuildingController.text =
+                            data['quarantine_building']['id'].toString();
+                        state.quarantineFloorController.text =
+                            data['quarantine_floor']['id'].toString();
+                        state.quarantineRoomController.text =
+                            data['quarantine_room']['id'].toString();
+                        initQuarantineBuilding =
+                            KeyValue.fromJson(data['quarantine_building']);
+                        initQuarantineFloor =
+                            KeyValue.fromJson(data['quarantine_floor']);
+                        initQuarantineRoom =
+                            KeyValue.fromJson(data['quarantine_room']);
+                        // state.updateField();
+                        setState(() {});
+                      }
                     },
                     child: Text(
                       "Gợi ý chọn phòng",
@@ -500,6 +516,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               },
               enabled: widget.mode != Permission.view,
               required: widget.mode != Permission.view,
+              error: getRoomError,
             ),
             NewDateInput(
               label: 'Thời gian bắt đầu cách ly',
@@ -509,7 +526,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             NewDateInput(
               label: 'Thời gian dự kiến hoàn thành cách ly',
               controller: state.quarantinedFinishExpectedAtController,
-              enabled: widget.mode != Permission.view && _role != 5,
+              enabled: widget.mode != Permission.view &&
+                  _role != 5 &&
+                  widget.mode != Permission.add,
             ),
             Input(
               label: "Tình trạng bệnh",
@@ -624,9 +643,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     const Spacer(),
                     ElevatedButton(
                       onPressed: _submit,
-                      child: widget.mode == Permission.changeStatus
-                          ? const Text("Xét duyệt")
-                          : const Text('Lưu'),
+                      child: widget.mode == Permission.add
+                          ? const Text("Tạo")
+                          : widget.mode == Permission.changeStatus
+                              ? const Text("Xét duyệt")
+                              : const Text('Lưu'),
                     ),
                     const Spacer(),
                   ])),
@@ -637,6 +658,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
   }
 
   void _submit() async {
+    setState(() {
+      getRoomError = null;
+    });
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       if (widget.mode == Permission.changeStatus) {
@@ -649,6 +673,37 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         ));
         cancel();
         showNotification(response);
+      } else if (widget.mode == Permission.add) {
+        final CancelFunc cancel = showLoading();
+        final response = await createMember(createMemberDataForm(
+          phoneNumber: state.phoneNumberController.text,
+          fullName: state.fullNameController.text,
+          email: state.emailController.text,
+          birthday: state.birthdayController.text,
+          gender: state.genderController.text,
+          nationality: "VNM",
+          country: state.countryController.text,
+          city: state.cityController.text,
+          district: state.districtController.text,
+          ward: state.wardController.text,
+          address: state.detailAddressController.text,
+          healthInsurance: state.healthInsuranceNumberController.text,
+          identity: state.identityNumberController.text,
+          passport: state.passportNumberController.text,
+          quarantineWard: state.quarantineWardController.text,
+          quarantineRoom: state.quarantineRoomController.text,
+          label: state.labelController.text,
+          quarantinedAt: parseDateToDateTimeWithTimeZone(
+              state.quarantinedAtController.text),
+          positiveBefore: _isPositiveTestedBefore,
+          backgroundDisease: state.backgroundDiseaseController.text,
+          otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
+        ));
+        cancel();
+        showNotification(response);
+        if (response.status == Status.success) {
+          state.codeController.text = response.data['custom_user']['code'];
+        }
       } else {
         final CancelFunc cancel = showLoading();
         final updateResponse = await updateMember(updateMemberDataForm(

@@ -5,13 +5,11 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
-import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
@@ -481,11 +479,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 margin: const EdgeInsets.all(16),
                 child: ElevatedButton(
                   onPressed: _submit,
-                  child: widget.mode == Permission.add
-                      ? const Text("Tạo")
-                      : widget.mode == Permission.edit
-                          ? const Text('Lưu')
-                          : const Text('Tiếp theo'),
+                  child: widget.mode == Permission.edit
+                      ? const Text('Lưu')
+                      : const Text('Tiếp theo'),
                 ),
               ),
           ],
@@ -500,33 +496,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
     } else {
       // Validate returns true if the form is valid, or false otherwise.
       if (_formKey.currentState!.validate()) {
-        final CancelFunc cancel = showLoading();
         if (widget.mode == Permission.add) {
-          final response = await createMember(createMemberDataForm(
-            phoneNumber: state.phoneNumberController.text,
-            fullName: state.fullNameController.text,
-            email: state.emailController.text,
-            birthday: state.birthdayController.text,
-            gender: state.genderController.text,
-            nationality: "VNM",
-            country: state.countryController.text,
-            city: state.cityController.text,
-            district: state.districtController.text,
-            ward: state.wardController.text,
-            address: state.detailAddressController.text,
-            healthInsurance: state.healthInsuranceNumberController.text,
-            identity: state.identityNumberController.text,
-            passport: state.passportNumberController.text,
-            quarantineWard: (await getQuarantineWard()).toString(),
-          ));
-          cancel();
-          showNotification(response);
-          if (response.status == Status.success) {
-            state.codeController.text = response.data['custom_user']['code'];
-            widget.tabController!.animateTo(1);
-          }
+          widget.tabController!.animateTo(1);
         }
         if (widget.mode == Permission.edit) {
+          final CancelFunc cancel = showLoading();
           final response = await updateMember(updateMemberDataForm(
             code: widget.personalData!.code,
             fullName: state.fullNameController.text,
