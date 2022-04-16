@@ -39,6 +39,7 @@ Map<String, dynamic> createMemberDataForm({
   String? backgroundDisease,
   String? otherBackgroundDisease,
   String? numberOfVaccineDoses,
+  String? careStaff,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -63,6 +64,7 @@ Map<String, dynamic> createMemberDataForm({
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
     "number_of_vaccine_doses": numberOfVaccineDoses,
+    "care_staff_code": careStaff,
   };
   return prepareDataForm(data);
 }
@@ -91,6 +93,7 @@ Map<String, dynamic> updateMemberDataForm({
   String? backgroundDisease,
   String? otherBackgroundDisease,
   String? numberOfVaccineDoses,
+  String? careStaff,
 }) {
   final data = {
     "code": code,
@@ -116,6 +119,7 @@ Map<String, dynamic> updateMemberDataForm({
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
     "number_of_vaccine_doses": numberOfVaccineDoses,
+    "care_staff_code": careStaff,
   };
   return prepareDataForm(data);
 }

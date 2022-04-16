@@ -157,6 +157,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           : null;
       state.numberOfVaccineDosesController.text =
           widget.quarantineData?.numberOfVaccineDoses ?? "0";
+      state.careStaffController.text = widget.quarantineData?.careStaff?.id;
     }
     fetchQuarantineWard({
       'page_size': pageSizeMax,
@@ -573,6 +574,35 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       ?.name,
                   enabled: false,
                 ),
+                DropdownInput<KeyValue>(
+                  label: 'Cán bộ chăm sóc',
+                  hint: 'Chọn cán bộ chăm sóc',
+                  onFind: (String? filter) => fetchNotMemberList({
+                    'role_name_list': 'STAFF',
+                    'quarantine_ward_id': state.quarantineWardController.text
+                  }),
+                  selectedItem: widget.quarantineData?.careStaff,
+                  onChanged: (value) {
+                    if (value == null) {
+                      state.careStaffController.text = "";
+                    } else {
+                      state.careStaffController.text = value.id;
+                    }
+                  },
+                  itemAsString: (KeyValue? u) => u!.name,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Cán bộ',
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -738,6 +768,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
+          careStaff: state.careStaffController.text,
         ));
         cancel();
         showNotification(response);
@@ -765,6 +796,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
+          careStaff: state.careStaffController.text,
         ));
         cancel();
         showNotification(updateResponse);

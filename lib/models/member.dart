@@ -57,7 +57,7 @@ class Member {
   final dynamic backgroundDisease;
   final dynamic otherBackgroundDisease;
   final dynamic backgroundDiseaseNote;
-  final dynamic careStaff;
+  final KeyValue? careStaff;
   String? customUserCode;
   final String numberOfVaccineDoses;
 
@@ -82,7 +82,9 @@ class Member {
         backgroundDisease: json["background_disease"],
         otherBackgroundDisease: json["other_background_disease"],
         backgroundDiseaseNote: json["background_disease_note"],
-        careStaff: json["care_staff"],
+        careStaff: json["care_staff"] != null
+            ? KeyValue.fromJson(json["care_staff"])
+            : null,
         numberOfVaccineDoses: json["number_of_vaccine_doses"],
       );
 
@@ -105,7 +107,7 @@ class Member {
         "background_disease": backgroundDisease,
         "other_background_disease": otherBackgroundDisease,
         "background_disease_note": backgroundDiseaseNote,
-        "care_staff": careStaff,
+        "care_staff": careStaff?.toJson(),
         "number_of_vaccine_doses": numberOfVaccineDoses,
       };
 }
