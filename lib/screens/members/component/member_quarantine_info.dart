@@ -91,6 +91,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineBuilding != null
               ? widget.quarantineBuilding!.id.toString()
               : "";
+      state.numberOfVaccineDosesController.text = "0";
+
       if (widget.quarantineWard != null) {
         state.quarantineWardController.text =
             widget.quarantineWard!.id.toString();
@@ -153,6 +155,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       initQuarantineRoom = (widget.quarantineData?.quarantineRoom != null)
           ? KeyValue.fromJson(widget.quarantineData?.quarantineRoom)
           : null;
+      state.numberOfVaccineDosesController.text =
+          widget.quarantineData?.numberOfVaccineDoses ?? "0";
     }
     fetchQuarantineWard({
       'page_size': pageSizeMax,
@@ -484,7 +488,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                               getSuitableRoomDataForm(
                                 gender: state.genderController.text,
                                 label: state.labelController.text,
-                                numberOfVaccineDoses: "0",
+                                numberOfVaccineDoses:
+                                    state.numberOfVaccineDosesController.text,
                                 quarantineWard:
                                     state.quarantineWardController.text,
                               ),
@@ -552,6 +557,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   enabled: widget.mode != Permission.view &&
                       _role != 5 &&
                       widget.mode != Permission.add,
+                ),
+                Input(
+                  label: "Số mũi vaccine đã tiêm",
+                  controller: state.numberOfVaccineDosesController,
+                  required: widget.mode == Permission.add,
+                  enabled: widget.mode == Permission.add,
                 ),
                 Input(
                   label: "Tình trạng bệnh",
@@ -726,6 +737,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
+          numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
         ));
         cancel();
         showNotification(response);
@@ -752,6 +764,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
+          numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
         ));
         cancel();
         showNotification(updateResponse);

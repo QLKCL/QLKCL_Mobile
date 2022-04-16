@@ -36,6 +36,7 @@ class Member {
     this.backgroundDiseaseNote,
     this.careStaff,
     this.customUserCode,
+    this.numberOfVaccineDoses = "0",
   });
 
   final int id;
@@ -58,6 +59,7 @@ class Member {
   final dynamic backgroundDiseaseNote;
   final dynamic careStaff;
   String? customUserCode;
+  final String numberOfVaccineDoses;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         id: json["id"],
@@ -81,6 +83,7 @@ class Member {
         otherBackgroundDisease: json["other_background_disease"],
         backgroundDiseaseNote: json["background_disease_note"],
         careStaff: json["care_staff"],
+        numberOfVaccineDoses: json["number_of_vaccine_doses"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -103,6 +106,7 @@ class Member {
         "other_background_disease": otherBackgroundDisease,
         "background_disease_note": backgroundDiseaseNote,
         "care_staff": careStaff,
+        "number_of_vaccine_doses": numberOfVaccineDoses,
       };
 }
 
