@@ -18,7 +18,7 @@ class _NewQuarantineState extends State<StatefulWidget> {
     return DismissKeyboard(
       child: Scaffold(
         appBar: appBar,
-        body:const  QuarantineForm(),
+        body: const QuarantineForm(),
       ),
     );
   }

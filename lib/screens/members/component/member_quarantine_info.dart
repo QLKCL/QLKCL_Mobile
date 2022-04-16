@@ -510,8 +510,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               onChanged: (value) {
                 if (value == null) {
                   state.labelController.text = "";
+                  setState(() {
+                    getRoomError = "Vui lòng chọn diện cách ly!";
+                  });
                 } else {
                   state.labelController.text = value.id.toString();
+                  setState(() {
+                    getRoomError = null;
+                  });
                 }
               },
               enabled: widget.mode != Permission.view,

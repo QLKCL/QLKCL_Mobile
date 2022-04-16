@@ -77,6 +77,7 @@ class _InputState extends State<Input> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         onTap: () {
           _focus = true;
         },
@@ -151,8 +152,7 @@ class _InputState extends State<Input> {
           errorText: (widget.error != null && widget.error!.isNotEmpty)
               ? widget.error
               : null,
-          fillColor:
-              !widget.enabled ? disable : white,
+          fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
 
