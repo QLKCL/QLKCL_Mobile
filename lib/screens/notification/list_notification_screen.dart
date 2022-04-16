@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 class ListNotification extends StatefulWidget {
   static const String routeName = "/list_notification";
   const ListNotification({Key? key, this.role = 5}) : super(key: key);
-  final int role;
+  final int? role;
 
   @override
   _ListNotificationState createState() => _ListNotificationState();

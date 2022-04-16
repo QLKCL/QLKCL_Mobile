@@ -44,7 +44,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: HomeAppBar(),
+      appBar: const HomeAppBar(),
       body: RefreshIndicator(
         onRefresh: () => Future.sync(() {
           setState(() {

@@ -2,13 +2,15 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
-import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/utils/constant.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
+  final int? role;
+  const HomeAppBar({Key? key, this.role}) : super(key: key);
+
   @override
   State<HomeAppBar> createState() => _HomeAppBarState();
 
@@ -121,9 +123,11 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 color: primaryText,
               ),
               onPressed: () {
-                Navigator.of(context,
-                        rootNavigator: !Responsive.isDesktopLayout(context))
-                    .pushNamed(ListNotification.routeName)
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => ListNotification(
+                              role: widget.role,
+                            )))
                     .then((value) => {
                           notifications.fetchUserNotificationList(data: {
                             'page_size': pageSizeMax
