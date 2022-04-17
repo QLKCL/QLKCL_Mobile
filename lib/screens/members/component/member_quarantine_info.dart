@@ -589,6 +589,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       state.careStaffController.text = value.id;
                     }
                   },
+                  enabled: widget.mode != Permission.view && _role != 5,
                   itemAsString: (KeyValue? u) => u!.name,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,

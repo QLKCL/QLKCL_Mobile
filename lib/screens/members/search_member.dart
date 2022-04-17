@@ -42,6 +42,7 @@ TextEditingController quarantinedFinishExpectedAtController =
 TextEditingController labelController = TextEditingController();
 TextEditingController healthStatusController = TextEditingController();
 TextEditingController testController = TextEditingController();
+TextEditingController careStaffController = TextEditingController();
 
 class SearchMember extends StatefulWidget {
   const SearchMember({Key? key}) : super(key: key);
@@ -55,6 +56,7 @@ class _SearchMemberState extends State<SearchMember> {
   List<KeyValue> _quarantineBuildingList = [];
   List<KeyValue> _quarantineFloorList = [];
   List<KeyValue> _quarantineRoomList = [];
+  List<KeyValue> _careStaffList = [];
 
   bool _searched = false;
 
@@ -133,6 +135,18 @@ class _SearchMemberState extends State<SearchMember> {
         }
       });
     }
+    fetchNotMemberList({
+      'role_name_list': 'STAFF,MANAGER',
+      'quarantine_ward_id': quarantineWardController.text != ""
+          ? quarantineWardController.text
+          : null
+    }).then((value) {
+      if (mounted) {
+        setState(() {
+          _careStaffList = value;
+        });
+      }
+    });
   }
 
   @override
@@ -160,6 +174,7 @@ class _SearchMemberState extends State<SearchMember> {
           label: labelController.text,
           healthStatus: healthStatusController.text,
           test: testController.text,
+          careStaff: careStaffController.text,
         ),
       );
 
@@ -239,6 +254,7 @@ class _SearchMemberState extends State<SearchMember> {
                           label: labelController.text,
                           healthStatus: healthStatusController.text,
                           test: testController.text,
+                          careStaff: careStaffController.text,
                         ),
                       );
                     });
@@ -267,17 +283,24 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineBuildingList: _quarantineBuildingList,
                   quarantineFloorList: _quarantineFloorList,
                   quarantineRoomList: _quarantineRoomList,
+                  careStaffList: _careStaffList,
                   labelController: labelController,
                   healthStatusController: healthStatusController,
                   testController: testController,
-                  onSubmit: (quarantineWardList, quarantineBuildingList,
-                      quarantineFloorList, quarantineRoomList, search) {
+                  careStaffController: careStaffController,
+                  onSubmit: (quarantineWardList,
+                      quarantineBuildingList,
+                      quarantineFloorList,
+                      quarantineRoomList,
+                      careStaffList,
+                      search) {
                     setState(() {
                       _searched = search;
                       _quarantineWardList = quarantineWardList;
                       _quarantineBuildingList = quarantineBuildingList;
                       _quarantineFloorList = quarantineFloorList;
                       _quarantineRoomList = quarantineRoomList;
+                      _careStaffList = careStaffList;
                     });
                     if (Responsive.isDesktopLayout(context)) {
                       setState(() {
@@ -300,6 +323,7 @@ class _SearchMemberState extends State<SearchMember> {
                             label: labelController.text,
                             healthStatus: healthStatusController.text,
                             test: testController.text,
+                            careStaff: careStaffController.text,
                           ),
                         );
                       });
@@ -605,6 +629,7 @@ class MemberDataSource extends DataGridSource {
               quarantinedFinishExpectedAtController.text),
           label: labelController.text,
           healthStatus: healthStatusController.text,
+          careStaff: careStaffController.text,
         ),
       );
       paginatedDataSource = newItems.data;
@@ -635,6 +660,7 @@ class MemberDataSource extends DataGridSource {
             quarantinedFinishExpectedAtController.text),
         label: labelController.text,
         healthStatus: healthStatusController.text,
+        careStaff: careStaffController.text,
       ),
     );
     paginatedDataSource = newItems.data;
