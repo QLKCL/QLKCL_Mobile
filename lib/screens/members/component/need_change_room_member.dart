@@ -305,7 +305,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
                 child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'action',
+            columnName: 'code',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,

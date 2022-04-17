@@ -20,6 +20,13 @@ import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datagrid_export/export.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart' as excel
+    hide Alignment, Column, Row, Border;
+
+// Platform specific import
+import '../../../helper/save_mobile.dart'
+    if (dart.library.html) '../../../helper/save_web.dart' as helper;
 
 // cre: https://pub.dev/packages/infinite_scroll_pagination/example
 // cre: https://help.syncfusion.com/flutter/datagrid/paging
@@ -125,6 +132,44 @@ class _ActiveMemberState extends State<ActiveMember>
         : listMemberCard();
   }
 
+  Widget _buildExportingButtons() {
+    Future<void> exportDataGridToExcel() async {
+      final excel.Workbook workbook = key.currentState!.exportToExcelWorkbook(
+        cellExport: (DataGridCellExcelExportDetails details) {},
+        excludeColumns: ['code'],
+      );
+      final List<int> bytes = workbook.saveAsStream();
+      workbook.dispose();
+      await helper.FileSaveHelper.saveAndLaunchFile(bytes, 'ExportFile.xlsx');
+    }
+
+    return Row(
+      children: <Widget>[
+        Container(
+          margin: const EdgeInsets.all(16),
+          child: ElevatedButton(
+            onPressed: exportDataGridToExcel,
+            child: SizedBox(
+              child: Row(
+                children: const <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 8, right: 8),
+                    child: ImageIcon(
+                      AssetImage('assets/images/ExcelExport.png'),
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text('Export to Excel'),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget listMemberCard() {
     return RefreshIndicator(
       onRefresh: () => Future.sync(_pagingController.refresh),
@@ -166,37 +211,45 @@ class _ActiveMemberState extends State<ActiveMember>
   }
 
   Widget listMemberTable() {
-    return Card(
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Column(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: constraints.maxHeight - 60,
-                  width: constraints.maxWidth,
-                  child: buildStack(constraints),
-                ),
-              ),
-              SizedBox(
-                height: 60,
-                width: constraints.maxWidth,
-                child: SfDataPager(
-                  controller: _dataPagerController,
-                  pageCount: pageCount,
-                  onPageNavigationStart: (int pageIndex) {
-                    showLoading();
-                  },
-                  delegate: memberDataSource,
-                  onPageNavigationEnd: (int pageIndex) {
-                    BotToast.closeAllLoading();
-                  },
-                ),
-              )
-            ],
-          );
-        },
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildExportingButtons(),
+        Expanded(
+          child: Card(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  children: [
+                    Expanded(
+                      child: SizedBox(
+                        height: constraints.maxHeight - 60,
+                        width: constraints.maxWidth,
+                        child: buildStack(constraints),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      width: constraints.maxWidth,
+                      child: SfDataPager(
+                        controller: _dataPagerController,
+                        pageCount: pageCount,
+                        onPageNavigationStart: (int pageIndex) {
+                          showLoading();
+                        },
+                        delegate: memberDataSource,
+                        onPageNavigationEnd: (int pageIndex) {
+                          BotToast.closeAllLoading();
+                        },
+                      ),
+                    )
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -300,7 +353,7 @@ class _ActiveMemberState extends State<ActiveMember>
                 child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'action',
+            columnName: 'code',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,

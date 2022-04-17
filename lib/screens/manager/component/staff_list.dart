@@ -264,7 +264,7 @@ class _StaffListState extends State<StaffList>
                 child: const Text('Trạng thái tài khoản',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'action',
+            columnName: 'code',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
