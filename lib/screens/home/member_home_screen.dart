@@ -3,15 +3,18 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
+import 'package:qlkcl/screens/home/component/requarantined.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MemberHomePage extends StatefulWidget {
@@ -25,12 +28,22 @@ class MemberHomePage extends StatefulWidget {
 class _MemberHomePageState extends State<MemberHomePage> {
   late Future<CovidData> futureCovid;
   late Future<dynamic> futureData;
+  List<KeyValue> quarantineWardList = [];
 
   @override
   void initState() {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
+    fetchQuarantineWardNoToken({
+      'is_full': "false",
+    }).then((value) {
+      if (mounted) {
+        setState(() {
+          quarantineWardList = value;
+        });
+      }
+    });
   }
 
   Future<dynamic> fetch() async {
@@ -244,6 +257,38 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             quarantineFinishExpect: snapshot
                                     .data['quarantined_finish_expected_at'] ??
                                 "",
+                          ),
+                        if (snapshot.data['custom_user']['status'] == "LEAVE")
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(double.infinity, 48),
+                              ),
+                              onPressed: () {
+                                memberRequarantined(
+                                  context,
+                                  quarantineWardList: quarantineWardList,
+                                  useCustomBottomSheetMode:
+                                      ResponsiveWrapper.of(context)
+                                          .isLargerThan(MOBILE),
+                                ).then((value) {
+                                  if (value != null &&
+                                      value.status == Status.success) {
+                                    setState(() {
+                                      futureData = fetch();
+                                    });
+                                  }
+                                });
+                              },
+                              child: Text(
+                                'Đăng ký tái cách ly',
+                                style: TextStyle(
+                                  color: white,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ),
                           ),
                         if (snapshot.data['quarantine_ward'] != null &&
                             snapshot.data['quarantine_ward']['phone_number'] !=

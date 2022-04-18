@@ -471,7 +471,45 @@ Future<dynamic> getSuitableRoom(data) async {
 Future<dynamic> importMember(data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.importMember, data);
-  print(response);
+  if (response == null) {
+    showNotification("Lỗi kết nối!", status: Status.error);
+  } else {
+    if (response['error_code'] == 0) {
+      return response['data'];
+    } else {
+      showNotification("Có lỗi xảy ra!", status: Status.error);
+    }
+  }
+}
+
+Future<Response> memberCallRequarantine(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.memberCallRequarantine, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+        status: Status.success,
+        message: "Đăng ký tái cách ly thành công! Vui lòng chờ xét duyệt.",
+      );
+    } else if (response['error_code'] == 400) {
+      if (response['message']['sender'] != null &&
+          response['message']['sender'] == "This user is not leave") {
+        return Response(
+            status: Status.error, message: "Không thể tái cách ly!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> managerCallRequarantine(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.managerCallRequarantine, data);
   if (response == null) {
     showNotification("Lỗi kết nối!", status: Status.error);
   } else {
