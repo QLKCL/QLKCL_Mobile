@@ -102,7 +102,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         return true;
       },
       child: Scaffold(
-        appBar: HomeAppBar(),
+        appBar: HomeAppBar(
+          role: widget.role,
+        ),
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
             final ScrollDirection direction = notification.direction;

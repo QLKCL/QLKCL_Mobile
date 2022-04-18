@@ -45,7 +45,7 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
                 quarantineInfo: widget.quarantineInfo,
                 mode: Permission.edit,
               )
-            : (FutureBuilder<dynamic>(
+            : FutureBuilder<dynamic>(
                 future: futureQuarantine,
                 builder: (context, snapshot) {
                   showLoading();
@@ -65,7 +65,7 @@ class _EditQuarantineScreenState extends State<EditQuarantineScreen> {
 
                   return const SizedBox();
                 },
-              )),
+              ),
       ),
     );
   }

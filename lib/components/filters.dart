@@ -49,15 +49,18 @@ Future memberFilter(
   required TextEditingController labelController,
   required TextEditingController healthStatusController,
   required TextEditingController testController,
+  required TextEditingController careStaffController,
   required List<KeyValue> quarantineWardList,
   required List<KeyValue> quarantineBuildingList,
   required List<KeyValue> quarantineFloorList,
   required List<KeyValue> quarantineRoomList,
+  required List<KeyValue> careStaffList,
   required void Function(
     List<KeyValue> quarantineWardList,
     List<KeyValue> quarantineBuildingList,
     List<KeyValue> quarantineFloorList,
     List<KeyValue> quarantineRoomList,
+    List<KeyValue> careStaffList,
     bool search,
   )?
       onSubmit,
@@ -304,6 +307,31 @@ Future memberFilter(
             }
           },
         ),
+        DropdownInput<KeyValue>(
+          label: 'Cán bộ chăm sóc',
+          hint: 'Chọn cán bộ chăm sóc',
+          onFind: careStaffList.isEmpty
+              ? (String? filter) => fetchNotMemberList({
+                    'role_name_list': 'STAFF',
+                    'quarantine_ward_id': quarantineWardController.text != ""
+                        ? quarantineWardController.text
+                        : null
+                  })
+              : null,
+          itemValue: careStaffList,
+          onChanged: (value) {
+            if (value == null) {
+              careStaffController.text = "";
+            } else {
+              careStaffController.text = value.id;
+            }
+          },
+          selectedItem: careStaffList.safeFirstWhere(
+              (type) => type.id.toString() == careStaffController.text),
+          itemAsString: (KeyValue? u) => u!.name,
+          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+          showClearButton: true,
+        ),
         Container(
           margin: const EdgeInsets.all(16),
           child: Row(
@@ -320,7 +348,7 @@ Future memberFilter(
                   quarantineAtMaxController.clear();
                   quarantinedFinishExpectedAtController.clear();
                   labelController.clear();
-                  onSubmit!(quarantineWardList, [], [], [], false);
+                  onSubmit!(quarantineWardList, [], [], [], [], false);
                   Navigator.pop(context);
                 },
                 child: const Text("Đặt lại"),
@@ -334,6 +362,7 @@ Future memberFilter(
                     quarantineBuildingList,
                     quarantineFloorList,
                     quarantineRoomList,
+                    careStaffList,
                     true,
                   );
                   Navigator.pop(context);

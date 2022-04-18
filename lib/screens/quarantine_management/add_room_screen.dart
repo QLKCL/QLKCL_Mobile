@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
@@ -81,9 +84,11 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
   final myController = TextEditingController();
 
+  int maxNum = 25;
+
   void _updateLatestValue() {
     setState(() {
-      numOfAddedRoom = int.tryParse(myController.text) ?? 1;
+      numOfAddedRoom = min(int.tryParse(myController.text) ?? 1, maxNum);
       nameList = []..length = numOfAddedRoom;
       capacityList = []..length = numOfAddedRoom;
     });
@@ -101,180 +106,197 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
         appBar: appBar,
         body: SingleChildScrollView(
           child: FutureBuilder<dynamic>(
-              future: futureRoomList,
-              builder: (context, snapshot) {
-                showLoading();
-                if (snapshot.connectionState == ConnectionState.done) {
-                  BotToast.closeAllLoading();
-                  if (snapshot.hasData) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.25,
-                          child: GeneralInfoFloor(
-                            currentBuilding: widget.currentBuilding!,
-                            currentQuarantine: widget.currentQuarantine!,
-                            currentFloor: widget.currentFloor!,
-                            numOfRoom: snapshot.data,
-                          ),
+            future: futureRoomList,
+            builder: (context, snapshot) {
+              showLoading();
+              if (snapshot.connectionState == ConnectionState.done) {
+                BotToast.closeAllLoading();
+                if (snapshot.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: GeneralInfoFloor(
+                          currentBuilding: widget.currentBuilding!,
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentFloor: widget.currentFloor!,
+                          numOfRoom: snapshot.data,
                         ),
-                        SingleChildScrollView(
-                          physics: const ScrollPhysics(),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Add multiple floors
-                                Container(
-                                  margin: const EdgeInsets.fromLTRB(6, 0, 0, 0),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 55,
-                                        child: ListTileTheme(
-                                          contentPadding: EdgeInsets.zero,
-                                          child: CheckboxListTile(
-                                            title:
-                                                const Text("Thêm nhiều phòng"),
-                                            controlAffinity:
-                                                ListTileControlAffinity.leading,
-                                            value: addMultiple,
-                                            onChanged: (bool? value) {
-                                              setState(() {
-                                                addMultiple = value!;
-                                                nameController.text = "";
-                                                capacityController.text = "";
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                      // insert number of floor
-                                      if (addMultiple)
+                      ),
+                      SingleChildScrollView(
+                        physics: const ScrollPhysics(),
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 100, maxWidth: 800),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Add multiple floors
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.fromLTRB(6, 0, 0, 0),
+                                    child: Row(
+                                      children: [
                                         Expanded(
-                                          flex: 45,
-                                          child: Input(
-                                            label: 'Số phòng',
-                                            hint: 'Số phòng',
-                                            type: TextInputType.number,
-                                            required: true,
-                                            controller: myController,
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: const Text(
-                                    'Chỉnh sửa thông tin phòng',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                if (addMultiple)
-                                  ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (ctx, index) {
-                                      return Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 55,
-                                            child: Input(
-                                              label: 'Tên phòng',
-                                              hint: 'Tên phòng',
-                                              required: true,
-                                              onChangedFunction: (text) {
-                                                nameList[index] = text;
+                                          flex: 55,
+                                          child: ListTileTheme(
+                                            contentPadding: EdgeInsets.zero,
+                                            child: CheckboxListTile(
+                                              title: const Text(
+                                                  "Thêm nhiều phòng"),
+                                              controlAffinity:
+                                                  ListTileControlAffinity
+                                                      .leading,
+                                              value: addMultiple,
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  addMultiple = value!;
+                                                  nameController.text = "";
+                                                  capacityController.text = "";
+                                                });
                                               },
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  16, 16, 8, 0),
                                             ),
                                           ),
+                                        ),
+                                        // insert number of floor
+                                        if (addMultiple)
                                           Expanded(
                                             flex: 45,
                                             child: Input(
-                                              label: 'Số người tối đa',
-                                              hint: 'Số người tối đa',
-                                              required: true,
+                                              label: 'Số phòng',
+                                              hint: 'Số phòng',
                                               type: TextInputType.number,
-                                              onChangedFunction: (text) {
-                                                capacityList[index] = text;
+                                              required: true,
+                                              controller: myController,
+                                              validatorFunction:
+                                                  (String? value) {
+                                                return maxNumberValidator(
+                                                    value, maxNum);
                                               },
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  8, 16, 16, 0),
                                             ),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                    itemCount: numOfAddedRoom,
-                                  )
-                                else
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 55,
-                                        child: Input(
-                                          label: 'Tên phòng',
-                                          hint: 'Tên phòng',
-                                          required: true,
-                                          controller: nameController,
-                                          margin: const EdgeInsets.fromLTRB(
-                                              16, 16, 8, 0),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 45,
-                                        child: Input(
-                                          label: 'Số người tối đa',
-                                          hint: 'Số người tối đa',
-                                          required: true,
-                                          type: TextInputType.number,
-                                          controller: capacityController,
-                                          margin: const EdgeInsets.fromLTRB(
-                                              8, 16, 16, 0),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                              ],
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 16),
+                                    child: const Text(
+                                      'Chỉnh sửa thông tin phòng',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  if (addMultiple)
+                                    ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (ctx, index) {
+                                        return Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 55,
+                                              child: Input(
+                                                label: 'Tên phòng',
+                                                hint: 'Tên phòng',
+                                                required: true,
+                                                onChangedFunction: (text) {
+                                                  nameList[index] = text;
+                                                },
+                                                margin:
+                                                    const EdgeInsets.fromLTRB(
+                                                        16, 16, 8, 0),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              flex: 45,
+                                              child: Input(
+                                                label: 'Số người tối đa',
+                                                hint: 'Số người tối đa',
+                                                required: true,
+                                                type: TextInputType.number,
+                                                onChangedFunction: (text) {
+                                                  capacityList[index] = text;
+                                                },
+                                                margin:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 16, 16, 0),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                      itemCount: numOfAddedRoom,
+                                    )
+                                  else
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 55,
+                                          child: Input(
+                                            label: 'Tên phòng',
+                                            hint: 'Tên phòng',
+                                            required: true,
+                                            controller: nameController,
+                                            margin: const EdgeInsets.fromLTRB(
+                                                16, 16, 8, 0),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 45,
+                                          child: Input(
+                                            label: 'Số người tối đa',
+                                            hint: 'Số người tối đa',
+                                            required: true,
+                                            type: TextInputType.number,
+                                            controller: capacityController,
+                                            margin: const EdgeInsets.fromLTRB(
+                                                8, 16, 16, 0),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              ElevatedButton(
-                                onPressed: _submit,
-                                child: const Text("Xác nhận"),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: const Text("Xác nhận"),
+                            ),
+                            const Spacer(),
+                          ],
                         ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Text('Snapshot has error');
-                  } else {
-                    return const Text(
-                      'Không có dữ liệu',
-                      textAlign: TextAlign.center,
-                    );
-                  }
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text('Snapshot has error');
+                } else {
+                  return const Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
                 }
-                return const SizedBox();
-              }),
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

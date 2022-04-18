@@ -32,11 +32,9 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
           title: const Text('Khai báo y tế'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: MedDeclForm(
-            mode: Permission.add,
-            phone: widget.phone,
-          ),
+        body: MedDeclForm(
+          mode: Permission.add,
+          phone: widget.phone,
         ),
       ),
     );

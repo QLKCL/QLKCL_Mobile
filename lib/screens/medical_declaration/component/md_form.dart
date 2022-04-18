@@ -104,239 +104,248 @@ class _MedDeclFormState extends State<MedDeclForm> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Tên người khai hộ
-            if (widget.mode == Permission.add)
-              Column(
-                children: [
-                  ListTileTheme(
-                    contentPadding: const EdgeInsets.only(left: 8),
-                    child: CheckboxListTile(
-                      title: const Text("Khai hộ"),
-                      controlAffinity: ListTileControlAffinity.leading,
-                      value: isChecked,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          isChecked = value!;
-                        });
-                      },
-                    ),
-                  ),
-
-                  // SĐT người khai hộ
-                  Input(
-                    label: 'Số điện thoại',
-                    hint: 'SĐT người được khai báo',
-                    margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                    required: isChecked,
-                    type: TextInputType.phone,
-                    controller: phoneNumberController,
-                    validatorFunction: isChecked ? phoneValidator : null,
-                    enabled: isChecked,
-                  )
-                ],
-              )
-            else
-              Input(
-                label: 'Họ và tên',
-                controller: userNameController,
-                enabled: false,
-              ),
-
-            //Medical Declaration Info
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-              child: const Text(
-                'A/ Chỉ số sức khỏe:',
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            Input(
-              label: 'Nhịp tim (lần/phút)',
-              hint: 'Nhịp tim (lần/phút)',
-              type: TextInputType.number,
-              controller: heartBeatController,
-              validatorFunction: intValidator,
-              enabled: widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Nhiệt độ cơ thể (độ C)',
-              hint: 'Nhiệt độ cơ thể (độ C)',
-              type: TextInputType.number,
-              controller: temperatureController,
-              enabled: widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Nồng độ Oxi trong máu (%)',
-              hint: 'Nồng độ Oxi trong máu (%)',
-              type: TextInputType.number,
-              controller: spo2Controller,
-              enabled: widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Nhịp thở (lần/phút)',
-              hint: 'Nhịp thở (lần/phút)',
-              type: TextInputType.number,
-              controller: breathingController,
-              validatorFunction: intValidator,
-              enabled: widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Huyết áp (mmHg)',
-              hint: 'Huyết áp (mmHg)',
-              type: TextInputType.number,
-              controller: bloodPressureController,
-              enabled: widget.mode == Permission.add,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-              child: const Text('B/ Triệu chứng nghi nhiễm:',
-                  style: TextStyle(fontSize: 16)),
-            ),
-
-            MultiDropdownInput<KeyValue>(
-              label: 'Triệu chứng nghi nhiễm',
-              hint: 'Chọn triệu chứng',
-              itemValue: symptomMainList,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              dropdownBuilder: customDropDown,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              selectedItems: (widget.medicalDeclData?.mainSymptoms != null)
-                  ? (widget.medicalDeclData!.mainSymptoms
-                      .toString()
-                      .split(',')
-                      .map((e) => symptomMainList.safeFirstWhere(
-                          (result) => result.id == int.parse(e))!)
-                      .toList())
-                  : null,
-              onChanged: (value) {
-                if (value == null) {
-                  mainSymptomController.text = "";
-                } else {
-                  mainSymptomController.text = value.map((e) => e.id).join(",");
-                }
-              },
-              enabled: widget.mode != Permission.view,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Triệu chứng nghi nhiễm',
-            ),
-
-            MultiDropdownInput<KeyValue>(
-              label: 'Triệu chứng khác',
-              hint: 'Chọn triệu chứng',
-              itemValue: symptomExtraList,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              dropdownBuilder: customDropDown,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              selectedItems: (widget.medicalDeclData?.extraSymptoms != null)
-                  ? (widget.medicalDeclData!.extraSymptoms
-                      .toString()
-                      .split(',')
-                      .map((e) => symptomExtraList.safeFirstWhere(
-                          (result) => result.id == int.parse(e))!)
-                      .toList())
-                  : null,
-              onChanged: (value) {
-                if (value == null) {
-                  extraSymptomController.text = "";
-                } else {
-                  extraSymptomController.text =
-                      value.map((e) => e.id).join(",");
-                }
-              },
-              enabled: widget.mode != Permission.view,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Triệu chứng khác',
-            ),
-
-            Input(
-              label: 'Khác',
-              hint: 'Khác',
-              controller: otherController,
-              enabled: widget.mode == Permission.add,
-            ),
-            const SizedBox(height: 8),
-
-            //Button add medical declaration
-            if (widget.mode == Permission.add)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTileTheme(
-                    contentPadding: const EdgeInsets.only(left: 8),
-                    child: CheckboxListTile(
-                      title: Container(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: const Text(
-                            "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
-                          )),
-                      value: agree,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          agree = value!;
-                        });
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          '(*)',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: error,
-                          ),
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Tên người khai hộ
+                if (widget.mode == Permission.add)
+                  Column(
+                    children: [
+                      ListTileTheme(
+                        contentPadding: const EdgeInsets.only(left: 8),
+                        child: CheckboxListTile(
+                          title: const Text("Khai hộ"),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
                         ),
-                        const Text(
-                          ' Thông tin bắt buộc',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(16),
-                    child: ElevatedButton(
-                      onPressed: agree
-                          ? _submit
-                          : () {
-                              showNotification(
-                                  'Vui lòng chọn cam kết trước khi khai báo.',
-                                  status: Status.error);
-                            },
-                      child: Text(
-                        "Khai báo",
-                        style: TextStyle(color: white),
                       ),
-                    ),
+
+                      // SĐT người khai hộ
+                      Input(
+                        label: 'Số điện thoại',
+                        hint: 'SĐT người được khai báo',
+                        margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                        required: isChecked,
+                        type: TextInputType.phone,
+                        controller: phoneNumberController,
+                        validatorFunction: isChecked ? phoneValidator : null,
+                        enabled: isChecked,
+                      )
+                    ],
+                  )
+                else
+                  Input(
+                    label: 'Họ và tên',
+                    controller: userNameController,
+                    enabled: false,
                   ),
-                ],
-              )
-          ],
+
+                //Medical Declaration Info
+                Container(
+                  margin: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+                  child: const Text(
+                    'A/ Chỉ số sức khỏe:',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                Input(
+                  label: 'Nhịp tim (lần/phút)',
+                  hint: 'Nhịp tim (lần/phút)',
+                  type: TextInputType.number,
+                  controller: heartBeatController,
+                  validatorFunction: intNullableValidator,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Nhiệt độ cơ thể (độ C)',
+                  hint: 'Nhiệt độ cơ thể (độ C)',
+                  type: TextInputType.number,
+                  controller: temperatureController,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Nồng độ Oxi trong máu (%)',
+                  hint: 'Nồng độ Oxi trong máu (%)',
+                  type: TextInputType.number,
+                  controller: spo2Controller,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Nhịp thở (lần/phút)',
+                  hint: 'Nhịp thở (lần/phút)',
+                  type: TextInputType.number,
+                  controller: breathingController,
+                  validatorFunction: intNullableValidator,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Huyết áp (mmHg)',
+                  hint: 'Huyết áp (mmHg)',
+                  type: TextInputType.number,
+                  controller: bloodPressureController,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: const Text('B/ Triệu chứng nghi nhiễm:',
+                      style: TextStyle(fontSize: 16)),
+                ),
+
+                MultiDropdownInput<KeyValue>(
+                  label: 'Triệu chứng nghi nhiễm',
+                  hint: 'Chọn triệu chứng',
+                  itemValue: symptomMainList,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  dropdownBuilder: customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: (widget.medicalDeclData?.mainSymptoms != null)
+                      ? (widget.medicalDeclData!.mainSymptoms
+                          .toString()
+                          .split(',')
+                          .map((e) => symptomMainList.safeFirstWhere(
+                              (result) => result.id == int.parse(e))!)
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      mainSymptomController.text = "";
+                    } else {
+                      mainSymptomController.text =
+                          value.map((e) => e.id).join(",");
+                    }
+                  },
+                  enabled: widget.mode != Permission.view,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Triệu chứng nghi nhiễm',
+                ),
+
+                MultiDropdownInput<KeyValue>(
+                  label: 'Triệu chứng khác',
+                  hint: 'Chọn triệu chứng',
+                  itemValue: symptomExtraList,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  dropdownBuilder: customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: (widget.medicalDeclData?.extraSymptoms != null)
+                      ? (widget.medicalDeclData!.extraSymptoms
+                          .toString()
+                          .split(',')
+                          .map((e) => symptomExtraList.safeFirstWhere(
+                              (result) => result.id == int.parse(e))!)
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      extraSymptomController.text = "";
+                    } else {
+                      extraSymptomController.text =
+                          value.map((e) => e.id).join(",");
+                    }
+                  },
+                  enabled: widget.mode != Permission.view,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Triệu chứng khác',
+                ),
+
+                Input(
+                  label: 'Khác',
+                  hint: 'Khác',
+                  controller: otherController,
+                  enabled: widget.mode == Permission.add,
+                ),
+                const SizedBox(height: 8),
+
+                //Button add medical declaration
+                if (widget.mode == Permission.add)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTileTheme(
+                        contentPadding: const EdgeInsets.only(left: 8),
+                        child: CheckboxListTile(
+                          title: Container(
+                              padding: const EdgeInsets.only(right: 16),
+                              child: const Text(
+                                "Tôi cam kết hoàn toàn chịu trách nhiệm về tính chính xác và trung thực của thông tin đã cung cấp",
+                              )),
+                          value: agree,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              agree = value!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '(*)',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: error,
+                              ),
+                            ),
+                            const Text(
+                              ' Thông tin bắt buộc',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: const EdgeInsets.all(16),
+                        child: ElevatedButton(
+                          onPressed: agree
+                              ? _submit
+                              : () {
+                                  showNotification(
+                                      'Vui lòng chọn cam kết trước khi khai báo.',
+                                      status: Status.error);
+                                },
+                          child: Text(
+                            "Khai báo",
+                            style: TextStyle(color: white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'dart:convert';
@@ -137,9 +138,18 @@ class ApiHelper {
 
   Future<dynamic> postHTTP(String url, data) async {
     try {
-      final Response response = await baseAPI.post(url,
-          data: data != null ? FormData.fromMap(data) : null);
-      return response.data;
+      if (data is PlatformFile) {
+        final FormData formData = FormData.fromMap({
+          "file": MultipartFile.fromBytes(List<int>.from(data.bytes!),
+              filename: data.name),
+        });
+        final Response response = await baseAPI.post(url, data: formData);
+        return response.data;
+      } else {
+        final Response response = await baseAPI.post(url,
+            data: data != null ? FormData.fromMap(data) : null);
+        return response.data;
+      }
     } on DioError catch (e) {
       // Handle error
       handleException(e);

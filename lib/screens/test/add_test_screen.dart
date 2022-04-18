@@ -28,13 +28,11 @@ class _AddTestState extends State<AddTest> {
           title: const Text('Tạo phiếu xét nghiệm'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: TestForm(
-            userCode: (widget.code != null && widget.name != null)
-                ? CreatedBy(code: widget.code!, fullName: widget.name!)
-                : null,
-            mode: Permission.add,
-          ),
+        body: TestForm(
+          userCode: (widget.code != null && widget.name != null)
+              ? CreatedBy(code: widget.code!, fullName: widget.name!)
+              : null,
+          mode: Permission.add,
         ),
       ),
     );

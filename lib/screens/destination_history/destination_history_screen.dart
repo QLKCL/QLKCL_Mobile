@@ -32,11 +32,9 @@ class _DestinationHistoryScreenState extends State<DestinationHistoryScreen> {
           title: const Text('Khai báo di chuyển'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: DestinationHistoryForm(
-            mode: Permission.add,
-            code: widget.code,
-          ),
+        body: DestinationHistoryForm(
+          mode: Permission.add,
+          code: widget.code,
         ),
       ),
     );

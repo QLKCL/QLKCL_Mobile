@@ -259,540 +259,553 @@ class _ManagerFormState extends State<ManagerForm> {
           ?.id;
     }
     return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-              child: Row(
-                children: <Widget>[
-                  Radio<String>(
-                    value: "manager",
-                    groupValue: type,
-                    onChanged: (value) {
-                      if (widget.mode == Permission.add) {
-                        setState(() {
-                          type = value!;
-                        });
+      child: Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+                  child: Row(
+                    children: <Widget>[
+                      Radio<String>(
+                        value: "manager",
+                        groupValue: type,
+                        onChanged: (value) {
+                          if (widget.mode == Permission.add) {
+                            setState(() {
+                              type = value!;
+                            });
+                          }
+                        },
+                      ),
+                      const Text(
+                        'Quản lý',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Radio<String>(
+                        value: "staff",
+                        groupValue: type,
+                        onChanged: (value) {
+                          if (widget.mode == Permission.add) {
+                            setState(() {
+                              type = value!;
+                            });
+                          }
+                        },
+                      ),
+                      const Text(
+                        'Cán bộ',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Input(
+                  label: 'Mã định danh',
+                  enabled: false,
+                  controller: codeController,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Khu cách ly',
+                  hint: 'Chọn khu cách ly',
+                  required: widget.mode != Permission.view,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  onFind: quarantineWardList.isEmpty
+                      ? (String? filter) => fetchQuarantineWard({
+                            'page_size': pageSizeMax,
+                            'search': filter,
+                          })
+                      : null,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemValue: quarantineWardList,
+                  selectedItem: widget.quarantineWard ??
+                      (initQuarantineWard ??
+                          quarantineWardList.safeFirstWhere((type) =>
+                              type.id.toString() ==
+                              quarantineWardController.text)),
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        quarantineWardController.text = "";
+                      } else {
+                        quarantineWardController.text = value.id.toString();
                       }
-                    },
-                  ),
-                  const Text(
-                    'Quản lý',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  Radio<String>(
-                    value: "staff",
-                    groupValue: type,
-                    onChanged: (value) {
-                      if (widget.mode == Permission.add) {
-                        setState(() {
-                          type = value!;
-                        });
-                      }
-                    },
-                  ),
-                  const Text(
-                    'Cán bộ',
-                    style: TextStyle(
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Input(
-              label: 'Mã định danh',
-              enabled: false,
-              controller: codeController,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Khu cách ly',
-              hint: 'Chọn khu cách ly',
-              required: widget.mode != Permission.view,
-              itemAsString: (KeyValue? u) => u!.name,
-              onFind: quarantineWardList.isEmpty
-                  ? (String? filter) => fetchQuarantineWard({
+                      quarantineBuildingController.clear();
+                      quarantineFloorController.clear();
+                      quarantineBuildingList = [];
+                      quarantineFloorList = [];
+                      initQuarantineWard = null;
+                      initQuarantineBuilding = [];
+                      initQuarantineFloor = [];
+                    });
+                    if (quarantineWardController.text != "") {
+                      fetchQuarantineBuilding({
+                        'quarantine_ward': quarantineWardController.text,
                         'page_size': pageSizeMax,
-                        'search': filter,
-                      })
-                  : null,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemValue: quarantineWardList,
-              selectedItem: widget.quarantineWard ??
-                  (initQuarantineWard ??
-                      quarantineWardList.safeFirstWhere((type) =>
-                          type.id.toString() == quarantineWardController.text)),
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    quarantineWardController.text = "";
-                  } else {
-                    quarantineWardController.text = value.id.toString();
-                  }
-                  quarantineBuildingController.clear();
-                  quarantineFloorController.clear();
-                  quarantineBuildingList = [];
-                  quarantineFloorList = [];
-                  initQuarantineWard = null;
-                  initQuarantineBuilding = [];
-                  initQuarantineFloor = [];
-                });
-                if (quarantineWardController.text != "") {
-                  fetchQuarantineBuilding({
-                    'quarantine_ward': quarantineWardController.text,
-                    'page_size': pageSizeMax,
-                  }).then((data) => setState(() {
-                        quarantineBuildingList = data;
-                        buildingKey.currentState?.openDropDownSearch();
-                      }));
-                }
-              },
-              enabled: widget.mode == Permission.add,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Khu cách ly',
-            ),
-            Input(
-              label: 'Họ và tên',
-              required: widget.mode != Permission.view,
-              textCapitalization: TextCapitalization.words,
-              controller: fullNameController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Số điện thoại',
-              required: widget.mode != Permission.view,
-              type: TextInputType.phone,
-              controller: phoneNumberController,
-              enabled: widget.mode == Permission.add,
-              validatorFunction: phoneValidator,
-            ),
-            Input(
-              label: 'Email',
-              type: TextInputType.emailAddress,
-              controller: emailController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              validatorFunction: emailValidator,
-            ),
-            Input(
-              label: 'Số CMND/CCCD',
-              required: widget.mode != Permission.view,
-              type: TextInputType.number,
-              controller: identityNumberController,
-              enabled: widget.mode == Permission.add ||
-                  (widget.mode == Permission.edit &&
-                      identityNumberController.text == ""),
-              validatorFunction: identityValidator,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Quốc tịch',
-              hint: 'Quốc tịch',
-              required: widget.mode != Permission.view,
-              itemValue: nationalityList,
-              itemAsString: (KeyValue? u) => u!.name,
-              maxHeight: 66,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: (widget.personalData?.nationality != null)
-                  ? KeyValue.fromJson(widget.personalData!.nationality)
-                  : const KeyValue(id: "VNM", name: 'Việt Nam'),
-              onChanged: (value) {
-                if (value == null) {
-                  nationalityController.text = "";
-                } else {
-                  nationalityController.text = value.id.toString();
-                }
-              },
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Giới tính',
-              hint: 'Chọn giới tính',
-              required: widget.mode != Permission.view,
-              itemValue: genderList,
-              itemAsString: (KeyValue? u) => u!.name,
-              maxHeight: 112,
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              selectedItem: genderList.safeFirstWhere(
-                  (gender) => gender.id == genderController.text),
-              onChanged: (value) {
-                if (value == null) {
-                  genderController.text = "";
-                } else {
-                  genderController.text = value.id;
-                }
-              },
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            NewDateInput(
-              label: 'Ngày sinh',
-              required: widget.mode != Permission.view,
-              controller: birthdayController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-            ),
-            DropdownInput<KeyValue>(
-              label: 'Quốc gia',
-              hint: 'Quốc gia',
-              required: widget.mode != Permission.view,
-              itemValue: countryList,
-              selectedItem: countryList.isEmpty
-                  ? initCountry
-                  : countryList.safeFirstWhere(
-                      (type) => type.id.toString() == countryController.text),
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              onFind: countryList.isEmpty
-                  ? (String? filter) => fetchCountry()
-                  : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    countryController.text = "";
-                  } else {
-                    countryController.text = value.id;
-                  }
-                  cityController.clear();
-                  districtController.clear();
-                  wardController.clear();
-                  cityList = [];
-                  districtList = [];
-                  wardList = [];
-                  initCountry = null;
-                  initCity = null;
-                  initDistrict = null;
-                  initWard = null;
-                });
-                if (countryController.text != "") {
-                  fetchCity({'country_code': countryController.text})
-                      .then((data) => setState(() {
-                            cityList = data;
-                            cityKey.currentState?.openDropDownSearch();
+                      }).then((data) => setState(() {
+                            quarantineBuildingList = data;
+                            buildingKey.currentState?.openDropDownSearch();
                           }));
-                }
-              },
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Quốc gia',
-            ),
-            DropdownInput<KeyValue>(
-              widgetKey: cityKey,
-              label: 'Tỉnh/thành',
-              hint: 'Tỉnh/thành',
-              itemValue: cityList,
-              required: widget.mode != Permission.view,
-              selectedItem: cityList.isEmpty
-                  ? initCity
-                  : cityList.safeFirstWhere(
-                      (type) => type.id.toString() == cityController.text),
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              onFind: cityList.isEmpty && countryController.text != ""
-                  ? (String? filter) => fetchCity({
-                        'country_code': countryController.text,
-                        'search': filter,
-                      })
-                  : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    cityController.text = "";
-                  } else {
-                    cityController.text = value.id.toString();
-                  }
-                  districtController.clear();
-                  wardController.clear();
-                  districtList = [];
-                  wardList = [];
-                  initCity = null;
-                  initDistrict = null;
-                  initWard = null;
-                });
-                if (cityController.text != "") {
-                  fetchDistrict({'city_id': cityController.text})
-                      .then((data) => setState(() {
-                            districtList = data;
-                            districtKey.currentState?.openDropDownSearch();
-                          }));
-                }
-              },
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Tỉnh/thành',
-            ),
-            DropdownInput<KeyValue>(
-              widgetKey: districtKey,
-              label: 'Quận/huyện',
-              hint: 'Quận/huyện',
-              itemValue: districtList,
-              required: widget.mode != Permission.view,
-              selectedItem: districtList.isEmpty
-                  ? initDistrict
-                  : districtList.safeFirstWhere(
-                      (type) => type.id.toString() == districtController.text),
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              onFind: districtList.isEmpty && cityController.text != ""
-                  ? (String? filter) => fetchDistrict({
-                        'city_id': cityController.text,
-                        'search': filter,
-                      })
-                  : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    districtController.text = "";
-                  } else {
-                    districtController.text = value.id.toString();
-                  }
-                  wardController.clear();
-                  wardList = [];
-                  initDistrict = null;
-                  initWard = null;
-                });
-                if (districtController.text != "") {
-                  fetchWard({'district_id': districtController.text})
-                      .then((data) => setState(() {
-                            wardList = data;
-                            wardKey.currentState?.openDropDownSearch();
-                          }));
-                }
-              },
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Quận/huyện',
-            ),
-            DropdownInput<KeyValue>(
-              widgetKey: wardKey,
-              label: 'Phường/xã',
-              hint: 'Phường/xã',
-              itemValue: wardList,
-              required: widget.mode != Permission.view,
-              selectedItem: wardList.isEmpty
-                  ? initWard
-                  : wardList.safeFirstWhere(
-                      (type) => type.id.toString() == wardController.text),
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              onFind: wardList.isEmpty && districtController.text != ""
-                  ? (String? filter) => fetchWard({
-                        'district_id': districtController.text,
-                        'search': filter,
-                      })
-                  : null,
-              onChanged: (value) {
-                setState(() {
-                  if (value == null) {
-                    wardController.text = "";
-                  } else {
-                    wardController.text = value.id.toString();
-                  }
-                  initWard = null;
-                });
-              },
-              compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-              itemAsString: (KeyValue? u) => u!.name,
-              showSearchBox: true,
-              mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                  ? Mode.DIALOG
-                  : Mode.BOTTOM_SHEET,
-              maxHeight: MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  MediaQuery.of(context).padding.top -
-                  MediaQuery.of(context).padding.bottom -
-                  100,
-              popupTitle: 'Phường/xã',
-            ),
-            Input(
-              label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
-              required: widget.mode != Permission.view,
-              controller: detailAddressController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Mã số BHXH/Thẻ BHYT',
-              controller: healthInsuranceNumberController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-            ),
-            Input(
-              label: 'Số hộ chiếu',
-              controller: passportNumberController,
-              enabled: widget.mode == Permission.edit ||
-                  widget.mode == Permission.add,
-              textCapitalization: TextCapitalization.characters,
-              validatorFunction: passportValidator,
-            ),
-            if (type == "staff")
-              MultiDropdownInput<KeyValue>(
-                widgetKey: buildingKey,
-                label: 'Tòa',
-                hint: 'Chọn tòa',
-                required: widget.mode != Permission.view,
-                dropdownBuilder: customDropDown,
-                itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineBuildingList.isEmpty &&
-                        quarantineWardController.text != ""
-                    ? (String? filter) => fetchQuarantineBuilding({
-                          'quarantine_ward': quarantineWardController.text,
-                          'page_size': pageSizeMax,
-                          'search': filter,
-                        })
-                    : null,
-                compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                itemValue: quarantineBuildingList,
-                selectedItems: widget.quarantineBuilding != null
-                    ? [widget.quarantineBuilding!]
-                    : initQuarantineBuilding.isNotEmpty
-                        ? initQuarantineBuilding
-                        : (quarantineBuildingController.text != ""
-                            ? (quarantineBuildingList.isNotEmpty
-                                ? quarantineBuildingController.text
-                                    .split(',')
-                                    .map((e) => quarantineBuildingList
-                                        .safeFirstWhere((result) =>
-                                            result.id.toString() == e)!)
-                                    .toList()
-                                : null)
-                            : null),
-                onChanged: (value) {
-                  setState(() {
-                    if (value == null) {
-                      quarantineBuildingController.text = "";
-                    } else {
-                      quarantineBuildingController.text =
-                          value.map((e) => e.id).join(",");
                     }
-                    quarantineFloorController.clear();
-                    quarantineFloorList = [];
-                    initQuarantineBuilding = [];
-                    initQuarantineFloor = [];
-                  });
-                  if (quarantineBuildingController.text != "") {
-                    fetchCustomQuarantineFloor({
-                      'quarantine_building_id_list':
-                          quarantineBuildingController.text,
-                      'page_size': pageSizeMax,
-                    }).then((data) => setState(() {
-                          quarantineFloorList = data;
-                          floorKey.currentState?.openDropDownSearch();
-                        }));
-                  }
-                },
-                enabled: widget.mode != Permission.view,
-                showSearchBox: true,
-                mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? Mode.DIALOG
-                    : Mode.BOTTOM_SHEET,
-                maxHeight: MediaQuery.of(context).size.height -
-                    AppBar().preferredSize.height -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom -
-                    100,
-                popupTitle: 'Tòa',
-              ),
-            if (type == "staff")
-              MultiDropdownInput<KeyValue>(
-                widgetKey: floorKey,
-                label: 'Tầng',
-                hint: 'Chọn tầng',
-                required: widget.mode != Permission.view,
-                dropdownBuilder: customDropDown,
-                itemAsString: (KeyValue? u) => u!.name,
-                onFind: quarantineFloorList.isEmpty &&
-                        quarantineBuildingController.text != ""
-                    ? (String? filter) => fetchCustomQuarantineFloor({
+                  },
+                  enabled: widget.mode == Permission.add,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Khu cách ly',
+                ),
+                Input(
+                  label: 'Họ và tên',
+                  required: widget.mode != Permission.view,
+                  textCapitalization: TextCapitalization.words,
+                  controller: fullNameController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Số điện thoại',
+                  required: widget.mode != Permission.view,
+                  type: TextInputType.phone,
+                  controller: phoneNumberController,
+                  enabled: widget.mode == Permission.add,
+                  validatorFunction: phoneValidator,
+                ),
+                Input(
+                  label: 'Email',
+                  type: TextInputType.emailAddress,
+                  controller: emailController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  validatorFunction: emailValidator,
+                ),
+                Input(
+                  label: 'Số CMND/CCCD',
+                  required: widget.mode != Permission.view,
+                  type: TextInputType.number,
+                  controller: identityNumberController,
+                  enabled: widget.mode == Permission.add ||
+                      (widget.mode == Permission.edit &&
+                          identityNumberController.text == ""),
+                  validatorFunction: identityValidator,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Quốc tịch',
+                  hint: 'Quốc tịch',
+                  required: widget.mode != Permission.view,
+                  itemValue: nationalityList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 66,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: (widget.personalData?.nationality != null)
+                      ? KeyValue.fromJson(widget.personalData!.nationality)
+                      : const KeyValue(id: "VNM", name: 'Việt Nam'),
+                  onChanged: (value) {
+                    if (value == null) {
+                      nationalityController.text = "";
+                    } else {
+                      nationalityController.text = value.id.toString();
+                    }
+                  },
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Giới tính',
+                  hint: 'Chọn giới tính',
+                  required: widget.mode != Permission.view,
+                  itemValue: genderList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 112,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: genderList.safeFirstWhere(
+                      (gender) => gender.id == genderController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      genderController.text = "";
+                    } else {
+                      genderController.text = value.id;
+                    }
+                  },
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                NewDateInput(
+                  label: 'Ngày sinh',
+                  required: widget.mode != Permission.view,
+                  controller: birthdayController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Quốc gia',
+                  hint: 'Quốc gia',
+                  required: widget.mode != Permission.view,
+                  itemValue: countryList,
+                  selectedItem: countryList.isEmpty
+                      ? initCountry
+                      : countryList.safeFirstWhere((type) =>
+                          type.id.toString() == countryController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: countryList.isEmpty
+                      ? (String? filter) => fetchCountry()
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        countryController.text = "";
+                      } else {
+                        countryController.text = value.id;
+                      }
+                      cityController.clear();
+                      districtController.clear();
+                      wardController.clear();
+                      cityList = [];
+                      districtList = [];
+                      wardList = [];
+                      initCountry = null;
+                      initCity = null;
+                      initDistrict = null;
+                      initWard = null;
+                    });
+                    if (countryController.text != "") {
+                      fetchCity({'country_code': countryController.text})
+                          .then((data) => setState(() {
+                                cityList = data;
+                                cityKey.currentState?.openDropDownSearch();
+                              }));
+                    }
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Quốc gia',
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: cityKey,
+                  label: 'Tỉnh/thành',
+                  hint: 'Tỉnh/thành',
+                  itemValue: cityList,
+                  required: widget.mode != Permission.view,
+                  selectedItem: cityList.isEmpty
+                      ? initCity
+                      : cityList.safeFirstWhere(
+                          (type) => type.id.toString() == cityController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: cityList.isEmpty && countryController.text != ""
+                      ? (String? filter) => fetchCity({
+                            'country_code': countryController.text,
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        cityController.text = "";
+                      } else {
+                        cityController.text = value.id.toString();
+                      }
+                      districtController.clear();
+                      wardController.clear();
+                      districtList = [];
+                      wardList = [];
+                      initCity = null;
+                      initDistrict = null;
+                      initWard = null;
+                    });
+                    if (cityController.text != "") {
+                      fetchDistrict({'city_id': cityController.text})
+                          .then((data) => setState(() {
+                                districtList = data;
+                                districtKey.currentState?.openDropDownSearch();
+                              }));
+                    }
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Tỉnh/thành',
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: districtKey,
+                  label: 'Quận/huyện',
+                  hint: 'Quận/huyện',
+                  itemValue: districtList,
+                  required: widget.mode != Permission.view,
+                  selectedItem: districtList.isEmpty
+                      ? initDistrict
+                      : districtList.safeFirstWhere((type) =>
+                          type.id.toString() == districtController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: districtList.isEmpty && cityController.text != ""
+                      ? (String? filter) => fetchDistrict({
+                            'city_id': cityController.text,
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        districtController.text = "";
+                      } else {
+                        districtController.text = value.id.toString();
+                      }
+                      wardController.clear();
+                      wardList = [];
+                      initDistrict = null;
+                      initWard = null;
+                    });
+                    if (districtController.text != "") {
+                      fetchWard({'district_id': districtController.text})
+                          .then((data) => setState(() {
+                                wardList = data;
+                                wardKey.currentState?.openDropDownSearch();
+                              }));
+                    }
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Quận/huyện',
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: wardKey,
+                  label: 'Phường/xã',
+                  hint: 'Phường/xã',
+                  itemValue: wardList,
+                  required: widget.mode != Permission.view,
+                  selectedItem: wardList.isEmpty
+                      ? initWard
+                      : wardList.safeFirstWhere(
+                          (type) => type.id.toString() == wardController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: wardList.isEmpty && districtController.text != ""
+                      ? (String? filter) => fetchWard({
+                            'district_id': districtController.text,
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        wardController.text = "";
+                      } else {
+                        wardController.text = value.id.toString();
+                      }
+                      initWard = null;
+                    });
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Phường/xã',
+                ),
+                Input(
+                  label: 'Số nhà, Đường, Thôn/Xóm/Ấp',
+                  required: widget.mode != Permission.view,
+                  controller: detailAddressController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Mã số BHXH/Thẻ BHYT',
+                  controller: healthInsuranceNumberController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Số hộ chiếu',
+                  controller: passportNumberController,
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  textCapitalization: TextCapitalization.characters,
+                  validatorFunction: passportValidator,
+                ),
+                if (type == "staff")
+                  MultiDropdownInput<KeyValue>(
+                    widgetKey: buildingKey,
+                    label: 'Tòa',
+                    hint: 'Chọn tòa',
+                    required: widget.mode != Permission.view,
+                    dropdownBuilder: customDropDown,
+                    itemAsString: (KeyValue? u) => u!.name,
+                    onFind: quarantineBuildingList.isEmpty &&
+                            quarantineWardController.text != ""
+                        ? (String? filter) => fetchQuarantineBuilding({
+                              'quarantine_ward': quarantineWardController.text,
+                              'page_size': pageSizeMax,
+                              'search': filter,
+                            })
+                        : null,
+                    compareFn: (item, selectedItem) =>
+                        item?.id == selectedItem?.id,
+                    itemValue: quarantineBuildingList,
+                    selectedItems: widget.quarantineBuilding != null
+                        ? [widget.quarantineBuilding!]
+                        : initQuarantineBuilding.isNotEmpty
+                            ? initQuarantineBuilding
+                            : quarantineBuildingList
+                                .where((element) => quarantineBuildingController
+                                    .text
+                                    .split(',')
+                                    .contains(element.id.toString()))
+                                .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == null) {
+                          quarantineBuildingController.text = "";
+                        } else {
+                          quarantineBuildingController.text =
+                              value.map((e) => e.id).join(",");
+                        }
+                        quarantineFloorController.clear();
+                        quarantineFloorList = [];
+                        initQuarantineBuilding = [];
+                        initQuarantineFloor = [];
+                      });
+                      if (quarantineBuildingController.text != "") {
+                        fetchCustomQuarantineFloor({
                           'quarantine_building_id_list':
                               quarantineBuildingController.text,
                           'page_size': pageSizeMax,
-                          'search': filter,
-                        })
-                    : null,
-                compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                itemValue: quarantineFloorList,
-                selectedItems: widget.quarantineFloor ??
-                    (initQuarantineFloor.isNotEmpty
-                        ? initQuarantineFloor
-                        : quarantineFloorList
-                            .where((element) => quarantineFloorController.text
-                                .split(',')
-                                .contains(element.id.toString()))
-                            .toList()),
-                onChanged: (value) {
-                  setState(() {
-                    if (value == null) {
-                      quarantineFloorController.text = "";
-                    } else {
-                      quarantineFloorController.text =
-                          value.map((e) => e.id).join(",");
-                    }
-                    initQuarantineFloor = [];
-                  });
-                },
-                enabled: widget.mode != Permission.view,
-                showSearchBox: true,
-                mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                    ? Mode.DIALOG
-                    : Mode.BOTTOM_SHEET,
-                maxHeight: MediaQuery.of(context).size.height -
-                    AppBar().preferredSize.height -
-                    MediaQuery.of(context).padding.top -
-                    MediaQuery.of(context).padding.bottom -
-                    100,
-                popupTitle: 'Tầng',
-              ),
-            Container(
-              margin: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: _submit,
-                child: const Text("Lưu"),
-              ),
+                        }).then((data) => setState(() {
+                              quarantineFloorList = data;
+                              floorKey.currentState?.openDropDownSearch();
+                            }));
+                      }
+                    },
+                    enabled: widget.mode != Permission.view,
+                    showSearchBox: true,
+                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                        ? Mode.DIALOG
+                        : Mode.BOTTOM_SHEET,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        100,
+                    popupTitle: 'Tòa',
+                  ),
+                if (type == "staff")
+                  MultiDropdownInput<KeyValue>(
+                    widgetKey: floorKey,
+                    label: 'Tầng',
+                    hint: 'Chọn tầng',
+                    required: widget.mode != Permission.view,
+                    dropdownBuilder: customDropDown,
+                    itemAsString: (KeyValue? u) => u!.name,
+                    onFind: quarantineFloorList.isEmpty &&
+                            quarantineBuildingController.text != ""
+                        ? (String? filter) => fetchCustomQuarantineFloor({
+                              'quarantine_building_id_list':
+                                  quarantineBuildingController.text,
+                              'page_size': pageSizeMax,
+                              'search': filter,
+                            })
+                        : null,
+                    compareFn: (item, selectedItem) =>
+                        item?.id == selectedItem?.id,
+                    itemValue: quarantineFloorList,
+                    selectedItems: widget.quarantineFloor ??
+                        (initQuarantineFloor.isNotEmpty
+                            ? initQuarantineFloor
+                            : quarantineFloorList
+                                .where((element) => quarantineFloorController
+                                    .text
+                                    .split(',')
+                                    .contains(element.id.toString()))
+                                .toList()),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value == null) {
+                          quarantineFloorController.text = "";
+                        } else {
+                          quarantineFloorController.text =
+                              value.map((e) => e.id).join(",");
+                        }
+                        initQuarantineFloor = [];
+                      });
+                    },
+                    enabled: widget.mode != Permission.view,
+                    showSearchBox: true,
+                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                        ? Mode.DIALOG
+                        : Mode.BOTTOM_SHEET,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        100,
+                    popupTitle: 'Tầng',
+                  ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: ElevatedButton(
+                    onPressed: _submit,
+                    child: const Text("Lưu"),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

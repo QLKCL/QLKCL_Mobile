@@ -65,6 +65,9 @@ dependencies:
   syncfusion_flutter_datagrid: ^19.4.55
   syncfusion_flutter_charts: ^19.4.56
   syncfusion_flutter_maps: ^19.4.56-beta
+  syncfusion_flutter_datagrid_export: ^19.4.56-beta
+  syncfusion_flutter_xlsio: ^19.4.56-beta
+  file_picker: ^4.5.1
   # shimmer: ^2.0.0
 
 dev_dependencies:

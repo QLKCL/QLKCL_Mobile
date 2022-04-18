@@ -5,7 +5,8 @@ enum Permission {
   edit,
   view,
   delete,
-  changeStatus,
+  approval,
+  renew,
 }
 
 List<KeyValue> genderList = const [

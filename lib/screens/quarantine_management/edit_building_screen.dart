@@ -68,63 +68,73 @@ class _EditBuildingScreenState extends State<EditBuildingScreen> {
         appBar: appBar,
         body: SingleChildScrollView(
           child: FutureBuilder<dynamic>(
-              future: numOfFloor,
-              builder: (context, snapshot) {
-                showLoading();
-                if (snapshot.connectionState == ConnectionState.done) {
-                  BotToast.closeAllLoading();
-                  if (snapshot.hasData) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                          height: (MediaQuery.of(context).size.height -
-                                  appBar.preferredSize.height -
-                                  MediaQuery.of(context).padding.top) *
-                              0.25,
-                          child: GeneralInfoBuilding(
-                            currentQuarantine: widget.currentQuarantine!,
-                            currentBuilding: widget.currentBuilding!,
-                            numberOfFloor: snapshot.data,
-                          ),
+            future: numOfFloor,
+            builder: (context, snapshot) {
+              showLoading();
+              if (snapshot.connectionState == ConnectionState.done) {
+                BotToast.closeAllLoading();
+                if (snapshot.hasData) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        height: (MediaQuery.of(context).size.height -
+                                appBar.preferredSize.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.25,
+                        child: GeneralInfoBuilding(
+                          currentQuarantine: widget.currentQuarantine!,
+                          currentBuilding: widget.currentBuilding!,
+                          numberOfFloor: snapshot.data,
                         ),
-                        Form(
-                          key: _formKey,
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Input(
-                              label: 'Tên tòa mới',
-                              hint: 'Tên tòa mới',
-                              controller: nameController,
+                      ),
+                      SingleChildScrollView(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 100, maxWidth: 800),
+                            child: Form(
+                              key: _formKey,
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Input(
+                                  label: 'Tên tòa mới',
+                                  hint: 'Tên tòa mới',
+                                  controller: nameController,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              ElevatedButton(
-                                onPressed: _submit,
-                                child: const Text("Xác nhận"),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const Spacer(),
+                            ElevatedButton(
+                              onPressed: _submit,
+                              child: const Text("Xác nhận"),
+                            ),
+                            const Spacer(),
+                          ],
                         ),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return const Text('Snapshot has error');
-                  } else {
-                    return const Text(
-                      'Không có dữ liệu',
-                      textAlign: TextAlign.center,
-                    );
-                  }
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text('Snapshot has error');
+                } else {
+                  return const Text(
+                    'Không có dữ liệu',
+                    textAlign: TextAlign.center,
+                  );
                 }
-                return const SizedBox();
-              }),
+              }
+              return const SizedBox();
+            },
+          ),
         ),
       ),
     );

@@ -107,4 +107,11 @@ class Api {
   static const String filterManager = '/api/user/manager/filter';
 
   static const String filterPandemic = '/api/form/pandemic/filter';
+
+  static const String importMember = '/api/user/member/create_by_file';
+
+  static const String memberCallRequarantine =
+      '/api/user/member/member_call_requarantine';
+  static const String managerCallRequarantine =
+      '/api/user/member/manager_call_requarantine';
 }

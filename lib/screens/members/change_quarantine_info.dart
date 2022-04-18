@@ -102,225 +102,239 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                DropdownInput<KeyValue>(
-                  label: 'Khu cách ly mới',
-                  hint: 'Chọn khu cách ly mới',
-                  required: true,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineWardList.isEmpty
-                      ? (String? filter) => fetchQuarantineWard({
-                            'page_size': pageSizeMax,
-                            'is_full': false,
-                            'search': filter,
-                          })
-                      : null,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemValue: quarantineWardList,
-                  selectedItem: widget.quarantineWard ??
-                      (initQuarantineWard ??
-                          quarantineWardList.safeFirstWhere((type) =>
-                              type.id.toString() ==
-                              newQuarantineWardController.text)),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        newQuarantineWardController.text = "";
-                      } else {
-                        newQuarantineWardController.text = value.id.toString();
-                      }
-                      newQuarantineBuildingController.clear();
-                      newQuarantineFloorController.clear();
-                      newQuarantineRoomController.clear();
-                      quarantineBuildingList = [];
-                      quarantineFloorList = [];
-                      quarantineRoomList = [];
-                      initQuarantineWard = null;
-                    });
-                    if (newQuarantineWardController.text != "") {
-                      fetchQuarantineBuilding({
-                        'quarantine_ward': newQuarantineWardController.text,
-                        'page_size': pageSizeMax,
-                        'is_full': false,
-                      }).then((data) => setState(() {
-                            quarantineBuildingList = data;
-                          }));
-                    }
-                  },
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Khu cách ly',
-                ),
-                DropdownInput<KeyValue>(
-                  label: 'Tòa mới',
-                  hint: 'Chọn tòa mới',
-                  required: true,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineBuildingList.isEmpty &&
-                          newQuarantineWardController.text != ""
-                      ? (String? filter) => fetchQuarantineBuilding({
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    DropdownInput<KeyValue>(
+                      label: 'Khu cách ly mới',
+                      hint: 'Chọn khu cách ly mới',
+                      required: true,
+                      itemAsString: (KeyValue? u) => u!.name,
+                      onFind: quarantineWardList.isEmpty
+                          ? (String? filter) => fetchQuarantineWard({
+                                'page_size': pageSizeMax,
+                                'is_full': false,
+                                'search': filter,
+                              })
+                          : null,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      itemValue: quarantineWardList,
+                      selectedItem: widget.quarantineWard ??
+                          (initQuarantineWard ??
+                              quarantineWardList.safeFirstWhere((type) =>
+                                  type.id.toString() ==
+                                  newQuarantineWardController.text)),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == null) {
+                            newQuarantineWardController.text = "";
+                          } else {
+                            newQuarantineWardController.text =
+                                value.id.toString();
+                          }
+                          newQuarantineBuildingController.clear();
+                          newQuarantineFloorController.clear();
+                          newQuarantineRoomController.clear();
+                          quarantineBuildingList = [];
+                          quarantineFloorList = [];
+                          quarantineRoomList = [];
+                          initQuarantineWard = null;
+                        });
+                        if (newQuarantineWardController.text != "") {
+                          fetchQuarantineBuilding({
                             'quarantine_ward': newQuarantineWardController.text,
                             'page_size': pageSizeMax,
-                            'search': filter,
                             'is_full': false,
-                          })
-                      : null,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemValue: quarantineBuildingList,
-                  selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
-                      type.id.toString() ==
-                      newQuarantineBuildingController.text),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        newQuarantineBuildingController.text = "";
-                      } else {
-                        newQuarantineBuildingController.text =
-                            value.id.toString();
-                      }
-                      newQuarantineFloorController.clear();
-                      newQuarantineRoomController.clear();
-                      quarantineFloorList = [];
-                      quarantineRoomList = [];
-                    });
-                    if (newQuarantineBuildingController.text != "") {
-                      fetchQuarantineFloor({
-                        'quarantine_building_id_list':
-                            newQuarantineBuildingController.text,
-                        'page_size': pageSizeMax,
-                        'is_full': false,
-                      }).then((data) => setState(() {
-                            quarantineFloorList = data;
-                          }));
-                    }
-                  },
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Tòa',
-                ),
-                DropdownInput<KeyValue>(
-                  label: 'Tầng mới',
-                  hint: 'Chọn tầng mới',
-                  required: true,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineFloorList.isEmpty &&
-                          newQuarantineBuildingController.text != ""
-                      ? (String? filter) => fetchQuarantineFloor({
+                          }).then((data) => setState(() {
+                                quarantineBuildingList = data;
+                              }));
+                        }
+                      },
+                      showSearchBox: true,
+                      mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                          ? Mode.DIALOG
+                          : Mode.BOTTOM_SHEET,
+                      maxHeight: MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom -
+                          100,
+                      popupTitle: 'Khu cách ly',
+                    ),
+                    DropdownInput<KeyValue>(
+                      label: 'Tòa mới',
+                      hint: 'Chọn tòa mới',
+                      required: true,
+                      itemAsString: (KeyValue? u) => u!.name,
+                      onFind: quarantineBuildingList.isEmpty &&
+                              newQuarantineWardController.text != ""
+                          ? (String? filter) => fetchQuarantineBuilding({
+                                'quarantine_ward':
+                                    newQuarantineWardController.text,
+                                'page_size': pageSizeMax,
+                                'search': filter,
+                                'is_full': false,
+                              })
+                          : null,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      itemValue: quarantineBuildingList,
+                      selectedItem: quarantineBuildingList.safeFirstWhere(
+                          (type) =>
+                              type.id.toString() ==
+                              newQuarantineBuildingController.text),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == null) {
+                            newQuarantineBuildingController.text = "";
+                          } else {
+                            newQuarantineBuildingController.text =
+                                value.id.toString();
+                          }
+                          newQuarantineFloorController.clear();
+                          newQuarantineRoomController.clear();
+                          quarantineFloorList = [];
+                          quarantineRoomList = [];
+                        });
+                        if (newQuarantineBuildingController.text != "") {
+                          fetchQuarantineFloor({
                             'quarantine_building_id_list':
                                 newQuarantineBuildingController.text,
                             'page_size': pageSizeMax,
-                            'search': filter,
                             'is_full': false,
-                          })
-                      : null,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemValue: quarantineFloorList,
-                  selectedItem: quarantineFloorList.safeFirstWhere((type) =>
-                      type.id.toString() == newQuarantineFloorController.text),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        newQuarantineFloorController.text = "";
-                      } else {
-                        newQuarantineFloorController.text = value.id.toString();
-                      }
-                      newQuarantineRoomController.clear();
-                      quarantineRoomList = [];
-                    });
-                    if (newQuarantineFloorController.text != "") {
-                      fetchQuarantineRoom({
-                        'quarantine_floor': newQuarantineFloorController.text,
-                        'page_size': pageSizeMax,
-                        'is_full': false,
-                      }).then((data) => setState(() {
-                            quarantineRoomList = data;
-                          }));
-                    }
-                  },
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Tầng',
-                ),
-                DropdownInput<KeyValue>(
-                  label: 'Phòng mới',
-                  hint: 'Chọn phòng mới',
-                  required: true,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  onFind: quarantineRoomList.isEmpty &&
-                          newQuarantineFloorController.text != ""
-                      ? (String? filter) => fetchQuarantineRoom({
+                          }).then((data) => setState(() {
+                                quarantineFloorList = data;
+                              }));
+                        }
+                      },
+                      showSearchBox: true,
+                      mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                          ? Mode.DIALOG
+                          : Mode.BOTTOM_SHEET,
+                      maxHeight: MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom -
+                          100,
+                      popupTitle: 'Tòa',
+                    ),
+                    DropdownInput<KeyValue>(
+                      label: 'Tầng mới',
+                      hint: 'Chọn tầng mới',
+                      required: true,
+                      itemAsString: (KeyValue? u) => u!.name,
+                      onFind: quarantineFloorList.isEmpty &&
+                              newQuarantineBuildingController.text != ""
+                          ? (String? filter) => fetchQuarantineFloor({
+                                'quarantine_building_id_list':
+                                    newQuarantineBuildingController.text,
+                                'page_size': pageSizeMax,
+                                'search': filter,
+                                'is_full': false,
+                              })
+                          : null,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      itemValue: quarantineFloorList,
+                      selectedItem: quarantineFloorList.safeFirstWhere((type) =>
+                          type.id.toString() ==
+                          newQuarantineFloorController.text),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == null) {
+                            newQuarantineFloorController.text = "";
+                          } else {
+                            newQuarantineFloorController.text =
+                                value.id.toString();
+                          }
+                          newQuarantineRoomController.clear();
+                          quarantineRoomList = [];
+                        });
+                        if (newQuarantineFloorController.text != "") {
+                          fetchQuarantineRoom({
                             'quarantine_floor':
                                 newQuarantineFloorController.text,
                             'page_size': pageSizeMax,
-                            'search': filter,
                             'is_full': false,
-                          })
-                      : null,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  itemValue: quarantineRoomList,
-                  selectedItem: quarantineRoomList.safeFirstWhere((type) =>
-                      type.id.toString() == newQuarantineRoomController.text),
-                  onChanged: (value) {
-                    setState(() {
-                      if (value == null) {
-                        newQuarantineRoomController.text = "";
-                      } else {
-                        newQuarantineRoomController.text = value.id.toString();
-                      }
-                    });
-                  },
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Phòng',
+                          }).then((data) => setState(() {
+                                quarantineRoomList = data;
+                              }));
+                        }
+                      },
+                      showSearchBox: true,
+                      mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                          ? Mode.DIALOG
+                          : Mode.BOTTOM_SHEET,
+                      maxHeight: MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom -
+                          100,
+                      popupTitle: 'Tầng',
+                    ),
+                    DropdownInput<KeyValue>(
+                      label: 'Phòng mới',
+                      hint: 'Chọn phòng mới',
+                      required: true,
+                      itemAsString: (KeyValue? u) => u!.name,
+                      onFind: quarantineRoomList.isEmpty &&
+                              newQuarantineFloorController.text != ""
+                          ? (String? filter) => fetchQuarantineRoom({
+                                'quarantine_floor':
+                                    newQuarantineFloorController.text,
+                                'page_size': pageSizeMax,
+                                'search': filter,
+                                'is_full': false,
+                              })
+                          : null,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      itemValue: quarantineRoomList,
+                      selectedItem: quarantineRoomList.safeFirstWhere((type) =>
+                          type.id.toString() ==
+                          newQuarantineRoomController.text),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == null) {
+                            newQuarantineRoomController.text = "";
+                          } else {
+                            newQuarantineRoomController.text =
+                                value.id.toString();
+                          }
+                        });
+                      },
+                      showSearchBox: true,
+                      mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                          ? Mode.DIALOG
+                          : Mode.BOTTOM_SHEET,
+                      maxHeight: MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom -
+                          100,
+                      popupTitle: 'Phòng',
+                    ),
+                    Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Row(children: [
+                          const Spacer(),
+                          ElevatedButton(
+                            onPressed: _submit,
+                            child: const Text(
+                              'Xác nhận',
+                            ),
+                          ),
+                          const Spacer(),
+                        ])),
+                  ],
                 ),
-                Container(
-                    margin: const EdgeInsets.all(16),
-                    child: Row(children: [
-                      const Spacer(),
-                      ElevatedButton(
-                        onPressed: _submit,
-                        child: const Text(
-                          'Xác nhận',
-                        ),
-                      ),
-                      const Spacer(),
-                    ])),
-              ],
+              ),
             ),
           ),
         ),

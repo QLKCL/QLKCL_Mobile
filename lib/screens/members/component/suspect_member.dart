@@ -62,8 +62,11 @@ class _SuspectMemberState extends State<SuspectMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(
-        data: {'page': 1, 'health_status_list': "UNWELL,SERIOUS"});
+    fetch = fetchMemberList(data: {
+      'page': 1,
+      'health_status_list': "UNWELL,SERIOUS",
+      'positive_test_now_list': 'False,Null',
+    });
   }
 
   @override
@@ -74,8 +77,11 @@ class _SuspectMemberState extends State<SuspectMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'health_status_list': "UNWELL,SERIOUS"});
+      final newItems = await fetchMemberList(data: {
+        'page': pageKey,
+        'health_status_list': "UNWELL,SERIOUS",
+        'positive_test_now_list': 'False,Null',
+      });
 
       final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
@@ -304,7 +310,7 @@ class _SuspectMemberState extends State<SuspectMember>
                 child: const Text('Xét nghiệm',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
-            columnName: 'action',
+            columnName: 'code',
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
@@ -355,7 +361,8 @@ class MemberDataSource extends DataGridSource {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {
         'page': newPageIndex + 1,
-        'health_status_list': "UNWELL,SERIOUS"
+        'health_status_list': "UNWELL,SERIOUS",
+        'positive_test_now_list': 'False,Null',
       });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -371,7 +378,8 @@ class MemberDataSource extends DataGridSource {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
       'page': currentPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS"
+      'health_status_list': "UNWELL,SERIOUS",
+      'positive_test_now_list': 'False,Null',
     });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();

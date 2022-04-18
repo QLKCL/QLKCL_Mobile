@@ -52,96 +52,102 @@ class _CreateVaccineDoseState extends State<CreateVaccineDose> {
           centerTitle: true,
         ),
         body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                DropdownInput<KeyValue>(
-                  label: 'Vaccine',
-                  hint: 'Chọn loại vaccine',
-                  required: true,
-                  itemValue: vaccineList,
-                  onFind: vaccineList.isEmpty
-                      ? (String? filter) => fetchVaccineList()
-                      : null,
-                  onChanged: (value) {
-                    if (value == null) {
-                      vaccineController.text = "";
-                    } else {
-                      vaccineController.text = value.id.toString();
-                    }
-                  },
-                  itemAsString: (KeyValue? u) => u!.name,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Vaccine',
-                ),
-                Row(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
+              child: Form(
+                key: _formKey,
+                child: Column(
                   children: [
-                    Expanded(
-                      flex: 2,
-                      child: NewDateInput(
-                        label: 'Ngày',
-                        controller: dateController,
-                        required: true,
-                        onChangedFunction: () {
-                          if (timeController.text == "") {
-                            timeController.text =
-                                "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
-                          }
-                          setState(() {});
-                        },
-                        maxDate:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                        margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
-                      ),
+                    DropdownInput<KeyValue>(
+                      label: 'Vaccine',
+                      hint: 'Chọn loại vaccine',
+                      required: true,
+                      itemValue: vaccineList,
+                      onFind: vaccineList.isEmpty
+                          ? (String? filter) => fetchVaccineList()
+                          : null,
+                      onChanged: (value) {
+                        if (value == null) {
+                          vaccineController.text = "";
+                        } else {
+                          vaccineController.text = value.id.toString();
+                        }
+                      },
+                      itemAsString: (KeyValue? u) => u!.name,
+                      compareFn: (item, selectedItem) =>
+                          item?.id == selectedItem?.id,
+                      showSearchBox: true,
+                      mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                          ? Mode.DIALOG
+                          : Mode.BOTTOM_SHEET,
+                      maxHeight: MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top -
+                          MediaQuery.of(context).padding.bottom -
+                          100,
+                      popupTitle: 'Vaccine',
                     ),
-                    Expanded(
-                      child: TimeInput(
-                        label: "Thời gian",
-                        controller: timeController,
-                        enabled: dateController.text != "",
-                        required: true,
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: NewDateInput(
+                            label: 'Ngày',
+                            controller: dateController,
+                            required: true,
+                            onChangedFunction: () {
+                              if (timeController.text == "") {
+                                timeController.text =
+                                    "${TimeOfDay.now().hour.toString().padLeft(2, '0')}:${TimeOfDay.now().minute.toString().padLeft(2, '0')}";
+                              }
+                              setState(() {});
+                            },
+                            maxDate:
+                                DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                          ),
+                        ),
+                        Expanded(
+                          child: TimeInput(
+                            label: "Thời gian",
+                            controller: timeController,
+                            enabled: dateController.text != "",
+                            required: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Input(
+                      label: 'Nơi tiêm',
+                      controller: injectionPlaceController,
+                      showClearButton: false,
+                    ),
+                    Input(
+                      label: 'Số lô',
+                      controller: batchNumberController,
+                      showClearButton: false,
+                    ),
+                    Input(
+                      label: 'Triệu chứng sau tiêm',
+                      maxLines: 10,
+                      controller: symptomAfterInjectedController,
+                      showClearButton: false,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(16),
+                      child: ElevatedButton(
+                        onPressed: _submit,
+                        child: Text(
+                          'Khai báo',
+                          style: TextStyle(color: white),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                Input(
-                  label: 'Nơi tiêm',
-                  controller: injectionPlaceController,
-                  showClearButton: false,
-                ),
-                Input(
-                  label: 'Số lô',
-                  controller: batchNumberController,
-                  showClearButton: false,
-                ),
-                Input(
-                  label: 'Triệu chứng sau tiêm',
-                  maxLines: 10,
-                  controller: symptomAfterInjectedController,
-                  showClearButton: false,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(16),
-                  child: ElevatedButton(
-                    onPressed: _submit,
-                    child: Text(
-                      'Khai báo',
-                      style: TextStyle(color: white),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),

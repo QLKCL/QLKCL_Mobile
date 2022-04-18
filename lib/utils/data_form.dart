@@ -38,6 +38,8 @@ Map<String, dynamic> createMemberDataForm({
   bool? positiveBefore,
   String? backgroundDisease,
   String? otherBackgroundDisease,
+  String? numberOfVaccineDoses,
+  String? careStaff,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -61,6 +63,8 @@ Map<String, dynamic> createMemberDataForm({
     "positive_tested_before": positiveBefore,
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
+    "number_of_vaccine_doses": numberOfVaccineDoses,
+    "care_staff_code": careStaff,
   };
   return prepareDataForm(data);
 }
@@ -88,6 +92,8 @@ Map<String, dynamic> updateMemberDataForm({
   bool? positiveBefore,
   String? backgroundDisease,
   String? otherBackgroundDisease,
+  String? numberOfVaccineDoses,
+  String? careStaff,
 }) {
   final data = {
     "code": code,
@@ -112,6 +118,8 @@ Map<String, dynamic> updateMemberDataForm({
     "positive_tested_before": positiveBefore,
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
+    "number_of_vaccine_doses": numberOfVaccineDoses,
+    "care_staff_code": careStaff,
   };
   return prepareDataForm(data);
 }
@@ -833,6 +841,27 @@ Map<String, dynamic> createVaccineDoseDataForm({
     "injection_place": injectionPlace,
     "batch_number": batchNumber,
     "symptom_after_injected": symptomAfterInjected,
+  };
+  return prepareDataForm(data);
+}
+
+Map<String, dynamic> requarantineMemberDataForm({
+  required String code,
+  required String quarantineWard,
+  required String label,
+  String? quarantineRoom,
+  String? quarantinedAt,
+  String? careStaff,
+  bool? positiveTestedBefore,
+}) {
+  final data = {
+    "code": code,
+    "quarantine_ward_id": quarantineWard,
+    "label": label,
+    "positive_tested_before": positiveTestedBefore,
+    "quarantined_at": quarantinedAt,
+    "quarantine_room_id": quarantineRoom,
+    "care_staff_code": careStaff,
   };
   return prepareDataForm(data);
 }
