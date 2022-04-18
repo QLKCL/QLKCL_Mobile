@@ -104,6 +104,26 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         });
       }
       state.backgroundDiseaseController.text = "";
+    } else if (widget.mode == Permission.renew) {
+      state.quarantineWardController.text =
+          widget.quarantineData?.quarantineWard != null
+              ? widget.quarantineData!.quarantineWard!.id.toString()
+              : "";
+      state.labelController.text = widget.quarantineData?.label ?? "";
+      state.quarantinedAtController.clear();
+      state.quarantinedFinishExpectedAtController.clear();
+      state.backgroundDiseaseController.text =
+          widget.quarantineData?.backgroundDisease ?? "";
+      state.otherBackgroundDiseaseController.text =
+          widget.quarantineData?.otherBackgroundDisease ?? "";
+      state.positiveTestNowController.text =
+          widget.quarantineData?.positiveTest.toString() ?? "Null";
+      _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
+          _isPositiveTestedBefore;
+
+      initQuarantineWard = widget.quarantineData?.quarantineWard;
+      state.numberOfVaccineDosesController.text =
+          widget.quarantineData?.numberOfVaccineDoses ?? "0";
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -274,7 +294,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           }));
                     }
                   },
-                  enabled: widget.mode == Permission.add && _role != 5,
+                  enabled: (widget.mode == Permission.add ||
+                          widget.mode == Permission.renew) &&
+                      _role != 5,
                   showSearchBox: true,
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                       ? Mode.DIALOG
@@ -291,7 +313,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   label: 'Tòa',
                   hint: 'Chọn tòa',
                   required: widget.mode != Permission.view &&
-                      widget.mode != Permission.changeStatus &&
+                      widget.mode != Permission.approval &&
                       _role != 5,
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineBuildingList.isEmpty &&
@@ -357,7 +379,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   label: 'Tầng',
                   hint: 'Chọn tầng',
                   required: widget.mode != Permission.view &&
-                      widget.mode != Permission.changeStatus &&
+                      widget.mode != Permission.approval &&
                       _role != 5,
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineFloorList.isEmpty &&
@@ -420,7 +442,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   label: 'Phòng',
                   hint: 'Chọn phòng',
                   required: widget.mode != Permission.view &&
-                      widget.mode != Permission.changeStatus &&
+                      widget.mode != Permission.approval &&
                       _role != 5,
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineRoomList.isEmpty &&
@@ -556,6 +578,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   label: 'Thời gian dự kiến hoàn thành cách ly',
                   controller: state.quarantinedFinishExpectedAtController,
                   enabled: widget.mode != Permission.view &&
+                      widget.mode != Permission.renew &&
                       _role != 5 &&
                       widget.mode != Permission.add,
                 ),
@@ -690,10 +713,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   Container(
                       margin: const EdgeInsets.all(16),
                       child: Row(children: [
-                        if (widget.mode == Permission.changeStatus &&
+                        if (widget.mode == Permission.approval &&
                             widget.quarantineData?.customUserCode != null)
                           const Spacer(),
-                        if (widget.mode == Permission.changeStatus &&
+                        if (widget.mode == Permission.approval &&
                             widget.quarantineData?.customUserCode != null)
                           OutlinedButton(
                             onPressed: () async {
@@ -713,9 +736,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           onPressed: _submit,
                           child: widget.mode == Permission.add
                               ? const Text("Tạo")
-                              : widget.mode == Permission.changeStatus
+                              : widget.mode == Permission.approval
                                   ? const Text("Xét duyệt")
-                                  : const Text('Lưu'),
+                                  : const Text('Xác nhận'),
                         ),
                         const Spacer(),
                       ])),
@@ -733,13 +756,28 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     });
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
-      if (widget.mode == Permission.changeStatus) {
+      if (widget.mode == Permission.approval) {
         final CancelFunc cancel = showLoading();
         final response = await acceptOneMember(acceptOneMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: state.quarantineRoomController.text,
           quarantinedAt: parseDateToDateTimeWithTimeZone(
               state.quarantinedAtController.text),
+        ));
+        cancel();
+        showNotification(response);
+      } else if (widget.mode == Permission.renew) {
+        final CancelFunc cancel = showLoading();
+        final response =
+            await managerCallRequarantine(requarantineMemberDataForm(
+          code: widget.quarantineData!.customUserCode.toString(),
+          quarantineRoom: state.quarantineRoomController.text,
+          quarantinedAt: parseDateToDateTimeWithTimeZone(
+              state.quarantinedAtController.text),
+          label: state.labelController.text,
+          quarantineWard: state.quarantineWardController.text,
+          careStaff: state.careStaffController.text,
+          positiveTestedBefore: _isPositiveTestedBefore,
         ));
         cancel();
         showNotification(response);

@@ -165,6 +165,57 @@ Future<Response> createMember(Map<String, dynamic> data) async {
           response['message']['identity_number'] == "Exist") {
         return Response(
             status: Status.error, message: "Số CMND/CCCD đã tồn tại!");
+      } else if (response['message']['health_insurance_number'] != null &&
+          response['message']['health_insurance_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số bảo hiểm y tế không hợp lệ!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Invalid") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu không hợp lệ!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] == "Full") {
+        return Response(
+            status: Status.error, message: "Phòng đã hết chỗ trống!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            status: Status.error, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room does not satisfy max_day_quarantined") {
+        return Response(
+            status: Status.error, message: "Phòng đã chọn không phù hợp!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This member positive, but this room has member that is not positive") {
+        return Response(
+            status: Status.error,
+            message: "Không thể thêm người dương tính vào phòng này!");
+      } else if (response['message']['passport_number'] != null &&
+          response['message']['passport_number'] == "Exist") {
+        return Response(
+            status: Status.error, message: "Số hộ chiếu đã tồn tại!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room is close (not accept any more member)") {
+        return Response(
+            status: Status.error,
+            message:
+                "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room has member that is positive") {
+        return Response(
+            status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          (response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history not exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "Many PRESENT quarantine history exist")) {
+        return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
@@ -227,7 +278,7 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Không thể chuyển người dương tính sang phòng này!");
+            message: "Không thể thêm người dương tính vào phòng này!");
       } else if (response['message']['passport_number'] != null &&
           response['message']['passport_number'] == "Exist") {
         return Response(
@@ -411,7 +462,7 @@ Future<Response> changeRoomMember(data) async {
               "This member positive, but this room has member that is not positive") {
         return Response(
             status: Status.error,
-            message: "Không thể chuyển người dương tính sang phòng này!");
+            message: "Không thể chuyển người dương tính vào phòng này!");
       } else if (response['message']['quarantine_room_id'] != null &&
           response['message']['quarantine_room_id'] ==
               "This room is close (not accept any more member)") {
@@ -507,16 +558,66 @@ Future<Response> memberCallRequarantine(data) async {
   }
 }
 
-Future<dynamic> managerCallRequarantine(data) async {
+Future<Response> managerCallRequarantine(data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.managerCallRequarantine, data);
   if (response == null) {
-    showNotification("Lỗi kết nối!", status: Status.error);
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return response['data'];
+      return Response(
+        status: Status.success,
+        message: "Đăng ký tái cách ly thành công! Vui lòng chờ xét duyệt.",
+      );
+    } else if (response['error_code'] == 400) {
+      if (response['message']['sender'] != null &&
+          response['message']['sender'] == "This user is not leave") {
+        return Response(
+            status: Status.error, message: "Không thể tái cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] == "Full") {
+        return Response(
+            status: Status.error, message: "Phòng đã hết chỗ trống!");
+      } else if (response['message']['quarantine_ward_id'] != null &&
+          response['message']['quarantine_ward_id'] == "Cannot change") {
+        return Response(
+            status: Status.error, message: "Không thể thay đổi khu cách ly!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room does not satisfy max_day_quarantined") {
+        return Response(
+            status: Status.error, message: "Phòng đã chọn không phù hợp!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This member positive, but this room has member that is not positive") {
+        return Response(
+            status: Status.error,
+            message: "Không thể thêm người dương tính vào phòng này!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room is close (not accept any more member)") {
+        return Response(
+            status: Status.error,
+            message:
+                "Phòng đã chọn không phù hợp (không chấp nhận thêm người cách ly mới)!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] ==
+              "This room has member that is positive") {
+        return Response(
+            status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          (response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "PRESENT quarantine history not exist" ||
+              response['message']['quarantine_room_id'] ==
+                  "Many PRESENT quarantine history exist")) {
+        return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
-      showNotification("Có lỗi xảy ra!", status: Status.error);
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

@@ -844,3 +844,24 @@ Map<String, dynamic> createVaccineDoseDataForm({
   };
   return prepareDataForm(data);
 }
+
+Map<String, dynamic> requarantineMemberDataForm({
+  required String code,
+  required String quarantineWard,
+  required String label,
+  String? quarantineRoom,
+  String? quarantinedAt,
+  String? careStaff,
+  bool? positiveTestedBefore,
+}) {
+  final data = {
+    "code": code,
+    "quarantine_ward_id": quarantineWard,
+    "label": label,
+    "positive_tested_before": positiveTestedBefore,
+    "quarantined_at": quarantinedAt,
+    "quarantine_room_id": quarantineRoom,
+    "care_staff_code": careStaff,
+  };
+  return prepareDataForm(data);
+}

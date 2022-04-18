@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/requarantine_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -609,24 +610,31 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListVaccineDose(
                       code: item.code,
                     )));
+      } else if (result == 'requarantine') {
+        Navigator.of(context,
+                rootNavigator: !Responsive.isDesktopLayout(context))
+            .push(MaterialPageRoute(
+                builder: (context) => RequarantienMember(
+                      code: item.code,
+                    )));
       }
     },
-    itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-      const PopupMenuItem(
+    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
+      PopupMenuItem(
         child: Text('Cập nhật thông tin'),
         value: "update_info",
       ),
-      const PopupMenuItem(
+      PopupMenuItem(
         child: Text('Lịch sử cách ly'),
         value: "quarantine_history",
       ),
-      const PopupMenuItem(
+      PopupMenuItem(
         child: Text('Thông tin tiêm chủng'),
         value: "vaccine_dose_history",
       ),
       PopupMenuItem(
-        child: const Text('Tái cách ly'),
-        onTap: () {},
+        child: Text('Tái cách ly'),
+        value: "requarantine",
       ),
     ],
   );

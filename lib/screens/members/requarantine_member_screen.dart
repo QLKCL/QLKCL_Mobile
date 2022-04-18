@@ -10,16 +10,16 @@ import 'package:qlkcl/screens/members/component/member_shared_data.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 
-class ConfirmDetailMember extends StatefulWidget {
-  static const String routeName = "/confirm_member";
+class RequarantienMember extends StatefulWidget {
+  static const String routeName = "/requarantine_member";
   final String? code;
-  const ConfirmDetailMember({Key? key, this.code}) : super(key: key);
+  const RequarantienMember({Key? key, this.code}) : super(key: key);
 
   @override
-  _ConfirmDetailMemberState createState() => _ConfirmDetailMemberState();
+  _RequarantienMemberState createState() => _RequarantienMemberState();
 }
 
-class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
+class _RequarantienMemberState extends State<RequarantienMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late Future<dynamic> futureMember;
@@ -48,7 +48,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
       child: DismissKeyboard(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Duyệt người cách ly"),
+            title: const Text("Tái cách ly"),
             centerTitle: true,
             // actions: [
             //   if (_tabController.index == 0)
@@ -94,7 +94,7 @@ class _ConfirmDetailMemberState extends State<ConfirmDetailMember>
                       ),
                       MemberQuarantineInfo(
                         quarantineData: quarantineData,
-                        mode: Permission.approval,
+                        mode: Permission.renew,
                       ),
                     ],
                   );
