@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -143,6 +144,19 @@ class _ActiveMemberState extends State<ActiveMember>
       await helper.FileSaveHelper.saveAndLaunchFile(bytes, 'ExportFile.xlsx');
     }
 
+    void _buildImportingButtons() async {
+      final files = (await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        onFileLoading: print,
+        allowedExtensions: ['csv', 'xls', 'xlsx'],
+      ))
+          ?.files;
+
+      if (files?.first != null) {
+        importMember(files!.first);
+      }
+    }
+
     return Row(
       children: <Widget>[
         Container(
@@ -161,6 +175,27 @@ class _ActiveMemberState extends State<ActiveMember>
                     ),
                   ),
                   Text('Export to Excel'),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.all(16),
+          child: ElevatedButton(
+            onPressed: _buildImportingButtons,
+            child: SizedBox(
+              child: Row(
+                children: const <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 8, right: 8),
+                    child: ImageIcon(
+                      AssetImage('assets/images/ExcelExport.png'),
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Text('Import to Excel'),
                 ],
               ),
             ),

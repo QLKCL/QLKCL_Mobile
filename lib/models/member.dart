@@ -468,6 +468,21 @@ Future<dynamic> getSuitableRoom(data) async {
   }
 }
 
+Future<dynamic> importMember(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.importMember, data);
+  print(response);
+  if (response == null) {
+    showNotification("Lỗi kết nối!", status: Status.error);
+  } else {
+    if (response['error_code'] == 0) {
+      return response['data'];
+    } else {
+      showNotification("Có lỗi xảy ra!", status: Status.error);
+    }
+  }
+}
+
 // To parse this JSON data, do
 //
 //     final filterMember = filterMemberFromJson(jsonString);
