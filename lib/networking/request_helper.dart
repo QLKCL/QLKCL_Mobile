@@ -30,6 +30,18 @@ class RequestHelper {
     return _response(null);
   }
 
+  Future<Response> post(String url) async {
+    _baseUrl = baseUrl ?? _baseUrl;
+    try {
+      final response = await http.post(Uri.parse(_baseUrl + url));
+      return _response(response);
+    } catch (e) {
+      print('Error: $e');
+    }
+
+    return _response(null);
+  }
+
   Response _response(response) {
     if (response == null) {
       return Response(status: Status.error, message: "Lỗi kết nối!");
