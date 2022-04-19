@@ -92,7 +92,6 @@ Map<String, dynamic> updateMemberDataForm({
   bool? positiveBefore,
   String? backgroundDisease,
   String? otherBackgroundDisease,
-  String? numberOfVaccineDoses,
   String? careStaff,
 }) {
   final data = {
@@ -118,7 +117,6 @@ Map<String, dynamic> updateMemberDataForm({
     "positive_tested_before": positiveBefore,
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
-    "number_of_vaccine_doses": numberOfVaccineDoses,
     "care_staff_code": careStaff,
   };
   return prepareDataForm(data);

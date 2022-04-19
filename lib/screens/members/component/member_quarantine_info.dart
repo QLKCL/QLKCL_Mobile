@@ -116,14 +116,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
-      state.positiveTestNowController.text =
-          widget.quarantineData?.positiveTest.toString() ?? "Null";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
       initQuarantineWard = widget.quarantineData?.quarantineWard;
       state.numberOfVaccineDosesController.text =
           widget.quarantineData?.numberOfVaccineDoses ?? "0";
+
+      state.positiveTestNowController.text =
+          state.labelController.text == "F0" ? "True" : "Null";
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -515,6 +516,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                                     state.numberOfVaccineDosesController.text,
                                 quarantineWard:
                                     state.quarantineWardController.text,
+                                positiveTestNow:
+                                    state.positiveTestNowController.text,
                               ),
                             );
                             cancel();
@@ -834,7 +837,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
-          numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
           careStaff: state.careStaffController.text,
         ));
         cancel();

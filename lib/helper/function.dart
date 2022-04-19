@@ -70,10 +70,10 @@ String formatISOTime(DateTime? dateTime) {
 }
 
 dynamic prepareDataForm(data, {List<String> exceptionField = const []}) {
-  data.removeWhere((key, value) =>
-      (key == "" || value == "") && (!exceptionField.contains(key)));
   data.removeWhere(
       (key, value) => (value == null) && (!exceptionField.contains(key)));
+  data.removeWhere((key, value) =>
+      (key == "" || value == "") && (!exceptionField.contains(key)));
   return data;
 }
 
