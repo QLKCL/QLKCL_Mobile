@@ -4,7 +4,6 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:intl/intl.dart';
 
 class InOutChart extends StatelessWidget {
   final List<KeyValue> inData;
@@ -216,9 +215,7 @@ class DestinationChartCard extends StatelessWidget {
                   label: 'Thời gian',
                   controllerStart: startTimeMinController,
                   controllerEnd: startTimeMaxController,
-                  maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                  // minDate: DateFormat('dd/MM/yyyy').format(
-                  //     DateTime.now().subtract(const Duration(days: 14))),
+                  maxDate: DateTime.now(),
                   onChangedFunction: refresh,
                 ),
               ),

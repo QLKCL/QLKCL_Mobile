@@ -49,10 +49,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   List<KeyValue> quarantineWardList = [];
 
   final startTimeMinController = TextEditingController(
-      text: DateFormat('dd/MM/yyyy')
-          .format(DateTime.now().subtract(const Duration(days: 14))));
-  final startTimeMaxController = TextEditingController(
-      text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+      text: DateTime.now().subtract(const Duration(days: 14)).toString());
+  final startTimeMaxController =
+      TextEditingController(text: DateTime.now().toString());
 
   @override
   void initState() {
@@ -62,9 +61,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
         getAddressWithMembersPassBy(getAddressWithMembersPassByDataForm(
       addressType: "city",
       startTimeMin:
-          parseDateToDateTimeWithTimeZone(startTimeMinController.text),
+          parseDateTimeWithTimeZone(startTimeMinController.text, time: "00:00"),
       startTimeMax:
-          parseDateToDateTimeWithTimeZone(startTimeMaxController.text),
+          parseDateTimeWithTimeZone(startTimeMaxController.text),
     ));
     fetchQuarantineWard({
       'page_size': pageSizeMax,
@@ -124,9 +123,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 futurePassBy = getAddressWithMembersPassBy(
                     getAddressWithMembersPassByDataForm(
                   addressType: "city",
-                  startTimeMin: parseDateToDateTimeWithTimeZone(
-                      startTimeMinController.text),
-                  startTimeMax: parseDateToDateTimeWithTimeZone(
+                  startTimeMin: parseDateTimeWithTimeZone(
+                      startTimeMinController.text,
+                      time: "00:00"),
+                  startTimeMax: parseDateTimeWithTimeZone(
                       startTimeMaxController.text),
                 ));
               });
@@ -246,9 +246,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                             futurePassBy = getAddressWithMembersPassBy(
                                 getAddressWithMembersPassByDataForm(
                               addressType: "city",
-                              startTimeMin: parseDateToDateTimeWithTimeZone(
-                                  startTimeMinController.text),
-                              startTimeMax: parseDateToDateTimeWithTimeZone(
+                              startTimeMin: parseDateTimeWithTimeZone(
+                                  startTimeMinController.text,
+                                  time: "00:00"),
+                              startTimeMax: parseDateTimeWithTimeZone(
                                   startTimeMaxController.text),
                             ));
                           });
@@ -268,9 +269,10 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                           futurePassBy = getAddressWithMembersPassBy(
                               getAddressWithMembersPassByDataForm(
                             addressType: "city",
-                            startTimeMin: parseDateToDateTimeWithTimeZone(
-                                startTimeMinController.text),
-                            startTimeMax: parseDateToDateTimeWithTimeZone(
+                            startTimeMin: parseDateTimeWithTimeZone(
+                                startTimeMinController.text,
+                                time: "00:00"),
+                            startTimeMax: parseDateTimeWithTimeZone(
                                 startTimeMaxController.text),
                           ));
                         });

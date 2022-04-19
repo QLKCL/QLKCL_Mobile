@@ -48,7 +48,8 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       phoneNumberController.text = value;
     });
     getBirthday().then((value) {
-      birthdayController.text = value;
+      birthdayController.text =
+          DateFormat('dd/MM/yyyy').parse(value).toIso8601String();
     });
     getGender().then((value) {
       genderController.text = value;
@@ -112,7 +113,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       label: 'Ngày sinh',
                       required: true,
                       controller: birthdayController,
-                      maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                      maxDate: DateTime.now(),
                       //enabled: false,
                     ),
                     // Input(
@@ -181,8 +182,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       final response = await provider.get(
         "/api/vaccination/public/otp-search",
         params: syncVaccinePortalDataForm(
-          birthday: DateFormat('dd/MM/yyyy')
-              .parse(birthdayController.text)
+          birthday: DateTime.parse(birthdayController.text)
               .copyWith(hour: 7)
               .toUtc()
               .millisecondsSinceEpoch
@@ -217,9 +217,9 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       final response = await provider.get(
         "/api/vaccination/public/patient-vaccinated",
         params: syncVaccinePortalDataForm(
-          birthday: DateFormat('dd/MM/yyyy')
-              .parse(birthdayController.text)
-              .copyWith(hour: 7)
+          birthday: DateTime.parse(birthdayController.text)
+              .copyWith(
+                  hour: 7, minute: 0, second: 0, microsecond: 0, millisecond: 0)
               .toUtc()
               .millisecondsSinceEpoch
               .toString(),
@@ -229,6 +229,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
           otpNumber: otpController.text,
         ),
       );
+      print(response);
       cancel();
       if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {

@@ -11,9 +11,9 @@ import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
-import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:intl/intl.dart';
 
 class ManagerForm extends StatefulWidget {
   final CustomUser? personalData;
@@ -116,7 +116,11 @@ class _ManagerFormState extends State<ManagerForm> {
       fullNameController.text = widget.personalData?.fullName ?? "";
       emailController.text = widget.personalData?.email ?? "";
       phoneNumberController.text = widget.personalData!.phoneNumber;
-      birthdayController.text = widget.personalData?.birthday ?? "";
+      birthdayController.text = widget.personalData?.birthday != null
+          ? DateFormat('dd/MM/yyyy')
+              .parse(widget.personalData?.birthday)
+              .toIso8601String()
+          : "";
       genderController.text = widget.personalData?.gender ?? "";
       identityNumberController.text = widget.personalData?.identityNumber ?? "";
       healthInsuranceNumberController.text =
@@ -453,7 +457,7 @@ class _ManagerFormState extends State<ManagerForm> {
                   controller: birthdayController,
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
-                  maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                  maxDate: DateTime.now(),
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Quốc gia',
@@ -885,7 +889,8 @@ class _ManagerFormState extends State<ManagerForm> {
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,
-            birthday: birthdayController.text,
+            birthday: DateFormat("dd/MM/yyyy")
+                .format(DateTime.parse(birthdayController.text)),
             gender: genderController.text,
             nationality: "VNM",
             country: countryController.text,

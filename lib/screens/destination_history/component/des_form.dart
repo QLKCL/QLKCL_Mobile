@@ -13,7 +13,6 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class DestinationHistoryForm extends StatefulWidget {
@@ -49,7 +48,6 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
   final startTimeController = TextEditingController();
   final endTimeController = TextEditingController();
   final noteController = TextEditingController();
-  DateTime startDateTime = DateTime.now();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -150,9 +148,9 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
           district: districtController.text,
           ward: wardController.text,
           address: detailAddressController.text,
-          startTime: parseDateToDateTimeWithTimeZone(startDateController.text,
+          startTime: parseDateTimeWithTimeZone(startDateController.text,
               time: startTimeController.text),
-          endTime: parseDateToDateTimeWithTimeZone(endDateController.text,
+          endTime: parseDateTimeWithTimeZone(endDateController.text,
               time: endTimeController.text),
           note: noteController.text,
         ),
@@ -396,8 +394,7 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                           }
                           setState(() {});
                         },
-                        maxDate:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        maxDate: DateTime.now(),
                         margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),
@@ -425,9 +422,10 @@ class _DestinationHistoryFormState extends State<DestinationHistoryForm> {
                           setState(() {});
                         },
                         enabled: startDateController.text != "",
-                        minDate: startDateController.text,
-                        maxDate:
-                            DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        minDate: startDateController.text != ""
+                            ? DateTime.parse(startDateController.text)
+                            : null,
+                        maxDate: DateTime.now(),
                         margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                       ),
                     ),

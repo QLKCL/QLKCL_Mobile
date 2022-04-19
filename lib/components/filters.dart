@@ -5,7 +5,6 @@ import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
-import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -233,7 +232,7 @@ Future memberFilter(
           label: 'Ngày bắt đầu cách ly',
           controllerStart: quarantineAtMinController,
           controllerEnd: quarantineAtMaxController,
-          maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+          maxDate: DateTime.now(),
           showClearButton: true,
         ),
         NewDateInput(
@@ -483,7 +482,7 @@ Future testFilter(
           label: 'Ngày xét nghiệm',
           controllerStart: createAtMinController,
           controllerEnd: createAtMaxController,
-          maxDate: DateFormat('dd/MM/yyyy').format(DateTime.now()),
+          maxDate: DateTime.now(),
           showClearButton: true,
         ),
         Container(
