@@ -72,7 +72,9 @@ Future<dynamic> fetchDestiantionHistoryList({data}) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.filterDestiantionHistory, data);
 
-  return response != null && response['data'] != null ? response['data'] : null;
+  return response != null && response['data'] != null
+      ? response['data']['content']
+      : null;
 }
 
 Future<dynamic> fetchDestiantionHistory({data}) async {
