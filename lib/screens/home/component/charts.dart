@@ -162,14 +162,12 @@ class DestinationChartCard extends StatelessWidget {
     required this.data,
     required this.startTimeMinController,
     required this.startTimeMaxController,
-    required this.role,
     this.height = 400,
     required this.refresh,
   }) : super(key: key);
   final List<KeyValue> data;
   final TextEditingController startTimeMinController;
   final TextEditingController startTimeMaxController;
-  final int role;
   final double height;
   final VoidCallback refresh;
 
