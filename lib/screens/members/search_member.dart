@@ -37,7 +37,9 @@ TextEditingController quarantineFloorController = TextEditingController();
 TextEditingController quarantineRoomController = TextEditingController();
 TextEditingController quarantineAtMinController = TextEditingController();
 TextEditingController quarantineAtMaxController = TextEditingController();
-TextEditingController quarantinedFinishExpectedAtController =
+TextEditingController quarantinedFinishExpectedAtMinController =
+    TextEditingController();
+TextEditingController quarantinedFinishExpectedAtMaxController =
     TextEditingController();
 TextEditingController labelController = TextEditingController();
 TextEditingController healthStatusController = TextEditingController();
@@ -170,8 +172,11 @@ class _SearchMemberState extends State<SearchMember> {
               time: "00:00"),
           quarantineAtMax:
               parseDateTimeWithTimeZone(quarantineAtMaxController.text),
-          quarantinedFinishExpectedAt: parseDateTimeWithTimeZone(
-              quarantinedFinishExpectedAtController.text),
+          quarantinedFinishExpectedAtMin: parseDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtMinController.text,
+              time: "00:00"),
+          quarantinedFinishExpectedAtMax: parseDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtMaxController.text),
           label: labelController.text,
           healthStatus: healthStatusController.text,
           test: testController.text,
@@ -250,9 +255,14 @@ class _SearchMemberState extends State<SearchMember> {
                               time: "00:00"),
                           quarantineAtMax: parseDateTimeWithTimeZone(
                               quarantineAtMaxController.text),
-                          quarantinedFinishExpectedAt:
+                          quarantinedFinishExpectedAtMin:
                               parseDateTimeWithTimeZone(
-                                  quarantinedFinishExpectedAtController.text),
+                                  quarantinedFinishExpectedAtMinController.text,
+                                  time: "00:00"),
+                          quarantinedFinishExpectedAtMax:
+                              parseDateTimeWithTimeZone(
+                                  quarantinedFinishExpectedAtMaxController
+                                      .text),
                           label: labelController.text,
                           healthStatus: healthStatusController.text,
                           test: testController.text,
@@ -279,8 +289,10 @@ class _SearchMemberState extends State<SearchMember> {
                   quarantineRoomController: quarantineRoomController,
                   quarantineAtMinController: quarantineAtMinController,
                   quarantineAtMaxController: quarantineAtMaxController,
-                  quarantinedFinishExpectedAtController:
-                      quarantinedFinishExpectedAtController,
+                  quarantinedFinishExpectedAtMinController:
+                      quarantinedFinishExpectedAtMinController,
+                  quarantinedFinishExpectedAtMaxController:
+                      quarantinedFinishExpectedAtMaxController,
                   quarantineWardList: _quarantineWardList,
                   quarantineBuildingList: _quarantineBuildingList,
                   quarantineFloorList: _quarantineFloorList,
@@ -320,9 +332,15 @@ class _SearchMemberState extends State<SearchMember> {
                                 time: "00:00"),
                             quarantineAtMax: parseDateTimeWithTimeZone(
                                 quarantineAtMaxController.text),
-                            quarantinedFinishExpectedAt:
+                            quarantinedFinishExpectedAtMin:
                                 parseDateTimeWithTimeZone(
-                                    quarantinedFinishExpectedAtController.text),
+                                    quarantinedFinishExpectedAtMinController
+                                        .text,
+                                    time: "00:00"),
+                            quarantinedFinishExpectedAtMax:
+                                parseDateTimeWithTimeZone(
+                                    quarantinedFinishExpectedAtMaxController
+                                        .text),
                             label: labelController.text,
                             healthStatus: healthStatusController.text,
                             test: testController.text,
@@ -629,8 +647,11 @@ class MemberDataSource extends DataGridSource {
               time: "00:00"),
           quarantineAtMax:
               parseDateTimeWithTimeZone(quarantineAtMaxController.text),
-          quarantinedFinishExpectedAt: parseDateTimeWithTimeZone(
-              quarantinedFinishExpectedAtController.text),
+          quarantinedFinishExpectedAtMin: parseDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtMinController.text,
+              time: "00:00"),
+          quarantinedFinishExpectedAtMax: parseDateTimeWithTimeZone(
+              quarantinedFinishExpectedAtMaxController.text),
           label: labelController.text,
           healthStatus: healthStatusController.text,
           careStaff: careStaffController.text,
@@ -661,8 +682,11 @@ class MemberDataSource extends DataGridSource {
             time: "00:00"),
         quarantineAtMax:
             parseDateTimeWithTimeZone(quarantineAtMaxController.text),
-        quarantinedFinishExpectedAt: parseDateTimeWithTimeZone(
-            quarantinedFinishExpectedAtController.text),
+        quarantinedFinishExpectedAtMin: parseDateTimeWithTimeZone(
+            quarantinedFinishExpectedAtMinController.text,
+            time: "00:00"),
+        quarantinedFinishExpectedAtMax: parseDateTimeWithTimeZone(
+            quarantinedFinishExpectedAtMaxController.text),
         label: labelController.text,
         healthStatus: healthStatusController.text,
         careStaff: careStaffController.text,
