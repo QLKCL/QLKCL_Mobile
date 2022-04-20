@@ -559,7 +559,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       });
                     }
                   },
-                  enabled: widget.mode != Permission.view,
+                  enabled: widget.mode != Permission.view &&
+                      widget.mode != Permission.approval,
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
@@ -571,10 +572,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 NewDateInput(
                   label: 'Thời gian dự kiến hoàn thành cách ly',
                   controller: state.quarantinedFinishExpectedAtController,
-                  enabled: widget.mode != Permission.view &&
-                      widget.mode != Permission.renew &&
-                      _role != 5 &&
-                      widget.mode != Permission.add,
+                  enabled: widget.mode == Permission.edit && _role != 5,
                 ),
                 Input(
                   label: "Số mũi vaccine đã tiêm",

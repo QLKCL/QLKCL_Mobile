@@ -126,6 +126,14 @@ Future<Response> createMedDecl(Map<String, dynamic> data) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(status: Status.success, message: "Khai báo thành công!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Not exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại không tồn tại!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
