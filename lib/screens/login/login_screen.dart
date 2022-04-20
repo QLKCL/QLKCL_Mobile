@@ -101,6 +101,7 @@ class _LoginFormState extends State<LoginForm> {
             required: true,
             validatorFunction: phoneValidator,
             controller: phoneController,
+            autoValidate: false,
           ),
           Input(
             label: "Mật khẩu",

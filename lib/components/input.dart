@@ -22,6 +22,7 @@ class Input extends StatefulWidget {
   final int maxLines;
   final IconData? prefixIcon;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const Input({
     Key? key,
@@ -44,6 +45,7 @@ class Input extends StatefulWidget {
     this.textCapitalization = TextCapitalization.none,
     this.prefixIcon,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -77,7 +79,8 @@ class _InputState extends State<Input> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () {
           _focus = true;
         },

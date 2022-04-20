@@ -274,6 +274,7 @@ class NewDateInput extends StatefulWidget {
   final bool showClearButton;
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const NewDateInput({
     Key? key,
@@ -288,6 +289,7 @@ class NewDateInput extends StatefulWidget {
     this.showClearButton = false,
     this.onChangedFunction,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -327,7 +329,8 @@ class _NewDateInputState extends State<NewDateInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () async {
           _focus = true;
           showDialog(
@@ -434,6 +437,7 @@ class NewDateRangeInput extends StatefulWidget {
   final bool showClearButton;
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const NewDateRangeInput({
     Key? key,
@@ -449,6 +453,7 @@ class NewDateRangeInput extends StatefulWidget {
     this.showClearButton = false,
     this.onChangedFunction,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -493,7 +498,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () async {
           _focus = true;
           showDialog(

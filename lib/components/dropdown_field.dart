@@ -29,6 +29,7 @@ class DropdownInput<T> extends StatefulWidget {
   final String? popupTitle;
   final EdgeInsets? margin;
   final Key? widgetKey;
+  final bool autoValidate;
 
   const DropdownInput({
     Key? key,
@@ -54,6 +55,7 @@ class DropdownInput<T> extends StatefulWidget {
     this.popupTitle,
     this.margin,
     this.widgetKey,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -67,7 +69,8 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>(
-        autoValidateMode: AutovalidateMode.onUserInteraction,
+        autoValidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         isFilteredOnline: true,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
@@ -170,6 +173,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final String? popupTitle;
   final EdgeInsets? margin;
   final Key? widgetKey;
+  final bool autoValidate;
 
   const MultiDropdownInput({
     Key? key,
@@ -196,6 +200,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
     this.popupTitle,
     this.margin,
     this.widgetKey,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -209,7 +214,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
-        // autoValidateMode: AutovalidateMode.onUserInteraction,
+        // autoValidateMode: widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         isFilteredOnline: true,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
