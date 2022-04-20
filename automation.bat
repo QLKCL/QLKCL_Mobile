@@ -5,21 +5,21 @@ if NOT "%CurDir%" == "QLKCL_Mobile_Flutter" exit
 
 echo.
 echo ==============================================
-echo Push this code to QLKCL_Mobile_Flutter in Github...
+@REM echo Push this code to QLKCL_Mobile_Flutter in Github...
 set /P commit_content=Commit message: 
-git add .
-git commit -m "%commit_content%"
-git push
+@REM git add .
+@REM git commit -m "%commit_content%"
+@REM git push
 
 echo.
 echo ==============================================
 echo Flutter clean
 call flutter clean
 
-echo.
-echo ==============================================
-echo Flutter build apk
-call flutter build apk --release --no-sound-null-safety
+@REM echo.
+@REM echo ==============================================
+@REM echo Flutter build apk
+@REM call flutter build apk --release --no-sound-null-safety
 
 echo.
 echo ==============================================
@@ -34,6 +34,7 @@ if exist %CD%\QLKCL_Mobile_Flutter\build\web\ (
     echo.
     echo ==============================================
     echo Push this code to QLKCL_Web in Github...
+    git pull
     git add .
     git commit -m "%commit_content%"
     git push

@@ -104,10 +104,9 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
         data: filterQuarantineDataForm(
           keySearch: keySearch.text,
           page: pageKey,
-          createAtMin:
-              parseDateToDateTimeWithTimeZone(createAtMinController.text),
-          createAtMax:
-              parseDateToDateTimeWithTimeZone(createAtMaxController.text),
+          createAtMin: parseDateTimeWithTimeZone(createAtMinController.text,
+              time: "00:00"),
+          createAtMax: parseDateTimeWithTimeZone(createAtMaxController.text),
           city: cityController.text,
           district: districtController.text,
           ward: wardController.text,

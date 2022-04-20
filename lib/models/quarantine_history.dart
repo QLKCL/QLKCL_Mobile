@@ -105,7 +105,7 @@ Future<List<QuarantineHistory>> fetchQuarantineHistoryList({data}) async {
 
   if (response != null) {
     if (response['error_code'] == 0 && response['data'] != null) {
-      final List<QuarantineHistory> itemList = response['data']
+      final List<QuarantineHistory> itemList = response['data']['content']
           .map<QuarantineHistory>((json) => QuarantineHistory.fromJson(json))
           .toList();
       return itemList;

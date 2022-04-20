@@ -12,6 +12,7 @@ class TimeInput extends StatefulWidget {
   final bool showClearButton;
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const TimeInput({
     Key? key,
@@ -25,6 +26,7 @@ class TimeInput extends StatefulWidget {
     this.showClearButton = false,
     this.onChangedFunction,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -50,7 +52,8 @@ class _TimeInputState extends State<TimeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () async {
           _focus = true;
           final TimeOfDay? pickedTime = await showTimePicker(

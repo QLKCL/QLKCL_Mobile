@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/destination_history.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
-import 'package:qlkcl/screens/home/component/charts.dart';
+import 'package:qlkcl/screens/home/component/maps.dart';
 import 'package:qlkcl/screens/manager/add_manager_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/models/key_value.dart';
@@ -49,22 +50,26 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
   List<KeyValue> quarantineWardList = [];
 
   final startTimeMinController = TextEditingController(
-      text: DateFormat('dd/MM/yyyy')
-          .format(DateTime.now().subtract(const Duration(days: 14))));
-  final startTimeMaxController = TextEditingController(
-      text: DateFormat('dd/MM/yyyy').format(DateTime.now()));
+      text: DateTime.now().subtract(const Duration(days: 14)).toString());
+  final startTimeMaxController =
+      TextEditingController(text: DateTime.now().toString());
+
+  late String mapData;
 
   @override
   void initState() {
+    rootBundle
+        .loadString('assets/maps/vietnam.json')
+        .then((value) => mapData = value);
+
     super.initState();
     futureData = fetch();
     futurePassBy =
         getAddressWithMembersPassBy(getAddressWithMembersPassByDataForm(
       addressType: "city",
       startTimeMin:
-          parseDateToDateTimeWithTimeZone(startTimeMinController.text),
-      startTimeMax:
-          parseDateToDateTimeWithTimeZone(startTimeMaxController.text),
+          parseDateTimeWithTimeZone(startTimeMinController.text, time: "00:00"),
+      startTimeMax: parseDateTimeWithTimeZone(startTimeMaxController.text),
     ));
     fetchQuarantineWard({
       'page_size': pageSizeMax,
@@ -124,10 +129,11 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 futurePassBy = getAddressWithMembersPassBy(
                     getAddressWithMembersPassByDataForm(
                   addressType: "city",
-                  startTimeMin: parseDateToDateTimeWithTimeZone(
-                      startTimeMinController.text),
-                  startTimeMax: parseDateToDateTimeWithTimeZone(
-                      startTimeMaxController.text),
+                  startTimeMin: parseDateTimeWithTimeZone(
+                      startTimeMinController.text,
+                      time: "00:00"),
+                  startTimeMax:
+                      parseDateTimeWithTimeZone(startTimeMaxController.text),
                 ));
               });
             }),
@@ -230,25 +236,21 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                   future: futurePassBy,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      // int sum = snapshot.data!.sumBy((e) => e.name).toInt();
-                      // List<KeyValue> data = snapshot.data!
-                      //     .map((e) =>
-                      //         KeyValue(id: e.id, name: (e.name * 100 / sum)))
-                      //     .toList();
-                      return DestinationChartCard(
+                      return Maps(
+                        mapData: mapData,
                         data: snapshot.data!,
                         startTimeMaxController: startTimeMaxController,
                         startTimeMinController: startTimeMinController,
-                        role: widget.role,
-                        height: 600,
+                        height: 800,
                         refresh: () {
                           setState(() {
                             futurePassBy = getAddressWithMembersPassBy(
                                 getAddressWithMembersPassByDataForm(
                               addressType: "city",
-                              startTimeMin: parseDateToDateTimeWithTimeZone(
-                                  startTimeMinController.text),
-                              startTimeMax: parseDateToDateTimeWithTimeZone(
+                              startTimeMin: parseDateTimeWithTimeZone(
+                                  startTimeMinController.text,
+                                  time: "00:00"),
+                              startTimeMax: parseDateTimeWithTimeZone(
                                   startTimeMaxController.text),
                             ));
                           });
@@ -258,24 +260,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       return Text('${snapshot.error}');
                     }
 
-                    return DestinationChartCard(
-                      data: const [],
-                      startTimeMaxController: startTimeMaxController,
-                      startTimeMinController: startTimeMinController,
-                      role: widget.role,
-                      refresh: () {
-                        setState(() {
-                          futurePassBy = getAddressWithMembersPassBy(
-                              getAddressWithMembersPassByDataForm(
-                            addressType: "city",
-                            startTimeMin: parseDateToDateTimeWithTimeZone(
-                                startTimeMinController.text),
-                            startTimeMax: parseDateToDateTimeWithTimeZone(
-                                startTimeMaxController.text),
-                          ));
-                        });
-                      },
-                    );
+                    return const SizedBox();
                   },
                 ),
               ],

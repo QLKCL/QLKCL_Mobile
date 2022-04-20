@@ -67,10 +67,9 @@ class _SearchTestState extends State<SearchTest> {
         keySearch: keySearch.text,
         type: typeController.text,
         result: resultController.text,
-        createAtMin:
-            parseDateToDateTimeWithTimeZone(createAtMinController.text),
-        createAtMax:
-            parseDateToDateTimeWithTimeZone(createAtMaxController.text),
+        createAtMin: parseDateTimeWithTimeZone(createAtMinController.text,
+            time: "00:00"),
+        createAtMax: parseDateTimeWithTimeZone(createAtMaxController.text),
       ));
       final isLastPage = newItems.length < pageSize;
       if (isLastPage) {

@@ -70,24 +70,23 @@ String formatISOTime(DateTime? dateTime) {
 }
 
 dynamic prepareDataForm(data, {List<String> exceptionField = const []}) {
-  data.removeWhere((key, value) =>
-      (key == "" || value == "") && (!exceptionField.contains(key)));
   data.removeWhere(
       (key, value) => (value == null) && (!exceptionField.contains(key)));
+  data.removeWhere((key, value) =>
+      (key == "" || value == "") && (!exceptionField.contains(key)));
   return data;
 }
 
-String parseDateToDateTimeWithTimeZone(String date, {String? time}) {
+String parseDateTimeWithTimeZone(String datetime, {String? time}) {
   String outputDate = "";
-  if (date != "") {
-    final DateTime parseDate = DateFormat("dd/MM/yyyy").parse(date);
-    var inputDate = DateTime.parse(parseDate.toString()).toLocal();
-    if (time != null) {
+  if (datetime != "") {
+    var inputDate = DateTime.parse(datetime).toLocal();
+    if (time != null && time != "") {
       final int hour = int.parse(time.split(':').first);
       final int minute = int.parse(time.split(':').last);
       inputDate = inputDate.copyWith(hour: hour, minute: minute);
     }
-    inputDate = DateTime.parse(formatISOTime(inputDate)).toLocal();
+    inputDate = DateTime.parse(formatISOTime(inputDate)).toUtc();
     final outputFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     outputDate = outputFormat.format(inputDate);
   }

@@ -116,8 +116,11 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
           ),
         ),
       ),
-      floatingActionButton: (!isWebPlatform())
-          ? FloatingActionButton(
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if (!isWebPlatform())
+            FloatingActionButton(
               onPressed: () {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
@@ -126,19 +129,24 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
               },
               child: const Icon(Icons.cloud_sync),
               tooltip: "Tra cứu chứng nhận tiêm",
-            )
-          : FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context,
-                        rootNavigator: !Responsive.isDesktopLayout(context))
-                    .push(MaterialPageRoute(
-                        builder: (context) => CreateVaccineDose(
-                              code: widget.code,
-                            )));
-              },
-              child: const Icon(Icons.add),
-              tooltip: "Khai báo tiêm vaccine",
             ),
+          const SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(MaterialPageRoute(
+                      builder: (context) => CreateVaccineDose(
+                            code: widget.code,
+                          )));
+            },
+            child: const Icon(Icons.add),
+            tooltip: "Khai báo tiêm vaccine",
+          ),
+        ],
+      ),
     );
   }
 }

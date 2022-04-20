@@ -4,12 +4,13 @@ import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class InfoCovid extends StatelessWidget {
   final Color color;
   final String title;
-  final String newCase;
-  final String totalCase;
+  final int newCase;
+  final int totalCase;
   const InfoCovid(
       {required this.color,
       required this.title,
@@ -18,6 +19,7 @@ class InfoCovid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formatter = NumberFormat('#,###,###');
     return SizedBox(
       // width: 128,
       height: 128,
@@ -31,13 +33,13 @@ class InfoCovid extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: white),
+              style: TextStyle(color: white, fontSize: 18),
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
-              "+ $newCase",
+              "+ ${formatter.format(newCase)}",
               textAlign: TextAlign.center,
               style: TextStyle(color: white),
             ),
@@ -45,8 +47,8 @@ class InfoCovid extends StatelessWidget {
               height: 8,
             ),
             Text(
-              totalCase,
-              style: TextStyle(color: white, fontSize: 20),
+              formatter.format(totalCase),
+              style: TextStyle(color: white, fontSize: 18),
             ),
           ],
         ),
@@ -56,25 +58,25 @@ class InfoCovid extends StatelessWidget {
 }
 
 class InfoCovidHomePage extends StatelessWidget {
-  final String increaseConfirmed;
-  final String confirmed;
-  final String increaseDeaths;
-  final String deaths;
-  final String increaseRecovered;
-  final String recovered;
-  final String increaseActived;
-  final String actived;
+  final int increaseConfirmed;
+  final int confirmed;
+  final int increaseDeaths;
+  final int deaths;
+  final int increaseRecovered;
+  final int recovered;
+  final int increaseActived;
+  final int actived;
   final String lastUpdate;
 
   const InfoCovidHomePage({
-    this.increaseConfirmed = "0",
-    this.confirmed = "0",
-    this.increaseDeaths = "0",
-    this.deaths = "0",
-    this.increaseRecovered = "0",
-    this.recovered = "0",
-    this.increaseActived = "0",
-    this.actived = "0",
+    this.increaseConfirmed = 0,
+    this.confirmed = 0,
+    this.increaseDeaths = 0,
+    this.deaths = 0,
+    this.increaseRecovered = 0,
+    this.recovered = 0,
+    this.increaseActived = 0,
+    this.actived = 0,
     this.lastUpdate = "dd/MM/yyyy HH:mm:ss",
   });
 
@@ -107,9 +109,11 @@ class InfoCovidHomePage extends StatelessWidget {
       ),
     ];
 
-    final screenWidth = MediaQuery.of(context).size.width - 16;
-    final crossAxisCount = screenWidth >= minDesktopSize ? 4 : 2;
-    final width = screenWidth / crossAxisCount;
+    final screenWidth = MediaQuery.of(context).size.width - 64;
+    final crossAxisCount = screenWidth >= maxMobileSize ? 4 : 2;
+    final width =
+        ((screenWidth >= maxTabletSize) ? (screenWidth - 230) : screenWidth) /
+            crossAxisCount;
     const cellHeight = 148;
     final aspectRatio = width / cellHeight;
 
@@ -149,11 +153,11 @@ class InfoCovidHomePage extends StatelessWidget {
                     style: TextStyle(color: primaryText),
                   ),
                   TextSpan(
-                    text: 'Dữ liệu Covid-19',
+                    text: 'Thanhnien.vn',
                     style: TextStyle(color: primary),
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        launch('https://covid19.ncsc.gov.vn/dulieu');
+                        launch('https://thanhnien.vn');
                       },
                   ),
                 ],

@@ -14,7 +14,6 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
@@ -116,14 +115,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
-      state.positiveTestNowController.text =
-          widget.quarantineData?.positiveTest.toString() ?? "Null";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
       initQuarantineWard = widget.quarantineData?.quarantineWard;
       state.numberOfVaccineDosesController.text =
           widget.quarantineData?.numberOfVaccineDoses ?? "0";
+
+      state.positiveTestNowController.text =
+          state.labelController.text == "F0" ? "True" : "Null";
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -142,19 +142,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
               ? widget.quarantineData!.quarantineWard!.id.toString()
               : "";
       state.labelController.text = widget.quarantineData?.label ?? "";
-      state.quarantinedAtController.text = widget
-                  .quarantineData?.quarantinedAt !=
-              null
-          ? DateFormat("dd/MM/yyyy").format(
-              DateTime.parse(widget.quarantineData?.quarantinedAt).toLocal())
-          : "";
-      state.quarantinedFinishExpectedAtController.text = widget
-                  .quarantineData?.quarantinedFinishExpectedAt !=
-              null
-          ? DateFormat("dd/MM/yyyy").format(
-              DateTime.parse(widget.quarantineData?.quarantinedFinishExpectedAt)
-                  .toLocal())
-          : "";
+
+      state.quarantinedAtController.text =
+          widget.quarantineData?.quarantinedAt ?? "";
+      state.quarantinedFinishExpectedAtController.text =
+          widget.quarantineData?.quarantinedFinishExpectedAt;
       state.backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
@@ -515,6 +507,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                                     state.numberOfVaccineDosesController.text,
                                 quarantineWard:
                                     state.quarantineWardController.text,
+                                positiveTestNow:
+                                    state.positiveTestNowController.text,
                               ),
                             );
                             cancel();
@@ -761,8 +755,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         final response = await acceptOneMember(acceptOneMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: state.quarantineRoomController.text,
-          quarantinedAt: parseDateToDateTimeWithTimeZone(
-              state.quarantinedAtController.text),
+          quarantinedAt:
+              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
         ));
         cancel();
         showNotification(response);
@@ -772,8 +766,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             await managerCallRequarantine(requarantineMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: state.quarantineRoomController.text,
-          quarantinedAt: parseDateToDateTimeWithTimeZone(
-              state.quarantinedAtController.text),
+          quarantinedAt:
+              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
           label: state.labelController.text,
           quarantineWard: state.quarantineWardController.text,
           careStaff: state.careStaffController.text,
@@ -801,8 +795,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,
-          quarantinedAt: parseDateToDateTimeWithTimeZone(
-              state.quarantinedAtController.text),
+          quarantinedAt:
+              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
@@ -827,14 +821,13 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,
-          quarantinedAt: parseDateToDateTimeWithTimeZone(
-              state.quarantinedAtController.text),
-          quarantinedFinishExpectedAt: parseDateToDateTimeWithTimeZone(
+          quarantinedAt:
+              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
+          quarantinedFinishExpectedAt: parseDateTimeWithTimeZone(
               state.quarantinedFinishExpectedAtController.text),
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
-          numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
           careStaff: state.careStaffController.text,
         ));
         cancel();

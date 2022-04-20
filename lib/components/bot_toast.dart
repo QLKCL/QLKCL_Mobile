@@ -127,7 +127,7 @@ class __CustomLoadWidgetState extends State<_CustomLoadWidget>
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: Text(
-              widget.textLoading ?? "Loading",
+              widget.textLoading ?? "Đang tải...",
             ),
           )
         ],

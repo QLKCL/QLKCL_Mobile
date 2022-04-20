@@ -14,7 +14,6 @@ import 'package:qlkcl/models/vaccine_dose.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:intl/intl.dart';
 
 class CreateVaccineDose extends StatefulWidget {
   static const String routeName = "/create_vaccine_dose";
@@ -104,8 +103,7 @@ class _CreateVaccineDoseState extends State<CreateVaccineDose> {
                               }
                               setState(() {});
                             },
-                            maxDate:
-                                DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                            maxDate: DateTime.now(),
                             margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
                           ),
                         ),
@@ -161,7 +159,7 @@ class _CreateVaccineDoseState extends State<CreateVaccineDose> {
       final CancelFunc cancel = showLoading();
       final response = await createVaccineDose(
         data: createVaccineDoseDataForm(
-          injectionDate: parseDateToDateTimeWithTimeZone(dateController.text,
+          injectionDate: parseDateTimeWithTimeZone(dateController.text,
               time: timeController.text),
           userCode: widget.code ?? await getCode(),
           vaccineId: vaccineController.text,

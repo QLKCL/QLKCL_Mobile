@@ -269,11 +269,12 @@ class NewDateInput extends StatefulWidget {
   final bool enabled;
   final TextEditingController? controller;
   final String? helper;
-  final String? minDate;
-  final String? maxDate;
+  final DateTime? minDate;
+  final DateTime? maxDate;
   final bool showClearButton;
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const NewDateInput({
     Key? key,
@@ -288,6 +289,7 @@ class NewDateInput extends StatefulWidget {
     this.showClearButton = false,
     this.onChangedFunction,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -299,21 +301,25 @@ class _NewDateInputState extends State<NewDateInput> {
   String newDate = "";
   DateTime minDate = DateTime(1900);
   DateTime maxDate = DateTime(2100);
+  late TextEditingController showDateController;
 
   @override
   void initState() {
     super.initState();
+    showDateController = TextEditingController(
+        text: widget.controller!.text.isNotEmpty
+            ? DateFormat("dd/MM/yyyy")
+                .format(DateTime.parse(widget.controller!.text))
+            : "");
   }
 
   @override
   void didUpdateWidget(oldWidget) {
-    if (widget.minDate != null && widget.minDate != "") {
-      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
-      minDate = minDate.copyWith(hour: 0, minute: 0);
+    if (widget.minDate != null) {
+      minDate = widget.minDate!.copyWith(hour: 0, minute: 0);
     }
-    if (widget.maxDate != null && widget.maxDate != "") {
-      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
-      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    if (widget.maxDate != null) {
+      maxDate = widget.maxDate!.copyWith(hour: 23, minute: 59);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -323,7 +329,8 @@ class _NewDateInputState extends State<NewDateInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () async {
           _focus = true;
           showDialog(
@@ -343,12 +350,14 @@ class _NewDateInputState extends State<NewDateInput> {
                       onPressed: () {
                         if (newDate == "" && widget.controller!.text == "") {
                           widget.controller!.text =
-                              DateFormat('dd/MM/yyyy').format(DateTime.now());
+                              DateTime.now().toIso8601String();
                         } else if (newDate != "") {
                           setState(() {
                             widget.controller!.text = newDate;
                           });
                         }
+                        showDateController.text = DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(widget.controller!.text));
                         widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
@@ -359,7 +368,7 @@ class _NewDateInputState extends State<NewDateInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        newDate = DateFormat('dd/MM/yyyy').format(data.value);
+                        newDate = data.value.toIso8601String();
                       },
                       monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
@@ -370,13 +379,11 @@ class _NewDateInputState extends State<NewDateInput> {
                       maxDate: maxDate,
                       initialSelectedDate: (widget.controller != null &&
                               widget.controller!.text != "")
-                          ? DateFormat("dd/MM/yyyy")
-                              .parse(widget.controller!.text)
+                          ? DateTime.parse(widget.controller!.text)
                           : DateTime.now(),
                       initialDisplayDate: (widget.controller != null &&
                               widget.controller!.text != "")
-                          ? DateFormat("dd/MM/yyyy")
-                              .parse(widget.controller!.text)
+                          ? DateTime.parse(widget.controller!.text)
                           : DateTime.now(),
                       showNavigationArrow: true,
                     ),
@@ -391,7 +398,7 @@ class _NewDateInputState extends State<NewDateInput> {
         },
         readOnly: true,
         enabled: widget.enabled,
-        controller: widget.controller,
+        controller: showDateController,
         decoration: InputDecoration(
           labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
@@ -425,11 +432,12 @@ class NewDateRangeInput extends StatefulWidget {
   final TextEditingController? controllerStart;
   final TextEditingController? controllerEnd;
   final String? helper;
-  final String? minDate;
-  final String? maxDate;
+  final DateTime? minDate;
+  final DateTime? maxDate;
   final bool showClearButton;
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
+  final bool autoValidate;
 
   const NewDateRangeInput({
     Key? key,
@@ -445,6 +453,7 @@ class NewDateRangeInput extends StatefulWidget {
     this.showClearButton = false,
     this.onChangedFunction,
     this.margin,
+    this.autoValidate = true,
   }) : super(key: key);
 
   @override
@@ -453,7 +462,7 @@ class NewDateRangeInput extends StatefulWidget {
 
 class _NewDateRangeInputState extends State<NewDateRangeInput> {
   bool _focus = false;
-  late TextEditingController controller;
+  late TextEditingController showDateController;
   String newStartDate = "";
   String newEndDate = "";
   DateTime minDate = DateTime(1900);
@@ -462,25 +471,24 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(
+    showDateController = TextEditingController(
         text: (widget.controllerStart != null &&
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? "${widget.controllerStart!.text} - ${widget.controllerEnd!.text}"
-                : widget.controllerStart!.text)
+                ? "${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text))} - ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text))}"
+                : DateFormat("dd/MM/yyyy")
+                    .format(DateTime.parse(widget.controllerStart!.text)))
             : "");
   }
 
   @override
   void didUpdateWidget(oldWidget) {
-    if (widget.minDate != null && widget.minDate != "") {
-      minDate = DateFormat("dd/MM/yyyy").parse(widget.minDate!);
-      minDate = minDate.copyWith(hour: 0, minute: 0);
+    if (widget.minDate != null) {
+      minDate = widget.minDate!.copyWith(hour: 0, minute: 0);
     }
-    if (widget.maxDate != null && widget.maxDate != "") {
-      maxDate = DateFormat("dd/MM/yyyy").parse(widget.maxDate!);
-      maxDate = maxDate.copyWith(hour: 23, minute: 59);
+    if (widget.maxDate != null) {
+      maxDate = widget.maxDate!.copyWith(hour: 23, minute: 59);
     }
     super.didUpdateWidget(oldWidget);
   }
@@ -490,7 +498,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
     return Container(
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: TextFormField(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
+        autovalidateMode:
+            widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
         onTap: () async {
           _focus = true;
           showDialog(
@@ -513,7 +522,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               widget.controllerStart != null &&
                               widget.controllerStart!.text == "") {
                             widget.controllerStart?.text =
-                                DateFormat('dd/MM/yyyy').format(DateTime.now());
+                                DateTime.now().toIso8601String();
                           } else if (newStartDate != "") {
                             widget.controllerStart!.text = newStartDate;
                           }
@@ -521,13 +530,14 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                               widget.controllerEnd != null &&
                               widget.controllerEnd!.text == "") {
                             widget.controllerEnd?.text =
-                                DateFormat('dd/MM/yyyy').format(DateTime.now());
+                                DateTime.now().toIso8601String();
                           } else if (newEndDate != "") {
                             widget.controllerEnd!.text = newEndDate;
                           }
 
-                          controller.text = '${widget.controllerStart!.text} -'
-                              ' ${widget.controllerEnd!.text}';
+                          showDateController.text =
+                              '${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text))} -'
+                              ' ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text))}';
                         });
                         widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
@@ -539,15 +549,10 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        newStartDate = DateFormat('dd/MM/yyyy')
-                            .format(data.value.startDate);
+                        newStartDate = data.value.startDate.toIso8601String();
                         newEndDate = data.value.endDate != null
-                            ? DateFormat('dd/MM/yyyy')
-                                .format(data.value.endDate)
-                            : DateFormat('dd/MM/yyyy')
-                                .format(data.value.startDate);
-                        controller.text =
-                            '$newStartDate -                             $newEndDate';
+                            ? data.value.endDate.toIso8601String()
+                            : data.value.startDate.toIso8601String();
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
                       monthViewSettings: const DateRangePickerMonthViewSettings(
@@ -560,13 +565,11 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                       initialSelectedRange: PickerDateRange(
                           (widget.controllerStart != null &&
                                   widget.controllerStart!.text != "")
-                              ? DateFormat("dd/MM/yyyy")
-                                  .parse(widget.controllerStart!.text)
+                              ? DateTime.parse(widget.controllerStart!.text)
                               : DateTime.now(),
                           (widget.controllerEnd != null &&
                                   widget.controllerEnd!.text != "")
-                              ? DateFormat("dd/MM/yyyy")
-                                  .parse(widget.controllerEnd!.text)
+                              ? DateTime.parse(widget.controllerEnd!.text)
                               : DateTime.now()),
                       showNavigationArrow: true,
                     ),
@@ -581,17 +584,17 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
         },
         readOnly: true,
         enabled: widget.enabled,
-        controller: controller,
+        controller: showDateController,
         decoration: InputDecoration(
           labelText: widget.required ? "${widget.label} *" : widget.label,
           hintText: "dd/mm/yyyy",
           suffixIcon: (widget.showClearButton &&
-                  controller.text != "" &&
+                  showDateController.text != "" &&
                   _focus == true)
               ? IconButton(
                   icon: const Icon(Icons.clear),
                   onPressed: () {
-                    controller.clear();
+                    showDateController.clear();
                     widget.controllerStart!.clear();
                     widget.controllerEnd!.clear();
                     _focus = false;
