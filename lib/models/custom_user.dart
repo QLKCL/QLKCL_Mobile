@@ -150,6 +150,32 @@ Future<dynamic> fetchUser({data}) async {
   }
 }
 
+Future<Response> getUserByPhone({data}) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getMemberByPhone, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(status: Status.success, data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "Not exist") {
+        return Response(
+            status: Status.error, message: "Số điện thoại không tồn tại!");
+      } else if (response['message']['phone_number'] != null &&
+          response['message']['phone_number'] == "empty") {
+        return Response(
+            status: Status.error, message: "Số điện thoại không hợp lệ!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
 Future<Response> createManager(Map<String, dynamic> data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.createManager, data);

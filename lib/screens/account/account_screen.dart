@@ -28,6 +28,7 @@ class Account extends StatefulWidget {
 class _AccountState extends State<Account> {
   int _role = 5;
   String code = "";
+  String name = "";
 
   @override
   void initState() {
@@ -40,6 +41,9 @@ class _AccountState extends State<Account> {
     });
     getCode().then((value) => setState(() {
           code = value;
+        }));
+    getName().then((value) => setState(() {
+          name = value;
         }));
     super.initState();
   }
@@ -54,7 +58,7 @@ class _AccountState extends State<Account> {
       body: SingleChildScrollView(
           child: Column(
         children: <Widget>[
-          GenerateQrCode(qrData: code),
+          GenerateQrCode(code: code, name: name),
           Container(
             alignment: Alignment.centerLeft,
             margin: const EdgeInsets.only(left: 16),
@@ -75,7 +79,12 @@ class _AccountState extends State<Account> {
                   onTap: () {
                     Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
-                        .pushNamed(ListMedicalDeclaration.routeName);
+                        .push(MaterialPageRoute(
+                      builder: (context) => ListMedicalDeclaration(
+                        code: code,
+                        name: name,
+                      ),
+                    ));
                   },
                   title: const Text('Lịch sử khai báo y tế'),
                   trailing: const Icon(Icons.keyboard_arrow_right),

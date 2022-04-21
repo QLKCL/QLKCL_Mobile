@@ -5,6 +5,7 @@ class Api {
   static const String register = '/api/user/member/register';
 
   static const String getMember = '/api/user/member/get';
+  static const String getMemberByPhone = '/api/user/member/get_by_phone_number';
   static const String getListMembers = '/api/user/member/filter';
   static const String createMember = '/api/user/member/create';
   static const String updateMember = '/api/user/member/update';

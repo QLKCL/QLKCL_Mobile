@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -20,10 +21,12 @@ class MedDeclForm extends StatefulWidget {
     this.mode = Permission.view,
     this.medicalDeclData,
     this.phone,
+    this.name,
   }) : super(key: key);
   final Permission mode;
   final MedicalDecl? medicalDeclData;
   final String? phone;
+  final String? name;
 
   @override
   _MedDeclFormState createState() => _MedDeclFormState();
@@ -47,13 +50,15 @@ class _MedDeclFormState extends State<MedDeclForm> {
   final mainSymptomController = TextEditingController();
   final spo2Controller = TextEditingController();
 
+  String? phoneError;
+
   @override
   void initState() {
     super.initState();
     //Data contained
     userNameController.text = widget.medicalDeclData?.user.fullName != null
         ? widget.medicalDeclData!.user.fullName
-        : "";
+        : widget.name ?? "";
 
     heartBeatController.text = widget.medicalDeclData?.heartbeat != null
         ? widget.medicalDeclData!.heartbeat.toString()
@@ -82,7 +87,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
   //submit
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        ((isChecked == false) ||
+            (isChecked == true && (phoneError == null || phoneError == "")))) {
       final CancelFunc cancel = showLoading();
       final response = await createMedDecl(createMedDeclDataForm(
         phoneNumber: isChecked ? phoneNumberController.text : null,
@@ -113,43 +120,64 @@ class _MedDeclFormState extends State<MedDeclForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Tên người khai hộ
-                if (widget.mode == Permission.add)
-                  Column(
-                    children: [
-                      ListTileTheme(
-                        contentPadding: const EdgeInsets.only(left: 8),
-                        child: CheckboxListTile(
-                          title: const Text("Khai hộ"),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: isChecked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value!;
-                            });
-                          },
-                        ),
+                Column(
+                  children: [
+                    ListTileTheme(
+                      contentPadding: const EdgeInsets.only(left: 8),
+                      child: CheckboxListTile(
+                        title: const Text("Khai hộ"),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        value: isChecked,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            isChecked = value!;
+                          });
+                        },
                       ),
+                    ),
 
-                      // SĐT người khai hộ
-                      Input(
-                        label: 'Số điện thoại',
-                        hint: 'SĐT người được khai báo',
-                        margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                        required: isChecked,
-                        type: TextInputType.phone,
-                        controller: phoneNumberController,
-                        validatorFunction: isChecked ? phoneValidator : null,
-                        enabled: isChecked,
-                      )
-                    ],
-                  )
-                else
-                  Input(
-                    label: 'Họ và tên',
-                    controller: userNameController,
-                    enabled: false,
-                  ),
+                    // SĐT người khai hộ
+                    Input(
+                      label: 'Số điện thoại',
+                      hint: 'SĐT người được khai báo',
+                      margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                      required: isChecked,
+                      type: TextInputType.phone,
+                      controller: phoneNumberController,
+                      validatorFunction: isChecked ? phoneValidator : null,
+                      enabled: isChecked,
+                      onChangedFunction: (_) async {
+                        if (phoneNumberController.text.isEmpty) {
+                          userNameController.text = "";
+                          setState(() {});
+                        } else {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                          }
+                        }
+                      },
+                      onSavedFunction: (value) async {
+                        final data =
+                            await getUserByPhone(data: {"phone_number": value});
+                        if (data.status == Status.success) {
+                          phoneError = null;
+                          userNameController.text = data.data['full_name'];
+                        } else {
+                          phoneError = data.message;
+                          userNameController.text = "";
+                        }
+                        setState(() {});
+                      },
+                      autoValidate: false,
+                      error: phoneError,
+                    ),
+                    Input(
+                      label: 'Họ và tên',
+                      controller: userNameController,
+                      enabled: false,
+                    ),
+                  ],
+                ),
 
                 //Medical Declaration Info
                 Container(

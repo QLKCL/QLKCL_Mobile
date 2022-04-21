@@ -611,6 +611,7 @@ Widget menus(BuildContext context, FilterMember item,
                 builder: (context) => ListMedicalDeclaration(
                       code: item.code,
                       phone: item.phoneNumber,
+                      name: item.fullName,
                     )));
       } else if (result == 'create_test') {
         Navigator.of(context,

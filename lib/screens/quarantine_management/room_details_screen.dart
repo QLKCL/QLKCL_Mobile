@@ -639,6 +639,7 @@ Widget menus(BuildContext context, FilterMember item) {
             .push(MaterialPageRoute(
                 builder: (context) => MedicalDeclarationScreen(
                       phone: item.phoneNumber,
+                      name: item.fullName,
                     )));
       } else if (result == 'medical_declare_history') {
         Navigator.of(context,
@@ -647,6 +648,7 @@ Widget menus(BuildContext context, FilterMember item) {
                 builder: (context) => ListMedicalDeclaration(
                       code: item.code,
                       phone: item.phoneNumber,
+                      name: item.fullName,
                     )));
       } else if (result == 'create_test') {
         Navigator.of(context,
