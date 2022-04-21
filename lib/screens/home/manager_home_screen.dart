@@ -239,6 +239,8 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         mapData: mapData,
                         data: snapshot.data!,
                         height: 800,
+                        startTimeMaxController: startTimeMaxController,
+                        startTimeMinController: startTimeMinController,
                       );
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');

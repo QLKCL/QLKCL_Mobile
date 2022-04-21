@@ -137,7 +137,7 @@ Future<List<KeyValue>> getAddressWithMembersPassBy(data) async {
   return response != null && response['data'] != null
       ? response['data']['content']
           .map<KeyValue>((e) => KeyValue(
-              id: KeyValue.fromJson(e['city']),
+              id: KeyValue.fromJson(e['city'] ?? e['district'] ?? e['ward']),
               name: e['num_of_members_pass_by']))
           .toList()
           .cast<KeyValue>()

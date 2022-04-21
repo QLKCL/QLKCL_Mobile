@@ -1,8 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/destination_history.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/screens/home/component/charts.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
 import 'package:intl/intl.dart';
@@ -24,10 +30,14 @@ class Maps extends StatefulWidget {
     required this.mapData,
     required this.data,
     this.height = 400,
+    required this.startTimeMinController,
+    required this.startTimeMaxController,
   }) : super(key: key);
   final String mapData;
   final List<KeyValue> data;
   final double height;
+  final TextEditingController startTimeMinController;
+  final TextEditingController startTimeMaxController;
 
   @override
   _MapsState createState() => _MapsState();
@@ -123,6 +133,16 @@ class _MapsState extends State<Maps> {
       child: SfMaps(
         layers: [
           MapShapeLayer(
+            onWillZoom: (MapZoomDetails detail) {
+              return true;
+            },
+            zoomPanBehavior: MapZoomPanBehavior(
+              enableDoubleTapZooming: true,
+              maxZoomLevel: 10,
+            ),
+            onWillPan: (MapPanDetails detail) {
+              return true;
+            },
             loadingBuilder: (BuildContext context) {
               return const SizedBox(
                 height: 25,
@@ -133,8 +153,27 @@ class _MapsState extends State<Maps> {
               );
             },
             source: mapSource,
-            onSelectionChanged: (int index) {
-              print(listMapModel[index].id);
+            onSelectionChanged: (int index) async {
+              if (listMapModel[index].id != null) {
+                final data = await getAddressWithMembersPassBy(
+                    getAddressWithMembersPassByDataForm(
+                  addressType: "district",
+                  startTimeMin: parseDateTimeWithTimeZone(
+                      widget.startTimeMinController.text,
+                      time: "00:00"),
+                  startTimeMax: parseDateTimeWithTimeZone(
+                      widget.startTimeMaxController.text),
+                  fatherAddressId: listMapModel[index].id.toString(),
+                ));
+                if (mounted) {
+                  showDetailDestinationHistory(
+                    context,
+                    data: data,
+                    useCustomBottomSheetMode:
+                        ResponsiveWrapper.of(context).isLargerThan(MOBILE),
+                  );
+                }
+              }
             },
             legend: const MapLegend(
               MapElement.shape,
@@ -158,6 +197,45 @@ class _MapsState extends State<Maps> {
         ],
       ),
     );
+  }
+
+  Future showDetailDestinationHistory(
+    BuildContext context, {
+    data,
+    bool useCustomBottomSheetMode = false,
+  }) {
+    final filterContent = StatefulBuilder(
+      builder: (BuildContext context,
+          StateSetter setState /*You can rename this!*/) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          height: MediaQuery.of(context).size.height -
+              AppBar().preferredSize.height -
+              MediaQuery.of(context).padding.top -
+              MediaQuery.of(context).padding.bottom -
+              100,
+          child: DestiantionChart(data: data),
+        );
+      },
+    );
+
+    return !useCustomBottomSheetMode
+        ? showBarModalBottomSheet(
+            barrierColor: Colors.black54,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            ),
+            useRootNavigator: !Responsive.isDesktopLayout(context),
+            context: context,
+            builder: (context) => filterContent,
+          )
+        : showCustomModalBottomSheet(
+            context: context,
+            builder: (context) => filterContent,
+            containerWidget: (_, animation, child) =>
+                FloatingModal(child: child),
+            expand: false);
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 Map<String, String> loginDataForm(
     {required String phoneNumber, required String password}) {
@@ -597,7 +598,7 @@ Map<String, dynamic> getAddressWithMembersPassByDataForm({
     "start_time_min": startTimeMin,
     "start_time_max": startTimeMax,
     "page": page,
-    "page_size": pageSize ?? 0,
+    "page_size": pageSize ?? pageSizeMax,
     "order_by": orderBy,
     "search": search
   };
