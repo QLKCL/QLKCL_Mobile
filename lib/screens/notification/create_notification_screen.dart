@@ -35,14 +35,6 @@ class _CreateNotificationState extends State<CreateNotification> {
   late List<String> users;
   List<KeyValue> quarantineWardList = [];
 
-  List<KeyValue> roles = const [
-    KeyValue(id: "0", name: "Tất cả"),
-    KeyValue(id: "1", name: "Admin"),
-    KeyValue(id: "2", name: "Tổng quản lý"),
-    KeyValue(id: "3", name: "Quản lý"),
-    KeyValue(id: "4", name: "Cán bộ"),
-    KeyValue(id: "5", name: "Người cách ly"),
-  ];
   List<KeyValue> types = const [
     KeyValue(name: "Tất cả", id: "0"),
     KeyValue(name: "Theo khu cách ly", id: "1"),
@@ -113,11 +105,11 @@ class _CreateNotificationState extends State<CreateNotification> {
                           roleController.text = value.id;
                         }
                       },
-                      itemValue: roles,
+                      itemValue: roleListVi,
                       itemAsString: (KeyValue? u) => u!.name,
                       compareFn: (item, selectedItem) =>
                           item?.id == selectedItem?.id,
-                      selectedItem: roles
+                      selectedItem: roleListVi
                           .safeFirstWhere((e) => e.id == roleController.text),
                     ),
                     if (receiverTypeController.text == "1")
@@ -159,14 +151,15 @@ class _CreateNotificationState extends State<CreateNotification> {
                         hint: 'Chọn người nhận',
                         required: true,
                         dropdownBuilder: customDropDown,
-                        onFind: (String? filter) => fetchNotMemberList({
+                        onFind: (String? filter) => fetchCustomNotMemberList({
                           'role_name_list': roleController.text == "0"
                               ? 'MEMBER,SUPER_MANAGER,MANAGER,ADMINISTRATOR,STAFF'
-                              : roleList
+                              : roleListEng
                                   .safeFirstWhere(
                                       (p0) => p0.id == roleController.text)
                                   ?.name,
                         }),
+                        searchOnline: false,
                         onChanged: (value) {
                           if (value == null) {
                             receiverUserController.text = "";

@@ -69,11 +69,12 @@ class _CreateRequestState extends State<CreateRequest> {
                       hint: 'Chọn người nhận',
                       required: true,
                       onFind: quarantineWard != null
-                          ? (String? filter) => fetchNotMemberList({
+                          ? (String? filter) => fetchCustomNotMemberList({
                                 'role_name_list': 'SUPER_MANAGER,MANAGER,STAFF',
                                 'quarantine_ward_id': quarantineWard,
                               })
                           : null,
+                      searchOnline: false,
                       onChanged: (value) {
                         if (value == null) {
                           receiverUserController.text = "";

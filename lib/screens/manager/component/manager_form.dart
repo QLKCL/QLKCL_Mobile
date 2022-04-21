@@ -825,7 +825,8 @@ class _ManagerFormState extends State<ManagerForm> {
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
-            birthday: birthdayController.text,
+            birthday: DateFormat("dd/MM/yyyy")
+                .format(DateTime.parse(birthdayController.text)),
             gender: genderController.text,
             nationality: "VNM",
             country: countryController.text,
@@ -845,7 +846,8 @@ class _ManagerFormState extends State<ManagerForm> {
             code: widget.personalData!.code,
             fullName: fullNameController.text,
             email: emailController.text,
-            birthday: birthdayController.text,
+            birthday: DateFormat("dd/MM/yyyy")
+                .format(DateTime.parse(birthdayController.text)),
             gender: genderController.text,
             nationality: "VNM",
             country: countryController.text,
@@ -867,7 +869,8 @@ class _ManagerFormState extends State<ManagerForm> {
             phoneNumber: phoneNumberController.text,
             fullName: fullNameController.text,
             email: emailController.text,
-            birthday: birthdayController.text,
+            birthday: DateFormat("dd/MM/yyyy")
+                .format(DateTime.parse(birthdayController.text)),
             gender: genderController.text,
             nationality: "VNM",
             country: countryController.text,

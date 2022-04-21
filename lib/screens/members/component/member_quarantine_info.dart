@@ -15,6 +15,7 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:intl/intl.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
   final Member? quarantineData;
@@ -604,6 +605,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'role_name_list': 'STAFF',
                     'quarantine_ward_id': state.quarantineWardController.text
                   }),
+                  searchOnline: false,
                   selectedItem: widget.quarantineData?.careStaff,
                   onChanged: (value) {
                     if (value == null) {
@@ -787,7 +789,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           phoneNumber: state.phoneNumberController.text,
           fullName: state.fullNameController.text,
           email: state.emailController.text,
-          birthday: state.birthdayController.text,
+          birthday: DateFormat("dd/MM/yyyy")
+              .format(DateTime.parse(state.birthdayController.text)),
           gender: state.genderController.text,
           nationality: "VNM",
           country: state.countryController.text,

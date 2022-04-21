@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/utils/api.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 KeyValue keyValueFromJson(str) => KeyValue.fromJson(json.decode(str));
 
@@ -167,19 +169,30 @@ Future<List<KeyValue>> fetchNotMemberList(data) async {
 }
 
 class CustomKeyValue {
-  dynamic name;
   dynamic id;
-  CustomKeyValue({required this.name, required this.id});
-  factory CustomKeyValue.fromJson(Map<String, dynamic> json) => CustomKeyValue(
-        id: json["id"],
-        name: '${json["name"]} - ${json["quarantine_building"]["name"]}',
+  dynamic name;
+  dynamic subname;
+  CustomKeyValue({
+    required this.name,
+    required this.id,
+    required this.subname,
+  });
+  factory CustomKeyValue.fromJson(
+          Map<String, dynamic> json, String customField) =>
+      CustomKeyValue(
+        id: json["code"] ?? json["id"],
+        name: json["name"] ?? json["full_name"] ?? "",
+        subname: json[customField]["name"] ?? "",
       );
 
-  static List<KeyValue> fromJsonList(List list) {
+  static List<KeyValue> fromJsonList(List list, String customField,
+      {Function? customValue}) {
     return list
         .map((item) => KeyValue(
-            name: CustomKeyValue.fromJson(item).name,
-            id: CustomKeyValue.fromJson(item).id))
+              id: CustomKeyValue.fromJson(item, customField).id,
+              name:
+                  "${CustomKeyValue.fromJson(item, customField).name} - ${customValue != null ? customValue(CustomKeyValue.fromJson(item, customField).subname) : CustomKeyValue.fromJson(item, customField).subname}",
+            ))
         .toList();
   }
 
@@ -196,8 +209,21 @@ Future<List<KeyValue>> fetchCustomQuarantineFloor(data) async {
   if (response['data'] != null) {
     final dataResponse = response['data']['content'];
     if (dataResponse != null) {
-      return CustomKeyValue.fromJsonList(dataResponse);
+      return CustomKeyValue.fromJsonList(dataResponse, "quarantine_building");
     }
+  }
+  return [];
+}
+
+Future<List<KeyValue>> fetchCustomNotMemberList(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getListNotMem, data);
+  final dataResponse = response['data'];
+
+  if (dataResponse != null) {
+    return CustomKeyValue.fromJsonList(dataResponse, "role",
+        customValue: (String value) =>
+            roleList.safeFirstWhere((e) => e.id == value)?.name);
   }
   return [];
 }

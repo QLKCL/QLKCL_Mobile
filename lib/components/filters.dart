@@ -319,6 +319,7 @@ Future memberFilter(
                         : null
                   })
               : null,
+          searchOnline: false,
           itemValue: careStaffList,
           onChanged: (value) {
             if (value == null) {
@@ -715,6 +716,7 @@ Future quarantineFilter(
                 ? (String? filter) =>
                     fetchNotMemberList({'role_name_list': 'MANAGER'})
                 : null,
+            searchOnline: false,
             onChanged: (value) {
               if (value == null) {
                 mainManagerController.text = "";
