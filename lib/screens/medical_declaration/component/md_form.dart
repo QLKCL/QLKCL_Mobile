@@ -85,7 +85,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
     if (_formKey.currentState!.validate()) {
       final CancelFunc cancel = showLoading();
       final response = await createMedDecl(createMedDeclDataForm(
-        phoneNumber: phoneNumberController.text,
+        phoneNumber: isChecked ? phoneNumberController.text : null,
         heartBeat: int.tryParse(heartBeatController.text),
         temperature: double.tryParse(temperatureController.text),
         breathing: int.tryParse(breathingController.text),

@@ -554,6 +554,12 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       });
                     } else {
                       state.labelController.text = value.id.toString();
+                      state.positiveTestNowController.text =
+                          state.labelController.text == "F0"
+                              ? "True"
+                              : widget.quarantineData?.positiveTest
+                                      .toString() ??
+                                  "Null";
                       setState(() {
                         getRoomError = null;
                       });
@@ -580,13 +586,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   required: widget.mode == Permission.add,
                   enabled: widget.mode == Permission.add,
                 ),
-                Input(
+                DropdownInput<KeyValue>(
                   label: "Tình trạng bệnh",
-                  initValue: testValueWithBoolList
-                      .safeFirstWhere((result) =>
-                          result.id ==
-                          state.positiveTestNowController.text.capitalize())
-                      ?.name,
+                  itemValue: testValueWithBoolList,
+                  selectedItem: testValueWithBoolList.safeFirstWhere((result) =>
+                      result.id ==
+                      state.positiveTestNowController.text.capitalize()),
+                  itemAsString: (KeyValue? u) => u!.name,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
                   enabled: false,
                 ),
                 DropdownInput<KeyValue>(

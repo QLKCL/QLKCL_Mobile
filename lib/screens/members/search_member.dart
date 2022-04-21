@@ -654,6 +654,7 @@ class MemberDataSource extends DataGridSource {
               quarantinedFinishExpectedAtMaxController.text),
           label: labelController.text,
           healthStatus: healthStatusController.text,
+          test: testController.text,
           careStaff: careStaffController.text,
         ),
       );
@@ -689,6 +690,7 @@ class MemberDataSource extends DataGridSource {
             quarantinedFinishExpectedAtMaxController.text),
         label: labelController.text,
         healthStatus: healthStatusController.text,
+        test: testController.text,
         careStaff: careStaffController.text,
       ),
     );
