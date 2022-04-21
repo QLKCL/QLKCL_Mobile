@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/validation.dart';
+import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -36,6 +38,8 @@ class _TestFormState extends State<TestForm> {
   final updateAtController = TextEditingController();
   final createByController = TextEditingController();
   final updateByController = TextEditingController();
+
+  String? userCodeError;
 
   @override
   void initState() {
@@ -102,13 +106,36 @@ class _TestFormState extends State<TestForm> {
                   enabled:
                       widget.userCode == null && widget.mode == Permission.add,
                   type: TextInputType.number,
+                  validatorFunction: userCodeValidator,
+                  onChangedFunction: (_) async {
+                    if (userCodeController.text.isEmpty) {
+                      userNameController.text = "";
+                      setState(() {});
+                    } else {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                      }
+                    }
+                  },
+                  onSavedFunction: (value) async {
+                    final data = await fetchUser(data: {"code": value});
+                    if (data.status == Status.success) {
+                      userCodeError = null;
+                      userNameController.text =
+                          data.data['custom_user']['full_name'];
+                    } else {
+                      userCodeError = data.message;
+                      userNameController.text = "";
+                    }
+                    setState(() {});
+                  },
+                  autoValidate: false,
+                  error: userCodeError,
                 ),
                 Input(
                   label: 'Họ và tên',
-                  hint: 'Nhập họ và tên',
                   controller: userNameController,
-                  enabled:
-                      widget.userCode == null && widget.mode == Permission.add,
+                  enabled: false,
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Trạng thái',
@@ -223,7 +250,8 @@ class _TestFormState extends State<TestForm> {
 
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        (userCodeError == null || userCodeError == "")) {
       final CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
         final response = await createTest(createTestDataForm(

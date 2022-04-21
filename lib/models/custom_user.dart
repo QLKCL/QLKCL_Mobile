@@ -134,18 +134,24 @@ class CustomUser {
       };
 }
 
-Future<dynamic> fetchUser({data}) async {
+Future<Response> fetchUser({data}) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getMember, data);
   if (response == null) {
-    return null;
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
     if (response['error_code'] == 0) {
-      return response["data"];
+      return Response(status: Status.success, data: response['data']);
     } else if (response['error_code'] == 400) {
-      return null;
+      if (response['message']['code'] != null &&
+          response['message']['code'] == "Not exist") {
+        return Response(
+            status: Status.error, message: "Không tìm thấy người cách ly!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
-      return null;
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }
