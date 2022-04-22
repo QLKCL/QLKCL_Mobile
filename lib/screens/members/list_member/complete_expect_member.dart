@@ -10,8 +10,8 @@ import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/confirm_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
@@ -20,33 +20,20 @@ double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
-class ConfirmMember extends StatefulWidget {
-  const ConfirmMember(
-      {Key? key,
-      required this.longPressFlag,
-      required this.indexList,
-      required this.longPress,
-      this.onDone = false,
-      required this.onDoneCallback})
-      : super(key: key);
-  final bool longPressFlag;
-  final List<String> indexList;
-  final VoidCallback longPress;
-  final bool onDone;
-  final VoidCallback onDoneCallback;
+class ExpectCompleteMember extends StatefulWidget {
+  const ExpectCompleteMember({Key? key}) : super(key: key);
 
   @override
-  _ConfirmMemberState createState() => _ConfirmMemberState();
+  _ExpectCompleteMemberState createState() => _ExpectCompleteMemberState();
 }
 
-class _ConfirmMemberState extends State<ConfirmMember>
-    with AutomaticKeepAliveClientMixin<ConfirmMember> {
+class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
+    with AutomaticKeepAliveClientMixin<ExpectCompleteMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
-  final DataGridController _dataGridController = DataGridController();
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -56,28 +43,18 @@ class _ConfirmMemberState extends State<ConfirmMember>
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Có lỗi xảy ra!',
-            ),
-            action: SnackBarAction(
-              label: 'Thử lại',
-              onPressed: _pagingController.retryLastFailedRequest,
-            ),
-          ),
-        );
+        showNotification("Có lỗi xảy ra!", status: Status.error);
       }
     });
     super.initState();
     fetch = fetchMemberList(data: {
       "search": keySearch.text,
       'page': 1,
-      'status_list': "WAITING",
+      'can_finish_quarantine': true
     });
   }
 
@@ -92,7 +69,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': pageKey,
-        'status_list': "WAITING"
+        'can_finish_quarantine': true
       });
 
       final isLastPage = newItems.data.length < pageSize;
@@ -110,16 +87,6 @@ class _ConfirmMemberState extends State<ConfirmMember>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (widget.onDone == true) {
-      widget.indexList.clear();
-      widget.onDoneCallback();
-      if (Responsive.isDesktopLayout(context)) {
-        key.currentState!.refresh();
-      } else {
-        _pagingController.refresh();
-      }
-    }
-
     return Responsive.isDesktopLayout(context)
         ? FutureBuilder(
             future: fetch,
@@ -144,8 +111,8 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
@@ -159,68 +126,49 @@ class _ConfirmMemberState extends State<ConfirmMember>
   }
 
   Widget listMemberCard() {
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: RefreshIndicator(
-        onRefresh: () => Future.sync(
-          () => {
-            _pagingController.refresh(),
-            widget.indexList.clear(),
-            widget.longPress(),
-          },
-        ),
-        child: PagedListView<int, FilterMember>(
-          padding: const EdgeInsets.only(bottom: 70),
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<FilterMember>(
-            animateTransitions: true,
-            noItemsFoundIndicatorBuilder: (context) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.15,
-                    child: Image.asset("assets/images/no_data.png"),
-                  ),
-                  const Text('Không có dữ liệu'),
-                ],
-              ),
+    return RefreshIndicator(
+      onRefresh: () => Future.sync(_pagingController.refresh),
+      child: PagedListView<int, FilterMember>(
+        padding: const EdgeInsets.only(bottom: 70),
+        pagingController: _pagingController,
+        builderDelegate: PagedChildBuilderDelegate<FilterMember>(
+          animateTransitions: true,
+          noItemsFoundIndicatorBuilder: (context) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Image.asset("assets/images/no_data.png"),
+                ),
+                const Text('Không có dữ liệu'),
+              ],
             ),
-            firstPageErrorIndicatorBuilder: (context) => const Center(
-              child: Text('Có lỗi xảy ra'),
-            ),
-            itemBuilder: (context, item, index) => MemberCard(
-              member: item,
-              isThreeLine: false,
-              onTap: () {
-                Navigator.of(context,
-                        rootNavigator: !Responsive.isDesktopLayout(context))
-                    .push(MaterialPageRoute(
-                        builder: (context) => ConfirmDetailMember(
-                              code: item.code,
-                            )));
-              },
-              longPressEnabled: widget.longPressFlag,
-              onLongPress: () {
-                if (widget.indexList.contains(item.code)) {
-                  widget.indexList.remove(item.code);
-                } else {
-                  widget.indexList.add(item.code);
-                }
-                widget.longPress();
-              },
-              menus: menus(
-                context,
-                item,
-                pagingController: _pagingController,
-                showMenusItems: [
-                  menusOptions.viewInfo,
-                  menusOptions.accept,
-                  menusOptions.deny,
-                  menusOptions.quarantineHistory,
-                ],
-              ),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => const Center(
+            child: Text('Có lỗi xảy ra'),
+          ),
+          itemBuilder: (context, item, index) => MemberCard(
+            member: item,
+            onTap: () {
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(MaterialPageRoute(
+                      builder: (context) => UpdateMember(
+                            code: item.code,
+                          )));
+            },
+            menus: menus(
+              context,
+              item,
+              pagingController: _pagingController,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.testHistory,
+                menusOptions.vaccineDoseHistory,
+                menusOptions.completeQuarantine,
+              ],
             ),
           ),
         ),
@@ -257,7 +205,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -274,28 +222,13 @@ class _ConfirmMemberState extends State<ConfirmMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
       allowTriStateSorting: true,
       selectionMode: SelectionMode.multiple,
       showCheckboxColumn: true,
-      controller: _dataGridController,
-      onSelectionChanged:
-          (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-        for (final element in addedRows) {
-          if (!widget.indexList.contains(element.getCells()[10].value)) {
-            widget.indexList.add(element.getCells()[10].value);
-          }
-        }
-
-        for (final element in removedRows) {
-          if (widget.indexList.contains(element.getCells()[10].value)) {
-            widget.indexList.remove(element.getCells()[10].value);
-          }
-        }
-      },
       columns: <GridColumn>[
         GridColumn(
             columnName: 'fullName',
@@ -337,6 +270,14 @@ class _ConfirmMemberState extends State<ConfirmMember>
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.centerLeft,
                 child: const Text('Khu cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantineLocation',
+            columnWidthMode: ColumnWidthMode.auto,
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.centerLeft,
+                child: const Text('Phòng',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'label',
@@ -414,8 +355,8 @@ class _ConfirmMemberState extends State<ConfirmMember>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
@@ -429,7 +370,7 @@ class MemberDataSource extends DataGridSource {
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': newPageIndex + 1,
-        'status_list': "WAITING"
+        'can_finish_quarantine': true
       });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -446,7 +387,7 @@ class MemberDataSource extends DataGridSource {
     final newItems = await fetchMemberList(data: {
       "search": keySearch.text,
       'page': currentPageIndex + 1,
-      'status_list': "WAITING"
+      'can_finish_quarantine': true
     });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
@@ -471,6 +412,9 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineWard',
                   value: e.quarantineWard?.name ?? ""),
+              DataGridCell<String>(
+                  columnName: 'quarantineLocation',
+                  value: e.quarantineLocation),
               DataGridCell<String>(columnName: 'label', value: e.label),
               DataGridCell<DateTime?>(
                   columnName: 'quarantinedAt',
@@ -512,8 +456,8 @@ class MemberDataSource extends DataGridSource {
                   Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
-                          builder: (context) => ConfirmDetailMember(
-                                code: row.getCells()[10].value.toString(),
+                          builder: (context) => UpdateMember(
+                                code: row.getCells()[11].value.toString(),
                               )));
                 },
                 child: Text(
@@ -557,17 +501,13 @@ class MemberDataSource extends DataGridSource {
         ),
         Container(
           padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Text(row.getCells()[5].value.toString()),
         ),
         Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
-            row.getCells()[6].value != null
-                ? DateFormat('dd/MM/yyyy').format(row.getCells()[6].value)
-                : "",
-          ),
+          child: Text(row.getCells()[6].value.toString()),
         ),
         Container(
           padding: const EdgeInsets.all(8),
@@ -581,22 +521,31 @@ class MemberDataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
+          child: Text(
+            row.getCells()[8].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[8].value)
+                : "",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          alignment: Alignment.center,
           child: Badge(
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[8].value.toString() == "SERIOUS"
+            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
                 ? error.withOpacity(0.25)
-                : row.getCells()[8].value.toString() == "UNWELL"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? warning.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[8].value.toString() == "SERIOUS"
+            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
                     style: TextStyle(color: error),
                   )
-                : row.getCells()[8].value.toString() == "UNWELL"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: warning),
@@ -615,17 +564,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[9].value == null
+            badgeColor: row.getCells()[10].value == null
                 ? secondaryText.withOpacity(0.25)
-                : row.getCells()[9].value == true
+                : row.getCells()[10].value == true
                     ? error.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[9].value == null
+            badgeContent: row.getCells()[10].value == null
                 ? Text(
                     "Chưa có",
                     style: TextStyle(color: secondaryText),
                   )
-                : row.getCells()[9].value == true
+                : row.getCells()[10].value == true
                     ? Text(
                         "Dương tính",
                         style: TextStyle(color: error),
@@ -644,13 +593,14 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[10].value.toString())!,
+                        (e) => e.code == row.getCells()[11].value.toString())!,
                     tableKey: key,
                     showMenusItems: [
-                      menusOptions.viewInfo,
-                      menusOptions.accept,
-                      menusOptions.deny,
-                      menusOptions.quarantineHistory,
+                      menusOptions.updateInfo,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.testHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.completeQuarantine,
                     ],
                   );
           },

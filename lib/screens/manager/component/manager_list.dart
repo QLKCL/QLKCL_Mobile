@@ -38,7 +38,7 @@ class _ManagerListState extends State<ManagerList>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource dataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -48,7 +48,7 @@ class _ManagerListState extends State<ManagerList>
 
   @override
   void initState() {
-    dataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     ManagerList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -319,8 +319,8 @@ class _ManagerListState extends State<ManagerList>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];

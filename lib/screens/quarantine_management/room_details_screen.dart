@@ -42,7 +42,7 @@ class RoomDetailsScreen extends StatefulWidget {
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late Future<FilterResponse<FilterMember>> futureMemberList;
 
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
 
   bool showLoadingIndicator = true;
   double pageCount = 0;
@@ -51,7 +51,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource();
+    dataSource = DataSource();
     super.initState();
     currentRoom = widget.currentRoom!;
     futureMemberList = fetchMemberList(
@@ -116,8 +116,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   showLoadingIndicator = false;
-                  memberDataSource =
-                      MemberDataSource(data: snapshot.data!.data);
+                  dataSource =
+                      DataSource(data: snapshot.data!.data);
                   return Responsive.isDesktopLayout(context)
                       ? listMemberTable(appBar)
                       : listMemberCard(appBar, snapshot.data!);
@@ -276,7 +276,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   Widget buildDataGrid(BoxConstraints constraint) {
     return SfDataGrid(
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -409,8 +409,8 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource({List<FilterMember>? data}) {
+class DataSource extends DataGridSource {
+  DataSource({List<FilterMember>? data}) {
     members = data ?? [];
     buildDataGridRows();
   }

@@ -20,20 +20,20 @@ double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
-class SuspectMember extends StatefulWidget {
-  const SuspectMember({Key? key}) : super(key: key);
+class NeedTestMember extends StatefulWidget {
+  const NeedTestMember({Key? key}) : super(key: key);
 
   @override
-  _SuspectMemberState createState() => _SuspectMemberState();
+  _NeedTestMemberState createState() => _NeedTestMemberState();
 }
 
-class _SuspectMemberState extends State<SuspectMember>
-    with AutomaticKeepAliveClientMixin<SuspectMember> {
+class _NeedTestMemberState extends State<NeedTestMember>
+    with AutomaticKeepAliveClientMixin<NeedTestMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,7 +43,7 @@ class _SuspectMemberState extends State<SuspectMember>
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -61,12 +61,8 @@ class _SuspectMemberState extends State<SuspectMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {
-      "search": keySearch.text,
-      'page': 1,
-      'health_status_list': "UNWELL,SERIOUS",
-      'positive_test_now_list': 'False,Null',
-    });
+    fetch = fetchMemberList(
+        data: {"search": keySearch.text, 'page': 1, 'is_last_tested': true});
   }
 
   @override
@@ -80,8 +76,7 @@ class _SuspectMemberState extends State<SuspectMember>
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': pageKey,
-        'health_status_list': "UNWELL,SERIOUS",
-        'positive_test_now_list': 'False,Null',
+        'is_last_tested': true
       });
 
       final isLastPage = newItems.data.length < pageSize;
@@ -123,8 +118,8 @@ class _SuspectMemberState extends State<SuspectMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
@@ -176,10 +171,9 @@ class _SuspectMemberState extends State<SuspectMember>
               pagingController: _pagingController,
               showMenusItems: [
                 menusOptions.updateInfo,
-                menusOptions.createMedicalDeclaration,
                 menusOptions.medicalDeclareHistory,
                 menusOptions.createTest,
-                menusOptions.vaccineDoseHistory,
+                menusOptions.testHistory,
               ],
             ),
           ),
@@ -217,7 +211,7 @@ class _SuspectMemberState extends State<SuspectMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -234,7 +228,7 @@ class _SuspectMemberState extends State<SuspectMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -367,8 +361,10 @@ class _SuspectMemberState extends State<SuspectMember>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key) {
+    buildDataGridRows();
+  }
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
@@ -382,11 +378,13 @@ class MemberDataSource extends DataGridSource {
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': newPageIndex + 1,
-        'health_status_list': "UNWELL,SERIOUS",
-        'positive_test_now_list': 'False,Null',
+        'is_last_tested': true
       });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
+      if (newItems.currentPage >= newItems.totalPages) {
+        _dataPagerController.selectedPageIndex = newItems.totalPages - 1;
+      }
       buildDataGridRows();
       notifyListeners();
       return true;
@@ -400,11 +398,13 @@ class MemberDataSource extends DataGridSource {
     final newItems = await fetchMemberList(data: {
       "search": keySearch.text,
       'page': currentPageIndex + 1,
-      'health_status_list': "UNWELL,SERIOUS",
-      'positive_test_now_list': 'False,Null',
+      'is_last_tested': true
     });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
+    if (newItems.currentPage >= newItems.totalPages) {
+      _dataPagerController.selectedPageIndex = newItems.totalPages - 1;
+    }
     buildDataGridRows();
     notifyListeners();
   }
@@ -611,10 +611,9 @@ class MemberDataSource extends DataGridSource {
                     tableKey: key,
                     showMenusItems: [
                       menusOptions.updateInfo,
-                      menusOptions.createMedicalDeclaration,
                       menusOptions.medicalDeclareHistory,
                       menusOptions.createTest,
-                      menusOptions.vaccineDoseHistory,
+                      menusOptions.testHistory,
                     ],
                   );
           },

@@ -3,37 +3,40 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
-import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/helper/function.dart';
-import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/components/cards.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
+
+// cre: https://pub.dev/packages/infinite_scroll_pagination/example
+// cre: https://help.syncfusion.com/flutter/datagrid/paging
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
-class DeniedMember extends StatefulWidget {
-  const DeniedMember({Key? key}) : super(key: key);
+class ActiveMember extends StatefulWidget {
+  const ActiveMember({Key? key}) : super(key: key);
 
   @override
-  _DeniedMemberState createState() => _DeniedMemberState();
+  _ActiveMemberState createState() => _ActiveMemberState();
 }
 
-class _DeniedMemberState extends State<DeniedMember>
-    with AutomaticKeepAliveClientMixin<DeniedMember> {
+class _ActiveMemberState extends State<ActiveMember>
+    with AutomaticKeepAliveClientMixin<ActiveMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,28 +46,17 @@ class _DeniedMemberState extends State<DeniedMember>
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text(
-              'Có lỗi xảy ra!',
-            ),
-            action: SnackBarAction(
-              label: 'Thử lại',
-              onPressed: _pagingController.retryLastFailedRequest,
-            ),
-          ),
-        );
+        showNotification("Có lỗi xảy ra!", status: Status.error);
       }
     });
     super.initState();
     fetch = fetchMemberList(data: {
       "search": keySearch.text,
       'page': 1,
-      'status_list': "REFUSED",
     });
   }
 
@@ -79,7 +71,6 @@ class _DeniedMemberState extends State<DeniedMember>
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': pageKey,
-        'status_list': "REFUSED"
       });
 
       final isLastPage = newItems.data.length < pageSize;
@@ -121,8 +112,8 @@ class _DeniedMemberState extends State<DeniedMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
@@ -160,28 +151,27 @@ class _DeniedMemberState extends State<DeniedMember>
           ),
           itemBuilder: (context, item, index) => MemberCard(
             member: item,
-            isThreeLine: false,
             onTap: () {
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
-                  .push(
-                MaterialPageRoute(
-                  builder: (context) => UpdateMember(
-                    code: item.code,
-                  ),
-                ),
-              );
+                  .push(MaterialPageRoute(
+                      builder: (context) => UpdateMember(
+                            code: item.code,
+                          )));
             },
             menus: menus(
               context,
               item,
-              pagingController: _pagingController,
               showMenusItems: [
                 menusOptions.updateInfo,
                 menusOptions.createMedicalDeclaration,
                 menusOptions.medicalDeclareHistory,
+                menusOptions.createTest,
+                menusOptions.testHistory,
                 menusOptions.vaccineDoseHistory,
-                menusOptions.accept,
+                menusOptions.changeRoom,
+                menusOptions.destinationHistory,
+                menusOptions.quarantineHistory,
               ],
             ),
           ),
@@ -200,6 +190,7 @@ class _DeniedMemberState extends State<DeniedMember>
                 children: [
                   searchBox(key, keySearch),
                   const Spacer(),
+                  buildImportingButtons(),
                   buildExportingButtons(key),
                 ],
               ),
@@ -219,7 +210,7 @@ class _DeniedMemberState extends State<DeniedMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -236,7 +227,7 @@ class _DeniedMemberState extends State<DeniedMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -286,12 +277,34 @@ class _DeniedMemberState extends State<DeniedMember>
                 child: const Text('Khu cách ly',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
+            columnName: 'quarantineLocation',
+            columnWidthMode: ColumnWidthMode.auto,
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.centerLeft,
+                child: const Text('Phòng',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
             columnName: 'label',
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 alignment: Alignment.center,
                 child: const Text('Diện cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.center,
+                child: const Text('Ngày cách ly',
+                    style: TextStyle(fontWeight: FontWeight.bold)))),
+        GridColumn(
+            columnName: 'quarantinedFinishExpectedAt',
+            label: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                alignment: Alignment.center,
+                child: const Text('Ngày dự kiến hoàn thành',
                     style: TextStyle(fontWeight: FontWeight.bold)))),
         GridColumn(
             columnName: 'healthStatus',
@@ -347,8 +360,8 @@ class _DeniedMemberState extends State<DeniedMember>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
@@ -362,7 +375,6 @@ class MemberDataSource extends DataGridSource {
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': newPageIndex + 1,
-        'status_list': "REFUSED"
       });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -379,7 +391,6 @@ class MemberDataSource extends DataGridSource {
     final newItems = await fetchMemberList(data: {
       "search": keySearch.text,
       'page': currentPageIndex + 1,
-      'status_list': "REFUSED"
     });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
@@ -404,7 +415,20 @@ class MemberDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineWard',
                   value: e.quarantineWard?.name ?? ""),
+              DataGridCell<String>(
+                  columnName: 'quarantineLocation',
+                  value: e.quarantineLocation),
               DataGridCell<String>(columnName: 'label', value: e.label),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedAt',
+                  value: e.quarantinedAt != null
+                      ? DateTime.parse(e.quarantinedAt!).toLocal()
+                      : null),
+              DataGridCell<DateTime?>(
+                  columnName: 'quarantinedFinishExpectedAt',
+                  value: e.quarantinedFinishExpectedAt != null
+                      ? DateTime.parse(e.quarantinedFinishExpectedAt!).toLocal()
+                      : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<bool?>(
@@ -436,7 +460,7 @@ class MemberDataSource extends DataGridSource {
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
                           builder: (context) => UpdateMember(
-                                code: row.getCells()[8].value.toString(),
+                                code: row.getCells()[11].value.toString(),
                               )));
                 },
                 child: Text(
@@ -480,8 +504,31 @@ class MemberDataSource extends DataGridSource {
         ),
         Container(
           padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Text(row.getCells()[5].value.toString()),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          alignment: Alignment.center,
+          child: Text(row.getCells()[6].value.toString()),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          alignment: Alignment.center,
+          child: Text(
+            row.getCells()[7].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[7].value)
+                : "",
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          alignment: Alignment.center,
+          child: Text(
+            row.getCells()[8].value != null
+                ? DateFormat('dd/MM/yyyy').format(row.getCells()[8].value)
+                : "",
+          ),
         ),
         Container(
           padding: const EdgeInsets.all(8),
@@ -491,17 +538,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[6].value.toString() == "SERIOUS"
+            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
                 ? error.withOpacity(0.25)
-                : row.getCells()[6].value.toString() == "UNWELL"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? warning.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[6].value.toString() == "SERIOUS"
+            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
                     style: TextStyle(color: error),
                   )
-                : row.getCells()[6].value.toString() == "UNWELL"
+                : row.getCells()[9].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: warning),
@@ -520,17 +567,17 @@ class MemberDataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[7].value == null
+            badgeColor: row.getCells()[10].value == null
                 ? secondaryText.withOpacity(0.25)
-                : row.getCells()[7].value == true
+                : row.getCells()[10].value == true
                     ? error.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[7].value == null
+            badgeContent: row.getCells()[10].value == null
                 ? Text(
                     "Chưa có",
                     style: TextStyle(color: secondaryText),
                   )
-                : row.getCells()[7].value == true
+                : row.getCells()[10].value == true
                     ? Text(
                         "Dương tính",
                         style: TextStyle(color: error),
@@ -549,14 +596,17 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[8].value.toString())!,
-                    tableKey: key,
+                        (e) => e.code == row.getCells()[11].value.toString())!,
                     showMenusItems: [
                       menusOptions.updateInfo,
                       menusOptions.createMedicalDeclaration,
                       menusOptions.medicalDeclareHistory,
+                      menusOptions.createTest,
+                      menusOptions.testHistory,
                       menusOptions.vaccineDoseHistory,
-                      menusOptions.accept,
+                      menusOptions.changeRoom,
+                      menusOptions.destinationHistory,
+                      menusOptions.quarantineHistory,
                     ],
                   );
           },

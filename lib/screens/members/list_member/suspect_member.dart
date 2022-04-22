@@ -3,40 +3,37 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
-
-// cre: https://pub.dev/packages/infinite_scroll_pagination/example
-// cre: https://help.syncfusion.com/flutter/datagrid/paging
 
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
-class ActiveMember extends StatefulWidget {
-  const ActiveMember({Key? key}) : super(key: key);
+class SuspectMember extends StatefulWidget {
+  const SuspectMember({Key? key}) : super(key: key);
 
   @override
-  _ActiveMemberState createState() => _ActiveMemberState();
+  _SuspectMemberState createState() => _SuspectMemberState();
 }
 
-class _ActiveMemberState extends State<ActiveMember>
-    with AutomaticKeepAliveClientMixin<ActiveMember> {
+class _SuspectMemberState extends State<SuspectMember>
+    with AutomaticKeepAliveClientMixin<SuspectMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -46,17 +43,29 @@ class _ActiveMemberState extends State<ActiveMember>
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
-        showNotification("Có lỗi xảy ra!", status: Status.error);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text(
+              'Có lỗi xảy ra!',
+            ),
+            action: SnackBarAction(
+              label: 'Thử lại',
+              onPressed: _pagingController.retryLastFailedRequest,
+            ),
+          ),
+        );
       }
     });
     super.initState();
     fetch = fetchMemberList(data: {
       "search": keySearch.text,
       'page': 1,
+      'health_status_list': "UNWELL,SERIOUS",
+      'positive_test_now_list': 'False,Null',
     });
   }
 
@@ -71,6 +80,8 @@ class _ActiveMemberState extends State<ActiveMember>
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': pageKey,
+        'health_status_list': "UNWELL,SERIOUS",
+        'positive_test_now_list': 'False,Null',
       });
 
       final isLastPage = newItems.data.length < pageSize;
@@ -112,8 +123,8 @@ class _ActiveMemberState extends State<ActiveMember>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listMemberTable();
                   }
                 }
@@ -162,16 +173,13 @@ class _ActiveMemberState extends State<ActiveMember>
             menus: menus(
               context,
               item,
+              pagingController: _pagingController,
               showMenusItems: [
                 menusOptions.updateInfo,
                 menusOptions.createMedicalDeclaration,
                 menusOptions.medicalDeclareHistory,
                 menusOptions.createTest,
-                menusOptions.testHistory,
                 menusOptions.vaccineDoseHistory,
-                menusOptions.changeRoom,
-                menusOptions.destinationHistory,
-                menusOptions.quarantineHistory,
               ],
             ),
           ),
@@ -190,7 +198,6 @@ class _ActiveMemberState extends State<ActiveMember>
                 children: [
                   searchBox(key, keySearch),
                   const Spacer(),
-                  buildImportingButtons(),
                   buildExportingButtons(key),
                 ],
               ),
@@ -210,7 +217,7 @@ class _ActiveMemberState extends State<ActiveMember>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -227,7 +234,7 @@ class _ActiveMemberState extends State<ActiveMember>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -360,8 +367,8 @@ class _ActiveMemberState extends State<ActiveMember>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
@@ -375,6 +382,8 @@ class MemberDataSource extends DataGridSource {
       final newItems = await fetchMemberList(data: {
         "search": keySearch.text,
         'page': newPageIndex + 1,
+        'health_status_list': "UNWELL,SERIOUS",
+        'positive_test_now_list': 'False,Null',
       });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
@@ -391,6 +400,8 @@ class MemberDataSource extends DataGridSource {
     final newItems = await fetchMemberList(data: {
       "search": keySearch.text,
       'page': currentPageIndex + 1,
+      'health_status_list': "UNWELL,SERIOUS",
+      'positive_test_now_list': 'False,Null',
     });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
@@ -597,16 +608,13 @@ class MemberDataSource extends DataGridSource {
                     context,
                     paginatedDataSource.safeFirstWhere(
                         (e) => e.code == row.getCells()[11].value.toString())!,
+                    tableKey: key,
                     showMenusItems: [
                       menusOptions.updateInfo,
                       menusOptions.createMedicalDeclaration,
                       menusOptions.medicalDeclareHistory,
                       menusOptions.createTest,
-                      menusOptions.testHistory,
                       menusOptions.vaccineDoseHistory,
-                      menusOptions.changeRoom,
-                      menusOptions.destinationHistory,
-                      menusOptions.quarantineHistory,
                     ],
                   );
           },

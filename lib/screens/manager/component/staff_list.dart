@@ -38,7 +38,7 @@ class _StaffListState extends State<StaffList>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -48,7 +48,7 @@ class _StaffListState extends State<StaffList>
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     StaffList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -117,8 +117,8 @@ class _StaffListState extends State<StaffList>
                     showLoadingIndicator = false;
                     paginatedDataSource = snapshot.data!.data;
                     pageCount = snapshot.data!.totalPages.toDouble();
-                    memberDataSource.buildDataGridRows();
-                    memberDataSource.updateDataGridSource();
+                    dataSource.buildDataGridRows();
+                    dataSource.updateDataGridSource();
                     return listTable();
                   }
                 }
@@ -208,7 +208,7 @@ class _StaffListState extends State<StaffList>
                   onPageNavigationStart: (int pageIndex) {
                     showLoading();
                   },
-                  delegate: memberDataSource,
+                  delegate: dataSource,
                   onPageNavigationEnd: (int pageIndex) {
                     BotToast.closeAllLoading();
                   },
@@ -225,7 +225,7 @@ class _StaffListState extends State<StaffList>
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -319,8 +319,8 @@ class _StaffListState extends State<StaffList>
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];

@@ -59,14 +59,14 @@ class _SearchMemberState extends State<SearchMember> {
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource memberDataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -383,8 +383,8 @@ class _SearchMemberState extends State<SearchMember> {
                             showLoadingIndicator = false;
                             paginatedDataSource = snapshot.data!.data;
                             pageCount = snapshot.data!.totalPages.toDouble();
-                            memberDataSource.buildDataGridRows();
-                            memberDataSource.updateDataGridSource();
+                            dataSource.buildDataGridRows();
+                            dataSource.updateDataGridSource();
                             return listMemberTable();
                           }
                         }
@@ -480,7 +480,7 @@ class _SearchMemberState extends State<SearchMember> {
                       onPageNavigationStart: (int pageIndex) {
                         showLoading();
                       },
-                      delegate: memberDataSource,
+                      delegate: dataSource,
                       onPageNavigationEnd: (int pageIndex) {
                         BotToast.closeAllLoading();
                       },
@@ -499,7 +499,7 @@ class _SearchMemberState extends State<SearchMember> {
     return SfDataGrid(
       key: key,
       allowPullToRefresh: true,
-      source: memberDataSource,
+      source: dataSource,
       columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
       allowSorting: true,
       allowMultiColumnSorting: true,
@@ -632,8 +632,8 @@ class _SearchMemberState extends State<SearchMember> {
   }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
