@@ -6,6 +6,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/components/cards.dart';
@@ -161,7 +162,13 @@ class _StaffListState extends State<StaffList>
                             code: item.code,
                           )));
             },
-            menus: menus(context, item),
+            menus: menus(
+              context,
+              item,
+              showMenusItems: [
+                menusOptions.updateInfo,
+              ],
+            ),
           ),
         ),
       ),
@@ -438,35 +445,14 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[6].value.toString())!);
+                        (e) => e.code == row.getCells()[6].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterStaff item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateManager(
-                      code: item.code,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-    ],
-  );
 }
