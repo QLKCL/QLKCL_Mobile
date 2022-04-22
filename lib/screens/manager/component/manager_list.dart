@@ -6,6 +6,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterStaff> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class ManagerList extends StatefulWidget {
   const ManagerList({
@@ -56,6 +58,7 @@ class _ManagerListState extends State<ManagerList>
     });
     super.initState();
     fetch = fetchManagerList(data: {
+      "search": keySearch.text,
       'page': 1,
       'quarantine_ward_id': widget.quarrantine?.id,
     });
@@ -70,6 +73,7 @@ class _ManagerListState extends State<ManagerList>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchManagerList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'quarantine_ward_id': widget.quarrantine?.id,
       });
@@ -181,9 +185,16 @@ class _ManagerListState extends State<ManagerList>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -321,6 +332,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchManagerList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'quarantine_ward_id': ManagerList.currentQuarrantine?.id,
       });
@@ -337,6 +349,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchManagerList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'quarantine_ward_id': ManagerList.currentQuarrantine?.id
     });

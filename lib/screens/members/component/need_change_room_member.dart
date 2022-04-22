@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class NeedChangeRoomMember extends StatefulWidget {
   const NeedChangeRoomMember({Key? key}) : super(key: key);
@@ -59,8 +61,11 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(
-        data: {'page': 1, 'is_need_change_room_because_be_positive': true});
+    fetch = fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': 1,
+      'is_need_change_room_because_be_positive': true
+    });
   }
 
   @override
@@ -72,6 +77,7 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'is_need_change_room_because_be_positive': true
       });
@@ -185,9 +191,16 @@ class _NeedChangeRoomMemberState extends State<NeedChangeRoomMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -364,6 +377,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'is_need_change_room_because_be_positive': true
       });
@@ -380,6 +394,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'is_need_change_room_because_be_positive': true
     });

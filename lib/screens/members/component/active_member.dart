@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -20,6 +21,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class ActiveMember extends StatefulWidget {
   const ActiveMember({Key? key}) : super(key: key);
@@ -52,7 +54,10 @@ class _ActiveMemberState extends State<ActiveMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {'page': 1});
+    fetch = fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': 1,
+    });
   }
 
   @override
@@ -63,7 +68,10 @@ class _ActiveMemberState extends State<ActiveMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(data: {'page': pageKey});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': pageKey,
+      });
 
       final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
@@ -178,9 +186,17 @@ class _ActiveMemberState extends State<ActiveMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildImportingButtons(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -356,7 +372,10 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(data: {'page': newPageIndex + 1});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': newPageIndex + 1,
+      });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
       buildDataGridRows();
@@ -369,8 +388,10 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems =
-        await fetchMemberList(data: {'page': currentPageIndex + 1});
+    final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': currentPageIndex + 1,
+    });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
     buildDataGridRows();

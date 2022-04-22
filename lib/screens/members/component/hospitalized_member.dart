@@ -5,6 +5,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 1;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class HospitalizedMember extends StatefulWidget {
   const HospitalizedMember({Key? key}) : super(key: key);
@@ -60,6 +62,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
     });
     super.initState();
     fetch = fetchMemberList(data: {
+      "search": keySearch.text,
       'page': 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"
@@ -75,6 +78,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
@@ -187,9 +191,16 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -358,6 +369,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
@@ -375,6 +387,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"
