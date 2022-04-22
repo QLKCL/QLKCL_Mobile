@@ -106,7 +106,7 @@ class _HomeAppBarState extends State<HomeAppBar> {
         actions: [
           Badge(
             showBadge: unreadNotifications != 0,
-            position: BadgePosition.topEnd(top: 10, end: 16),
+            position: BadgePosition.topEnd(top: 10, end: 2),
             animationDuration: const Duration(milliseconds: 300),
             animationType: BadgeAnimationType.scale,
             shape: BadgeShape.square,
@@ -117,7 +117,6 @@ class _HomeAppBarState extends State<HomeAppBar> {
               style: TextStyle(fontSize: 11, color: white),
             ),
             child: IconButton(
-              padding: const EdgeInsets.only(right: 24),
               icon: Icon(
                 Icons.notifications_none_outlined,
                 color: primaryText,
@@ -146,6 +145,9 @@ class _HomeAppBarState extends State<HomeAppBar> {
               },
               tooltip: "Thông báo",
             ),
+          ),
+          const SizedBox(
+            width: 24,
           ),
         ],
       ),
