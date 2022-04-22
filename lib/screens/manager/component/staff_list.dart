@@ -6,6 +6,8 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/components/cards.dart';
@@ -16,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterStaff> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class StaffList extends StatefulWidget {
   const StaffList({
@@ -55,6 +58,7 @@ class _StaffListState extends State<StaffList>
     });
     super.initState();
     fetch = fetchStaffList(data: {
+      "search": keySearch.text,
       'page': 1,
       'quarantine_ward_id': widget.quarrantine?.id,
     });
@@ -69,6 +73,7 @@ class _StaffListState extends State<StaffList>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchStaffList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'quarantine_ward_id': widget.quarrantine?.id,
       });
@@ -161,7 +166,13 @@ class _StaffListState extends State<StaffList>
                             code: item.code,
                           )));
             },
-            menus: menus(context, item),
+            menus: menus(
+              context,
+              item,
+              showMenusItems: [
+                menusOptions.updateInfo,
+              ],
+            ),
           ),
         ),
       ),
@@ -174,9 +185,16 @@ class _StaffListState extends State<StaffList>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -314,6 +332,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchStaffList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'quarantine_ward_id': StaffList.currentQuarrantine?.id,
       });
@@ -330,6 +349,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchStaffList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'quarantine_ward_id': StaffList.currentQuarrantine?.id
     });
@@ -438,35 +458,14 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[6].value.toString())!);
+                        (e) => e.code == row.getCells()[6].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterStaff item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateManager(
-                      code: item.code,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-    ],
-  );
 }

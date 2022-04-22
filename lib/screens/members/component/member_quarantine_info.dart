@@ -15,6 +15,7 @@ import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:intl/intl.dart';
 
 class MemberQuarantineInfo extends StatefulWidget {
   final Member? quarantineData;
@@ -554,12 +555,19 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       });
                     } else {
                       state.labelController.text = value.id.toString();
+                      state.positiveTestNowController.text =
+                          state.labelController.text == "F0"
+                              ? "True"
+                              : widget.quarantineData?.positiveTest
+                                      .toString() ??
+                                  "Null";
                       setState(() {
                         getRoomError = null;
                       });
                     }
                   },
-                  enabled: widget.mode != Permission.view,
+                  enabled: widget.mode != Permission.view &&
+                      widget.mode != Permission.approval,
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
@@ -571,10 +579,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 NewDateInput(
                   label: 'Thời gian dự kiến hoàn thành cách ly',
                   controller: state.quarantinedFinishExpectedAtController,
-                  enabled: widget.mode != Permission.view &&
-                      widget.mode != Permission.renew &&
-                      _role != 5 &&
-                      widget.mode != Permission.add,
+                  enabled: widget.mode == Permission.edit && _role != 5,
                 ),
                 Input(
                   label: "Số mũi vaccine đã tiêm",
@@ -582,13 +587,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   required: widget.mode == Permission.add,
                   enabled: widget.mode == Permission.add,
                 ),
-                Input(
+                DropdownInput<KeyValue>(
                   label: "Tình trạng bệnh",
-                  initValue: testValueWithBoolList
-                      .safeFirstWhere((result) =>
-                          result.id ==
-                          state.positiveTestNowController.text.capitalize())
-                      ?.name,
+                  itemValue: testValueWithBoolList,
+                  selectedItem: testValueWithBoolList.safeFirstWhere((result) =>
+                      result.id ==
+                      state.positiveTestNowController.text.capitalize()),
+                  itemAsString: (KeyValue? u) => u!.name,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
                   enabled: false,
                 ),
                 DropdownInput<KeyValue>(
@@ -598,6 +605,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                     'role_name_list': 'STAFF',
                     'quarantine_ward_id': state.quarantineWardController.text
                   }),
+                  searchOnline: false,
                   selectedItem: widget.quarantineData?.careStaff,
                   onChanged: (value) {
                     if (value == null) {
@@ -781,7 +789,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           phoneNumber: state.phoneNumberController.text,
           fullName: state.fullNameController.text,
           email: state.emailController.text,
-          birthday: state.birthdayController.text,
+          birthday: DateFormat("dd/MM/yyyy")
+              .format(DateTime.parse(state.birthdayController.text)),
           gender: state.genderController.text,
           nationality: "VNM",
           country: state.countryController.text,

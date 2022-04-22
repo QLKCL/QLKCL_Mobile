@@ -7,10 +7,9 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -19,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class DeniedMember extends StatefulWidget {
   const DeniedMember({Key? key}) : super(key: key);
@@ -61,7 +61,11 @@ class _DeniedMemberState extends State<DeniedMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {'page': 1, 'status_list': "REFUSED"});
+    fetch = fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': 1,
+      'status_list': "REFUSED",
+    });
   }
 
   @override
@@ -72,8 +76,11 @@ class _DeniedMemberState extends State<DeniedMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'status_list': "REFUSED"});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': pageKey,
+        'status_list': "REFUSED"
+      });
 
       final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
@@ -135,34 +142,50 @@ class _DeniedMemberState extends State<DeniedMember>
         padding: const EdgeInsets.only(bottom: 70),
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<FilterMember>(
-            animateTransitions: true,
-            noItemsFoundIndicatorBuilder: (context) => Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.15,
-                        child: Image.asset("assets/images/no_data.png"),
-                      ),
-                      const Text('Không có dữ liệu'),
-                    ],
+          animateTransitions: true,
+          noItemsFoundIndicatorBuilder: (context) => Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: Image.asset("assets/images/no_data.png"),
+                ),
+                const Text('Không có dữ liệu'),
+              ],
+            ),
+          ),
+          firstPageErrorIndicatorBuilder: (context) => const Center(
+            child: Text('Có lỗi xảy ra'),
+          ),
+          itemBuilder: (context, item, index) => MemberCard(
+            member: item,
+            isThreeLine: false,
+            onTap: () {
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(
+                MaterialPageRoute(
+                  builder: (context) => UpdateMember(
+                    code: item.code,
                   ),
                 ),
-            firstPageErrorIndicatorBuilder: (context) => const Center(
-                  child: Text('Có lỗi xảy ra'),
-                ),
-            itemBuilder: (context, item, index) => MemberCard(
-                  member: item,
-                  isThreeLine: false,
-                  onTap: () {
-                    Navigator.of(context,
-                            rootNavigator: !Responsive.isDesktopLayout(context))
-                        .push(MaterialPageRoute(
-                            builder: (context) => UpdateMember(
-                                  code: item.code,
-                                )));
-                  },
-                )),
+              );
+            },
+            menus: menus(
+              context,
+              item,
+              pagingController: _pagingController,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.createMedicalDeclaration,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.vaccineDoseHistory,
+                menusOptions.accept,
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -173,9 +196,16 @@ class _DeniedMemberState extends State<DeniedMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -329,8 +359,11 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(
-          data: {'page': newPageIndex + 1, 'status_list': "REFUSED"});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': newPageIndex + 1,
+        'status_list': "REFUSED"
+      });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
       buildDataGridRows();
@@ -343,8 +376,11 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(
-        data: {'page': currentPageIndex + 1, 'status_list': "REFUSED"});
+    final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': currentPageIndex + 1,
+      'status_list': "REFUSED"
+    });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
     buildDataGridRows();
@@ -514,88 +550,18 @@ class MemberDataSource extends DataGridSource {
                     context,
                     paginatedDataSource.safeFirstWhere(
                         (e) => e.code == row.getCells()[8].value.toString())!,
-                    tableKey: key);
+                    tableKey: key,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.createMedicalDeclaration,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.accept,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item,
-    {GlobalKey<SfDataGridState>? tableKey,
-    PagingController<int, FilterMember>? pagingController}) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) async {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'create_medical_declaration') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => MedicalDeclarationScreen(
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'medical_declare_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListMedicalDeclaration(
-                      code: item.code,
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
-                    )));
-      } else if (result == 'accept_one') {
-        final CancelFunc cancel = showLoading();
-        final response = await acceptOneMember({'code': item.code});
-        cancel();
-        showNotification(response);
-        if (response.status == Status.success) {
-          // ignore: use_build_context_synchronously
-          if (Responsive.isDesktopLayout(context)) {
-            tableKey?.currentState!.refresh();
-          } else {
-            pagingController!.refresh();
-          }
-        }
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Khai báo y tế'),
-        value: "create_medical_declaration",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
-        value: "medical_declare_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Chấp nhận'),
-        value: "accept_one",
-      ),
-    ],
-  );
 }

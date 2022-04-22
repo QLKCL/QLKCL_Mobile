@@ -5,13 +5,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/test/list_test_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/test/add_test_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class NeedTestMember extends StatefulWidget {
   const NeedTestMember({Key? key}) : super(key: key);
@@ -61,7 +61,8 @@ class _NeedTestMemberState extends State<NeedTestMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {'page': 1, 'is_last_tested': true});
+    fetch = fetchMemberList(
+        data: {"search": keySearch.text, 'page': 1, 'is_last_tested': true});
   }
 
   @override
@@ -72,8 +73,11 @@ class _NeedTestMemberState extends State<NeedTestMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(
-          data: {'page': pageKey, 'is_last_tested': true});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': pageKey,
+        'is_last_tested': true
+      });
 
       final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
@@ -152,16 +156,27 @@ class _NeedTestMemberState extends State<NeedTestMember>
             child: Text('Có lỗi xảy ra'),
           ),
           itemBuilder: (context, item, index) => MemberCard(
-              member: item,
-              onTap: () {
-                Navigator.of(context,
-                        rootNavigator: !Responsive.isDesktopLayout(context))
-                    .push(MaterialPageRoute(
-                        builder: (context) => UpdateMember(
-                              code: item.code,
-                            )));
-              },
-              menus: menus(context, item, pagingController: _pagingController)),
+            member: item,
+            onTap: () {
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(MaterialPageRoute(
+                      builder: (context) => UpdateMember(
+                            code: item.code,
+                          )));
+            },
+            menus: menus(
+              context,
+              item,
+              pagingController: _pagingController,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.createTest,
+                menusOptions.testHistory,
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -173,9 +188,16 @@ class _NeedTestMemberState extends State<NeedTestMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -353,8 +375,11 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(
-          data: {'page': newPageIndex + 1, 'is_last_tested': true});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': newPageIndex + 1,
+        'is_last_tested': true
+      });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
       if (newItems.currentPage >= newItems.totalPages) {
@@ -370,8 +395,11 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems = await fetchMemberList(
-        data: {'page': currentPageIndex + 1, 'is_last_tested': true});
+    final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': currentPageIndex + 1,
+      'is_last_tested': true
+    });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
     if (newItems.currentPage >= newItems.totalPages) {
@@ -580,82 +608,17 @@ class MemberDataSource extends DataGridSource {
                     context,
                     paginatedDataSource.safeFirstWhere(
                         (e) => e.code == row.getCells()[11].value.toString())!,
-                    tableKey: key);
+                    tableKey: key,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.createTest,
+                      menusOptions.testHistory,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item,
-    {GlobalKey<SfDataGridState>? tableKey,
-    PagingController<int, FilterMember>? pagingController}) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) async {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'medical_declare_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListMedicalDeclaration(
-                      code: item.code,
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'create_test') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => AddTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )))
-            .then(
-          (value) {
-            if (Responsive.isDesktopLayout(context)) {
-              tableKey?.currentState!.refresh();
-            } else {
-              pagingController!.refresh();
-            }
-          },
-        );
-      } else if (result == 'test_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
-        value: "medical_declare_history",
-      ),
-      PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
-        value: "create_test",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử xét nghiệm'),
-        value: "test_history",
-      ),
-    ],
-  );
 }

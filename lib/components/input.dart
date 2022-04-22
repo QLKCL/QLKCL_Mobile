@@ -147,6 +147,7 @@ class _InputState extends State<Input> {
                       icon: const Icon(Icons.clear),
                       onPressed: () {
                         widget.controller!.clear();
+                        widget.onChangedFunction?.call("");
                         setState(() {});
                       },
                     )

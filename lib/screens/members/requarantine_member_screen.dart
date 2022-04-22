@@ -4,6 +4,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/screens/members/component/member_shared_data.dart';
@@ -22,7 +23,7 @@ class RequarantienMember extends StatefulWidget {
 class _RequarantienMemberState extends State<RequarantienMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late Future<dynamic> futureMember;
+  late Future<Response> futureMember;
   late CustomUser personalData;
   late Member? quarantineData;
 
@@ -67,7 +68,7 @@ class _RequarantienMemberState extends State<RequarantienMember>
               ],
             ),
           ),
-          body: FutureBuilder<dynamic>(
+          body: FutureBuilder<Response>(
             future: futureMember,
             builder: (context, snapshot) {
               showLoading();
@@ -75,9 +76,9 @@ class _RequarantienMemberState extends State<RequarantienMember>
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   personalData =
-                      CustomUser.fromJson(snapshot.data["custom_user"]);
-                  quarantineData = snapshot.data["member"] != null
-                      ? (Member.fromJson(snapshot.data["member"]))
+                      CustomUser.fromJson(snapshot.data!.data["custom_user"]);
+                  quarantineData = snapshot.data!.data["member"] != null
+                      ? (Member.fromJson(snapshot.data!.data["member"]))
                       : null;
                   if (quarantineData != null) {
                     quarantineData!.customUserCode = personalData.code;

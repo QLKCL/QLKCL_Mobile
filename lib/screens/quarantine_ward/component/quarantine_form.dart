@@ -478,6 +478,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                         widget.mode == Permission.add,
                     onFind: (String? filter) =>
                         fetchNotMemberList({'role_name_list': 'MANAGER'}),
+                    searchOnline: false,
                     onChanged: (value) {
                       if (value == null) {
                         managerController.text = "";

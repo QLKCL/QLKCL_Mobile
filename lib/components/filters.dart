@@ -44,7 +44,8 @@ Future memberFilter(
   required TextEditingController quarantineRoomController,
   required TextEditingController quarantineAtMinController,
   required TextEditingController quarantineAtMaxController,
-  required TextEditingController quarantinedFinishExpectedAtController,
+  required TextEditingController quarantinedFinishExpectedAtMinController,
+  required TextEditingController quarantinedFinishExpectedAtMaxController,
   required TextEditingController labelController,
   required TextEditingController healthStatusController,
   required TextEditingController testController,
@@ -235,9 +236,10 @@ Future memberFilter(
           maxDate: DateTime.now(),
           showClearButton: true,
         ),
-        NewDateInput(
+        NewDateRangeInput(
           label: 'Ngày dự kiến hoàn thành cách ly',
-          controller: quarantinedFinishExpectedAtController,
+          controllerStart: quarantinedFinishExpectedAtMinController,
+          controllerEnd: quarantinedFinishExpectedAtMaxController,
           showClearButton: true,
         ),
         MultiDropdownInput<KeyValue>(
@@ -317,6 +319,7 @@ Future memberFilter(
                         : null
                   })
               : null,
+          searchOnline: false,
           itemValue: careStaffList,
           onChanged: (value) {
             if (value == null) {
@@ -345,7 +348,8 @@ Future memberFilter(
                   quarantineRoomController.clear();
                   quarantineAtMinController.clear();
                   quarantineAtMaxController.clear();
-                  quarantinedFinishExpectedAtController.clear();
+                  quarantinedFinishExpectedAtMinController.clear();
+                  quarantinedFinishExpectedAtMaxController.clear();
                   labelController.clear();
                   onSubmit!(quarantineWardList, [], [], [], [], false);
                   Navigator.pop(context);
@@ -712,6 +716,7 @@ Future quarantineFilter(
                 ? (String? filter) =>
                     fetchNotMemberList({'role_name_list': 'MANAGER'})
                 : null,
+            searchOnline: false,
             onChanged: (value) {
               if (value == null) {
                 mainManagerController.text = "";

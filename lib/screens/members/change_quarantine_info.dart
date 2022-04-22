@@ -53,12 +53,12 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
       fetchUser(data: {'code': widget.code}).then((value) => {
             setState(() {
               BotToast.closeAllLoading();
-              quarantineData = value["member"] != null
-                  ? Member.fromJson(value["member"])
+              quarantineData = value.data["member"] != null
+                  ? Member.fromJson(value.data["member"])
                   : null;
               if (quarantineData != null) {
                 quarantineData!.quarantineWard =
-                    value["custom_user"]['quarantine_ward'];
+                    value.data["custom_user"]['quarantine_ward'];
               }
 
               newQuarantineWardController.text =

@@ -1,33 +1,19 @@
 import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
-import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/components/cards.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
-import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/test/add_test_screen.dart';
-import 'package:qlkcl/screens/test/list_test_screen.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datagrid_export/export.dart';
-import 'package:syncfusion_flutter_xlsio/xlsio.dart' as excel
-    hide Alignment, Column, Row, Border;
-
-// Platform specific import
-import '../../../helper/save_mobile.dart'
-    if (dart.library.html) '../../../helper/save_web.dart' as helper;
 
 // cre: https://pub.dev/packages/infinite_scroll_pagination/example
 // cre: https://help.syncfusion.com/flutter/datagrid/paging
@@ -35,6 +21,7 @@ import '../../../helper/save_mobile.dart'
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class ActiveMember extends StatefulWidget {
   const ActiveMember({Key? key}) : super(key: key);
@@ -67,7 +54,10 @@ class _ActiveMemberState extends State<ActiveMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {'page': 1});
+    fetch = fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': 1,
+    });
   }
 
   @override
@@ -78,7 +68,10 @@ class _ActiveMemberState extends State<ActiveMember>
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems = await fetchMemberList(data: {'page': pageKey});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': pageKey,
+      });
 
       final isLastPage = newItems.data.length < pageSize;
       if (isLastPage) {
@@ -133,78 +126,6 @@ class _ActiveMemberState extends State<ActiveMember>
         : listMemberCard();
   }
 
-  Widget _buildExportingButtons() {
-    Future<void> exportDataGridToExcel() async {
-      final excel.Workbook workbook = key.currentState!.exportToExcelWorkbook(
-        cellExport: (DataGridCellExcelExportDetails details) {},
-        excludeColumns: ['code'],
-      );
-      final List<int> bytes = workbook.saveAsStream();
-      workbook.dispose();
-      await helper.FileSaveHelper.saveAndLaunchFile(bytes, 'ExportFile.xlsx');
-    }
-
-    void _buildImportingButtons() async {
-      final files = (await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        onFileLoading: print,
-        allowedExtensions: ['csv', 'xls', 'xlsx'],
-      ))
-          ?.files;
-
-      if (files?.first != null) {
-        importMember(files!.first);
-      }
-    }
-
-    return Row(
-      children: <Widget>[
-        Container(
-          margin: const EdgeInsets.all(16),
-          child: ElevatedButton(
-            onPressed: exportDataGridToExcel,
-            child: SizedBox(
-              child: Row(
-                children: const <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8),
-                    child: ImageIcon(
-                      AssetImage('assets/images/ExcelExport.png'),
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text('Export to Excel'),
-                ],
-              ),
-            ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(16),
-          child: ElevatedButton(
-            onPressed: _buildImportingButtons,
-            child: SizedBox(
-              child: Row(
-                children: const <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 8, right: 8),
-                    child: ImageIcon(
-                      AssetImage('assets/images/ExcelExport.png'),
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text('Import to Excel'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget listMemberCard() {
     return RefreshIndicator(
       onRefresh: () => Future.sync(_pagingController.refresh),
@@ -238,7 +159,21 @@ class _ActiveMemberState extends State<ActiveMember>
                             code: item.code,
                           )));
             },
-            menus: menus(context, item),
+            menus: menus(
+              context,
+              item,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.createMedicalDeclaration,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.createTest,
+                menusOptions.testHistory,
+                menusOptions.vaccineDoseHistory,
+                menusOptions.changeRoom,
+                menusOptions.destinationHistory,
+                menusOptions.quarantineHistory,
+              ],
+            ),
           ),
         ),
       ),
@@ -246,45 +181,45 @@ class _ActiveMemberState extends State<ActiveMember>
   }
 
   Widget listMemberTable() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        _buildExportingButtons(),
-        Expanded(
-          child: Card(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  children: [
-                    Expanded(
-                      child: SizedBox(
-                        height: constraints.maxHeight - 60,
-                        width: constraints.maxWidth,
-                        child: buildStack(constraints),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                      width: constraints.maxWidth,
-                      child: SfDataPager(
-                        controller: _dataPagerController,
-                        pageCount: pageCount,
-                        onPageNavigationStart: (int pageIndex) {
-                          showLoading();
-                        },
-                        delegate: memberDataSource,
-                        onPageNavigationEnd: (int pageIndex) {
-                          BotToast.closeAllLoading();
-                        },
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
-          ),
-        ),
-      ],
+    return Card(
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildImportingButtons(),
+                  buildExportingButtons(key),
+                ],
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: constraints.maxHeight - 120,
+                  width: constraints.maxWidth,
+                  child: buildStack(constraints),
+                ),
+              ),
+              SizedBox(
+                height: 60,
+                width: constraints.maxWidth,
+                child: SfDataPager(
+                  controller: _dataPagerController,
+                  pageCount: pageCount,
+                  onPageNavigationStart: (int pageIndex) {
+                    showLoading();
+                  },
+                  delegate: memberDataSource,
+                  onPageNavigationEnd: (int pageIndex) {
+                    BotToast.closeAllLoading();
+                  },
+                ),
+              )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -437,7 +372,10 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
-      final newItems = await fetchMemberList(data: {'page': newPageIndex + 1});
+      final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
+        'page': newPageIndex + 1,
+      });
       paginatedDataSource = newItems.data;
       pageCount = newItems.totalPages.toDouble();
       buildDataGridRows();
@@ -450,8 +388,10 @@ class MemberDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
-    final newItems =
-        await fetchMemberList(data: {'page': currentPageIndex + 1});
+    final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
+      'page': currentPageIndex + 1,
+    });
     paginatedDataSource = newItems.data;
     pageCount = newItems.totalPages.toDouble();
     buildDataGridRows();
@@ -656,127 +596,22 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.createMedicalDeclaration,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.createTest,
+                      menusOptions.testHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.changeRoom,
+                      menusOptions.destinationHistory,
+                      menusOptions.quarantineHistory,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'create_medical_declaration') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => MedicalDeclarationScreen(
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'medical_declare_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListMedicalDeclaration(
-                      code: item.code,
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'create_test') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => AddTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      } else if (result == 'test_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
-                    )));
-      } else if (result == 'change_room') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ChangeQuanrantineInfo(
-                      code: item.code,
-                      quarantineWard: item.quarantineWard,
-                    )));
-      } else if (result == 'quarantine_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListQuarantineHistory(
-                      code: item.code,
-                    )));
-      } else if (result == 'destination_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListDestinationHistory(
-                      code: item.code,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Khai báo y tế'),
-        value: "create_medical_declaration",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
-        value: "medical_declare_history",
-      ),
-      PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
-        value: "create_test",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử xét nghiệm'),
-        value: "test_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Chuyển phòng'),
-        value: "change_room",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử di chuyển'),
-        value: "destination_history",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử cách ly'),
-        value: "quarantine_history",
-      ),
-    ],
-  );
 }

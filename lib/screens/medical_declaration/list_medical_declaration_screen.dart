@@ -11,10 +11,15 @@ import 'package:intl/intl.dart';
 
 class ListMedicalDeclaration extends StatefulWidget {
   static const String routeName = "/list_medical_declaration";
-  const ListMedicalDeclaration({Key? key, this.code, this.phone})
-      : super(key: key);
+  const ListMedicalDeclaration({
+    Key? key,
+    this.code,
+    this.phone,
+    this.name,
+  }) : super(key: key);
   final String? code;
   final String? phone;
+  final String? name;
 
   @override
   _ListMedicalDeclarationState createState() => _ListMedicalDeclarationState();
@@ -79,6 +84,7 @@ class _ListMedicalDeclarationState extends State<ListMedicalDeclaration> {
               .push(MaterialPageRoute(
                   builder: (context) => MedicalDeclarationScreen(
                         phone: widget.phone,
+                        name: widget.name,
                       )))
               .then(
                 (value) => _pagingController.refresh(),

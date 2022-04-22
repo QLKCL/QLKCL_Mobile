@@ -30,6 +30,7 @@ class DropdownInput<T> extends StatefulWidget {
   final EdgeInsets? margin;
   final Key? widgetKey;
   final bool autoValidate;
+  final bool searchOnline;
 
   const DropdownInput({
     Key? key,
@@ -56,6 +57,7 @@ class DropdownInput<T> extends StatefulWidget {
     this.margin,
     this.widgetKey,
     this.autoValidate = true,
+    this.searchOnline = true,
   }) : super(key: key);
 
   @override
@@ -71,7 +73,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
       child: DropdownSearch<T>(
         autoValidateMode:
             widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
-        isFilteredOnline: true,
+        isFilteredOnline: widget.searchOnline,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,
@@ -174,6 +176,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
   final EdgeInsets? margin;
   final Key? widgetKey;
   final bool autoValidate;
+  final bool searchOnline;
 
   const MultiDropdownInput({
     Key? key,
@@ -201,6 +204,7 @@ class MultiDropdownInput<T> extends StatefulWidget {
     this.margin,
     this.widgetKey,
     this.autoValidate = true,
+    this.searchOnline = true,
   }) : super(key: key);
 
   @override
@@ -215,7 +219,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
       margin: widget.margin ?? const EdgeInsets.fromLTRB(16, 16, 16, 0),
       child: DropdownSearch<T>.multiSelection(
         // autoValidateMode: widget.autoValidate ? AutovalidateMode.onUserInteraction : null,
-        isFilteredOnline: true,
+        isFilteredOnline: widget.searchOnline,
         key: widget.widgetKey,
         onSaved: widget.onSaved,
         onChanged: widget.onChanged,

@@ -86,7 +86,8 @@ class _ListTestState extends State<ListTest> {
                                   !Responsive.isDesktopLayout(context))
                           .push(MaterialPageRoute(
                               builder: (context) =>
-                                  AddTest(code: code, name: name)));
+                                  AddTest(code: code, name: name)))
+                          .then((value) => _pagingController.refresh());
                     },
                     child: const Icon(Icons.add),
                     tooltip: "Thêm phiếu xét nghiệm",

@@ -61,7 +61,6 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
     rootBundle
         .loadString('assets/maps/vietnam.json')
         .then((value) => mapData = value);
-
     super.initState();
     futureData = fetch();
     futurePassBy =
@@ -239,22 +238,9 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       return Maps(
                         mapData: mapData,
                         data: snapshot.data!,
+                        height: 800,
                         startTimeMaxController: startTimeMaxController,
                         startTimeMinController: startTimeMinController,
-                        height: 800,
-                        refresh: () {
-                          setState(() {
-                            futurePassBy = getAddressWithMembersPassBy(
-                                getAddressWithMembersPassByDataForm(
-                              addressType: "city",
-                              startTimeMin: parseDateTimeWithTimeZone(
-                                  startTimeMinController.text,
-                                  time: "00:00"),
-                              startTimeMax: parseDateTimeWithTimeZone(
-                                  startTimeMaxController.text),
-                            ));
-                          });
-                        },
                       );
                     } else if (snapshot.hasError) {
                       return Text('${snapshot.error}');

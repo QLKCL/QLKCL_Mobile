@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:qlkcl/helper/authentication.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 //cre: https://pub.dev/packages/qr_flutter
 
 class GenerateQrCode extends StatelessWidget {
-  final String qrData;
+  final String code;
+  final String name;
 
-  const GenerateQrCode({Key? key, required this.qrData}) : super(key: key);
+  const GenerateQrCode({
+    Key? key,
+    required this.code,
+    required this.name,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +22,16 @@ class GenerateQrCode extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             QrImage(
-              data: qrData,
+              data: code,
               size: 100,
             ),
-            FutureBuilder(
-              future: getName(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return Container(
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      snapshot.data,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                  );
-                }
-                return const SizedBox();
-              },
+            Container(
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                name,
+                style: Theme.of(context).textTheme.headline6,
+              ),
             ),
           ],
         ),

@@ -7,10 +7,12 @@ import 'component/md_form.dart';
 class MedicalDeclarationScreen extends StatefulWidget {
   static const String routeName = "/medical_declaration";
   final String? phone;
+  final String? name;
 
   const MedicalDeclarationScreen({
     Key? key,
     this.phone,
+    this.name,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,7 @@ class _MedicalDeclarationScreenState extends State<MedicalDeclarationScreen> {
         body: MedDeclForm(
           mode: Permission.add,
           phone: widget.phone,
+          name: widget.name,
         ),
       ),
     );

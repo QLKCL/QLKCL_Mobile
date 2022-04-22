@@ -5,14 +5,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
-import 'package:qlkcl/screens/test/list_test_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 1;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class HospitalizedMember extends StatefulWidget {
   const HospitalizedMember({Key? key}) : super(key: key);
@@ -63,6 +62,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
     });
     super.initState();
     fetch = fetchMemberList(data: {
+      "search": keySearch.text,
       'page': 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"
@@ -78,6 +78,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
@@ -173,7 +174,10 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                               code: item.code,
                             )));
               },
-              menus: menus(context, item),
+              menus: menus(
+                context,
+                item,
+              ),
             ),
           ),
         ),
@@ -187,9 +191,16 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -358,6 +369,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
         'quarantined_status_list': "HOSPITALIZE"
@@ -375,6 +387,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "HOSPITALIZE"
@@ -575,81 +588,18 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[10].value.toString())!);
+                        (e) => e.code == row.getCells()[10].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.testHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.quarantineHistory,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) async {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'medical_declare_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListMedicalDeclaration(
-                      code: item.code,
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'test_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
-                    )));
-      } else if (result == 'quarantine_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListQuarantineHistory(
-                      code: item.code,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
-        value: "medical_declare_history",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử xét nghiệm'),
-        value: "test_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử cách ly'),
-        value: "quarantine_history",
-      ),
-    ],
-  );
 }

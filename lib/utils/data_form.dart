@@ -1,4 +1,5 @@
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 Map<String, String> loginDataForm(
     {required String phoneNumber, required String password}) {
@@ -130,7 +131,8 @@ Map<String, dynamic> filterMemberDataForm({
   String? quarantineRoom,
   String? quarantineAtMin,
   String? quarantineAtMax,
-  String? quarantinedFinishExpectedAt,
+  String? quarantinedFinishExpectedAtMin,
+  String? quarantinedFinishExpectedAtMax,
   String? label,
   String? healthStatus,
   String? test,
@@ -145,7 +147,8 @@ Map<String, dynamic> filterMemberDataForm({
     "quarantine_room_id": quarantineRoom,
     "created_at_min": quarantineAtMin,
     "created_at_max": quarantineAtMax,
-    "quarantined_finish_expected_at_max": quarantinedFinishExpectedAt,
+    "quarantined_finish_expected_at_min": quarantinedFinishExpectedAtMin,
+    "quarantined_finish_expected_at_max": quarantinedFinishExpectedAtMax,
     "label_list": label,
     "health_status_list": healthStatus,
     "care_staff_code": careStaff,
@@ -595,7 +598,7 @@ Map<String, dynamic> getAddressWithMembersPassByDataForm({
     "start_time_min": startTimeMin,
     "start_time_max": startTimeMax,
     "page": page,
-    "page_size": pageSize ?? 0,
+    "page_size": pageSize ?? pageSizeMax,
     "order_by": orderBy,
     "search": search
   };

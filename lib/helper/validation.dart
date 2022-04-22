@@ -122,3 +122,17 @@ String? phoneNullableValidator(String? phone) {
   }
   return null;
 }
+
+String? userCodeValidator(String? code) {
+  const String patttern = r'(^[0-9]{15}$)';
+  final RegExp regExp = RegExp(patttern);
+  if (code == null || code.isEmpty) {
+    return 'Mã người dùng không được để trống';
+  } else if (code.length != 15) {
+    return 'Mã người dùng không hợp lệ';
+  } else if (!regExp.hasMatch(code)) {
+    return 'Mã người dùng không hợp lệ';
+  }
+
+  return null;
+}

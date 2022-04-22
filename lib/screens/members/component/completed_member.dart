@@ -5,13 +5,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/requarantine_member_screen.dart';
-import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
+import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +18,7 @@ import 'package:intl/intl.dart';
 List<FilterMember> paginatedDataSource = [];
 double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
+TextEditingController keySearch = TextEditingController();
 
 class CompletedMember extends StatefulWidget {
   const CompletedMember({Key? key}) : super(key: key);
@@ -62,6 +62,7 @@ class _CompletedMemberState extends State<CompletedMember>
     });
     super.initState();
     fetch = fetchMemberList(data: {
+      "search": keySearch.text,
       'page': 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "COMPLETED"
@@ -77,6 +78,7 @@ class _CompletedMemberState extends State<CompletedMember>
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': pageKey,
         'status_list': "LEAVE",
         'quarantined_status_list': "COMPLETED"
@@ -172,7 +174,16 @@ class _CompletedMemberState extends State<CompletedMember>
                               code: item.code,
                             )));
               },
-              menus: menus(context, item),
+              menus: menus(
+                context,
+                item,
+                showMenusItems: [
+                  menusOptions.updateInfo,
+                  menusOptions.quarantineHistory,
+                  menusOptions.vaccineDoseHistory,
+                  menusOptions.requarantine,
+                ],
+              ),
             ),
           ),
         ),
@@ -186,9 +197,16 @@ class _CompletedMemberState extends State<CompletedMember>
         builder: (context, constraints) {
           return Column(
             children: [
+              Row(
+                children: [
+                  searchBox(key, keySearch),
+                  const Spacer(),
+                  buildExportingButtons(key),
+                ],
+              ),
               Expanded(
                 child: SizedBox(
-                  height: constraints.maxHeight - 60,
+                  height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
                   child: buildStack(constraints),
                 ),
@@ -357,6 +375,7 @@ class MemberDataSource extends DataGridSource {
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     if (oldPageIndex != newPageIndex) {
       final newItems = await fetchMemberList(data: {
+        "search": keySearch.text,
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
         'quarantined_status_list': "COMPLETED"
@@ -374,6 +393,7 @@ class MemberDataSource extends DataGridSource {
   Future<void> handleRefresh() async {
     final int currentPageIndex = _dataPagerController.selectedPageIndex;
     final newItems = await fetchMemberList(data: {
+      "search": keySearch.text,
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
       'quarantined_status_list': "COMPLETED"
@@ -574,68 +594,17 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[10].value.toString())!);
+                        (e) => e.code == row.getCells()[10].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.quarantineHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.requarantine,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) async {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'quarantine_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListQuarantineHistory(
-                      code: item.code,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
-                    )));
-      } else if (result == 'requarantine') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => RequarantienMember(
-                      code: item.code,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử cách ly'),
-        value: "quarantine_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Tái cách ly'),
-        value: "requarantine",
-      ),
-    ],
-  );
 }

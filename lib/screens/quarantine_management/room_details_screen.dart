@@ -12,19 +12,14 @@ import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/room.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/screens/members/change_quarantine_info.dart';
-import 'package:qlkcl/screens/vaccine/list_vaccine_dose_screen.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'component/general_info_room.dart';
 import './edit_room_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
-import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
-import 'package:qlkcl/screens/test/add_test_screen.dart';
-import 'package:qlkcl/screens/test/list_test_screen.dart';
 
 class RoomDetailsScreen extends StatefulWidget {
   final Building? currentBuilding;
@@ -202,18 +197,31 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
               return Column(
                 children: [
                   MemberCard(
-                      member: data.data[index],
-                      isThreeLine: false,
-                      onTap: () {
-                        Navigator.of(context,
-                                rootNavigator:
-                                    !Responsive.isDesktopLayout(context))
-                            .push(MaterialPageRoute(
-                                builder: (context) => UpdateMember(
-                                      code: data.data[index].code,
-                                    )));
-                      },
-                      menus: menus(context, data.data[index])),
+                    member: data.data[index],
+                    isThreeLine: false,
+                    onTap: () {
+                      Navigator.of(context,
+                              rootNavigator:
+                                  !Responsive.isDesktopLayout(context))
+                          .push(MaterialPageRoute(
+                              builder: (context) => UpdateMember(
+                                    code: data.data[index].code,
+                                  )));
+                    },
+                    menus: menus(
+                      context,
+                      data.data[index],
+                      showMenusItems: [
+                        menusOptions.updateInfo,
+                        menusOptions.createMedicalDeclaration,
+                        menusOptions.medicalDeclareHistory,
+                        menusOptions.createTest,
+                        menusOptions.testHistory,
+                        menusOptions.vaccineDoseHistory,
+                        menusOptions.changeRoom,
+                      ],
+                    ),
+                  ),
                   if (index == data.data.length - 1) const SizedBox(height: 70),
                 ],
               );
@@ -611,105 +619,20 @@ class MemberDataSource extends DataGridSource {
                 : menus(
                     context,
                     members.safeFirstWhere(
-                        (e) => e.code == row.getCells()[11].value.toString())!);
+                        (e) => e.code == row.getCells()[11].value.toString())!,
+                    showMenusItems: [
+                      menusOptions.updateInfo,
+                      menusOptions.createMedicalDeclaration,
+                      menusOptions.medicalDeclareHistory,
+                      menusOptions.createTest,
+                      menusOptions.testHistory,
+                      menusOptions.vaccineDoseHistory,
+                      menusOptions.changeRoom,
+                    ],
+                  );
           },
         ),
       ],
     );
   }
-}
-
-Widget menus(BuildContext context, FilterMember item) {
-  return PopupMenuButton(
-    icon: Icon(
-      Icons.more_vert,
-      color: disableText,
-    ),
-    onSelected: (result) {
-      if (result == 'update_info') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => UpdateMember(
-                      code: item.code,
-                    )));
-      } else if (result == 'create_medical_declaration') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => MedicalDeclarationScreen(
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'medical_declare_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListMedicalDeclaration(
-                      code: item.code,
-                      phone: item.phoneNumber,
-                    )));
-      } else if (result == 'create_test') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => AddTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      } else if (result == 'test_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListTest(
-                      code: item.code,
-                      name: item.fullName,
-                    )));
-      } else if (result == 'vaccine_dose_history') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ListVaccineDose(
-                      code: item.code,
-                    )));
-      } else if (result == 'change_room') {
-        Navigator.of(context,
-                rootNavigator: !Responsive.isDesktopLayout(context))
-            .push(MaterialPageRoute(
-                builder: (context) => ChangeQuanrantineInfo(
-                      code: item.code,
-                      quarantineWard: item.quarantineWard,
-                    )));
-      }
-    },
-    itemBuilder: (BuildContext context) => const <PopupMenuEntry>[
-      PopupMenuItem(
-        child: Text('Cập nhật thông tin'),
-        value: "update_info",
-      ),
-      PopupMenuItem(
-        child: Text('Khai báo y tế'),
-        value: "create_medical_declaration",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử khai báo y tế'),
-        value: "medical_declare_history",
-      ),
-      PopupMenuItem(
-        child: Text('Tạo phiếu xét nghiệm'),
-        value: "create_test",
-      ),
-      PopupMenuItem(
-        child: Text('Lịch sử xét nghiệm'),
-        value: "test_history",
-      ),
-      PopupMenuItem(
-        child: Text('Thông tin tiêm chủng'),
-        value: "vaccine_dose_history",
-      ),
-      PopupMenuItem(
-        child: Text('Chuyển phòng'),
-        value: "change_room",
-      ),
-    ],
-  );
 }

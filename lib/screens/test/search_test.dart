@@ -102,20 +102,23 @@ class _SearchTestState extends State<SearchTest> {
                 controller: keySearch,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.zero,
                   prefixIcon: Icon(
                     Icons.search,
                     color: secondaryText,
                   ),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      /* Clear the search field */
-                      keySearch.clear();
-                      setState(() {
-                        searched = false;
-                      });
-                    },
-                  ),
+                  suffixIcon: keySearch.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            /* Clear the search field */
+                            keySearch.clear();
+                            setState(() {
+                              searched = false;
+                            });
+                          },
+                        )
+                      : null,
                   hintText: 'Tìm kiếm...',
                   border: InputBorder.none,
                   filled: false,

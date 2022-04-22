@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/custom_user.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/component/manager_form.dart';
 
 class UpdateManager extends StatefulWidget {
@@ -15,7 +16,7 @@ class UpdateManager extends StatefulWidget {
 }
 
 class _UpdateManagerState extends State<UpdateManager> {
-  late Future<dynamic> future;
+  late Future<Response> future;
   late CustomUser personalData;
 
   @override
@@ -44,7 +45,7 @@ class _UpdateManagerState extends State<UpdateManager> {
           //     ),
           // ],
         ),
-        body: FutureBuilder<dynamic>(
+        body: FutureBuilder<Response>(
           future: future,
           builder: (context, snapshot) {
             showLoading();
@@ -52,8 +53,8 @@ class _UpdateManagerState extends State<UpdateManager> {
               BotToast.closeAllLoading();
               if (snapshot.hasData) {
                 personalData =
-                    CustomUser.fromJson(snapshot.data["custom_user"]);
-                final dynamic staffData = snapshot.data["staff"];
+                    CustomUser.fromJson(snapshot.data!.data["custom_user"]);
+                final dynamic staffData = snapshot.data!.data["staff"];
                 return ManagerForm(
                   personalData: personalData,
                   staffData: staffData,
