@@ -606,7 +606,7 @@ Future<Response> managerCallRequarantine(data) async {
     if (response['error_code'] == 0) {
       return Response(
         status: Status.success,
-        message: "Đăng ký tái cách ly thành công! Vui lòng chờ xét duyệt.",
+        message: "Tái cách ly thành công!",
       );
     } else if (response['error_code'] == 400) {
       if (response['message']['sender'] != null &&
