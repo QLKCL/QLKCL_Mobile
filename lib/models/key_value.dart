@@ -187,13 +187,14 @@ class CustomKeyValue {
 
   static List<KeyValue> fromJsonList(List list, String customField,
       {Function? customValue}) {
-    return list
-        .map((item) => KeyValue(
-              id: CustomKeyValue.fromJson(item, customField).id,
-              name:
-                  "${CustomKeyValue.fromJson(item, customField).name} - ${customValue != null ? customValue(CustomKeyValue.fromJson(item, customField).subname) : CustomKeyValue.fromJson(item, customField).subname}",
-            ))
-        .toList();
+    return list.map((item) {
+      final CustomKeyValue data = CustomKeyValue.fromJson(item, customField);
+      return KeyValue(
+        id: data.id,
+        name:
+            "${data.name} - ${customValue?.call(data.subname) ?? data.subname}",
+      );
+    }).toList();
   }
 
   @override
