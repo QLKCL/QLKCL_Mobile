@@ -156,7 +156,10 @@ class _ManagerFormState extends State<ManagerForm> {
           }
           if (!initQuarantineFloor
               .contains(KeyValue.fromJson(e['quarantine_floor']))) {
-            initQuarantineFloor.add(KeyValue.fromJson(e['quarantine_floor']));
+            initQuarantineFloor.add(KeyValue(
+                id: e['quarantine_floor']['id'],
+                name:
+                    "${e['quarantine_floor']['name']} - ${e['quarantine_building']['name']}"));
           }
         });
         quarantineBuildingController.text =

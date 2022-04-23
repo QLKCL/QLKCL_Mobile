@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -13,6 +12,7 @@ import 'package:qlkcl/models/room.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
+import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'component/general_info_room.dart';
@@ -42,7 +42,8 @@ class RoomDetailsScreen extends StatefulWidget {
 class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late Future<FilterResponse<FilterMember>> futureMemberList;
 
-  late MemberDataSource memberDataSource;
+  final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
+  late DataSource dataSource;
 
   bool showLoadingIndicator = true;
   double pageCount = 0;
@@ -51,7 +52,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
 
   @override
   void initState() {
-    memberDataSource = MemberDataSource();
+    dataSource = DataSource();
     super.initState();
     currentRoom = widget.currentRoom!;
     futureMemberList = fetchMemberList(
@@ -116,8 +117,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                 BotToast.closeAllLoading();
                 if (snapshot.hasData) {
                   showLoadingIndicator = false;
-                  memberDataSource =
-                      MemberDataSource(data: snapshot.data!.data);
+                  dataSource = DataSource(data: snapshot.data!.data);
                   return Responsive.isDesktopLayout(context)
                       ? listMemberTable(appBar)
                       : listMemberCard(appBar, snapshot.data!);
@@ -262,7 +262,26 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                     SizedBox(
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
-                      child: buildStack(constraints),
+                      child: buildStack(
+                        key,
+                        dataSource,
+                        constraints,
+                        showLoadingIndicator,
+                        showColumnItems: [
+                          columns.fullName,
+                          columns.birthday,
+                          columns.gender,
+                          columns.phoneNumber,
+                          columns.quarantineWard,
+                          columns.quarantineLocation,
+                          columns.label,
+                          columns.quarantinedAt,
+                          columns.quarantinedFinishExpectedAt,
+                          columns.healthStatus,
+                          columns.positiveTestNow,
+                          columns.code,
+                        ],
+                      ),
                     ),
                   ],
                 );
@@ -273,144 +292,10 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
       ],
     );
   }
-
-  Widget buildDataGrid(BoxConstraints constraint) {
-    return SfDataGrid(
-      source: memberDataSource,
-      columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-      allowSorting: true,
-      allowMultiColumnSorting: true,
-      allowTriStateSorting: true,
-      selectionMode: SelectionMode.multiple,
-      showCheckboxColumn: true,
-      columns: <GridColumn>[
-        GridColumn(
-            columnName: 'fullName',
-            columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 150,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Họ và tên',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'birthday',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày sinh',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'gender',
-            columnWidthMode: ColumnWidthMode.fitByCellValue,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Giới tính',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ))),
-        GridColumn(
-            columnName: 'phoneNumber',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('SDT',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantineWard',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Khu cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantineLocation',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Phòng',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'label',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Diện cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantinedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantinedFinishExpectedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày dự kiến hoàn thành',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'healthStatus',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Sức khỏe',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'positiveTestNow',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Xét nghiệm',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'code',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Hành động',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-      ],
-    );
-  }
-
-  Widget buildStack(BoxConstraints constraints) {
-    List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
-      stackChildren.add(buildDataGrid(constraints));
-
-      if (showLoadingIndicator) {
-        stackChildren.add(Container(
-          color: Colors.black12,
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: const Align(
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-            ),
-          ),
-        ));
-      }
-
-      return stackChildren;
-    }
-
-    return Stack(
-      children: _getChildren(),
-    );
-  }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource({List<FilterMember>? data}) {
+class DataSource extends DataGridSource {
+  DataSource({List<FilterMember>? data}) {
     members = data ?? [];
     buildDataGridRows();
   }
@@ -553,63 +438,67 @@ class MemberDataSource extends DataGridSource {
                 : "",
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Badge(
-            elevation: 0,
-            shape: BadgeShape.square,
-            borderRadius: BorderRadius.circular(16),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[9].value.toString() == "SERIOUS"
-                ? error.withOpacity(0.25)
-                : row.getCells()[9].value.toString() == "UNWELL"
-                    ? warning.withOpacity(0.25)
-                    : success.withOpacity(0.25),
-            badgeContent: row.getCells()[9].value.toString() == "SERIOUS"
-                ? Text(
-                    "Nguy hiểm",
-                    style: TextStyle(color: error),
-                  )
-                : row.getCells()[9].value.toString() == "UNWELL"
-                    ? Text(
-                        "Không tốt",
-                        style: TextStyle(color: warning),
-                      )
-                    : Text(
-                        "Bình thường",
-                        style: TextStyle(color: success),
-                      ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Badge(
-            elevation: 0,
-            shape: BadgeShape.square,
-            borderRadius: BorderRadius.circular(16),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[10].value == null
-                ? secondaryText.withOpacity(0.25)
-                : row.getCells()[10].value == true
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[9].value.toString() == "SERIOUS"
                     ? error.withOpacity(0.25)
-                    : success.withOpacity(0.25),
-            badgeContent: row.getCells()[10].value == null
-                ? Text(
-                    "Chưa có",
-                    style: TextStyle(color: secondaryText),
-                  )
-                : row.getCells()[10].value == true
-                    ? Text(
-                        "Dương tính",
-                        style: TextStyle(color: error),
-                      )
-                    : Text(
-                        "Âm tính",
-                        style: TextStyle(color: success),
-                      ),
-          ),
+                    : row.getCells()[9].value.toString() == "UNWELL"
+                        ? warning.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[9].value.toString() == "SERIOUS"
+                  ? Text(
+                      "Nguy hiểm",
+                      style: TextStyle(color: error),
+                    )
+                  : row.getCells()[9].value.toString() == "UNWELL"
+                      ? Text(
+                          "Không tốt",
+                          style: TextStyle(color: warning),
+                        )
+                      : Text(
+                          "Bình thường",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[10].value == null
+                    ? secondaryText.withOpacity(0.25)
+                    : row.getCells()[10].value == true
+                        ? error.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[10].value == null
+                  ? Text(
+                      "Chưa có",
+                      style: TextStyle(color: secondaryText),
+                    )
+                  : row.getCells()[10].value == true
+                      ? Text(
+                          "Dương tính",
+                          style: TextStyle(color: error),
+                        )
+                      : Text(
+                          "Âm tính",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
         ),
         FutureBuilder(
           future: Future.delayed(Duration.zero, () => true),

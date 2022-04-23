@@ -2,6 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/cloudinary.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/notification/list_notification_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/models/notification.dart' as notifications;
@@ -122,7 +123,8 @@ class _HomeAppBarState extends State<HomeAppBar> {
                 color: primaryText,
               ),
               onPressed: () {
-                Navigator.of(context)
+                Navigator.of(context,
+                        rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
                         builder: (context) => ListNotification(
                               role: widget.role,

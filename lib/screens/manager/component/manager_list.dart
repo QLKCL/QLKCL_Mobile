@@ -8,6 +8,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
+import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/components/cards.dart';
@@ -38,7 +39,7 @@ class _ManagerListState extends State<ManagerList>
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
-  late MemberDataSource dataSource;
+  late DataSource dataSource;
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -48,7 +49,7 @@ class _ManagerListState extends State<ManagerList>
 
   @override
   void initState() {
-    dataSource = MemberDataSource(key);
+    dataSource = DataSource(key);
     ManagerList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -186,17 +187,47 @@ class _ManagerListState extends State<ManagerList>
           return Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  searchBox(key, keySearch),
-                  const Spacer(),
-                  buildExportingButtons(key),
+                  Expanded(
+                    flex: 6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        searchBox(key, keySearch),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        buildExportingButtons(key),
+                      ],
+                    ),
+                  ),
                 ],
               ),
               Expanded(
                 child: SizedBox(
                   height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
-                  child: buildStack(constraints),
+                  child: buildStack(
+                    key,
+                    dataSource,
+                    constraints,
+                    showLoadingIndicator,
+                    showColumnItems: [
+                      columns.fullName,
+                      columns.birthday,
+                      columns.gender,
+                      columns.phoneNumber,
+                      columns.quarantineWard,
+                      columns.accountStatus,
+                      columns.code,
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -220,107 +251,10 @@ class _ManagerListState extends State<ManagerList>
       ),
     );
   }
-
-  Widget buildDataGrid(BoxConstraints constraint) {
-    return SfDataGrid(
-      key: key,
-      allowPullToRefresh: true,
-      source: dataSource,
-      columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-      allowSorting: true,
-      allowMultiColumnSorting: true,
-      allowTriStateSorting: true,
-      selectionMode: SelectionMode.multiple,
-      showCheckboxColumn: true,
-      columns: <GridColumn>[
-        GridColumn(
-            columnName: 'fullName',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Họ và tên',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'birthday',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày sinh',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'gender',
-            columnWidthMode: ColumnWidthMode.fitByCellValue,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Giới tính',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ))),
-        GridColumn(
-            columnName: 'phoneNumber',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('SDT',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantineWard',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Khu cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'status',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Trạng thái tài khoản',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'code',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Hành động',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-      ],
-    );
-  }
-
-  Widget buildStack(BoxConstraints constraints) {
-    List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
-      stackChildren.add(buildDataGrid(constraints));
-
-      if (showLoadingIndicator) {
-        stackChildren.add(Container(
-          color: Colors.black12,
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: const Align(
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-            ),
-          ),
-        ));
-      }
-
-      return stackChildren;
-    }
-
-    return Stack(
-      children: _getChildren(),
-    );
-  }
 }
 
-class MemberDataSource extends DataGridSource {
-  MemberDataSource(this.key);
+class DataSource extends DataGridSource {
+  DataSource(this.key);
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
@@ -373,7 +307,8 @@ class MemberDataSource extends DataGridSource {
                   columnName: 'phoneNumber', value: e.phoneNumber),
               DataGridCell<String>(
                   columnName: 'quarantineWard', value: e.quarantineWard.name),
-              DataGridCell<String>(columnName: 'status', value: e.status),
+              DataGridCell<String>(
+                  columnName: 'accountStatus', value: e.status),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -443,12 +378,36 @@ class MemberDataSource extends DataGridSource {
             row.getCells()[4].value.toString(),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Text(
-            row.getCells()[5].value.toString(),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[5].value.toString() == "LOCKED"
+                    ? error.withOpacity(0.25)
+                    : row.getCells()[5].value.toString() == "LEAVE"
+                        ? warning.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[5].value.toString() == "LOCKED"
+                  ? Text(
+                      "Đã khóa",
+                      style: TextStyle(color: error),
+                    )
+                  : row.getCells()[5].value.toString() == "LEAVE"
+                      ? Text(
+                          "Leave",
+                          style: TextStyle(color: warning),
+                        )
+                      : Text(
+                          "Hoạt động",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
         ),
         FutureBuilder(
           future: Future.delayed(Duration.zero, () => true),

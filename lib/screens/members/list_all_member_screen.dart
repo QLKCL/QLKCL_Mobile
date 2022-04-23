@@ -4,18 +4,18 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/completed_member.dart';
-import 'package:qlkcl/screens/members/component/hospitalized_member.dart';
-import 'package:qlkcl/screens/members/component/need_change_room_member.dart';
-import 'package:qlkcl/screens/members/component/positive_member.dart';
+import 'package:qlkcl/screens/members/list_member/completed_member.dart';
+import 'package:qlkcl/screens/members/list_member/hospitalized_member.dart';
+import 'package:qlkcl/screens/members/list_member/need_change_room_member.dart';
+import 'package:qlkcl/screens/members/list_member/positive_member.dart';
 import 'package:qlkcl/screens/members/search_member.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
-import 'package:qlkcl/screens/members/component/active_member.dart';
-import 'package:qlkcl/screens/members/component/complete_expect_member.dart';
-import 'package:qlkcl/screens/members/component/confirm_member.dart';
-import 'package:qlkcl/screens/members/component/denied_member.dart';
-import 'package:qlkcl/screens/members/component/suspect_member.dart';
-import 'package:qlkcl/screens/members/component/need_test_member.dart';
+import 'package:qlkcl/screens/members/list_member/active_member.dart';
+import 'package:qlkcl/screens/members/list_member/complete_expect_member.dart';
+import 'package:qlkcl/screens/members/list_member/confirm_member.dart';
+import 'package:qlkcl/screens/members/list_member/denied_member.dart';
+import 'package:qlkcl/screens/members/list_member/suspect_member.dart';
+import 'package:qlkcl/screens/members/list_member/need_test_member.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 // cre: https://stackoverflow.com/questions/50462281/flutter-i-want-to-select-the-card-by-onlongpress
