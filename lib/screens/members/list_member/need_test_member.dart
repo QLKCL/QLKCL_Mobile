@@ -189,10 +189,22 @@ class _NeedTestMemberState extends State<NeedTestMember>
           return Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  searchBox(key, keySearch),
-                  const Spacer(),
-                  buildExportingButtons(key),
+                  Expanded(
+                    flex: 6,
+                    child: searchBox(key, keySearch),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        buildImportingButtons(),
+                        buildExportingButtons(key),
+                      ],
+                    ),
+                  ),
                 ],
               ),
               Expanded(
