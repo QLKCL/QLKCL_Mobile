@@ -136,74 +136,92 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                 ));
               });
             }),
-            child: ListView(
-              children: <Widget>[
-                FutureBuilder<dynamic>(
-                  future: futureData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final int numberDays = ResponsiveWrapper.of(context)
-                              .isSmallerThan(MOBILE)
-                          ? 4
-                          : ResponsiveWrapper.of(context).isLargerThan(TABLET)
-                              ? 12
-                              : 6;
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  FutureBuilder<dynamic>(
+                    future: futureData,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final int numberDays = ResponsiveWrapper.of(context)
+                                .isSmallerThan(MOBILE)
+                            ? 4
+                            : ResponsiveWrapper.of(context).isLargerThan(TABLET)
+                                ? 12
+                                : 6;
+                        return InfoManagerHomePage(
+                          totalUsers: snapshot
+                              .data['number_of_all_members_past_and_now'],
+                          availableSlots:
+                              snapshot.data['number_of_available_slots'],
+                          activeUsers:
+                              snapshot.data['number_of_quarantining_members'],
+                          waitingUsers:
+                              snapshot.data['number_of_waiting_members'],
+                          suspectedUsers:
+                              snapshot.data['number_of_suspected_members'],
+                          needTestUsers:
+                              snapshot.data['number_of_need_test_members'],
+                          canFinishUsers:
+                              snapshot.data['number_of_can_finish_members'],
+                          waitingTests:
+                              snapshot.data['number_of_waiting_tests'],
+                          positiveUsers:
+                              snapshot.data['number_of_positive_members'],
+                          hospitalizedUsers:
+                              snapshot.data['number_of_hospitalized_members'],
+                          numberIn: snapshot.data['in'].entries
+                              .map((entry) => KeyValue(
+                                  id: DateFormat("dd/MM/yyyy").format(
+                                      DateTime.parse(entry.key).toLocal()),
+                                  name: entry.value))
+                              .toList()
+                              .cast<KeyValue>()
+                              .reversed
+                              .take(numberDays)
+                              .toList()
+                              .reversed
+                              .toList(),
+                          numberOut: snapshot.data['out'].entries
+                              .map((entry) => KeyValue(
+                                  id: DateFormat("dd/MM/yyyy").format(
+                                      DateTime.parse(entry.key).toLocal()),
+                                  name: entry.value))
+                              .toList()
+                              .cast<KeyValue>()
+                              .reversed
+                              .take(numberDays)
+                              .toList()
+                              .reversed
+                              .toList(),
+                          hospitalize: snapshot.data['hospitalize'].entries
+                              .map((entry) => KeyValue(
+                                  id: DateFormat("dd/MM/yyyy").format(
+                                      DateTime.parse(entry.key).toLocal()),
+                                  name: entry.value))
+                              .toList()
+                              .cast<KeyValue>()
+                              .reversed
+                              .take(numberDays)
+                              .toList()
+                              .reversed
+                              .toList(),
+                          quarantineWardList: quarantineWardList,
+                          quarantineWardController: quarantineWardController,
+                          refresh: () {
+                            setState(() {
+                              futureData = fetch();
+                            });
+                          },
+                          role: widget.role,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
+
+                      // By default, show a loading spinner.
+                      // return const CircularProgressIndicator();
                       return InfoManagerHomePage(
-                        totalUsers:
-                            snapshot.data['number_of_all_members_past_and_now'],
-                        availableSlots:
-                            snapshot.data['number_of_available_slots'],
-                        activeUsers:
-                            snapshot.data['number_of_quarantining_members'],
-                        waitingUsers:
-                            snapshot.data['number_of_waiting_members'],
-                        suspectedUsers:
-                            snapshot.data['number_of_suspected_members'],
-                        needTestUsers:
-                            snapshot.data['number_of_need_test_members'],
-                        canFinishUsers:
-                            snapshot.data['number_of_can_finish_members'],
-                        waitingTests: snapshot.data['number_of_waiting_tests'],
-                        positiveUsers:
-                            snapshot.data['number_of_positive_members'],
-                        hospitalizedUsers:
-                            snapshot.data['number_of_hospitalized_members'],
-                        numberIn: snapshot.data['in'].entries
-                            .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy").format(
-                                    DateTime.parse(entry.key).toLocal()),
-                                name: entry.value))
-                            .toList()
-                            .cast<KeyValue>()
-                            .reversed
-                            .take(numberDays)
-                            .toList()
-                            .reversed
-                            .toList(),
-                        numberOut: snapshot.data['out'].entries
-                            .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy").format(
-                                    DateTime.parse(entry.key).toLocal()),
-                                name: entry.value))
-                            .toList()
-                            .cast<KeyValue>()
-                            .reversed
-                            .take(numberDays)
-                            .toList()
-                            .reversed
-                            .toList(),
-                        hospitalize: snapshot.data['hospitalize'].entries
-                            .map((entry) => KeyValue(
-                                id: DateFormat("dd/MM/yyyy").format(
-                                    DateTime.parse(entry.key).toLocal()),
-                                name: entry.value))
-                            .toList()
-                            .cast<KeyValue>()
-                            .reversed
-                            .take(numberDays)
-                            .toList()
-                            .reversed
-                            .toList(),
                         quarantineWardList: quarantineWardList,
                         quarantineWardController: quarantineWardController,
                         refresh: () {
@@ -213,43 +231,28 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                         },
                         role: widget.role,
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
+                    },
+                  ),
+                  FutureBuilder<List<KeyValue>>(
+                    future: futurePassBy,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return Maps(
+                          mapData: mapData,
+                          data: snapshot.data!,
+                          height: 800,
+                          startTimeMaxController: startTimeMaxController,
+                          startTimeMinController: startTimeMinController,
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      }
 
-                    // By default, show a loading spinner.
-                    // return const CircularProgressIndicator();
-                    return InfoManagerHomePage(
-                      quarantineWardList: quarantineWardList,
-                      quarantineWardController: quarantineWardController,
-                      refresh: () {
-                        setState(() {
-                          futureData = fetch();
-                        });
-                      },
-                      role: widget.role,
-                    );
-                  },
-                ),
-                FutureBuilder<List<KeyValue>>(
-                  future: futurePassBy,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      return Maps(
-                        mapData: mapData,
-                        data: snapshot.data!,
-                        height: 800,
-                        startTimeMaxController: startTimeMaxController,
-                        startTimeMinController: startTimeMinController,
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
-                    }
-
-                    return const SizedBox();
-                  },
-                ),
-              ],
+                      return const SizedBox();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),

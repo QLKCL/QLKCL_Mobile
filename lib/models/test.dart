@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
@@ -27,9 +29,9 @@ class Test {
   });
 
   final int id;
-  final CreatedBy user;
-  final CreatedBy createdBy;
-  final dynamic updatedBy;
+  final KeyValue user;
+  final KeyValue createdBy;
+  final KeyValue? updatedBy;
   final String code;
   final String status;
   final String result;
@@ -39,10 +41,10 @@ class Test {
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
         id: json["id"],
-        user: CreatedBy.fromJson(json["user"]),
-        createdBy: CreatedBy.fromJson(json["created_by"]),
+        user: KeyValue.fromJson(json["user"]),
+        createdBy: KeyValue.fromJson(json["created_by"]),
         updatedBy: json["updated_by"] != null
-            ? CreatedBy.fromJson(json["updated_by"])
+            ? KeyValue.fromJson(json["updated_by"])
             : null,
         code: json["code"],
         status: json["status"],
@@ -56,45 +58,13 @@ class Test {
         "id": id,
         "user": user.toJson(),
         "created_by": createdBy.toJson(),
-        "updated_by": updatedBy.toJson(),
+        "updated_by": updatedBy?.toJson(),
         "code": code,
         "status": status,
         "result": result,
         "type": type,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
-      };
-}
-
-class CreatedBy {
-  CreatedBy({
-    required this.code,
-    required this.fullName,
-    this.birthday,
-    this.gender,
-    this.healthStatus,
-  });
-
-  final String code;
-  final String fullName;
-  final String? birthday;
-  final String? gender;
-  final dynamic healthStatus;
-
-  factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
-        code: json["code"],
-        fullName: json["full_name"],
-        birthday: json["birthday"],
-        gender: json["gender"],
-        healthStatus: json["health_status"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "code": code,
-        "full_name": fullName,
-        "birthday": birthday,
-        "gender": gender,
-        "health_status": healthStatus,
       };
 }
 
@@ -139,6 +109,20 @@ Future<Response> updateTest(Map<String, dynamic> data) async {
           message: "Cập nhật phiếu xét nghiệm thành công!");
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
+Future<dynamic> importTest(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.importTest, data);
+  if (response == null) {
+    showNotification("Lỗi kết nối!", status: Status.error);
+  } else {
+    if (response['error_code'] == 0) {
+      return response['data'];
+    } else {
+      showNotification("Có lỗi xảy ra!", status: Status.error);
     }
   }
 }

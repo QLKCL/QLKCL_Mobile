@@ -15,7 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class TestForm extends StatefulWidget {
-  final CreatedBy? userCode;
+  final KeyValue? userCode;
   final Test? testData;
   final Permission mode;
   const TestForm(
@@ -47,10 +47,9 @@ class _TestFormState extends State<TestForm> {
       testCodeController.text =
           widget.testData?.code != null ? widget.testData!.code : "";
       userCodeController.text =
-          widget.testData?.user.code != null ? widget.testData!.user.code : "";
-      userNameController.text = widget.testData?.user.fullName != null
-          ? widget.testData!.user.fullName
-          : "";
+          widget.testData?.user.id != null ? widget.testData!.user.id : "";
+      userNameController.text =
+          widget.testData?.user.name != null ? widget.testData!.user.name : "";
       stateController.text =
           widget.testData?.status != null ? widget.testData!.status : "";
       typeController.text =
@@ -62,20 +61,20 @@ class _TestFormState extends State<TestForm> {
               .format(widget.testData!.createdAt.toLocal())
           : "";
       createByController.text = widget.testData?.createdBy != null
-          ? widget.testData!.createdBy.fullName
+          ? widget.testData!.createdBy.name
           : "";
       updateAtController.text = widget.testData?.updatedAt != null
           ? DateFormat("dd/MM/yyyy HH:mm:ss")
               .format(widget.testData!.updatedAt.toLocal())
           : "";
       updateByController.text = widget.testData?.updatedBy != null
-          ? widget.testData!.updatedBy.fullName
+          ? widget.testData!.updatedBy?.name
           : "";
     } else {
       userCodeController.text =
-          widget.userCode != null ? widget.userCode!.code : "";
+          widget.userCode != null ? widget.userCode!.id : "";
       userNameController.text =
-          widget.userCode != null ? widget.userCode!.fullName : "";
+          widget.userCode != null ? widget.userCode!.name : "";
       stateController.text = "WAITING";
       typeController.text = "QUICK";
       resultController.text = "NONE";
@@ -204,13 +203,15 @@ class _TestFormState extends State<TestForm> {
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
                 ),
-                if (widget.mode == Permission.view)
+                if (widget.mode == Permission.view ||
+                    widget.mode == Permission.edit)
                   Input(
                     label: 'Thời gian tạo',
                     controller: createAtController,
                     enabled: false,
                   ),
-                if (widget.mode == Permission.view)
+                if (widget.mode == Permission.view ||
+                    widget.mode == Permission.edit)
                   Input(
                     label: 'Người tạo',
                     controller: createByController,
