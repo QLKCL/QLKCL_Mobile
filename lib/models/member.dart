@@ -530,30 +530,30 @@ Future<Response> changeRoomMember(data) async {
   }
 }
 
-Future<dynamic> getSuitableRoom(data) async {
+Future<Response> getSuitableRoom(data) async {
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getSuitableRoom, data);
   if (response == null) {
-    showNotification("Lỗi kết nối!", status: Status.error);
+    return Response(status: Status.error, message: "Lỗi kết nối!");
   } else {
-    if (response['error_code'] == 0 &&
-        (response['data']['warning'] == null ||
-            response['data']['warning'] == "")) {
-      return response['data'];
-    } else if (response['error_code'] == 0 &&
-        response['data']['warning'] ==
-            "All rooms are not accept any more member") {
-      showNotification("Không tìm thấy phòng thích hợp!", status: Status.error);
+    if (response['error_code'] == 0) {
+      return Response(status: Status.success, data: response['data']);
     } else if (response['error_code'] == 400) {
-      if (response['message']['label'] != null &&
+      if (response['message'] == "All rooms are not accept any more member" ||
+          response['message'] ==
+              "All rooms in this quarantine ward are full or dont meet with this user positive_test_now") {
+        return Response(
+            status: Status.error, message: "Không tìm thấy phòng thích hợp!");
+      } else if (response['message']['label'] != null &&
           response['message']['label'] == "empty") {
-        showNotification("Vui lòng chọn diện cách ly!", status: Status.error);
+        return Response(
+            status: Status.error, message: "Vui lòng chọn diện cách ly!");
       } else {
-        showNotification("Không tìm thấy phòng thích hợp!",
-            status: Status.error);
+        return Response(
+            status: Status.error, message: "Không tìm thấy phòng thích hợp!");
       }
     } else {
-      showNotification("Có lỗi xảy ra!", status: Status.error);
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
   }
 }

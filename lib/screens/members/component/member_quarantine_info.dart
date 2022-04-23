@@ -500,7 +500,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                               getRoomError = null;
                             });
                             final CancelFunc cancel = showLoading();
-                            final data = await getSuitableRoom(
+                            final response = await getSuitableRoom(
                               getSuitableRoomDataForm(
                                 gender: state.genderController.text,
                                 label: state.labelController.text,
@@ -508,25 +508,33 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                                     state.numberOfVaccineDosesController.text,
                                 quarantineWard:
                                     state.quarantineWardController.text,
-                                positiveTestNow:
-                                    state.positiveTestNowController.text,
+                                positiveTestNow: state
+                                    .positiveTestNowController.text
+                                    .capitalize(),
                               ),
                             );
                             cancel();
-                            state.quarantineBuildingController.text =
-                                data['quarantine_building']['id'].toString();
-                            state.quarantineFloorController.text =
-                                data['quarantine_floor']['id'].toString();
-                            state.quarantineRoomController.text =
-                                data['quarantine_room']['id'].toString();
-                            initQuarantineBuilding =
-                                KeyValue.fromJson(data['quarantine_building']);
-                            initQuarantineFloor =
-                                KeyValue.fromJson(data['quarantine_floor']);
-                            initQuarantineRoom =
-                                KeyValue.fromJson(data['quarantine_room']);
-                            // state.updateField();
-                            setState(() {});
+                            if (response.status == Status.success) {
+                              state.quarantineBuildingController.text = response
+                                  .data['quarantine_building']['id']
+                                  .toString();
+                              state.quarantineFloorController.text = response
+                                  .data['quarantine_floor']['id']
+                                  .toString();
+                              state.quarantineRoomController.text = response
+                                  .data['quarantine_room']['id']
+                                  .toString();
+                              initQuarantineBuilding = KeyValue.fromJson(
+                                  response.data['quarantine_building']);
+                              initQuarantineFloor = KeyValue.fromJson(
+                                  response.data['quarantine_floor']);
+                              initQuarantineRoom = KeyValue.fromJson(
+                                  response.data['quarantine_room']);
+                              state.updateField();
+                              setState(() {});
+                            } else {
+                              showNotification(response);
+                            }
                           }
                         },
                         child: Text(
