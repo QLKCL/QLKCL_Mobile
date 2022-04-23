@@ -84,25 +84,36 @@ Widget menus<T>(
   GlobalKey<SfDataGridState>? tableKey,
   PagingController<int, T>? pagingController,
   List<menusOptions> showMenusItems = const [],
+  Color? customMenusColor,
 }) {
-  if (data.runtimeType == FilterMember || data.runtimeType == FilterStaff) {
+  if (data.runtimeType == FilterMember ||
+      data.runtimeType == FilterStaff ||
+      data.runtimeType == CustomUser) {
     final code = data.runtimeType == FilterMember
         ? (data as FilterMember).code
-        : (data as FilterStaff).code;
+        : data.runtimeType == FilterStaff
+            ? (data as FilterStaff).code
+            : (data as CustomUser).code;
     final phoneNumber = data.runtimeType == FilterMember
         ? (data as FilterMember).phoneNumber
-        : (data as FilterStaff).phoneNumber;
+        : data.runtimeType == FilterStaff
+            ? (data as FilterStaff).phoneNumber
+            : (data as CustomUser).phoneNumber;
     final fullName = data.runtimeType == FilterMember
         ? (data as FilterMember).fullName
-        : (data as FilterStaff).fullName;
+        : data.runtimeType == FilterStaff
+            ? (data as FilterStaff).fullName
+            : (data as CustomUser).fullName;
     final quarantineWard = data.runtimeType == FilterMember
         ? (data as FilterMember).quarantineWard
-        : (data as FilterStaff).quarantineWard;
+        : data.runtimeType == FilterStaff
+            ? (data as FilterStaff).quarantineWard
+            : (data as CustomUser).quarantineWard;
 
     return PopupMenuButton<menusOptions>(
         icon: Icon(
           Icons.more_vert,
-          color: disableText,
+          color: customMenusColor ?? disableText,
         ),
         onSelected: (result) async {
           if (result == menusOptions.updateInfo) {

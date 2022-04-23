@@ -8,6 +8,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/member_personal_info.dart';
 import 'package:qlkcl/screens/members/component/member_quarantine_info.dart';
 import 'package:qlkcl/screens/members/component/member_shared_data.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 
 class UpdateMember extends StatefulWidget {
@@ -22,18 +23,32 @@ class UpdateMember extends StatefulWidget {
 class _UpdateMemberState extends State<UpdateMember>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late Future<Response> futureMember;
-  late CustomUser personalData;
-  late Member? quarantineData;
+  CustomUser? personalData;
+  Member? quarantineData;
 
   @override
   void initState() {
     super.initState();
-    if (widget.code != null) {
-      futureMember = fetchUser(data: {'code': widget.code});
-    } else {
-      futureMember = fetchUser();
-    }
+
+    final CancelFunc cancel = showLoading();
+    fetchUser(data: widget.code != null ? {'code': widget.code} : {})
+        .then((value) {
+      cancel();
+      if (value.status == Status.success) {
+        setState(() {
+          personalData = CustomUser.fromJson(value.data["custom_user"]);
+          quarantineData = value.data["member"] != null
+              ? Member.fromJson(value.data["member"])
+              : null;
+          if (quarantineData != null) {
+            quarantineData!.customUserCode = personalData!.code;
+            quarantineData!.quarantineWard = personalData!.quarantineWard;
+          }
+        });
+      } else {
+        showNotification(value);
+      }
+    });
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_handleTabChange);
   }
@@ -45,45 +60,39 @@ class _UpdateMemberState extends State<UpdateMember>
   @override
   Widget build(BuildContext context) {
     return MemberSharedData(
-        child: DismissKeyboard(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Thông tin chi tiết"),
-          centerTitle: true,
-          // actions: [
-          //   if (_tabController.index == 0)
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: const Icon(Icons.qr_code_scanner),
-          //       tooltip: "Nhập dữ liệu từ CCCD",
-          //     ),
-          // ],
-          bottom: TabBar(
-            controller: _tabController,
-            indicatorColor: white,
-            tabs: const [
-              Tab(text: "Thông tin cá nhân"),
-              Tab(text: "Thông tin cách ly"),
+      child: DismissKeyboard(
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text("Thông tin chi tiết"),
+            centerTitle: true,
+            actions: [
+              if (personalData != null)
+                menus(
+                  context,
+                  personalData,
+                  customMenusColor: white,
+                  showMenusItems: [
+                    menusOptions.createMedicalDeclaration,
+                    menusOptions.medicalDeclareHistory,
+                    menusOptions.createTest,
+                    menusOptions.testHistory,
+                    menusOptions.vaccineDoseHistory,
+                    menusOptions.destinationHistory,
+                    menusOptions.quarantineHistory,
+                  ],
+                ),
             ],
+            bottom: TabBar(
+              controller: _tabController,
+              indicatorColor: white,
+              tabs: const [
+                Tab(text: "Thông tin cá nhân"),
+                Tab(text: "Thông tin cách ly"),
+              ],
+            ),
           ),
-        ),
-        body: FutureBuilder<Response>(
-          future: futureMember,
-          builder: (context, snapshot) {
-            showLoading();
-            if (snapshot.connectionState == ConnectionState.done) {
-              BotToast.closeAllLoading();
-              if (snapshot.hasData) {
-                personalData =
-                    CustomUser.fromJson(snapshot.data!.data["custom_user"]);
-                quarantineData = snapshot.data!.data["member"] != null
-                    ? Member.fromJson(snapshot.data!.data["member"])
-                    : null;
-                if (quarantineData != null) {
-                  quarantineData!.customUserCode = personalData.code;
-                  quarantineData!.quarantineWard = personalData.quarantineWard;
-                }
-                return TabBarView(
+          body: personalData != null
+              ? TabBarView(
                   controller: _tabController,
                   children: [
                     MemberPersonalInfo(
@@ -94,20 +103,10 @@ class _UpdateMemberState extends State<UpdateMember>
                       quarantineData: quarantineData,
                     ),
                   ],
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
-              } else {
-                return const Center(
-                  child: Text('Có lỗi xảy ra!'),
-                );
-              }
-            }
-
-            return const SizedBox();
-          },
+                )
+              : const SizedBox(),
         ),
       ),
-    ));
+    );
   }
 }
