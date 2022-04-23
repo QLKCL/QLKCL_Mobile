@@ -115,4 +115,6 @@ class Api {
       '/api/user/member/member_call_requarantine';
   static const String managerCallRequarantine =
       '/api/user/member/manager_call_requarantine';
+
+  static const String importTest = '/api/form/test/create_by_file';
 }
