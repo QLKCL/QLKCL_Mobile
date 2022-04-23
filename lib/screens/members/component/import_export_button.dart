@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datagrid_export/export.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as excel
     hide Alignment, Column, Row, Border;
+import 'package:url_launcher/url_launcher.dart';
 
 // Platform specific import
 import '../../../helper/save_mobile.dart'
@@ -110,7 +111,10 @@ Widget buildImportingButtons() {
                 ),
               ],
             ),
-            onTap: () async {},
+            onTap: () async {
+              launch(
+                  "https://docs.google.com/spreadsheets/d/1ItVphe7GZRb-Bafiw_OFEAtSSDUgD71i/edit?usp=sharing&ouid=101792372176143715365&rtpof=true&sd=true");
+            },
           ),
           PopupMenuItem(
             child: Row(

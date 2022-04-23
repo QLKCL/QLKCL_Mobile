@@ -196,14 +196,18 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                 children: [
                   Expanded(
                     flex: 6,
-                    child: searchBox(key, keySearch),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        searchBox(key, keySearch),
+                      ],
+                    ),
                   ),
                   Expanded(
                     flex: 4,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildImportingButtons(),
                         buildExportingButtons(key),
                       ],
                     ),
