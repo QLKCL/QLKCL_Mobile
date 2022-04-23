@@ -362,12 +362,36 @@ class DataSource extends DataGridSource {
             row.getCells()[4].value.toString(),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Text(
-            row.getCells()[5].value.toString(),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[5].value.toString() == "LOCKED"
+                    ? error.withOpacity(0.25)
+                    : row.getCells()[5].value.toString() == "LEAVE"
+                        ? warning.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[5].value.toString() == "LOCKED"
+                  ? Text(
+                      "Đã khóa",
+                      style: TextStyle(color: error),
+                    )
+                  : row.getCells()[5].value.toString() == "LEAVE"
+                      ? Text(
+                          "Leave",
+                          style: TextStyle(color: warning),
+                        )
+                      : Text(
+                          "Hoạt động",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
         ),
         FutureBuilder(
           future: Future.delayed(Duration.zero, () => true),

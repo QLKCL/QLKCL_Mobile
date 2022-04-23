@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -386,63 +385,67 @@ class DataSource extends DataGridSource {
           alignment: Alignment.center,
           child: Text(row.getCells()[5].value.toString()),
         ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Badge(
-            elevation: 0,
-            shape: BadgeShape.square,
-            borderRadius: BorderRadius.circular(16),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[6].value.toString() == "SERIOUS"
-                ? error.withOpacity(0.25)
-                : row.getCells()[6].value.toString() == "UNWELL"
-                    ? warning.withOpacity(0.25)
-                    : success.withOpacity(0.25),
-            badgeContent: row.getCells()[6].value.toString() == "SERIOUS"
-                ? Text(
-                    "Nguy hiểm",
-                    style: TextStyle(color: error),
-                  )
-                : row.getCells()[6].value.toString() == "UNWELL"
-                    ? Text(
-                        "Không tốt",
-                        style: TextStyle(color: warning),
-                      )
-                    : Text(
-                        "Bình thường",
-                        style: TextStyle(color: success),
-                      ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Badge(
-            elevation: 0,
-            shape: BadgeShape.square,
-            borderRadius: BorderRadius.circular(16),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[7].value == null
-                ? secondaryText.withOpacity(0.25)
-                : row.getCells()[7].value == true
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[6].value.toString() == "SERIOUS"
                     ? error.withOpacity(0.25)
-                    : success.withOpacity(0.25),
-            badgeContent: row.getCells()[7].value == null
-                ? Text(
-                    "Chưa có",
-                    style: TextStyle(color: secondaryText),
-                  )
-                : row.getCells()[7].value == true
-                    ? Text(
-                        "Dương tính",
-                        style: TextStyle(color: error),
-                      )
-                    : Text(
-                        "Âm tính",
-                        style: TextStyle(color: success),
-                      ),
-          ),
+                    : row.getCells()[6].value.toString() == "UNWELL"
+                        ? warning.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[6].value.toString() == "SERIOUS"
+                  ? Text(
+                      "Nguy hiểm",
+                      style: TextStyle(color: error),
+                    )
+                  : row.getCells()[6].value.toString() == "UNWELL"
+                      ? Text(
+                          "Không tốt",
+                          style: TextStyle(color: warning),
+                        )
+                      : Text(
+                          "Bình thường",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.all(8),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              decoration: BoxDecoration(
+                color: row.getCells()[7].value == null
+                    ? secondaryText.withOpacity(0.25)
+                    : row.getCells()[7].value == true
+                        ? error.withOpacity(0.25)
+                        : success.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: row.getCells()[7].value == null
+                  ? Text(
+                      "Chưa có",
+                      style: TextStyle(color: secondaryText),
+                    )
+                  : row.getCells()[7].value == true
+                      ? Text(
+                          "Dương tính",
+                          style: TextStyle(color: error),
+                        )
+                      : Text(
+                          "Âm tính",
+                          style: TextStyle(color: success),
+                        ),
+            )
+          ],
         ),
         FutureBuilder(
           future: Future.delayed(Duration.zero, () => true),
