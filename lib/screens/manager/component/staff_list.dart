@@ -8,6 +8,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
+import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/components/cards.dart';
@@ -196,7 +197,21 @@ class _StaffListState extends State<StaffList>
                 child: SizedBox(
                   height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
-                  child: buildStack(constraints),
+                  child: buildStack(
+                    key,
+                    dataSource,
+                    constraints,
+                    showLoadingIndicator,
+                    showColumnItems: [
+                      columns.fullName,
+                      columns.birthday,
+                      columns.gender,
+                      columns.phoneNumber,
+                      columns.quarantineWard,
+                      columns.accountStatus,
+                      columns.code,
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -218,103 +233,6 @@ class _StaffListState extends State<StaffList>
           );
         },
       ),
-    );
-  }
-
-  Widget buildDataGrid(BoxConstraints constraint) {
-    return SfDataGrid(
-      key: key,
-      allowPullToRefresh: true,
-      source: dataSource,
-      columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-      allowSorting: true,
-      allowMultiColumnSorting: true,
-      allowTriStateSorting: true,
-      selectionMode: SelectionMode.multiple,
-      showCheckboxColumn: true,
-      columns: <GridColumn>[
-        GridColumn(
-            columnName: 'fullName',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Họ và tên',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'birthday',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày sinh',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'gender',
-            columnWidthMode: ColumnWidthMode.fitByCellValue,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Giới tính',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ))),
-        GridColumn(
-            columnName: 'phoneNumber',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('SDT',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantineWard',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Khu cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'status',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Trạng thái tài khoản',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'code',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Hành động',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-      ],
-    );
-  }
-
-  Widget buildStack(BoxConstraints constraints) {
-    List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
-      stackChildren.add(buildDataGrid(constraints));
-
-      if (showLoadingIndicator) {
-        stackChildren.add(Container(
-          color: Colors.black12,
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: const Align(
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-            ),
-          ),
-        ));
-      }
-
-      return stackChildren;
-    }
-
-    return Stack(
-      children: _getChildren(),
     );
   }
 }
@@ -373,7 +291,8 @@ class DataSource extends DataGridSource {
                   columnName: 'phoneNumber', value: e.phoneNumber),
               DataGridCell<String>(
                   columnName: 'quarantineWard', value: e.quarantineWard.name),
-              DataGridCell<String>(columnName: 'status', value: e.status),
+              DataGridCell<String>(
+                  columnName: 'accountStatus', value: e.status),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),

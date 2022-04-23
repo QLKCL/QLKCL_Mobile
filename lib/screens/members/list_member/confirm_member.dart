@@ -7,6 +7,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/import_export_button.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
+import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -245,7 +246,40 @@ class _ConfirmMemberState extends State<ConfirmMember>
                 child: SizedBox(
                   height: constraints.maxHeight - 120,
                   width: constraints.maxWidth,
-                  child: buildStack(constraints),
+                  child: buildStack(
+                    key,
+                    dataSource,
+                    constraints,
+                    showLoadingIndicator,
+                    showColumnItems: [
+                      columns.fullName,
+                      columns.birthday,
+                      columns.gender,
+                      columns.phoneNumber,
+                      columns.quarantineWard,
+                      columns.label,
+                      columns.healthStatus,
+                      columns.positiveTestNow,
+                      columns.code,
+                    ],
+                    dataGridController: _dataGridController,
+                    onSelectionChange: (List<DataGridRow> addedRows,
+                        List<DataGridRow> removedRows) {
+                      for (final element in addedRows) {
+                        if (!widget.indexList
+                            .contains(element.getCells()[10].value)) {
+                          widget.indexList.add(element.getCells()[10].value);
+                        }
+                      }
+
+                      for (final element in removedRows) {
+                        if (widget.indexList
+                            .contains(element.getCells()[10].value)) {
+                          widget.indexList.remove(element.getCells()[10].value);
+                        }
+                      }
+                    },
+                  ),
                 ),
               ),
               SizedBox(
@@ -267,149 +301,6 @@ class _ConfirmMemberState extends State<ConfirmMember>
           );
         },
       ),
-    );
-  }
-
-  Widget buildDataGrid(BoxConstraints constraint) {
-    return SfDataGrid(
-      key: key,
-      allowPullToRefresh: true,
-      source: dataSource,
-      columnWidthCalculationRange: ColumnWidthCalculationRange.allRows,
-      allowSorting: true,
-      allowMultiColumnSorting: true,
-      allowTriStateSorting: true,
-      selectionMode: SelectionMode.multiple,
-      showCheckboxColumn: true,
-      controller: _dataGridController,
-      onSelectionChanged:
-          (List<DataGridRow> addedRows, List<DataGridRow> removedRows) {
-        for (final element in addedRows) {
-          if (!widget.indexList.contains(element.getCells()[10].value)) {
-            widget.indexList.add(element.getCells()[10].value);
-          }
-        }
-
-        for (final element in removedRows) {
-          if (widget.indexList.contains(element.getCells()[10].value)) {
-            widget.indexList.remove(element.getCells()[10].value);
-          }
-        }
-      },
-      columns: <GridColumn>[
-        GridColumn(
-            columnName: 'fullName',
-            columnWidthMode: ColumnWidthMode.fill,
-            minimumWidth: 150,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Họ và tên',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'birthday',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày sinh',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'gender',
-            columnWidthMode: ColumnWidthMode.fitByCellValue,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Giới tính',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ))),
-        GridColumn(
-            columnName: 'phoneNumber',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('SDT',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantineWard',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.centerLeft,
-                child: const Text('Khu cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'label',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Diện cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantinedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày cách ly',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'quarantinedFinishExpectedAt',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Ngày dự kiến hoàn thành',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'healthStatus',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Sức khỏe',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'positiveTestNow',
-            columnWidthMode: ColumnWidthMode.auto,
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Xét nghiệm',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-        GridColumn(
-            columnName: 'code',
-            label: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                alignment: Alignment.center,
-                child: const Text('Hành động',
-                    style: TextStyle(fontWeight: FontWeight.bold)))),
-      ],
-    );
-  }
-
-  Widget buildStack(BoxConstraints constraints) {
-    List<Widget> _getChildren() {
-      final List<Widget> stackChildren = [];
-      stackChildren.add(buildDataGrid(constraints));
-
-      if (showLoadingIndicator) {
-        stackChildren.add(Container(
-          color: Colors.black12,
-          width: constraints.maxWidth,
-          height: constraints.maxHeight,
-          child: const Align(
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-            ),
-          ),
-        ));
-      }
-
-      return stackChildren;
-    }
-
-    return Stack(
-      children: _getChildren(),
     );
   }
 }
@@ -472,16 +363,6 @@ class DataSource extends DataGridSource {
                   columnName: 'quarantineWard',
                   value: e.quarantineWard?.name ?? ""),
               DataGridCell<String>(columnName: 'label', value: e.label),
-              DataGridCell<DateTime?>(
-                  columnName: 'quarantinedAt',
-                  value: e.quarantinedAt != null
-                      ? DateTime.parse(e.quarantinedAt!).toLocal()
-                      : null),
-              DataGridCell<DateTime?>(
-                  columnName: 'quarantinedFinishExpectedAt',
-                  value: e.quarantinedFinishExpectedAt != null
-                      ? DateTime.parse(e.quarantinedFinishExpectedAt!).toLocal()
-                      : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<bool?>(
@@ -563,40 +444,22 @@ class DataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(
-            row.getCells()[6].value != null
-                ? DateFormat('dd/MM/yyyy').format(row.getCells()[6].value)
-                : "",
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
-          child: Text(
-            row.getCells()[7].value != null
-                ? DateFormat('dd/MM/yyyy').format(row.getCells()[7].value)
-                : "",
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.all(8),
-          alignment: Alignment.center,
           child: Badge(
             elevation: 0,
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[8].value.toString() == "SERIOUS"
+            badgeColor: row.getCells()[6].value.toString() == "SERIOUS"
                 ? error.withOpacity(0.25)
-                : row.getCells()[8].value.toString() == "UNWELL"
+                : row.getCells()[6].value.toString() == "UNWELL"
                     ? warning.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[8].value.toString() == "SERIOUS"
+            badgeContent: row.getCells()[6].value.toString() == "SERIOUS"
                 ? Text(
                     "Nguy hiểm",
                     style: TextStyle(color: error),
                   )
-                : row.getCells()[8].value.toString() == "UNWELL"
+                : row.getCells()[6].value.toString() == "UNWELL"
                     ? Text(
                         "Không tốt",
                         style: TextStyle(color: warning),
@@ -615,17 +478,17 @@ class DataSource extends DataGridSource {
             shape: BadgeShape.square,
             borderRadius: BorderRadius.circular(16),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            badgeColor: row.getCells()[9].value == null
+            badgeColor: row.getCells()[7].value == null
                 ? secondaryText.withOpacity(0.25)
-                : row.getCells()[9].value == true
+                : row.getCells()[7].value == true
                     ? error.withOpacity(0.25)
                     : success.withOpacity(0.25),
-            badgeContent: row.getCells()[9].value == null
+            badgeContent: row.getCells()[7].value == null
                 ? Text(
                     "Chưa có",
                     style: TextStyle(color: secondaryText),
                   )
-                : row.getCells()[9].value == true
+                : row.getCells()[7].value == true
                     ? Text(
                         "Dương tính",
                         style: TextStyle(color: error),
@@ -644,7 +507,7 @@ class DataSource extends DataGridSource {
                 : menus(
                     context,
                     paginatedDataSource.safeFirstWhere(
-                        (e) => e.code == row.getCells()[10].value.toString())!,
+                        (e) => e.code == row.getCells()[8].value.toString())!,
                     tableKey: key,
                     showMenusItems: [
                       menusOptions.viewInfo,
