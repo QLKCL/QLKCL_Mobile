@@ -137,27 +137,27 @@ class _TestFormState extends State<TestForm> {
                   controller: userNameController,
                   enabled: false,
                 ),
-                DropdownInput<KeyValue>(
-                  label: 'Trạng thái',
-                  hint: 'Chọn trạng thái',
-                  required: widget.mode != Permission.view,
-                  itemValue: testStateList,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  maxHeight: 112,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  selectedItem: testStateList.safeFirstWhere(
-                      (state) => state.id == stateController.text),
-                  onChanged: (value) {
-                    if (value == null) {
-                      stateController.text = "";
-                    } else {
-                      stateController.text = value.id;
-                    }
-                  },
-                  enabled: widget.mode == Permission.edit ||
-                      widget.mode == Permission.add,
-                ),
+                // DropdownInput<KeyValue>(
+                //   label: 'Trạng thái',
+                //   hint: 'Chọn trạng thái',
+                //   required: widget.mode != Permission.view,
+                //   itemValue: testStateList,
+                //   itemAsString: (KeyValue? u) => u!.name,
+                //   maxHeight: 112,
+                //   compareFn: (item, selectedItem) =>
+                //       item?.id == selectedItem?.id,
+                //   selectedItem: testStateList.safeFirstWhere(
+                //       (state) => state.id == stateController.text),
+                //   onChanged: (value) {
+                //     if (value == null) {
+                //       stateController.text = "";
+                //     } else {
+                //       stateController.text = value.id;
+                //     }
+                //   },
+                //   enabled: widget.mode == Permission.edit ||
+                //       widget.mode == Permission.add,
+                // ),
                 DropdownInput<KeyValue>(
                   label: 'Kỹ thuật xét nghiệm',
                   hint: 'Chọn kỹ thuật xét nghiệm',
