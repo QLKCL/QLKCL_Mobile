@@ -682,6 +682,7 @@ class FilterMember {
     required this.createdAt,
     this.quarantinedAt,
     this.quarantinedFinishExpectedAt,
+    this.quarantinedFinishAt,
     this.quarantineFloor,
     this.quarantineBuilding,
     required this.quarantineWard,
@@ -704,6 +705,7 @@ class FilterMember {
   final String createdAt;
   final String? quarantinedAt;
   final String? quarantinedFinishExpectedAt;
+  final String? quarantinedFinishAt;
   final KeyValue? quarantineFloor;
   final KeyValue? quarantineBuilding;
   final KeyValue? quarantineWard;
@@ -728,6 +730,7 @@ class FilterMember {
         createdAt: json["created_at"],
         quarantinedAt: json["quarantined_at"],
         quarantinedFinishExpectedAt: json["quarantined_finish_expected_at"],
+        quarantinedFinishAt: json["quarantined_finished_at"],
         quarantineFloor: json["quarantine_floor"] != null
             ? KeyValue.fromJson(json["quarantine_floor"])
             : null,
@@ -763,6 +766,7 @@ class FilterMember {
         "created_at": createdAt,
         "quarantined_at": quarantinedAt,
         "quarantined_finish_expected_at": quarantinedFinishExpectedAt,
+        "quarantined_finished_at": quarantinedFinishAt,
         "quarantine_floor": quarantineFloor?.toJson(),
         "quarantine_building": quarantineBuilding?.toJson(),
         "quarantine_ward": quarantineWard?.toJson(),

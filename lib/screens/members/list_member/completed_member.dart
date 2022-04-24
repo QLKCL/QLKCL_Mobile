@@ -62,7 +62,8 @@ class _CompletedMemberState extends State<CompletedMember>
       "search": keySearch.text,
       'page': 1,
       'status_list': "LEAVE",
-      'quarantined_status_list': "COMPLETED"
+      'quarantined_status_list': "COMPLETED",
+      "order_by": "-quarantined_finished_at"
     }).then((data) {
       showLoadingIndicator = false;
       paginatedDataSource = data.data;
@@ -94,7 +95,8 @@ class _CompletedMemberState extends State<CompletedMember>
         "search": keySearch.text,
         'page': pageKey,
         'status_list': "LEAVE",
-        'quarantined_status_list': "COMPLETED"
+        'quarantined_status_list': "COMPLETED",
+        "order_by": "-quarantined_finished_at"
       });
 
       final isLastPage = newItems.data.length < pageSize;
@@ -234,7 +236,7 @@ class _CompletedMemberState extends State<CompletedMember>
                       columns.quarantineWard,
                       columns.label,
                       columns.quarantinedAt,
-                      columns.quarantinedFinishExpectedAt,
+                      columns.quarantinedFinishAt,
                       columns.healthStatus,
                       columns.positiveTestNow,
                       columns.code,
@@ -285,7 +287,8 @@ class DataSource extends DataGridSource {
         "search": keySearch.text,
         'page': newPageIndex + 1,
         'status_list': "LEAVE",
-        'quarantined_status_list': "COMPLETED"
+        'quarantined_status_list': "COMPLETED",
+        "order_by": "-quarantined_finished_at"
       });
       _paginatedRows = newItems.data;
       updatePageCount(newItems.totalPages.toDouble());
@@ -303,7 +306,8 @@ class DataSource extends DataGridSource {
       "search": keySearch.text,
       'page': currentPageIndex + 1,
       'status_list': "LEAVE",
-      'quarantined_status_list': "COMPLETED"
+      'quarantined_status_list': "COMPLETED",
+      "order_by": "-quarantined_finished_at"
     });
     _paginatedRows = newItems.data;
     updatePageCount(newItems.totalPages.toDouble());
@@ -335,9 +339,9 @@ class DataSource extends DataGridSource {
                       ? DateTime.parse(e.quarantinedAt!).toLocal()
                       : null),
               DataGridCell<DateTime?>(
-                  columnName: 'quarantinedFinishExpectedAt',
-                  value: e.quarantinedFinishExpectedAt != null
-                      ? DateTime.parse(e.quarantinedFinishExpectedAt!).toLocal()
+                  columnName: 'quarantinedFinishAt',
+                  value: e.quarantinedFinishAt != null
+                      ? DateTime.parse(e.quarantinedFinishAt!).toLocal()
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),

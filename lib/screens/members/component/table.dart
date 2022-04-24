@@ -11,6 +11,7 @@ enum columns {
   label,
   quarantinedAt,
   quarantinedFinishExpectedAt,
+  quarantinedFinishAt,
   healthStatus,
   positiveTestNow,
   code,
@@ -88,6 +89,13 @@ Map<columns, GridColumn> columnsValue = {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           alignment: Alignment.center,
           child: const Text('Ngày dự kiến hoàn thành',
+              style: TextStyle(fontWeight: FontWeight.bold)))),
+  columns.quarantinedFinishAt: GridColumn(
+      columnName: 'quarantinedFinishAt',
+      label: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          alignment: Alignment.center,
+          child: const Text('Ngày hoàn thành cách ly',
               style: TextStyle(fontWeight: FontWeight.bold)))),
   columns.healthStatus: GridColumn(
       columnName: 'healthStatus',
