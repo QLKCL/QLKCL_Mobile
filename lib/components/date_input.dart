@@ -280,6 +280,7 @@ class NewDateInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
   final bool autoValidate;
+  final String? defaultTime;
 
   const NewDateInput({
     Key? key,
@@ -295,6 +296,7 @@ class NewDateInput extends StatefulWidget {
     this.onChangedFunction,
     this.margin,
     this.autoValidate = true,
+    this.defaultTime,
   }) : super(key: key);
 
   @override
@@ -374,7 +376,17 @@ class _NewDateInputState extends State<NewDateInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        newDate = data.value.toIso8601String();
+                        if (widget.defaultTime != null) {
+                          final int hour =
+                              int.parse(widget.defaultTime!.split(':').first);
+                          final int minute =
+                              int.parse(widget.defaultTime!.split(':').last);
+                          newDate = (data.value as DateTime)
+                              .copyWith(hour: hour, minute: minute)
+                              .toIso8601String();
+                        } else {
+                          newDate = (data.value as DateTime).toIso8601String();
+                        }
                       },
                       monthViewSettings: const DateRangePickerMonthViewSettings(
                         firstDayOfWeek: 1,
@@ -385,11 +397,11 @@ class _NewDateInputState extends State<NewDateInput> {
                       maxDate: maxDate,
                       initialSelectedDate: (widget.controller != null &&
                               widget.controller!.text != "")
-                          ? DateTime.parse(widget.controller!.text)
+                          ? DateTime.parse(widget.controller!.text).toLocal()
                           : DateTime.now(),
                       initialDisplayDate: (widget.controller != null &&
                               widget.controller!.text != "")
-                          ? DateTime.parse(widget.controller!.text)
+                          ? DateTime.parse(widget.controller!.text).toLocal()
                           : DateTime.now(),
                       showNavigationArrow: true,
                     ),
@@ -444,6 +456,7 @@ class NewDateRangeInput extends StatefulWidget {
   final void Function()? onChangedFunction;
   final EdgeInsets? margin;
   final bool autoValidate;
+  final String? defaultTime;
 
   const NewDateRangeInput({
     Key? key,
@@ -460,6 +473,7 @@ class NewDateRangeInput extends StatefulWidget {
     this.onChangedFunction,
     this.margin,
     this.autoValidate = true,
+    this.defaultTime,
   }) : super(key: key);
 
   @override
@@ -555,10 +569,27 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                     width: 300,
                     child: SfDateRangePicker(
                       onSelectionChanged: (data) {
-                        newStartDate = data.value.startDate.toIso8601String();
-                        newEndDate = data.value.endDate != null
-                            ? data.value.endDate.toIso8601String()
-                            : data.value.startDate.toIso8601String();
+                        if (widget.defaultTime != null) {
+                          final int hour =
+                              int.parse(widget.defaultTime!.split(':').first);
+                          final int minute =
+                              int.parse(widget.defaultTime!.split(':').last);
+                          newStartDate = (data.value.startDate as DateTime)
+                              .copyWith(hour: hour, minute: minute)
+                              .toIso8601String();
+                          newEndDate = data.value.endDate != null
+                              ? (data.value.endDate as DateTime)
+                                  .copyWith(hour: hour, minute: minute)
+                                  .toIso8601String()
+                              : (data.value.startDate as DateTime)
+                                  .copyWith(hour: hour, minute: minute)
+                                  .toIso8601String();
+                        } else {
+                          newStartDate = data.value.startDate.toIso8601String();
+                          newEndDate = data.value.endDate != null
+                              ? data.value.endDate.toIso8601String()
+                              : data.value.startDate.toIso8601String();
+                        }
                       },
                       selectionMode: DateRangePickerSelectionMode.range,
                       monthViewSettings: const DateRangePickerMonthViewSettings(
@@ -572,10 +603,12 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           (widget.controllerStart != null &&
                                   widget.controllerStart!.text != "")
                               ? DateTime.parse(widget.controllerStart!.text)
+                                  .toLocal()
                               : DateTime.now(),
                           (widget.controllerEnd != null &&
                                   widget.controllerEnd!.text != "")
                               ? DateTime.parse(widget.controllerEnd!.text)
+                                  .toLocal()
                               : DateTime.now()),
                       showNavigationArrow: true,
                     ),
