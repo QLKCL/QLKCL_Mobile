@@ -771,8 +771,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         final response = await acceptOneMember(acceptOneMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: state.quarantineRoomController.text,
-          quarantinedAt:
-              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
+          quarantinedAt: parseDateTimeWithTimeZone(
+            state.quarantinedAtController.text,
+            time: "07:00",
+          ),
         ));
         cancel();
         showNotification(response);
@@ -782,8 +784,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
             await managerCallRequarantine(requarantineMemberDataForm(
           code: widget.quarantineData!.customUserCode.toString(),
           quarantineRoom: state.quarantineRoomController.text,
-          quarantinedAt:
-              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
+          quarantinedAt: parseDateTimeWithTimeZone(
+            state.quarantinedAtController.text,
+            time: "07:00",
+          ),
           label: state.labelController.text,
           quarantineWard: state.quarantineWardController.text,
           careStaff: state.careStaffController.text,
@@ -812,8 +816,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,
-          quarantinedAt:
-              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
+          quarantinedAt: parseDateTimeWithTimeZone(
+            state.quarantinedAtController.text,
+            time: "07:00",
+          ),
           positiveBefore: _isPositiveTestedBefore,
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
@@ -838,8 +844,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           quarantineWard: state.quarantineWardController.text,
           quarantineRoom: state.quarantineRoomController.text,
           label: state.labelController.text,
-          quarantinedAt:
-              parseDateTimeWithTimeZone(state.quarantinedAtController.text),
+          quarantinedAt: parseDateTimeWithTimeZone(
+            state.quarantinedAtController.text,
+            time: "07:00",
+          ),
           quarantinedFinishExpectedAt: parseDateTimeWithTimeZone(
               state.quarantinedFinishExpectedAtController.text),
           positiveBefore: _isPositiveTestedBefore,

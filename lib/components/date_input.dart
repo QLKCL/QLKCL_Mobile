@@ -69,7 +69,9 @@ class _DateInputState extends State<DateInput> {
             context: context,
             initialDate:
                 (widget.controller != null && widget.controller!.text != "")
-                    ? DateFormat("dd/MM/yyyy").parse(widget.controller!.text)
+                    ? DateFormat("dd/MM/yyyy")
+                        .parse(widget.controller!.text)
+                        .toLocal()
                     : DateTime.now(),
             firstDate: minDate,
             lastDate: maxDate,
@@ -200,10 +202,13 @@ class _DateRangeInputState extends State<DateRangeInput> {
                         widget.controllerStart!.text != "")
                     ? DateFormat("dd/MM/yyyy")
                         .parse(widget.controllerStart!.text)
+                        .toLocal()
                     : DateTime.now(),
                 end: (widget.controllerEnd != null &&
                         widget.controllerEnd!.text != "")
-                    ? DateFormat("dd/MM/yyyy").parse(widget.controllerEnd!.text)
+                    ? DateFormat("dd/MM/yyyy")
+                        .parse(widget.controllerEnd!.text)
+                        .toLocal()
                     : DateTime.now()),
             firstDate: minDate,
             lastDate: maxDate,
@@ -309,7 +314,7 @@ class _NewDateInputState extends State<NewDateInput> {
     showDateController = TextEditingController(
         text: widget.controller!.text.isNotEmpty
             ? DateFormat("dd/MM/yyyy")
-                .format(DateTime.parse(widget.controller!.text))
+                .format(DateTime.parse(widget.controller!.text).toLocal())
             : "");
   }
 
@@ -357,7 +362,8 @@ class _NewDateInputState extends State<NewDateInput> {
                           });
                         }
                         showDateController.text = DateFormat("dd/MM/yyyy")
-                            .format(DateTime.parse(widget.controller!.text));
+                            .format(DateTime.parse(widget.controller!.text)
+                                .toLocal());
                         widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
                       },
@@ -476,9 +482,9 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                 widget.controllerStart!.text != "")
             ? ((widget.controllerEnd != null &&
                     widget.controllerEnd!.text != "")
-                ? "${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text))} - ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text))}"
-                : DateFormat("dd/MM/yyyy")
-                    .format(DateTime.parse(widget.controllerStart!.text)))
+                ? "${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text).toLocal())} - ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text).toLocal())}"
+                : DateFormat("dd/MM/yyyy").format(
+                    DateTime.parse(widget.controllerStart!.text).toLocal()))
             : "");
   }
 
@@ -536,8 +542,8 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
                           }
 
                           showDateController.text =
-                              '${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text))} -'
-                              ' ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text))}';
+                              '${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerStart!.text).toLocal())} -'
+                              ' ${DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.controllerEnd!.text).toLocal())}';
                         });
                         widget.onChangedFunction?.call();
                         Navigator.of(context).pop();
