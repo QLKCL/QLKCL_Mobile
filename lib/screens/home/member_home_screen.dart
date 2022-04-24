@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
-import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
+import 'package:qlkcl/screens/home/component/card.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/screens/home/component/requarantined.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
-import 'package:intl/intl.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -135,6 +134,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                         if (msg != "")
                           Card(
                             child: ListTile(
+                              isThreeLine: true,
                               contentPadding: const EdgeInsets.all(8),
                               title: Text(
                                 msg,
@@ -143,6 +143,30 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     fontWeight: FontWeight.normal,
                                     color: primaryText),
                               ),
+                              minVerticalPadding: 10,
+                              subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Khu cách ly: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['full_name'] != "") ? snapshot.data['quarantine_ward']['full_name'] : "Không rõ"}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: primaryText),
+                                      ),
+                                      const SizedBox(
+                                        height: 2,
+                                      ),
+                                      Text(
+                                        "Số điện thoại: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['phone_number'] != "") ? snapshot.data['quarantine_ward']['phone_number'] : "Chưa có"}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            color: primaryText),
+                                      ),
+                                    ],
+                                  )),
                               leading: CircleAvatar(
                                 backgroundColor: error,
                                 child: Icon(
@@ -152,87 +176,15 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               ),
                             ),
                           ),
-                        Card(
-                          child: InkWell(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            "Thông tin sức khỏe",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline6,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        cardLine(
-                                          icon: Icons.history,
-                                          title: "Sức khỏe",
-                                          content: snapshot
-                                                      .data['health_status'] ==
-                                                  "SERIOUS"
-                                              ? "Nguy hiểm"
-                                              : (snapshot.data[
-                                                          'health_status'] ==
-                                                      "UNWELL"
-                                                  ? "Nghi nhiễm"
-                                                  : "Bình thường"),
-                                          textColor: primaryText,
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        cardLine(
-                                          icon: Icons.description_outlined,
-                                          title: "Xét nghiệm",
-                                          content: snapshot.data[
-                                                      'positive_test_now'] !=
-                                                  null
-                                              ? ((snapshot.data[
-                                                              'positive_test_now'] ==
-                                                          false
-                                                      ? "Âm tính"
-                                                      : "Dương tính") +
-                                                  (snapshot.data[
-                                                              'last_tested_had_result'] !=
-                                                          null
-                                                      ? " (${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(snapshot.data['last_tested_had_result']).toLocal())})"
-                                                      : ""))
-                                              : "Chưa có kết quả xét nghiệm",
-                                          textColor: primaryText,
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        cardLine(
-                                          icon: Icons.vaccines_outlined,
-                                          title: "Số mũi vaccine",
-                                          content: (snapshot.data[
-                                                      'number_of_vaccine_doses'] +
-                                                  " mũi") ??
-                                              "Chưa có dữ liệu",
-                                          textColor: primaryText,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (snapshot.data['quarantine_ward'] != null)
+                        HealthStatus(
+                            healthStatus: snapshot.data['health_status'],
+                            positiveTestNow: snapshot.data['positive_test_now'],
+                            lastTestedHadResult:
+                                snapshot.data['last_tested_had_result'],
+                            numberOfVaccineDoses:
+                                snapshot.data['number_of_vaccine_doses']),
+                        if (snapshot.data['quarantine_ward'] != null &&
+                            msg == "")
                           QuarantineHome(
                             name: snapshot.data['quarantine_ward'] != null
                                 ? snapshot.data['quarantine_ward']['full_name']
