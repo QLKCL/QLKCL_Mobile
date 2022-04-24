@@ -1,7 +1,5 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -15,8 +13,6 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
-List<FilterMember> paginatedDataSource = [];
-double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
@@ -34,6 +30,8 @@ class _DeniedMemberState extends State<DeniedMember>
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
   late DataSource dataSource;
+  double pageCount = 0;
+  List<FilterMember> paginatedDataSource = [];
   late Future<FilterResponse<FilterMember>> fetch;
 
   bool showLoadingIndicator = true;
@@ -43,7 +41,6 @@ class _DeniedMemberState extends State<DeniedMember>
 
   @override
   void initState() {
-    dataSource = DataSource(key);
     _pagingController.addPageRequestListener(_fetchPage);
     _pagingController.addStatusListener((status) {
       if (status == PagingStatus.subsequentPageError) {
@@ -61,10 +58,26 @@ class _DeniedMemberState extends State<DeniedMember>
       }
     });
     super.initState();
-    fetch = fetchMemberList(data: {
+    fetchMemberList(data: {
       "search": keySearch.text,
       'page': 1,
       'status_list': "REFUSED",
+    }).then((data) {
+      showLoadingIndicator = false;
+      paginatedDataSource = data.data;
+      pageCount = data.totalPages.toDouble();
+      dataSource = DataSource(
+        key,
+        (value) {
+          setState(() {
+            pageCount = value;
+          });
+        },
+        memberData: paginatedDataSource,
+      );
+      dataSource.buildDataGridRows();
+      dataSource.updateDataGridSource();
+      setState(() {});
     });
   }
 
@@ -98,40 +111,24 @@ class _DeniedMemberState extends State<DeniedMember>
   Widget build(BuildContext context) {
     super.build(context);
     return Responsive.isDesktopLayout(context)
-        ? FutureBuilder(
-            future: fetch,
-            builder: (BuildContext context,
-                AsyncSnapshot<FilterResponse<FilterMember>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.data.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image.asset("assets/images/no_data.png"),
-                          ),
-                          const Text('Không có dữ liệu'),
-                        ],
-                      ),
-                    );
-                  } else {
-                    showLoadingIndicator = false;
-                    paginatedDataSource = snapshot.data!.data;
-                    pageCount = snapshot.data!.totalPages.toDouble();
-                    dataSource.buildDataGridRows();
-                    dataSource.updateDataGridSource();
-                    return listMemberTable();
-                  }
-                }
-              }
-              return const Align(
+        ? showLoadingIndicator
+            ? const Align(
                 child: CircularProgressIndicator(),
-              );
-            },
-          )
+              )
+            : paginatedDataSource.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: Image.asset("assets/images/no_data.png"),
+                        ),
+                        const Text('Không có dữ liệu'),
+                      ],
+                    ),
+                  )
+                : listMemberTable()
         : listMemberCard();
   }
 
@@ -248,13 +245,7 @@ class _DeniedMemberState extends State<DeniedMember>
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  onPageNavigationStart: (int pageIndex) {
-                    showLoading();
-                  },
                   delegate: dataSource,
-                  onPageNavigationEnd: (int pageIndex) {
-                    BotToast.closeAllLoading();
-                  },
                 ),
               )
             ],
@@ -266,10 +257,20 @@ class _DeniedMemberState extends State<DeniedMember>
 }
 
 class DataSource extends DataGridSource {
-  DataSource(this.key);
+  DataSource(
+    this.key,
+    this.updatePageCount, {
+    required List<FilterMember> memberData,
+  }) {
+    _paginatedRows = memberData;
+    buildDataGridRows();
+  }
+
+  Function updatePageCount;
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
+  List<FilterMember> _paginatedRows = [];
 
   @override
   List<DataGridRow> get rows => _memberData;
@@ -282,8 +283,8 @@ class DataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'status_list': "REFUSED"
       });
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
+      _paginatedRows = newItems.data;
+      updatePageCount(newItems.totalPages.toDouble());
       buildDataGridRows();
       notifyListeners();
       return true;
@@ -299,14 +300,14 @@ class DataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'status_list': "REFUSED"
     });
-    paginatedDataSource = newItems.data;
-    pageCount = newItems.totalPages.toDouble();
+    _paginatedRows = newItems.data;
+    updatePageCount(newItems.totalPages.toDouble());
     buildDataGridRows();
     notifyListeners();
   }
 
   void buildDataGridRows() {
-    _memberData = paginatedDataSource
+    _memberData = _paginatedRows
         .map<DataGridRow>(
           (e) => DataGridRow(
             cells: [
@@ -470,7 +471,7 @@ class DataSource extends DataGridSource {
                 ? const SizedBox()
                 : menus(
                     context,
-                    paginatedDataSource.safeFirstWhere(
+                    _paginatedRows.safeFirstWhere(
                         (e) => e.code == row.getCells()[8].value.toString())!,
                     tableKey: key,
                     showMenusItems: [

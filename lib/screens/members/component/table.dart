@@ -100,6 +100,7 @@ Map<columns, GridColumn> columnsValue = {
   columns.positiveTestNow: GridColumn(
       columnName: 'positiveTestNow',
       columnWidthMode: ColumnWidthMode.auto,
+      maximumWidth: 120,
       label: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           alignment: Alignment.center,
@@ -114,7 +115,8 @@ Map<columns, GridColumn> columnsValue = {
               style: TextStyle(fontWeight: FontWeight.bold)))),
   columns.accountStatus: GridColumn(
       columnName: 'accountStatus',
-      columnWidthMode: ColumnWidthMode.auto,
+      // columnWidthMode: ColumnWidthMode.auto,
+      width: 180,
       label: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
           alignment: Alignment.center,

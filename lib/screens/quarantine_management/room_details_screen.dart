@@ -46,7 +46,6 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
   late DataSource dataSource;
 
   bool showLoadingIndicator = true;
-  double pageCount = 0;
 
   late Room currentRoom;
 

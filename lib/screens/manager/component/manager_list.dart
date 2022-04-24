@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -16,8 +15,6 @@ import 'package:qlkcl/utils/constant.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:intl/intl.dart';
 
-List<FilterStaff> paginatedDataSource = [];
-double pageCount = 0;
 DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
@@ -40,6 +37,8 @@ class _ManagerListState extends State<ManagerList>
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
   late DataSource dataSource;
+  double pageCount = 0;
+  List<FilterStaff> paginatedDataSource = [];
   late Future<FilterResponse<FilterStaff>> fetch;
 
   bool showLoadingIndicator = true;
@@ -49,7 +48,6 @@ class _ManagerListState extends State<ManagerList>
 
   @override
   void initState() {
-    dataSource = DataSource(key);
     ManagerList.currentQuarrantine = widget.quarrantine;
     pagingController.addPageRequestListener(_fetchPage);
     pagingController.addStatusListener((status) {
@@ -58,10 +56,26 @@ class _ManagerListState extends State<ManagerList>
       }
     });
     super.initState();
-    fetch = fetchManagerList(data: {
+    fetchManagerList(data: {
       "search": keySearch.text,
       'page': 1,
       'quarantine_ward_id': widget.quarrantine?.id,
+    }).then((data) {
+      showLoadingIndicator = false;
+      paginatedDataSource = data.data;
+      pageCount = data.totalPages.toDouble();
+      dataSource = DataSource(
+        key,
+        (value) {
+          setState(() {
+            pageCount = value;
+          });
+        },
+        data: paginatedDataSource,
+      );
+      dataSource.buildDataGridRows();
+      dataSource.updateDataGridSource();
+      setState(() {});
     });
   }
 
@@ -95,40 +109,24 @@ class _ManagerListState extends State<ManagerList>
   Widget build(BuildContext context) {
     super.build(context);
     return Responsive.isDesktopLayout(context)
-        ? FutureBuilder(
-            future: fetch,
-            builder: (BuildContext context,
-                AsyncSnapshot<FilterResponse<FilterStaff>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                if (snapshot.hasData) {
-                  if (snapshot.data!.data.isEmpty) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.15,
-                            child: Image.asset("assets/images/no_data.png"),
-                          ),
-                          const Text('Không có dữ liệu'),
-                        ],
-                      ),
-                    );
-                  } else {
-                    showLoadingIndicator = false;
-                    paginatedDataSource = snapshot.data!.data;
-                    pageCount = snapshot.data!.totalPages.toDouble();
-                    dataSource.buildDataGridRows();
-                    dataSource.updateDataGridSource();
-                    return listTable();
-                  }
-                }
-              }
-              return const Align(
+        ? showLoadingIndicator
+            ? const Align(
                 child: CircularProgressIndicator(),
-              );
-            },
-          )
+              )
+            : paginatedDataSource.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.15,
+                          child: Image.asset("assets/images/no_data.png"),
+                        ),
+                        const Text('Không có dữ liệu'),
+                      ],
+                    ),
+                  )
+                : listTable()
         : listCard(pagingController);
   }
 
@@ -236,13 +234,7 @@ class _ManagerListState extends State<ManagerList>
                 child: SfDataPager(
                   controller: _dataPagerController,
                   pageCount: pageCount,
-                  onPageNavigationStart: (int pageIndex) {
-                    showLoading();
-                  },
                   delegate: dataSource,
-                  onPageNavigationEnd: (int pageIndex) {
-                    BotToast.closeAllLoading();
-                  },
                 ),
               )
             ],
@@ -254,10 +246,20 @@ class _ManagerListState extends State<ManagerList>
 }
 
 class DataSource extends DataGridSource {
-  DataSource(this.key);
+  DataSource(
+    this.key,
+    this.updatePageCount, {
+    required List<FilterStaff> data,
+  }) {
+    _paginatedRows = data;
+    buildDataGridRows();
+  }
+
+  Function updatePageCount;
   GlobalKey<SfDataGridState> key;
 
   List<DataGridRow> _memberData = [];
+  List<FilterStaff> _paginatedRows = [];
 
   @override
   List<DataGridRow> get rows => _memberData;
@@ -270,8 +272,8 @@ class DataSource extends DataGridSource {
         'page': newPageIndex + 1,
         'quarantine_ward_id': ManagerList.currentQuarrantine?.id,
       });
-      paginatedDataSource = newItems.data;
-      pageCount = newItems.totalPages.toDouble();
+      _paginatedRows = newItems.data;
+      updatePageCount(newItems.totalPages.toDouble());
       buildDataGridRows();
       notifyListeners();
       return true;
@@ -287,14 +289,14 @@ class DataSource extends DataGridSource {
       'page': currentPageIndex + 1,
       'quarantine_ward_id': ManagerList.currentQuarrantine?.id
     });
-    paginatedDataSource = newItems.data;
-    pageCount = newItems.totalPages.toDouble();
+    _paginatedRows = newItems.data;
+    updatePageCount(newItems.totalPages.toDouble());
     buildDataGridRows();
     notifyListeners();
   }
 
   void buildDataGridRows() {
-    _memberData = paginatedDataSource
+    _memberData = _paginatedRows
         .map<DataGridRow>(
           (e) => DataGridRow(
             cells: [
@@ -416,7 +418,7 @@ class DataSource extends DataGridSource {
                 ? const SizedBox()
                 : menus(
                     context,
-                    paginatedDataSource.safeFirstWhere(
+                    _paginatedRows.safeFirstWhere(
                         (e) => e.code == row.getCells()[6].value.toString())!,
                     showMenusItems: [
                       menusOptions.updateInfo,
