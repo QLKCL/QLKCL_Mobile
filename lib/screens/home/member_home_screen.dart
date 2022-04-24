@@ -203,10 +203,29 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 ? snapshot.data['quarantine_ward']
                                     ['phone_number']
                                 : "Chưa có",
-                            quarantineAt: snapshot.data['quarantined_at'] ?? "",
-                            quarantineFinishExpect: snapshot
-                                    .data['quarantined_finish_expected_at'] ??
-                                "",
+                            quarantineAt: snapshot.data['quarantined_at'],
+                            quarantineFinishExpect:
+                                snapshot.data['quarantined_finish_expected_at'],
+                          ),
+                        if (snapshot.data['custom_user']['status'] == "LEAVE" &&
+                            snapshot.data['quarantined_finished_at'] != null &&
+                            snapshot.data['quarantined_finished_at'] != "")
+                          QuarantineFinishCertification(
+                            name: snapshot.data['quarantine_ward'] != null
+                                ? snapshot.data['quarantine_ward']['full_name']
+                                : "",
+                            address:
+                                getAddress(snapshot.data['quarantine_ward']),
+                            phone: snapshot.data['quarantine_ward'] != null &&
+                                    snapshot.data['quarantine_ward']
+                                            ['phone_number'] !=
+                                        null
+                                ? snapshot.data['quarantine_ward']
+                                    ['phone_number']
+                                : "Chưa có",
+                            quarantineAt: snapshot.data['quarantined_at'],
+                            quarantineFinishAt:
+                                snapshot.data['quarantined_finished_at'],
                           ),
                         if (snapshot.data['custom_user']['status'] == "LEAVE")
                           Container(
