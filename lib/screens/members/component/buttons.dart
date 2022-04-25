@@ -1,6 +1,9 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datagrid_export/export.dart';
@@ -175,4 +178,89 @@ Widget searchBox(
       },
     ),
   );
+}
+
+Widget buildAcceptsButton(
+  GlobalKey<SfDataGridState> key,
+  bool longPressFlag,
+  List<String> indexList,
+  VoidCallback longPress,
+  bool onDone,
+  VoidCallback onDoneCallback,
+) {
+  return indexList.isNotEmpty
+      ? Container(
+          margin: const EdgeInsets.all(8),
+          height: 36,
+          decoration: BoxDecoration(
+              color: disable, borderRadius: BorderRadius.circular(4)),
+          child: TooltipVisibility(
+            visible: false,
+            child: PopupMenuButton(
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      WidgetSpan(
+                        alignment: PlaceholderAlignment.middle,
+                        child: Icon(
+                          Icons.done,
+                          size: 22,
+                          color: primaryText,
+                        ),
+                      ),
+                      const TextSpan(
+                        text: " Xét duyệt",
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                PopupMenuItem(
+                  child: const Text('Chấp nhận'),
+                  onTap: () async {
+                    if (indexList.isEmpty) {
+                      showNotification("Vui lòng chọn tài khoản cần xét duyệt!",
+                          status: Status.error);
+                    } else {
+                      final CancelFunc cancel = showLoading();
+                      final response = await acceptManyMember(
+                          {'member_codes': indexList.join(",")});
+                      cancel();
+                      if (response.status == Status.success) {
+                        indexList.clear();
+                        key.currentState!.refresh();
+                        longPress();
+                      }
+                    }
+                  },
+                ),
+                PopupMenuItem(
+                  child: const Text('Từ chối'),
+                  onTap: () async {
+                    if (indexList.isEmpty) {
+                      showNotification("Vui lòng chọn tài khoản cần xét duyệt!",
+                          status: Status.error);
+                    } else {
+                      final CancelFunc cancel = showLoading();
+                      final response = await denyMember(
+                          {'member_codes': indexList.join(",")});
+                      cancel();
+                      showNotification(response);
+                      if (response.status == Status.success) {
+                        indexList.clear();
+                        key.currentState!.refresh();
+                        longPress();
+                      }
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        )
+      : const SizedBox();
 }

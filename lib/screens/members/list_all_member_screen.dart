@@ -94,18 +94,7 @@ class _ListAllMemberState extends State<ListAllMember>
                     : const Text("Danh sách người cách ly"),
                 centerTitle: true,
                 actions: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context,
-                              rootNavigator:
-                                  !Responsive.isDesktopLayout(context))
-                          .push(MaterialPageRoute(
-                              builder: (context) => const SearchMember()));
-                    },
-                    icon: const Icon(Icons.search),
-                    tooltip: "Tìm kiếm",
-                  ),
-                  if (_tabController.index == 1)
+                  if (longPressFlag)
                     PopupMenuButton(
                       icon: const Icon(
                         Icons.more_vert,
@@ -157,6 +146,18 @@ class _ListAllMemberState extends State<ListAllMember>
                           },
                         ),
                       ],
+                    )
+                  else
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context,
+                                rootNavigator:
+                                    !Responsive.isDesktopLayout(context))
+                            .push(MaterialPageRoute(
+                                builder: (context) => const SearchMember()));
+                      },
+                      icon: const Icon(Icons.search),
+                      tooltip: "Tìm kiếm",
                     ),
                 ],
                 pinned: true,

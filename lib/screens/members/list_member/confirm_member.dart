@@ -127,7 +127,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
       widget.indexList.clear();
       widget.onDoneCallback();
       if (Responsive.isDesktopLayout(context)) {
-        key.currentState!.refresh();
+        // key.currentState!.refresh();
       } else {
         _pagingController.refresh();
       }
@@ -248,6 +248,14 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        buildAcceptsButton(
+                          key,
+                          widget.longPressFlag,
+                          widget.indexList,
+                          widget.longPress,
+                          widget.onDone,
+                          widget.onDoneCallback,
+                        ),
                         buildExportingButton(key),
                       ],
                     ),
@@ -277,17 +285,22 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     dataGridController: _dataGridController,
                     onSelectionChange: (List<DataGridRow> addedRows,
                         List<DataGridRow> removedRows) {
-                      for (final element in addedRows) {
-                        if (!widget.indexList
-                            .contains(element.getCells()[8].value)) {
-                          widget.indexList.add(element.getCells()[8].value);
+                      if (addedRows.isEmpty && removedRows.isEmpty) {
+                        widget.indexList.clear();
+                      } else {
+                        for (final element in addedRows) {
+                          if (!widget.indexList
+                              .contains(element.getCells()[8].value)) {
+                            widget.indexList.add(element.getCells()[8].value);
+                          }
                         }
-                      }
 
-                      for (final element in removedRows) {
-                        if (widget.indexList
-                            .contains(element.getCells()[8].value)) {
-                          widget.indexList.remove(element.getCells()[8].value);
+                        for (final element in removedRows) {
+                          if (widget.indexList
+                              .contains(element.getCells()[8].value)) {
+                            widget.indexList
+                                .remove(element.getCells()[8].value);
+                          }
                         }
                       }
                       setState(() {});
