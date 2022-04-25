@@ -5,7 +5,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
-import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/buttons.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
@@ -201,7 +201,7 @@ class _StaffListState extends State<StaffList>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildExportingButtons(key),
+                        buildExportingButton(key),
                       ],
                     ),
                   ),

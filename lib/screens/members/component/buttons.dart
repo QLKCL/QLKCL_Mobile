@@ -12,7 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../helper/save_mobile.dart'
     if (dart.library.html) '../../../helper/save_web.dart' as helper;
 
-Widget buildExportingButtons(GlobalKey<SfDataGridState> key) {
+Widget buildExportingButton(GlobalKey<SfDataGridState> key) {
   Future<void> exportDataGridToExcel() async {
     final excel.Workbook workbook = key.currentState!.exportToExcelWorkbook(
       cellExport: (DataGridCellExcelExportDetails details) {},
@@ -52,7 +52,7 @@ Widget buildExportingButtons(GlobalKey<SfDataGridState> key) {
   );
 }
 
-Widget buildImportingButtons() {
+Widget buildImportingButton() {
   void importDataFromExcel() async {
     final files = (await FilePicker.platform.pickFiles(
       type: FileType.custom,

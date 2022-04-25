@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/buttons.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
@@ -248,7 +248,7 @@ class _ConfirmMemberState extends State<ConfirmMember>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildExportingButtons(key),
+                        buildExportingButton(key),
                       ],
                     ),
                   ),
@@ -279,17 +279,18 @@ class _ConfirmMemberState extends State<ConfirmMember>
                         List<DataGridRow> removedRows) {
                       for (final element in addedRows) {
                         if (!widget.indexList
-                            .contains(element.getCells()[10].value)) {
-                          widget.indexList.add(element.getCells()[10].value);
+                            .contains(element.getCells()[8].value)) {
+                          widget.indexList.add(element.getCells()[8].value);
                         }
                       }
 
                       for (final element in removedRows) {
                         if (widget.indexList
-                            .contains(element.getCells()[10].value)) {
-                          widget.indexList.remove(element.getCells()[10].value);
+                            .contains(element.getCells()[8].value)) {
+                          widget.indexList.remove(element.getCells()[8].value);
                         }
                       }
+                      setState(() {});
                     },
                   ),
                 ),
@@ -410,7 +411,7 @@ class DataSource extends DataGridSource {
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
                           builder: (context) => ConfirmDetailMember(
-                                code: row.getCells()[10].value.toString(),
+                                code: row.getCells()[8].value.toString(),
                               )));
                 },
                 child: Text(

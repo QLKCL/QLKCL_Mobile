@@ -4,7 +4,7 @@ import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/buttons.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
@@ -210,7 +210,7 @@ class _DeniedMemberState extends State<DeniedMember>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildExportingButtons(key),
+                        buildExportingButton(key),
                       ],
                     ),
                   ),

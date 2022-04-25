@@ -3,7 +3,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/import_export_button.dart';
+import 'package:qlkcl/screens/members/component/buttons.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
 import 'package:qlkcl/utils/app_theme.dart';
@@ -197,7 +197,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        buildExportingButtons(key),
+                        buildExportingButton(key),
                       ],
                     ),
                   ),
