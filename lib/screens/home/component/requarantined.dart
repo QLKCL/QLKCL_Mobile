@@ -4,6 +4,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
@@ -19,6 +20,8 @@ Future<Response?> memberRequarantined(
   final TextEditingController quarantineWardController =
       TextEditingController();
   final TextEditingController labelController = TextEditingController();
+  final TextEditingController quarantineReasonController =
+      TextEditingController();
   bool isPositiveTestedBefore = false;
 
   // Using Wrap makes the bottom sheet height the height of the content.
@@ -81,6 +84,11 @@ Future<Response?> memberRequarantined(
                     }
                   },
                 ),
+                Input(
+                  label: 'Lý do cách ly',
+                  controller: quarantineReasonController,
+                  maxLines: 3,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -113,6 +121,7 @@ Future<Response?> memberRequarantined(
                                   quarantineWardController.text,
                               'label': labelController.text,
                               "positive_tested_before": isPositiveTestedBefore,
+                              "quarantine_reason": quarantineReasonController,
                             }).then((value) {
                               cancel();
                               showNotification(value);

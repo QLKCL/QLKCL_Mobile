@@ -41,6 +41,7 @@ Map<String, dynamic> createMemberDataForm({
   String? otherBackgroundDisease,
   String? numberOfVaccineDoses,
   String? careStaff,
+  String? quarantineReason,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -66,8 +67,9 @@ Map<String, dynamic> createMemberDataForm({
     "other_background_disease": otherBackgroundDisease,
     "number_of_vaccine_doses": numberOfVaccineDoses,
     "care_staff_code": careStaff,
+    "quarantine_reason": quarantineReason,
   };
-  return prepareDataForm(data);
+  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
 }
 
 Map<String, dynamic> updateMemberDataForm({
@@ -94,6 +96,7 @@ Map<String, dynamic> updateMemberDataForm({
   String? backgroundDisease,
   String? otherBackgroundDisease,
   String? careStaff,
+  String? quarantineReason,
 }) {
   final data = {
     "code": code,
@@ -119,8 +122,9 @@ Map<String, dynamic> updateMemberDataForm({
     "background_disease": backgroundDisease,
     "other_background_disease": otherBackgroundDisease,
     "care_staff_code": careStaff,
+    "quarantine_reason": quarantineReason,
   };
-  return prepareDataForm(data);
+  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
 }
 
 Map<String, dynamic> filterMemberDataForm({
@@ -854,6 +858,7 @@ Map<String, dynamic> requarantineMemberDataForm({
   String? quarantinedAt,
   String? careStaff,
   bool? positiveTestedBefore,
+  String? quarantineReason,
 }) {
   final data = {
     "code": code,
@@ -863,6 +868,7 @@ Map<String, dynamic> requarantineMemberDataForm({
     "quarantined_at": quarantinedAt,
     "quarantine_room_id": quarantineRoom,
     "care_staff_code": careStaff,
+    "quarantine_reason": quarantineReason,
   };
-  return prepareDataForm(data);
+  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
 }

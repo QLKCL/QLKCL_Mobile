@@ -116,6 +116,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
+      state.quarantineReasonController.text =
+          widget.quarantineData?.quarantineReason ?? "";
+
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
@@ -154,6 +157,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.otherBackgroundDisease ?? "";
       state.positiveTestNowController.text =
           widget.quarantineData?.positiveTest.toString() ?? "Null";
+      state.quarantineReasonController.text =
+          widget.quarantineData?.quarantineReason ?? "";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
 
@@ -579,6 +584,11 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
+                Input(
+                  label: 'Lý do cách ly',
+                  controller: state.quarantineReasonController,
+                  maxLines: 3,
+                ),
                 NewDateInput(
                   label: 'Thời gian bắt đầu cách ly',
                   controller: state.quarantinedAtController,
@@ -790,6 +800,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           quarantineWard: state.quarantineWardController.text,
           careStaff: state.careStaffController.text,
           positiveTestedBefore: _isPositiveTestedBefore,
+          quarantineReason: state.quarantineReasonController.text,
         ));
         cancel();
         showNotification(response);
@@ -821,6 +832,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
           careStaff: state.careStaffController.text,
+          quarantineReason: state.quarantineReasonController.text,
         ));
         cancel();
         showNotification(response);
@@ -848,6 +860,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           backgroundDisease: state.backgroundDiseaseController.text,
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           careStaff: state.careStaffController.text,
+          quarantineReason: state.quarantineReasonController.text,
         ));
         cancel();
         showNotification(updateResponse);

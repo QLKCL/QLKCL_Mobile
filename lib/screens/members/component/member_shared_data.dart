@@ -44,6 +44,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
   final positiveTestNowController = TextEditingController(text: "Null");
   final numberOfVaccineDosesController = TextEditingController(text: "0");
   final careStaffController = TextEditingController();
+  final quarantineReasonController = TextEditingController();
 
   void updateField() {
     setState(() {});
@@ -90,6 +91,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
       positiveTestNowController,
       numberOfVaccineDosesController,
       careStaffController,
+      quarantineReasonController,
       childWidget: widget.child,
       data: this,
     );
@@ -125,6 +127,7 @@ class InheritedMemberData extends InheritedWidget {
       this.positiveTestNowController,
       this.numberOfVaccineDosesController,
       this.careStaffController,
+      this.quarantineReasonController,
       {Key? key,
       required this.childWidget,
       required this.data})
@@ -160,6 +163,7 @@ class InheritedMemberData extends InheritedWidget {
   final TextEditingController positiveTestNowController;
   final TextEditingController numberOfVaccineDosesController;
   final TextEditingController careStaffController;
+  final TextEditingController quarantineReasonController;
 
   @override
   bool updateShouldNotify(InheritedMemberData oldWidget) {
