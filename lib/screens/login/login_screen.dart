@@ -124,7 +124,6 @@ class _LoginFormState extends State<LoginForm> {
                     "Quên mật khẩu",
                     style: TextStyle(
                       color: primary,
-                      // decoration: TextDecoration.underline,
                     ),
                   ),
                 )
