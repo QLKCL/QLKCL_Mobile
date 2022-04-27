@@ -10,6 +10,8 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/networking/api_helper.dart';
+import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -69,6 +71,7 @@ class _ManagerFormState extends State<ManagerForm> {
   final quarantineFloorController = TextEditingController();
   final quarantineBuildingController = TextEditingController();
   final quarantineWardController = TextEditingController();
+  final professionalController = TextEditingController();
 
   List<KeyValue> countryList = [];
   List<KeyValue> cityList = [];
@@ -87,6 +90,9 @@ class _ManagerFormState extends State<ManagerForm> {
   KeyValue? initQuarantineWard;
   List<KeyValue> initQuarantineBuilding = [];
   List<KeyValue> initQuarantineFloor = [];
+
+  List<KeyValue> professionalList = [];
+  KeyValue? initProfessional;
 
   late String type;
 
@@ -126,6 +132,9 @@ class _ManagerFormState extends State<ManagerForm> {
       healthInsuranceNumberController.text =
           widget.personalData?.healthInsuranceNumber ?? "";
       passportNumberController.text = widget.personalData?.passportNumber ?? "";
+      professionalController.text = widget.personalData?.professional != null
+          ? widget.personalData!.professional['code'].toString()
+          : "";
 
       initCountry = (widget.personalData?.country != null)
           ? KeyValue.fromJson(widget.personalData!.country)
@@ -138,6 +147,10 @@ class _ManagerFormState extends State<ManagerForm> {
           : null;
       initWard = (widget.personalData?.ward != null)
           ? KeyValue.fromJson(widget.personalData!.ward)
+          : null;
+
+      initProfessional = (widget.personalData?.professional != null)
+          ? KeyValue.fromJson(widget.personalData!.professional)
           : null;
 
       quarantineWardController.text =
@@ -253,6 +266,21 @@ class _ManagerFormState extends State<ManagerForm> {
         }
       });
     }
+    fetchProfessional().then((value) {
+      if (mounted) {
+        setState(() {
+          professionalList = value;
+        });
+      }
+    });
+  }
+
+  Future<List<KeyValue>> fetchProfessional() async {
+    final ApiHelper api = ApiHelper();
+    final response = await api.postHTTP(Api.filterProfessional, null);
+    return response != null && response['data'] != null
+        ? KeyValue.fromJsonList(response['data'])
+        : [];
   }
 
   @override
@@ -686,6 +714,44 @@ class _ManagerFormState extends State<ManagerForm> {
                   textCapitalization: TextCapitalization.characters,
                   validatorFunction: passportValidator,
                 ),
+                DropdownInput<KeyValue>(
+                  widgetKey: cityKey,
+                  label: 'Nghề nghiệp',
+                  hint: 'Nghề nghiệp',
+                  itemValue: professionalList,
+                  selectedItem: professionalList.isEmpty
+                      ? initProfessional
+                      : professionalList.safeFirstWhere((type) =>
+                          type.id.toString() == professionalController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: professionalList.isEmpty &&
+                          professionalController.text != ""
+                      ? (String? filter) => fetchProfessional()
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        professionalController.text = "";
+                      } else {
+                        professionalController.text = value.id.toString();
+                      }
+                    });
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Nghề nghiệp',
+                ),
                 if (type == "staff")
                   MultiDropdownInput<KeyValue>(
                     widgetKey: buildingKey,
@@ -841,6 +907,7 @@ class _ManagerFormState extends State<ManagerForm> {
             identity: identityNumberController.text,
             passport: passportNumberController.text,
             quarantineWard: quarantineWardController.text,
+            professional: professionalController.text,
           ));
           cancel();
           showNotification(response);
@@ -862,6 +929,7 @@ class _ManagerFormState extends State<ManagerForm> {
             identity: identityNumberController.text,
             passport: passportNumberController.text,
             quarantineWard: quarantineWardController.text,
+            professional: professionalController.text,
           ));
           cancel();
           showNotification(response);
@@ -886,6 +954,7 @@ class _ManagerFormState extends State<ManagerForm> {
             passport: passportNumberController.text,
             quarantineWard: quarantineWardController.text,
             careArea: quarantineFloorController.text,
+            professional: professionalController.text,
           ));
           cancel();
           showNotification(response);
@@ -909,6 +978,7 @@ class _ManagerFormState extends State<ManagerForm> {
             passport: passportNumberController.text,
             quarantineWard: quarantineWardController.text,
             careArea: quarantineFloorController.text,
+            professional: professionalController.text,
           ));
           cancel();
           showNotification(response);

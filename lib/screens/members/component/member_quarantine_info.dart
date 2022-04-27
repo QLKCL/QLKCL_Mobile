@@ -833,6 +833,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
+            professional: state.professionalController.text,
         ));
         cancel();
         showNotification(response);
@@ -861,6 +862,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
+            professional: state.professionalController.text,
         ));
         cancel();
         showNotification(updateResponse);

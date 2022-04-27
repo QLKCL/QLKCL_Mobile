@@ -42,6 +42,7 @@ class CustomUser {
     this.role,
     this.createdBy,
     this.updatedBy,
+    this.professional,
   });
 
   final int id;
@@ -70,6 +71,7 @@ class CustomUser {
   final dynamic role;
   final dynamic createdBy;
   final dynamic updatedBy;
+  final dynamic professional;
 
   factory CustomUser.fromJson(Map<String, dynamic> json) => CustomUser(
         id: json["id"],
@@ -102,6 +104,7 @@ class CustomUser {
         role: json["role"],
         createdBy: json["created_by"],
         updatedBy: json["updated_by"],
+        professional: json["professional"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -131,6 +134,7 @@ class CustomUser {
         "role": role,
         "created_by": createdBy,
         "updated_by": updatedBy,
+        "professional": professional,
       };
 }
 

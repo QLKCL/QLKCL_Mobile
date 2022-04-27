@@ -42,6 +42,7 @@ Map<String, dynamic> createMemberDataForm({
   String? numberOfVaccineDoses,
   String? careStaff,
   String? quarantineReason,
+  String? professional,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -68,6 +69,7 @@ Map<String, dynamic> createMemberDataForm({
     "number_of_vaccine_doses": numberOfVaccineDoses,
     "care_staff_code": careStaff,
     "quarantine_reason": quarantineReason,
+    "professional": professional,
   };
   return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
 }
@@ -97,6 +99,7 @@ Map<String, dynamic> updateMemberDataForm({
   String? otherBackgroundDisease,
   String? careStaff,
   String? quarantineReason,
+  String? professional,
 }) {
   final data = {
     "code": code,
@@ -123,6 +126,7 @@ Map<String, dynamic> updateMemberDataForm({
     "other_background_disease": otherBackgroundDisease,
     "care_staff_code": careStaff,
     "quarantine_reason": quarantineReason,
+    "professional": professional,
   };
   return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
 }
@@ -645,6 +649,7 @@ Map<String, dynamic> createManagerDataForm({
   String? healthInsurance,
   String? passport,
   required String quarantineWard,
+  String? professional,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -662,6 +667,7 @@ Map<String, dynamic> createManagerDataForm({
     "identity_number": identity,
     "passport_number": passport,
     "quarantine_ward_id": quarantineWard,
+    "professional": professional,
   };
   return prepareDataForm(data);
 }
@@ -682,6 +688,7 @@ Map<String, dynamic> updateManagerDataForm({
   String? healthInsurance,
   String? passport,
   String? quarantineWard,
+  String? professional,
 }) {
   final data = {
     "code": code,
@@ -699,6 +706,7 @@ Map<String, dynamic> updateManagerDataForm({
     "identity_number": identity,
     "passport_number": passport,
     "quarantine_ward_id": quarantineWard,
+    "professional": professional,
   };
   return prepareDataForm(data);
 }
@@ -720,6 +728,7 @@ Map<String, dynamic> createStaffDataForm({
   String? passport,
   required String quarantineWard,
   String? careArea,
+  String? professional,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -738,6 +747,7 @@ Map<String, dynamic> createStaffDataForm({
     "passport_number": passport,
     "quarantine_ward_id": quarantineWard,
     "care_area": careArea,
+    "professional": professional,
   };
   return prepareDataForm(data);
 }
@@ -759,6 +769,7 @@ Map<String, dynamic> updateStaffDataForm({
   String? passport,
   String? quarantineWard,
   String? careArea,
+  String? professional,
 }) {
   final data = {
     "code": code,
@@ -777,6 +788,7 @@ Map<String, dynamic> updateStaffDataForm({
     "passport_number": passport,
     "quarantine_ward_id": quarantineWard,
     "care_area": careArea,
+    "professional": professional,
   };
   return prepareDataForm(data);
 }

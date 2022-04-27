@@ -10,7 +10,9 @@ import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/screens/members/component/member_shared_data.dart';
+import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -53,6 +55,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   KeyValue? initCity;
   KeyValue? initDistrict;
   KeyValue? initWard;
+
+  List<KeyValue> professionalList = [];
+  KeyValue? initProfessional;
 
   @override
   bool get wantKeepAlive => true;
@@ -102,6 +107,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           widget.personalData?.healthInsuranceNumber ?? "";
       state.passportNumberController.text =
           widget.personalData?.passportNumber ?? "";
+      state.professionalController.text =
+          widget.personalData?.professional != null
+              ? widget.personalData!.professional['code'].toString()
+              : "";
 
       initCountry = (widget.personalData?.country != null)
           ? KeyValue.fromJson(widget.personalData!.country)
@@ -114,6 +123,9 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           : null;
       initWard = (widget.personalData?.ward != null)
           ? KeyValue.fromJson(widget.personalData!.ward)
+          : null;
+      initProfessional = (widget.personalData?.professional != null)
+          ? KeyValue.fromJson(widget.personalData!.professional)
           : null;
     }
     fetchCountry().then((value) {
@@ -150,6 +162,21 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         }
       });
     }
+    fetchProfessional().then((value) {
+      if (mounted) {
+        setState(() {
+          professionalList = value;
+        });
+      }
+    });
+  }
+
+  Future<List<KeyValue>> fetchProfessional() async {
+    final ApiHelper api = ApiHelper();
+    final response = await api.postHTTP(Api.filterProfessional, null);
+    return response != null && response['data'] != null
+        ? KeyValue.fromJsonList(response['data'])
+        : [];
   }
 
   @override
@@ -490,6 +517,45 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   textCapitalization: TextCapitalization.characters,
                   validatorFunction: passportValidator,
                 ),
+                DropdownInput<KeyValue>(
+                  widgetKey: cityKey,
+                  label: 'Nghề nghiệp',
+                  hint: 'Nghề nghiệp',
+                  itemValue: professionalList,
+                  selectedItem: professionalList.isEmpty
+                      ? initProfessional
+                      : professionalList.safeFirstWhere((type) =>
+                          type.id.toString() ==
+                          state.professionalController.text),
+                  enabled: widget.mode == Permission.edit ||
+                      widget.mode == Permission.add,
+                  onFind: professionalList.isEmpty &&
+                          state.professionalController.text != ""
+                      ? (String? filter) => fetchProfessional()
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        state.professionalController.text = "";
+                      } else {
+                        state.professionalController.text = value.id.toString();
+                      }
+                    });
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Nghề nghiệp',
+                ),
                 if (widget.tabController != null)
                   Container(
                     margin: const EdgeInsets.all(16),
@@ -535,6 +601,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             healthInsurance: state.healthInsuranceNumberController.text,
             identity: state.identityNumberController.text,
             passport: state.passportNumberController.text,
+            professional: state.professionalController.text,
           ));
           cancel();
           showNotification(response);
