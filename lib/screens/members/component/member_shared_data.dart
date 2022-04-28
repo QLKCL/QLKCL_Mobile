@@ -39,6 +39,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
   final labelController = TextEditingController();
   final quarantinedAtController = TextEditingController();
   final quarantinedFinishExpectedAtController = TextEditingController();
+  final quarantinedFinishAtController = TextEditingController();
   final backgroundDiseaseController = TextEditingController();
   final otherBackgroundDiseaseController = TextEditingController();
   final positiveTestNowController = TextEditingController(text: "Null");
@@ -46,6 +47,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
   final careStaffController = TextEditingController();
   final quarantineReasonController = TextEditingController();
   final professionalController = TextEditingController();
+  final statusController = TextEditingController();
 
   void updateField() {
     setState(() {});
@@ -87,6 +89,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
       labelController,
       quarantinedAtController,
       quarantinedFinishExpectedAtController,
+      quarantinedFinishAtController,
       backgroundDiseaseController,
       otherBackgroundDiseaseController,
       positiveTestNowController,
@@ -94,6 +97,7 @@ class MemberSharedDataState extends State<MemberSharedData> {
       careStaffController,
       quarantineReasonController,
       professionalController,
+      statusController,
       childWidget: widget.child,
       data: this,
     );
@@ -124,6 +128,7 @@ class InheritedMemberData extends InheritedWidget {
       this.labelController,
       this.quarantinedAtController,
       this.quarantinedFinishExpectedAtController,
+      this.quarantinedFinishAtController,
       this.backgroundDiseaseController,
       this.otherBackgroundDiseaseController,
       this.positiveTestNowController,
@@ -131,6 +136,7 @@ class InheritedMemberData extends InheritedWidget {
       this.careStaffController,
       this.quarantineReasonController,
       this.professionalController,
+      this.statusController,
       {Key? key,
       required this.childWidget,
       required this.data})
@@ -161,6 +167,7 @@ class InheritedMemberData extends InheritedWidget {
   final TextEditingController labelController;
   final TextEditingController quarantinedAtController;
   final TextEditingController quarantinedFinishExpectedAtController;
+  final TextEditingController quarantinedFinishAtController;
   final TextEditingController backgroundDiseaseController;
   final TextEditingController otherBackgroundDiseaseController;
   final TextEditingController positiveTestNowController;
@@ -168,6 +175,7 @@ class InheritedMemberData extends InheritedWidget {
   final TextEditingController careStaffController;
   final TextEditingController quarantineReasonController;
   final TextEditingController professionalController;
+  final TextEditingController statusController;
 
   @override
   bool updateShouldNotify(InheritedMemberData oldWidget) {

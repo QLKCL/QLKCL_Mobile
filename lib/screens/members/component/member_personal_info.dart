@@ -111,6 +111,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
           widget.personalData?.professional != null
               ? widget.personalData!.professional['code'].toString()
               : "";
+      state.statusController.text = widget.personalData?.status ?? "AVAILABLE";
 
       initCountry = (widget.personalData?.country != null)
           ? KeyValue.fromJson(widget.personalData!.country)

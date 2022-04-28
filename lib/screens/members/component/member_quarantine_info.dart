@@ -151,6 +151,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.quarantinedAt ?? "";
       state.quarantinedFinishExpectedAtController.text =
           widget.quarantineData?.quarantinedFinishExpectedAt;
+      state.quarantinedFinishAtController.text =
+          widget.quarantineData?.quarantinedFinishAt ?? "";
       state.backgroundDiseaseController.text =
           widget.quarantineData?.backgroundDisease ?? "";
       state.otherBackgroundDiseaseController.text =
@@ -595,12 +597,21 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   enabled: widget.mode != Permission.view && _role != 5,
                   defaultTime: "07:00",
                 ),
-                NewDateInput(
-                  label: 'Thời gian dự kiến hoàn thành cách ly',
-                  controller: state.quarantinedFinishExpectedAtController,
-                  enabled: widget.mode == Permission.edit && _role != 5,
-                  defaultTime: "07:00",
-                ),
+                if (state.statusController.text == "AVAILABLE" &&
+                    widget.quarantineData?.quarantinedStatus == "QUARANTINING")
+                  NewDateInput(
+                    label: 'Thời gian dự kiến hoàn thành cách ly',
+                    controller: state.quarantinedFinishExpectedAtController,
+                    enabled: widget.mode == Permission.edit && _role != 5,
+                    defaultTime: "07:00",
+                  ),
+                if (state.statusController.text == "LEAVE" &&
+                    widget.quarantineData?.quarantinedStatus == "COMPLETED")
+                  NewDateInput(
+                    label: 'Thời gian hoàn thành cách ly',
+                    controller: state.quarantinedFinishAtController,
+                    enabled: false,
+                  ),
                 Input(
                   label: "Số mũi vaccine đã tiêm",
                   controller: state.numberOfVaccineDosesController,
@@ -833,7 +844,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           numberOfVaccineDoses: state.numberOfVaccineDosesController.text,
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
-            professional: state.professionalController.text,
+          professional: state.professionalController.text,
         ));
         cancel();
         showNotification(response);
@@ -862,7 +873,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           otherBackgroundDisease: state.otherBackgroundDiseaseController.text,
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
-            professional: state.professionalController.text,
+          professional: state.professionalController.text,
         ));
         cancel();
         showNotification(updateResponse);

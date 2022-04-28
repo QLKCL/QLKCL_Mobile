@@ -26,6 +26,7 @@ class Member {
     this.abroad,
     this.quarantinedAt,
     this.quarantinedFinishExpectedAt,
+    this.quarantinedFinishAt,
     this.quarantinedStatus,
     this.lastTested,
     this.healthStatus,
@@ -50,6 +51,7 @@ class Member {
   final bool? abroad;
   final dynamic quarantinedAt;
   final dynamic quarantinedFinishExpectedAt;
+  final dynamic quarantinedFinishAt;
   final String? quarantinedStatus;
   final dynamic lastTested;
   final String? healthStatus;
@@ -76,6 +78,7 @@ class Member {
         abroad: json["abroad"],
         quarantinedAt: json["quarantined_at"],
         quarantinedFinishExpectedAt: json["quarantined_finish_expected_at"],
+        quarantinedFinishAt: json["quarantined_finished_at"],
         quarantinedStatus: json["quarantined_status"],
         lastTested: json["last_tested"],
         healthStatus: json["health_status"],
@@ -102,6 +105,7 @@ class Member {
         "abroad": abroad,
         "quarantined_at": quarantinedAt,
         "quarantined_finish_expected_at": quarantinedFinishExpectedAt,
+        "quarantined_finished_at": quarantinedFinishAt,
         "quarantined_status": quarantinedStatus,
         "last_tested": lastTested,
         "health_status": healthStatus,
@@ -264,6 +268,11 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
           response['message']['quarantine_room_id'] == "Full") {
         return Response(
             status: Status.error, message: "Phòng đã hết chỗ trống!");
+      } else if (response['message']['quarantine_room_id'] != null &&
+          response['message']['quarantine_room_id'] == "Must empty") {
+        return Response(
+            status: Status.error,
+            message: "Không thể gán phòng cho người này!");
       } else if (response['message']['email'] != null &&
           response['message']['email'] == "Exist") {
         return Response(
