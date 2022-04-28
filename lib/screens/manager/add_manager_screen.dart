@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/screens/manager/component/manager_form.dart';
 import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
@@ -36,22 +37,23 @@ class _AddManagerState extends State<AddManager> {
           title: const Text("Thêm quản lý, cán bộ"),
           centerTitle: true,
           actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                          builder: (context) => const QrCodeScan()),
-                    )
-                    .then((value) => setState(() {
-                          if (value != null) {
-                            infoFromIdentityCard = value.split('|').toList();
-                          }
-                        }));
-              },
-              icon: const Icon(Icons.photo_camera_front_outlined),
-              tooltip: "Nhập dữ liệu từ CCCD",
-            ),
+            if (!isWebPlatform())
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(
+                        MaterialPageRoute(
+                            builder: (context) => const QrCodeScan()),
+                      )
+                      .then((value) => setState(() {
+                            if (value != null) {
+                              infoFromIdentityCard = value.split('|').toList();
+                            }
+                          }));
+                },
+                icon: const Icon(Icons.photo_camera_front_outlined),
+                tooltip: "Nhập dữ liệu từ CCCD",
+              ),
           ],
         ),
         body: ManagerForm(

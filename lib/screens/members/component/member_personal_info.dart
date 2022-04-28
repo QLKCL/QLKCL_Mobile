@@ -519,7 +519,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   validatorFunction: passportValidator,
                 ),
                 DropdownInput<KeyValue>(
-                  widgetKey: cityKey,
                   label: 'Nghề nghiệp',
                   hint: 'Nghề nghiệp',
                   itemValue: professionalList,

@@ -1,10 +1,10 @@
 String? phoneValidator(String? phone) {
-  const String patttern = r'(^[0-9]{10}$)';
+  const String patttern = r'(^[0-9]{10,11}$)';
   final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return 'Số điện thoại không được để trống';
-  } else if (phone.length != 10) {
-    return 'Số điện thoại phải là 10 số';
+  } else if (phone.length < 10 || phone.length > 11) {
+    return 'Số điện thoại phải là 10-11 số';
   } else if (!regExp.hasMatch(phone)) {
     return 'Số điện thoại không hợp lệ';
   }

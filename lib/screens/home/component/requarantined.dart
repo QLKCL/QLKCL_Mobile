@@ -121,7 +121,8 @@ Future<Response?> memberRequarantined(
                                   quarantineWardController.text,
                               'label': labelController.text,
                               "positive_tested_before": isPositiveTestedBefore,
-                              "quarantine_reason": quarantineReasonController,
+                              "quarantine_reason":
+                                  quarantineReasonController.text,
                             }).then((value) {
                               cancel();
                               showNotification(value);

@@ -210,8 +210,8 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                       },
                       child: const Text('Danh sách quản lý, cán bộ'),
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            primary),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(primary),
                       ),
                     )
                   ],
@@ -219,7 +219,7 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
                 buildInformation(context, Icons.medical_services_outlined,
                     ' Dịch bệnh cách ly: ${widget.quarantineInfo.pandemic?.name ?? "Chưa có thông tin"}'),
                 buildInformation(context, Icons.history,
-                    ' Thời gian cách ly: ${widget.quarantineInfo.quarantineTime} ngày'),
+                    ' Thời gian cách ly: ${widget.quarantineInfo.pandemic?.quarantineTimeNotVac} ngày'),
                 buildInformation(context, Icons.hotel_outlined,
                     ' Tổng số giường: ${widget.quarantineInfo.capacity} giường'),
                 buildInformation(context, Icons.groups_outlined,

@@ -43,7 +43,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
   final addressController = TextEditingController();
   final typeController = TextEditingController();
   final emailController = TextEditingController();
-  final quarantineTimeController = TextEditingController();
   final managerController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final statusController = TextEditingController();
@@ -91,8 +90,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
       typeController.text = widget.quarantineInfo?.type ?? "";
       statusController.text = widget.quarantineInfo?.status ?? "";
       emailController.text = widget.quarantineInfo?.email ?? "";
-      quarantineTimeController.text =
-          widget.quarantineInfo?.quarantineTime.toString() ?? "";
       managerController.text = widget.quarantineInfo?.mainManager != null
           ? widget.quarantineInfo!.mainManager['code']
           : "";
@@ -187,7 +184,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
           district: districtController.text,
           ward: wardController.text,
           status: statusController.text,
-          quarantineTime: int.parse(quarantineTimeController.text),
           mainManager: managerController.text,
           address: addressController.text,
           type: typeController.text,
@@ -209,7 +205,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
           district: districtController.text,
           ward: wardController.text,
           status: statusController.text,
-          quarantineTime: int.parse(quarantineTimeController.text),
           mainManager: managerController.text,
           address: addressController.text,
           type: typeController.text,
@@ -572,14 +567,6 @@ class _QuarantineFormState extends State<QuarantineForm> {
                       MediaQuery.of(context).padding.bottom -
                       100,
                   popupTitle: 'Dịch bệnh',
-                ),
-                Input(
-                  label: 'Thời gian cách ly (ngày)',
-                  hint: 'Thời gian cách ly',
-                  required: true,
-                  type: TextInputType.number,
-                  validatorFunction: quarantineTimeValidator,
-                  controller: quarantineTimeController,
                 ),
                 Input(
                   label: 'Điện thoại liên lạc',

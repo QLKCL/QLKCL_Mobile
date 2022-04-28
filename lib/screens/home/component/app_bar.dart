@@ -9,8 +9,8 @@ import 'package:qlkcl/models/notification.dart' as notifications;
 import 'package:qlkcl/utils/constant.dart';
 
 class HomeAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final int? role;
-  const HomeAppBar({Key? key, this.role}) : super(key: key);
+  final int role;
+  const HomeAppBar({Key? key, this.role = 5}) : super(key: key);
 
   @override
   State<HomeAppBar> createState() => _HomeAppBarState();
