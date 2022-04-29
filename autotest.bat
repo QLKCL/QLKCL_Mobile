@@ -9,5 +9,15 @@ call flutter drive --driver=test_driver/integration_test.dart --target=integrati
 
 echo.
 echo ==============================================
-echo Forget password testing...
+echo Quarantine Ward testing...
 call flutter drive --driver=test_driver/integration_test.dart --target=integration_test/quarantine_ward_test.dart
+
+echo.
+echo ==============================================
+echo Notification testing...
+call flutter drive --driver=test_driver/integration_test.dart --target=integration_test/notification_test.dart
+
+echo.
+echo ==============================================
+echo Notification testing...
+call flutter drive --driver=test_driver/integration_test.dart --target=integration_test/quarantine_person_test.dart

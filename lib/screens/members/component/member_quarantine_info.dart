@@ -177,7 +177,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           : null;
       state.numberOfVaccineDosesController.text =
           widget.quarantineData?.numberOfVaccineDoses ?? "0";
-      state.careStaffController.text = widget.quarantineData?.careStaff?.id;
+      state.careStaffController.text =
+          widget.quarantineData?.careStaff?.id ?? "";
     }
     fetchQuarantineWard({
       'page_size': pageSizeMax,
