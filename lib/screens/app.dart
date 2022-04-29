@@ -6,6 +6,8 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
+import 'package:qlkcl/screens/manager/update_manager_screen.dart';
+import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 
@@ -45,28 +47,49 @@ class _AppState extends State<App> {
 
   @override
   void initState() {
-    setInfo();
+    super.initState();
+
     getLoginState().then((value) {
       if (!value) {
         Future(() {
           Navigator.pushNamedAndRemoveUntil(
               context, Login.routeName, (Route<dynamic> route) => false);
         });
-      }
-    });
-    super.initState();
-    if (widget.role == null) {
-      getRole().then((value) {
-        if (mounted) {
+      } else {
+        if (widget.role == null) {
+          getRole().then((value) {
+            if (mounted) {
+              setState(() {
+                _role = value;
+              });
+            }
+          });
+        } else {
           setState(() {
-            _role = value;
+            _role = widget.role;
           });
         }
-      });
-    } else {
-      _role = widget.role;
-    }
-
+        setInfo().then((data) {
+          if (data["custom_user"]["full_name"] == null ||
+              data["custom_user"]["birthday"] == null ||
+              data["custom_user"]["identity_number"] == null ||
+              data["custom_user"]["city"] == null ||
+              data["custom_user"]["district"] == null ||
+              data["custom_user"]["ward"] == null ||
+              data["custom_user"]["detail_address"] == null ||
+              data["custom_user"]["full_name"] == "" ||
+              data["custom_user"]["birthday"] == "" ||
+              data["custom_user"]["identity_number"] == "" ||
+              data["custom_user"]["detail_address"] == "") {
+            Navigator.of(context,
+                    rootNavigator: !Responsive.isDesktopLayout(context))
+                .pushNamed((_role == null || _role == 5)
+                    ? UpdateMember.routeName
+                    : UpdateManager.routeName);
+          }
+        });
+      }
+    });
     if (isAndroidPlatform() || isIOSPlatform()) {
       initPlatformState();
     }

@@ -63,7 +63,7 @@ Future<String> getPhoneNumber() async {
   return infoBox.get('phoneNumber');
 }
 
-Future<void> setInfo() async {
+Future<dynamic> setInfo() async {
   final infoBox = await Hive.openBox('myInfo');
   final ApiHelper api = ApiHelper();
   final response = await api.postHTTP(Api.getMember, null);
@@ -84,6 +84,8 @@ Future<void> setInfo() async {
   infoBox.put('code', code);
   final String quarantineStatus = response['data']['custom_user']['status'];
   infoBox.put('quarantineStatus', quarantineStatus);
+
+  return response['data'];
 }
 
 Future<bool> getLoginState() async {

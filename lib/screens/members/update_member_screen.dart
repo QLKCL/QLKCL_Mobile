@@ -31,7 +31,7 @@ class _UpdateMemberState extends State<UpdateMember>
     super.initState();
 
     final CancelFunc cancel = showLoading();
-    fetchUser(data: widget.code != null ? {'code': widget.code} : {})
+    fetchUser(data: widget.code != null ? {'code': widget.code} : null)
         .then((value) {
       cancel();
       if (value.status == Status.success) {
@@ -63,7 +63,7 @@ class _UpdateMemberState extends State<UpdateMember>
       child: DismissKeyboard(
         child: Scaffold(
           appBar: AppBar(
-            title: const Text("Thông tin chi tiết"),
+            title: const Text("Cập nhật thông tin"),
             centerTitle: true,
             actions: [
               if (personalData != null)

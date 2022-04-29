@@ -581,8 +581,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       });
                     }
                   },
-                  enabled: widget.mode != Permission.view &&
-                      widget.mode != Permission.approval,
+                  enabled: widget.mode == Permission.add ||
+                      widget.mode == Permission.renew ||
+                      (widget.mode == Permission.edit && _role < 5),
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),

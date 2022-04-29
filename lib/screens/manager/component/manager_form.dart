@@ -715,7 +715,6 @@ class _ManagerFormState extends State<ManagerForm> {
                   validatorFunction: passportValidator,
                 ),
                 DropdownInput<KeyValue>(
-                  widgetKey: cityKey,
                   label: 'Nghề nghiệp',
                   hint: 'Nghề nghiệp',
                   itemValue: professionalList,
