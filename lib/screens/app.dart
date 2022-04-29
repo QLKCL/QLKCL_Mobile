@@ -7,9 +7,10 @@ import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/onesignal.dart';
 import 'package:qlkcl/screens/login/login_screen.dart';
 import 'package:qlkcl/screens/manager/update_manager_screen.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/splash/splash_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
+
+import 'members/update_member_screen.dart';
 
 class App extends StatefulWidget {
   static const String routeName = "/app";
@@ -17,10 +18,10 @@ class App extends StatefulWidget {
   const App({Key? key, this.role}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  AppState createState() => AppState();
 }
 
-class _AppState extends State<App> {
+class AppState extends State<App> {
   DateTime currentBackPressTime = DateTime.now();
   int? _role;
 
@@ -36,7 +37,7 @@ class _AppState extends State<App> {
     TabItem.account: GlobalKey<NavigatorState>(),
   };
 
-  void _selectTab(TabItem tabItem) {
+  void selectTab(TabItem tabItem) {
     if (tabItem == _currentTab) {
       // pop to first route
       _navigatorKeys[tabItem]!.currentState!.popUntil((route) => route.isFirst);
@@ -107,7 +108,7 @@ class _AppState extends State<App> {
                 // if not on the 'main' tab
                 if (_currentTab != TabItem.homepage) {
                   // select 'main' tab
-                  _selectTab(TabItem.homepage);
+                  selectTab(TabItem.homepage);
                   // back button handled by app
                   return false;
                 }
@@ -138,7 +139,7 @@ class _AppState extends State<App> {
                     SideBar(
                       role: _role!,
                       currentTab: _currentTab,
-                      onSelectTab: _selectTab,
+                      onSelectTab: selectTab,
                     ),
 
                   /// Make it take the rest of the available width
@@ -163,7 +164,7 @@ class _AppState extends State<App> {
                           ? BottomNavigation(
                               role: _role!,
                               currentTab: _currentTab,
-                              onSelectTab: _selectTab,
+                              onSelectTab: selectTab,
                             )
                           : Container(
                               color: Colors.white,

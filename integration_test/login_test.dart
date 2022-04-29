@@ -35,6 +35,7 @@ void main() {
       app.main();
 
       await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
 
       final phoneField = find.byType(Input).first;
       final passwordField = find.byType(Input).last;
@@ -59,6 +60,7 @@ void main() {
       app.main();
 
       await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
 
       final phoneField = find.byType(Input).first;
       final passwordField = find.byType(Input).last;
