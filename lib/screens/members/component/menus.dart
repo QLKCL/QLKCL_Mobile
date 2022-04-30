@@ -196,7 +196,6 @@ Widget menus<T>(
             cancel();
             showNotification(response);
             if (response.status == Status.success) {
-              // ignore: use_build_context_synchronously
               if (Responsive.isDesktopLayout(context)) {
                 tableKey?.currentState!.refresh();
               } else {
@@ -223,7 +222,6 @@ Widget menus<T>(
             cancel();
             showNotification(response);
             if (response.status == Status.success) {
-              // ignore: use_build_context_synchronously
               if (Responsive.isDesktopLayout(context)) {
                 tableKey?.currentState!.refresh();
               } else {
@@ -236,7 +234,6 @@ Widget menus<T>(
             cancel();
             showNotification(response);
             if (response.status == Status.success) {
-              // ignore: use_build_context_synchronously
               if (Responsive.isDesktopLayout(context)) {
                 tableKey?.currentState!.refresh();
               } else {

@@ -68,6 +68,7 @@ dependencies:
   syncfusion_flutter_datagrid_export: ^19.4.56-beta
   syncfusion_flutter_xlsio: ^19.4.56-beta
   file_picker: ^4.5.1
+  timelines: ^0.1.0
   # shimmer: ^2.0.0
 
 dev_dependencies:
