@@ -9,8 +9,8 @@ import 'package:qlkcl/screens/app.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('Quarantine Person', () {
-    testWidgets("Update personal infomation", (WidgetTester tester) async {
+  group('Medical Declaration', () {
+    testWidgets("Get list medical declaration", (WidgetTester tester) async {
       app.main();
 
       await tester.pumpAndSettle();
@@ -38,25 +38,17 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final personalInfoButton = find.text("Thông tin cá nhân");
+      final personalInfoButton = find.text("Lịch sử khai báo y tế");
 
       await tester.pumpAndSettle();
       await tester.tap(personalInfoButton);
       await tester.pumpAndSettle();
 
-      final confirmButton = find.byType(ElevatedButton).first;
-
-      await tester.pumpAndSettle();
-
-      await tester.ensureVisible(confirmButton);
-      await tester.pumpAndSettle();
-      await tester.tap(confirmButton);
-      await tester.pumpAndSettle();
-
-      expect(find.text('Thành công'), findsOneWidget);
+      final medicalDeclarationList = find.byType(Card);
+      expect(medicalDeclarationList, findsWidgets);
     });
 
-    testWidgets("Update quarantine infomation", (WidgetTester tester) async {
+    testWidgets("Get medical declaration", (WidgetTester tester) async {
       app.main();
 
       await tester.pumpAndSettle();
@@ -84,17 +76,73 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final personalInfoButton = find.text("Thông tin cá nhân");
+      final personalInfoButton = find.text("Lịch sử khai báo y tế");
 
       await tester.pumpAndSettle();
       await tester.tap(personalInfoButton);
       await tester.pumpAndSettle();
 
-      final quarantineInfoButton = find.text("Thông tin cách ly");
+      final medicalDeclarationList = find.byType(Card);
 
       await tester.pumpAndSettle();
-      await tester.tap(quarantineInfoButton);
+      await tester.tap(medicalDeclarationList.first);
       await tester.pumpAndSettle();
+
+      final medicalDeclaration = find.text("Thông tin tờ khai");
+      expect(medicalDeclaration, findsOneWidget);
+    });
+
+    testWidgets("Create medical declaration", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0987654321");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final medicalDeclarationButton = find.text("Khai báo y tế");
+
+      await tester.pumpAndSettle();
+      await tester.tap(medicalDeclarationButton);
+      await tester.pumpAndSettle();
+
+      final temprature = find.byType(Input).at(3);
+      await tester.pumpAndSettle();
+      await tester.enterText(temprature, "37.5");
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final commitment = find.byType(CheckboxListTile).last;
+
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(commitment);
+      await tester.tap(commitment);
+      await tester.pumpAndSettle();
+
+      expect(
+          tester.getSemantics(commitment),
+          matchesSemantics(
+            hasTapAction: true,
+            hasCheckedState: true,
+            isChecked: true,
+            hasEnabledState: true,
+            isEnabled: true,
+            isFocusable: true,
+          ));
 
       final confirmButton = find.byType(ElevatedButton).first;
 
@@ -106,88 +154,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Thành công'), findsOneWidget);
-    });
-
-    testWidgets("Quarantine Person List", (WidgetTester tester) async {
-      app.main();
-
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 1));
-
-      final phoneField = find.byType(Input).first;
-      final passwordField = find.byType(Input).last;
-      final loginButton = find.byType(ElevatedButton).first;
-
-      await tester.pumpAndSettle();
-
-      await tester.enterText(phoneField, "0123456789");
-      await tester.pump(const Duration(milliseconds: 1));
-      await tester.enterText(passwordField, "123456");
-      await tester.pump(const Duration(milliseconds: 1));
-      await tester.pumpAndSettle();
-
-      await tester.ensureVisible(loginButton);
-      await tester.pumpAndSettle();
-      await tester.tap(loginButton);
-      await tester.pumpAndSettle();
-
-      final AppState state = tester.state(find.byType(App));
-      state.selectTab(TabItem.quarantinePerson);
-
-      await tester.pumpAndSettle();
-
-      final quarantineWardList = find.byType(Card);
-      expect(quarantineWardList, findsWidgets);
-    });
-
-    testWidgets("Search quarantine ward", (WidgetTester tester) async {
-      app.main();
-
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 1));
-
-      final phoneField = find.byType(Input).first;
-      final passwordField = find.byType(Input).last;
-      final loginButton = find.byType(ElevatedButton).first;
-
-      await tester.pumpAndSettle();
-
-      await tester.enterText(phoneField, "0123456789");
-      await tester.pump(const Duration(milliseconds: 1));
-      await tester.enterText(passwordField, "123456");
-      await tester.pump(const Duration(milliseconds: 1));
-      await tester.pumpAndSettle();
-
-      await tester.ensureVisible(loginButton);
-      await tester.pumpAndSettle();
-      await tester.tap(loginButton);
-      await tester.pumpAndSettle();
-
-      final AppState state = tester.state(find.byType(App));
-      state.selectTab(TabItem.quarantinePerson);
-
-      await tester.pumpAndSettle();
-
-      final searchButton = find.byTooltip("Tìm kiếm");
-
-      await tester.pumpAndSettle();
-      await tester.tap(searchButton);
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 1));
-
-      final searchField = find.byType(TextField).first;
-
-      await tester.pumpAndSettle();
-
-      await tester.enterText(searchField, "son");
-      await tester.pumpAndSettle();
-
-      await tester.testTextInput.receiveAction(TextInputAction.search);
-      await tester.pumpAndSettle();
-      await tester.pump(const Duration(milliseconds: 1));
-
-      final quarantineWardList = find.byType(Card);
-      expect(quarantineWardList, findsWidgets);
     });
   });
 }
