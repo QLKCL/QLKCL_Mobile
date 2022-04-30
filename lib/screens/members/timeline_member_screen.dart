@@ -64,6 +64,7 @@ class _TimelineMemberState extends State<TimelineMember> {
           ? const SizedBox()
           : data!.isNotEmpty
               ? ListView.builder(
+                  padding: const EdgeInsets.only(bottom: 8),
                   itemCount: data!.length,
                   itemBuilder: (context, index) {
                     final currentDay = data![index];

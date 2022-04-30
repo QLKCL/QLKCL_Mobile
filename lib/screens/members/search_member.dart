@@ -7,12 +7,12 @@ import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
+import 'package:qlkcl/screens/members/timeline_member_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/member.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -423,9 +423,7 @@ class _SearchMemberState extends State<SearchMember> {
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(
                 MaterialPageRoute(
-                  builder: (context) => UpdateMember(
-                    code: item.code,
-                  ),
+                  builder: (context) => TimelineMember(code: item.code),
                 ),
               );
             },
@@ -654,7 +652,7 @@ class DataSource extends DataGridSource {
                   Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
-                          builder: (context) => UpdateMember(
+                          builder: (context) => TimelineMember(
                                 code: row.getCells()[11].value.toString(),
                               )));
                 },
