@@ -291,6 +291,7 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
                   maxDate: DateTime.now(),
+                  helper: "Chọn ngày 1/1 khi không rõ ngày sinh",
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Quốc gia',

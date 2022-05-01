@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/custom_user.dart';
+import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/timeline.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/medical_declaration/detail_md_screen.dart';
 import 'package:qlkcl/screens/members/component/card.dart';
+import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/test/detail_test_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -34,12 +37,32 @@ class TimelineMember extends StatefulWidget {
 
 class _TimelineMemberState extends State<TimelineMember> {
   List<TimelineByDay>? data;
+  CustomUser? personalData;
+  Member? quarantineData;
 
   @override
   void initState() {
     super.initState();
 
     final CancelFunc cancel = showLoading();
+    fetchUser(data: widget.code != null ? {'code': widget.code} : null)
+        .then((value) {
+      cancel();
+      if (value.status == Status.success) {
+        setState(() {
+          personalData = CustomUser.fromJson(value.data["custom_user"]);
+          quarantineData = value.data["member"] != null
+              ? Member.fromJson(value.data["member"])
+              : null;
+          if (quarantineData != null) {
+            quarantineData!.customUserCode = personalData!.code;
+            quarantineData!.quarantineWard = personalData!.quarantineWard;
+          }
+        });
+      } else {
+        showNotification(value);
+      }
+    });
     getMemberTimeline(widget.code != null ? {'code': widget.code} : null)
         .then((value) {
       cancel();
@@ -59,6 +82,24 @@ class _TimelineMemberState extends State<TimelineMember> {
       appBar: AppBar(
         title: const Text('Thông tin chi tiết'),
         centerTitle: true,
+        actions: [
+          if (personalData != null)
+            menus(
+              context,
+              personalData,
+              customMenusColor: white,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.createMedicalDeclaration,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.createTest,
+                menusOptions.testHistory,
+                menusOptions.vaccineDoseHistory,
+                menusOptions.destinationHistory,
+                menusOptions.quarantineHistory,
+              ],
+            ),
+        ],
       ),
       body: data == null
           ? const SizedBox()
@@ -72,133 +113,138 @@ class _TimelineMemberState extends State<TimelineMember> {
                         .format(DateTime.parse(currentDay.date));
                     return Column(
                       mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: Responsive.isDesktopLayout(context)
-                          ? CrossAxisAlignment.center
-                          : CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                          child: Text(
-                            date,
-                            style: const TextStyle(fontSize: 16),
+                        Container(
+                          constraints: const BoxConstraints(
+                              minWidth: 100, maxWidth: 800),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                            child: Text(
+                              date,
+                              style: const TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
-                        FixedTimeline.tileBuilder(
-                          theme: TimelineThemeData(
-                            color: primary,
-                            nodePosition:
-                                Responsive.isDesktopLayout(context) ? 0.5 : 0.2,
-                          ),
-                          builder: TimelineTileBuilder.connectedFromStyle(
-                            contentsAlign: Responsive.isDesktopLayout(context)
-                                ? ContentsAlign.alternating
-                                : ContentsAlign.basic,
-                            oppositeContentsBuilder: (context, index) =>
-                                Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Text(timelineType[
-                                  currentDay.listData[index].type ==
-                                          "quarantine_history"
-                                      ? currentDay.listData[index].data["type"]
-                                      : currentDay.listData[index].type]!),
+                        Container(
+                          constraints: const BoxConstraints(
+                              minWidth: 100, maxWidth: 800),
+                          child: FixedTimeline.tileBuilder(
+                            theme: TimelineThemeData(
+                              color: primary,
+                              nodePosition: 0.2,
                             ),
-                            contentsBuilder: (context, index) {
-                              if (currentDay.listData[index].type == "test") {
-                                final data = currentDay.listData[index].data;
-                                return TestCard(
-                                  code: data['code'],
-                                  time: DateFormat("dd/MM/yyyy HH:mm:ss")
-                                      .format(DateTime.parse(data['created_at'])
-                                          .toLocal()),
-                                  status: testValueList
-                                      .safeFirstWhere((result) =>
-                                          result.id == data['result'])!
-                                      .name,
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => DetailTest(
-                                                  code: data['code'],
-                                                )));
-                                  },
-                                );
-                              } else if (currentDay.listData[index].type ==
-                                  "medical_declaration") {
-                                final data = currentDay.listData[index].data;
-                                return MedicalDeclarationCard(
-                                  code: data['code'].toString(),
-                                  time: DateFormat("dd/MM/yyyy HH:mm:ss")
-                                      .format(DateTime.parse(data['created_at'])
-                                          .toLocal()),
-                                  status: medDeclValueList
-                                      .safeFirstWhere((result) =>
-                                          result.id == data['conclude'])!
-                                      .name,
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ViewMD(
-                                                  id: data['id'].toString(),
-                                                )));
-                                  },
-                                );
-                              } else if (currentDay.listData[index].type ==
-                                  "destination_history") {
-                                final data = currentDay.listData[index].data;
-                                return DestinationHistoryCard(
-                                  name: data['user']['full_name'],
-                                  time: (data['start_time'] != null
-                                          ? DateFormat("dd/MM/yyyy HH:mm:ss")
-                                              .format(DateTime.parse(
-                                                      data['start_time'])
-                                                  .toLocal())
-                                          : "") +
-                                      (data['end_time'] != null
-                                          ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(data['end_time']).toLocal())}"
-                                          : ""),
-                                  address: getAddress(data),
-                                  note: data['note'] ?? "",
-                                );
-                              } else if (currentDay.listData[index].type ==
-                                  "quarantine_history") {
-                                final data = currentDay.listData[index].data;
-                                return SimpleQuarantineHistoryCard(
-                                  name: data['quarantine_ward'] != null
-                                      ? "${data['quarantine_ward']['full_name']}"
-                                      : "",
-                                  time: DateFormat("dd/MM/yyyy HH:mm:ss")
-                                      .format(DateTime.parse(data["start_date"])
-                                          .toLocal()),
-                                  room: (data['quarantine_room'] != null
-                                          ? "${data['quarantine_room']['name']}, "
-                                          : "") +
-                                      (data['quarantine_floor'] != null
-                                          ? "${data['quarantine_floor']['name']}, "
-                                          : "") +
-                                      (data['quarantine_building'] != null
-                                          ? "${data['quarantine_building']['name']}, "
-                                          : ""),
-                                  note: data["note"] ?? "",
-                                );
-                              } else {
-                                return Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Text(currentDay.listData[index].data
-                                        .toString()),
-                                  ),
-                                );
-                              }
-                            },
-                            connectorStyleBuilder: (context, index) =>
-                                ConnectorStyle.solidLine,
-                            indicatorStyleBuilder: (context, index) =>
-                                IndicatorStyle.dot,
-                            itemCount: currentDay.listData.length,
+                            builder: TimelineTileBuilder.connectedFromStyle(
+                              oppositeContentsBuilder: (context, index) =>
+                                  Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(timelineType[currentDay
+                                            .listData[index].type ==
+                                        "quarantine_history"
+                                    ? currentDay.listData[index].data["type"]
+                                    : currentDay.listData[index].type]!),
+                              ),
+                              contentsBuilder: (context, index) {
+                                if (currentDay.listData[index].type == "test") {
+                                  final data = currentDay.listData[index].data;
+                                  return TestCard(
+                                    code: data['code'],
+                                    time: DateFormat("dd/MM/yyyy HH:mm:ss")
+                                        .format(
+                                            DateTime.parse(data['created_at'])
+                                                .toLocal()),
+                                    status: testValueList
+                                        .safeFirstWhere((result) =>
+                                            result.id == data['result'])!
+                                        .name,
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => DetailTest(
+                                                    code: data['code'],
+                                                  )));
+                                    },
+                                  );
+                                } else if (currentDay.listData[index].type ==
+                                    "medical_declaration") {
+                                  final data = currentDay.listData[index].data;
+                                  return MedicalDeclarationCard(
+                                    code: data['code'].toString(),
+                                    time: DateFormat("dd/MM/yyyy HH:mm:ss")
+                                        .format(
+                                            DateTime.parse(data['created_at'])
+                                                .toLocal()),
+                                    status: medDeclValueList
+                                        .safeFirstWhere((result) =>
+                                            result.id == data['conclude'])!
+                                        .name,
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ViewMD(
+                                                    id: data['id'].toString(),
+                                                  )));
+                                    },
+                                  );
+                                } else if (currentDay.listData[index].type ==
+                                    "destination_history") {
+                                  final data = currentDay.listData[index].data;
+                                  return DestinationHistoryCard(
+                                    name: data['user']['full_name'],
+                                    time: (data['start_time'] != null
+                                            ? DateFormat("dd/MM/yyyy HH:mm:ss")
+                                                .format(DateTime.parse(
+                                                        data['start_time'])
+                                                    .toLocal())
+                                            : "") +
+                                        (data['end_time'] != null
+                                            ? " - ${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(data['end_time']).toLocal())}"
+                                            : ""),
+                                    address: getAddress(data),
+                                    note: data['note'] ?? "",
+                                  );
+                                } else if (currentDay.listData[index].type ==
+                                    "quarantine_history") {
+                                  final data = currentDay.listData[index].data;
+                                  return SimpleQuarantineHistoryCard(
+                                    name: data['quarantine_ward'] != null
+                                        ? "${data['quarantine_ward']['full_name']}"
+                                        : "",
+                                    time: DateFormat("dd/MM/yyyy HH:mm:ss")
+                                        .format(
+                                            DateTime.parse(data["start_date"])
+                                                .toLocal()),
+                                    room: (data['quarantine_room'] != null
+                                            ? "${data['quarantine_room']['name']}, "
+                                            : "") +
+                                        (data['quarantine_floor'] != null
+                                            ? "${data['quarantine_floor']['name']}, "
+                                            : "") +
+                                        (data['quarantine_building'] != null
+                                            ? "${data['quarantine_building']['name']}"
+                                            : ""),
+                                    note: data["note"] ?? "",
+                                  );
+                                } else {
+                                  return Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(currentDay
+                                          .listData[index].data
+                                          .toString()),
+                                    ),
+                                  );
+                                }
+                              },
+                              connectorStyleBuilder: (context, index) =>
+                                  ConnectorStyle.solidLine,
+                              indicatorStyleBuilder: (context, index) =>
+                                  IndicatorStyle.dot,
+                              itemCount: currentDay.listData.length,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     );
                   },

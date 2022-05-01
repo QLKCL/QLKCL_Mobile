@@ -45,3 +45,21 @@ echo ==============================================
 echo Run successfully!!!
 echo Press Any Key To Exit...
 pause >nul
+
+@REM Script deploy web to github from codemagic
+@REM "#!/usr/bin/env bash
+
+@REM set -e # exit on first failed command
+@REM set -x # print all executed commands to the log
+
+@REM new_version=v1.0.$PROJECT_BUILD_NUMBER
+
+@REM git clone https://$APP_PASSWORD_ENV_VARIABLE@github.com/lesonlhld/QLKCL_Web.git
+
+@REM rsync -arv build/web/ QLKCL_Web/
+
+@REM cd QLKCL_Web
+
+@REM git add .
+@REM git commit -m ""Published new version $new_version""
+@REM git push -u origin master"
