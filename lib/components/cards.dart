@@ -968,7 +968,8 @@ Widget cardLine({
               ),
             ),
           TextSpan(
-            text: title != null ? " $title: $content" : " $content",
+            text: (icon != null ? " " : "") +
+                (title != null ? "$title: $content" : content),
           )
         ],
       ),
