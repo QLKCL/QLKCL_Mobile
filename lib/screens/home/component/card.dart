@@ -53,28 +53,22 @@ class QuarantineHome extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.phone,
                       title: "Liên hệ",
                       content: phone,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.account_box_outlined,
                       title: "Quản lý",
                       content: manager,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.date_range_outlined,
                       title: "Bắt đầu cách ly",
                       content: quarantineAt != null
@@ -83,10 +77,8 @@ class QuarantineHome extends StatelessWidget {
                           : "Chưa có",
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.date_range_outlined,
                       title: "Dự kiến hoàn thành cách ly",
                       content: quarantineFinishExpect != null
@@ -95,19 +87,15 @@ class QuarantineHome extends StatelessWidget {
                           : "Chưa có",
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.maps_home_work_outlined,
                       title: "Phòng cách ly",
                       content: room,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.place_outlined,
                       title: "Địa chỉ",
                       content: address,
@@ -157,10 +145,8 @@ class HealthStatus extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.history,
                       title: "Sức khỏe",
                       content: healthStatus == "SERIOUS"
@@ -170,10 +156,8 @@ class HealthStatus extends StatelessWidget {
                               : "Bình thường"),
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.description_outlined,
                       title: "Xét nghiệm",
                       content: positiveTestNow != null
@@ -186,10 +170,8 @@ class HealthStatus extends StatelessWidget {
                           : "Chưa có kết quả xét nghiệm",
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.vaccines_outlined,
                       title: "Số mũi vaccine",
                       content: numberOfVaccineDoses != null &&
@@ -245,37 +227,29 @@ class QuarantineFinishCertification extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline6,
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.maps_home_work_outlined,
                       title: "Khu cách ly",
                       content: name,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.phone,
                       title: "Liên hệ",
                       content: phone,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.place_outlined,
                       title: "Địa chỉ",
                       content: address,
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.date_range_outlined,
                       title: "Bắt đầu cách ly",
                       content: quarantineAt != null
@@ -284,16 +258,21 @@ class QuarantineFinishCertification extends StatelessWidget {
                           : "Chưa có",
                       textColor: primaryText,
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     cardLine(
+                      topPadding: 8,
                       icon: Icons.date_range_outlined,
                       title: "Hoàn thành cách ly",
                       content: quarantineFinishAt != null
                           ? DateFormat("dd/MM/yyyy").format(
                               DateTime.parse(quarantineFinishAt!).toLocal())
                           : "Chưa có",
+                      textColor: primaryText,
+                    ),
+                    cardLine(
+                      topPadding: 8,
+                      icon: Icons.date_range_outlined,
+                      title: "Lý do cách ly",
+                      content: "Chưa rõ",
                       textColor: primaryText,
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/networking/response.dart';
@@ -29,28 +30,6 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
     super.initState();
     futureBuildingList =
         fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
-  }
-
-  Widget buildInformation(BuildContext context, IconData icon, String info) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      child: Text.rich(
-        TextSpan(
-          children: [
-            WidgetSpan(
-              child: Icon(
-                icon,
-                size: 16,
-                color: secondaryText,
-              ),
-            ),
-            TextSpan(
-              text: info,
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -172,71 +151,107 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
           ),
 
           //Information
-          Container(
-            width: MediaQuery.of(context).size.width * 1,
-            margin:
-                const EdgeInsets.only(left: 23, right: 23, top: 8, bottom: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(
-                        bottom: 10,
-                      ),
-                      child: const Text(
-                        'Thông tin',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(
+                          bottom: 10,
+                        ),
+                        child: const Text(
+                          'Thông tin',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ListAllManager(
-                              currentQuarrantine: KeyValue(
-                                  name: widget.quarantineInfo.fullName,
-                                  id: widget.quarantineInfo.id),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListAllManager(
+                                currentQuarrantine: KeyValue(
+                                    name: widget.quarantineInfo.fullName,
+                                    id: widget.quarantineInfo.id),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: const Text('Danh sách quản lý, cán bộ'),
-                      style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(primary),
-                      ),
-                    )
-                  ],
-                ),
-                buildInformation(context, Icons.medical_services_outlined,
-                    ' Dịch bệnh cách ly: ${widget.quarantineInfo.pandemic?.name ?? "Chưa có thông tin"}'),
-                buildInformation(context, Icons.history,
-                    ' Thời gian cách ly: ${widget.quarantineInfo.pandemic?.quarantineTimeNotVac} ngày'),
-                buildInformation(context, Icons.hotel_outlined,
-                    ' Tổng số giường: ${widget.quarantineInfo.capacity} giường'),
-                buildInformation(context, Icons.groups_outlined,
-                    ' Đang cách ly: ${widget.quarantineInfo.currentMem} người'),
-                buildInformation(context, Icons.account_box_outlined,
-                    ' Quản lý: ${widget.quarantineInfo.mainManager["full_name"]}'),
-                buildInformation(
-                  context,
-                  Icons.place_outlined,
-                  ' Địa chỉ: ${widget.quarantineInfo.address != null ? "${widget.quarantineInfo.address}, " : ""}${widget.quarantineInfo.ward != null ? "${widget.quarantineInfo.ward['name']}, " : ""}${widget.quarantineInfo.district != null ? "${widget.quarantineInfo.district['name']}, " : ""}${widget.quarantineInfo.city != null ? "${widget.quarantineInfo.city['name']}" : ""}',
-                ),
-                buildInformation(context, Icons.phone,
-                    ' Số điện thoại: ${widget.quarantineInfo.phoneNumber ?? "Chưa có"}'),
-                buildInformation(context, Icons.email_outlined,
-                    ' Email: ${widget.quarantineInfo.email}'),
-              ],
+                          );
+                        },
+                        child: const Text('Danh sách quản lý, cán bộ'),
+                        style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(primary),
+                        ),
+                      )
+                    ],
+                  ),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.medical_services_outlined,
+                      title: "Dịch bệnh cách ly",
+                      content: widget.quarantineInfo.pandemic?.name ??
+                          "Chưa có thông tin"),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.history,
+                      title: "Thời gian cách ly",
+                      content:
+                          '${widget.quarantineInfo.pandemic?.quarantineTimeNotVac} ngày'),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.hotel_outlined,
+                      title: "Tổng số giường",
+                      content: '${widget.quarantineInfo.capacity} giường'),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.groups_outlined,
+                      title: "Đang cách ly",
+                      content: '${widget.quarantineInfo.currentMem} người'),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.account_box_outlined,
+                      title: "Quản lý",
+                      content:
+                          '${widget.quarantineInfo.mainManager["full_name"]}'),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.place_outlined,
+                      title: "Địa chỉ",
+                      content:
+                          '${widget.quarantineInfo.address != null ? "${widget.quarantineInfo.address}, " : ""}${widget.quarantineInfo.ward != null ? "${widget.quarantineInfo.ward['name']}, " : ""}${widget.quarantineInfo.district != null ? "${widget.quarantineInfo.district['name']}, " : ""}${widget.quarantineInfo.city != null ? "${widget.quarantineInfo.city['name']}" : ""}'),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.phone,
+                      title: "Số điện thoại",
+                      content: widget.quarantineInfo.phoneNumber ?? "Chưa có"),
+                  cardLine(
+                      topPadding: 8,
+                      textColor: secondaryText,
+                      icon: Icons.email_outlined,
+                      title: "Email",
+                      content: widget.quarantineInfo.email),
+                ],
+              ),
             ),
+          ),
+          const SizedBox(
+            height: 8,
           ),
         ],
       ),

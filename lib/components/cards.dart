@@ -44,14 +44,8 @@ class MedicalDeclarationCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.description_outlined,
                         title: "Tình trạng",
@@ -104,14 +98,8 @@ class TestCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.description_outlined,
                         title: "Kết quả",
@@ -244,13 +232,7 @@ class TestNoResultCard extends StatelessWidget {
                         color: disableText,
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(icon: Icons.qr_code, content: code),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history,
                         content: DateFormat("dd/MM/yyyy HH:mm:ss")
@@ -445,9 +427,6 @@ class _MemberCardState extends State<MemberCard> {
                         maxLines: 1,
                         softWrap: false,
                       ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                       icon: Icons.history,
                       content: widget.member.positiveTestNow != null
@@ -610,16 +589,10 @@ class _QuarantineItemState extends State<QuarantineItem> {
                               fontWeight: FontWeight.normal,
                               color: primaryText),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ),
                         cardLine(
                             icon: Icons.groups_rounded,
                             title: "Đang cách ly",
                             content: widget.currentMem.toString()),
-                        const SizedBox(
-                          height: 4,
-                        ),
                         cardLine(
                             icon: Icons.account_box_outlined,
                             title: "Quản lý",
@@ -805,9 +778,6 @@ class VaccineDoseCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
                     // const SizedBox(
@@ -884,21 +854,12 @@ class DestinationHistoryCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.location_on_outlined,
                         title: "Địa điểm",
                         content: address),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.note_outlined,
                         title: "Ghi chú",
@@ -956,28 +917,16 @@ class QuarantineHistoryCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.location_on_outlined,
                         title: "Đơn vị",
                         content: room),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.medical_services_outlined,
                         title: "Dịch bệnh",
                         content: pademic),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.note_outlined,
                         title: "Ghi chú",
@@ -994,30 +943,35 @@ class QuarantineHistoryCard extends StatelessWidget {
   }
 }
 
-Widget cardLine(
-    {IconData? icon,
-    String? title,
-    required String content,
-    Color? textColor}) {
-  return Text.rich(
-    TextSpan(
-      style: TextStyle(
-        color: textColor ?? disableText,
-      ),
-      children: [
-        if (icon != null)
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-            child: Icon(
-              icon,
-              size: 16,
-              color: disableText,
+Widget cardLine({
+  IconData? icon,
+  String? title,
+  required String content,
+  Color? textColor,
+  double topPadding = 4,
+}) {
+  return Container(
+    padding: EdgeInsets.only(top: topPadding),
+    child: Text.rich(
+      TextSpan(
+        style: TextStyle(
+          color: textColor ?? disableText,
+        ),
+        children: [
+          if (icon != null)
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Icon(
+                icon,
+                size: 16,
+                color: textColor ?? disableText,
+              ),
             ),
-          ),
-        TextSpan(
-          text: title != null ? " $title: $content" : " $content",
-        )
-      ],
+          TextSpan(
+            text: title != null ? " $title: $content" : " $content",
+          )
+        ],
+      ),
     ),
   );
 }

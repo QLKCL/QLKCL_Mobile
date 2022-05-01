@@ -41,21 +41,12 @@ class SimpleQuarantineHistoryCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.location_on_outlined,
                         title: "Phòng",
                         content: room),
-                    const SizedBox(
-                      height: 4,
-                    ),
                     cardLine(
                         icon: Icons.note_outlined,
                         title: "Ghi chú",
