@@ -706,6 +706,7 @@ class FilterMember {
     required this.label,
     required this.numberOfVaccineDoses,
     this.quarantineLocation,
+    this.quarantineLocationWithWard,
   });
 
   final String code;
@@ -729,6 +730,7 @@ class FilterMember {
   final String label;
   final String numberOfVaccineDoses;
   final String? quarantineLocation;
+  final String? quarantineLocationWithWard;
 
   factory FilterMember.fromJson(Map<String, dynamic> json) => FilterMember(
         code: json["code"],
@@ -758,13 +760,25 @@ class FilterMember {
         label: json["label"],
         numberOfVaccineDoses: json["number_of_vaccine_doses"],
         quarantineLocation: (json['quarantine_room'] != null
-                ? "${json['quarantine_room']['name']} - "
+                ? "${json['quarantine_room']['name']}, "
                 : "") +
             (json['quarantine_floor'] != null
-                ? "${json['quarantine_floor']['name']} - "
+                ? "${json['quarantine_floor']['name']}, "
                 : "") +
             (json['quarantine_building'] != null
                 ? "${json['quarantine_building']['name']}"
+                : ""),
+        quarantineLocationWithWard: (json['quarantine_room'] != null
+                ? "${json['quarantine_room']['name']}, "
+                : "") +
+            (json['quarantine_floor'] != null
+                ? "${json['quarantine_floor']['name']}, "
+                : "") +
+            (json['quarantine_building'] != null
+                ? "${json['quarantine_building']['name']}, "
+                : "") +
+            (json['quarantine_ward'] != null
+                ? "${json['quarantine_ward']['full_name']}"
                 : ""),
       );
 

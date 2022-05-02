@@ -399,11 +399,11 @@ class _MemberCardState extends State<MemberCard> {
                         color: disableText,
                       ),
                     ),
-                    if (widget.member.quarantineLocation != null)
+                    if (widget.member.quarantineLocationWithWard != null)
                       const SizedBox(
                         height: 4,
                       ),
-                    if (widget.member.quarantineLocation != null)
+                    if (widget.member.quarantineLocationWithWard != null)
                       Text.rich(
                         TextSpan(
                           style: TextStyle(
@@ -419,7 +419,8 @@ class _MemberCardState extends State<MemberCard> {
                               ),
                             ),
                             TextSpan(
-                              text: " ${widget.member.quarantineLocation}",
+                              text:
+                                  " ${widget.member.quarantineLocationWithWard}",
                             ),
                           ],
                         ),
