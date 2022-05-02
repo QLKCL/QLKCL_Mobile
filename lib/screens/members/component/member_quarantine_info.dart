@@ -158,7 +158,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       state.otherBackgroundDiseaseController.text =
           widget.quarantineData?.otherBackgroundDisease ?? "";
       state.positiveTestNowController.text =
-          widget.quarantineData?.positiveTest.toString() ?? "Null";
+          widget.quarantineData?.positiveTestNow.toString() ?? "Null";
       state.quarantineReasonController.text =
           widget.quarantineData?.quarantineReason ?? "";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
@@ -574,7 +574,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       state.positiveTestNowController.text =
                           state.labelController.text == "F0"
                               ? "True"
-                              : widget.quarantineData?.positiveTest
+                              : widget.quarantineData?.positiveTestNow
                                       .toString() ??
                                   "Null";
                       setState(() {

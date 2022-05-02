@@ -31,7 +31,7 @@ class Member {
     this.lastTested,
     this.healthStatus,
     this.healthNote,
-    this.positiveTest,
+    this.positiveTestNow,
     this.backgroundDisease,
     this.otherBackgroundDisease,
     this.backgroundDiseaseNote,
@@ -56,7 +56,7 @@ class Member {
   final dynamic lastTested;
   final String? healthStatus;
   final dynamic healthNote;
-  final bool? positiveTest;
+  final bool? positiveTestNow;
   final dynamic backgroundDisease;
   final dynamic otherBackgroundDisease;
   final dynamic backgroundDiseaseNote;
@@ -83,7 +83,7 @@ class Member {
         lastTested: json["last_tested"],
         healthStatus: json["health_status"],
         healthNote: json["health_note"],
-        positiveTest: json["positive_test_now"],
+        positiveTestNow: json["positive_test_now"],
         backgroundDisease: json["background_disease"],
         otherBackgroundDisease: json["other_background_disease"],
         backgroundDiseaseNote: json["background_disease_note"],
@@ -110,7 +110,7 @@ class Member {
         "last_tested": lastTested,
         "health_status": healthStatus,
         "health_note": healthNote,
-        "positive_test_now": positiveTest,
+        "positive_test_now": positiveTestNow,
         "background_disease": backgroundDisease,
         "other_background_disease": otherBackgroundDisease,
         "background_disease_note": backgroundDiseaseNote,
