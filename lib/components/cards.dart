@@ -977,6 +977,38 @@ Widget cardLine({
   );
 }
 
+Widget textField({
+  String? title,
+  required String content,
+  Color? textColor,
+  double topPadding = 4,
+}) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const SizedBox(
+        height: 2,
+      ),
+      Text(
+        title != null ? "$title: " : "",
+        style: const TextStyle(fontSize: 16),
+      ),
+      const SizedBox(
+        height: 4,
+      ),
+      Text(
+        content,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      ),
+      const Divider(
+        // indent: 16,
+        // endIndent: 16,
+        thickness: 2,
+      ),
+    ],
+  );
+}
+
 class ManagerCard extends StatefulWidget {
   final bool? longPressEnabled;
   final VoidCallback onTap;
