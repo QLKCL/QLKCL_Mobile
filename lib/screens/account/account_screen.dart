@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/screens/account/component/app_infomation.dart';
 import 'package:qlkcl/screens/account/component/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
@@ -194,6 +195,49 @@ class _AccountState extends State<Account> {
               ],
             ),
           ),
+          Container(
+            alignment: Alignment.centerLeft,
+            margin: const EdgeInsets.only(left: 16),
+            padding: const EdgeInsets.only(top: 16),
+            child: Text(
+              "Giới thiệu",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          Card(
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8),
+                          topRight: Radius.circular(8))),
+                  onTap: () {
+                    Navigator.of(context,
+                            rootNavigator: !Responsive.isDesktopLayout(context))
+                        .push(
+                      MaterialPageRoute(builder: (context) => const AppInfo()),
+                    );
+                  },
+                  title: const Text('Về ứng dụng'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
+                ),
+                const Divider(
+                  indent: 16,
+                  endIndent: 16,
+                ),
+                ListTile(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(8),
+                          bottomRight: Radius.circular(8))),
+                  onTap: () {},
+                  title: const Text('Điều khoản và bảo mật'),
+                  trailing: const Icon(Icons.keyboard_arrow_right),
+                ),
+              ],
+            ),
+          ),
           Card(
             child: ListTile(
               shape: RoundedRectangleBorder(
@@ -220,7 +264,7 @@ class _AccountState extends State<Account> {
           ),
           const SizedBox(
             height: 16,
-          )
+          ),
         ],
       )),
     );

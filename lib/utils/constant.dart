@@ -136,3 +136,8 @@ const String oneSignalId = "3def0255-600c-4376-bece-77202ef908e5";
 const double maxMobileSize = 480;
 const double maxTabletSize = 768;
 const double minDesktopSize = 1200;
+
+class WebVersionInfo {
+  static const String version = '1.0.0';
+  static const int buildNumber = 10;
+}

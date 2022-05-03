@@ -1,5 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -10,7 +13,9 @@ import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/screens/login/forget_password_screen.dart';
 import 'package:qlkcl/screens/register/register_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   static const String routeName = "/login";
@@ -21,6 +26,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  String version = "Unknown";
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +39,18 @@ class _LoginState extends State<Login> {
         });
       }
     });
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    if (kIsWeb) {
+      version = "${WebVersionInfo.version}+${WebVersionInfo.buildNumber}";
+    } else {
+      final info = await PackageInfo.fromPlatform();
+      setState(() {
+        version = "${info.version}+${info.buildNumber}";
+      });
+    }
   }
 
   @override
@@ -57,6 +76,49 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ],
+          ),
+        ),
+        bottomNavigationBar: SizedBox(
+          height: 60,
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Phiên bản: $version",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: disableText),
+                ),
+                const SizedBox(
+                  width: 16,
+                  child: Text(
+                    "|",
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Tải ứng dụng ',
+                        style: TextStyle(color: disableText),
+                      ),
+                      TextSpan(
+                        text: 'Android',
+                        style: TextStyle(color: primary),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            launch(
+                                'https://appdistribution.firebase.dev/i/503670dfd128ae45');
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
