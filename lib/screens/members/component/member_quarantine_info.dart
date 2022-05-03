@@ -128,6 +128,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 
       state.positiveTestNowController.text =
           state.labelController.text == "F0" ? "True" : "Null";
+      state.firstPositiveTestDateController.text =
+          widget.quarantineData?.firstPositiveTestDate ?? "";
     } else {
       state.quarantineRoomController.text =
           widget.quarantineData?.quarantineRoom != null
@@ -163,6 +165,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           widget.quarantineData?.quarantineReason ?? "";
       _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
           _isPositiveTestedBefore;
+      state.firstPositiveTestDateController.text =
+          widget.quarantineData?.firstPositiveTestDate ?? "";
 
       initQuarantineWard = widget.quarantineData?.quarantineWard;
       initQuarantineBuilding =
@@ -592,6 +596,15 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
+                if (state.labelController.text == "F0")
+                  NewDateInput(
+                    label: 'Ngày nhiễm bệnh',
+                    controller: state.firstPositiveTestDateController,
+                    enabled: widget.mode == Permission.add ||
+                        widget.mode == Permission.edit ||
+                        widget.mode == Permission.renew,
+                    defaultTime: "07:00",
+                  ),
                 Input(
                   label: 'Lý do cách ly',
                   controller: state.quarantineReasonController,
@@ -824,6 +837,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           careStaff: state.careStaffController.text,
           positiveTestedBefore: _isPositiveTestedBefore,
           quarantineReason: state.quarantineReasonController.text,
+          firstPositiveTestDate: parseDateTimeWithTimeZone(
+              state.firstPositiveTestDateController.text),
         ));
         cancel();
         showNotification(response);
@@ -857,6 +872,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
           professional: state.professionalController.text,
+          firstPositiveTestDate: parseDateTimeWithTimeZone(
+              state.firstPositiveTestDateController.text),
         ));
         cancel();
         showNotification(response);
@@ -886,6 +903,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           careStaff: state.careStaffController.text,
           quarantineReason: state.quarantineReasonController.text,
           professional: state.professionalController.text,
+          firstPositiveTestDate: parseDateTimeWithTimeZone(
+              state.firstPositiveTestDateController.text),
         ));
         cancel();
         showNotification(updateResponse);

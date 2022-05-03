@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/components/input.dart';
@@ -21,6 +22,8 @@ Future<Response?> memberRequarantined(
       TextEditingController();
   final TextEditingController labelController = TextEditingController();
   final TextEditingController quarantineReasonController =
+      TextEditingController();
+  final TextEditingController firstPositiveTestDateController =
       TextEditingController();
   bool isPositiveTestedBefore = false;
 
@@ -82,8 +85,15 @@ Future<Response?> memberRequarantined(
                     } else {
                       labelController.text = value.id.toString();
                     }
+                    setState(() {});
                   },
                 ),
+                if (labelController.text == "F0")
+                  NewDateInput(
+                    label: 'Ngày nhiễm bệnh',
+                    controller: firstPositiveTestDateController,
+                    defaultTime: "07:00",
+                  ),
                 Input(
                   label: 'Lý do cách ly',
                   controller: quarantineReasonController,

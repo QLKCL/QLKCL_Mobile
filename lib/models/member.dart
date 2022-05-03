@@ -320,6 +320,11 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               response['message']['quarantine_room_id'] ==
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
+      } else if (response['message']['first_positive_test_date'] != null &&
+          response['message']['first_positive_test_date'] == "Cannot change") {
+        return Response(
+            status: Status.error,
+            message: "Không thể thay đổi ngày nhiễm bệnh!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }

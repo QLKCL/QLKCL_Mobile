@@ -43,6 +43,7 @@ Map<String, dynamic> createMemberDataForm({
   String? careStaff,
   String? quarantineReason,
   String? professional,
+  String? firstPositiveTestDate,
 }) {
   final data = {
     "phone_number": phoneNumber,
@@ -70,8 +71,10 @@ Map<String, dynamic> createMemberDataForm({
     "care_staff_code": careStaff,
     "quarantine_reason": quarantineReason,
     "professional": professional,
+    "first_positive_test_date": firstPositiveTestDate,
   };
-  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
+  return prepareDataForm(data,
+      exceptionField: ["quarantine_reason", "first_positive_test_date"]);
 }
 
 Map<String, dynamic> updateMemberDataForm({
@@ -100,6 +103,7 @@ Map<String, dynamic> updateMemberDataForm({
   String? careStaff,
   String? quarantineReason,
   String? professional,
+  String? firstPositiveTestDate,
 }) {
   final data = {
     "code": code,
@@ -127,8 +131,10 @@ Map<String, dynamic> updateMemberDataForm({
     "care_staff_code": careStaff,
     "quarantine_reason": quarantineReason,
     "professional": professional,
+    "first_positive_test_date": firstPositiveTestDate,
   };
-  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
+  return prepareDataForm(data,
+      exceptionField: ["quarantine_reason", "first_positive_test_date"]);
 }
 
 Map<String, dynamic> filterMemberDataForm({
@@ -869,6 +875,7 @@ Map<String, dynamic> requarantineMemberDataForm({
   String? careStaff,
   bool? positiveTestedBefore,
   String? quarantineReason,
+  String? firstPositiveTestDate,
 }) {
   final data = {
     "code": code,
@@ -879,6 +886,8 @@ Map<String, dynamic> requarantineMemberDataForm({
     "quarantine_room_id": quarantineRoom,
     "care_staff_code": careStaff,
     "quarantine_reason": quarantineReason,
+    "first_positive_test_date": firstPositiveTestDate,
   };
-  return prepareDataForm(data, exceptionField: ["quarantine_reason"]);
+  return prepareDataForm(data,
+      exceptionField: ["quarantine_reason", "first_positive_test_date"]);
 }
