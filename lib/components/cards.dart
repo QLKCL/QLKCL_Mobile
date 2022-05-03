@@ -879,6 +879,7 @@ class DestinationHistoryCard extends StatelessWidget {
 
 class QuarantineHistoryCard extends StatelessWidget {
   final VoidCallback? onTap;
+  final String? endType;
   final String name;
   final String time;
   final String room;
@@ -886,6 +887,7 @@ class QuarantineHistoryCard extends StatelessWidget {
   final String note;
   final Widget? menus;
   const QuarantineHistoryCard({
+    this.endType,
     required this.name,
     this.onTap,
     required this.time,
@@ -918,6 +920,16 @@ class QuarantineHistoryCard extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           color: primaryText),
                     ),
+                    cardLine(
+                        icon: Icons.medical_services_outlined,
+                        title: "Loại",
+                        content: endType == "COMPLETED"
+                            ? "Đã hoàn thành cách ly"
+                            : endType == "CHANGE_ROOM"
+                                ? "Chuyển phòng"
+                                : endType == null
+                                    ? "Đang cách ly"
+                                    : "Không rõ"),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
                     cardLine(

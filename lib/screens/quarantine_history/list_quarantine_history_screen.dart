@@ -105,6 +105,7 @@ class _ListQuarantineHistoryState extends State<ListQuarantineHistory> {
                 child: Text('Có lỗi xảy ra'),
               ),
               itemBuilder: (context, item, index) => QuarantineHistoryCard(
+                endType: item.endType,
                 name: item.user.name,
                 time: (DateFormat("dd/MM/yyyy HH:mm:ss")
                         .format(DateTime.parse(item.startDate).toLocal())) +
