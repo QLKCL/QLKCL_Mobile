@@ -39,7 +39,11 @@ class InfoCovid extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "+ ${formatter.format(newCase)}",
+              newCase > 0
+                  ? "+ ${formatter.format(newCase)}"
+                  : newCase < 0
+                      ? "- ${formatter.format(-newCase)}"
+                      : "0",
               textAlign: TextAlign.center,
               style: TextStyle(color: white),
             ),

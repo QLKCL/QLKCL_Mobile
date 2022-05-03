@@ -240,46 +240,7 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
-    final cellHeight = widget.height - 64;
-
-    return ResponsiveRowColumn(
-      layout: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-          ? ResponsiveRowColumnType.COLUMN
-          : ResponsiveRowColumnType.ROW,
-      rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
-      rowCrossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        ResponsiveRowColumnItem(
-          rowFlex: 1,
-          child: SingleChildScrollView(
-            child: Container(
-              height: cellHeight,
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Thống kê người di chuyển",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Expanded(
-                        child: _viewMap(),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        const ResponsiveRowColumnItem(rowFlex: 1, child: SizedBox()),
-      ],
-    );
+    return _viewMap();
   }
 }
 

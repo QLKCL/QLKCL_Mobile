@@ -157,7 +157,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                             color: primaryText),
                                       ),
                                       const SizedBox(
-                                        height: 2,
+                                        height: 4,
                                       ),
                                       Text(
                                         "Số điện thoại: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['phone_number'] != "") ? snapshot.data['quarantine_ward']['phone_number'] : "Chưa có"}",

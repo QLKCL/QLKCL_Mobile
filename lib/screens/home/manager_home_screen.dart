@@ -233,24 +233,63 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                       );
                     },
                   ),
-                  FutureBuilder<List<KeyValue>>(
-                    future: futurePassBy,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return Maps(
-                          mapData: mapData,
-                          data: snapshot.data!,
+                  ResponsiveRowColumn(
+                    layout: MediaQuery.of(context).size.width < 960
+                        ? ResponsiveRowColumnType.COLUMN
+                        : ResponsiveRowColumnType.ROW,
+                    rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    rowCrossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ResponsiveRowColumnItem(
+                        rowFlex: 1,
+                        child: Container(
+                          width: double.infinity,
                           height: 800,
-                          startTimeMaxController: startTimeMaxController,
-                          startTimeMinController: startTimeMinController,
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Thống kê người di chuyển",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(
+                                    height: 8,
+                                  ),
+                                  Expanded(
+                                    child: FutureBuilder<List<KeyValue>>(
+                                      future: futurePassBy,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasData) {
+                                          return Maps(
+                                            mapData: mapData,
+                                            data: snapshot.data!,
+                                            height: 800,
+                                            startTimeMaxController:
+                                                startTimeMaxController,
+                                            startTimeMinController:
+                                                startTimeMinController,
+                                          );
+                                        } else if (snapshot.hasError) {
+                                          return Text('${snapshot.error}');
+                                        }
 
-                      return const SizedBox();
-                    },
-                  ),
+                                        return const SizedBox();
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const ResponsiveRowColumnItem(
+                          rowFlex: 1, child: SizedBox()),
+                    ],
+                  )
                 ],
               ),
             ),
