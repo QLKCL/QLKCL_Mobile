@@ -226,6 +226,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                             quarantineAt: snapshot.data['quarantined_at'],
                             quarantineFinishAt:
                                 snapshot.data['quarantined_finished_at'],
+                            quarantineReason:
+                                snapshot.data['quarantine_reason'],
                           ),
                         if (snapshot.data['custom_user']['status'] == "LEAVE")
                           Container(

@@ -197,13 +197,15 @@ class QuarantineFinishCertification extends StatelessWidget {
   final String phone;
   final String? quarantineAt;
   final String? quarantineFinishAt;
+  final String? quarantineReason;
 
   const QuarantineFinishCertification({
     required this.name,
     required this.address,
     required this.phone,
-    required this.quarantineAt,
-    required this.quarantineFinishAt,
+    this.quarantineAt,
+    this.quarantineFinishAt,
+    this.quarantineReason,
   });
 
   @override
@@ -272,7 +274,7 @@ class QuarantineFinishCertification extends StatelessWidget {
                       topPadding: 8,
                       icon: Icons.date_range_outlined,
                       title: "Lý do cách ly",
-                      content: "Chưa rõ",
+                      content: quarantineReason ?? "Chưa rõ",
                       textColor: primaryText,
                     ),
                   ],
