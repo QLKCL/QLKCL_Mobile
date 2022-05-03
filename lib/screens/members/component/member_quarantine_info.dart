@@ -315,7 +315,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   hint: 'Chọn tòa',
                   required: widget.mode != Permission.view &&
                       widget.mode != Permission.approval &&
-                      _role != 5,
+                      _role != 5 &&
+                      state.statusController.text == "AVAILABLE",
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineBuildingList.isEmpty &&
                           state.quarantineWardController.text != ""
@@ -381,7 +382,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   hint: 'Chọn tầng',
                   required: widget.mode != Permission.view &&
                       widget.mode != Permission.approval &&
-                      _role != 5,
+                      _role != 5 &&
+                      state.statusController.text == "AVAILABLE",
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineFloorList.isEmpty &&
                           state.quarantineBuildingController.text != ""
@@ -444,7 +446,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   hint: 'Chọn phòng',
                   required: widget.mode != Permission.view &&
                       widget.mode != Permission.approval &&
-                      _role != 5,
+                      _role != 5 &&
+                      state.statusController.text == "AVAILABLE",
                   itemAsString: (KeyValue? u) => u!.name,
                   onFind: quarantineRoomList.isEmpty &&
                           state.quarantineFloorController.text != ""
@@ -557,6 +560,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                 DropdownInput<KeyValue>(
                   label: 'Diện cách ly',
                   hint: 'Chọn diện cách ly',
+                  helper: "Người cách ly sẽ dương tính khi chọn F0",
                   itemValue: labelList,
                   compareFn: (item, selectedItem) =>
                       item?.id == selectedItem?.id,
@@ -600,68 +604,74 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   defaultTime: "07:00",
                 ),
                 if (state.statusController.text == "AVAILABLE" &&
-                    widget.quarantineData?.quarantinedStatus == "QUARANTINING")
+                    widget.quarantineData?.quarantinedStatus ==
+                        "QUARANTINING" &&
+                    _role != 5)
                   NewDateInput(
                     label: 'Thời gian dự kiến hoàn thành cách ly',
                     controller: state.quarantinedFinishExpectedAtController,
                     enabled: widget.mode == Permission.edit && _role != 5,
                     defaultTime: "07:00",
                   ),
-                if (state.statusController.text == "LEAVE" &&
-                    widget.quarantineData?.quarantinedStatus == "COMPLETED")
-                  NewDateInput(
-                    label: 'Thời gian hoàn thành cách ly',
-                    controller: state.quarantinedFinishAtController,
-                    enabled: false,
+                // if (state.statusController.text == "LEAVE" &&
+                //     widget.quarantineData?.quarantinedStatus == "COMPLETED")
+                //   NewDateInput(
+                //     label: 'Thời gian hoàn thành cách ly',
+                //     controller: state.quarantinedFinishAtController,
+                //     enabled: false,
+                //   ),
+                if (widget.mode == Permission.add ||
+                    widget.mode == Permission.approval)
+                  Input(
+                    label: "Số mũi vaccine đã tiêm",
+                    controller: state.numberOfVaccineDosesController,
+                    required: widget.mode == Permission.add,
+                    enabled: widget.mode == Permission.add ||
+                        widget.mode == Permission.approval,
                   ),
-                Input(
-                  label: "Số mũi vaccine đã tiêm",
-                  controller: state.numberOfVaccineDosesController,
-                  required: widget.mode == Permission.add,
-                  enabled: widget.mode == Permission.add,
-                ),
-                DropdownInput<KeyValue>(
-                  label: "Tình trạng bệnh",
-                  itemValue: testValueWithBoolList,
-                  selectedItem: testValueWithBoolList.safeFirstWhere((result) =>
-                      result.id ==
-                      state.positiveTestNowController.text.capitalize()),
-                  itemAsString: (KeyValue? u) => u!.name,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  enabled: false,
-                ),
-                DropdownInput<KeyValue>(
-                  label: 'Cán bộ chăm sóc',
-                  hint: 'Chọn cán bộ chăm sóc',
-                  onFind: (String? filter) => fetchNotMemberList({
-                    'role_name_list': 'STAFF',
-                    'quarantine_ward_id': state.quarantineWardController.text
-                  }),
-                  searchOnline: false,
-                  selectedItem: widget.quarantineData?.careStaff,
-                  onChanged: (value) {
-                    if (value == null) {
-                      state.careStaffController.text = "";
-                    } else {
-                      state.careStaffController.text = value.id;
-                    }
-                  },
-                  enabled: widget.mode != Permission.view && _role != 5,
-                  itemAsString: (KeyValue? u) => u!.name,
-                  compareFn: (item, selectedItem) =>
-                      item?.id == selectedItem?.id,
-                  showSearchBox: true,
-                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                      ? Mode.DIALOG
-                      : Mode.BOTTOM_SHEET,
-                  maxHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top -
-                      MediaQuery.of(context).padding.bottom -
-                      100,
-                  popupTitle: 'Cán bộ',
-                ),
+                // DropdownInput<KeyValue>(
+                //   label: "Tình trạng bệnh",
+                //   itemValue: testValueWithBoolList,
+                //   selectedItem: testValueWithBoolList.safeFirstWhere((result) =>
+                //       result.id ==
+                //       state.positiveTestNowController.text.capitalize()),
+                //   itemAsString: (KeyValue? u) => u!.name,
+                //   compareFn: (item, selectedItem) =>
+                //       item?.id == selectedItem?.id,
+                //   enabled: false,
+                // ),
+                if (_role != 5)
+                  DropdownInput<KeyValue>(
+                    label: 'Cán bộ chăm sóc',
+                    hint: 'Chọn cán bộ chăm sóc',
+                    onFind: (String? filter) => fetchNotMemberList({
+                      'role_name_list': 'STAFF',
+                      'quarantine_ward_id': state.quarantineWardController.text
+                    }),
+                    searchOnline: false,
+                    selectedItem: widget.quarantineData?.careStaff,
+                    onChanged: (value) {
+                      if (value == null) {
+                        state.careStaffController.text = "";
+                      } else {
+                        state.careStaffController.text = value.id;
+                      }
+                    },
+                    enabled: widget.mode != Permission.view && _role != 5,
+                    itemAsString: (KeyValue? u) => u!.name,
+                    compareFn: (item, selectedItem) =>
+                        item?.id == selectedItem?.id,
+                    showSearchBox: true,
+                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                        ? Mode.DIALOG
+                        : Mode.BOTTOM_SHEET,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        100,
+                    popupTitle: 'Cán bộ',
+                  ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
