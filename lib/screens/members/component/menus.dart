@@ -1,7 +1,9 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/components/filters.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/custom_user.dart';
@@ -86,6 +88,84 @@ Widget menus<T>(
   List<menusOptions> showMenusItems = const [],
   Color? customMenusColor,
 }) {
+  Future completeMember(
+    BuildContext context, {
+    required String code,
+    required String name,
+  }) {
+    final filterContent = StatefulBuilder(builder:
+        (BuildContext context, StateSetter setState /*You can rename this!*/) {
+      return Wrap(
+        children: <Widget>[
+          ListTile(
+            title: Center(
+              child: Text(
+                'Xác nhận',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Xác nhận hoàn thành cách ly cho ',
+                  ),
+                  TextSpan(
+                    text: name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Hủy"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    final CancelFunc cancel = showLoading();
+                    final response = await finishMember({'member_codes': code});
+                    cancel();
+                    showNotification(response);
+                    if (response.status == Status.success) {
+                      if (Responsive.isDesktopLayout(context)) {
+                        tableKey?.currentState!.refresh();
+                      } else {
+                        pagingController!.refresh();
+                      }
+                    }
+                  },
+                  child: const Text("Xác nhận"),
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    });
+
+    return showCustomModalBottomSheet(
+        context: context,
+        builder: (context) => filterContent,
+        containerWidget: (_, animation, child) => FloatingModal(
+              child: child,
+            ),
+        expand: false);
+  }
+
   if (data.runtimeType == FilterMember ||
       data.runtimeType == FilterStaff ||
       data.runtimeType == CustomUser) {
@@ -191,17 +271,7 @@ Widget menus<T>(
                           quarantineWard: quarantineWard,
                         )));
           } else if (result == menusOptions.completeQuarantine) {
-            final CancelFunc cancel = showLoading();
-            final response = await finishMember({'member_codes': code});
-            cancel();
-            showNotification(response);
-            if (response.status == Status.success) {
-              if (Responsive.isDesktopLayout(context)) {
-                tableKey?.currentState!.refresh();
-              } else {
-                pagingController!.refresh();
-              }
-            }
+            completeMember(context, code: code, name: fullName);
           } else if (result == menusOptions.requarantine) {
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
