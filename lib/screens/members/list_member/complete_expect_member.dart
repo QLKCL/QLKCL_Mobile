@@ -360,7 +360,9 @@ class DataSource extends DataGridSource {
                               )));
                 },
                 child: Text(
-                  row.getCells()[0].value.toString(),
+                  row.getCells()[0].value.toString().isNotEmpty
+                      ? row.getCells()[0].value.toString()
+                      : row.getCells()[11].value.toString(),
                   style: TextStyle(
                     color: primaryText,
                     fontWeight: FontWeight.bold,
