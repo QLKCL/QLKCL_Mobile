@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/account/component/app_infomation.dart';
 import 'package:qlkcl/screens/account/component/qr_code.dart';
 import 'package:qlkcl/helper/authentication.dart';
@@ -231,7 +233,12 @@ class _AccountState extends State<Account> {
                       borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(8),
                           bottomRight: Radius.circular(8))),
-                  onTap: () {},
+                  onTap: () {
+                    showNotification(
+                      "Chức năng đang phát triển",
+                      status: Status.error,
+                    );
+                  },
                   title: const Text('Điều khoản và bảo mật'),
                   trailing: const Icon(Icons.keyboard_arrow_right),
                 ),
