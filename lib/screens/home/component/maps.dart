@@ -134,7 +134,7 @@ class _MapsState extends State<Maps> {
         layers: [
           MapShapeLayer(
             onWillZoom: (MapZoomDetails detail) {
-              return true;
+              return false;
             },
             zoomPanBehavior: MapZoomPanBehavior(
               enableDoubleTapZooming: true,
