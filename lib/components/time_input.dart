@@ -108,6 +108,7 @@ class _TimeInputState extends State<TimeInput> {
                 )
               : const Icon(Icons.access_time),
           helperText: widget.helper,
+          helperStyle: TextStyle(color: disableText),
           fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),

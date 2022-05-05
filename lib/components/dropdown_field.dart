@@ -87,6 +87,7 @@ class _DropdownInputState<T> extends State<DropdownInput<T>> {
           hintText: widget.hint,
           labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
+          helperStyle: TextStyle(color: disableText),
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&
@@ -234,6 +235,7 @@ class _MultiDropdownInputState<T> extends State<MultiDropdownInput<T>> {
           hintText: widget.hint,
           labelText: widget.required ? "${widget.label} *" : widget.label,
           helperText: widget.helper,
+          helperStyle: TextStyle(color: disableText),
           contentPadding: const EdgeInsets.fromLTRB(12, 4, 0, 4),
           errorText: (widget.validator == null &&
                   widget.error != null &&

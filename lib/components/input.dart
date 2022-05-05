@@ -153,6 +153,7 @@ class _InputState extends State<Input> {
                     )
                   : null),
           helperText: widget.helper,
+          helperStyle: TextStyle(color: disableText),
           errorText: (widget.error != null && widget.error!.isNotEmpty)
               ? widget.error
               : null,
