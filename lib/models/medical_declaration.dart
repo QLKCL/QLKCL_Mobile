@@ -155,3 +155,96 @@ Future<Response> updateMedDecl(Map<String, dynamic> data) async {
     }
   }
 }
+
+// To parse this JSON data, do
+//
+//     final healthInfo = healthInfoFromJson(jsonString);
+
+HealthInfo healthInfoFromJson(String str) =>
+    HealthInfo.fromJson(json.decode(str));
+
+String healthInfoToJson(HealthInfo data) => json.encode(data.toJson());
+
+class HealthInfo {
+  HealthInfo({
+    required this.heartbeat,
+    required this.temperature,
+    required this.breathing,
+    required this.spo2,
+    required this.bloodPressure,
+    required this.mainSymptoms,
+    required this.extraSymptoms,
+    required this.otherSymptoms,
+  });
+
+  final HealthData? heartbeat;
+  final HealthData? temperature;
+  final HealthData? breathing;
+  final HealthData? spo2;
+  final HealthData? bloodPressure;
+  final HealthData? mainSymptoms;
+  final HealthData? extraSymptoms;
+  final HealthData? otherSymptoms;
+
+  factory HealthInfo.fromJson(Map<String, dynamic> json) => HealthInfo(
+        heartbeat: json["heartbeat"] != null
+            ? HealthData.fromJson(json["heartbeat"])
+            : null,
+        temperature: json["temperature"] != null
+            ? HealthData.fromJson(json["temperature"])
+            : null,
+        breathing: json["breathing"] != null
+            ? HealthData.fromJson(json["breathing"])
+            : null,
+        spo2: json["spo2"] != null ? HealthData.fromJson(json["spo2"]) : null,
+        bloodPressure: json["blood_pressure"] != null
+            ? HealthData.fromJson(json["blood_pressure"])
+            : null,
+        mainSymptoms: json["main_symptoms"] != null
+            ? HealthData.fromJson(json["main_symptoms"])
+            : null,
+        extraSymptoms: json["extra_symptoms"] != null
+            ? HealthData.fromJson(json["extra_symptoms"])
+            : null,
+        otherSymptoms: json["other_symptoms"] != null
+            ? HealthData.fromJson(json["other_symptoms"])
+            : null,
+      );
+
+  Map<String, dynamic> toJson() => {
+        "heartbeat": heartbeat?.toJson(),
+        "temperature": temperature?.toJson(),
+        "breathing": breathing?.toJson(),
+        "spo2": spo2?.toJson(),
+        "blood_pressure": bloodPressure?.toJson(),
+        "main_symptoms": mainSymptoms?.toJson(),
+        "extra_symptoms": extraSymptoms?.toJson(),
+        "other_symptoms": otherSymptoms?.toJson(),
+      };
+}
+
+class HealthData {
+  HealthData({
+    required this.data,
+    required this.updatedAt,
+  });
+
+  final String data;
+  final DateTime updatedAt;
+
+  factory HealthData.fromJson(Map<String, dynamic> json) => HealthData(
+        data: json["data"].toString(),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data,
+        "updated_at": updatedAt.toIso8601String(),
+      };
+}
+
+Future<HealthInfo> getHeathInfo({data}) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.getHealthInfo, data);
+  return HealthInfo.fromJson(response["data"]);
+}

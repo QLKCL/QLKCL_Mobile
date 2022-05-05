@@ -2,13 +2,16 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/custom_user.dart';
+import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/models/timeline.dart';
 import 'package:qlkcl/networking/response.dart';
-import 'package:qlkcl/screens/members/component/infomation.dart';
+import 'package:qlkcl/screens/members/component/health_infomation.dart';
+import 'package:qlkcl/screens/members/component/personal_infomation.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/timeline.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class TimelineMember extends StatefulWidget {
@@ -23,112 +26,130 @@ class TimelineMember extends StatefulWidget {
 class _TimelineMemberState extends State<TimelineMember> {
   late Future<Response> futureData;
   late Future<Response> futureTimeline;
+  late Future<HealthInfo> futureHealth;
 
   List<TimelineByDay>? data;
   CustomUser? personalData;
   Member? quarantineData;
+  HealthInfo? healthData;
 
-  late CancelFunc cancel;
   @override
   void initState() {
     super.initState();
 
-    cancel = showLoading();
-    futureData =
-        fetchUser(data: widget.code != null ? {'code': widget.code} : null);
+    final CancelFunc cancel = showLoading();
+
+    fetchUser(data: widget.code != null ? {'code': widget.code} : null)
+        .then((value) {
+      cancel();
+      personalData = CustomUser.fromJson(value.data["custom_user"]);
+      quarantineData = value.data["member"] != null
+          ? Member.fromJson(value.data["member"])
+          : null;
+      if (quarantineData != null) {
+        quarantineData!.customUserCode = personalData!.code;
+        quarantineData!.quarantineWard = personalData!.quarantineWard;
+      }
+      setState(() {});
+    });
     futureTimeline =
         getMemberTimeline(widget.code != null ? {'code': widget.code} : null);
+    futureHealth = getHeathInfo(
+        data: widget.code != null ? {'user_code': widget.code} : null);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Thông tin chi tiết'),
-          centerTitle: true,
-          actions: [
-            if (personalData != null)
-              menus(
-                context,
-                personalData,
-                customMenusColor: white,
-                showMenusItems: [
-                  menusOptions.updateInfo,
-                  menusOptions.createMedicalDeclaration,
-                  menusOptions.medicalDeclareHistory,
-                  menusOptions.createTest,
-                  menusOptions.testHistory,
-                  menusOptions.vaccineDoseHistory,
-                  menusOptions.destinationHistory,
-                  menusOptions.quarantineHistory,
-                ],
-              ),
-          ],
-        ),
-        body: RefreshIndicator(
-          onRefresh: () => Future.sync(() {
-            setState(() {
-              futureData = fetchUser(
-                  data: widget.code != null ? {'code': widget.code} : null);
-              futureTimeline = getMemberTimeline(
-                  widget.code != null ? {'code': widget.code} : null);
-            });
-          }),
-          child: SingleChildScrollView(
-            child: ResponsiveRowColumn(
-              layout: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-                  ? ResponsiveRowColumnType.COLUMN
-                  : ResponsiveRowColumnType.ROW,
-              rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
-              rowCrossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ResponsiveRowColumnItem(
-                  rowFlex: 5,
-                  rowFit: FlexFit.tight,
-                  child: FutureBuilder<Response>(
-                    future: futureData,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        cancel();
-                        personalData = CustomUser.fromJson(
-                            snapshot.data!.data["custom_user"]);
-                        quarantineData = snapshot.data!.data["member"] != null
-                            ? Member.fromJson(snapshot.data!.data["member"])
-                            : null;
-                        if (quarantineData != null) {
-                          quarantineData!.customUserCode = personalData!.code;
-                          quarantineData!.quarantineWard =
-                              personalData!.quarantineWard;
-                        }
-                        return infomation(personalData!, quarantineData!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-
-                      return const SizedBox();
-                    },
-                  ),
-                ),
-                ResponsiveRowColumnItem(
-                  rowFlex: 5,
-                  child: FutureBuilder<Response>(
-                    future: futureTimeline,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        cancel();
-                        data = TimelineByDay.fromJsonList(snapshot.data!.data);
-                        return timeline(data!);
-                      } else if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      }
-
-                      return const SizedBox();
-                    },
-                  ),
-                ),
+      appBar: AppBar(
+        title: const Text('Thông tin chi tiết'),
+        centerTitle: true,
+        actions: [
+          if (personalData != null)
+            menus(
+              context,
+              personalData,
+              customMenusColor: white,
+              showMenusItems: [
+                menusOptions.updateInfo,
+                menusOptions.createMedicalDeclaration,
+                menusOptions.medicalDeclareHistory,
+                menusOptions.createTest,
+                menusOptions.testHistory,
+                menusOptions.vaccineDoseHistory,
+                menusOptions.destinationHistory,
+                menusOptions.quarantineHistory,
               ],
             ),
-          ),
-        ));
+        ],
+      ),
+      body: personalData != null
+          ? RefreshIndicator(
+              onRefresh: () => Future.sync(() {
+                setState(() {
+                  futureData = fetchUser(
+                      data: widget.code != null ? {'code': widget.code} : null);
+                  futureTimeline = getMemberTimeline(
+                      widget.code != null ? {'code': widget.code} : null);
+                  futureHealth = getHeathInfo(
+                      data: widget.code != null
+                          ? {'user_code': widget.code}
+                          : null);
+                });
+              }),
+              child: SingleChildScrollView(
+                child: ResponsiveRowColumn(
+                  layout: MediaQuery.of(context).size.width < minDesktopSize
+                      ? ResponsiveRowColumnType.COLUMN
+                      : ResponsiveRowColumnType.ROW,
+                  rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  rowCrossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ResponsiveRowColumnItem(
+                      rowFlex: 5,
+                      rowFit: FlexFit.tight,
+                      child: personalInfomation(personalData!, quarantineData!),
+                    ),
+                    ResponsiveRowColumnItem(
+                      rowFlex: 5,
+                      rowFit: FlexFit.tight,
+                      child: FutureBuilder<HealthInfo>(
+                        future: futureHealth,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            healthData = snapshot.data;
+                            return healthInfomation(
+                                personalData!, quarantineData!, healthData!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+
+                          return const SizedBox();
+                        },
+                      ),
+                    ),
+                    ResponsiveRowColumnItem(
+                      rowFlex: 5,
+                      child: FutureBuilder<Response>(
+                        future: futureTimeline,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            data =
+                                TimelineByDay.fromJsonList(snapshot.data!.data);
+                            return timeline(data!);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+
+                          return const SizedBox();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : const SizedBox(),
+    );
   }
 }

@@ -68,6 +68,8 @@ class Api {
   static const String filterMedDecl = '/api/form/medical-declaration/filter';
   static const String getMedDecl = '/api/form/medical-declaration/get';
   static const String createMedDecl = '/api/form/medical-declaration/create';
+  static const String getHealthInfo =
+      '/api/form/medical-declaration/get_health_info_of_user';
 
   static const String getListNotMem = '/api/user/member/not_member_filter';
 
