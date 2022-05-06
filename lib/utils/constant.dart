@@ -138,6 +138,6 @@ const double maxTabletSize = 768;
 const double minDesktopSize = 1200;
 
 class WebVersionInfo {
-  static const String version = '1.0.0';
-  static const int buildNumber = 10;
+  static const String version = '1.0.50';
+  static const int buildNumber = 1;
 }

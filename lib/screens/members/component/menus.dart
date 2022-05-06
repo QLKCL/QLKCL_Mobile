@@ -88,10 +88,12 @@ Widget menus<T>(
   List<menusOptions> showMenusItems = const [],
   Color? customMenusColor,
 }) {
-  Future completeMember(
+  Future alertPopup(
     BuildContext context, {
+    required String message,
     required String code,
     required String name,
+    required Function confirmAction,
   }) {
     final filterContent = StatefulBuilder(builder:
         (BuildContext context, StateSetter setState /*You can rename this!*/) {
@@ -111,12 +113,16 @@ Widget menus<T>(
             child: RichText(
               text: TextSpan(
                 children: [
-                  const TextSpan(
-                    text: 'Xác nhận hoàn thành cách ly cho ',
+                  TextSpan(
+                    text: message,
+                    style: TextStyle(color: primaryText),
                   ),
                   TextSpan(
                     text: name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: primaryText,
+                    ),
                   ),
                 ],
               ),
@@ -134,19 +140,9 @@ Widget menus<T>(
                   child: const Text("Hủy"),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
                     Navigator.pop(context);
-                    final CancelFunc cancel = showLoading();
-                    final response = await finishMember({'member_codes': code});
-                    cancel();
-                    showNotification(response);
-                    if (response.status == Status.success) {
-                      if (Responsive.isDesktopLayout(context)) {
-                        tableKey?.currentState!.refresh();
-                      } else {
-                        pagingController!.refresh();
-                      }
-                    }
+                    confirmAction.call();
                   },
                   child: const Text("Xác nhận"),
                 ),
@@ -271,7 +267,25 @@ Widget menus<T>(
                           quarantineWard: quarantineWard,
                         )));
           } else if (result == menusOptions.completeQuarantine) {
-            completeMember(context, code: code, name: fullName);
+            await alertPopup(
+              context,
+              message: 'Xác nhận hoàn thành cách ly cho ',
+              code: code,
+              name: fullName,
+              confirmAction: () async {
+                final CancelFunc cancel = showLoading();
+                final response = await finishMember({'member_codes': code});
+                cancel();
+                showNotification(response);
+                if (response.status == Status.success) {
+                  if (Responsive.isDesktopLayout(context)) {
+                    tableKey?.currentState!.refresh();
+                  } else {
+                    pagingController!.refresh();
+                  }
+                }
+              },
+            );
           } else if (result == menusOptions.requarantine) {
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
@@ -287,31 +301,47 @@ Widget menus<T>(
                           code: code,
                         )));
           } else if (result == menusOptions.accept) {
-            final CancelFunc cancel = showLoading();
-            final response = await acceptOneMember({'code': code});
-            cancel();
-            showNotification(response);
-            if (response.status == Status.success) {
-              if (Responsive.isDesktopLayout(context)) {
-                tableKey?.currentState!.refresh();
-              } else {
-                pagingController!.refresh();
-              }
-            }
+            await alertPopup(
+              context,
+              message: "Xác nhận đồng ý cách ly cho ",
+              code: code,
+              name: fullName,
+              confirmAction: () async {
+                final CancelFunc cancel = showLoading();
+                final response = await acceptOneMember({'code': code});
+                cancel();
+                showNotification(response);
+                if (response.status == Status.success) {
+                  if (Responsive.isDesktopLayout(context)) {
+                    tableKey?.currentState!.refresh();
+                  } else {
+                    pagingController!.refresh();
+                  }
+                }
+              },
+            );
           } else if (result == menusOptions.deny) {
-            final CancelFunc cancel = showLoading();
-            final response = await denyMember({'member_codes': code});
-            cancel();
-            showNotification(response);
-            if (response.status == Status.success) {
-              if (Responsive.isDesktopLayout(context)) {
-                tableKey?.currentState!.refresh();
-              } else {
-                pagingController!.refresh();
-              }
-            }
+            await alertPopup(
+              context,
+              message: "Xác nhận từ chối cách ly cho ",
+              code: code,
+              name: fullName,
+              confirmAction: () async {
+                final CancelFunc cancel = showLoading();
+                final response = await denyMember({'member_codes': code});
+                cancel();
+                showNotification(response);
+                if (response.status == Status.success) {
+                  if (Responsive.isDesktopLayout(context)) {
+                    tableKey?.currentState!.refresh();
+                  } else {
+                    pagingController!.refresh();
+                  }
+                }
+              },
+            );
           } else if (result == menusOptions.moveHospital) {
-            showNotification("Chức năng chưa hỗ trợ", status: Status.error);
+            showNotification("Chức năng đang phát triển", status: Status.error);
           }
         },
         itemBuilder: (BuildContext context) => showMenusItems

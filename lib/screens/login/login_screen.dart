@@ -1,5 +1,4 @@
 import 'package:bot_toast/bot_toast.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -7,6 +6,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
+import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/app.dart';
@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _initPackageInfo() async {
-    if (kIsWeb) {
+    if (isWebPlatform()) {
       version = "${WebVersionInfo.version}+${WebVersionInfo.buildNumber}";
     } else {
       final info = await PackageInfo.fromPlatform();
@@ -91,32 +91,34 @@ class _LoginState extends State<Login> {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: disableText),
                 ),
-                const SizedBox(
-                  width: 16,
-                  child: Text(
-                    "|",
-                    textAlign: TextAlign.center,
+                if (isWebPlatform())
+                  const SizedBox(
+                    width: 16,
+                    child: Text(
+                      "|",
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Tải ứng dụng ',
-                        style: TextStyle(color: disableText),
-                      ),
-                      TextSpan(
-                        text: 'Android',
-                        style: TextStyle(color: primary),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            launch(
-                                'https://appdistribution.firebase.dev/i/503670dfd128ae45');
-                          },
-                      ),
-                    ],
+                if (isWebPlatform())
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Tải ứng dụng ',
+                          style: TextStyle(color: disableText),
+                        ),
+                        TextSpan(
+                          text: 'Android',
+                          style: TextStyle(color: primary),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launch(
+                                  'https://appdistribution.firebase.dev/i/503670dfd128ae45');
+                            },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
