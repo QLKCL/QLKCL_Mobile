@@ -140,7 +140,7 @@ void main() {
       expect(quarantineWardList, findsWidgets);
     });
 
-    testWidgets("Search quarantine ward", (WidgetTester tester) async {
+    testWidgets("Search member", (WidgetTester tester) async {
       app.main();
 
       await tester.pumpAndSettle();
@@ -188,6 +188,198 @@ void main() {
 
       final quarantineWardList = find.byType(Card);
       expect(quarantineWardList, findsWidgets);
+    });
+
+    testWidgets("Deny member", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0123456789");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final AppState state = tester.state(find.byType(App));
+      state.selectTab(TabItem.quarantinePerson);
+
+      await tester.pumpAndSettle();
+
+      final waitingTab = find.text("Chờ xét duyệt");
+
+      await tester.pumpAndSettle();
+      await tester.tap(waitingTab);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final menus = find.byIcon(Icons.more_vert).first;
+
+      await tester.pumpAndSettle();
+      await tester.tap(menus);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final denyButton = find.text("Từ chối");
+
+      await tester.pumpAndSettle();
+      await tester.tap(denyButton);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final confirmButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(confirmButton);
+      await tester.pumpAndSettle();
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Thành công'), findsOneWidget);
+    });
+
+    testWidgets("Accept member", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0123456789");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final AppState state = tester.state(find.byType(App));
+      state.selectTab(TabItem.quarantinePerson);
+
+      await tester.pumpAndSettle();
+
+      final waitingTab = find.text("Chờ xét duyệt");
+
+      await tester.pumpAndSettle();
+      await tester.tap(waitingTab);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final menus = find.byIcon(Icons.more_vert).first;
+
+      await tester.pumpAndSettle();
+      await tester.tap(menus);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final denyButton = find.text("Chấp nhận");
+
+      await tester.pumpAndSettle();
+      await tester.tap(denyButton);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final confirmButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(confirmButton);
+      await tester.pumpAndSettle();
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
+
+      if (find.text("Lỗi").evaluate().isNotEmpty) {
+        expect(find.text('Lỗi'), findsOneWidget);
+      } else {
+        expect(find.text('Thành công'), findsOneWidget);
+      }
+    });
+
+    testWidgets("Finish member", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0123456789");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final AppState state = tester.state(find.byType(App));
+      state.selectTab(TabItem.quarantinePerson);
+
+      await tester.pumpAndSettle();
+
+      final waitingTab = find.text("Có thể hoàn thành cách ly");
+
+      await tester.ensureVisible(waitingTab);
+      await tester.pumpAndSettle();
+      await tester.tap(waitingTab);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final menus = find.byIcon(Icons.more_vert).first;
+
+      await tester.pumpAndSettle();
+      await tester.tap(menus);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final denyButton = find.text("Hoàn thành cách ly");
+
+      await tester.pumpAndSettle();
+      await tester.tap(denyButton);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final confirmButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(confirmButton);
+      await tester.pumpAndSettle();
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
+
+      if (find.text("Lỗi").evaluate().isNotEmpty) {
+        expect(find.text('Lỗi'), findsOneWidget);
+      } else {
+        expect(find.text('Thành công'), findsOneWidget);
+      }
     });
   });
 }

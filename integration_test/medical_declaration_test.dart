@@ -38,10 +38,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final personalInfoButton = find.text("Lịch sử khai báo y tế");
+      final medicalDeclarationButton = find.text("Lịch sử khai báo y tế");
 
       await tester.pumpAndSettle();
-      await tester.tap(personalInfoButton);
+      await tester.tap(medicalDeclarationButton);
       await tester.pumpAndSettle();
 
       final medicalDeclarationList = find.byType(Card);
@@ -76,10 +76,10 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      final personalInfoButton = find.text("Lịch sử khai báo y tế");
+      final medicalDeclarationButton = find.text("Lịch sử khai báo y tế");
 
       await tester.pumpAndSettle();
-      await tester.tap(personalInfoButton);
+      await tester.tap(medicalDeclarationButton);
       await tester.pumpAndSettle();
 
       final medicalDeclarationList = find.byType(Card);
@@ -154,6 +154,53 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Thành công'), findsOneWidget);
+    });
+
+    testWidgets("Create medical declaration with no commitment",
+        (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0987654321");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final medicalDeclarationButton = find.text("Khai báo y tế");
+
+      await tester.pumpAndSettle();
+      await tester.tap(medicalDeclarationButton);
+      await tester.pumpAndSettle();
+
+      final temprature = find.byType(Input).at(3);
+      await tester.pumpAndSettle();
+      await tester.enterText(temprature, "37.5");
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final confirmButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(confirmButton);
+      await tester.pumpAndSettle();
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Lỗi'), findsOneWidget);
     });
   });
 }

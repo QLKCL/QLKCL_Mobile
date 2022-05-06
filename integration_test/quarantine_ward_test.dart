@@ -331,5 +331,108 @@ void main() {
       final quarantineWardList = find.byType(Card);
       expect(quarantineWardList, findsWidgets);
     });
+
+    testWidgets("Show quarantine map", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0123456789");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final AppState state = tester.state(find.byType(App));
+      state.selectTab(TabItem.quarantineWard);
+
+      await tester.pumpAndSettle();
+
+      final mapButton = find.byTooltip("Bản đồ");
+
+      await tester.pumpAndSettle();
+      await tester.tap(mapButton);
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 10));
+
+      await Future.delayed(const Duration(seconds: 2));
+
+      final markerList = find.byIcon(Icons.location_on);
+      expect(markerList, findsWidgets);
+    });
+
+    testWidgets("Get detail of room", (WidgetTester tester) async {
+      app.main();
+
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(milliseconds: 1));
+
+      final phoneField = find.byType(Input).first;
+      final passwordField = find.byType(Input).last;
+      final loginButton = find.byType(ElevatedButton).first;
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(phoneField, "0123456789");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.enterText(passwordField, "123456");
+      await tester.pump(const Duration(milliseconds: 1));
+      await tester.pumpAndSettle();
+
+      await tester.ensureVisible(loginButton);
+      await tester.pumpAndSettle();
+      await tester.tap(loginButton);
+      await tester.pumpAndSettle();
+
+      final AppState state = tester.state(find.byType(App));
+      state.selectTab(TabItem.quarantineWard);
+
+      await tester.pumpAndSettle();
+
+      final quarantineWardList = find.byType(Card);
+
+      await tester.pumpAndSettle();
+      await tester.tap(quarantineWardList.first);
+      await tester.pumpAndSettle();
+
+      final buildingsListButton = find.text("Xem tất cả");
+
+      await tester.pumpAndSettle();
+      await tester.tap(buildingsListButton);
+      await tester.pumpAndSettle();
+
+      final buildingList = find.byType(Card);
+
+      await tester.pumpAndSettle();
+      await tester.tap(buildingList.first);
+      await tester.pumpAndSettle();
+
+      final floorList = find.byType(Card);
+
+      await tester.pumpAndSettle();
+      await tester.tap(floorList.first);
+      await tester.pumpAndSettle();
+
+      final roomList = find.byType(Card);
+
+      await tester.pumpAndSettle();
+      await tester.tap(roomList.first);
+      await tester.pumpAndSettle();
+
+      final room = find.text("Thông tin chi tiết phòng");
+      expect(room, findsWidgets);
+    });
   });
 }
