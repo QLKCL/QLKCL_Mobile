@@ -40,10 +40,13 @@ void main() async {
 
   HttpOverrides.global = MyHttpOverrides();
 
-  runApp(MyApp(
-    isLoggedIn: isLoggedIn,
-    role: role,
-  ));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(MyApp(
+      isLoggedIn: isLoggedIn,
+      role: role,
+    ));
+  });
 }
 
 class MyApp extends StatelessWidget {
