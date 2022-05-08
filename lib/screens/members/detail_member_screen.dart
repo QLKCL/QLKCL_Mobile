@@ -14,16 +14,16 @@ import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-class TimelineMember extends StatefulWidget {
+class DetailMemberScreen extends StatefulWidget {
   static const String routeName = "/detail_member";
   final String? code;
-  const TimelineMember({Key? key, this.code}) : super(key: key);
+  const DetailMemberScreen({Key? key, this.code}) : super(key: key);
 
   @override
-  State<TimelineMember> createState() => _TimelineMemberState();
+  State<DetailMemberScreen> createState() => _DetailMemberScreenState();
 }
 
-class _TimelineMemberState extends State<TimelineMember> {
+class _DetailMemberScreenState extends State<DetailMemberScreen> {
   late Future<Response> futureData;
   late Future<Response> futureTimeline;
   late Future<HealthInfo> futureHealth;
@@ -118,8 +118,10 @@ class _TimelineMemberState extends State<TimelineMember> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             healthData = snapshot.data;
-                            return healthInfomation(
-                                personalData!, quarantineData!, healthData!);
+                            return HealthInformation(
+                                personalData: personalData!,
+                                quarantineData: quarantineData!,
+                                healthData: healthData!);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           }

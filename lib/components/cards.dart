@@ -993,6 +993,7 @@ Widget cardLine({
 Widget textField({
   String? title,
   required String content,
+  String? extraContent,
   Color? textColor,
   double topPadding = 4,
 }) {
@@ -1009,9 +1010,25 @@ Widget textField({
       const SizedBox(
         height: 4,
       ),
-      Text(
-        content,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+      RichText(
+        text: TextSpan(
+          style: TextStyle(
+            color: textColor ?? primaryText,
+            fontSize: 15,
+          ),
+          children: [
+            TextSpan(
+              text: content,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (extraContent != null && extraContent.isNotEmpty)
+              TextSpan(
+                text: " $extraContent",
+              ),
+          ],
+        ),
       ),
       const Divider(
         // indent: 16,

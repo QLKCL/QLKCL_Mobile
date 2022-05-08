@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:intl/intl.dart';
+import 'package:qlkcl/helper/function.dart';
+import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/app_theme.dart';
+import 'package:qlkcl/utils/constant.dart';
 
 class QuarantineHome extends StatelessWidget {
   final String name;
@@ -117,16 +120,83 @@ class HealthStatus extends StatelessWidget {
   final bool? positiveTestNow;
   final String? lastTestedHadResult;
   final String? numberOfVaccineDoses;
+  final HealthInfo? healthData;
 
   const HealthStatus({
     required this.healthStatus,
     required this.positiveTestNow,
     required this.lastTestedHadResult,
     required this.numberOfVaccineDoses,
+    this.healthData,
   });
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> listHealthData() {
+      return (healthData != null)
+          ? [
+              cardLine(
+                topPadding: 8,
+                title: "Nhịp tim",
+                content: healthData!.heartbeat != null
+                    ? "${healthData!.heartbeat!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.heartbeat!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Nhiệt độ cơ thể",
+                content: healthData!.temperature != null
+                    ? "${healthData!.temperature!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.temperature!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Nồng độ oxi trong máu (SPO2)",
+                content: healthData!.spo2 != null
+                    ? "${healthData!.spo2!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.spo2!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Nhịp thở",
+                content: healthData!.breathing != null
+                    ? "${healthData!.breathing!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.breathing!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Huyết áp",
+                content: healthData!.bloodPressure != null
+                    ? "${healthData!.bloodPressure!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressure!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Triệu chứng nghi nhiễm",
+                content: (healthData!.mainSymptoms != null &&
+                        healthData!.mainSymptoms!.data.isNotEmpty)
+                    ? "${healthData!.mainSymptoms!.data.split(',').map((e) => symptomMainList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ")} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.mainSymptoms!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Triệu chứng khác",
+                content: (healthData!.mainSymptoms != null &&
+                        healthData!.mainSymptoms!.data.isNotEmpty)
+                    ? "${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? healthData!.extraSymptoms!.data.split(',').map((e) => symptomExtraList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ") + ((healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? ", ${healthData!.otherSymptoms!.data}" : "") : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? healthData!.otherSymptoms!.data : ""} (${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.extraSymptoms!.updatedAt.toLocal())})" : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.otherSymptoms!.updatedAt.toLocal())})" : ""})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+            ]
+          : const [];
+    }
+
     return Card(
       child: InkWell(
         child: Padding(
@@ -147,7 +217,6 @@ class HealthStatus extends StatelessWidget {
                     ),
                     cardLine(
                       topPadding: 8,
-                      icon: Icons.history,
                       title: "Sức khỏe",
                       content: healthStatus == "SERIOUS"
                           ? "Nguy hiểm"
@@ -158,7 +227,6 @@ class HealthStatus extends StatelessWidget {
                     ),
                     cardLine(
                       topPadding: 8,
-                      icon: Icons.description_outlined,
                       title: "Xét nghiệm",
                       content: positiveTestNow != null
                           ? ((positiveTestNow == false
@@ -172,7 +240,6 @@ class HealthStatus extends StatelessWidget {
                     ),
                     cardLine(
                       topPadding: 8,
-                      icon: Icons.vaccines_outlined,
                       title: "Số mũi vaccine",
                       content: numberOfVaccineDoses != null &&
                               numberOfVaccineDoses != ""
@@ -180,6 +247,7 @@ class HealthStatus extends StatelessWidget {
                           : "Chưa có dữ liệu",
                       textColor: primaryText,
                     ),
+                    ...listHealthData(),
                   ],
                 ),
               ),

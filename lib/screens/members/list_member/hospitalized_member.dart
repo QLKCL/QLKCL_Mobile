@@ -5,7 +5,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/component/buttons.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
-import 'package:qlkcl/screens/members/timeline_member_screen.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -169,7 +169,7 @@ class _HospitalizedMemberState extends State<HospitalizedMember>
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => TimelineMember(code: item.code)));
+                        builder: (context) => DetailMemberScreen(code: item.code)));
               },
               menus: menus(
                 context,
@@ -363,7 +363,7 @@ class DataSource extends DataGridSource {
                   Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
-                          builder: (context) => TimelineMember(
+                          builder: (context) => DetailMemberScreen(
                                 code: row.getCells()[10].value.toString(),
                               )));
                 },

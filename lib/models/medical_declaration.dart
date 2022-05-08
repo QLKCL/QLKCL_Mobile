@@ -233,7 +233,7 @@ class HealthData {
   final DateTime updatedAt;
 
   factory HealthData.fromJson(Map<String, dynamic> json) => HealthData(
-        data: json["data"].toString(),
+        data: json["data"] != null ? json["data"].toString() : "",
         updatedAt: DateTime.parse(json["updated_at"]),
       );
 

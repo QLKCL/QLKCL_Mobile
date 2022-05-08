@@ -38,8 +38,8 @@ List<KeyValue> testValueWithBoolList = const [
 
 List<KeyValue> medDeclValueList = const [
   KeyValue(id: "NORMAL", name: "Bình thường"),
-  KeyValue(id: "UNWELL", name: "Có dấu hiệu nghi nhiễm"),
-  KeyValue(id: "SERIOUS", name: "Nghi nhiễm")
+  KeyValue(id: "UNWELL", name: "Nghi nhiễm"),
+  KeyValue(id: "SERIOUS", name: "Nghi hiểm")
 ];
 
 List<KeyValue> roleList = const [

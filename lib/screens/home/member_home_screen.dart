@@ -3,6 +3,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/covid_data.dart';
 import 'package:qlkcl/models/key_value.dart';
+import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
@@ -27,6 +28,9 @@ class MemberHomePage extends StatefulWidget {
 class _MemberHomePageState extends State<MemberHomePage> {
   late Future<CovidData> futureCovid;
   late Future<dynamic> futureData;
+  late Future<HealthInfo> futureHealth;
+  HealthInfo? healthData;
+
   List<KeyValue> quarantineWardList = [];
 
   @override
@@ -34,6 +38,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
     super.initState();
     futureCovid = fetchCovidList();
     futureData = fetch();
+    futureHealth = getHeathInfo();
     fetchQuarantineWardNoToken({
       'is_full': "false",
     }).then((value) {
@@ -176,13 +181,35 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               ),
                             ),
                           ),
-                        HealthStatus(
-                            healthStatus: snapshot.data['health_status'],
-                            positiveTestNow: snapshot.data['positive_test_now'],
-                            lastTestedHadResult:
-                                snapshot.data['last_tested_had_result'],
-                            numberOfVaccineDoses:
-                                snapshot.data['number_of_vaccine_doses']),
+                        FutureBuilder<HealthInfo>(
+                          future: futureHealth,
+                          builder: (context, snapshot2) {
+                            if (snapshot2.hasData) {
+                              healthData = snapshot2.data;
+                              return HealthStatus(
+                                healthStatus: snapshot.data['health_status'],
+                                positiveTestNow:
+                                    snapshot.data['positive_test_now'],
+                                lastTestedHadResult:
+                                    snapshot.data['last_tested_had_result'],
+                                numberOfVaccineDoses:
+                                    snapshot.data['number_of_vaccine_doses'],
+                                healthData: healthData,
+                              );
+                            } else if (snapshot2.hasError) {
+                              return Text('${snapshot2.error}');
+                            }
+
+                            return HealthStatus(
+                                healthStatus: snapshot.data['health_status'],
+                                positiveTestNow:
+                                    snapshot.data['positive_test_now'],
+                                lastTestedHadResult:
+                                    snapshot.data['last_tested_had_result'],
+                                numberOfVaccineDoses:
+                                    snapshot.data['number_of_vaccine_doses']);
+                          },
+                        ),
                         if (snapshot.data['quarantine_ward'] != null &&
                             msg == "")
                           QuarantineHome(

@@ -13,7 +13,7 @@ import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/members/add_member_screen.dart';
 import 'package:qlkcl/screens/members/component/menus.dart';
 import 'package:qlkcl/screens/members/component/table.dart';
-import 'package:qlkcl/screens/members/timeline_member_screen.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'component/general_info_room.dart';
@@ -203,7 +203,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
                           .push(MaterialPageRoute(
-                              builder: (context) => TimelineMember(
+                              builder: (context) => DetailMemberScreen(
                                     code: data.data[index].code,
                                   )));
                     },
@@ -366,7 +366,7 @@ class DataSource extends DataGridSource {
                   Navigator.of(context,
                           rootNavigator: !Responsive.isDesktopLayout(context))
                       .push(MaterialPageRoute(
-                          builder: (context) => TimelineMember(
+                          builder: (context) => DetailMemberScreen(
                                 code: row.getCells()[11].value.toString(),
                               )));
                 },
