@@ -152,7 +152,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
       state.quarantinedAtController.text =
           widget.quarantineData?.quarantinedAt ?? "";
       state.quarantinedFinishExpectedAtController.text =
-          widget.quarantineData?.quarantinedFinishExpectedAt;
+          widget.quarantineData?.quarantinedFinishExpectedAt ?? "";
       state.quarantinedFinishAtController.text =
           widget.quarantineData?.quarantinedFinishAt ?? "";
       state.backgroundDiseaseController.text =

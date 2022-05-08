@@ -29,6 +29,12 @@ class ChangeQuanrantineInfo extends StatefulWidget {
 
 class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
   final _formKey = GlobalKey<FormState>();
+
+  final wardKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final buildingKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final floorKey = GlobalKey<DropdownSearchState<KeyValue>>();
+  final roomKey = GlobalKey<DropdownSearchState<KeyValue>>();
+
   late Member? quarantineData;
 
   final newQuarantineRoomController = TextEditingController();
@@ -111,6 +117,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                 child: Column(
                   children: <Widget>[
                     DropdownInput<KeyValue>(
+                      widgetKey: wardKey,
                       label: 'Khu cách ly mới',
                       hint: 'Chọn khu cách ly mới',
                       required: true,
@@ -153,6 +160,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                             'is_full': false,
                           }).then((data) => setState(() {
                                 quarantineBuildingList = data;
+                                buildingKey.currentState?.openDropDownSearch();
                               }));
                         }
                       },
@@ -168,6 +176,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       popupTitle: 'Khu cách ly',
                     ),
                     DropdownInput<KeyValue>(
+                      widgetKey: buildingKey,
                       label: 'Tòa mới',
                       hint: 'Chọn tòa mới',
                       required: true,
@@ -210,6 +219,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                             'is_full': false,
                           }).then((data) => setState(() {
                                 quarantineFloorList = data;
+                                floorKey.currentState?.openDropDownSearch();
                               }));
                         }
                       },
@@ -225,6 +235,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       popupTitle: 'Tòa',
                     ),
                     DropdownInput<KeyValue>(
+                      widgetKey: floorKey,
                       label: 'Tầng mới',
                       hint: 'Chọn tầng mới',
                       required: true,
@@ -264,6 +275,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                             'is_full': false,
                           }).then((data) => setState(() {
                                 quarantineRoomList = data;
+                                roomKey.currentState?.openDropDownSearch();
                               }));
                         }
                       },
@@ -279,6 +291,7 @@ class _ChangeQuanrantineInfoState extends State<ChangeQuanrantineInfo> {
                       popupTitle: 'Tầng',
                     ),
                     DropdownInput<KeyValue>(
+                      widgetKey: roomKey,
                       label: 'Phòng mới',
                       hint: 'Chọn phòng mới',
                       required: true,
