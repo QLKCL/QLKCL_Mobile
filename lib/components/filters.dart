@@ -20,8 +20,11 @@ class FloatingModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Center(
-      child: SizedBox(
+      child: Container(
         width: maxMobileSize,
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.9,
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Material(
@@ -83,256 +86,277 @@ Future memberFilter(
             ),
           ),
         ),
-        DropdownInput<KeyValue>(
-          label: 'Khu cách ly',
-          hint: 'Chọn khu cách ly',
-          itemAsString: (KeyValue? u) => u!.name,
-          itemValue: quarantineWardList,
-          selectedItem: quarantineWardList.safeFirstWhere(
-              (type) => type.id.toString() == quarantineWardController.text),
-          onFind: quarantineWardList.isEmpty
-              ? (String? filter) => fetchQuarantineWard({
-                    'page_size': pageSizeMax,
-                  })
-              : null,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                quarantineWardController.text = "";
-              } else {
-                quarantineWardController.text = value.id.toString();
-              }
-              quarantineBuildingController.clear();
-              quarantineFloorController.clear();
-              quarantineRoomController.clear();
-              quarantineBuildingList = [];
-              quarantineFloorList = [];
-              quarantineRoomList = [];
-            });
-            if (quarantineWardController.text != "") {
-              fetchQuarantineBuilding({
-                'quarantine_ward': quarantineWardController.text,
-                'page_size': pageSizeMax,
-              }).then((data) => setState(() {
-                    quarantineBuildingList = data;
-                    buildingKey.currentState?.openDropDownSearch();
-                  }));
-            }
-          },
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          widgetKey: buildingKey,
-          label: 'Tòa',
-          hint: 'Chọn tòa',
-          itemAsString: (KeyValue? u) => u!.name,
-          itemValue: quarantineBuildingList,
-          selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
-              type.id.toString() == quarantineBuildingController.text),
-          onFind: quarantineBuildingList.isEmpty &&
-                  quarantineWardController.text != ""
-              ? (String? filter) => fetchQuarantineBuilding({
-                    'quarantine_ward': quarantineWardController.text,
-                    'page_size': pageSizeMax,
-                    'search': filter
-                  })
-              : null,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                quarantineBuildingController.text = "";
-              } else {
-                quarantineBuildingController.text = value.id.toString();
-              }
-              quarantineFloorController.clear();
-              quarantineRoomController.clear();
-              quarantineFloorList = [];
-              quarantineRoomList = [];
-            });
-            if (quarantineBuildingController.text != "") {
-              fetchQuarantineFloor({
-                'quarantine_building_id_list':
-                    quarantineBuildingController.text,
-                'page_size': pageSizeMax,
-              }).then((data) => setState(() {
-                    quarantineFloorList = data;
-                    floorKey.currentState?.openDropDownSearch();
-                  }));
-            }
-          },
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          widgetKey: floorKey,
-          label: 'Tầng',
-          hint: 'Chọn tầng',
-          itemAsString: (KeyValue? u) => u!.name,
-          itemValue: quarantineFloorList,
-          selectedItem: quarantineFloorList.safeFirstWhere(
-              (type) => type.id.toString() == quarantineFloorController.text),
-          onFind: quarantineFloorList.isEmpty &&
-                  quarantineBuildingController.text != ""
-              ? (String? filter) => fetchQuarantineFloor({
-                    'quarantine_building_id_list':
-                        quarantineBuildingController.text,
-                    'page_size': pageSizeMax,
-                    'search': filter
-                  })
-              : null,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                quarantineFloorController.text = "";
-              } else {
-                quarantineFloorController.text = value.id.toString();
-              }
-              quarantineRoomController.clear();
-              quarantineRoomList = [];
-            });
-            if (quarantineFloorController.text != "") {
-              fetchQuarantineRoom({
-                'quarantine_floor': quarantineFloorController.text,
-                'page_size': pageSizeMax,
-              }).then((data) => setState(() {
-                    quarantineRoomList = data;
-                    roomKey.currentState?.openDropDownSearch();
-                  }));
-            }
-          },
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          label: 'Phòng',
-          hint: 'Chọn phòng',
-          itemAsString: (KeyValue? u) => u!.name,
-          itemValue: quarantineRoomList,
-          selectedItem: quarantineRoomList.safeFirstWhere(
-              (type) => type.id.toString() == quarantineRoomController.text),
-          onFind:
-              quarantineRoomList.isEmpty && quarantineFloorController.text != ""
-                  ? (String? filter) => fetchQuarantineRoom({
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.5,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                DropdownInput<KeyValue>(
+                  label: 'Khu cách ly',
+                  hint: 'Chọn khu cách ly',
+                  itemAsString: (KeyValue? u) => u!.name,
+                  itemValue: quarantineWardList,
+                  selectedItem: quarantineWardList.safeFirstWhere((type) =>
+                      type.id.toString() == quarantineWardController.text),
+                  onFind: quarantineWardList.isEmpty
+                      ? (String? filter) => fetchQuarantineWard({
+                            'page_size': pageSizeMax,
+                          })
+                      : null,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        quarantineWardController.text = "";
+                      } else {
+                        quarantineWardController.text = value.id.toString();
+                      }
+                      quarantineBuildingController.clear();
+                      quarantineFloorController.clear();
+                      quarantineRoomController.clear();
+                      quarantineBuildingList = [];
+                      quarantineFloorList = [];
+                      quarantineRoomList = [];
+                    });
+                    if (quarantineWardController.text != "") {
+                      fetchQuarantineBuilding({
+                        'quarantine_ward': quarantineWardController.text,
+                        'page_size': pageSizeMax,
+                      }).then((data) => setState(() {
+                            quarantineBuildingList = data;
+                            buildingKey.currentState?.openDropDownSearch();
+                          }));
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: buildingKey,
+                  label: 'Tòa',
+                  hint: 'Chọn tòa',
+                  itemAsString: (KeyValue? u) => u!.name,
+                  itemValue: quarantineBuildingList,
+                  selectedItem: quarantineBuildingList.safeFirstWhere((type) =>
+                      type.id.toString() == quarantineBuildingController.text),
+                  onFind: quarantineBuildingList.isEmpty &&
+                          quarantineWardController.text != ""
+                      ? (String? filter) => fetchQuarantineBuilding({
+                            'quarantine_ward': quarantineWardController.text,
+                            'page_size': pageSizeMax,
+                            'search': filter
+                          })
+                      : null,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        quarantineBuildingController.text = "";
+                      } else {
+                        quarantineBuildingController.text = value.id.toString();
+                      }
+                      quarantineFloorController.clear();
+                      quarantineRoomController.clear();
+                      quarantineFloorList = [];
+                      quarantineRoomList = [];
+                    });
+                    if (quarantineBuildingController.text != "") {
+                      fetchQuarantineFloor({
+                        'quarantine_building_id_list':
+                            quarantineBuildingController.text,
+                        'page_size': pageSizeMax,
+                      }).then((data) => setState(() {
+                            quarantineFloorList = data;
+                            floorKey.currentState?.openDropDownSearch();
+                          }));
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: floorKey,
+                  label: 'Tầng',
+                  hint: 'Chọn tầng',
+                  itemAsString: (KeyValue? u) => u!.name,
+                  itemValue: quarantineFloorList,
+                  selectedItem: quarantineFloorList.safeFirstWhere((type) =>
+                      type.id.toString() == quarantineFloorController.text),
+                  onFind: quarantineFloorList.isEmpty &&
+                          quarantineBuildingController.text != ""
+                      ? (String? filter) => fetchQuarantineFloor({
+                            'quarantine_building_id_list':
+                                quarantineBuildingController.text,
+                            'page_size': pageSizeMax,
+                            'search': filter
+                          })
+                      : null,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        quarantineFloorController.text = "";
+                      } else {
+                        quarantineFloorController.text = value.id.toString();
+                      }
+                      quarantineRoomController.clear();
+                      quarantineRoomList = [];
+                    });
+                    if (quarantineFloorController.text != "") {
+                      fetchQuarantineRoom({
                         'quarantine_floor': quarantineFloorController.text,
                         'page_size': pageSizeMax,
-                        'search': filter
-                      })
-                  : null,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          onChanged: (value) {
-            if (value == null) {
-              quarantineRoomController.text = "";
-            } else {
-              quarantineRoomController.text = value.id.toString();
-            }
-          },
-          showClearButton: true,
-        ),
-        NewDateRangeInput(
-          label: 'Ngày bắt đầu cách ly',
-          controllerStart: quarantineAtMinController,
-          controllerEnd: quarantineAtMaxController,
-          maxDate: DateTime.now(),
-          showClearButton: true,
-        ),
-        NewDateRangeInput(
-          label: 'Ngày dự kiến hoàn thành cách ly',
-          controllerStart: quarantinedFinishExpectedAtMinController,
-          controllerEnd: quarantinedFinishExpectedAtMaxController,
-          showClearButton: true,
-        ),
-        MultiDropdownInput<KeyValue>(
-          label: 'Diện cách ly',
-          hint: 'Chọn diện cách ly',
-          itemValue: labelList,
-          dropdownBuilder: customDropDown,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          selectedItems: labelController.text != ""
-              ? (labelController.text
-                  .split(',')
-                  .map((e) =>
-                      labelList.safeFirstWhere((result) => result.id == e)!)
-                  .toList())
-              : null,
-          onChanged: (value) {
-            if (value == null) {
-              labelController.text = "";
-            } else {
-              labelController.text = value.map((e) => e.id).join(",");
-            }
-          },
-        ),
-        MultiDropdownInput<KeyValue>(
-          label: 'Tình trạng sức khỏe',
-          hint: 'Chọn tình trạng sức khỏe',
-          itemValue: medDeclValueList,
-          dropdownBuilder: customDropDown,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          selectedItems: healthStatusController.text != ""
-              ? (healthStatusController.text
-                  .split(',')
-                  .map((e) => medDeclValueList
-                      .safeFirstWhere((result) => result.id == e)!)
-                  .toList())
-              : null,
-          onChanged: (value) {
-            if (value == null) {
-              healthStatusController.text = "";
-            } else {
-              healthStatusController.text = value.map((e) => e.id).join(",");
-            }
-          },
-        ),
-        MultiDropdownInput<KeyValue>(
-          label: 'Kết quả xét nghiệm',
-          hint: 'Chọn kết quả xét nghiệm',
-          itemValue: testValueWithBoolList,
-          dropdownBuilder: customDropDown,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          selectedItems: testController.text != ""
-              ? (testController.text
-                  .split(',')
-                  .map((e) => testValueWithBoolList
-                      .safeFirstWhere((result) => result.id == e)!)
-                  .toList())
-              : null,
-          onChanged: (value) {
-            if (value == null) {
-              testController.text = "";
-            } else {
-              testController.text = value.map((e) => e.id).join(",");
-            }
-          },
-        ),
-        DropdownInput<KeyValue>(
-          label: 'Cán bộ chăm sóc',
-          hint: 'Chọn cán bộ chăm sóc',
-          onFind: careStaffList.isEmpty
-              ? (String? filter) => fetchNotMemberList({
-                    'role_name_list': 'STAFF',
-                    'quarantine_ward_id': quarantineWardController.text != ""
-                        ? quarantineWardController.text
-                        : null
-                  })
-              : null,
-          searchOnline: false,
-          itemValue: careStaffList,
-          onChanged: (value) {
-            if (value == null) {
-              careStaffController.text = "";
-            } else {
-              careStaffController.text = value.id;
-            }
-          },
-          selectedItem: careStaffList.safeFirstWhere(
-              (type) => type.id.toString() == careStaffController.text),
-          itemAsString: (KeyValue? u) => u!.name,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          showClearButton: true,
+                      }).then((data) => setState(() {
+                            quarantineRoomList = data;
+                            roomKey.currentState?.openDropDownSearch();
+                          }));
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Phòng',
+                  hint: 'Chọn phòng',
+                  itemAsString: (KeyValue? u) => u!.name,
+                  itemValue: quarantineRoomList,
+                  selectedItem: quarantineRoomList.safeFirstWhere((type) =>
+                      type.id.toString() == quarantineRoomController.text),
+                  onFind: quarantineRoomList.isEmpty &&
+                          quarantineFloorController.text != ""
+                      ? (String? filter) => fetchQuarantineRoom({
+                            'quarantine_floor': quarantineFloorController.text,
+                            'page_size': pageSizeMax,
+                            'search': filter
+                          })
+                      : null,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  onChanged: (value) {
+                    if (value == null) {
+                      quarantineRoomController.text = "";
+                    } else {
+                      quarantineRoomController.text = value.id.toString();
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                NewDateRangeInput(
+                  label: 'Ngày bắt đầu cách ly',
+                  controllerStart: quarantineAtMinController,
+                  controllerEnd: quarantineAtMaxController,
+                  maxDate: DateTime.now(),
+                  showClearButton: true,
+                ),
+                NewDateRangeInput(
+                  label: 'Ngày dự kiến hoàn thành cách ly',
+                  controllerStart: quarantinedFinishExpectedAtMinController,
+                  controllerEnd: quarantinedFinishExpectedAtMaxController,
+                  showClearButton: true,
+                ),
+                MultiDropdownInput<KeyValue>(
+                  label: 'Diện cách ly',
+                  hint: 'Chọn diện cách ly',
+                  itemValue: labelList,
+                  dropdownBuilder: customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: labelController.text != ""
+                      ? (labelController.text
+                          .split(',')
+                          .map((e) => labelList
+                              .safeFirstWhere((result) => result.id == e)!)
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      labelController.text = "";
+                    } else {
+                      labelController.text = value.map((e) => e.id).join(",");
+                    }
+                  },
+                ),
+                MultiDropdownInput<KeyValue>(
+                  label: 'Tình trạng sức khỏe',
+                  hint: 'Chọn tình trạng sức khỏe',
+                  itemValue: medDeclValueList,
+                  dropdownBuilder: customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: healthStatusController.text != ""
+                      ? (healthStatusController.text
+                          .split(',')
+                          .map((e) => medDeclValueList
+                              .safeFirstWhere((result) => result.id == e)!)
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      healthStatusController.text = "";
+                    } else {
+                      healthStatusController.text =
+                          value.map((e) => e.id).join(",");
+                    }
+                  },
+                ),
+                MultiDropdownInput<KeyValue>(
+                  label: 'Kết quả xét nghiệm',
+                  hint: 'Chọn kết quả xét nghiệm',
+                  itemValue: testValueWithBoolList,
+                  dropdownBuilder: customDropDown,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  selectedItems: testController.text != ""
+                      ? (testController.text
+                          .split(',')
+                          .map((e) => testValueWithBoolList
+                              .safeFirstWhere((result) => result.id == e)!)
+                          .toList())
+                      : null,
+                  onChanged: (value) {
+                    if (value == null) {
+                      testController.text = "";
+                    } else {
+                      testController.text = value.map((e) => e.id).join(",");
+                    }
+                  },
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Cán bộ chăm sóc',
+                  hint: 'Chọn cán bộ chăm sóc',
+                  onFind: careStaffList.isEmpty
+                      ? (String? filter) => fetchNotMemberList({
+                            'role_name_list': 'STAFF',
+                            'quarantine_ward_id':
+                                quarantineWardController.text != ""
+                                    ? quarantineWardController.text
+                                    : null
+                          })
+                      : null,
+                  searchOnline: false,
+                  itemValue: careStaffList,
+                  onChanged: (value) {
+                    if (value == null) {
+                      careStaffController.text = "";
+                    } else {
+                      careStaffController.text = value.id;
+                    }
+                  },
+                  selectedItem: careStaffList.safeFirstWhere(
+                      (type) => type.id.toString() == careStaffController.text),
+                  itemAsString: (KeyValue? u) => u!.name,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  showClearButton: true,
+                ),
+              ],
+            ),
+          ),
         ),
         Container(
           margin: const EdgeInsets.all(16),
