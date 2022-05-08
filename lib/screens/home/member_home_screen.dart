@@ -14,6 +14,7 @@ import 'package:qlkcl/screens/notification/create_request_screen.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -181,165 +182,252 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               ),
                             ),
                           ),
-                        FutureBuilder<HealthInfo>(
-                          future: futureHealth,
-                          builder: (context, snapshot2) {
-                            if (snapshot2.hasData) {
-                              healthData = snapshot2.data;
-                              return HealthStatus(
-                                healthStatus: snapshot.data['health_status'],
-                                positiveTestNow:
-                                    snapshot.data['positive_test_now'],
-                                lastTestedHadResult:
-                                    snapshot.data['last_tested_had_result'],
-                                numberOfVaccineDoses:
-                                    snapshot.data['number_of_vaccine_doses'],
-                                healthData: healthData,
-                              );
-                            } else if (snapshot2.hasError) {
-                              return Text('${snapshot2.error}');
-                            }
-
-                            return HealthStatus(
-                                healthStatus: snapshot.data['health_status'],
-                                positiveTestNow:
-                                    snapshot.data['positive_test_now'],
-                                lastTestedHadResult:
-                                    snapshot.data['last_tested_had_result'],
-                                numberOfVaccineDoses:
-                                    snapshot.data['number_of_vaccine_doses']);
-                          },
-                        ),
-                        if (snapshot.data['quarantine_ward'] != null &&
-                            msg == "")
-                          QuarantineHome(
-                            name: snapshot.data['quarantine_ward'] != null
-                                ? snapshot.data['quarantine_ward']['full_name']
-                                : "",
-                            manager: snapshot.data['quarantine_ward'] != null
-                                ? snapshot.data['quarantine_ward']
-                                    ['main_manager']['full_name']
-                                : "",
-                            address:
-                                getAddress(snapshot.data['quarantine_ward']),
-                            room: getRoom(snapshot.data),
-                            phone: snapshot.data['quarantine_ward'] != null &&
-                                    snapshot.data['quarantine_ward']
-                                            ['phone_number'] !=
-                                        null
-                                ? snapshot.data['quarantine_ward']
-                                    ['phone_number']
-                                : "Chưa có",
-                            quarantineAt: snapshot.data['quarantined_at'],
-                            quarantineFinishExpect:
-                                snapshot.data['quarantined_finish_expected_at'],
-                          ),
-                        if (snapshot.data['custom_user']['status'] == "LEAVE" &&
-                            snapshot.data['quarantined_finished_at'] != null &&
-                            snapshot.data['quarantined_finished_at'] != "")
-                          QuarantineFinishCertification(
-                            name: snapshot.data['quarantine_ward'] != null
-                                ? snapshot.data['quarantine_ward']['full_name']
-                                : "",
-                            address:
-                                getAddress(snapshot.data['quarantine_ward']),
-                            phone: snapshot.data['quarantine_ward'] != null &&
-                                    snapshot.data['quarantine_ward']
-                                            ['phone_number'] !=
-                                        null
-                                ? snapshot.data['quarantine_ward']
-                                    ['phone_number']
-                                : "Chưa có",
-                            quarantineAt: snapshot.data['quarantined_at'],
-                            quarantineFinishAt:
-                                snapshot.data['quarantined_finished_at'],
-                            quarantineReason:
-                                snapshot.data['quarantine_reason'],
-                          ),
-                        if (snapshot.data['custom_user']['status'] == "LEAVE")
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 48),
-                              ),
-                              onPressed: () {
-                                memberRequarantined(
-                                  context,
-                                  quarantineWardList: quarantineWardList,
-                                  useCustomBottomSheetMode:
-                                      ResponsiveWrapper.of(context)
-                                          .isLargerThan(MOBILE),
-                                ).then((value) {
-                                  if (value != null &&
-                                      value.status == Status.success) {
-                                    setState(() {
-                                      futureData = fetch();
-                                    });
+                        ResponsiveRowColumn(
+                          layout:
+                              MediaQuery.of(context).size.width < minDesktopSize
+                                  ? ResponsiveRowColumnType.COLUMN
+                                  : ResponsiveRowColumnType.ROW,
+                          rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          rowCrossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ResponsiveRowColumnItem(
+                              rowFlex: 5,
+                              rowFit: FlexFit.tight,
+                              child: FutureBuilder<HealthInfo>(
+                                future: futureHealth,
+                                builder: (context, snapshot2) {
+                                  if (snapshot2.hasData) {
+                                    healthData = snapshot2.data;
+                                    return HealthStatus(
+                                      healthStatus:
+                                          snapshot.data['health_status'],
+                                      positiveTestNow:
+                                          snapshot.data['positive_test_now'],
+                                      lastTestedHadResult: snapshot
+                                          .data['last_tested_had_result'],
+                                      numberOfVaccineDoses: snapshot
+                                          .data['number_of_vaccine_doses'],
+                                      healthData: healthData,
+                                    );
+                                  } else if (snapshot2.hasError) {
+                                    return Text('${snapshot2.error}');
                                   }
-                                });
-                              },
-                              child: Text(
-                                'Đăng ký tái cách ly',
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 20,
-                                ),
+
+                                  return HealthStatus(
+                                      healthStatus:
+                                          snapshot.data['health_status'],
+                                      positiveTestNow:
+                                          snapshot.data['positive_test_now'],
+                                      lastTestedHadResult: snapshot
+                                          .data['last_tested_had_result'],
+                                      numberOfVaccineDoses: snapshot
+                                          .data['number_of_vaccine_doses']);
+                                },
                               ),
                             ),
-                          ),
-                        if (snapshot.data['quarantine_ward'] != null &&
-                            snapshot.data['quarantine_ward']['phone_number'] !=
-                                "")
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.infinity, 48),
-                                primary: success,
-                              ),
-                              onPressed:
-                                  (snapshot.data['quarantine_ward'] != null &&
+                            if (snapshot.data['quarantine_ward'] != null &&
+                                msg == "")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: QuarantineHome(
+                                  name: snapshot.data['quarantine_ward'] != null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['full_name']
+                                      : "",
+                                  manager:
+                                      snapshot.data['quarantine_ward'] != null
+                                          ? snapshot.data['quarantine_ward']
+                                              ['main_manager']['full_name']
+                                          : "",
+                                  address: getAddress(
+                                      snapshot.data['quarantine_ward']),
+                                  room: getRoom(snapshot.data),
+                                  phone: snapshot.data['quarantine_ward'] !=
+                                              null &&
                                           snapshot.data['quarantine_ward']
                                                   ['phone_number'] !=
-                                              "")
-                                      ? () async {
-                                          launch(
-                                              "tel://${snapshot.data['quarantine_ward']['phone_number']}");
-                                        }
-                                      : () {
-                                          showNotification(
-                                              'Số điện thoại không tồn tại.',
-                                              status: Status.error);
-                                        },
-                              child: Text(
-                                'Gọi cấp cứu',
-                                style: TextStyle(
-                                  color: white,
-                                  fontSize: 20,
+                                              null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['phone_number']
+                                      : "Chưa có",
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  quarantineFinishExpect: snapshot
+                                      .data['quarantined_finish_expected_at'],
                                 ),
                               ),
-                            ),
-                          ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(double.infinity, 48),
-                              primary: warning,
-                            ),
-                            onPressed: () => Navigator.of(context,
-                                    rootNavigator:
-                                        !Responsive.isDesktopLayout(context))
-                                .pushNamed(CreateRequest.routeName),
-                            child: Text(
-                              'Phản ánh/yêu cầu',
-                              style: TextStyle(
-                                color: white,
-                                fontSize: 20,
+                            if (snapshot.data['custom_user']['status'] ==
+                                    "LEAVE" &&
+                                snapshot.data['quarantined_finished_at'] !=
+                                    null &&
+                                snapshot.data['quarantined_finished_at'] != "")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: QuarantineFinishCertification(
+                                  name: snapshot.data['quarantine_ward'] != null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['full_name']
+                                      : "",
+                                  address: getAddress(
+                                      snapshot.data['quarantine_ward']),
+                                  phone: snapshot.data['quarantine_ward'] !=
+                                              null &&
+                                          snapshot.data['quarantine_ward']
+                                                  ['phone_number'] !=
+                                              null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['phone_number']
+                                      : "Chưa có",
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  quarantineFinishAt:
+                                      snapshot.data['quarantined_finished_at'],
+                                  quarantineReason:
+                                      snapshot.data['quarantine_reason'],
+                                ),
                               ),
-                            ),
-                          ),
+                          ],
+                        ),
+                        ResponsiveRowColumn(
+                          layout:
+                              MediaQuery.of(context).size.width < minDesktopSize
+                                  ? ResponsiveRowColumnType.COLUMN
+                                  : ResponsiveRowColumnType.ROW,
+                          rowSpacing: 16,
+                          columnSpacing: 16,
+                          rowPadding: const EdgeInsets.all(16),
+                          columnPadding: const EdgeInsets.all(16),
+                          rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          rowCrossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (snapshot.data['custom_user']['status'] ==
+                                "LEAVE")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                  ),
+                                  onPressed: () {
+                                    memberRequarantined(
+                                      context,
+                                      quarantineWardList: quarantineWardList,
+                                      useCustomBottomSheetMode:
+                                          ResponsiveWrapper.of(context)
+                                              .isLargerThan(MOBILE),
+                                    ).then((value) {
+                                      if (value != null &&
+                                          value.status == Status.success) {
+                                        setState(() {
+                                          futureData = fetch();
+                                        });
+                                      }
+                                    });
+                                  },
+                                  child: Text(
+                                    'Đăng ký tái cách ly',
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] ==
+                                    "AVAILABLE" &&
+                                snapshot.data['quarantine_ward'] != null &&
+                                snapshot.data['quarantine_ward']
+                                        ['phone_number'] !=
+                                    "")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    primary: success,
+                                  ),
+                                  onPressed:
+                                      (snapshot.data['quarantine_ward'] !=
+                                                  null &&
+                                              snapshot.data['quarantine_ward']
+                                                      ['phone_number'] !=
+                                                  "")
+                                          ? () async {
+                                              launch(
+                                                  "tel://${snapshot.data['quarantine_ward']['phone_number']}");
+                                            }
+                                          : () {
+                                              showNotification(
+                                                  'Số điện thoại không tồn tại.',
+                                                  status: Status.error);
+                                            },
+                                  child: Text(
+                                    'Gọi cấp cứu',
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] ==
+                                "AVAILABLE")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    primary: warning,
+                                  ),
+                                  onPressed: () => Navigator.of(context,
+                                          rootNavigator:
+                                              !Responsive.isDesktopLayout(
+                                                  context))
+                                      .pushNamed(CreateRequest.routeName),
+                                  child: Text(
+                                    'Phản ánh/yêu cầu',
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] !=
+                                "LEAVE")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 48),
+                                    primary: secondary,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context,
+                                            rootNavigator:
+                                                !Responsive.isDesktopLayout(
+                                                    context))
+                                        .pushNamed(
+                                            MedicalDeclarationScreen.routeName);
+                                  },
+                                  child: Text(
+                                    'Khai báo y tế',
+                                    style: TextStyle(
+                                      color: white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     );
@@ -351,27 +439,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   // return const CircularProgressIndicator();
                   return const SizedBox();
                 },
-              ),
-              Container(
-                margin: const EdgeInsets.all(16),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 48),
-                    primary: secondary,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context,
-                            rootNavigator: !Responsive.isDesktopLayout(context))
-                        .pushNamed(MedicalDeclarationScreen.routeName);
-                  },
-                  child: Text(
-                    'Khai báo y tế',
-                    style: TextStyle(
-                      color: white,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
               ),
             ],
           ),
