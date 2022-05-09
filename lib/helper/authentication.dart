@@ -73,7 +73,7 @@ Future<dynamic> setInfo() async {
   infoBox.put('name', name);
   final String gender = response['data']['custom_user']['gender'];
   infoBox.put('gender', gender);
-  final String birthday = response['data']['custom_user']['birthday'];
+  final String birthday = response['data']['custom_user']['birthday'] ?? "";
   infoBox.put('birthday', birthday);
   final String phoneNumber = response['data']['custom_user']['phone_number'];
   infoBox.put('phoneNumber', phoneNumber);
