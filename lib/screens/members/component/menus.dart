@@ -221,7 +221,7 @@ Widget menus<T>(
                     rootNavigator: !Responsive.isDesktopLayout(context))
                 .push(MaterialPageRoute(
                     builder: (context) => AddTest(
-                          code: code,
+                          phoneNumber: phoneNumber,
                           name: fullName,
                         )));
           } else if (result == menusOptions.testHistory) {
@@ -231,6 +231,7 @@ Widget menus<T>(
                     builder: (context) => ListTest(
                           code: code,
                           name: fullName,
+                          phoneNumber: phoneNumber,
                         )));
           } else if (result == menusOptions.quarantineHistory) {
             Navigator.of(context,

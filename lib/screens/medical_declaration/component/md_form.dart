@@ -56,29 +56,31 @@ class _MedDeclFormState extends State<MedDeclForm> {
   void initState() {
     super.initState();
     //Data contained
-    userNameController.text = widget.medicalDeclData?.user.fullName != null
-        ? widget.medicalDeclData!.user.fullName
-        : widget.name ?? "";
+    if (widget.medicalDeclData != null) {
+      userNameController.text = widget.medicalDeclData?.user.fullName != null
+          ? widget.medicalDeclData!.user.fullName
+          : widget.name ?? "";
 
-    heartBeatController.text = widget.medicalDeclData?.heartbeat != null
-        ? widget.medicalDeclData!.heartbeat.toString()
-        : "";
+      heartBeatController.text = widget.medicalDeclData?.heartbeat != null
+          ? widget.medicalDeclData!.heartbeat.toString()
+          : "";
 
-    temperatureController.text = widget.medicalDeclData?.temperature != null
-        ? widget.medicalDeclData!.temperature.toString()
-        : "";
+      temperatureController.text = widget.medicalDeclData?.temperature != null
+          ? widget.medicalDeclData!.temperature.toString()
+          : "";
 
-    breathingController.text = widget.medicalDeclData?.breathing != null
-        ? widget.medicalDeclData!.breathing.toString()
-        : "";
+      breathingController.text = widget.medicalDeclData?.breathing != null
+          ? widget.medicalDeclData!.breathing.toString()
+          : "";
 
-    bloodPressureController.text = widget.medicalDeclData?.breathing != null
-        ? widget.medicalDeclData!.bloodPressure.toString()
-        : "";
+      bloodPressureController.text = widget.medicalDeclData?.breathing != null
+          ? widget.medicalDeclData!.bloodPressure.toString()
+          : "";
 
-    spo2Controller.text = widget.medicalDeclData?.spo2 != null
-        ? widget.medicalDeclData!.spo2.toString()
-        : "";
+      spo2Controller.text = widget.medicalDeclData?.spo2 != null
+          ? widget.medicalDeclData!.spo2.toString()
+          : "";
+    }
 
     isChecked = widget.phone != null;
     phoneNumberController.text = widget.phone ?? "";
@@ -122,55 +124,56 @@ class _MedDeclFormState extends State<MedDeclForm> {
               children: [
                 Column(
                   children: [
-                    ListTileTheme(
-                      contentPadding: const EdgeInsets.only(left: 8),
-                      child: CheckboxListTile(
-                        title: const Text("Khai hộ"),
-                        controlAffinity: ListTileControlAffinity.leading,
-                        value: isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isChecked = value!;
-                          });
-                        },
+                    if (widget.mode == Permission.add)
+                      ListTileTheme(
+                        contentPadding: const EdgeInsets.only(left: 8),
+                        child: CheckboxListTile(
+                          title: const Text("Khai hộ"),
+                          controlAffinity: ListTileControlAffinity.leading,
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-
-                    // SĐT người khai hộ
-                    Input(
-                      label: 'Số điện thoại',
-                      hint: 'SĐT người được khai báo',
-                      margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                      required: isChecked,
-                      type: TextInputType.phone,
-                      controller: phoneNumberController,
-                      validatorFunction: isChecked ? phoneValidator : null,
-                      enabled: isChecked,
-                      onChangedFunction: (_) async {
-                        if (phoneNumberController.text.isEmpty) {
-                          userNameController.text = "";
-                          setState(() {});
-                        } else {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
+                    if (widget.mode == Permission.add)
+                      // SĐT người khai hộ
+                      Input(
+                        label: 'Số điện thoại',
+                        hint: 'SĐT người được khai báo',
+                        margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                        required: isChecked,
+                        type: TextInputType.phone,
+                        controller: phoneNumberController,
+                        validatorFunction: isChecked ? phoneValidator : null,
+                        enabled: isChecked,
+                        onChangedFunction: (_) async {
+                          if (phoneNumberController.text.isEmpty) {
+                            userNameController.text = "";
+                            setState(() {});
+                          } else {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                            }
                           }
-                        }
-                      },
-                      onSavedFunction: (value) async {
-                        final data =
-                            await getUserByPhone(data: {"phone_number": value});
-                        if (data.status == Status.success) {
-                          phoneError = null;
-                          userNameController.text = data.data['full_name'];
-                        } else {
-                          phoneError = data.message;
-                          userNameController.text = "";
-                        }
-                        setState(() {});
-                      },
-                      autoValidate: false,
-                      error: phoneError,
-                    ),
+                        },
+                        onSavedFunction: (value) async {
+                          final data = await getUserByPhone(
+                              data: {"phone_number": value});
+                          if (data.status == Status.success) {
+                            phoneError = null;
+                            userNameController.text = data.data['full_name'];
+                          } else {
+                            phoneError = data.message;
+                            userNameController.text = "";
+                          }
+                          setState(() {});
+                        },
+                        autoValidate: false,
+                        error: phoneError,
+                      ),
                     Input(
                       label: 'Họ và tên',
                       controller: userNameController,

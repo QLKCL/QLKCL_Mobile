@@ -10,8 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AddTest extends StatefulWidget {
   static const String routeName = "/add_test";
-  const AddTest({Key? key, this.code, this.name}) : super(key: key);
-  final String? code;
+  const AddTest({Key? key, this.phoneNumber, this.name}) : super(key: key);
+  final String? phoneNumber;
   final String? name;
 
   @override
@@ -78,8 +78,8 @@ class _AddTestState extends State<AddTest> {
           ],
         ),
         body: TestForm(
-          userCode: (widget.code != null && widget.name != null)
-              ? KeyValue(id: widget.code, name: widget.name)
+          user: (widget.phoneNumber != null && widget.name != null)
+              ? KeyValue(id: widget.phoneNumber, name: widget.name)
               : null,
           mode: Permission.add,
         ),

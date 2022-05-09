@@ -6,13 +6,11 @@ import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
-import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/app.dart';
 import 'package:qlkcl/utils/app_theme.dart';
-import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
@@ -231,11 +229,6 @@ class _RegisterFormState extends State<RegisterForm> {
             if (mounted) {
               Navigator.pushNamedAndRemoveUntil(
                   context, App.routeName, (Route<dynamic> route) => false);
-              Navigator.of(context,
-                      rootNavigator: !Responsive.isDesktopLayout(context))
-                  .push(
-                MaterialPageRoute(builder: (context) => const UpdateMember()),
-              );
             }
           } else {
             showNotification(loginResponse.message, status: Status.error);

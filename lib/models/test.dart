@@ -41,7 +41,8 @@ class Test {
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
         id: json["id"],
-        user: KeyValue.fromJson(json["user"]),
+        user: KeyValue(
+            id: json["user"]["phone_number"], name: json["user"]["full_name"]),
         createdBy: KeyValue.fromJson(json["created_by"]),
         updatedBy: json["updated_by"] != null
             ? KeyValue.fromJson(json["updated_by"])

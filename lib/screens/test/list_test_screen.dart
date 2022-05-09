@@ -11,9 +11,11 @@ import 'package:intl/intl.dart';
 
 class ListTest extends StatefulWidget {
   static const String routeName = "/list_test";
-  const ListTest({Key? key, this.code, this.name}) : super(key: key);
+  const ListTest({Key? key, this.code, this.name, this.phoneNumber})
+      : super(key: key);
   final String? code;
   final String? name;
+  final String? phoneNumber;
 
   @override
   _ListTestState createState() => _ListTestState();
@@ -23,6 +25,7 @@ class _ListTestState extends State<ListTest> {
   final PagingController<int, dynamic> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
   late String code;
+  late String phoneNumber;
   late String name;
 
   @override
@@ -55,6 +58,7 @@ class _ListTestState extends State<ListTest> {
   Future<void> _fetchPage(int pageKey) async {
     code = widget.code ?? await getCode();
     name = widget.name ?? await getName();
+    phoneNumber = widget.phoneNumber ?? await getPhoneNumber();
     try {
       final newItems =
           await fetchTestList(data: {'page': pageKey, 'user_code': code});
@@ -85,8 +89,8 @@ class _ListTestState extends State<ListTest> {
                               rootNavigator:
                                   !Responsive.isDesktopLayout(context))
                           .push(MaterialPageRoute(
-                              builder: (context) =>
-                                  AddTest(code: code, name: name)))
+                              builder: (context) => AddTest(
+                                  phoneNumber: phoneNumber, name: name)))
                           .then((value) => _pagingController.refresh());
                     },
                     child: const Icon(Icons.add),

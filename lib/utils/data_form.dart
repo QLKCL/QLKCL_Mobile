@@ -173,13 +173,13 @@ Map<String, dynamic> filterMemberDataForm({
 }
 
 Map<String, dynamic> createTestDataForm({
-  required String userCode,
+  required String phoneNumber,
   String? status,
   String? type,
   String? result,
 }) {
   final data = {
-    "user_code": userCode,
+    "phone_number": phoneNumber,
     "status": status,
     "type": type,
     "result": result,

@@ -399,34 +399,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   ),
                                 ),
                               ),
-                            if (snapshot.data['custom_user']['status'] !=
-                                "LEAVE")
-                              ResponsiveRowColumnItem(
-                                rowFlex: 5,
-                                rowFit: FlexFit.tight,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    minimumSize:
-                                        const Size(double.infinity, 48),
-                                    primary: secondary,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context,
-                                            rootNavigator:
-                                                !Responsive.isDesktopLayout(
-                                                    context))
-                                        .pushNamed(
-                                            MedicalDeclarationScreen.routeName);
-                                  },
-                                  child: Text(
-                                    'Khai báo y tế',
-                                    style: TextStyle(
-                                      color: white,
-                                      fontSize: 20,
-                                    ),
+                            ResponsiveRowColumnItem(
+                              rowFlex: 5,
+                              rowFit: FlexFit.tight,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(double.infinity, 48),
+                                  primary: secondary,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context,
+                                          rootNavigator:
+                                              !Responsive.isDesktopLayout(
+                                                  context))
+                                      .pushNamed(
+                                          MedicalDeclarationScreen.routeName);
+                                },
+                                child: Text(
+                                  'Khai báo y tế',
+                                  style: TextStyle(
+                                    color: white,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
+                            ),
                           ],
                         ),
                       ],

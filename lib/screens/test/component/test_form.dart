@@ -15,11 +15,11 @@ import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class TestForm extends StatefulWidget {
-  final KeyValue? userCode;
+  final KeyValue? user;
   final Test? testData;
   final Permission mode;
   const TestForm(
-      {Key? key, this.testData, this.mode = Permission.view, this.userCode})
+      {Key? key, this.testData, this.mode = Permission.view, this.user})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class TestForm extends StatefulWidget {
 class _TestFormState extends State<TestForm> {
   final _formKey = GlobalKey<FormState>();
   final testCodeController = TextEditingController();
-  final userCodeController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   final userNameController = TextEditingController();
   final stateController = TextEditingController();
   final typeController = TextEditingController();
@@ -39,14 +39,14 @@ class _TestFormState extends State<TestForm> {
   final createByController = TextEditingController();
   final updateByController = TextEditingController();
 
-  String? userCodeError;
+  String? phoneError;
 
   @override
   void initState() {
     if (widget.testData != null) {
       testCodeController.text =
           widget.testData?.code != null ? widget.testData!.code : "";
-      userCodeController.text =
+      phoneNumberController.text =
           widget.testData?.user.id != null ? widget.testData!.user.id : "";
       userNameController.text =
           widget.testData?.user.name != null ? widget.testData!.user.name : "";
@@ -71,10 +71,10 @@ class _TestFormState extends State<TestForm> {
           ? widget.testData!.updatedBy?.name
           : "";
     } else {
-      userCodeController.text =
-          widget.userCode != null ? widget.userCode!.id : "";
+      phoneNumberController.text =
+          widget.user != null ? widget.user!.id : "";
       userNameController.text =
-          widget.userCode != null ? widget.userCode!.name : "";
+          widget.user != null ? widget.user!.name : "";
       stateController.text = "WAITING";
       typeController.text = "QUICK";
       resultController.text = "NONE";
@@ -93,21 +93,27 @@ class _TestFormState extends State<TestForm> {
             key: _formKey,
             child: Column(
               children: [
+                if (widget.mode != Permission.add)
+                  Input(
+                    label: 'Mã phiếu',
+                    enabled: false,
+                    controller: testCodeController,
+                  ),
+
                 Input(
-                  label: 'Mã phiếu',
-                  enabled: false,
-                  controller: testCodeController,
-                ),
-                Input(
-                  label: 'Mã người xét nghiệm',
-                  controller: userCodeController,
+                  label: 'Số điện thoại',
+                  hint: 'SĐT người được xét nghiệm',
                   required: widget.mode != Permission.view,
+                  type: TextInputType.phone,
+                  controller: phoneNumberController,
+                  validatorFunction:
+                      (widget.user == null && widget.mode == Permission.add)
+                          ? phoneValidator
+                          : null,
                   enabled:
-                      widget.userCode == null && widget.mode == Permission.add,
-                  type: TextInputType.number,
-                  validatorFunction: userCodeValidator,
+                      widget.user == null && widget.mode == Permission.add,
                   onChangedFunction: (_) async {
-                    if (userCodeController.text.isEmpty) {
+                    if (phoneNumberController.text.isEmpty) {
                       userNameController.text = "";
                       setState(() {});
                     } else {
@@ -117,19 +123,19 @@ class _TestFormState extends State<TestForm> {
                     }
                   },
                   onSavedFunction: (value) async {
-                    final data = await fetchUser(data: {"code": value});
+                    final data =
+                        await getUserByPhone(data: {"phone_number": value});
                     if (data.status == Status.success) {
-                      userCodeError = null;
-                      userNameController.text =
-                          data.data['custom_user']['full_name'];
+                      phoneError = null;
+                      userNameController.text = data.data['full_name'];
                     } else {
-                      userCodeError = data.message;
+                      phoneError = data.message;
                       userNameController.text = "";
                     }
                     setState(() {});
                   },
                   autoValidate: false,
-                  error: userCodeError,
+                  error: phoneError,
                 ),
                 Input(
                   label: 'Họ và tên',
@@ -252,11 +258,11 @@ class _TestFormState extends State<TestForm> {
   void _submit() async {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate() &&
-        (userCodeError == null || userCodeError == "")) {
+        (phoneError == null || phoneError == "")) {
       final CancelFunc cancel = showLoading();
       if (widget.mode == Permission.add) {
         final response = await createTest(createTestDataForm(
-            userCode: userCodeController.text,
+            phoneNumber: phoneNumberController.text,
             status: stateController.text,
             type: typeController.text,
             result: resultController.text));
