@@ -223,7 +223,7 @@ class HealthStatus extends StatelessWidget {
                     content: healthStatus == "SERIOUS"
                         ? "Nguy hiểm"
                         : (healthStatus == "UNWELL"
-                            ? "Nghi nhiễm"
+                            ? "Không tốt"
                             : "Bình thường"),
                     textColor: primaryText,
                   ),
