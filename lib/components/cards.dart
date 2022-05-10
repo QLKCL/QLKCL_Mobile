@@ -922,14 +922,16 @@ class QuarantineHistoryCard extends StatelessWidget {
                     ),
                     cardLine(
                         icon: Icons.medical_services_outlined,
-                        title: "Loại",
+                        title: "Tình trạng",
                         content: endType == "COMPLETED"
                             ? "Đã hoàn thành cách ly"
                             : endType == "CHANGE_ROOM"
-                                ? "Chuyển phòng"
+                                ? "Đã chuyển phòng"
                                 : endType == null
                                     ? "Đang cách ly"
-                                    : "Không rõ"),
+                                    : endType == "HOSPITALIZE"
+                                        ? "Đã chuyển viện"
+                                        : "Không rõ"),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
                     cardLine(

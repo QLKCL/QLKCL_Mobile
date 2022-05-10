@@ -137,7 +137,7 @@ Future<Response> createNotification({data}) async {
   } else {
     if (response['error_code'] == 0) {
       return Response(
-          status: Status.success, message: "Gửi yêu cầu thành công!");
+          status: Status.success, message: "Tạo thông báo thành công!");
     } else if (response['error_code'] == 400) {
       if (response['message']['users'] != null &&
           response['message']['users'] == "empty") {

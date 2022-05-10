@@ -540,6 +540,7 @@ class _QuarantineFormState extends State<QuarantineForm> {
                       ? initPandemic
                       : pandemicList.safeFirstWhere((type) =>
                           type.id.toString() == pandemicController.text),
+                  required: true,
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
                   onFind: pandemicList.isEmpty

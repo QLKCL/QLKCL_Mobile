@@ -187,9 +187,9 @@ class HealthStatus extends StatelessWidget {
               cardLine(
                 topPadding: 8,
                 title: "Triệu chứng khác",
-                content: (healthData!.mainSymptoms != null &&
-                        healthData!.mainSymptoms!.data.isNotEmpty)
-                    ? "${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? healthData!.extraSymptoms!.data.split(',').map((e) => symptomExtraList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ") + ((healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? ", ${healthData!.otherSymptoms!.data}" : "") : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? healthData!.otherSymptoms!.data : ""} (${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.extraSymptoms!.updatedAt.toLocal())})" : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.otherSymptoms!.updatedAt.toLocal())})" : ""})"
+                content: (healthData!.extraSymptoms != null &&
+                        healthData!.extraSymptoms!.data.isNotEmpty)
+                    ? "${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? healthData!.extraSymptoms!.data.split(',').map((e) => symptomExtraList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ") + ((healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? ", ${healthData!.otherSymptoms!.data}" : "") : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? healthData!.otherSymptoms!.data : ""} ${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.extraSymptoms!.updatedAt.toLocal())})" : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.otherSymptoms!.updatedAt.toLocal())})" : ""}"
                     : "Không rõ",
                 textColor: primaryText,
               ),

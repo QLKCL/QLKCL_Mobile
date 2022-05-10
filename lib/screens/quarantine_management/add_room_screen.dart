@@ -146,7 +146,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          flex: 55,
+                                          flex: 35,
                                           child: ListTileTheme(
                                             contentPadding: EdgeInsets.zero,
                                             child: CheckboxListTile(
@@ -169,7 +169,7 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
                                         // insert number of floor
                                         if (addMultiple)
                                           Expanded(
-                                            flex: 45,
+                                            flex: 65,
                                             child: Input(
                                               label: 'Số phòng',
                                               hint: 'Số phòng',

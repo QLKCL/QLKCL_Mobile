@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
+import 'package:qlkcl/networking/response.dart' as custom_response;
 import 'package:qlkcl/utils/api.dart';
 import 'dart:convert';
 import 'package:qlkcl/helper/authentication.dart';
@@ -77,6 +78,8 @@ class ApiHelper {
             // Do something with response error
             handler.next(e);
           }
+        } else {
+          showNotification("Lỗi kết nối mạng!", status: custom_response.Status.error);
         }
       },
     ));

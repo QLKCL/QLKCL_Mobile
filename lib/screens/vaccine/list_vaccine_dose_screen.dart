@@ -121,6 +121,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
         children: [
           if (!isWebPlatform())
             FloatingActionButton(
+              heroTag: "sync_vaccine_dose",
               onPressed: () {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
@@ -134,6 +135,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
             height: 10,
           ),
           FloatingActionButton(
+              heroTag: "create_vaccine_dose",
             onPressed: () {
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))

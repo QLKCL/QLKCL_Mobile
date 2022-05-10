@@ -16,7 +16,14 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class CreateRequest extends StatefulWidget {
   static const String routeName = "/create_request";
-  const CreateRequest({Key? key}) : super(key: key);
+  const CreateRequest({
+    Key? key,
+    required this.userName,
+    required this.quarantineLocation,
+  }) : super(key: key);
+
+  final String userName;
+  final String quarantineLocation;
 
   @override
   _CreateRequestState createState() => _CreateRequestState();
@@ -140,7 +147,8 @@ class _CreateRequestState extends State<CreateRequest> {
       final response = await createNotification(
         data: createNotificationDataForm(
           title: titleController.text,
-          description: descriptionController.text,
+          description:
+              "${widget.userName} - ${widget.quarantineLocation}: ${descriptionController.text}",
           receiverType: 2,
           quarantineWard: quarantineWard,
           users: receiverUserController.text,

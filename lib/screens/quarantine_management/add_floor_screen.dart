@@ -144,7 +144,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                     child: Row(
                                       children: [
                                         Expanded(
-                                          flex: 55,
+                                          flex: 35,
                                           child: ListTileTheme(
                                             contentPadding: EdgeInsets.zero,
                                             child: CheckboxListTile(
@@ -167,7 +167,7 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
                                         // insert number of floor
                                         if (addMultiple)
                                           Expanded(
-                                            flex: 45,
+                                            flex: 65,
                                             child: Input(
                                               label: 'Số tầng',
                                               hint: 'Số tầng',

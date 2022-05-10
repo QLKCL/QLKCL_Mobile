@@ -43,13 +43,16 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
     super.initState();
     getName().then((value) {
       fullNameController.text = value;
+      setState(() {});
     });
     getPhoneNumber().then((value) {
       phoneNumberController.text = value;
+      setState(() {});
     });
     getBirthday().then((value) {
       birthdayController.text =
           DateFormat('dd/MM/yyyy').parse(value).toIso8601String();
+      setState(() {});
     });
     getGender().then((value) {
       genderController.text = value;
@@ -79,7 +82,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       required: true,
                       textCapitalization: TextCapitalization.words,
                       controller: fullNameController,
-                      //enabled: false,
+                      enabled: false,
                     ),
                     Input(
                       label: 'Số điện thoại',
@@ -87,7 +90,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       type: TextInputType.phone,
                       controller: phoneNumberController,
                       validatorFunction: phoneValidator,
-                      //enabled: false,
+                      enabled: false,
                     ),
                     DropdownInput<KeyValue>(
                       label: 'Giới tính',
@@ -107,7 +110,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                           genderController.text = value.id;
                         }
                       },
-                      //enabled: false,
+                      enabled: false,
                     ),
                     NewDateInput(
                       label: 'Ngày sinh',
@@ -115,6 +118,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       controller: birthdayController,
                       maxDate: DateTime.now(),
                       //enabled: false,
+                      helper: "Chọn ngày 1/1 khi không rõ ngày sinh",
                     ),
                     // Input(
                     //   label: 'Số CMND/CCCD',
@@ -132,7 +136,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                     //   validatorFunction: passportValidator,
                     // ),
                     Input(
-                      label: 'Mã xác nhận',
+                      label: 'OTP',
                       controller: otpController,
                       type: TextInputType.number,
                       enabled: enableNext,

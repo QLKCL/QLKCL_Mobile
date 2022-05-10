@@ -389,7 +389,14 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                           rootNavigator:
                                               !Responsive.isDesktopLayout(
                                                   context))
-                                      .pushNamed(CreateRequest.routeName),
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => CreateRequest(
+                                                quarantineLocation:
+                                                    getRoom(snapshot.data),
+                                                userName:
+                                                    snapshot.data['custom_user']
+                                                        ['full_name'],
+                                              ))),
                                   child: Text(
                                     'Phản ánh/yêu cầu',
                                     style: TextStyle(

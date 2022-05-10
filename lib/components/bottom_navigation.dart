@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/screens/members/detail_member_screen.dart';
 import 'package:qlkcl/utils/routes.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/screens/account/account_screen.dart';
@@ -10,8 +11,6 @@ import 'package:qlkcl/screens/qr_code/qr_scan_screen.dart';
 import 'package:qlkcl/screens/quarantine_ward/quarantine_list_screen.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:side_navigation/side_navigation.dart';
-
-import '../screens/members/update_member_screen.dart';
 
 // cre: https://codewithandrea.com/articles/multiple-navigators-bottom-navigation-bar/
 
@@ -65,7 +64,7 @@ class BottomNavigation extends StatelessWidget {
                     ? Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .push(MaterialPageRoute(
-                            builder: (context) => UpdateMember(
+                            builder: (context) => DetailMemberScreen(
                                   code: value,
                                 )))
                     : null)
@@ -164,7 +163,7 @@ class SideBar extends StatelessWidget {
                     ? Navigator.of(context,
                             rootNavigator: !Responsive.isDesktopLayout(context))
                         .push(MaterialPageRoute(
-                            builder: (context) => UpdateMember(
+                            builder: (context) => DetailMemberScreen(
                                   code: value,
                                 )))
                     : null)
