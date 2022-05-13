@@ -137,7 +137,7 @@ class HealthStatus extends StatelessWidget {
           ? [
               cardLine(
                 topPadding: 8,
-                title: "Nhịp tim (lần /phút)",
+                title: "Nhịp tim (lần/phút)",
                 content: healthData!.heartbeat != null
                     ? "${healthData!.heartbeat!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.heartbeat!.updatedAt.toLocal())})"
                     : "Không rõ",
@@ -169,9 +169,17 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Huyết áp (mmHg)",
-                content: healthData!.bloodPressure != null
-                    ? "${healthData!.bloodPressure!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressure!.updatedAt.toLocal())})"
+                title: "Huyết áp tâm trương (mmHg)",
+                content: healthData!.bloodPressureMin != null
+                    ? "${healthData!.bloodPressureMin!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressureMin!.updatedAt.toLocal())})"
+                    : "Không rõ",
+                textColor: primaryText,
+              ),
+              cardLine(
+                topPadding: 8,
+                title: "Huyết áp tâm thu (mmHg)",
+                content: healthData!.bloodPressureMax != null
+                    ? "${healthData!.bloodPressureMax!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressureMax!.updatedAt.toLocal())})"
                     : "Không rõ",
                 textColor: primaryText,
               ),

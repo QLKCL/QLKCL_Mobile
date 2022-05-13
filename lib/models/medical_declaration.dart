@@ -21,7 +21,8 @@ class MedicalDecl {
     this.temperature,
     this.breathing,
     this.spo2,
-    this.bloodPressure,
+    this.bloodPressureMin,
+    this.bloodPressureMax,
     this.mainSymptoms,
     this.extraSymptoms,
     this.otherSymptoms,
@@ -36,7 +37,8 @@ class MedicalDecl {
   final double? temperature;
   final int? breathing;
   final double? spo2;
-  final double? bloodPressure;
+  final int? bloodPressureMin;
+  final int? bloodPressureMax;
   final String? mainSymptoms;
   final String? extraSymptoms;
   final String? otherSymptoms;
@@ -52,7 +54,8 @@ class MedicalDecl {
         temperature: json["temperature"],
         breathing: json["breathing"],
         spo2: json["spo2"],
-        bloodPressure: json["blood_pressure"],
+        bloodPressureMin: json["blood_pressure_min"],
+        bloodPressureMax: json["blood_pressure_max"],
         mainSymptoms: json["main_symptoms"],
         extraSymptoms: json["extra_symptoms"],
         otherSymptoms: json["other_symptoms"],
@@ -68,7 +71,8 @@ class MedicalDecl {
         "temperature": temperature,
         "breathing": breathing,
         "spo2": spo2,
-        "blood_pressure": bloodPressure,
+        "blood_pressure_min": bloodPressureMin,
+        "blood_pressure_max": bloodPressureMax,
         "main_symptoms": mainSymptoms,
         "extra_symptoms": extraSymptoms,
         "other_symptoms": otherSymptoms,
@@ -171,7 +175,8 @@ class HealthInfo {
     required this.temperature,
     required this.breathing,
     required this.spo2,
-    required this.bloodPressure,
+    required this.bloodPressureMin,
+    required this.bloodPressureMax,
     required this.mainSymptoms,
     required this.extraSymptoms,
     required this.otherSymptoms,
@@ -181,7 +186,8 @@ class HealthInfo {
   final HealthData? temperature;
   final HealthData? breathing;
   final HealthData? spo2;
-  final HealthData? bloodPressure;
+  final HealthData? bloodPressureMin;
+  final HealthData? bloodPressureMax;
   final HealthData? mainSymptoms;
   final HealthData? extraSymptoms;
   final HealthData? otherSymptoms;
@@ -197,8 +203,11 @@ class HealthInfo {
             ? HealthData.fromJson(json["breathing"])
             : null,
         spo2: json["spo2"] != null ? HealthData.fromJson(json["spo2"]) : null,
-        bloodPressure: json["blood_pressure"] != null
-            ? HealthData.fromJson(json["blood_pressure"])
+        bloodPressureMin: json["blood_pressure_min"] != null
+            ? HealthData.fromJson(json["blood_pressure_min"])
+            : null,
+        bloodPressureMax: json["blood_pressure_max"] != null
+            ? HealthData.fromJson(json["blood_pressure_max"])
             : null,
         mainSymptoms: json["main_symptoms"] != null
             ? HealthData.fromJson(json["main_symptoms"])
@@ -216,7 +225,8 @@ class HealthInfo {
         "temperature": temperature?.toJson(),
         "breathing": breathing?.toJson(),
         "spo2": spo2?.toJson(),
-        "blood_pressure": bloodPressure?.toJson(),
+        "blood_pressure_min": bloodPressureMin?.toJson(),
+        "blood_pressure_max": bloodPressureMax?.toJson(),
         "main_symptoms": mainSymptoms?.toJson(),
         "extra_symptoms": extraSymptoms?.toJson(),
         "other_symptoms": otherSymptoms?.toJson(),

@@ -73,7 +73,7 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Nhịp tim",
+                  title: "Nhịp tim (lần/phút)",
                   content: healthData.heartbeat != null
                       ? healthData.heartbeat!.data
                       : "Không rõ",
@@ -83,7 +83,7 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Nhiệt độ cơ thể",
+                  title: "Nhiệt độ cơ thể (\u00B0C)",
                   content: healthData.temperature != null
                       ? healthData.temperature!.data
                       : "Không rõ",
@@ -93,7 +93,7 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Nồng độ oxi trong máu (SPO2)",
+                  title: "Nồng độ oxi trong máu (spO2) (%)",
                   content: healthData.spo2 != null
                       ? healthData.spo2!.data
                       : "Không rõ",
@@ -103,7 +103,7 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Nhịp thở",
+                  title: "Nhịp thở (lần/phút)",
                   content: healthData.breathing != null
                       ? healthData.breathing!.data
                       : "Không rõ",
@@ -113,12 +113,22 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Huyết áp",
-                  content: healthData.bloodPressure != null
-                      ? healthData.bloodPressure!.data
+                  title: "Huyết áp tâm trương (mmHg)",
+                  content: healthData.bloodPressureMin != null
+                      ? healthData.bloodPressureMin!.data
                       : "Không rõ",
-                  extraContent: healthData.bloodPressure != null
-                      ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressure!.updatedAt.toLocal())})"
+                  extraContent: healthData.bloodPressureMin != null
+                      ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressureMin!.updatedAt.toLocal())})"
+                      : "",
+                  textColor: primaryText,
+                ),
+                textField(
+                  title: "Huyết áp tâm trương (mmHg)",
+                  content: healthData.bloodPressureMax != null
+                      ? healthData.bloodPressureMax!.data
+                      : "Không rõ",
+                  extraContent: healthData.bloodPressureMax != null
+                      ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressureMax!.updatedAt.toLocal())})"
                       : "",
                   textColor: primaryText,
                 ),

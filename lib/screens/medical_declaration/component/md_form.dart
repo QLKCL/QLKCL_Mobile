@@ -44,7 +44,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
   final heartBeatController = TextEditingController();
   final temperatureController = TextEditingController();
   final breathingController = TextEditingController();
-  final bloodPressureController = TextEditingController();
+  final bloodPressureMinController = TextEditingController();
+  final bloodPressureMaxController = TextEditingController();
   final otherController = TextEditingController();
   final extraSymptomController = TextEditingController();
   final mainSymptomController = TextEditingController();
@@ -73,17 +74,24 @@ class _MedDeclFormState extends State<MedDeclForm> {
           ? widget.medicalDeclData!.breathing.toString()
           : "";
 
-      bloodPressureController.text = widget.medicalDeclData?.bloodPressure != null
-          ? widget.medicalDeclData!.bloodPressure.toString()
-          : "";
+      bloodPressureMinController.text =
+          widget.medicalDeclData?.bloodPressureMin != null
+              ? widget.medicalDeclData!.bloodPressureMin.toString()
+              : "";
+
+      bloodPressureMaxController.text =
+          widget.medicalDeclData?.bloodPressureMax != null
+              ? widget.medicalDeclData!.bloodPressureMax.toString()
+              : "";
 
       spo2Controller.text = widget.medicalDeclData?.spo2 != null
           ? widget.medicalDeclData!.spo2.toString()
           : "";
+    } else {
+      isChecked = widget.phone != null;
+      phoneNumberController.text = widget.phone ?? "";
+      userNameController.text = widget.name ?? "";
     }
-
-    isChecked = widget.phone != null;
-    phoneNumberController.text = widget.phone ?? "";
   }
 
   //submit
@@ -98,7 +106,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
         heartBeat: int.tryParse(heartBeatController.text),
         temperature: double.tryParse(temperatureController.text),
         breathing: int.tryParse(breathingController.text),
-        bloodPressure: double.tryParse(bloodPressureController.text),
+        bloodPressureMin: int.tryParse(bloodPressureMinController.text),
+        bloodPressureMax: int.tryParse(bloodPressureMaxController.text),
         mainSymtoms: mainSymptomController.text,
         extraSymtoms: extraSymptomController.text,
         otherSymtoms: otherController.text,
@@ -221,10 +230,17 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
-                  label: 'Huyết áp (mmHg)',
-                  hint: 'Huyết áp (mmHg)',
+                  label: 'Huyết áp tâm trương (mmHg)',
+                  hint: 'Huyết áp tâm trương (mmHg)',
                   type: TextInputType.number,
-                  controller: bloodPressureController,
+                  controller: bloodPressureMinController,
+                  enabled: widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Huyết áp tâm thu (mmHg)',
+                  hint: 'Huyết áp tâm thu (mmHg)',
+                  type: TextInputType.number,
+                  controller: bloodPressureMaxController,
                   enabled: widget.mode == Permission.add,
                 ),
                 Container(
