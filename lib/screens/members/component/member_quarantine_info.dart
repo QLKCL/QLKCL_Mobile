@@ -288,7 +288,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                       initQuarantineFloor = null;
                       initQuarantineRoom = null;
                     });
-                    if (state.quarantineWardController.text != "") {
+                    if (state.quarantineWardController.text != "" &&
+                        _role != 5) {
                       fetchQuarantineBuilding({
                         'quarantine_ward': state.quarantineWardController.text,
                         'page_size': pageSizeMax,
@@ -299,9 +300,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                           }));
                     }
                   },
-                  enabled: (widget.mode == Permission.add ||
-                          widget.mode == Permission.renew) &&
-                      _role != 5,
+                  enabled: widget.mode == Permission.add ||
+                      widget.mode == Permission.renew ||
+                      (widget.mode == Permission.edit &&
+                          state.statusController.text != "AVAILABLE"),
                   showSearchBox: true,
                   mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
                       ? Mode.DIALOG
