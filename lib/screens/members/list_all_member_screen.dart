@@ -265,6 +265,52 @@ class _ListAllMemberState extends State<ListAllMember>
                           ),
                         ],
                       )
+                    else if (_tabController.index == 6)
+                      PopupMenuButton(
+                        icon: const Icon(
+                          Icons.more_vert,
+                        ),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            child: const Text('Hoàn thành cách ly'),
+                            onTap: () async {
+                              if (indexList.isEmpty) {
+                                showNotification(
+                                    "Vui lòng chọn tài khoản cần hoàn thành cách ly!",
+                                    status: Status.error);
+                              } else {
+                                await confirmAlertPopup(
+                                  context,
+                                  content: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text:
+                                              'Xác nhận hoàn thành cách ly cho những người đã chọn',
+                                          style: TextStyle(color: primaryText),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  confirmAction: () async {
+                                    final CancelFunc cancel = showLoading();
+                                    final response = await finishMember(
+                                        {'member_codes': indexList.join(",")});
+                                    cancel();
+                                    if (response.status == Status.success) {
+                                      setState(() {
+                                        onDone = true;
+                                      });
+                                      indexList.clear();
+                                      longPress();
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      )
                     else
                       IconButton(
                         onPressed: () {

@@ -439,15 +439,15 @@ Widget buildFinishsButton(
                     ),
                   ),
                   confirmAction: () async {
-                    // final CancelFunc cancel = showLoading();
-                    // final response = await acceptManyMember(
-                    //     {'member_codes': indexList.join(",")});
-                    // cancel();
-                    // if (response.status == Status.success) {
-                    //   indexList.clear();
-                    //   key.currentState!.refresh();
-                    //   longPress();
-                    // }
+                    final CancelFunc cancel = showLoading();
+                    final response = await finishMember(
+                        {'member_codes': indexList.join(",")});
+                    cancel();
+                    if (response.status == Status.success) {
+                      indexList.clear();
+                      key.currentState!.refresh();
+                      longPress();
+                    }
                   },
                 );
               }
