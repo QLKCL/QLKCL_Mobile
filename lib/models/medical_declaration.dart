@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/api.dart';
@@ -45,7 +46,7 @@ class MedicalDecl {
 
   final String conclude;
   final DateTime createdAt;
-  final int createdBy;
+  final KeyValue createdBy;
 
   factory MedicalDecl.fromJson(Map<String, dynamic> json) => MedicalDecl(
         id: json["id"],
@@ -61,7 +62,7 @@ class MedicalDecl {
         otherSymptoms: json["other_symptoms"],
         conclude: json["conclude"],
         createdAt: DateTime.parse(json["created_at"]),
-        createdBy: json["created_by"],
+        createdBy: KeyValue.fromJson(json["created_by"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,7 +79,7 @@ class MedicalDecl {
         "other_symptoms": otherSymptoms,
         "conclude": conclude,
         "created_at": createdAt.toIso8601String(),
-        "created_by": createdBy,
+        "created_by": createdBy.toJson(),
       };
 }
 

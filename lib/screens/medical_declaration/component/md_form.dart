@@ -14,6 +14,7 @@ import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:intl/intl.dart';
 
 class MedDeclForm extends StatefulWidget {
   const MedDeclForm({
@@ -131,65 +132,80 @@ class _MedDeclFormState extends State<MedDeclForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  children: [
-                    if (widget.mode == Permission.add)
-                      ListTileTheme(
-                        contentPadding: const EdgeInsets.only(left: 8),
-                        child: CheckboxListTile(
-                          title: const Text("Khai hộ"),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          value: isChecked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isChecked = value!;
-                            });
-                          },
-                        ),
-                      ),
-                    if (widget.mode == Permission.add)
-                      // SĐT người khai hộ
-                      Input(
-                        label: 'Số điện thoại',
-                        hint: 'SĐT người được khai báo',
-                        margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                        required: isChecked,
-                        type: TextInputType.phone,
-                        controller: phoneNumberController,
-                        validatorFunction: isChecked ? phoneValidator : null,
-                        enabled: isChecked,
-                        onChangedFunction: (_) async {
-                          if (phoneNumberController.text.isEmpty) {
-                            userNameController.text = "";
-                            setState(() {});
-                          } else {
-                            if (_formKey.currentState!.validate()) {
-                              _formKey.currentState!.save();
-                            }
-                          }
-                        },
-                        onSavedFunction: (value) async {
-                          final data = await getUserByPhone(
-                              data: {"phone_number": value});
-                          if (data.status == Status.success) {
-                            phoneError = null;
-                            userNameController.text = data.data['full_name'];
-                          } else {
-                            phoneError = data.message;
-                            userNameController.text = "";
-                          }
-                          setState(() {});
-                        },
-                        autoValidate: false,
-                        error: phoneError,
-                      ),
-                    Input(
-                      label: 'Họ và tên',
-                      controller: userNameController,
-                      enabled: false,
+                if (widget.mode == Permission.add)
+                  ListTileTheme(
+                    contentPadding: const EdgeInsets.only(left: 8),
+                    child: CheckboxListTile(
+                      title: const Text("Khai hộ"),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value!;
+                        });
+                      },
                     ),
-                  ],
+                  ),
+                if (widget.mode == Permission.add)
+                  // SĐT người khai hộ
+                  Input(
+                    label: 'Số điện thoại',
+                    hint: 'SĐT người được khai báo',
+                    margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                    required: isChecked,
+                    type: TextInputType.phone,
+                    controller: phoneNumberController,
+                    validatorFunction: isChecked ? phoneValidator : null,
+                    enabled: isChecked,
+                    onChangedFunction: (_) async {
+                      if (phoneNumberController.text.isEmpty) {
+                        userNameController.text = "";
+                        setState(() {});
+                      } else {
+                        if (_formKey.currentState!.validate()) {
+                          _formKey.currentState!.save();
+                        }
+                      }
+                    },
+                    onSavedFunction: (value) async {
+                      final data =
+                          await getUserByPhone(data: {"phone_number": value});
+                      if (data.status == Status.success) {
+                        phoneError = null;
+                        userNameController.text = data.data['full_name'];
+                      } else {
+                        phoneError = data.message;
+                        userNameController.text = "";
+                      }
+                      setState(() {});
+                    },
+                    autoValidate: false,
+                    error: phoneError,
+                  ),
+                Input(
+                  label: 'Họ và tên',
+                  controller: userNameController,
+                  enabled: false,
                 ),
+
+                if (widget.mode == Permission.view)
+                  Input(
+                    label: 'Thời gian khai báo',
+                    initValue: widget.medicalDeclData?.createdAt != null
+                        ? DateFormat("dd/MM/yyyy HH:mm:ss")
+                            .format(widget.medicalDeclData!.createdAt.toLocal())
+                        : "",
+                    enabled: false,
+                  ),
+                if (widget.mode == Permission.view &&
+                    widget.medicalDeclData?.createdBy != null &&
+                    widget.medicalDeclData?.createdBy.id !=
+                        widget.medicalDeclData?.user.code)
+                  Input(
+                    label: 'Người khai báo',
+                    initValue: widget.medicalDeclData!.createdBy.name,
+                    enabled: false,
+                  ),
 
                 //Medical Declaration Info
                 Container(
