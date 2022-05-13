@@ -73,7 +73,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
           ? widget.medicalDeclData!.breathing.toString()
           : "";
 
-      bloodPressureController.text = widget.medicalDeclData?.breathing != null
+      bloodPressureController.text = widget.medicalDeclData?.bloodPressure != null
           ? widget.medicalDeclData!.bloodPressure.toString()
           : "";
 
@@ -199,8 +199,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
-                  label: 'Nhiệt độ cơ thể (độ C)',
-                  hint: 'Nhiệt độ cơ thể (độ C)',
+                  label: 'Nhiệt độ cơ thể (\u00B0C)',
+                  hint: 'Nhiệt độ cơ thể (\u00B0C)',
                   type: TextInputType.number,
                   controller: temperatureController,
                   enabled: widget.mode == Permission.add,

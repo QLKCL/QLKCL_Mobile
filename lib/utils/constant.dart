@@ -44,7 +44,7 @@ List<KeyValue> medDeclValueList = const [
 
 List<KeyValue> roleList = const [
   KeyValue(id: "ADMINISTRATOR", name: "Admin"),
-  KeyValue(id: "SUPER_MANAGER", name: "Tổng quản lý"),
+  KeyValue(id: "SUPER_MANAGER", name: "Quản lý tổng"),
   KeyValue(id: "MANAGER", name: "Quản lý"),
   KeyValue(id: "STAFF", name: "Cán bộ"),
   KeyValue(id: "MEMBER", name: "Người cách ly"),
@@ -61,7 +61,7 @@ List<KeyValue> roleListEng = const [
 List<KeyValue> roleListVi = const [
   KeyValue(id: "0", name: "Tất cả"),
   KeyValue(id: "1", name: "Admin"),
-  KeyValue(id: "2", name: "Tổng quản lý"),
+  KeyValue(id: "2", name: "Quản lý tổng"),
   KeyValue(id: "3", name: "Quản lý"),
   KeyValue(id: "4", name: "Cán bộ"),
   KeyValue(id: "5", name: "Người cách ly"),
@@ -138,6 +138,6 @@ const double maxTabletSize = 768;
 const double minDesktopSize = 1200;
 
 class WebVersionInfo {
-  static const String version = '2.0.0';
+  static const String version = '2.0.2';
   static const int buildNumber = 1;
 }

@@ -171,7 +171,7 @@ class AppState extends State<App> {
                               width: MediaQuery.of(context).size.width,
                               alignment: Alignment.center,
                               child: const Text(
-                                "Copyright \u00a9 2022 Le Trung Son\nMade with \u2665", // https://unicode-table.com/en/
+                                "Copyright \u00a9 2022 Le Trung Son, Chau Thanh Tan, Nguyen Ba Tien\nMade with \u2665", // https://unicode-table.com/en/
                                 textAlign: TextAlign.center,
                               ),
                             ),

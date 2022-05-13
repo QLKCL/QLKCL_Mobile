@@ -137,7 +137,7 @@ class HealthStatus extends StatelessWidget {
           ? [
               cardLine(
                 topPadding: 8,
-                title: "Nhịp tim",
+                title: "Nhịp tim (lần /phút)",
                 content: healthData!.heartbeat != null
                     ? "${healthData!.heartbeat!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.heartbeat!.updatedAt.toLocal())})"
                     : "Không rõ",
@@ -145,7 +145,7 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Nhiệt độ cơ thể",
+                title: "Nhiệt độ cơ thể (\u00B0C)",
                 content: healthData!.temperature != null
                     ? "${healthData!.temperature!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.temperature!.updatedAt.toLocal())})"
                     : "Không rõ",
@@ -153,7 +153,7 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Nồng độ oxi trong máu (SPO2)",
+                title: "Nồng độ oxi trong máu (spO2) (%)",
                 content: healthData!.spo2 != null
                     ? "${healthData!.spo2!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.spo2!.updatedAt.toLocal())})"
                     : "Không rõ",
@@ -161,7 +161,7 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Nhịp thở",
+                title: "Nhịp thở (lần/phút)",
                 content: healthData!.breathing != null
                     ? "${healthData!.breathing!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.breathing!.updatedAt.toLocal())})"
                     : "Không rõ",
@@ -169,7 +169,7 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Huyết áp",
+                title: "Huyết áp (mmHg)",
                 content: healthData!.bloodPressure != null
                     ? "${healthData!.bloodPressure!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressure!.updatedAt.toLocal())})"
                     : "Không rõ",

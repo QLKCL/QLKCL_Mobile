@@ -81,7 +81,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Thông tin dịch bệnh (Việt Nam)",
+                          "Thông tin dịch bệnh Covid-19 (Việt Nam)",
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
