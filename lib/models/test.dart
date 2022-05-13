@@ -127,3 +127,18 @@ Future<dynamic> importTest(data) async {
     }
   }
 }
+
+Future<Response> createManyTests(Map<String, dynamic> data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.createManyTests, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success, message: "Tạo phiếu xét nghiệm thành công!");
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}

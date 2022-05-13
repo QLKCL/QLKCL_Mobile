@@ -17,14 +17,14 @@ DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
 class ConfirmMember extends StatefulWidget {
-  const ConfirmMember(
-      {Key? key,
-      required this.longPressFlag,
-      required this.indexList,
-      required this.longPress,
-      this.onDone = false,
-      required this.onDoneCallback})
-      : super(key: key);
+  const ConfirmMember({
+    Key? key,
+    required this.longPressFlag,
+    required this.indexList,
+    required this.longPress,
+    this.onDone = false,
+    required this.onDoneCallback,
+  }) : super(key: key);
   final bool longPressFlag;
   final List<String> indexList;
   final VoidCallback longPress;

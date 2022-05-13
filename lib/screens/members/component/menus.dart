@@ -1,9 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:qlkcl/components/bot_toast.dart';
-import 'package:qlkcl/components/filters.dart';
+import 'package:qlkcl/components/popup.dart';
 import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/custom_user.dart';
@@ -88,80 +87,6 @@ Widget menus<T>(
   List<menusOptions> showMenusItems = const [],
   Color? customMenusColor,
 }) {
-  Future alertPopup(
-    BuildContext context, {
-    required String message,
-    required String code,
-    required String name,
-    required Function confirmAction,
-  }) {
-    final filterContent = StatefulBuilder(builder:
-        (BuildContext context, StateSetter setState /*You can rename this!*/) {
-      return Wrap(
-        children: <Widget>[
-          ListTile(
-            title: Center(
-              child: Text(
-                'Xác nhận',
-                style: Theme.of(context).textTheme.headline6,
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(16),
-            alignment: Alignment.center,
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: message,
-                    style: TextStyle(color: primaryText),
-                  ),
-                  TextSpan(
-                    text: name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: primaryText,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Hủy"),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    confirmAction.call();
-                  },
-                  child: const Text("Xác nhận"),
-                ),
-              ],
-            ),
-          ),
-        ],
-      );
-    });
-
-    return showCustomModalBottomSheet(
-        context: context,
-        builder: (context) => filterContent,
-        containerWidget: (_, animation, child) => FloatingModal(
-              child: child,
-            ),
-        expand: false);
-  }
-
   if (data.runtimeType == FilterMember ||
       data.runtimeType == FilterStaff ||
       data.runtimeType == CustomUser) {
@@ -268,11 +193,25 @@ Widget menus<T>(
                           quarantineWard: quarantineWard,
                         )));
           } else if (result == menusOptions.completeQuarantine) {
-            await alertPopup(
+            await confirmAlertPopup(
               context,
-              message: 'Xác nhận hoàn thành cách ly cho ',
-              code: code,
-              name: fullName,
+              content: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Xác nhận hoàn thành cách ly cho ',
+                      style: TextStyle(color: primaryText),
+                    ),
+                    TextSpan(
+                      text: fullName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               confirmAction: () async {
                 final CancelFunc cancel = showLoading();
                 final response = await finishMember({'member_codes': code});
@@ -302,11 +241,25 @@ Widget menus<T>(
                           code: code,
                         )));
           } else if (result == menusOptions.accept) {
-            await alertPopup(
+            await confirmAlertPopup(
               context,
-              message: "Xác nhận đồng ý cách ly cho ",
-              code: code,
-              name: fullName,
+              content: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Xác nhận đồng ý cách ly cho ',
+                      style: TextStyle(color: primaryText),
+                    ),
+                    TextSpan(
+                      text: fullName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               confirmAction: () async {
                 final CancelFunc cancel = showLoading();
                 final response = await acceptOneMember({'code': code});
@@ -322,11 +275,25 @@ Widget menus<T>(
               },
             );
           } else if (result == menusOptions.deny) {
-            await alertPopup(
+            await confirmAlertPopup(
               context,
-              message: "Xác nhận từ chối cách ly cho ",
-              code: code,
-              name: fullName,
+              content: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Xác nhận từ chối cách ly cho ',
+                      style: TextStyle(color: primaryText),
+                    ),
+                    TextSpan(
+                      text: fullName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: primaryText,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               confirmAction: () async {
                 final CancelFunc cancel = showLoading();
                 final response = await denyMember({'member_codes': code});

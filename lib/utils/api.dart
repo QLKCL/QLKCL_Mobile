@@ -27,6 +27,7 @@ class Api {
   static const String createTest = '/api/form/test/create';
   static const String updateTest = '/api/form/test/update';
   static const String getTest = '/api/form/test/get';
+  static const String createManyTests = '/api/form/test/create_many';
 
   static const String getListCountry = '/api/address/country/filter';
   static const String getListCity = '/api/address/city/filter';

@@ -18,7 +18,19 @@ DataPagerController _dataPagerController = DataPagerController();
 TextEditingController keySearch = TextEditingController();
 
 class ExpectCompleteMember extends StatefulWidget {
-  const ExpectCompleteMember({Key? key}) : super(key: key);
+  const ExpectCompleteMember({
+    Key? key,
+    required this.longPressFlag,
+    required this.indexList,
+    required this.longPress,
+    this.onDone = false,
+    required this.onDoneCallback,
+  }) : super(key: key);
+  final bool longPressFlag;
+  final List<String> indexList;
+  final VoidCallback longPress;
+  final bool onDone;
+  final VoidCallback onDoneCallback;
 
   @override
   _ExpectCompleteMemberState createState() => _ExpectCompleteMemberState();
@@ -28,6 +40,7 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
     with AutomaticKeepAliveClientMixin<ExpectCompleteMember> {
   final PagingController<int, FilterMember> _pagingController =
       PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
+  final DataGridController _dataGridController = DataGridController();
 
   final GlobalKey<SfDataGridState> key = GlobalKey<SfDataGridState>();
   late DataSource dataSource;
@@ -101,6 +114,16 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    if (widget.onDone == true) {
+      widget.indexList.clear();
+      widget.onDoneCallback();
+      if (Responsive.isDesktopLayout(context)) {
+        // key.currentState!.refresh();
+      } else {
+        _pagingController.refresh();
+      }
+    }
+
     return Responsive.isDesktopLayout(context)
         ? showLoadingIndicator
             ? const Align(
@@ -125,7 +148,13 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
 
   Widget listMemberCard() {
     return RefreshIndicator(
-      onRefresh: () => Future.sync(_pagingController.refresh),
+      onRefresh: () => Future.sync(
+        () => {
+          _pagingController.refresh(),
+          widget.indexList.clear(),
+          widget.longPress(),
+        },
+      ),
       child: PagedListView<int, FilterMember>(
         padding: const EdgeInsets.only(bottom: 70),
         pagingController: _pagingController,
@@ -152,7 +181,17 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(MaterialPageRoute(
-                      builder: (context) => DetailMemberScreen(code: item.code)));
+                      builder: (context) =>
+                          DetailMemberScreen(code: item.code)));
+            },
+            longPressEnabled: widget.longPressFlag,
+            onLongPress: () {
+              if (widget.indexList.contains(item.code)) {
+                widget.indexList.remove(item.code);
+              } else {
+                widget.indexList.add(item.code);
+              }
+              widget.longPress();
             },
             menus: menus(
               context,
@@ -195,6 +234,15 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        buildFinishsButton(
+                          context,
+                          key,
+                          widget.longPressFlag,
+                          widget.indexList,
+                          widget.longPress,
+                          widget.onDone,
+                          widget.onDoneCallback,
+                        ),
                         buildExportingButton(key),
                       ],
                     ),
@@ -224,6 +272,29 @@ class _ExpectCompleteMemberState extends State<ExpectCompleteMember>
                       columns.positiveTestNow,
                       columns.code,
                     ],
+                    dataGridController: _dataGridController,
+                    onSelectionChange: (List<DataGridRow> addedRows,
+                        List<DataGridRow> removedRows) {
+                      if (addedRows.isEmpty && removedRows.isEmpty) {
+                        widget.indexList.clear();
+                      } else {
+                        for (final element in addedRows) {
+                          if (!widget.indexList
+                              .contains(element.getCells()[11].value)) {
+                            widget.indexList.add(element.getCells()[11].value);
+                          }
+                        }
+
+                        for (final element in removedRows) {
+                          if (widget.indexList
+                              .contains(element.getCells()[11].value)) {
+                            widget.indexList
+                                .remove(element.getCells()[11].value);
+                          }
+                        }
+                      }
+                      setState(() {});
+                    },
                   ),
                 ),
               ),
