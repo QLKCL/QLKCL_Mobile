@@ -140,7 +140,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
                       controller: otpController,
                       type: TextInputType.number,
                       enabled: enableNext,
-                      // required: enableNext,
+                      required: enableNext,
                     ),
                     Container(
                       margin: const EdgeInsets.all(16),
