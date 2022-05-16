@@ -222,7 +222,7 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Phòng hiện tại",
+                  title: "Nơi cách ly",
                   content: (quarantineData.quarantineRoom != null
                           ? "${quarantineData.quarantineRoom['name']}, "
                           : "") +

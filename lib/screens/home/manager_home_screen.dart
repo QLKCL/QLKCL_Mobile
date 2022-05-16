@@ -182,7 +182,7 @@ class _ManagerHomePageState extends State<ManagerHomePage> {
                               .toList()
                               .reversed
                               .toList(),
-                          numberOut: snapshot.data['out'].entries
+                          numberOut: snapshot.data['complete'].entries
                               .map((entry) => KeyValue(
                                   id: DateFormat("dd/MM/yyyy").format(
                                       DateTime.parse(entry.key).toLocal()),

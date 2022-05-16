@@ -19,7 +19,8 @@ Map<String, String> timelineType = {
   "start_quarantine": "Bắt đầu cách ly",
   "COMPLETED": "Hoàn thành cách ly",
   "vaccine_dose": "Tiêm chủng",
-  "change_room": "Chuyển phòng"
+  "change_room": "Chuyển phòng",
+  "HOSPITALIZE": "Chuyển viện",
 };
 
 Widget timeline(List<TimelineByDay> data) {

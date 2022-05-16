@@ -87,8 +87,23 @@ class _DetailMemberScreenState extends State<DetailMemberScreen> {
           ? RefreshIndicator(
               onRefresh: () => Future.sync(() {
                 setState(() {
-                  futureData = fetchUser(
-                      data: widget.code != null ? {'code': widget.code} : null);
+                  fetchUser(
+                          data: widget.code != null
+                              ? {'code': widget.code}
+                              : null)
+                      .then((value) {
+                    personalData =
+                        CustomUser.fromJson(value.data["custom_user"]);
+                    quarantineData = value.data["member"] != null
+                        ? Member.fromJson(value.data["member"])
+                        : null;
+                    if (quarantineData != null) {
+                      quarantineData!.customUserCode = personalData!.code;
+                      quarantineData!.quarantineWard =
+                          personalData!.quarantineWard;
+                    }
+                    setState(() {});
+                  });
                   futureTimeline = getMemberTimeline(
                       widget.code != null ? {'code': widget.code} : null);
                   futureHealth = getHeathInfo(

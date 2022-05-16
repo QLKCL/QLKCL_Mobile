@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
@@ -59,12 +60,17 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   List<KeyValue> professionalList = [];
   KeyValue? initProfessional;
 
+  int _role = 5;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
+    getRole().then((value) => setState(() {
+          _role = value;
+        }));
   }
 
   @override
@@ -233,12 +239,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 ),
                 Input(
                   label: 'Số CMND/CCCD',
-                  required: widget.mode != Permission.view,
                   type: TextInputType.number,
                   controller: state.identityNumberController,
                   enabled: widget.mode == Permission.add ||
                       (widget.mode == Permission.edit &&
-                          state.identityNumberController.text == ""),
+                          (state.identityNumberController.text == "" ||
+                              _role < 4)),
                   validatorFunction: identityValidator,
                 ),
                 DropdownInput<KeyValue>(
@@ -286,7 +292,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 ),
                 NewDateInput(
                   label: 'Ngày sinh',
-                  required: widget.mode != Permission.view,
                   controller: state.birthdayController,
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
