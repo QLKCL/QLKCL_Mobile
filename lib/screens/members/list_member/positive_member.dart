@@ -161,7 +161,8 @@ class _PositiveMemberState extends State<PositiveMember>
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(MaterialPageRoute(
-                      builder: (context) => DetailMemberScreen(code: item.code)));
+                      builder: (context) =>
+                          DetailMemberScreen(code: item.code)));
             },
             menus: menus(
               context,

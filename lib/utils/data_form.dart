@@ -893,3 +893,16 @@ Map<String, dynamic> requarantineMemberDataForm({
   return prepareDataForm(data,
       exceptionField: ["quarantine_reason", "first_positive_test_date"]);
 }
+
+Map<String, dynamic> hospitalizeMemberDataForm({
+  required String code,
+  required String hospitalName,
+  String? note,
+}) {
+  final data = {
+    "code": code,
+    "hospital_name": hospitalName,
+    "note": note,
+  };
+  return prepareDataForm(data);
+}

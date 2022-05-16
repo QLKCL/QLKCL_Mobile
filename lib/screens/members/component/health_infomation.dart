@@ -201,19 +201,24 @@ class HealthInformation extends StatelessWidget {
                   title: "Trạng thái tài khoản",
                   content: personalData.status == "WAITING"
                       ? "Chờ xét duyệt"
-                      : personalData.status == "AVAILABLE"
-                          ? "Đang cách ly"
-                          : personalData.status == "REFUSE"
-                              ? "Từ chối"
-                              : personalData.status == "LEAVE" &&
-                                      quarantineData.quarantinedStatus ==
-                                          "HOSPITALIZE"
-                                  ? "Chuyển viện"
-                                  : personalData.status == "LEAVE" &&
+                      : (personalData.status == "AVAILABLE" &&
+                              quarantineData.quarantinedStatus ==
+                                  "HOSPITALIZE_WAITING")
+                          ? "Đang cách ly & Chờ chuyển viện"
+                          : personalData.status == "AVAILABLE"
+                              ? "Đang cách ly"
+                              : personalData.status == "REFUSE"
+                                  ? "Đã từ chối"
+                                  : (personalData.status == "LEAVE" &&
                                           quarantineData.quarantinedStatus ==
-                                              "COMPLETED"
-                                      ? "Đã hoàn thành cách ly"
-                                      : "Không rõ",
+                                              "HOSPITALIZE")
+                                      ? "Đã chuyển viện"
+                                      : (personalData.status == "LEAVE" &&
+                                              quarantineData
+                                                      .quarantinedStatus ==
+                                                  "COMPLETED")
+                                          ? "Đã hoàn thành cách ly"
+                                          : "Không rõ",
                   textColor: primaryText,
                 ),
                 textField(

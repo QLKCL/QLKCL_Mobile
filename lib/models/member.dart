@@ -683,6 +683,24 @@ Future<Response> managerCallRequarantine(data) async {
   }
 }
 
+Future<Response> hospitalizeMember(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.hospitalize, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success,
+          message: "Vui lòng chờ xét duyệt từ phía bệnh viện!");
+    } else if (response['error_code'] == 400) {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
 // To parse this JSON data, do
 //
 //     final filterMember = filterMemberFromJson(jsonString);
@@ -716,6 +734,7 @@ class FilterMember {
     required this.numberOfVaccineDoses,
     this.quarantineLocation,
     this.quarantineLocationWithWard,
+    this.quarantinedStatus,
   });
 
   final String code;
@@ -740,6 +759,7 @@ class FilterMember {
   final String numberOfVaccineDoses;
   final String? quarantineLocation;
   final String? quarantineLocationWithWard;
+  final String? quarantinedStatus;
 
   factory FilterMember.fromJson(Map<String, dynamic> json) => FilterMember(
         code: json["code"],
@@ -789,6 +809,7 @@ class FilterMember {
             (json['quarantine_ward'] != null
                 ? "${json['quarantine_ward']['full_name']}"
                 : ""),
+        quarantinedStatus: json["quarantined_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -812,6 +833,7 @@ class FilterMember {
         "last_tested_had_result": lastTestedHadResult,
         "label": label,
         "number_of_vaccine_doses": numberOfVaccineDoses,
+        "quarantined_status": quarantinedStatus,
       };
 
   @override
