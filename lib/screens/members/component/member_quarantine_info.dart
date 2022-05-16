@@ -594,7 +594,9 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   },
                   enabled: widget.mode == Permission.add ||
                       widget.mode == Permission.renew ||
-                      (widget.mode == Permission.edit && _role < 5),
+                      (widget.mode == Permission.edit && _role < 5) ||
+                      (_role == 5 &&
+                          state.statusController.text != "AVAILABLE"),
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
@@ -850,8 +852,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           phoneNumber: state.phoneNumberController.text,
           fullName: state.fullNameController.text,
           email: state.emailController.text,
-          birthday: DateFormat("dd/MM/yyyy")
-              .format(DateTime.parse(state.birthdayController.text)),
+          birthday: state.birthdayController.text != ""
+              ? DateFormat("dd/MM/yyyy")
+                  .format(DateTime.parse(state.birthdayController.text))
+              : "",
           gender: state.genderController.text,
           nationality: "VNM",
           country: state.countryController.text,

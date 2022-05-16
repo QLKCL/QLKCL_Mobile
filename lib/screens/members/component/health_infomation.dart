@@ -113,22 +113,13 @@ class HealthInformation extends StatelessWidget {
                   textColor: primaryText,
                 ),
                 textField(
-                  title: "Huyết áp tâm trương (mmHg)",
-                  content: healthData.bloodPressureMin != null
-                      ? healthData.bloodPressureMin!.data
+                  title: "Huyết áp (mmHg)",
+                  content: (healthData.bloodPressureMax != null &&
+                          healthData.bloodPressureMin != null)
+                      ? "${healthData.bloodPressureMax!.data}/${healthData.bloodPressureMin!.data}"
                       : "Không rõ",
                   extraContent: healthData.bloodPressureMin != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressureMin!.updatedAt.toLocal())})"
-                      : "",
-                  textColor: primaryText,
-                ),
-                textField(
-                  title: "Huyết áp tâm trương (mmHg)",
-                  content: healthData.bloodPressureMax != null
-                      ? healthData.bloodPressureMax!.data
-                      : "Không rõ",
-                  extraContent: healthData.bloodPressureMax != null
-                      ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressureMax!.updatedAt.toLocal())})"
                       : "",
                   textColor: primaryText,
                 ),

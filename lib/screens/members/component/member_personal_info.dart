@@ -101,7 +101,8 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
       state.fullNameController.text = widget.personalData?.fullName ?? "";
       state.emailController.text = widget.personalData?.email ?? "";
       state.phoneNumberController.text = widget.personalData!.phoneNumber;
-      state.birthdayController.text = widget.personalData?.birthday != null
+      state.birthdayController.text = (widget.personalData?.birthday != null &&
+              widget.personalData?.birthday != "")
           ? DateFormat('dd/MM/yyyy')
               .parse(widget.personalData?.birthday)
               .toIso8601String()
@@ -595,8 +596,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             code: widget.personalData!.code,
             fullName: state.fullNameController.text,
             email: state.emailController.text,
-            birthday: DateFormat("dd/MM/yyyy")
-                .format(DateTime.parse(state.birthdayController.text)),
+            birthday: state.birthdayController.text != ""
+                ? DateFormat("dd/MM/yyyy")
+                    .format(DateTime.parse(state.birthdayController.text))
+                : "",
             gender: state.genderController.text,
             nationality: "VNM",
             country: state.countryController.text,
