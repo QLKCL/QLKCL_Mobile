@@ -59,7 +59,7 @@ class _MapsState extends State<Maps> {
 
   late final List<MapColorMapper> _shapeColorMappers = <MapColorMapper>[
     MapColorMapper(
-        from: 0, to: 5, color: error.withOpacity(0.2), text: '1 - 5'),
+        from: 0, to: 5, color: error.withOpacity(0.2), text: '0 - 5'),
     MapColorMapper(
         from: 6, to: 20, color: error.withOpacity(0.4), text: '6 - 20'),
     MapColorMapper(

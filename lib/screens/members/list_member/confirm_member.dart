@@ -392,7 +392,7 @@ class DataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: 'quarantineWard',
                   value: e.quarantineWard?.name ?? ""),
-              DataGridCell<String>(columnName: 'label', value: e.label),
+              DataGridCell<String?>(columnName: 'label', value: e.label),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
               DataGridCell<bool?>(
@@ -471,7 +471,11 @@ class DataSource extends DataGridSource {
         Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
-          child: Text(row.getCells()[5].value.toString()),
+          child: Text(
+            row.getCells()[5].value != null
+                ? row.getCells()[5].value.toString()
+                : "",
+          ),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

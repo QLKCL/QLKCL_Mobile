@@ -594,6 +594,7 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   },
                   enabled: widget.mode == Permission.add ||
                       widget.mode == Permission.renew ||
+                      widget.mode == Permission.approval ||
                       (widget.mode == Permission.edit && _role < 5) ||
                       (_role == 5 &&
                           state.statusController.text != "AVAILABLE"),

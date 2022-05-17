@@ -47,7 +47,7 @@ class Member {
   final dynamic quarantineFloor;
   final dynamic quarantineBuilding;
   KeyValue? quarantineWard;
-  final String label;
+  final String? label;
   final bool? positiveTestedBefore;
   final bool? abroad;
   final dynamic quarantinedAt;
@@ -755,7 +755,7 @@ class FilterMember {
   final bool? positiveTestNow;
   final String? lastTested;
   final String? lastTestedHadResult;
-  final String label;
+  final String? label;
   final String numberOfVaccineDoses;
   final String? quarantineLocation;
   final String? quarantineLocationWithWard;
