@@ -155,28 +155,30 @@ class AppState extends State<App> {
                   )
                 ],
               ),
-
-              bottomNavigationBar: MediaQuery.of(context).size.height > 600
-                  ? SizedBox(
-                      height: 60,
-                      width: MediaQuery.of(context).size.width,
-                      child: !Responsive.isDesktopLayout(context)
-                          ? BottomNavigation(
-                              role: _role!,
-                              currentTab: _currentTab,
-                              onSelectTab: selectTab,
-                            )
-                          : Container(
-                              color: Colors.white,
-                              width: MediaQuery.of(context).size.width,
-                              alignment: Alignment.center,
-                              child: const Text(
-                                "Copyright \u00a9 2022 Le Trung Son, Chau Thanh Tan, Nguyen Ba Tien\nMade with \u2665", // https://unicode-table.com/en/
-                                textAlign: TextAlign.center,
-                              ),
+              bottomNavigationBar: SizedBox(
+                height: (!Responsive.isDesktopLayout(context) ||
+                        MediaQuery.of(context).size.height > 600)
+                    ? 60
+                    : null,
+                width: MediaQuery.of(context).size.width,
+                child: !Responsive.isDesktopLayout(context)
+                    ? BottomNavigation(
+                        role: _role!,
+                        currentTab: _currentTab,
+                        onSelectTab: selectTab,
+                      )
+                    : MediaQuery.of(context).size.height > 600
+                        ? Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width,
+                            alignment: Alignment.center,
+                            child: const Text(
+                              "Copyright \u00a9 2022 Le Trung Son, Chau Thanh Tan, Nguyen Ba Tien\nMade with \u2665", // https://unicode-table.com/en/
+                              textAlign: TextAlign.center,
                             ),
-                    )
-                  : const SizedBox(),
+                          )
+                        : const SizedBox(),
+              ),
             ),
           );
   }
