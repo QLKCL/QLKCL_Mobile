@@ -116,6 +116,7 @@ class _DateInputState extends State<DateInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           helperStyle: TextStyle(color: disableText),
+          errorStyle: TextStyle(color: error),
           fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
@@ -261,6 +262,7 @@ class _DateRangeInputState extends State<DateRangeInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           helperStyle: TextStyle(color: disableText),
+          errorStyle: TextStyle(color: error),
           fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
@@ -437,6 +439,7 @@ class _NewDateInputState extends State<NewDateInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           helperStyle: TextStyle(color: disableText),
+          errorStyle: TextStyle(color: error),
           fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
@@ -646,6 +649,7 @@ class _NewDateRangeInputState extends State<NewDateRangeInput> {
               : const Icon(Icons.calendar_today),
           helperText: widget.helper,
           helperStyle: TextStyle(color: disableText),
+          errorStyle: TextStyle(color: error),
           fillColor: !widget.enabled ? disable : white,
           filled: true, // dont forget this line
         ),
