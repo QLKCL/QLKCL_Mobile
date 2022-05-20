@@ -319,7 +319,16 @@ Widget menus<T>(
                   .push(MaterialPageRoute(
                       builder: (context) => Hospitalize(
                             code: code,
-                          )));
+                          )))
+                  .then((value) => {
+                        if (value.status == Status.success)
+                          {
+                            if (Responsive.isDesktopLayout(context))
+                              {tableKey?.currentState!.refresh()}
+                            else
+                              {pagingController!.refresh()}
+                          }
+                      });
             } else {
               showNotification(
                   "Tài khoản này đã thực hiện chuyển viện. Vui lòng chờ xác nhận từ phía bệnh viện!",

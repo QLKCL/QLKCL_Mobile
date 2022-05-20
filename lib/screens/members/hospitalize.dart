@@ -5,6 +5,7 @@ import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/member.dart';
+import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class Hospitalize extends StatefulWidget {
@@ -96,13 +97,18 @@ class _HospitalizeState extends State<Hospitalize> {
     // Validate returns true if the form is valid, or false otherwise.
     if (_formKey.currentState!.validate()) {
       final CancelFunc cancel = showLoading();
-      final updateResponse = await hospitalizeMember(hospitalizeMemberDataForm(
+      final response = await hospitalizeMember(hospitalizeMemberDataForm(
         code: widget.code,
         hospitalName: hospitalNameController.text,
         note: noteController.text,
       ));
       cancel();
-      showNotification(updateResponse);
+      showNotification(response);
+      if (response.status == Status.success) {
+        if (mounted) {
+          Navigator.pop(context, response);
+        }
+      }
     }
   }
 }

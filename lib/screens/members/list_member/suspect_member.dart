@@ -163,7 +163,8 @@ class _SuspectMemberState extends State<SuspectMember>
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))
                   .push(MaterialPageRoute(
-                      builder: (context) => DetailMemberScreen(code: item.code)));
+                      builder: (context) =>
+                          DetailMemberScreen(code: item.code)));
             },
             menus: menus(
               context,
@@ -175,6 +176,7 @@ class _SuspectMemberState extends State<SuspectMember>
                 menusOptions.medicalDeclareHistory,
                 menusOptions.createTest,
                 menusOptions.vaccineDoseHistory,
+                menusOptions.moveHospital,
               ],
             ),
           ),
@@ -519,6 +521,7 @@ class DataSource extends DataGridSource {
                       menusOptions.medicalDeclareHistory,
                       menusOptions.createTest,
                       menusOptions.vaccineDoseHistory,
+                      menusOptions.moveHospital,
                     ],
                   );
           },

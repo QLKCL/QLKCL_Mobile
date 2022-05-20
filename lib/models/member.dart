@@ -461,11 +461,15 @@ Future<Response> acceptOneMember(data) async {
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else if (response['message']['main'] != null &&
-          response['message']['main'] ==
-              "All rooms are not accept any more member") {
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
         return Response(
             status: Status.error,
-            message: "Khu cách ly này đã hết giường trống!");
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['main'] != null &&
           (response['message']['main'] == "PRESENT quarantine history exist" ||
               response['message']['main'] ==
@@ -694,7 +698,16 @@ Future<Response> hospitalizeMember(data) async {
           status: Status.success,
           message: "Vui lòng chờ xét duyệt từ phía bệnh viện!");
     } else if (response['error_code'] == 400) {
-      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      if (response['message']['code'] != null &&
+          (response['message']['code'] ==
+              "This member is already hospitalize waiting")) {
+        return Response(
+            status: Status.error,
+            message:
+                "Tài khoản này đã thực hiện chuyển viện. Vui lòng chờ xác nhận từ phía bệnh viện!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
