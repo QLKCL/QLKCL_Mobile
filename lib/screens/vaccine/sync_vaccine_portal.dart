@@ -8,11 +8,13 @@ import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
+import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/vaccine_dose.dart';
 import 'package:qlkcl/networking/request_helper.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/vaccine/vaccination_certificate_screen.dart';
+import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/utils/constant.dart';
 import 'package:intl/intl.dart';
 import 'package:qlkcl/utils/data_form.dart';
@@ -20,7 +22,9 @@ import 'package:qlkcl/utils/data_form.dart';
 class SyncVaccinePortal extends StatefulWidget {
   const SyncVaccinePortal({
     Key? key,
+    this.code,
   }) : super(key: key);
+  final String? code;
 
   @override
   _SyncVaccinePortalState createState() => _SyncVaccinePortalState();
@@ -41,23 +45,38 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
   @override
   void initState() {
     super.initState();
-    getName().then((value) {
-      fullNameController.text = value;
-      setState(() {});
-    });
-    getPhoneNumber().then((value) {
-      phoneNumberController.text = value;
-      setState(() {});
-    });
-    getBirthday().then((value) {
-      birthdayController.text =
-          DateFormat('dd/MM/yyyy').parse(value).toIso8601String();
-      setState(() {});
-    });
-    getGender().then((value) {
-      genderController.text = value;
-      setState(() {});
-    });
+    final CancelFunc cancel = showLoading();
+    if (widget.code != null) {
+      fetchUser(data: {'code': widget.code}).then((value) {
+        cancel();
+        fullNameController.text = value.data["custom_user"]["full_name"];
+        phoneNumberController.text = value.data["custom_user"]["phone_number"];
+        birthdayController.text = DateFormat('dd/MM/yyyy')
+            .parse(value.data["custom_user"]["birthday"])
+            .toIso8601String();
+        genderController.text = value.data["custom_user"]["gender"];
+        setState(() {});
+      });
+    } else {
+      getName().then((value) {
+        fullNameController.text = value;
+        setState(() {});
+      });
+      getPhoneNumber().then((value) {
+        phoneNumberController.text = value;
+        setState(() {});
+      });
+      getBirthday().then((value) {
+        birthdayController.text =
+            DateFormat('dd/MM/yyyy').parse(value).toIso8601String();
+        setState(() {});
+      });
+      getGender().then((value) {
+        genderController.text = value;
+        setState(() {});
+      });
+      cancel();
+    }
   }
 
   @override
@@ -68,109 +87,142 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
           title: const Text('Tra cứu chứng nhận tiêm'),
           centerTitle: true,
         ),
-        body: SingleChildScrollView(
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              constraints: const BoxConstraints(minWidth: 100, maxWidth: 800),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Input(
-                      label: 'Họ và tên',
-                      required: true,
-                      textCapitalization: TextCapitalization.words,
-                      controller: fullNameController,
-                      enabled: false,
-                    ),
-                    Input(
-                      label: 'Số điện thoại',
-                      required: true,
-                      type: TextInputType.phone,
-                      controller: phoneNumberController,
-                      validatorFunction: phoneValidator,
-                      enabled: false,
-                    ),
-                    DropdownInput<KeyValue>(
-                      label: 'Giới tính',
-                      hint: 'Chọn giới tính',
-                      required: true,
-                      itemValue: genderList,
-                      itemAsString: (KeyValue? u) => u!.name,
-                      maxHeight: 112,
-                      compareFn: (item, selectedItem) =>
-                          item?.id == selectedItem?.id,
-                      selectedItem: genderList.safeFirstWhere(
-                          (gender) => gender.id == genderController.text),
-                      onChanged: (value) {
-                        if (value == null) {
-                          genderController.text = "";
-                        } else {
-                          genderController.text = value.id;
-                        }
-                      },
-                      enabled: false,
-                    ),
-                    NewDateInput(
-                      label: 'Ngày sinh',
-                      required: true,
-                      controller: birthdayController,
-                      maxDate: DateTime.now(),
-                      //enabled: false,
-                      helper: "Chọn ngày 1/1 khi không rõ ngày sinh",
-                    ),
-                    // Input(
-                    //   label: 'Số CMND/CCCD',
-                    //   type: TextInputType.number,
-                    //   controller: identityNumberController,
-                    // ),
-                    // Input(
-                    //   label: 'Mã số BHXH/Thẻ BHYT',
-                    //   controller: healthInsuranceNumberController,
-                    // ),
-                    // Input(
-                    //   label: 'Số hộ chiếu',
-                    //   controller: passportNumberController,
-                    //   textCapitalization: TextCapitalization.characters,
-                    //   validatorFunction: passportValidator,
-                    // ),
-                    Input(
-                      label: 'OTP',
-                      controller: otpController,
-                      type: TextInputType.number,
-                      enabled: enableNext,
-                      required: enableNext,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          const Spacer(),
-                          OutlinedButton(
-                            onPressed: () {
-                              setState(() {
-                                enableNext = false;
-                              });
-                              _otp();
+        body: fullNameController.text.isNotEmpty
+            ? SingleChildScrollView(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    constraints:
+                        const BoxConstraints(minWidth: 100, maxWidth: 800),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Input(
+                            label: 'Họ và tên',
+                            required: true,
+                            textCapitalization: TextCapitalization.words,
+                            controller: fullNameController,
+                            // enabled: false,
+                          ),
+                          Input(
+                            label: 'Số điện thoại',
+                            required: true,
+                            type: TextInputType.phone,
+                            controller: phoneNumberController,
+                            validatorFunction: phoneValidator,
+                            enabled: false,
+                          ),
+                          DropdownInput<KeyValue>(
+                            label: 'Giới tính',
+                            hint: 'Chọn giới tính',
+                            required: true,
+                            itemValue: genderList,
+                            itemAsString: (KeyValue? u) => u!.name,
+                            maxHeight: 112,
+                            compareFn: (item, selectedItem) =>
+                                item?.id == selectedItem?.id,
+                            selectedItem: genderList.safeFirstWhere(
+                                (gender) => gender.id == genderController.text),
+                            onChanged: (value) {
+                              if (value == null) {
+                                genderController.text = "";
+                              } else {
+                                genderController.text = value.id;
+                              }
                             },
-                            child: const Text("Nhận OTP"),
+                            // enabled: false,
                           ),
-                          const Spacer(),
-                          ElevatedButton(
-                            onPressed: enableNext ? _submit : null,
-                            child: const Text("Tra cứu"),
+                          NewDateInput(
+                            label: 'Ngày sinh',
+                            required: true,
+                            controller: birthdayController,
+                            maxDate: DateTime.now(),
+                            //enabled: false,
+                            helper: "Chọn ngày 1/1 khi chỉ biết năm sinh",
                           ),
-                          const Spacer(),
+                          // Input(
+                          //   label: 'Số CMND/CCCD',
+                          //   type: TextInputType.number,
+                          //   controller: identityNumberController,
+                          // ),
+                          // Input(
+                          //   label: 'Mã số BHXH/Thẻ BHYT',
+                          //   controller: healthInsuranceNumberController,
+                          // ),
+                          // Input(
+                          //   label: 'Số hộ chiếu',
+                          //   controller: passportNumberController,
+                          //   textCapitalization: TextCapitalization.characters,
+                          //   validatorFunction: passportValidator,
+                          // ),
+                          Input(
+                            label: 'OTP',
+                            controller: otpController,
+                            type: TextInputType.number,
+                            enabled: enableNext,
+                            required: enableNext,
+                            helper: "Nhập OTP trước khi thực hiện tra cứu",
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.fromLTRB(16, 16, 0, 0),
+                            child: RichText(
+                              text: TextSpan(
+                                style: TextStyle(
+                                  color: primaryText,
+                                  fontSize: 15,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '(*)',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: error,
+                                    ),
+                                  ),
+                                  const TextSpan(
+                                    text:
+                                        ' Vui lòng kiểm tra chính xác thông tin cá nhân trước khi nhấn chọn "Nhận OTP".',
+                                    style: TextStyle(
+                                      height: 1.5,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(16),
+                            child: Row(
+                              children: [
+                                const Spacer(),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      enableNext = false;
+                                    });
+                                    _otp();
+                                  },
+                                  child: const Text("Nhận OTP"),
+                                ),
+                                const Spacer(),
+                                ElevatedButton(
+                                  onPressed: enableNext ? _submit : null,
+                                  child: const Text("Tra cứu"),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ),
+              )
+            : const SizedBox(),
       ),
     );
   }
@@ -237,7 +289,6 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
       cancel();
       if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {
-          showNotification(null);
           final VaccinationCertification vaccineCertification =
               VaccinationCertification.fromJson(response.data);
           if (mounted) {
