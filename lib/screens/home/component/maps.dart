@@ -210,11 +210,14 @@ class _MapsState extends State<Maps> {
           StateSetter setState /*You can rename this!*/) {
         return Container(
           padding: const EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height -
-              AppBar().preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              100,
+          // height: MediaQuery.of(context).size.height -
+          //     AppBar().preferredSize.height -
+          //     MediaQuery.of(context).padding.top -
+          //     MediaQuery.of(context).padding.bottom -
+          //     100,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.85,
+          ),
           child: DestiantionChart(data: data),
         );
       },

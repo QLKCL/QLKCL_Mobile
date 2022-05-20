@@ -20,29 +20,40 @@ Future confirmAlertPopup(
           ),
         ),
         Container(
-          margin: const EdgeInsets.all(16),
-          alignment: Alignment.center,
-          child: content,
-        ),
-        Container(
-          margin: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              OutlinedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Hủy"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  confirmAction.call();
-                },
-                child: const Text("Xác nhận"),
-              ),
-            ],
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  alignment: Alignment.center,
+                  child: content,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Hủy"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          confirmAction.call();
+                        },
+                        child: const Text("Xác nhận"),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
