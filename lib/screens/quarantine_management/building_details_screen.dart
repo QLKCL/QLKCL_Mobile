@@ -5,6 +5,7 @@ import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/component/floor_list.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'component/general_info_building.dart';
 import './edit_building_screen.dart';
 import './add_floor_screen.dart';
@@ -32,8 +33,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   void initState() {
     super.initState();
     currentBuilding = widget.currentBuilding!;
-    futureFloorList =
-        fetchFloorList({'quarantine_building_id_list': currentBuilding.id});
+    futureFloorList = fetchFloorList({
+      'quarantine_building_id_list': currentBuilding.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override
@@ -56,8 +59,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                   if (value != null) {
                     currentBuilding = value;
                   }
-                  futureFloorList = fetchFloorList(
-                      {'quarantine_building_id_list': currentBuilding.id});
+                  futureFloorList = fetchFloorList({
+                    'quarantine_building_id_list': currentBuilding.id,
+                    'page_size': pageSizeMax,
+                  });
                 }));
           },
           icon: const Icon(Icons.edit),
@@ -125,8 +130,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
               ),
             ),
           ).then((value) => setState(() {
-                futureFloorList = fetchFloorList(
-                    {'quarantine_building_id_list': currentBuilding.id});
+                futureFloorList = fetchFloorList({
+                  'quarantine_building_id_list': currentBuilding.id,
+                  'page_size': pageSizeMax,
+                });
               }));
         },
         tooltip: 'Thêm tầng',

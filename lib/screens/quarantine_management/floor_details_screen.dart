@@ -5,6 +5,7 @@ import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/room.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'component/general_info_floor.dart';
 import 'component/room_list.dart';
 import 'edit_floor_screen.dart';
@@ -34,7 +35,10 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
   void initState() {
     super.initState();
     currentFloor = widget.currentFloor!;
-    futureRoomList = fetchRoomList({'quarantine_floor': currentFloor.id});
+    futureRoomList = fetchRoomList({
+      'quarantine_floor': currentFloor.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override
@@ -58,8 +62,10 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
                   if (value != null) {
                     currentFloor = value;
                   }
-                  futureRoomList =
-                      fetchRoomList({'quarantine_floor': currentFloor.id});
+                  futureRoomList = fetchRoomList({
+                    'quarantine_floor': currentFloor.id,
+                    'page_size': pageSizeMax,
+                  });
                 }));
           },
           icon: const Icon(Icons.edit),
@@ -131,8 +137,10 @@ class _FloorDetailsScreen extends State<FloorDetailsScreen> {
               ),
             ),
           ).then((value) => setState(() {
-                futureRoomList =
-                    fetchRoomList({'quarantine_floor': currentFloor.id});
+                futureRoomList = fetchRoomList({
+                  'quarantine_floor': currentFloor.id,
+                  'page_size': pageSizeMax,
+                });
               }));
         },
         child: const Icon(Icons.add),

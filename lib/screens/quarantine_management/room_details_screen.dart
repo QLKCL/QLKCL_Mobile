@@ -252,7 +252,7 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
                       appBar.preferredSize.height -
                       MediaQuery.of(context).padding.top) *
                   0.75 -
-              200,
+              100,
           child: Card(
             child: LayoutBuilder(
               builder: (context, constraints) {

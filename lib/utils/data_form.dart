@@ -464,6 +464,7 @@ Map<String, dynamic> filterMemberByRoomDataForm({
     "quarantine_building_id": quarantineBuilding,
     "quarantine_floor_id": quarantineFloor,
     "quarantine_room_id": quarantineRoom,
+    'page_size': pageSizeMax,
   };
   return prepareDataForm(data);
 }

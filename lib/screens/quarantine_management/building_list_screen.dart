@@ -4,6 +4,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/component/bulding_list.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'component/general_info.dart';
 
 class BuildingListScreen extends StatefulWidget {
@@ -21,8 +22,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
   @override
   void initState() {
     super.initState();
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
+    futureBuildingList = fetchBuildingList({
+      'quarantine_ward': widget.currentQuarrantine!.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override
@@ -84,8 +87,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                   builder: (context) => AddBuildingScreen(
                         currentQuarrantine: widget.currentQuarrantine,
                       ))).then((value) => setState(() {
-                futureBuildingList = fetchBuildingList(
-                    {'quarantine_ward': widget.currentQuarrantine!.id});
+                futureBuildingList = fetchBuildingList({
+                  'quarantine_ward': widget.currentQuarrantine!.id,
+                  'page_size': pageSizeMax,
+                });
               }));
         },
         tooltip: 'Thêm tòa',
