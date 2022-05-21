@@ -624,8 +624,9 @@ class DataSource extends DataGridSource {
                       : null),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<bool?>(
-                  columnName: 'positiveTestNow', value: e.positiveTestNow),
+              DataGridCell<String>(
+                  columnName: 'positiveTestNow',
+                  value: e.positiveTestNow.toString()),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -763,19 +764,19 @@ class DataSource extends DataGridSource {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               decoration: BoxDecoration(
-                color: row.getCells()[10].value == null
+                color: row.getCells()[10].value == "null"
                     ? secondaryText.withOpacity(0.25)
-                    : row.getCells()[10].value == true
+                    : row.getCells()[10].value == "true"
                         ? error.withOpacity(0.25)
                         : success.withOpacity(0.25),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: row.getCells()[10].value == null
+              child: row.getCells()[10].value == "null"
                   ? Text(
                       "Chưa có",
                       style: TextStyle(color: secondaryText),
                     )
-                  : row.getCells()[10].value == true
+                  : row.getCells()[10].value == "true"
                       ? Text(
                           "Dương tính",
                           style: TextStyle(color: error),

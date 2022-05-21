@@ -1,5 +1,7 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/models/member.dart';
@@ -246,6 +248,12 @@ class _DeniedMemberState extends State<DeniedMember>
                   controller: _dataPagerController,
                   pageCount: pageCount,
                   delegate: dataSource,
+                  onPageNavigationStart: (pageIndex) {
+                    showLoading();
+                  },
+                  onPageNavigationEnd: (pageIndex) {
+                    BotToast.closeAllLoading();
+                  },
                 ),
               )
             ],
@@ -326,8 +334,9 @@ class DataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'label', value: e.label),
               DataGridCell<String>(
                   columnName: 'healthStatus', value: e.healthStatus),
-              DataGridCell<bool?>(
-                  columnName: 'positiveTestNow', value: e.positiveTestNow),
+              DataGridCell<String>(
+                  columnName: 'positiveTestNow',
+                  value: e.positiveTestNow.toString()),
               DataGridCell<String>(columnName: 'code', value: e.code),
             ],
           ),
@@ -442,19 +451,19 @@ class DataSource extends DataGridSource {
               margin: const EdgeInsets.all(8),
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               decoration: BoxDecoration(
-                color: row.getCells()[7].value == null
+                color: row.getCells()[7].value == "null"
                     ? secondaryText.withOpacity(0.25)
-                    : row.getCells()[7].value == true
+                    : row.getCells()[7].value == "true"
                         ? error.withOpacity(0.25)
                         : success.withOpacity(0.25),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: row.getCells()[7].value == null
+              child: row.getCells()[7].value == "null"
                   ? Text(
                       "Chưa có",
                       style: TextStyle(color: secondaryText),
                     )
-                  : row.getCells()[7].value == true
+                  : row.getCells()[7].value == "true"
                       ? Text(
                           "Dương tính",
                           style: TextStyle(color: error),
