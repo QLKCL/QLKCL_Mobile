@@ -607,7 +607,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
-                if (state.labelController.text == "F0")
+                if (state.labelController.text == "F0" ||
+                    _isPositiveTestedBefore)
                   NewDateInput(
                     label: 'Ngày nhiễm bệnh',
                     controller: state.firstPositiveTestDateController,

@@ -99,7 +99,8 @@ Future<Response?> memberRequarantined(
                           setState(() {});
                         },
                       ),
-                      if (labelController.text == "F0")
+                      if (labelController.text == "F0" ||
+                          isPositiveTestedBefore)
                         NewDateInput(
                           label: 'Ngày nhiễm bệnh',
                           controller: firstPositiveTestDateController,
