@@ -61,6 +61,13 @@ Future<dynamic> createRoom(Map<String, dynamic> data) async {
           status: Status.success,
           message: "Tạo phòng thành công!",
           data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message']['name'] != null &&
+          response['message']['name'] == "Exist") {
+        return Response(status: Status.error, message: 'Tên phòng đã tồn tại!');
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
@@ -100,6 +107,13 @@ Future<Response> updateRoom(Map<String, dynamic> data) async {
       if (response['message']['name'] != null &&
           response['message']['name'] == "Exist") {
         return Response(status: Status.error, message: 'Tên phòng đã tồn tại!');
+      } else if (response['message']['capacity'] != null &&
+          response['message']['capacity'] ==
+              "Updated capacity is smaller than number of current member") {
+        return Response(
+            status: Status.error,
+            message:
+                'Số người tối đa không thể nhỏ hơn số người hiện tại trong phòng!');
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }

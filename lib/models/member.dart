@@ -220,6 +220,16 @@ Future<Response> createMember(Map<String, dynamic> data) async {
               "This room has member that is positive") {
         return Response(
             status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
+        return Response(
+            status: Status.error,
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['quarantine_room_id'] != null &&
           (response['message']['quarantine_room_id'] ==
                   "PRESENT quarantine history exist" ||
@@ -320,6 +330,16 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               response['message']['quarantine_room_id'] ==
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
+        return Response(
+            status: Status.error,
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['first_positive_test_date'] != null &&
           response['message']['first_positive_test_date'] == "Cannot change") {
         return Response(
