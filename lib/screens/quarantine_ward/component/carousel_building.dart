@@ -20,6 +20,8 @@ class CarouselBuilding extends StatefulWidget {
 }
 
 class _CarouselBuildingState extends State<CarouselBuilding> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return (widget.data == null || widget.data.isEmpty)
@@ -100,18 +102,23 @@ class _CarouselBuildingState extends State<CarouselBuilding> {
               SizedBox(
                 height: 170,
                 width: MediaQuery.of(context).size.width,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: widget.data.length,
-                  padding: const EdgeInsets.only(bottom: 16),
-                  itemBuilder: (BuildContext context, int index) => Card(
-                    child: BuildingItem(
-                      currentQuarantine: widget.currentQuarantine!,
-                      currentBuilding: Building.fromJson(widget.data[index]),
-                      buildingName: widget.data[index]['name'],
-                      maxMem: widget.data[index]['total_capacity'] ?? 0,
-                      currentMem: widget.data[index]['num_current_member'],
+                child: Scrollbar(
+                  isAlwaysShown: true,
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: widget.data.length,
+                    padding: const EdgeInsets.only(bottom: 16),
+                    itemBuilder: (BuildContext context, int index) => Card(
+                      child: BuildingItem(
+                        currentQuarantine: widget.currentQuarantine!,
+                        currentBuilding: Building.fromJson(widget.data[index]),
+                        buildingName: widget.data[index]['name'],
+                        maxMem: widget.data[index]['total_capacity'] ?? 0,
+                        currentMem: widget.data[index]['num_current_member'],
+                      ),
                     ),
                   ),
                 ),
