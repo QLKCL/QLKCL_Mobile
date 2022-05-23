@@ -345,6 +345,12 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
         return Response(
             status: Status.error,
             message: "Không thể thay đổi ngày nhiễm bệnh!");
+      } else if (response['message']['main'] != null &&
+          response['message']['main'] ==
+              "Cannot change room and label together") {
+        return Response(
+            status: Status.error,
+            message: "Không thể thay đổi phòng và diện cách ly cùng lúc!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }

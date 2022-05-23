@@ -108,29 +108,43 @@ class _RoomDetailsScreen extends State<RoomDetailsScreen> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: FutureBuilder<FilterResponse<FilterMember>>(
-            future: futureMemberList,
-            builder: (context, snapshot) {
-              showLoading();
-              if (snapshot.connectionState == ConnectionState.done) {
-                BotToast.closeAllLoading();
-                if (snapshot.hasData) {
-                  showLoadingIndicator = false;
-                  dataSource = DataSource(data: snapshot.data!.data);
-                  return Responsive.isDesktopLayout(context)
-                      ? listMemberTable(appBar)
-                      : listMemberCard(appBar, snapshot.data!);
-                } else if (snapshot.hasError) {
-                  return const Text('Snapshot has error');
-                } else {
-                  return const Text(
-                    'Không có dữ liệu',
-                    textAlign: TextAlign.center,
-                  );
+        child: RefreshIndicator(
+          onRefresh: () => Future.sync(() {
+            setState(() {
+              futureMemberList = fetchMemberList(
+                data: filterMemberByRoomDataForm(
+                  quarantineWard: widget.currentQuarantine!.id,
+                  quarantineBuilding: widget.currentBuilding!.id,
+                  quarantineFloor: widget.currentFloor!.id,
+                  quarantineRoom: currentRoom.id,
+                ),
+              );
+            });
+          }),
+          child: FutureBuilder<FilterResponse<FilterMember>>(
+              future: futureMemberList,
+              builder: (context, snapshot) {
+                showLoading();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  BotToast.closeAllLoading();
+                  if (snapshot.hasData) {
+                    showLoadingIndicator = false;
+                    dataSource = DataSource(data: snapshot.data!.data);
+                    return Responsive.isDesktopLayout(context)
+                        ? listMemberTable(appBar)
+                        : listMemberCard(appBar, snapshot.data!);
+                  } else if (snapshot.hasError) {
+                    return const Text('Snapshot has error');
+                  } else {
+                    return const Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 }
-              }
-              return const SizedBox();
-            }),
+                return const SizedBox();
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
