@@ -4,6 +4,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/add_building_screen.dart';
 import 'package:qlkcl/screens/quarantine_management/component/bulding_list.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'component/general_info.dart';
 
 class BuildingListScreen extends StatefulWidget {
@@ -21,8 +22,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
   @override
   void initState() {
     super.initState();
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
+    futureBuildingList = fetchBuildingList({
+      'quarantine_ward': widget.currentQuarrantine!.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override
@@ -33,48 +36,58 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: futureBuildingList,
-            builder: (context, snapshot) {
-              showLoading();
-              if (snapshot.connectionState == ConnectionState.done) {
-                BotToast.closeAllLoading();
-                if (snapshot.hasData) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: GeneralInfo(
-                          currentQuarantine: widget.currentQuarrantine!,
-                          numOfBuilding: snapshot.data.length,
+        child: RefreshIndicator(
+          onRefresh: () => Future.sync(() {
+            setState(() {
+              futureBuildingList = fetchBuildingList({
+                'quarantine_ward': widget.currentQuarrantine!.id,
+                'page_size': pageSizeMax,
+              });
+            });
+          }),
+          child: FutureBuilder<dynamic>(
+              future: futureBuildingList,
+              builder: (context, snapshot) {
+                showLoading();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  BotToast.closeAllLoading();
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.25,
+                          child: GeneralInfo(
+                            currentQuarantine: widget.currentQuarrantine!,
+                            numOfBuilding: snapshot.data.length,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.75,
-                        child: BuildingList(
-                            data: snapshot.data,
-                            currentQuarantine: widget.currentQuarrantine!),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return const Text('Snapshot has error');
-                } else {
-                  return const Text(
-                    'Không có dữ liệu',
-                    textAlign: TextAlign.center,
-                  );
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.75,
+                          child: BuildingList(
+                              data: snapshot.data,
+                              currentQuarantine: widget.currentQuarrantine!),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('Snapshot has error');
+                  } else {
+                    return const Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 }
-              }
-              return const SizedBox();
-            }),
+                return const SizedBox();
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -84,8 +97,10 @@ class _BuildingListScreenState extends State<BuildingListScreen> {
                   builder: (context) => AddBuildingScreen(
                         currentQuarrantine: widget.currentQuarrantine,
                       ))).then((value) => setState(() {
-                futureBuildingList = fetchBuildingList(
-                    {'quarantine_ward': widget.currentQuarrantine!.id});
+                futureBuildingList = fetchBuildingList({
+                  'quarantine_ward': widget.currentQuarrantine!.id,
+                  'page_size': pageSizeMax,
+                });
               }));
         },
         tooltip: 'Thêm tòa',

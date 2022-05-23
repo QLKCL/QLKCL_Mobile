@@ -5,6 +5,7 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/manager/list_all_manager_screen.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:websafe_svg/websafe_svg.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'carousel.dart';
@@ -28,8 +29,10 @@ class _QuarantineInfoState extends State<QuarantineInfo> {
   @override
   void initState() {
     super.initState();
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.quarantineInfo.id});
+    futureBuildingList = fetchBuildingList({
+      'quarantine_ward': widget.quarantineInfo.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override

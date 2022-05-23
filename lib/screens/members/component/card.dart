@@ -43,14 +43,16 @@ class SimpleQuarantineHistoryCard extends StatelessWidget {
                     ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    cardLine(
-                        icon: Icons.location_on_outlined,
-                        title: "Phòng",
-                        content: room),
-                    cardLine(
-                        icon: Icons.note_outlined,
-                        title: "Ghi chú",
-                        content: note),
+                    if (room != "")
+                      cardLine(
+                          icon: Icons.location_on_outlined,
+                          title: "Phòng",
+                          content: room),
+                    if (note != "")
+                      cardLine(
+                          icon: Icons.note_outlined,
+                          title: "Ghi chú",
+                          content: note),
                   ],
                 ),
               ),

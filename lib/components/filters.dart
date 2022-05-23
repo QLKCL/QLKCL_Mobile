@@ -88,7 +88,7 @@ Future memberFilter(
         ),
         Container(
           constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.5,
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -354,50 +354,50 @@ Future memberFilter(
                       item?.id == selectedItem?.id,
                   showClearButton: true,
                 ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          quarantineWardController.clear();
+                          quarantineBuildingController.clear();
+                          quarantineFloorController.clear();
+                          quarantineRoomController.clear();
+                          quarantineAtMinController.clear();
+                          quarantineAtMaxController.clear();
+                          quarantinedFinishExpectedAtMinController.clear();
+                          quarantinedFinishExpectedAtMaxController.clear();
+                          labelController.clear();
+                          onSubmit!(quarantineWardList, [], [], [], [], false);
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Đặt lại"),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          onSubmit!(
+                            quarantineWardList,
+                            quarantineBuildingList,
+                            quarantineFloorList,
+                            quarantineRoomList,
+                            careStaffList,
+                            true,
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Tìm kiếm"),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  // Respond to button press
-                  quarantineWardController.clear();
-                  quarantineBuildingController.clear();
-                  quarantineFloorController.clear();
-                  quarantineRoomController.clear();
-                  quarantineAtMinController.clear();
-                  quarantineAtMaxController.clear();
-                  quarantinedFinishExpectedAtMinController.clear();
-                  quarantinedFinishExpectedAtMaxController.clear();
-                  labelController.clear();
-                  onSubmit!(quarantineWardList, [], [], [], [], false);
-                  Navigator.pop(context);
-                },
-                child: const Text("Đặt lại"),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  // Respond to button press
-                  onSubmit!(
-                    quarantineWardList,
-                    quarantineBuildingList,
-                    quarantineFloorList,
-                    quarantineRoomList,
-                    careStaffList,
-                    true,
-                  );
-                  Navigator.pop(context);
-                },
-                child: const Text("Tìm kiếm"),
-              ),
-              const Spacer(),
-            ],
           ),
         ),
       ],
@@ -447,102 +447,116 @@ Future testFilter(
             ),
           ),
         ),
-        DropdownInput<KeyValue>(
-          label: 'Kỹ thuật xét nghiệm',
-          hint: 'Chọn kỹ thuật xét nghiệm',
-          itemValue: testTypeList,
-          itemAsString: (KeyValue? u) => u!.name,
-          maxHeight: 112,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          selectedItem: testTypeList
-              .safeFirstWhere((type) => type.id == typeController.text),
-          onChanged: (value) {
-            if (value == null) {
-              typeController.text = "";
-            } else {
-              typeController.text = value.id;
-            }
-          },
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          label: 'Trạng thái',
-          hint: 'Chọn trạng thái',
-          itemValue: testStateList,
-          itemAsString: (KeyValue? u) => u!.name,
-          maxHeight: 112,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          selectedItem: testStateList
-              .safeFirstWhere((state) => state.id == stateController.text),
-          onChanged: (value) {
-            if (value == null) {
-              stateController.text = "";
-            } else {
-              stateController.text = value.id;
-            }
-          },
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          label: 'Kết quả',
-          hint: 'Chọn kết quả',
-          itemValue: testValueList,
-          itemAsString: (KeyValue? u) => u!.name,
-          maxHeight: 168,
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          selectedItem: testValueList
-              .safeFirstWhere((result) => result.id == resultController.text),
-          onChanged: (value) {
-            if (value == null) {
-              resultController.text = "";
-            } else {
-              if (value.id == "NEGATIVE" || value.id == "POSITIVE") {
-                stateController.text = "DONE";
-              } else {
-                stateController.text = "WAITING";
-              }
-              resultController.text = value.id;
-            }
-          },
-          showClearButton: true,
-        ),
-        NewDateRangeInput(
-          label: 'Ngày xét nghiệm',
-          controllerStart: createAtMinController,
-          controllerEnd: createAtMaxController,
-          maxDate: DateTime.now(),
-          showClearButton: true,
-        ),
         Container(
-          margin: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  // Respond to button press
-                  userCodeController.clear();
-                  stateController.clear();
-                  typeController.clear();
-                  resultController.clear();
-                  createAtMinController.clear();
-                  createAtMaxController.clear();
-                  onSubmit!();
-                  Navigator.pop(context);
-                },
-                child: const Text("Đặt lại"),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  // Respond to button press
-                  onSubmit!();
-                  Navigator.pop(context);
-                },
-                child: const Text("Tìm kiếm"),
-              ),
-              const Spacer(),
-            ],
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                DropdownInput<KeyValue>(
+                  label: 'Kỹ thuật xét nghiệm',
+                  hint: 'Chọn kỹ thuật xét nghiệm',
+                  itemValue: testTypeList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 112,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testTypeList
+                      .safeFirstWhere((type) => type.id == typeController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      typeController.text = "";
+                    } else {
+                      typeController.text = value.id;
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Trạng thái',
+                  hint: 'Chọn trạng thái',
+                  itemValue: testStateList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 112,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testStateList.safeFirstWhere(
+                      (state) => state.id == stateController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      stateController.text = "";
+                    } else {
+                      stateController.text = value.id;
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  label: 'Kết quả',
+                  hint: 'Chọn kết quả',
+                  itemValue: testValueList,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  maxHeight: 168,
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  selectedItem: testValueList.safeFirstWhere(
+                      (result) => result.id == resultController.text),
+                  onChanged: (value) {
+                    if (value == null) {
+                      resultController.text = "";
+                    } else {
+                      if (value.id == "NEGATIVE" || value.id == "POSITIVE") {
+                        stateController.text = "DONE";
+                      } else {
+                        stateController.text = "WAITING";
+                      }
+                      resultController.text = value.id;
+                    }
+                  },
+                  showClearButton: true,
+                ),
+                NewDateRangeInput(
+                  label: 'Ngày xét nghiệm',
+                  controllerStart: createAtMinController,
+                  controllerEnd: createAtMaxController,
+                  maxDate: DateTime.now(),
+                  showClearButton: true,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          userCodeController.clear();
+                          stateController.clear();
+                          typeController.clear();
+                          resultController.clear();
+                          createAtMinController.clear();
+                          createAtMaxController.clear();
+                          onSubmit!();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Đặt lại"),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          onSubmit!();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Tìm kiếm"),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -603,213 +617,228 @@ Future quarantineFilter(
             ),
           ),
         ),
-        DropdownInput<KeyValue>(
-          label: 'Tỉnh/thành',
-          hint: 'Tỉnh/thành',
-          itemValue: cityList,
-          selectedItem: cityList.safeFirstWhere(
-              (type) => type.id.toString() == cityController.text),
-          onFind: cityList.isEmpty
-              ? (String? filter) => fetchCity({
-                    'country_code': 'VNM',
-                    'search': filter,
-                  })
-              : null,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                cityController.text = "";
-              } else {
-                cityController.text = value.id.toString();
-              }
-              districtController.clear();
-              wardController.clear();
-              districtList = [];
-              wardList = [];
-            });
-            if (cityController.text != "") {
-              fetchDistrict({'city_id': cityController.text})
-                  .then((data) => setState(() {
-                        districtList = data;
-                        districtKey.currentState?.openDropDownSearch();
-                      }));
-            }
-          },
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          showSearchBox: true,
-          mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-              ? Mode.DIALOG
-              : Mode.BOTTOM_SHEET,
-          maxHeight: MediaQuery.of(context).size.height -
-              AppBar().preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              100,
-          popupTitle: 'Tỉnh/thành',
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          widgetKey: districtKey,
-          label: 'Quận/huyện',
-          hint: 'Quận/huyện',
-          itemValue: districtList,
-          selectedItem: districtList.safeFirstWhere(
-              (type) => type.id.toString() == districtController.text),
-          onFind: districtList.isEmpty && cityController.text != ""
-              ? (String? filter) => fetchDistrict({
-                    'city_id': cityController.text,
-                    'search': filter,
-                  })
-              : null,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                districtController.text = "";
-              } else {
-                districtController.text = value.id.toString();
-              }
-              wardController.clear();
-              wardList = [];
-            });
-            if (districtController.text != "") {
-              fetchWard({'district_id': districtController.text})
-                  .then((data) => setState(() {
-                        wardList = data;
-                        wardKey.currentState?.openDropDownSearch();
-                      }));
-            }
-          },
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          showSearchBox: true,
-          mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-              ? Mode.DIALOG
-              : Mode.BOTTOM_SHEET,
-          maxHeight: MediaQuery.of(context).size.height -
-              AppBar().preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              100,
-          popupTitle: 'Quận/huyện',
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-          widgetKey: wardKey,
-          label: 'Phường/xã',
-          hint: 'Phường/xã',
-          itemValue: wardList,
-          selectedItem: wardList.safeFirstWhere(
-              (type) => type.id.toString() == wardController.text),
-          onFind: wardList.isEmpty && districtController.text != ""
-              ? (String? filter) => fetchWard({
-                    'district_id': districtController.text,
-                    'search': filter,
-                  })
-              : null,
-          onChanged: (value) {
-            setState(() {
-              if (value == null) {
-                wardController.text = "";
-              } else {
-                wardController.text = value.id.toString();
-              }
-            });
-          },
-          compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-          itemAsString: (KeyValue? u) => u!.name,
-          showSearchBox: true,
-          mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-              ? Mode.DIALOG
-              : Mode.BOTTOM_SHEET,
-          maxHeight: MediaQuery.of(context).size.height -
-              AppBar().preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              100,
-          popupTitle: 'Phường/xã',
-          showClearButton: true,
-        ),
-        DropdownInput<KeyValue>(
-            label: 'Người quản lý',
-            hint: 'Chọn người quản lý',
-            itemValue: managerList,
-            selectedItem: managerList.safeFirstWhere(
-                (type) => type.id == mainManagerController.text),
-            onFind: managerList.isEmpty
-                ? (String? filter) =>
-                    fetchNotMemberList({'role_name_list': 'MANAGER'})
-                : null,
-            searchOnline: false,
-            onChanged: (value) {
-              if (value == null) {
-                mainManagerController.text = "";
-              } else {
-                mainManagerController.text = value.id.toString();
-              }
-            },
-            compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-            itemAsString: (KeyValue? u) => u!.name,
-            showSearchBox: true,
-            mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
-                ? Mode.DIALOG
-                : Mode.BOTTOM_SHEET,
-            maxHeight: MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top -
-                MediaQuery.of(context).padding.bottom -
-                100,
-            popupTitle: 'Quản lý'),
-
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     ListTileTheme(
-        //       contentPadding: const EdgeInsets.only(left: 8),
-        //       child: CheckboxListTile(
-        //         title: const Text("Quản lý bởi tôi"),
-        //         controlAffinity: ListTileControlAffinity.leading,
-        //         value: myQuarantine,
-        //         onChanged: (bool? value) {
-        //           myQuarantine = value!;
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // ),
         Container(
-          margin: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              const Spacer(),
-              OutlinedButton(
-                onPressed: () {
-                  // Respond to button press
-                  cityController.clear();
-                  districtController.clear();
-                  wardController.clear();
-                  mainManagerController.clear();
-                  onSubmit!(cityList, [], [], false);
-                  Navigator.pop(context);
-                },
-                child: const Text("Đặt lại"),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: () {
-                  // Respond to button press
-                  onSubmit!(
-                    cityList,
-                    districtList,
-                    wardList,
-                    true,
-                  );
-                  Navigator.pop(context);
-                },
-                child: const Text("Tìm kiếm"),
-              ),
-              const Spacer(),
-            ],
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.75,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                DropdownInput<KeyValue>(
+                  label: 'Tỉnh/thành',
+                  hint: 'Tỉnh/thành',
+                  itemValue: cityList,
+                  selectedItem: cityList.safeFirstWhere(
+                      (type) => type.id.toString() == cityController.text),
+                  onFind: cityList.isEmpty
+                      ? (String? filter) => fetchCity({
+                            'country_code': 'VNM',
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        cityController.text = "";
+                      } else {
+                        cityController.text = value.id.toString();
+                      }
+                      districtController.clear();
+                      wardController.clear();
+                      districtList = [];
+                      wardList = [];
+                    });
+                    if (cityController.text != "") {
+                      fetchDistrict({'city_id': cityController.text})
+                          .then((data) => setState(() {
+                                districtList = data;
+                                districtKey.currentState?.openDropDownSearch();
+                              }));
+                    }
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Tỉnh/thành',
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: districtKey,
+                  label: 'Quận/huyện',
+                  hint: 'Quận/huyện',
+                  itemValue: districtList,
+                  selectedItem: districtList.safeFirstWhere(
+                      (type) => type.id.toString() == districtController.text),
+                  onFind: districtList.isEmpty && cityController.text != ""
+                      ? (String? filter) => fetchDistrict({
+                            'city_id': cityController.text,
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        districtController.text = "";
+                      } else {
+                        districtController.text = value.id.toString();
+                      }
+                      wardController.clear();
+                      wardList = [];
+                    });
+                    if (districtController.text != "") {
+                      fetchWard({'district_id': districtController.text})
+                          .then((data) => setState(() {
+                                wardList = data;
+                                wardKey.currentState?.openDropDownSearch();
+                              }));
+                    }
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Quận/huyện',
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                  widgetKey: wardKey,
+                  label: 'Phường/xã',
+                  hint: 'Phường/xã',
+                  itemValue: wardList,
+                  selectedItem: wardList.safeFirstWhere(
+                      (type) => type.id.toString() == wardController.text),
+                  onFind: wardList.isEmpty && districtController.text != ""
+                      ? (String? filter) => fetchWard({
+                            'district_id': districtController.text,
+                            'search': filter,
+                          })
+                      : null,
+                  onChanged: (value) {
+                    setState(() {
+                      if (value == null) {
+                        wardController.text = "";
+                      } else {
+                        wardController.text = value.id.toString();
+                      }
+                    });
+                  },
+                  compareFn: (item, selectedItem) =>
+                      item?.id == selectedItem?.id,
+                  itemAsString: (KeyValue? u) => u!.name,
+                  showSearchBox: true,
+                  mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                      ? Mode.DIALOG
+                      : Mode.BOTTOM_SHEET,
+                  maxHeight: MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top -
+                      MediaQuery.of(context).padding.bottom -
+                      100,
+                  popupTitle: 'Phường/xã',
+                  showClearButton: true,
+                ),
+                DropdownInput<KeyValue>(
+                    label: 'Người quản lý',
+                    hint: 'Chọn người quản lý',
+                    itemValue: managerList,
+                    selectedItem: managerList.safeFirstWhere(
+                        (type) => type.id == mainManagerController.text),
+                    onFind: managerList.isEmpty
+                        ? (String? filter) =>
+                            fetchNotMemberList({'role_name_list': 'MANAGER'})
+                        : null,
+                    searchOnline: false,
+                    onChanged: (value) {
+                      if (value == null) {
+                        mainManagerController.text = "";
+                      } else {
+                        mainManagerController.text = value.id.toString();
+                      }
+                    },
+                    compareFn: (item, selectedItem) =>
+                        item?.id == selectedItem?.id,
+                    itemAsString: (KeyValue? u) => u!.name,
+                    showSearchBox: true,
+                    mode: ResponsiveWrapper.of(context).isLargerThan(MOBILE)
+                        ? Mode.DIALOG
+                        : Mode.BOTTOM_SHEET,
+                    maxHeight: MediaQuery.of(context).size.height -
+                        AppBar().preferredSize.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        100,
+                    popupTitle: 'Quản lý'),
+
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     ListTileTheme(
+                //       contentPadding: const EdgeInsets.only(left: 8),
+                //       child: CheckboxListTile(
+                //         title: const Text("Quản lý bởi tôi"),
+                //         controlAffinity: ListTileControlAffinity.leading,
+                //         value: myQuarantine,
+                //         onChanged: (bool? value) {
+                //           myQuarantine = value!;
+                //         },
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                Container(
+                  margin: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          cityController.clear();
+                          districtController.clear();
+                          wardController.clear();
+                          mainManagerController.clear();
+                          onSubmit!(cityList, [], [], false);
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Đặt lại"),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Respond to button press
+                          onSubmit!(
+                            cityList,
+                            districtList,
+                            wardList,
+                            true,
+                          );
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Tìm kiếm"),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],

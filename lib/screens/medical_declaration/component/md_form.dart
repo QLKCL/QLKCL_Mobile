@@ -246,18 +246,40 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
-                  label: 'Huyết áp tâm trương (mmHg)',
-                  hint: 'Huyết áp tâm trương (mmHg)',
-                  type: TextInputType.number,
-                  controller: bloodPressureMinController,
-                  enabled: widget.mode == Permission.add,
-                ),
-                Input(
                   label: 'Huyết áp tâm thu (mmHg)',
                   hint: 'Huyết áp tâm thu (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureMaxController,
                   enabled: widget.mode == Permission.add,
+                  onChangedFunction: (_) async {
+                    if (bloodPressureMaxController.text.isEmpty) {
+                      setState(() {});
+                    } else {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                      }
+                    }
+                  },
+                  required: bloodPressureMinController.text.isNotEmpty &&
+                      widget.mode == Permission.add,
+                ),
+                Input(
+                  label: 'Huyết áp tâm trương (mmHg)',
+                  hint: 'Huyết áp tâm trương (mmHg)',
+                  type: TextInputType.number,
+                  controller: bloodPressureMinController,
+                  enabled: widget.mode == Permission.add,
+                  onChangedFunction: (_) async {
+                    if (bloodPressureMinController.text.isEmpty) {
+                      setState(() {});
+                    } else {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                      }
+                    }
+                  },
+                  required: bloodPressureMaxController.text.isNotEmpty &&
+                      widget.mode == Permission.add,
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),

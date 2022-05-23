@@ -51,7 +51,7 @@ String? identityValidator(String? number) {
   const String patttern = r'(^[0-9]{9,12}$)';
   final RegExp regExp = RegExp(patttern);
   if (number == null || number.isEmpty) {
-    return 'Số CMND/CCCD không được để trống';
+    return null;
   } else if (number.length < 9 || number.length > 12) {
     return 'Số CMND/CCCD phải từ 9 - 12 số';
   } else if (!regExp.hasMatch(number)) {

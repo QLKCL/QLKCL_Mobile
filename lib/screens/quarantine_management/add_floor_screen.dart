@@ -9,6 +9,7 @@ import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 import 'component/general_info_building.dart';
 
@@ -33,8 +34,10 @@ class _AddFloorScreenState extends State<AddFloorScreen> {
   @override
   void initState() {
     super.initState();
-    futureFloorList = fetchFloorList(
-        {'quarantine_building_id_list': widget.currentBuilding!.id});
+    futureFloorList = fetchFloorList({
+      'quarantine_building_id_list': widget.currentBuilding!.id,
+      'page_size': pageSizeMax,
+    });
 
     myController.addListener(_updateLatestValue);
   }

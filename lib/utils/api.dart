@@ -123,4 +123,6 @@ class Api {
   static const String importTest = '/api/form/test/create_by_file';
 
   static const String filterProfessional = '/api/user/professional/filter';
+
+  static const String hospitalize = '/api/user/member/hospitalize';
 }

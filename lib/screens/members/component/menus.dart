@@ -13,6 +13,7 @@ import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_scree
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/change_quarantine_info.dart';
 import 'package:qlkcl/screens/members/confirm_member_screen.dart';
+import 'package:qlkcl/screens/members/hospitalize.dart';
 import 'package:qlkcl/screens/members/requarantine_member_screen.dart';
 import 'package:qlkcl/screens/members/update_member_screen.dart';
 import 'package:qlkcl/screens/quarantine_history/list_quarantine_history_screen.dart';
@@ -110,6 +111,9 @@ Widget menus<T>(
         : data.runtimeType == FilterStaff
             ? (data as FilterStaff).quarantineWard
             : (data as CustomUser).quarantineWard;
+    final quarantinedStatus = data.runtimeType == FilterMember
+        ? (data as FilterMember).quarantinedStatus
+        : "";
 
     return PopupMenuButton<menusOptions>(
         icon: Icon(
@@ -309,7 +313,27 @@ Widget menus<T>(
               },
             );
           } else if (result == menusOptions.moveHospital) {
-            showNotification("Chức năng đang phát triển", status: Status.error);
+            if (quarantinedStatus != "HOSPITALIZE_WAITING") {
+              Navigator.of(context,
+                      rootNavigator: !Responsive.isDesktopLayout(context))
+                  .push(MaterialPageRoute(
+                      builder: (context) => Hospitalize(
+                            code: code,
+                          )))
+                  .then((value) => {
+                        if (value.status == Status.success)
+                          {
+                            if (Responsive.isDesktopLayout(context))
+                              {tableKey?.currentState!.refresh()}
+                            else
+                              {pagingController!.refresh()}
+                          }
+                      });
+            } else {
+              showNotification(
+                  "Tài khoản này đã thực hiện chuyển viện. Vui lòng chờ xác nhận từ phía bệnh viện!",
+                  status: Status.error);
+            }
           }
         },
         itemBuilder: (BuildContext context) => showMenusItems

@@ -254,13 +254,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   quarantineAt: snapshot.data['quarantined_at'],
                                   quarantineFinishExpect: snapshot
                                       .data['quarantined_finish_expected_at'],
+                                  status: snapshot.data['quarantined_status'] ==
+                                          "QUARANTINING"
+                                      ? "Đang cách ly"
+                                      : "Đang cách ly & Chờ chuyển viện",
                                 ),
                               ),
                             if (snapshot.data['custom_user']['status'] ==
                                     "LEAVE" &&
-                                snapshot.data['quarantined_finished_at'] !=
-                                    null &&
-                                snapshot.data['quarantined_finished_at'] != "")
+                                snapshot.data['quarantined_status'] ==
+                                    "COMPLETED")
                               ResponsiveRowColumnItem(
                                 rowFlex: 5,
                                 rowFit: FlexFit.tight,
@@ -284,6 +287,40 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                       snapshot.data['quarantined_finished_at'],
                                   quarantineReason:
                                       snapshot.data['quarantine_reason'],
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] ==
+                                    "LEAVE" &&
+                                snapshot.data['quarantined_status'] ==
+                                    "HOSPITALIZE")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: Hospitalization(
+                                  name: snapshot.data['quarantine_ward'] != null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['full_name']
+                                      : "",
+                                  address: getAddress(
+                                      snapshot.data['quarantine_ward']),
+                                  phone: snapshot.data['quarantine_ward'] !=
+                                              null &&
+                                          snapshot.data['quarantine_ward']
+                                                  ['phone_number'] !=
+                                              null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['phone_number']
+                                      : "Chưa có",
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  quarantineReason:
+                                      snapshot.data['quarantine_reason'],
+                                  hospitalName:
+                                      snapshot.data['hospitalize_info']
+                                          ['hospital_name'],
+                                  hospitalizeAt:
+                                      snapshot.data['hospitalize_info']['time'],
+                                  note: snapshot.data['hospitalize_info']
+                                      ['note'],
                                 ),
                               ),
                           ],

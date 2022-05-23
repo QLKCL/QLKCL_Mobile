@@ -5,6 +5,7 @@ import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/models/floor.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/screens/quarantine_management/component/floor_list.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'component/general_info_building.dart';
 import './edit_building_screen.dart';
 import './add_floor_screen.dart';
@@ -32,8 +33,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
   void initState() {
     super.initState();
     currentBuilding = widget.currentBuilding!;
-    futureFloorList =
-        fetchFloorList({'quarantine_building_id_list': currentBuilding.id});
+    futureFloorList = fetchFloorList({
+      'quarantine_building_id_list': currentBuilding.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   @override
@@ -56,8 +59,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
                   if (value != null) {
                     currentBuilding = value;
                   }
-                  futureFloorList = fetchFloorList(
-                      {'quarantine_building_id_list': currentBuilding.id});
+                  futureFloorList = fetchFloorList({
+                    'quarantine_building_id_list': currentBuilding.id,
+                    'page_size': pageSizeMax,
+                  });
                 }));
           },
           icon: const Icon(Icons.edit),
@@ -68,51 +73,61 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
-        child: FutureBuilder<dynamic>(
-            future: futureFloorList,
-            builder: (context, snapshot) {
-              showLoading();
-              if (snapshot.connectionState == ConnectionState.done) {
-                BotToast.closeAllLoading();
-                if (snapshot.hasData) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.25,
-                        child: GeneralInfoBuilding(
-                          currentQuarantine: widget.currentQuarantine!,
-                          currentBuilding: currentBuilding,
-                          numberOfFloor: snapshot.data.length,
+        child: RefreshIndicator(
+          onRefresh: () => Future.sync(() {
+            setState(() {
+              futureFloorList = fetchFloorList({
+                'quarantine_building_id_list': currentBuilding.id,
+                'page_size': pageSizeMax,
+              });
+            });
+          }),
+          child: FutureBuilder<dynamic>(
+              future: futureFloorList,
+              builder: (context, snapshot) {
+                showLoading();
+                if (snapshot.connectionState == ConnectionState.done) {
+                  BotToast.closeAllLoading();
+                  if (snapshot.hasData) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.25,
+                          child: GeneralInfoBuilding(
+                            currentQuarantine: widget.currentQuarantine!,
+                            currentBuilding: currentBuilding,
+                            numberOfFloor: snapshot.data.length,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: (MediaQuery.of(context).size.height -
-                                appBar.preferredSize.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.75,
-                        child: FloorList(
-                          data: snapshot.data,
-                          currentBuilding: currentBuilding,
-                          currentQuarantine: widget.currentQuarantine!,
+                        SizedBox(
+                          height: (MediaQuery.of(context).size.height -
+                                  appBar.preferredSize.height -
+                                  MediaQuery.of(context).padding.top) *
+                              0.75,
+                          child: FloorList(
+                            data: snapshot.data,
+                            currentBuilding: currentBuilding,
+                            currentQuarantine: widget.currentQuarantine!,
+                          ),
                         ),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return const Text('Snapshot has error');
-                } else {
-                  return const Text(
-                    'Không có dữ liệu',
-                    textAlign: TextAlign.center,
-                  );
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('Snapshot has error');
+                  } else {
+                    return const Text(
+                      'Không có dữ liệu',
+                      textAlign: TextAlign.center,
+                    );
+                  }
                 }
-              }
-              return const SizedBox();
-            }),
+                return const SizedBox();
+              }),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -125,8 +140,10 @@ class _BuildingDetailsScreen extends State<BuildingDetailsScreen> {
               ),
             ),
           ).then((value) => setState(() {
-                futureFloorList = fetchFloorList(
-                    {'quarantine_building_id_list': currentBuilding.id});
+                futureFloorList = fetchFloorList({
+                  'quarantine_building_id_list': currentBuilding.id,
+                  'page_size': pageSizeMax,
+                });
               }));
         },
         tooltip: 'Thêm tầng',

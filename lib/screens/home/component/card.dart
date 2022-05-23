@@ -14,6 +14,7 @@ class QuarantineHome extends StatelessWidget {
   final String phone;
   final String? quarantineAt;
   final String? quarantineFinishExpect;
+  final String status;
 
   const QuarantineHome({
     required this.name,
@@ -21,8 +22,9 @@ class QuarantineHome extends StatelessWidget {
     required this.address,
     required this.room,
     required this.phone,
-    required this.quarantineAt,
-    required this.quarantineFinishExpect,
+    this.quarantineAt,
+    this.quarantineFinishExpect,
+    required this.status,
   });
 
   @override
@@ -69,6 +71,13 @@ class QuarantineHome extends StatelessWidget {
                     icon: Icons.account_box_outlined,
                     title: "Quản lý",
                     content: manager,
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.airline_seat_flat_outlined,
+                    title: "Trạng thái",
+                    content: status,
                     textColor: primaryText,
                   ),
                   cardLine(
@@ -169,17 +178,10 @@ class HealthStatus extends StatelessWidget {
               ),
               cardLine(
                 topPadding: 8,
-                title: "Huyết áp tâm trương (mmHg)",
-                content: healthData!.bloodPressureMin != null
-                    ? "${healthData!.bloodPressureMin!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressureMin!.updatedAt.toLocal())})"
-                    : "Không rõ",
-                textColor: primaryText,
-              ),
-              cardLine(
-                topPadding: 8,
-                title: "Huyết áp tâm thu (mmHg)",
-                content: healthData!.bloodPressureMax != null
-                    ? "${healthData!.bloodPressureMax!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressureMax!.updatedAt.toLocal())})"
+                title: "Huyết áp (mmHg)",
+                content: (healthData!.bloodPressureMax?.data != null &&
+                        healthData!.bloodPressureMin?.data != null)
+                    ? "${healthData!.bloodPressureMax!.data}/${healthData!.bloodPressureMin!.data} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.bloodPressureMin!.updatedAt.toLocal())})"
                     : "Không rõ",
                 textColor: primaryText,
               ),
@@ -353,6 +355,121 @@ class QuarantineFinishCertification extends StatelessWidget {
                     icon: Icons.date_range_outlined,
                     title: "Lý do cách ly",
                     content: quarantineReason ?? "Chưa rõ",
+                    textColor: primaryText,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Hospitalization extends StatelessWidget {
+  final String name;
+  final String address;
+  final String phone;
+  final String? quarantineAt;
+  final String? hospitalizeAt;
+  final String? quarantineReason;
+  final String? hospitalName;
+  final String? note;
+
+  const Hospitalization({
+    required this.name,
+    required this.address,
+    required this.phone,
+    required this.quarantineAt,
+    required this.hospitalizeAt,
+    this.quarantineReason,
+    required this.hospitalName,
+    this.note,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: MediaQuery.of(context).size.width > minDesktopSize
+          ? const EdgeInsets.fromLTRB(8, 8, 16, 0)
+          : null,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Đã chuyển viện",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.maps_home_work_outlined,
+                    title: "Khu cách ly",
+                    content: name,
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.phone,
+                    title: "Liên hệ",
+                    content: phone,
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.place_outlined,
+                    title: "Địa chỉ",
+                    content: address,
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.date_range_outlined,
+                    title: "Bắt đầu cách ly",
+                    content: quarantineAt != null
+                        ? DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(quarantineAt!).toLocal())
+                        : "Chưa có",
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.date_range_outlined,
+                    title: "Lý do cách ly",
+                    content: quarantineReason ?? "Chưa rõ",
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.local_hospital_outlined,
+                    title: "Bệnh viện tiếp nhận",
+                    content: hospitalName ?? "Chưa rõ",
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.date_range_outlined,
+                    title: "Thời gian tiếp nhận",
+                    content: hospitalizeAt != null
+                        ? DateFormat("dd/MM/yyyy")
+                            .format(DateTime.parse(hospitalizeAt!).toLocal())
+                        : "Chưa có",
+                    textColor: primaryText,
+                  ),
+                  cardLine(
+                    topPadding: 8,
+                    icon: Icons.note_alt_outlined,
+                    title: "Ghi chú",
+                    content: note ?? "Không có",
                     textColor: primaryText,
                   ),
                 ],

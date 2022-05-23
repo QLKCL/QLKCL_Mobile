@@ -58,7 +58,8 @@ class _MapsState extends State<Maps> {
   }
 
   late final List<MapColorMapper> _shapeColorMappers = <MapColorMapper>[
-    MapColorMapper(from: 0, to: 5, color: error.withOpacity(0.2), text: '0 - 5'),
+    MapColorMapper(
+        from: 0, to: 5, color: error.withOpacity(0.2), text: '0 - 5'),
     MapColorMapper(
         from: 6, to: 20, color: error.withOpacity(0.4), text: '6 - 20'),
     MapColorMapper(
@@ -209,11 +210,14 @@ class _MapsState extends State<Maps> {
           StateSetter setState /*You can rename this!*/) {
         return Container(
           padding: const EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height -
-              AppBar().preferredSize.height -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              100,
+          // height: MediaQuery.of(context).size.height -
+          //     AppBar().preferredSize.height -
+          //     MediaQuery.of(context).padding.top -
+          //     MediaQuery.of(context).padding.bottom -
+          //     100,
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.85,
+          ),
           child: DestiantionChart(data: data),
         );
       },

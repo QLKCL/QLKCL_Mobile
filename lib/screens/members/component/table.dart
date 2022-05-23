@@ -157,6 +157,7 @@ Widget buildDataGrid(
         )
         .cast<GridColumn>()
         .toList(),
+    isScrollbarAlwaysShown: true,
   );
 }
 

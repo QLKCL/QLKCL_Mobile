@@ -5,6 +5,7 @@ import 'package:qlkcl/components/bot_toast.dart';
 import 'package:qlkcl/components/date_input.dart';
 import 'package:qlkcl/components/dropdown_field.dart';
 import 'package:qlkcl/components/input.dart';
+import 'package:qlkcl/helper/authentication.dart';
 import 'package:qlkcl/helper/function.dart';
 import 'package:qlkcl/helper/validation.dart';
 import 'package:qlkcl/models/custom_user.dart';
@@ -59,76 +60,19 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
   List<KeyValue> professionalList = [];
   KeyValue? initProfessional;
 
+  int _role = 5;
+
+  bool isDataLoaded = false;
+
   @override
   bool get wantKeepAlive => true;
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    state = MemberSharedData.of(context);
-    if (widget.personalData != null) {
-      state.codeController.text =
-          widget.personalData?.code != null ? widget.personalData!.code : "";
-      state.nationalityController.text =
-          widget.personalData?.nationality != null
-              ? widget.personalData!.nationality['code']
-              : "";
-      state.countryController.text = widget.personalData?.country != null
-          ? widget.personalData!.country['code']
-          : "VNM";
-      state.cityController.text = widget.personalData?.city != null
-          ? widget.personalData!.city['id'].toString()
-          : "";
-      state.districtController.text = widget.personalData?.district != null
-          ? widget.personalData!.district['id'].toString()
-          : "";
-      state.wardController.text = widget.personalData?.ward != null
-          ? widget.personalData!.ward['id'].toString()
-          : "";
-      state.detailAddressController.text =
-          widget.personalData?.detailAddress ?? "";
-      state.fullNameController.text = widget.personalData?.fullName ?? "";
-      state.emailController.text = widget.personalData?.email ?? "";
-      state.phoneNumberController.text = widget.personalData!.phoneNumber;
-      state.birthdayController.text = widget.personalData?.birthday != null
-          ? DateFormat('dd/MM/yyyy')
-              .parse(widget.personalData?.birthday)
-              .toIso8601String()
-          : "";
-      state.genderController.text = widget.personalData?.gender ?? "";
-      state.identityNumberController.text =
-          widget.personalData?.identityNumber ?? "";
-      state.healthInsuranceNumberController.text =
-          widget.personalData?.healthInsuranceNumber ?? "";
-      state.passportNumberController.text =
-          widget.personalData?.passportNumber ?? "";
-      state.professionalController.text =
-          widget.personalData?.professional != null
-              ? widget.personalData!.professional['code'].toString()
-              : "";
-      state.statusController.text = widget.personalData?.status ?? "AVAILABLE";
-
-      initCountry = (widget.personalData?.country != null)
-          ? KeyValue.fromJson(widget.personalData!.country)
-          : null;
-      initCity = (widget.personalData?.city != null)
-          ? KeyValue.fromJson(widget.personalData!.city)
-          : null;
-      initDistrict = (widget.personalData?.district != null)
-          ? KeyValue.fromJson(widget.personalData!.district)
-          : null;
-      initWard = (widget.personalData?.ward != null)
-          ? KeyValue.fromJson(widget.personalData!.ward)
-          : null;
-      initProfessional = (widget.personalData?.professional != null)
-          ? KeyValue.fromJson(widget.personalData!.professional)
-          : null;
-    }
+    getRole().then((value) => setState(() {
+          _role = value;
+        }));
     fetchCountry().then((value) {
       if (mounted) {
         setState(() {
@@ -136,33 +80,6 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         });
       }
     });
-    if (state.countryController.text != "") {
-      fetchCity({'country_code': state.countryController.text}).then((value) {
-        if (mounted) {
-          setState(() {
-            cityList = value;
-          });
-        }
-      });
-    }
-    if (state.cityController.text != "") {
-      fetchDistrict({'city_id': state.cityController.text}).then((value) {
-        if (mounted) {
-          setState(() {
-            districtList = value;
-          });
-        }
-      });
-    }
-    if (state.districtController.text != "") {
-      fetchWard({'district_id': state.districtController.text}).then((value) {
-        if (mounted) {
-          setState(() {
-            wardList = value;
-          });
-        }
-      });
-    }
     fetchProfessional().then((value) {
       if (mounted) {
         setState(() {
@@ -170,6 +87,104 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
         });
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!isDataLoaded) {
+      isDataLoaded = true;
+      state = MemberSharedData.of(context);
+      if (widget.personalData != null) {
+        state.codeController.text =
+            widget.personalData?.code != null ? widget.personalData!.code : "";
+        state.nationalityController.text =
+            widget.personalData?.nationality != null
+                ? widget.personalData!.nationality['code']
+                : "";
+        state.countryController.text = widget.personalData?.country != null
+            ? widget.personalData!.country['code']
+            : "VNM";
+        state.cityController.text = widget.personalData?.city != null
+            ? widget.personalData!.city['id'].toString()
+            : "";
+        state.districtController.text = widget.personalData?.district != null
+            ? widget.personalData!.district['id'].toString()
+            : "";
+        state.wardController.text = widget.personalData?.ward != null
+            ? widget.personalData!.ward['id'].toString()
+            : "";
+        state.detailAddressController.text =
+            widget.personalData?.detailAddress ?? "";
+        state.fullNameController.text = widget.personalData?.fullName ?? "";
+        state.emailController.text = widget.personalData?.email ?? "";
+        state.phoneNumberController.text = widget.personalData!.phoneNumber;
+        state.birthdayController.text =
+            (widget.personalData?.birthday != null &&
+                    widget.personalData?.birthday != "")
+                ? DateFormat('dd/MM/yyyy')
+                    .parse(widget.personalData?.birthday)
+                    .toIso8601String()
+                : "";
+        state.genderController.text = widget.personalData?.gender ?? "";
+        state.identityNumberController.text =
+            widget.personalData?.identityNumber ?? "";
+        state.healthInsuranceNumberController.text =
+            widget.personalData?.healthInsuranceNumber ?? "";
+        state.passportNumberController.text =
+            widget.personalData?.passportNumber ?? "";
+        state.professionalController.text =
+            widget.personalData?.professional != null
+                ? widget.personalData!.professional['code'].toString()
+                : "";
+        state.statusController.text =
+            widget.personalData?.status ?? "AVAILABLE";
+
+        initCountry = (widget.personalData?.country != null)
+            ? KeyValue.fromJson(widget.personalData!.country)
+            : null;
+        initCity = (widget.personalData?.city != null)
+            ? KeyValue.fromJson(widget.personalData!.city)
+            : null;
+        initDistrict = (widget.personalData?.district != null)
+            ? KeyValue.fromJson(widget.personalData!.district)
+            : null;
+        initWard = (widget.personalData?.ward != null)
+            ? KeyValue.fromJson(widget.personalData!.ward)
+            : null;
+        initProfessional = (widget.personalData?.professional != null)
+            ? KeyValue.fromJson(widget.personalData!.professional)
+            : null;
+      }
+      if (state.countryController.text != "") {
+        fetchCity({'country_code': state.countryController.text}).then((value) {
+          if (mounted) {
+            setState(() {
+              cityList = value;
+            });
+          }
+        });
+      }
+      if (state.cityController.text != "") {
+        fetchDistrict({'city_id': state.cityController.text}).then((value) {
+          if (mounted) {
+            setState(() {
+              districtList = value;
+            });
+          }
+        });
+      }
+      if (state.districtController.text != "") {
+        fetchWard({'district_id': state.districtController.text}).then((value) {
+          if (mounted) {
+            setState(() {
+              wardList = value;
+            });
+          }
+        });
+      }
+    }
   }
 
   Future<List<KeyValue>> fetchProfessional() async {
@@ -233,12 +248,12 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 ),
                 Input(
                   label: 'Số CMND/CCCD',
-                  required: widget.mode != Permission.view,
                   type: TextInputType.number,
                   controller: state.identityNumberController,
                   enabled: widget.mode == Permission.add ||
                       (widget.mode == Permission.edit &&
-                          state.identityNumberController.text == ""),
+                          (state.identityNumberController.text == "" ||
+                              _role < 4)),
                   validatorFunction: identityValidator,
                 ),
                 DropdownInput<KeyValue>(
@@ -286,12 +301,11 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
                 ),
                 NewDateInput(
                   label: 'Ngày sinh',
-                  required: widget.mode != Permission.view,
                   controller: state.birthdayController,
                   enabled: widget.mode == Permission.edit ||
                       widget.mode == Permission.add,
                   maxDate: DateTime.now(),
-                  helper: "Chọn ngày 1/1 khi không rõ ngày sinh",
+                  helper: "Chọn ngày 1/1 khi chỉ biết năm sinh",
                 ),
                 DropdownInput<KeyValue>(
                   label: 'Quốc gia',
@@ -590,8 +604,10 @@ class _MemberPersonalInfoState extends State<MemberPersonalInfo>
             code: widget.personalData!.code,
             fullName: state.fullNameController.text,
             email: state.emailController.text,
-            birthday: DateFormat("dd/MM/yyyy")
-                .format(DateTime.parse(state.birthdayController.text)),
+            birthday: state.birthdayController.text != ""
+                ? DateFormat("dd/MM/yyyy")
+                    .format(DateTime.parse(state.birthdayController.text))
+                : "",
             gender: state.genderController.text,
             nationality: "VNM",
             country: state.countryController.text,

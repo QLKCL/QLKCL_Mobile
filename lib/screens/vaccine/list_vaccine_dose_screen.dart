@@ -126,7 +126,9 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                 Navigator.of(context,
                         rootNavigator: !Responsive.isDesktopLayout(context))
                     .push(MaterialPageRoute(
-                        builder: (context) => const SyncVaccinePortal()));
+                        builder: (context) => SyncVaccinePortal(
+                              code: widget.code,
+                            )));
               },
               child: const Icon(Icons.cloud_sync),
               tooltip: "Tra cứu chứng nhận tiêm",
@@ -135,7 +137,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
             height: 10,
           ),
           FloatingActionButton(
-              heroTag: "create_vaccine_dose",
+            heroTag: "create_vaccine_dose",
             onPressed: () {
               Navigator.of(context,
                       rootNavigator: !Responsive.isDesktopLayout(context))

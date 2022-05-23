@@ -63,6 +63,8 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
 
   int _role = 5;
 
+  bool isDataLoaded = false;
+
   String? getRoomError;
 
   @override
@@ -74,116 +76,6 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
     getRole().then((value) => setState(() {
           _role = value;
         }));
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    state = MemberSharedData.of(context);
-    if (widget.mode == Permission.add) {
-      state.quarantineRoomController.text = widget.quarantineRoom != null
-          ? widget.quarantineRoom!.id.toString()
-          : "";
-      state.quarantineFloorController.text = widget.quarantineFloor != null
-          ? widget.quarantineFloor!.id.toString()
-          : "";
-      state.quarantineBuildingController.text =
-          widget.quarantineBuilding != null
-              ? widget.quarantineBuilding!.id.toString()
-              : "";
-      state.numberOfVaccineDosesController.text = "0";
-
-      if (widget.quarantineWard != null) {
-        state.quarantineWardController.text =
-            widget.quarantineWard!.id.toString();
-      } else {
-        getQuarantineWard().then((val) {
-          setState(() {
-            state.quarantineWardController.text = "$val";
-          });
-        });
-      }
-      state.backgroundDiseaseController.text = "";
-    } else if (widget.mode == Permission.renew) {
-      state.quarantineWardController.text =
-          widget.quarantineData?.quarantineWard != null
-              ? widget.quarantineData!.quarantineWard!.id.toString()
-              : "";
-      state.labelController.text = widget.quarantineData?.label ?? "";
-      state.quarantinedAtController.clear();
-      state.quarantinedFinishExpectedAtController.clear();
-      state.backgroundDiseaseController.text =
-          widget.quarantineData?.backgroundDisease ?? "";
-      state.otherBackgroundDiseaseController.text =
-          widget.quarantineData?.otherBackgroundDisease ?? "";
-      state.quarantineReasonController.text =
-          widget.quarantineData?.quarantineReason ?? "";
-
-      _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
-          _isPositiveTestedBefore;
-
-      initQuarantineWard = widget.quarantineData?.quarantineWard;
-      state.numberOfVaccineDosesController.text =
-          widget.quarantineData?.numberOfVaccineDoses ?? "0";
-
-      state.positiveTestNowController.text =
-          state.labelController.text == "F0" ? "True" : "Null";
-      state.firstPositiveTestDateController.text =
-          widget.quarantineData?.firstPositiveTestDate ?? "";
-    } else {
-      state.quarantineRoomController.text =
-          widget.quarantineData?.quarantineRoom != null
-              ? widget.quarantineData!.quarantineRoom['id'].toString()
-              : "";
-      state.quarantineFloorController.text =
-          widget.quarantineData?.quarantineFloor != null
-              ? widget.quarantineData!.quarantineFloor['id'].toString()
-              : "";
-      state.quarantineBuildingController.text =
-          widget.quarantineData?.quarantineBuilding != null
-              ? widget.quarantineData!.quarantineBuilding['id'].toString()
-              : "";
-      state.quarantineWardController.text =
-          widget.quarantineData?.quarantineWard != null
-              ? widget.quarantineData!.quarantineWard!.id.toString()
-              : "";
-      state.labelController.text = widget.quarantineData?.label ?? "";
-
-      state.quarantinedAtController.text =
-          widget.quarantineData?.quarantinedAt ?? "";
-      state.quarantinedFinishExpectedAtController.text =
-          widget.quarantineData?.quarantinedFinishExpectedAt ?? "";
-      state.quarantinedFinishAtController.text =
-          widget.quarantineData?.quarantinedFinishAt ?? "";
-      state.backgroundDiseaseController.text =
-          widget.quarantineData?.backgroundDisease ?? "";
-      state.otherBackgroundDiseaseController.text =
-          widget.quarantineData?.otherBackgroundDisease ?? "";
-      state.positiveTestNowController.text =
-          widget.quarantineData?.positiveTestNow.toString() ?? "Null";
-      state.quarantineReasonController.text =
-          widget.quarantineData?.quarantineReason ?? "";
-      _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
-          _isPositiveTestedBefore;
-      state.firstPositiveTestDateController.text =
-          widget.quarantineData?.firstPositiveTestDate ?? "";
-
-      initQuarantineWard = widget.quarantineData?.quarantineWard;
-      initQuarantineBuilding =
-          (widget.quarantineData?.quarantineBuilding != null)
-              ? KeyValue.fromJson(widget.quarantineData?.quarantineBuilding)
-              : null;
-      initQuarantineFloor = (widget.quarantineData?.quarantineFloor != null)
-          ? KeyValue.fromJson(widget.quarantineData?.quarantineFloor)
-          : null;
-      initQuarantineRoom = (widget.quarantineData?.quarantineRoom != null)
-          ? KeyValue.fromJson(widget.quarantineData?.quarantineRoom)
-          : null;
-      state.numberOfVaccineDosesController.text =
-          widget.quarantineData?.numberOfVaccineDoses ?? "0";
-      state.careStaffController.text =
-          widget.quarantineData?.careStaff?.id ?? "";
-    }
     fetchQuarantineWard({
       'page_size': pageSizeMax,
       'is_full': false,
@@ -194,44 +86,159 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
         });
       }
     });
-    if (state.quarantineWardController.text != "") {
-      fetchQuarantineBuilding({
-        'quarantine_ward': state.quarantineWardController.text,
-        'page_size': pageSizeMax,
-        'is_full': false,
-      }).then((value) {
-        if (mounted) {
-          setState(() {
-            quarantineBuildingList = value;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!isDataLoaded) {
+      isDataLoaded = true;
+      state = MemberSharedData.of(context);
+      if (widget.mode == Permission.add) {
+        state.quarantineRoomController.text = widget.quarantineRoom != null
+            ? widget.quarantineRoom!.id.toString()
+            : "";
+        state.quarantineFloorController.text = widget.quarantineFloor != null
+            ? widget.quarantineFloor!.id.toString()
+            : "";
+        state.quarantineBuildingController.text =
+            widget.quarantineBuilding != null
+                ? widget.quarantineBuilding!.id.toString()
+                : "";
+        state.numberOfVaccineDosesController.text = "0";
+
+        if (widget.quarantineWard != null) {
+          state.quarantineWardController.text =
+              widget.quarantineWard!.id.toString();
+        } else {
+          getQuarantineWard().then((val) {
+            setState(() {
+              state.quarantineWardController.text = "$val";
+            });
           });
         }
-      });
-    }
-    if (state.quarantineBuildingController.text != "") {
-      fetchQuarantineFloor({
-        'quarantine_building_id_list': state.quarantineBuildingController.text,
-        'page_size': pageSizeMax,
-        'is_full': false,
-      }).then((value) {
-        if (mounted) {
-          setState(() {
-            quarantineFloorList = value;
-          });
-        }
-      });
-    }
-    if (state.quarantineFloorController.text != "") {
-      fetchQuarantineRoom({
-        'quarantine_floor': state.quarantineFloorController.text,
-        'page_size': pageSizeMax,
-        'is_full': false,
-      }).then((value) {
-        if (mounted) {
-          setState(() {
-            quarantineRoomList = value;
-          });
-        }
-      });
+        state.backgroundDiseaseController.text = "";
+      } else if (widget.mode == Permission.renew) {
+        state.quarantineWardController.text =
+            widget.quarantineData?.quarantineWard != null
+                ? widget.quarantineData!.quarantineWard!.id.toString()
+                : "";
+        state.labelController.text = widget.quarantineData?.label ?? "";
+        state.quarantinedAtController.clear();
+        state.quarantinedFinishExpectedAtController.clear();
+        state.backgroundDiseaseController.text =
+            widget.quarantineData?.backgroundDisease ?? "";
+        state.otherBackgroundDiseaseController.text =
+            widget.quarantineData?.otherBackgroundDisease ?? "";
+        state.quarantineReasonController.text =
+            widget.quarantineData?.quarantineReason ?? "";
+
+        _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
+            _isPositiveTestedBefore;
+
+        initQuarantineWard = widget.quarantineData?.quarantineWard;
+        state.numberOfVaccineDosesController.text =
+            widget.quarantineData?.numberOfVaccineDoses ?? "0";
+
+        state.positiveTestNowController.text =
+            state.labelController.text == "F0" ? "True" : "Null";
+        state.firstPositiveTestDateController.text =
+            widget.quarantineData?.firstPositiveTestDate ?? "";
+      } else {
+        state.quarantineRoomController.text =
+            widget.quarantineData?.quarantineRoom != null
+                ? widget.quarantineData!.quarantineRoom['id'].toString()
+                : "";
+        state.quarantineFloorController.text =
+            widget.quarantineData?.quarantineFloor != null
+                ? widget.quarantineData!.quarantineFloor['id'].toString()
+                : "";
+        state.quarantineBuildingController.text =
+            widget.quarantineData?.quarantineBuilding != null
+                ? widget.quarantineData!.quarantineBuilding['id'].toString()
+                : "";
+        state.quarantineWardController.text =
+            widget.quarantineData?.quarantineWard != null
+                ? widget.quarantineData!.quarantineWard!.id.toString()
+                : "";
+        state.labelController.text = widget.quarantineData?.label ?? "";
+
+        state.quarantinedAtController.text =
+            widget.quarantineData?.quarantinedAt ?? "";
+        state.quarantinedFinishExpectedAtController.text =
+            widget.quarantineData?.quarantinedFinishExpectedAt ?? "";
+        state.quarantinedFinishAtController.text =
+            widget.quarantineData?.quarantinedFinishAt ?? "";
+        state.backgroundDiseaseController.text =
+            widget.quarantineData?.backgroundDisease ?? "";
+        state.otherBackgroundDiseaseController.text =
+            widget.quarantineData?.otherBackgroundDisease ?? "";
+        state.positiveTestNowController.text =
+            widget.quarantineData?.positiveTestNow.toString() ?? "Null";
+        state.quarantineReasonController.text =
+            widget.quarantineData?.quarantineReason ?? "";
+        _isPositiveTestedBefore = widget.quarantineData?.positiveTestedBefore ??
+            _isPositiveTestedBefore;
+        state.firstPositiveTestDateController.text =
+            widget.quarantineData?.firstPositiveTestDate ?? "";
+
+        initQuarantineWard = widget.quarantineData?.quarantineWard;
+        initQuarantineBuilding =
+            (widget.quarantineData?.quarantineBuilding != null)
+                ? KeyValue.fromJson(widget.quarantineData?.quarantineBuilding)
+                : null;
+        initQuarantineFloor = (widget.quarantineData?.quarantineFloor != null)
+            ? KeyValue.fromJson(widget.quarantineData?.quarantineFloor)
+            : null;
+        initQuarantineRoom = (widget.quarantineData?.quarantineRoom != null)
+            ? KeyValue.fromJson(widget.quarantineData?.quarantineRoom)
+            : null;
+        state.numberOfVaccineDosesController.text =
+            widget.quarantineData?.numberOfVaccineDoses ?? "0";
+        state.careStaffController.text =
+            widget.quarantineData?.careStaff?.id ?? "";
+      }
+      if (state.quarantineWardController.text != "") {
+        fetchQuarantineBuilding({
+          'quarantine_ward': state.quarantineWardController.text,
+          'page_size': pageSizeMax,
+          'is_full': false,
+        }).then((value) {
+          if (mounted) {
+            setState(() {
+              quarantineBuildingList = value;
+            });
+          }
+        });
+      }
+      if (state.quarantineBuildingController.text != "") {
+        fetchQuarantineFloor({
+          'quarantine_building_id_list':
+              state.quarantineBuildingController.text,
+          'page_size': pageSizeMax,
+          'is_full': false,
+        }).then((value) {
+          if (mounted) {
+            setState(() {
+              quarantineFloorList = value;
+            });
+          }
+        });
+      }
+      if (state.quarantineFloorController.text != "") {
+        fetchQuarantineRoom({
+          'quarantine_floor': state.quarantineFloorController.text,
+          'page_size': pageSizeMax,
+          'is_full': false,
+        }).then((value) {
+          if (mounted) {
+            setState(() {
+              quarantineRoomList = value;
+            });
+          }
+        });
+      }
     }
   }
 
@@ -594,11 +601,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                   },
                   enabled: widget.mode == Permission.add ||
                       widget.mode == Permission.renew ||
-                      (widget.mode == Permission.edit && _role < 5),
+                      (widget.mode == Permission.edit && _role < 5) ||
+                      (_role == 5 &&
+                          state.statusController.text != "AVAILABLE"),
                   required: widget.mode != Permission.view,
                   error: getRoomError,
                 ),
-                if (state.labelController.text == "F0")
+                if (state.labelController.text == "F0" ||
+                    _isPositiveTestedBefore)
                   NewDateInput(
                     label: 'Ngày nhiễm bệnh',
                     controller: state.firstPositiveTestDateController,
@@ -756,14 +766,14 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
                         Text(
                           '(*)',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: error,
                           ),
                         ),
                         const Text(
                           ' Thông tin bắt buộc',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                       ],
@@ -850,8 +860,10 @@ class _MemberQuarantineInfoState extends State<MemberQuarantineInfo>
           phoneNumber: state.phoneNumberController.text,
           fullName: state.fullNameController.text,
           email: state.emailController.text,
-          birthday: DateFormat("dd/MM/yyyy")
-              .format(DateTime.parse(state.birthdayController.text)),
+          birthday: state.birthdayController.text != ""
+              ? DateFormat("dd/MM/yyyy")
+                  .format(DateTime.parse(state.birthdayController.text))
+              : "",
           gender: state.genderController.text,
           nationality: "VNM",
           country: state.countryController.text,

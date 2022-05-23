@@ -6,6 +6,7 @@ import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/quarantine.dart';
 import 'package:qlkcl/models/building.dart';
 import 'package:qlkcl/screens/quarantine_management/component/general_info.dart';
+import 'package:qlkcl/utils/constant.dart';
 import 'package:qlkcl/utils/data_form.dart';
 
 class AddBuildingScreen extends StatefulWidget {
@@ -27,8 +28,10 @@ class _AddBuildingScreenState extends State<AddBuildingScreen> {
   @override
   void initState() {
     super.initState();
-    futureBuildingList =
-        fetchBuildingList({'quarantine_ward': widget.currentQuarrantine!.id});
+    futureBuildingList = fetchBuildingList({
+      'quarantine_ward': widget.currentQuarrantine!.id,
+      'page_size': pageSizeMax,
+    });
   }
 
   //Input Controller

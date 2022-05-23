@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -79,7 +80,9 @@ class ApiHelper {
             handler.next(e);
           }
         } else {
-          showNotification("Lỗi kết nối mạng!", status: custom_response.Status.error);
+          BotToast.closeAllLoading();
+          showNotification("Lỗi kết nối mạng!",
+              status: custom_response.Status.error);
         }
       },
     ));

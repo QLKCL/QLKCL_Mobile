@@ -61,6 +61,13 @@ Future<Response> createFloor(Map<String, dynamic> data) async {
           status: Status.success,
           message: "Tạo tầng thành công!",
           data: response['data']);
+    } else if (response['error_code'] == 400) {
+      if (response['message']['name'] != null &&
+          response['message']['name'] == "Exist") {
+        return Response(status: Status.error, message: 'Tên tầng đã tồn tại!');
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else {
       return Response(status: Status.error, message: "Có lỗi xảy ra!");
     }
@@ -94,6 +101,13 @@ Future<Response> updateFloor(Map<String, dynamic> data) async {
           status: Status.success,
           message: "Cập nhật thông tin thành công!",
           data: Floor.fromJson(response['data']));
+    } else if (response['error_code'] == 400) {
+      if (response['message']['name'] != null &&
+          response['message']['name'] == "Exist") {
+        return Response(status: Status.error, message: 'Tên tầng đã tồn tại!');
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
     } else if (response['error_code'] == 401) {
       if (response['message'] != null &&
           response['message'] == "Permission denied") {

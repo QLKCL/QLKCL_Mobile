@@ -861,10 +861,11 @@ class DestinationHistoryCard extends StatelessWidget {
                         icon: Icons.location_on_outlined,
                         title: "Địa điểm",
                         content: address),
-                    cardLine(
-                        icon: Icons.note_outlined,
-                        title: "Ghi chú",
-                        content: note),
+                    if (note != "")
+                      cardLine(
+                          icon: Icons.note_outlined,
+                          title: "Ghi chú",
+                          content: note),
                   ],
                 ),
               ),

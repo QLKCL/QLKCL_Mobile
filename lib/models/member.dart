@@ -47,7 +47,7 @@ class Member {
   final dynamic quarantineFloor;
   final dynamic quarantineBuilding;
   KeyValue? quarantineWard;
-  final String label;
+  final String? label;
   final bool? positiveTestedBefore;
   final bool? abroad;
   final dynamic quarantinedAt;
@@ -220,6 +220,16 @@ Future<Response> createMember(Map<String, dynamic> data) async {
               "This room has member that is positive") {
         return Response(
             status: Status.error, message: "Phòng này có người dương tính!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
+        return Response(
+            status: Status.error,
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['quarantine_room_id'] != null &&
           (response['message']['quarantine_room_id'] ==
                   "PRESENT quarantine history exist" ||
@@ -320,11 +330,27 @@ Future<Response> updateMember(Map<String, dynamic> data) async {
               response['message']['quarantine_room_id'] ==
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
+      } else if (response['message']['main'] != null &&
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
+        return Response(
+            status: Status.error,
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['first_positive_test_date'] != null &&
           response['message']['first_positive_test_date'] == "Cannot change") {
         return Response(
             status: Status.error,
             message: "Không thể thay đổi ngày nhiễm bệnh!");
+      } else if (response['message']['main'] != null &&
+          response['message']['main'] ==
+              "Cannot change room and label together") {
+        return Response(
+            status: Status.error,
+            message: "Không thể thay đổi phòng và diện cách ly cùng lúc!");
       } else {
         return Response(status: Status.error, message: "Có lỗi xảy ra!");
       }
@@ -461,11 +487,15 @@ Future<Response> acceptOneMember(data) async {
                   "Many PRESENT quarantine history exist")) {
         return Response(status: Status.error, message: "Lỗi lịch sử cách ly!");
       } else if (response['message']['main'] != null &&
-          response['message']['main'] ==
-              "All rooms are not accept any more member") {
+          (response['message']['main'] ==
+                  "All rooms are not accept any more member" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full" ||
+              response['message']['main'] ==
+                  "All rooms in this quarantine ward are full or dont meet with this user positive_test_now")) {
         return Response(
             status: Status.error,
-            message: "Khu cách ly này đã hết giường trống!");
+            message: "Khu cách ly này không thể tiếp nhận người cách ly mới!");
       } else if (response['message']['main'] != null &&
           (response['message']['main'] == "PRESENT quarantine history exist" ||
               response['message']['main'] ==
@@ -683,6 +713,33 @@ Future<Response> managerCallRequarantine(data) async {
   }
 }
 
+Future<Response> hospitalizeMember(data) async {
+  final ApiHelper api = ApiHelper();
+  final response = await api.postHTTP(Api.hospitalize, data);
+  if (response == null) {
+    return Response(status: Status.error, message: "Lỗi kết nối!");
+  } else {
+    if (response['error_code'] == 0) {
+      return Response(
+          status: Status.success,
+          message: "Vui lòng chờ xét duyệt từ phía bệnh viện!");
+    } else if (response['error_code'] == 400) {
+      if (response['message']['code'] != null &&
+          (response['message']['code'] ==
+              "This member is already hospitalize waiting")) {
+        return Response(
+            status: Status.error,
+            message:
+                "Tài khoản này đã thực hiện chuyển viện. Vui lòng chờ xác nhận từ phía bệnh viện!");
+      } else {
+        return Response(status: Status.error, message: "Có lỗi xảy ra!");
+      }
+    } else {
+      return Response(status: Status.error, message: "Có lỗi xảy ra!");
+    }
+  }
+}
+
 // To parse this JSON data, do
 //
 //     final filterMember = filterMemberFromJson(jsonString);
@@ -716,6 +773,7 @@ class FilterMember {
     required this.numberOfVaccineDoses,
     this.quarantineLocation,
     this.quarantineLocationWithWard,
+    this.quarantinedStatus,
   });
 
   final String code;
@@ -736,10 +794,11 @@ class FilterMember {
   final bool? positiveTestNow;
   final String? lastTested;
   final String? lastTestedHadResult;
-  final String label;
+  final String? label;
   final String numberOfVaccineDoses;
   final String? quarantineLocation;
   final String? quarantineLocationWithWard;
+  final String? quarantinedStatus;
 
   factory FilterMember.fromJson(Map<String, dynamic> json) => FilterMember(
         code: json["code"],
@@ -789,6 +848,7 @@ class FilterMember {
             (json['quarantine_ward'] != null
                 ? "${json['quarantine_ward']['full_name']}"
                 : ""),
+        quarantinedStatus: json["quarantined_status"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -812,6 +872,7 @@ class FilterMember {
         "last_tested_had_result": lastTestedHadResult,
         "label": label,
         "number_of_vaccine_doses": numberOfVaccineDoses,
+        "quarantined_status": quarantinedStatus,
       };
 
   @override

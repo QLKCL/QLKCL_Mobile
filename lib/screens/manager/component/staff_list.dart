@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:qlkcl/components/bot_toast.dart';
@@ -235,6 +236,12 @@ class _StaffListState extends State<StaffList>
                   controller: _dataPagerController,
                   pageCount: pageCount,
                   delegate: dataSource,
+                  onPageNavigationStart: (pageIndex) {
+                    showLoading();
+                  },
+                  onPageNavigationEnd: (pageIndex) {
+                    BotToast.closeAllLoading();
+                  },
                 ),
               )
             ],
