@@ -414,7 +414,7 @@ class DataSource extends DataGridSource {
                           style: TextStyle(color: warning),
                         )
                       : Text(
-                          "Không hoạt động",
+                          "Hoạt động",
                           style: TextStyle(color: success),
                         ),
             )
@@ -430,7 +430,7 @@ class DataSource extends DataGridSource {
                     _paginatedRows.safeFirstWhere(
                         (e) => e.code == row.getCells()[6].value.toString())!,
                     showMenusItems: [
-                      menusOptions.updateInfo,
+                      menusOptions.updateManagerInfo,
                     ],
                   );
           },

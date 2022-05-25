@@ -68,6 +68,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
           setState(() {
             futureCovid = fetchCovidList();
             futureData = fetch();
+            futureHealth = getHeathInfo();
           });
         }),
         child: SingleChildScrollView(
