@@ -148,12 +148,22 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         setState(() {
                           isChecked = value!;
                         });
+                        if (isChecked == false) {
+                          phoneNumberController.clear();
+                          userNameController.clear();
+                          phoneError = "";
+                          setState(() {});
+                        } else {
+                          phoneNumberController.text = widget.phone ?? "";
+                          userNameController.text = widget.name ?? "";
+                        }
                       },
                     ),
                   ),
-                if (widget.mode == Permission.add)
+                if (widget.mode == Permission.add && isChecked)
                   // SĐT người khai hộ
                   Input(
+                    key: const Key("phone"),
                     label: 'Số điện thoại',
                     hint: 'SĐT người được khai báo',
                     margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
@@ -163,10 +173,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     validatorFunction: isChecked ? phoneValidator : null,
                     enabled: isChecked,
                     onChangedFunction: (_) async {
-                      if (phoneNumberController.text.isEmpty) {
-                        userNameController.text = "";
-                        setState(() {});
-                      } else {
+                      userNameController.text = "";
+                      setState(() {});
+                      if (phoneNumberController.text.isNotEmpty) {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                         }
@@ -187,11 +196,15 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     autoValidate: false,
                     error: phoneError,
                   ),
-                Input(
-                  label: 'Họ và tên',
-                  controller: userNameController,
-                  enabled: false,
-                ),
+                if ((widget.mode != Permission.add) ||
+                    (widget.mode == Permission.add && isChecked))
+                  Input(
+                    key: const Key("name"),
+                    label: 'Họ và tên',
+                    controller: userNameController,
+                    enabled: false,
+                    showClearButton: false,
+                  ),
 
                 if (widget.mode == Permission.view)
                   Input(

@@ -139,5 +139,5 @@ const double minDesktopSize = 1200;
 
 class WebVersionInfo {
   static const String version = '2.0.6';
-  static const int buildNumber = 7;
+  static const int buildNumber = 12;
 }
