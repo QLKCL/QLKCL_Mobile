@@ -101,22 +101,27 @@ class _MedDeclFormState extends State<MedDeclForm> {
     if (_formKey.currentState!.validate() &&
         ((isChecked == false) ||
             (isChecked == true && (phoneError == null || phoneError == "")))) {
-      final CancelFunc cancel = showLoading();
-      final response = await createMedDecl(createMedDeclDataForm(
-        phoneNumber: isChecked ? phoneNumberController.text : null,
-        heartBeat: int.tryParse(heartBeatController.text),
-        temperature: double.tryParse(temperatureController.text),
-        breathing: int.tryParse(breathingController.text),
-        bloodPressureMin: int.tryParse(bloodPressureMinController.text),
-        bloodPressureMax: int.tryParse(bloodPressureMaxController.text),
-        mainSymtoms: mainSymptomController.text,
-        extraSymtoms: extraSymptomController.text,
-        otherSymtoms: otherController.text,
-        spo2: double.tryParse(spo2Controller.text),
-      ));
+      if (agree) {
+        final CancelFunc cancel = showLoading();
+        final response = await createMedDecl(createMedDeclDataForm(
+          phoneNumber: isChecked ? phoneNumberController.text : null,
+          heartBeat: int.tryParse(heartBeatController.text),
+          temperature: double.tryParse(temperatureController.text),
+          breathing: int.tryParse(breathingController.text),
+          bloodPressureMin: int.tryParse(bloodPressureMinController.text),
+          bloodPressureMax: int.tryParse(bloodPressureMaxController.text),
+          mainSymtoms: mainSymptomController.text,
+          extraSymtoms: extraSymptomController.text,
+          otherSymtoms: otherController.text,
+          spo2: double.tryParse(spo2Controller.text),
+        ));
 
-      cancel();
-      showNotification(response);
+        cancel();
+        showNotification(response);
+      } else {
+        showNotification('Vui lòng chọn cam kết trước khi khai báo.',
+            status: Status.error);
+      }
     }
   }
 
@@ -413,13 +418,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         alignment: Alignment.center,
                         margin: const EdgeInsets.all(16),
                         child: ElevatedButton(
-                          onPressed: agree
-                              ? _submit
-                              : () {
-                                  showNotification(
-                                      'Vui lòng chọn cam kết trước khi khai báo.',
-                                      status: Status.error);
-                                },
+                          onPressed: _submit,
                           child: Text(
                             "Khai báo",
                             style: TextStyle(color: white),

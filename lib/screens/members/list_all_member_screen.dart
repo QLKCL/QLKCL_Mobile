@@ -390,7 +390,7 @@ class _ListAllMemberState extends State<ListAllMember>
                         child: e,
                         width: constraints.maxWidth,
                         height: Responsive.isDesktopLayout(context)
-                            ? constraints.maxHeight - 140
+                            ? constraints.maxHeight - 120
                             : constraints.maxHeight - 20,
                       ),
                     ),
