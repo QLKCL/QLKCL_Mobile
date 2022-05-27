@@ -86,13 +86,13 @@ class _QuanrantineListState extends State<QuanrantineList> {
           itemBuilder: (context, item, index) => QuarantineItem(
             id: item.id.toString(),
             name: item.fullName,
-            currentMem: item.numCurrentMember,
+            currentMem: "${item.numCurrentMember}/${item.totalCapacity}",
+            phoneNumber: item.phoneNumber ?? "Chưa có",
             manager: item.mainManager?.name,
             address: (item.address != null ? "${item.address}, " : "") +
                 (item.ward != null ? "${item.ward?.name}, " : "") +
                 (item.district != null ? "${item.district?.name}, " : "") +
-                (item.city != null ? "${item.city?.name}, " : "") +
-                (item.country != null ? "${item.country?.name}" : ""),
+                (item.city != null ? "${item.city?.name}" : ""),
             image: item.image,
           ),
         ),

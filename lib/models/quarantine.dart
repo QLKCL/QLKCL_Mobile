@@ -237,6 +237,7 @@ class FilterQuanrantineWard {
     required this.updatedAt,
     required this.numCurrentMember,
     required this.totalCapacity,
+    required this.phoneNumber,
   });
 
   final int id;
@@ -255,6 +256,7 @@ class FilterQuanrantineWard {
   final DateTime updatedAt;
   final int numCurrentMember;
   final int totalCapacity;
+  final String? phoneNumber;
 
   factory FilterQuanrantineWard.fromJson(Map<String, dynamic> json) =>
       FilterQuanrantineWard(
@@ -284,6 +286,7 @@ class FilterQuanrantineWard {
         updatedAt: DateTime.parse(json["updated_at"]),
         numCurrentMember: json["num_current_member"],
         totalCapacity: json["total_capacity"],
+        phoneNumber: json["phone_number"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -303,5 +306,6 @@ class FilterQuanrantineWard {
         "updated_at": updatedAt.toIso8601String(),
         "num_current_member": numCurrentMember,
         "total_capacity": totalCapacity,
+        "phone_number": phoneNumber
       };
 }

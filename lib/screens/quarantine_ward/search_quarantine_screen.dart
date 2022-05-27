@@ -231,8 +231,10 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                     itemBuilder: (context, item, index) => QuarantineItem(
                       id: item.id.toString(),
                       name: item.fullName,
-                      currentMem: item.numCurrentMember,
+                      currentMem:
+                          "${item.numCurrentMember}/${item.totalCapacity}",
                       manager: item.mainManager?.name,
+                      phoneNumber: item.phoneNumber ?? "Chưa có",
                       address: (item.address != null
                               ? "${item.address}, "
                               : "") +
@@ -240,8 +242,7 @@ class _SearchQuarantineState extends State<SearchQuarantine> {
                           (item.district != null
                               ? "${item.district?.name}, "
                               : "") +
-                          (item.city != null ? "${item.city?.name}, " : "") +
-                          (item.country != null ? "${item.country?.name}" : ""),
+                          (item.city != null ? "${item.city?.name}" : ""),
                       image: item.image,
                     ),
                   ),

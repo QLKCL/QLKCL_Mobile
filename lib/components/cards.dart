@@ -506,7 +506,8 @@ class QuarantineItem extends StatefulWidget {
   final String id;
   final String name;
   final String manager;
-  final int currentMem;
+  final String currentMem;
+  final String phoneNumber;
   final String? address;
   final Widget? menus;
   final String? image;
@@ -516,6 +517,7 @@ class QuarantineItem extends StatefulWidget {
     required this.name,
     required this.manager,
     required this.currentMem,
+    required this.phoneNumber,
     this.menus,
     this.address,
     this.image,
@@ -552,14 +554,14 @@ class _QuarantineItemState extends State<QuarantineItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return Column(
       children: [
         Card(
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () => selectQuarantine(context),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -593,11 +595,15 @@ class _QuarantineItemState extends State<QuarantineItem> {
                         cardLine(
                             icon: Icons.groups_rounded,
                             title: "Đang cách ly",
-                            content: widget.currentMem.toString()),
+                            content: widget.currentMem),
+                        // cardLine(
+                        //     icon: Icons.account_box_outlined,
+                        //     title: "Quản lý",
+                        //     content: widget.manager),
                         cardLine(
-                            icon: Icons.account_box_outlined,
-                            title: "Quản lý",
-                            content: widget.manager),
+                            icon: Icons.phone,
+                            title: "Liên hệ",
+                            content: widget.phoneNumber),
                         const SizedBox(
                           height: 4,
                         ),
@@ -630,7 +636,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
