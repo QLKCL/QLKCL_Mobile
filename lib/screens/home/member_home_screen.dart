@@ -6,11 +6,13 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/destination_history/destination_history_screen.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
 import 'package:qlkcl/screens/home/component/card.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/screens/home/component/requarantined.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/component/quarantine_maps.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -386,7 +388,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   style: ElevatedButton.styleFrom(
                                     minimumSize:
                                         const Size(double.infinity, 48),
-                                    primary: success,
+                                    primary: error,
                                   ),
                                   onPressed:
                                       (snapshot.data['quarantine_ward'] !=
@@ -469,6 +471,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 ),
                               ),
                             ),
+                            ResponsiveRowColumnItem(
+                              rowFlex: 5,
+                              rowFit: FlexFit.tight,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(double.infinity, 48),
+                                  primary: success,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context,
+                                          rootNavigator:
+                                              !Responsive.isDesktopLayout(
+                                                  context))
+                                      .pushNamed(
+                                          DestinationHistoryScreen.routeName);
+                                },
+                                child: Text(
+                                  'Khai báo di chuyển',
+                                  style: TextStyle(
+                                    color: white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -482,6 +509,45 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   return const SizedBox();
                 },
               ),
+              ResponsiveRowColumn(
+                layout: MediaQuery.of(context).size.width < 960
+                    ? ResponsiveRowColumnType.COLUMN
+                    : ResponsiveRowColumnType.ROW,
+                rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                rowCrossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ResponsiveRowColumnItem(
+                    rowFlex: 1,
+                    child: Container(
+                      width: double.infinity,
+                      height: 800,
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: const [
+                              Text(
+                                "Các khu cách ly",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Expanded(
+                                child: QuanrantineMaps(
+                                  canZoom: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const ResponsiveRowColumnItem(rowFlex: 1, child: SizedBox()),
+                ],
+              )
             ],
           ),
         ),
