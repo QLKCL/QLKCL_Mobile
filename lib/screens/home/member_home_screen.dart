@@ -204,6 +204,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     return HealthStatus(
                                       healthStatus:
                                           snapshot.data['health_status'],
+                                      lastHealthStatusTime: snapshot
+                                          .data['last_health_status_time'],
                                       positiveTestNow:
                                           snapshot.data['positive_test_now'],
                                       lastTestedHadResult: snapshot
@@ -219,6 +221,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   return HealthStatus(
                                       healthStatus:
                                           snapshot.data['health_status'],
+                                      lastHealthStatusTime: snapshot
+                                          .data['last_health_status_time'],
                                       positiveTestNow:
                                           snapshot.data['positive_test_now'],
                                       lastTestedHadResult: snapshot
@@ -510,7 +514,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 },
               ),
               ResponsiveRowColumn(
-                layout: MediaQuery.of(context).size.width < 960
+                layout: MediaQuery.of(context).size.width < minDesktopSize
                     ? ResponsiveRowColumnType.COLUMN
                     : ResponsiveRowColumnType.ROW,
                 rowMainAxisAlignment: MainAxisAlignment.spaceBetween,

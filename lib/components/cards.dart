@@ -1035,6 +1035,7 @@ Widget textField({
             if (extraContent != null && extraContent.isNotEmpty)
               TextSpan(
                 text: " $extraContent",
+                style: TextStyle(color: primaryText),
               ),
           ],
         ),
