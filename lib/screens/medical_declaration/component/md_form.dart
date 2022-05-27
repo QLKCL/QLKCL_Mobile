@@ -238,7 +238,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp tim (lần/phút)',
                   type: TextInputType.number,
                   controller: heartBeatController,
-                  validatorFunction: intNullableValidator,
+                  validatorFunction: (String? num) =>
+                      numberRangeValidator(num, 0, 220),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -246,6 +247,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhiệt độ cơ thể (\u00B0C)',
                   type: TextInputType.number,
                   controller: temperatureController,
+                  validatorFunction: (String? num) =>
+                      numberRangeValidator(num, 30, 45),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -253,6 +256,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nồng độ Oxi trong máu (%)',
                   type: TextInputType.number,
                   controller: spo2Controller,
+                  validatorFunction: (String? num) =>
+                      numberRangeValidator(num, 0, 100),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -260,7 +265,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp thở (lần/phút)',
                   type: TextInputType.number,
                   controller: breathingController,
-                  validatorFunction: intNullableValidator,
+                  validatorFunction: (String? num) =>
+                      numberRangeValidator(num, 0, 150),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -268,6 +274,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Huyết áp tâm thu (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureMaxController,
+                  validatorFunction: intNullableValidator,
                   enabled: widget.mode == Permission.add,
                   onChangedFunction: (_) async {
                     if (bloodPressureMaxController.text.isEmpty) {
@@ -286,6 +293,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Huyết áp tâm trương (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureMinController,
+                  validatorFunction: intNullableValidator,
                   enabled: widget.mode == Permission.add,
                   onChangedFunction: (_) async {
                     if (bloodPressureMinController.text.isEmpty) {

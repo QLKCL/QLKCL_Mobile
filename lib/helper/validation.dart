@@ -110,6 +110,19 @@ String? intNullableValidator(String? num) {
   return null;
 }
 
+String? numberRangeValidator(String? num, double min, double max) {
+  const String patttern = r'^[0-9.]+$';
+  final RegExp regExp = RegExp(patttern);
+  if (num == null || num.isEmpty) {
+    return null;
+  } else if (!regExp.hasMatch(num)) {
+    return 'Chỉ số không hợp lệ';
+  } else if (double.parse(num) < min || double.parse(num) > max) {
+    return 'Ngoài giới hạn cho phép $min-$max';
+  }
+  return null;
+}
+
 String? phoneNullableValidator(String? phone) {
   const String patttern = r'(^[0-9]{10,11}$)';
   final RegExp regExp = RegExp(patttern);
