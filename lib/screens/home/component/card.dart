@@ -146,7 +146,8 @@ class HealthStatus extends StatelessWidget {
                             ? "Âm tính"
                             : "Dương tính"
                         : "Chưa có kết quả xét nghiệm",
-                    extraContent: lastTestedHadResult != null
+                    extraContent: (positiveTestNow != null &&
+                            lastTestedHadResult != null)
                         ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(lastTestedHadResult!).toLocal())})"
                         : "",
                     contentColor: positiveTestNow != null
@@ -202,8 +203,25 @@ class HealthStatusData extends StatelessWidget {
                 title: "Triệu chứng nghi nhiễm",
                 content: (healthData!.mainSymptoms != null &&
                         healthData!.mainSymptoms!.data.isNotEmpty)
-                    ? "${healthData!.mainSymptoms!.data.split(',').map((e) => symptomMainList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ")} (${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.mainSymptoms!.updatedAt.toLocal())})"
+                    ? healthData!.mainSymptoms!.data
+                        .split(',')
+                        .map((e) => symptomMainList
+                            .safeFirstWhere(
+                                (result) => result.id == int.parse(e))!
+                            .name)
+                        .join(", ")
                     : "Không có",
+                extraContent: (healthData!.mainSymptoms != null &&
+                        healthData!.mainSymptoms!.data.isNotEmpty)
+                    ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.mainSymptoms!.updatedAt.toLocal())})"
+                    : "",
+                contentColor: (healthData!.mainSymptoms != null &&
+                            healthData!.mainSymptoms!.data.isNotEmpty) &&
+                        lastHealthStatusTime != null &&
+                        (DateTime.parse(lastHealthStatusTime!).toString() ==
+                            healthData!.mainSymptoms!.updatedAt.toString())
+                    ? error
+                    : primaryText,
                 textColor: primaryText,
               ),
               cardLine(
@@ -211,8 +229,47 @@ class HealthStatusData extends StatelessWidget {
                 title: "Triệu chứng khác",
                 content: (healthData!.extraSymptoms != null &&
                         healthData!.extraSymptoms!.data.isNotEmpty)
-                    ? "${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? healthData!.extraSymptoms!.data.split(',').map((e) => symptomExtraList.safeFirstWhere((result) => result.id == int.parse(e))!.name).join(", ") + ((healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? ", ${healthData!.otherSymptoms!.data}" : "") : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? healthData!.otherSymptoms!.data : ""} ${(healthData!.extraSymptoms != null && healthData!.extraSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.extraSymptoms!.updatedAt.toLocal())})" : (healthData!.otherSymptoms != null && healthData!.otherSymptoms!.data.isNotEmpty) ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.otherSymptoms!.updatedAt.toLocal())})" : ""}"
+                    ? (healthData!.extraSymptoms != null &&
+                            healthData!.extraSymptoms!.data.isNotEmpty)
+                        ? healthData!.extraSymptoms!.data
+                                .split(',')
+                                .map((e) => symptomExtraList
+                                    .safeFirstWhere(
+                                        (result) => result.id == int.parse(e))!
+                                    .name)
+                                .join(", ") +
+                            ((healthData!.otherSymptoms != null &&
+                                    healthData!.otherSymptoms!.data.isNotEmpty)
+                                ? ", ${healthData!.otherSymptoms!.data}"
+                                : "")
+                        : (healthData!.otherSymptoms != null &&
+                                healthData!.otherSymptoms!.data.isNotEmpty)
+                            ? healthData!.otherSymptoms!.data
+                            : ""
                     : "Không có",
+                extraContent: (healthData!.extraSymptoms != null &&
+                        healthData!.extraSymptoms!.data.isNotEmpty)
+                    ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.extraSymptoms!.updatedAt.toLocal())})"
+                    : (healthData!.otherSymptoms != null &&
+                            healthData!.otherSymptoms!.data.isNotEmpty)
+                        ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData!.otherSymptoms!.updatedAt.toLocal())})"
+                        : "",
+                contentColor: ((healthData!.extraSymptoms != null &&
+                                healthData!.extraSymptoms!.data.isNotEmpty) ||
+                            (healthData!.otherSymptoms != null &&
+                                healthData!.otherSymptoms!.data.isNotEmpty)) &&
+                        (lastHealthStatusTime != null &&
+                                (DateTime.parse(lastHealthStatusTime!)
+                                        .toString() ==
+                                    healthData!.extraSymptoms!.updatedAt
+                                        .toString()) ||
+                            lastHealthStatusTime != null &&
+                                (DateTime.parse(lastHealthStatusTime!)
+                                        .toString() ==
+                                    healthData!.otherSymptoms!.updatedAt
+                                        .toString()))
+                    ? warning
+                    : primaryText,
                 textColor: primaryText,
               ),
             ]
@@ -327,12 +384,14 @@ class HealthStatusData extends StatelessWidget {
           ]
         : const [];
 
-    final screenWidth = MediaQuery.of(context).size.width - 64;
-    final crossAxisCount = screenWidth <= maxTabletSize
-        ? 2
-        : screenWidth >= minDesktopSize
-            ? (screenWidth - 230) ~/ (maxMobileSize - 156)
-            : screenWidth ~/ (maxMobileSize - 64);
+    final screenWidth = MediaQuery.of(context).size.width - 16;
+    final crossAxisCount = screenWidth <= maxMobileSize
+        ? 1
+        : screenWidth <= maxTabletSize
+            ? 2
+            : screenWidth >= minDesktopSize
+                ? (screenWidth - 230) ~/ (maxMobileSize - 156)
+                : screenWidth ~/ (maxMobileSize - 32);
     final width = screenWidth / crossAxisCount;
     const cellHeight = 148;
     final aspectRatio = width / cellHeight;
@@ -347,23 +406,28 @@ class HealthStatusData extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ResponsiveGridView.builder(
-                    padding: const EdgeInsets.only(top: 8, bottom: 12),
-                    gridDelegate: ResponsiveGridDelegate(
-                      mainAxisSpacing: 8,
-                      crossAxisSpacing: 8,
-                      maxCrossAxisExtent: width,
-                      minCrossAxisExtent:
-                          width < maxMobileSize ? width : maxMobileSize,
-                      childAspectRatio: aspectRatio,
+                  if (!ResponsiveWrapper.of(context).isSmallerThan(MOBILE))
+                    ResponsiveGridView.builder(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      gridDelegate: ResponsiveGridDelegate(
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                        maxCrossAxisExtent: width,
+                        minCrossAxisExtent:
+                            width < maxMobileSize ? width : maxMobileSize,
+                        childAspectRatio: aspectRatio,
+                      ),
+                      itemCount: listCardHealthData.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return listCardHealthData[index];
+                      },
                     ),
-                    itemCount: listCardHealthData.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return listCardHealthData[index];
-                    },
-                  ),
+                  if (ResponsiveWrapper.of(context).isSmallerThan(MOBILE))
+                    ...listCardHealthData.map(
+                      (e) => e,
+                    ),
                   ...listHealthData(),
                 ],
               ),
@@ -393,59 +457,62 @@ class HealthIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 128),
-      width: 200,
-      // height: 128,
-      child: Card(
-        // margin: const EdgeInsets.fromLTRB(0, 8, 16, 0),
-        margin: EdgeInsets.zero,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            border: Border(
-                left: BorderSide(
-              color: color ?? success,
-              width: 3,
-            )),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      color: primaryText,
+    return Card(
+      margin: Responsive.isDesktopLayout(context)
+          ? const EdgeInsets.fromLTRB(0, 8, 0, 0)
+          : const EdgeInsets.only(bottom: 8),
+      // margin: EdgeInsets.zero,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          border: Border(
+              left: BorderSide(
+            color: color ?? success,
+            width: 3,
+          )),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(fontSize: 16),
                     ),
-                    children: [
-                      TextSpan(
-                        text: data,
+                    RichText(
+                      text: TextSpan(
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: color,
+                          color: primaryText,
                         ),
+                        children: [
+                          TextSpan(
+                            text: data,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                              color: color,
+                            ),
+                          ),
+                          TextSpan(
+                            text: " $unit",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                        ],
                       ),
-                      TextSpan(
-                        text: " $unit",
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
+                    ),
+                    if (time != null)
+                      Text(
+                        DateFormat("dd/MM/yyyy HH:mm").format(time!.toLocal()),
+                        style: TextStyle(fontSize: 13, color: disableText),
+                      )
+                  ],
                 ),
-                if (time != null)
-                  Text(
-                    DateFormat("dd/MM/yyyy HH:mm").format(time!.toLocal()),
-                    style: TextStyle(fontSize: 13, color: disableText),
-                  )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -52,8 +52,8 @@ String? identityValidator(String? number) {
   final RegExp regExp = RegExp(patttern);
   if (number == null || number.isEmpty) {
     return null;
-  } else if (number.length < 9 || number.length > 12) {
-    return 'Số CMND/CCCD phải từ 9 - 12 số';
+  } else if (number.length != 9 && number.length != 12) {
+    return 'Số CMND/CCCD phải là 9 hoặc 12 số';
   } else if (!regExp.hasMatch(number)) {
     return 'Số CMND/CCCD không hợp lệ';
   }

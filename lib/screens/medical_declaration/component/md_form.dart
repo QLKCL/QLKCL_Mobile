@@ -85,6 +85,10 @@ class _MedDeclFormState extends State<MedDeclForm> {
               ? widget.medicalDeclData!.bloodPressureMax.toString()
               : "";
 
+      otherController.text = widget.medicalDeclData?.otherSymptoms != null
+          ? widget.medicalDeclData!.otherSymptoms.toString()
+          : "";
+
       spo2Controller.text = widget.medicalDeclData?.spo2 != null
           ? widget.medicalDeclData!.spo2.toString()
           : "";

@@ -40,7 +40,8 @@ class HealthInformation extends StatelessWidget {
                   content: quarantineData.positiveTestNow != null
                       ? "${testValueWithBoolList.safeFirstWhere((result) => result.id == quarantineData.positiveTestNow?.toString().capitalize())?.name}"
                       : "Không rõ",
-                  extraContent: quarantineData.lastTested != null
+                  extraContent: (quarantineData.positiveTestNow != null &&
+                          quarantineData.lastTested != null)
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(quarantineData.lastTested).toLocal())})"
                       : "",
                   textColor: quarantineData.positiveTestNow != null
@@ -63,7 +64,7 @@ class HealthInformation extends StatelessWidget {
                   extraContent: quarantineData.lastHealthStatusTime != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.parse(quarantineData.lastHealthStatusTime!).toLocal())})"
                       : "",
-                  textColor: quarantineData.healthStatus != null
+                  textColor: quarantineData.lastHealthStatusTime != null
                       ? (quarantineData.healthStatus == "SERIOUS"
                           ? error
                           : quarantineData.healthStatus == "UNWELL"
@@ -85,14 +86,14 @@ class HealthInformation extends StatelessWidget {
                           (quarantineData.backgroundDiseaseNote != null
                               ? ", ${quarantineData.backgroundDiseaseNote}"
                               : "")
-                      : quarantineData.backgroundDiseaseNote ?? "Không rõ",
+                      : quarantineData.backgroundDiseaseNote ?? "Không có",
                   textColor: primaryText,
                 ),
                 textField(
                   title: "Nhịp tim (lần/phút)",
                   content: healthData.heartbeat != null
                       ? healthData.heartbeat!.data
-                      : "Không có",
+                      : "Không rõ",
                   extraContent: healthData.heartbeat != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.heartbeat!.updatedAt.toLocal())})"
                       : "",
