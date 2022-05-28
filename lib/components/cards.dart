@@ -969,6 +969,8 @@ Widget cardLine({
   IconData? icon,
   String? title,
   required String content,
+  String? extraContent,
+  Color? contentColor,
   Color? textColor,
   double topPadding = 4,
 }) {
@@ -990,9 +992,22 @@ Widget cardLine({
               ),
             ),
           TextSpan(
-            text: (icon != null ? " " : "") +
-                (title != null ? "$title: $content" : content),
-          )
+            text: icon != null && title != null
+                ? " $title: "
+                : icon != null
+                    ? " "
+                    : title != null
+                        ? "$title: "
+                        : "",
+          ),
+          TextSpan(
+            text: content,
+            style: TextStyle(color: contentColor ?? textColor ?? disableText),
+          ),
+          if (extraContent != null && extraContent.isNotEmpty)
+            TextSpan(
+              text: " $extraContent",
+            ),
         ],
       ),
     ),

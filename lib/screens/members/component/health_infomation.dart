@@ -92,7 +92,7 @@ class HealthInformation extends StatelessWidget {
                   title: "Nhịp tim (lần/phút)",
                   content: healthData.heartbeat != null
                       ? healthData.heartbeat!.data
-                      : "Không rõ",
+                      : "Không có",
                   extraContent: healthData.heartbeat != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.heartbeat!.updatedAt.toLocal())})"
                       : "",
@@ -216,7 +216,7 @@ class HealthInformation extends StatelessWidget {
                                   (result) => result.id == int.parse(e))!
                               .name)
                           .join(", ")
-                      : "Không rõ",
+                      : "Không có",
                   extraContent: (healthData.mainSymptoms != null &&
                           healthData.mainSymptoms!.data.isNotEmpty)
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.mainSymptoms!.updatedAt.toLocal())})"
@@ -248,7 +248,7 @@ class HealthInformation extends StatelessWidget {
                       : (healthData.otherSymptoms != null &&
                               healthData.otherSymptoms!.data.isNotEmpty)
                           ? healthData.otherSymptoms!.data
-                          : "Không rõ",
+                          : "Không có",
                   extraContent: (healthData.extraSymptoms != null &&
                           healthData.extraSymptoms!.data.isNotEmpty)
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.extraSymptoms!.updatedAt.toLocal())})"

@@ -98,7 +98,7 @@ class _QuanrantineMapsState extends State<QuanrantineMaps> {
       _canUpdateZoomLevel = true;
     }
     _cardHeight = (MediaQuery.of(context).orientation == Orientation.landscape)
-        ? (_isDesktop ? 155 : 200)
+        ? (_isDesktop ? 170 : 200)
         : 180;
     _pageViewController = PageController(
         initialPage: _currentSelectedIndex,
