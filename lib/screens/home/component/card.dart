@@ -229,8 +229,8 @@ class HealthStatusData extends StatelessWidget {
               unit: 'lần/phút',
               time: healthData!.heartbeat?.updatedAt,
               color: healthData!.heartbeat != null &&
-                      (int.parse(healthData!.heartbeat!.data) < 50 ||
-                          int.parse(healthData!.heartbeat!.data) > 100) &&
+                      (double.parse(healthData!.heartbeat!.data) < 50 ||
+                          double.parse(healthData!.heartbeat!.data) > 100) &&
                       lastHealthStatusTime != null &&
                       (DateTime.parse(lastHealthStatusTime!).toString() ==
                           healthData!.heartbeat!.updatedAt.toString())
@@ -250,26 +250,25 @@ class HealthStatusData extends StatelessWidget {
                       lastHealthStatusTime != null &&
                       (DateTime.parse(lastHealthStatusTime!).toString() ==
                           healthData!.temperature!.updatedAt.toString())
-                  ? ((double.parse(healthData!.temperature!.data) - 36).abs() <
-                              1 &&
-                          (double.parse(healthData!.temperature!.data) - 37.6)
-                                  .abs() <
-                              1)
-                      ? warning
-                      : error
+                  ? (double.parse(healthData!.temperature!.data) < 35 ||
+                          double.parse(healthData!.temperature!.data) > 38.6)
+                      ? error
+                      : warning
                   : secondaryText,
             ),
             HealthIndex(
               title: 'spO2',
-              data: healthData!.spo2 != null ? healthData!.spo2!.data : "--",
+              data: healthData!.spo2 != null
+                  ? double.parse(healthData!.spo2!.data).toInt().toString()
+                  : "--",
               unit: '%',
               time: healthData!.spo2?.updatedAt,
               color: healthData!.spo2 != null &&
-                      int.parse(healthData!.spo2!.data) <= 97 &&
+                      double.parse(healthData!.spo2!.data) <= 97 &&
                       lastHealthStatusTime != null &&
                       (DateTime.parse(lastHealthStatusTime!).toString() ==
                           healthData!.spo2!.updatedAt.toString())
-                  ? int.parse(healthData!.spo2!.data) < 94
+                  ? double.parse(healthData!.spo2!.data) < 94
                       ? error
                       : warning
                   : secondaryText,
@@ -282,13 +281,13 @@ class HealthStatusData extends StatelessWidget {
               unit: 'lần/phút',
               time: healthData!.breathing?.updatedAt,
               color: healthData!.breathing != null &&
-                      (int.parse(healthData!.breathing!.data) < 16 ||
-                          int.parse(healthData!.breathing!.data) > 20) &&
+                      (double.parse(healthData!.breathing!.data) < 16 ||
+                          double.parse(healthData!.breathing!.data) > 20) &&
                       lastHealthStatusTime != null &&
                       (DateTime.parse(lastHealthStatusTime!).toString() ==
                           healthData!.breathing!.updatedAt.toString())
-                  ? (int.parse(healthData!.breathing!.data) < 12 ||
-                          int.parse(healthData!.breathing!.data) > 28)
+                  ? (double.parse(healthData!.breathing!.data) < 12 ||
+                          double.parse(healthData!.breathing!.data) > 28)
                       ? error
                       : warning
                   : secondaryText,
@@ -302,12 +301,12 @@ class HealthStatusData extends StatelessWidget {
               unit: 'mmHg',
               time: healthData!.bloodPressureMin?.updatedAt,
               color: ((healthData!.bloodPressureMax != null &&
-                              (int.parse(healthData!.bloodPressureMax!.data) < 90 ||
-                                  int.parse(healthData!.bloodPressureMax!.data) >
+                              (double.parse(healthData!.bloodPressureMax!.data) < 90 ||
+                                  double.parse(healthData!.bloodPressureMax!.data) >
                                       119)) ||
                           (healthData!.bloodPressureMin != null &&
-                              (int.parse(healthData!.bloodPressureMin!.data) < 60 ||
-                                  int.parse(healthData!.bloodPressureMin!.data) >
+                              (double.parse(healthData!.bloodPressureMin!.data) < 60 ||
+                                  double.parse(healthData!.bloodPressureMin!.data) >
                                       79))) &&
                       (lastHealthStatusTime != null &&
                               (DateTime.parse(lastHealthStatusTime!).toString() ==
@@ -317,10 +316,10 @@ class HealthStatusData extends StatelessWidget {
                               (DateTime.parse(lastHealthStatusTime!).toString() ==
                                   healthData!.bloodPressureMin!.updatedAt
                                       .toString()))
-                  ? (int.parse(healthData!.bloodPressureMax!.data) <= 89 ||
-                          int.parse(healthData!.bloodPressureMax!.data) >= 140 ||
-                          int.parse(healthData!.bloodPressureMin!.data) <= 59 ||
-                          int.parse(healthData!.bloodPressureMin!.data) >= 90)
+                  ? (double.parse(healthData!.bloodPressureMax!.data) <= 89 ||
+                          double.parse(healthData!.bloodPressureMax!.data) >= 140 ||
+                          double.parse(healthData!.bloodPressureMin!.data) <= 59 ||
+                          double.parse(healthData!.bloodPressureMin!.data) >= 90)
                       ? error
                       : warning
                   : secondaryText,

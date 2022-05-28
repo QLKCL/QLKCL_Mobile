@@ -97,8 +97,8 @@ class HealthInformation extends StatelessWidget {
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.heartbeat!.updatedAt.toLocal())})"
                       : "",
                   textColor: healthData.heartbeat != null &&
-                          (int.parse(healthData.heartbeat!.data) < 50 ||
-                              int.parse(healthData.heartbeat!.data) > 100) &&
+                          (double.parse(healthData.heartbeat!.data) < 50 ||
+                              double.parse(healthData.heartbeat!.data) > 100) &&
                           quarantineData.lastHealthStatusTime != null &&
                           (DateTime.parse(quarantineData.lastHealthStatusTime!)
                                   .toString() ==
@@ -122,32 +122,27 @@ class HealthInformation extends StatelessWidget {
                           (DateTime.parse(quarantineData.lastHealthStatusTime!)
                                   .toString() ==
                               healthData.temperature!.updatedAt.toString())
-                      ? ((double.parse(healthData.temperature!.data) - 36)
-                                      .abs() <
-                                  1 &&
-                              (double.parse(healthData.temperature!.data) -
-                                          37.6)
-                                      .abs() <
-                                  1)
-                          ? warning
-                          : error
+                      ? (double.parse(healthData.temperature!.data) < 35 ||
+                              double.parse(healthData.temperature!.data) > 38.6)
+                          ? error
+                          : warning
                       : primaryText,
                 ),
                 textField(
                   title: "Nồng độ oxi trong máu (spO2) (%)",
                   content: healthData.spo2 != null
-                      ? healthData.spo2!.data
+                      ? double.parse(healthData.spo2!.data).toInt().toString()
                       : "Không rõ",
                   extraContent: healthData.spo2 != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.spo2!.updatedAt.toLocal())})"
                       : "",
                   textColor: healthData.spo2 != null &&
-                          int.parse(healthData.spo2!.data) <= 97 &&
+                          double.parse(healthData.spo2!.data) <= 97 &&
                           quarantineData.lastHealthStatusTime != null &&
                           (DateTime.parse(quarantineData.lastHealthStatusTime!)
                                   .toString() ==
                               healthData.spo2!.updatedAt.toString())
-                      ? int.parse(healthData.spo2!.data) < 94
+                      ? double.parse(healthData.spo2!.data) < 94
                           ? error
                           : warning
                       : primaryText,
@@ -161,14 +156,14 @@ class HealthInformation extends StatelessWidget {
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.breathing!.updatedAt.toLocal())})"
                       : "",
                   textColor: healthData.breathing != null &&
-                          (int.parse(healthData.breathing!.data) < 16 ||
-                              int.parse(healthData.breathing!.data) > 20) &&
+                          (double.parse(healthData.breathing!.data) < 16 ||
+                              double.parse(healthData.breathing!.data) > 20) &&
                           quarantineData.lastHealthStatusTime != null &&
                           (DateTime.parse(quarantineData.lastHealthStatusTime!)
                                   .toString() ==
                               healthData.breathing!.updatedAt.toString())
-                      ? (int.parse(healthData.breathing!.data) < 12 ||
-                              int.parse(healthData.breathing!.data) > 28)
+                      ? (double.parse(healthData.breathing!.data) < 12 ||
+                              double.parse(healthData.breathing!.data) > 28)
                           ? error
                           : warning
                       : primaryText,
@@ -182,10 +177,10 @@ class HealthInformation extends StatelessWidget {
                   extraContent: healthData.bloodPressureMin != null
                       ? "(${DateFormat("dd/MM/yyyy HH:mm:ss").format(healthData.bloodPressureMin!.updatedAt.toLocal())})"
                       : "",
-                  textColor: ((healthData.bloodPressureMax != null && (int.parse(healthData.bloodPressureMax!.data) < 90 || int.parse(healthData.bloodPressureMax!.data) > 119)) ||
+                  textColor: ((healthData.bloodPressureMax != null && (double.parse(healthData.bloodPressureMax!.data) < 90 || double.parse(healthData.bloodPressureMax!.data) > 119)) ||
                               (healthData.bloodPressureMin != null &&
-                                  (int.parse(healthData.bloodPressureMin!.data) < 60 ||
-                                      int.parse(healthData.bloodPressureMin!.data) >
+                                  (double.parse(healthData.bloodPressureMin!.data) < 60 ||
+                                      double.parse(healthData.bloodPressureMin!.data) >
                                           79))) &&
                           (quarantineData.lastHealthStatusTime != null &&
                                   (DateTime.parse(quarantineData.lastHealthStatusTime!)
@@ -197,10 +192,10 @@ class HealthInformation extends StatelessWidget {
                                           .toString() ==
                                       healthData.bloodPressureMin!.updatedAt
                                           .toString()))
-                      ? (int.parse(healthData.bloodPressureMax!.data) <= 89 ||
-                              int.parse(healthData.bloodPressureMax!.data) >= 140 ||
-                              int.parse(healthData.bloodPressureMin!.data) <= 59 ||
-                              int.parse(healthData.bloodPressureMin!.data) >= 90)
+                      ? (double.parse(healthData.bloodPressureMax!.data) <= 89 ||
+                              double.parse(healthData.bloodPressureMax!.data) >= 140 ||
+                              double.parse(healthData.bloodPressureMin!.data) <= 59 ||
+                              double.parse(healthData.bloodPressureMin!.data) >= 90)
                           ? error
                           : warning
                       : primaryText,

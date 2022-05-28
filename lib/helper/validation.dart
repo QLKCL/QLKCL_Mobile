@@ -110,15 +110,28 @@ String? intNullableValidator(String? num) {
   return null;
 }
 
-String? numberRangeValidator(String? num, double min, double max) {
+String? doubleRangeValidator(String? num, double min, double max) {
   const String patttern = r'^[0-9.]+$';
   final RegExp regExp = RegExp(patttern);
   if (num == null || num.isEmpty) {
     return null;
   } else if (!regExp.hasMatch(num)) {
-    return 'Chỉ số không hợp lệ';
+    return 'Chỉ số phải là số thập phân';
   } else if (double.parse(num) < min || double.parse(num) > max) {
-    return 'Ngoài giới hạn cho phép $min-$max';
+    return 'Ngoài giới hạn cho phép $min - $max';
+  }
+  return null;
+}
+
+String? intRangeValidator(String? num, int min, int max) {
+  const String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
+  if (num == null || num.isEmpty) {
+    return null;
+  } else if (!regExp.hasMatch(num)) {
+    return 'Chỉ số phải là số nguyên';
+  } else if (int.parse(num) < min || int.parse(num) > max) {
+    return 'Ngoài giới hạn cho phép $min - $max';
   }
   return null;
 }
