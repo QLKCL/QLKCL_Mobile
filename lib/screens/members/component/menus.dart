@@ -156,7 +156,16 @@ Widget menus<T>(
                     builder: (context) => AddTest(
                           phoneNumber: phoneNumber,
                           name: fullName,
-                        )));
+                        )))
+                .then((value) => {
+                      if (value.status == Status.success)
+                        {
+                          if (Responsive.isDesktopLayout(context))
+                            {tableKey?.currentState!.refresh()}
+                          else
+                            {pagingController!.refresh()}
+                        }
+                    });
           } else if (result == menusOptions.testHistory) {
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
