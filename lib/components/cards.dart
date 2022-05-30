@@ -754,12 +754,14 @@ class VaccineDoseCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String vaccine;
   final String time;
+  final String? place;
   final Widget? menus;
   const VaccineDoseCard({
     this.onTap,
     required this.time,
     required this.vaccine,
     this.menus,
+    this.place,
   });
 
   @override
@@ -787,29 +789,10 @@ class VaccineDoseCard extends StatelessWidget {
                     ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    // const SizedBox(
-                    //   height: 4,
-                    // ),
-                    // Text.rich(
-                    //   TextSpan(
-                    //     style: TextStyle(
-                    //       color: disableText,
-                    //     ),
-                    //     children: [
-                    //       WidgetSpan(
-                    //         alignment: PlaceholderAlignment.middle,
-                    //         child: const Icon(
-                    //           Icons.description_outlined,
-                    //           size: 16,
-                    //           color: disableText,
-                    //         ),
-                    //       ),
-                    //       TextSpan(
-                    //         text: " Nơi tiêm: " ,
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
+                    cardLine(
+                        icon: Icons.description_outlined,
+                        title: "Nơi tiêm",
+                        content: place ?? "Chưa rõ"),
                   ],
                 ),
               ),

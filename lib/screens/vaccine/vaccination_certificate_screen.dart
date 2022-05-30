@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlkcl/components/cards.dart';
 import 'package:qlkcl/helper/dismiss_keyboard.dart';
 import 'package:qlkcl/models/vaccine_dose.dart';
 import 'package:qlkcl/utils/constant.dart';
@@ -107,6 +108,41 @@ class _VaccinationCertificationScreenState
                       ],
                     ),
                   ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Divider(
+                  indent: 16,
+                  endIndent: 16,
+                  thickness: 2,
+                ),
+                const Text("Thông tin các mũi tiêm",
+                    style: TextStyle(fontSize: 25)),
+                const SizedBox(
+                  height: 8,
+                ),
+                const Divider(
+                  indent: 16,
+                  endIndent: 16,
+                  thickness: 2,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget
+                      .vaccineCertification.patientInfo.vaccinatedInfoes.length,
+                  padding: const EdgeInsets.only(bottom: 16),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return VaccineDoseCard(
+                      vaccine: widget.vaccineCertification.patientInfo
+                          .vaccinatedInfoes[index].vaccineName,
+                      time: widget.vaccineCertification.patientInfo
+                          .vaccinatedInfoes[index].injectionDate,
+                      place: widget.vaccineCertification.patientInfo
+                          .vaccinatedInfoes[index].injectionPlace,
+                    );
+                  },
                 ),
               ],
             ),

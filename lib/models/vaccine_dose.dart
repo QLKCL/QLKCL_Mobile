@@ -225,7 +225,7 @@ class VaccinatedInfoe {
 
   final String vaccineId;
   final String vaccineName;
-  final int injectionDate;
+  final String injectionDate;
   final String injectionPlace;
   final String batchNumber;
 
@@ -233,7 +233,8 @@ class VaccinatedInfoe {
       VaccinatedInfoe(
         vaccineId: json["vaccineId"],
         vaccineName: json["vaccineName"],
-        injectionDate: json["injectionDate"],
+        injectionDate: DateFormat("dd/MM/yyyy")
+            .format(DateTime.fromMillisecondsSinceEpoch(json["injectionDate"])),
         injectionPlace: json["injectionPlace"],
         batchNumber: json["batchNumber"],
       );
