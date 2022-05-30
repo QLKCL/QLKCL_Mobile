@@ -71,10 +71,8 @@ class _TestFormState extends State<TestForm> {
           ? widget.testData!.updatedBy?.name
           : "";
     } else {
-      phoneNumberController.text =
-          widget.user != null ? widget.user!.id : "";
-      userNameController.text =
-          widget.user != null ? widget.user!.name : "";
+      phoneNumberController.text = widget.user != null ? widget.user!.id : "";
+      userNameController.text = widget.user != null ? widget.user!.name : "";
       stateController.text = "WAITING";
       typeController.text = "QUICK";
       resultController.text = "NONE";
@@ -110,8 +108,7 @@ class _TestFormState extends State<TestForm> {
                       (widget.user == null && widget.mode == Permission.add)
                           ? phoneValidator
                           : null,
-                  enabled:
-                      widget.user == null && widget.mode == Permission.add,
+                  enabled: widget.user == null && widget.mode == Permission.add,
                   onChangedFunction: (_) async {
                     if (phoneNumberController.text.isEmpty) {
                       userNameController.text = "";
@@ -280,7 +277,7 @@ class _TestFormState extends State<TestForm> {
         cancel();
         showNotification(response);
         if (response.status == Status.success) {
-          Navigator.pop(context);
+          Navigator.pop(context, response);
         }
       }
     }

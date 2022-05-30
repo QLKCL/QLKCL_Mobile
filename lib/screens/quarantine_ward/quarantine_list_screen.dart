@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlkcl/helper/function.dart';
-import 'package:qlkcl/screens/quarantine_ward/component/quarantine_list_maps.dart';
+import 'package:qlkcl/screens/quarantine_ward/quarantine_list_maps.dart';
 import 'package:qlkcl/screens/quarantine_ward/search_quarantine_screen.dart';
 import './add_quarantine_screen.dart';
 import './component/quarantine_list.dart';

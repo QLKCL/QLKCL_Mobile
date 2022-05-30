@@ -6,11 +6,13 @@ import 'package:qlkcl/models/key_value.dart';
 import 'package:qlkcl/models/medical_declaration.dart';
 import 'package:qlkcl/networking/api_helper.dart';
 import 'package:qlkcl/networking/response.dart';
+import 'package:qlkcl/screens/destination_history/destination_history_screen.dart';
 import 'package:qlkcl/screens/home/component/app_bar.dart';
 import 'package:qlkcl/screens/home/component/card.dart';
 import 'package:qlkcl/screens/home/component/covid_info.dart';
 import 'package:qlkcl/screens/home/component/requarantined.dart';
 import 'package:qlkcl/screens/notification/create_request_screen.dart';
+import 'package:qlkcl/screens/quarantine_ward/component/quarantine_maps.dart';
 import 'package:qlkcl/utils/api.dart';
 import 'package:qlkcl/utils/app_theme.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
@@ -68,52 +70,12 @@ class _MemberHomePageState extends State<MemberHomePage> {
           setState(() {
             futureCovid = fetchCovidList();
             futureData = fetch();
+            futureHealth = getHeathInfo();
           });
         }),
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Thông tin dịch bệnh Covid-19 (Việt Nam)",
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                      FutureBuilder<CovidData>(
-                        future: futureCovid,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return InfoCovidHomePage(
-                                increaseConfirmed:
-                                    snapshot.data!.increaseConfirmed,
-                                confirmed: snapshot.data!.confirmed,
-                                increaseDeaths: snapshot.data!.increaseDeaths,
-                                deaths: snapshot.data!.deaths,
-                                increaseRecovered:
-                                    snapshot.data!.increaseRecovered,
-                                recovered: snapshot.data!.recovered,
-                                increaseActived: snapshot.data!.increaseActived,
-                                actived: snapshot.data!.actived,
-                                lastUpdate: snapshot.data!.lastUpdate);
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          }
-
-                          // By default, show a loading spinner.
-                          // return const CircularProgressIndicator();
-                          return const InfoCovidHomePage();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               FutureBuilder<dynamic>(
                 future: futureData,
                 builder: (context, snapshot) {
@@ -121,7 +83,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     var msg = "";
                     if (snapshot.data['custom_user']['status'] == "WAITING") {
                       msg =
-                          "Tài khoản của bạn chưa được xét duyệt. Vui lòng liên hệ với quản lý khu cách ly!";
+                          "Tài khoản của bạn chưa được xét duyệt. Vui lòng chờ hoặc liên hệ với quản lý khu cách ly!";
                     } else if (snapshot.data['custom_user']['status'] ==
                         "REFUSED") {
                       msg =
@@ -137,51 +99,6 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     }
                     return Column(
                       children: [
-                        if (msg != "")
-                          Card(
-                            child: ListTile(
-                              isThreeLine: true,
-                              contentPadding: const EdgeInsets.all(8),
-                              title: Text(
-                                msg,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                    color: primaryText),
-                              ),
-                              minVerticalPadding: 10,
-                              subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 4),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Khu cách ly: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['full_name'] != "") ? snapshot.data['quarantine_ward']['full_name'] : "Không rõ"}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: primaryText),
-                                      ),
-                                      const SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "Số điện thoại: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['phone_number'] != "") ? snapshot.data['quarantine_ward']['phone_number'] : "Chưa có"}",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            color: primaryText),
-                                      ),
-                                    ],
-                                  )),
-                              leading: CircleAvatar(
-                                backgroundColor: error,
-                                child: Icon(
-                                  Icons.notification_important_outlined,
-                                  color: white,
-                                ),
-                              ),
-                            ),
-                          ),
                         ResponsiveRowColumn(
                           layout:
                               MediaQuery.of(context).size.width < minDesktopSize
@@ -190,6 +107,111 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
                           rowCrossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            if (msg != "")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: Card(
+                                  margin: MediaQuery.of(context).size.width >
+                                          minDesktopSize
+                                      ? const EdgeInsets.fromLTRB(16, 8, 8, 0)
+                                      : null,
+                                  child: ListTile(
+                                    isThreeLine: true,
+                                    contentPadding: const EdgeInsets.all(8),
+                                    title: Text(
+                                      msg,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal,
+                                          color: primaryText),
+                                    ),
+                                    minVerticalPadding: 10,
+                                    subtitle: Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Khu cách ly: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['full_name'] != "") ? snapshot.data['quarantine_ward']['full_name'] : "Không rõ"}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  color: primaryText),
+                                            ),
+                                            const SizedBox(
+                                              height: 8,
+                                            ),
+                                            Text(
+                                              "Số điện thoại: ${(snapshot.data['quarantine_ward'] != null && snapshot.data['quarantine_ward']['phone_number'] != "") ? snapshot.data['quarantine_ward']['phone_number'] : "Chưa có"}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  color: primaryText),
+                                            ),
+                                          ],
+                                        )),
+                                    leading: CircleAvatar(
+                                      backgroundColor: error,
+                                      child: Icon(
+                                        Icons.notification_important_outlined,
+                                        color: white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (snapshot.data['quarantine_ward'] != null &&
+                                msg == "")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: QuarantineHome(
+                                  room: getRoom(snapshot.data),
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  quarantineFinishExpect: snapshot
+                                      .data['quarantined_finish_expected_at'],
+                                  status: snapshot.data['quarantined_status'] ==
+                                          "HOSPITALIZE"
+                                      ? "Đã chuyển viện"
+                                      : snapshot.data['quarantined_status'] ==
+                                              "QUARANTINING"
+                                          ? "Đang cách ly"
+                                          : "Đang cách ly & Chờ chuyển viện",
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] ==
+                                    "LEAVE" &&
+                                snapshot.data['quarantined_status'] ==
+                                    "COMPLETED")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: QuarantineFinishCertification(
+                                  name: snapshot.data['quarantine_ward'] != null
+                                      ? snapshot.data['quarantine_ward']
+                                          ['full_name']
+                                      : "",
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  quarantineFinishAt:
+                                      snapshot.data['quarantined_finished_at'],
+                                ),
+                              ),
+                            if (snapshot.data['custom_user']['status'] ==
+                                    "LEAVE" &&
+                                snapshot.data['quarantined_status'] ==
+                                    "HOSPITALIZE")
+                              ResponsiveRowColumnItem(
+                                rowFlex: 5,
+                                rowFit: FlexFit.tight,
+                                child: Hospitalization(
+                                  quarantineAt: snapshot.data['quarantined_at'],
+                                  hospitalName:
+                                      snapshot.data['hospitalize_info']
+                                          ['hospital_name'],
+                                  hospitalizeAt:
+                                      snapshot.data['hospitalize_info']['time'],
+                                ),
+                              ),
                             ResponsiveRowColumnItem(
                               rowFlex: 5,
                               rowFit: FlexFit.tight,
@@ -201,6 +223,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                     return HealthStatus(
                                       healthStatus:
                                           snapshot.data['health_status'],
+                                      lastHealthStatusTime: snapshot
+                                          .data['last_health_status_time'],
                                       positiveTestNow:
                                           snapshot.data['positive_test_now'],
                                       lastTestedHadResult: snapshot
@@ -216,6 +240,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   return HealthStatus(
                                       healthStatus:
                                           snapshot.data['health_status'],
+                                      lastHealthStatusTime: snapshot
+                                          .data['last_health_status_time'],
                                       positiveTestNow:
                                           snapshot.data['positive_test_now'],
                                       lastTestedHadResult: snapshot
@@ -225,105 +251,40 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 },
                               ),
                             ),
-                            if (snapshot.data['quarantine_ward'] != null &&
-                                msg == "")
-                              ResponsiveRowColumnItem(
-                                rowFlex: 5,
-                                rowFit: FlexFit.tight,
-                                child: QuarantineHome(
-                                  name: snapshot.data['quarantine_ward'] != null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['full_name']
-                                      : "",
-                                  manager:
-                                      snapshot.data['quarantine_ward'] != null
-                                          ? snapshot.data['quarantine_ward']
-                                              ['main_manager']['full_name']
-                                          : "",
-                                  address: getAddress(
-                                      snapshot.data['quarantine_ward']),
-                                  room: getRoom(snapshot.data),
-                                  phone: snapshot.data['quarantine_ward'] !=
-                                              null &&
-                                          snapshot.data['quarantine_ward']
-                                                  ['phone_number'] !=
-                                              null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['phone_number']
-                                      : "Chưa có",
-                                  quarantineAt: snapshot.data['quarantined_at'],
-                                  quarantineFinishExpect: snapshot
-                                      .data['quarantined_finish_expected_at'],
-                                  status: snapshot.data['quarantined_status'] ==
-                                          "QUARANTINING"
-                                      ? "Đang cách ly"
-                                      : "Đang cách ly & Chờ chuyển viện",
-                                ),
-                              ),
-                            if (snapshot.data['custom_user']['status'] ==
-                                    "LEAVE" &&
-                                snapshot.data['quarantined_status'] ==
-                                    "COMPLETED")
-                              ResponsiveRowColumnItem(
-                                rowFlex: 5,
-                                rowFit: FlexFit.tight,
-                                child: QuarantineFinishCertification(
-                                  name: snapshot.data['quarantine_ward'] != null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['full_name']
-                                      : "",
-                                  address: getAddress(
-                                      snapshot.data['quarantine_ward']),
-                                  phone: snapshot.data['quarantine_ward'] !=
-                                              null &&
-                                          snapshot.data['quarantine_ward']
-                                                  ['phone_number'] !=
-                                              null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['phone_number']
-                                      : "Chưa có",
-                                  quarantineAt: snapshot.data['quarantined_at'],
-                                  quarantineFinishAt:
-                                      snapshot.data['quarantined_finished_at'],
-                                  quarantineReason:
-                                      snapshot.data['quarantine_reason'],
-                                ),
-                              ),
-                            if (snapshot.data['custom_user']['status'] ==
-                                    "LEAVE" &&
-                                snapshot.data['quarantined_status'] ==
-                                    "HOSPITALIZE")
-                              ResponsiveRowColumnItem(
-                                rowFlex: 5,
-                                rowFit: FlexFit.tight,
-                                child: Hospitalization(
-                                  name: snapshot.data['quarantine_ward'] != null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['full_name']
-                                      : "",
-                                  address: getAddress(
-                                      snapshot.data['quarantine_ward']),
-                                  phone: snapshot.data['quarantine_ward'] !=
-                                              null &&
-                                          snapshot.data['quarantine_ward']
-                                                  ['phone_number'] !=
-                                              null
-                                      ? snapshot.data['quarantine_ward']
-                                          ['phone_number']
-                                      : "Chưa có",
-                                  quarantineAt: snapshot.data['quarantined_at'],
-                                  quarantineReason:
-                                      snapshot.data['quarantine_reason'],
-                                  hospitalName:
-                                      snapshot.data['hospitalize_info']
-                                          ['hospital_name'],
-                                  hospitalizeAt:
-                                      snapshot.data['hospitalize_info']['time'],
-                                  note: snapshot.data['hospitalize_info']
-                                      ['note'],
-                                ),
-                              ),
                           ],
+                        ),
+                        FutureBuilder<HealthInfo>(
+                          future: futureHealth,
+                          builder: (context, snapshot2) {
+                            if (snapshot2.hasData) {
+                              healthData = snapshot2.data;
+                              return HealthStatusData(
+                                healthStatus: snapshot.data['health_status'],
+                                lastHealthStatusTime:
+                                    snapshot.data['last_health_status_time'],
+                                positiveTestNow:
+                                    snapshot.data['positive_test_now'],
+                                lastTestedHadResult:
+                                    snapshot.data['last_tested_had_result'],
+                                numberOfVaccineDoses:
+                                    snapshot.data['number_of_vaccine_doses'],
+                                healthData: healthData,
+                              );
+                            } else if (snapshot2.hasError) {
+                              return Text('${snapshot2.error}');
+                            }
+
+                            return HealthStatusData(
+                                healthStatus: snapshot.data['health_status'],
+                                lastHealthStatusTime:
+                                    snapshot.data['last_health_status_time'],
+                                positiveTestNow:
+                                    snapshot.data['positive_test_now'],
+                                lastTestedHadResult:
+                                    snapshot.data['last_tested_had_result'],
+                                numberOfVaccineDoses:
+                                    snapshot.data['number_of_vaccine_doses']);
+                          },
                         ),
                         ResponsiveRowColumn(
                           layout:
@@ -385,7 +346,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                   style: ElevatedButton.styleFrom(
                                     minimumSize:
                                         const Size(double.infinity, 48),
-                                    primary: success,
+                                    primary: error,
                                   ),
                                   onPressed:
                                       (snapshot.data['quarantine_ward'] !=
@@ -468,6 +429,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 ),
                               ),
                             ),
+                            ResponsiveRowColumnItem(
+                              rowFlex: 5,
+                              rowFit: FlexFit.tight,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  minimumSize: const Size(double.infinity, 48),
+                                  primary: success,
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context,
+                                          rootNavigator:
+                                              !Responsive.isDesktopLayout(
+                                                  context))
+                                      .pushNamed(
+                                          DestinationHistoryScreen.routeName);
+                                },
+                                child: Text(
+                                  'Khai báo di chuyển',
+                                  style: TextStyle(
+                                    color: white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -481,6 +467,97 @@ class _MemberHomePageState extends State<MemberHomePage> {
                   return const SizedBox();
                 },
               ),
+              ResponsiveRowColumn(
+                layout: MediaQuery.of(context).size.width < minDesktopSize
+                    ? ResponsiveRowColumnType.COLUMN
+                    : ResponsiveRowColumnType.ROW,
+                rowMainAxisAlignment: MainAxisAlignment.spaceBetween,
+                rowCrossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ResponsiveRowColumnItem(
+                    rowFlex: 1,
+                    child: Card(
+                      margin: MediaQuery.of(context).size.width > minDesktopSize
+                          ? const EdgeInsets.fromLTRB(16, 8, 8, 0)
+                          : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Thông tin dịch bệnh Covid-19 (Việt Nam)",
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                            FutureBuilder<CovidData>(
+                              future: futureCovid,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return InfoCovidHomePage(
+                                      increaseConfirmed:
+                                          snapshot.data!.increaseConfirmed,
+                                      confirmed: snapshot.data!.confirmed,
+                                      increaseDeaths:
+                                          snapshot.data!.increaseDeaths,
+                                      deaths: snapshot.data!.deaths,
+                                      increaseRecovered:
+                                          snapshot.data!.increaseRecovered,
+                                      recovered: snapshot.data!.recovered,
+                                      increaseActived:
+                                          snapshot.data!.increaseActived,
+                                      actived: snapshot.data!.actived,
+                                      lastUpdate: snapshot.data!.lastUpdate);
+                                } else if (snapshot.hasError) {
+                                  return Text('${snapshot.error}');
+                                }
+
+                                // By default, show a loading spinner.
+                                // return const CircularProgressIndicator();
+                                return const InfoCovidHomePage();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ResponsiveRowColumnItem(
+                    rowFlex: 1,
+                    child: Container(
+                      width: double.infinity,
+                      height: 800,
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Card(
+                        margin:
+                            MediaQuery.of(context).size.width > minDesktopSize
+                                ? const EdgeInsets.fromLTRB(8, 8, 16, 0)
+                                : null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            children: const [
+                              Text(
+                                "Các khu cách ly",
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 8,
+                              ),
+                              Expanded(
+                                child: QuanrantineMaps(
+                                  canZoom: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),

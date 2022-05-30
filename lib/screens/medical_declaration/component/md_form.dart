@@ -85,6 +85,10 @@ class _MedDeclFormState extends State<MedDeclForm> {
               ? widget.medicalDeclData!.bloodPressureMax.toString()
               : "";
 
+      otherController.text = widget.medicalDeclData?.otherSymptoms != null
+          ? widget.medicalDeclData!.otherSymptoms.toString()
+          : "";
+
       spo2Controller.text = widget.medicalDeclData?.spo2 != null
           ? widget.medicalDeclData!.spo2.toString()
           : "";
@@ -101,22 +105,27 @@ class _MedDeclFormState extends State<MedDeclForm> {
     if (_formKey.currentState!.validate() &&
         ((isChecked == false) ||
             (isChecked == true && (phoneError == null || phoneError == "")))) {
-      final CancelFunc cancel = showLoading();
-      final response = await createMedDecl(createMedDeclDataForm(
-        phoneNumber: isChecked ? phoneNumberController.text : null,
-        heartBeat: int.tryParse(heartBeatController.text),
-        temperature: double.tryParse(temperatureController.text),
-        breathing: int.tryParse(breathingController.text),
-        bloodPressureMin: int.tryParse(bloodPressureMinController.text),
-        bloodPressureMax: int.tryParse(bloodPressureMaxController.text),
-        mainSymtoms: mainSymptomController.text,
-        extraSymtoms: extraSymptomController.text,
-        otherSymtoms: otherController.text,
-        spo2: double.tryParse(spo2Controller.text),
-      ));
+      if (agree) {
+        final CancelFunc cancel = showLoading();
+        final response = await createMedDecl(createMedDeclDataForm(
+          phoneNumber: isChecked ? phoneNumberController.text : null,
+          heartBeat: int.tryParse(heartBeatController.text),
+          temperature: double.tryParse(temperatureController.text),
+          breathing: int.tryParse(breathingController.text),
+          bloodPressureMin: int.tryParse(bloodPressureMinController.text),
+          bloodPressureMax: int.tryParse(bloodPressureMaxController.text),
+          mainSymtoms: mainSymptomController.text,
+          extraSymtoms: extraSymptomController.text,
+          otherSymtoms: otherController.text,
+          spo2: double.tryParse(spo2Controller.text),
+        ));
 
-      cancel();
-      showNotification(response);
+        cancel();
+        showNotification(response);
+      } else {
+        showNotification('Vui lòng chọn cam kết trước khi khai báo.',
+            status: Status.error);
+      }
     }
   }
 
@@ -143,12 +152,22 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         setState(() {
                           isChecked = value!;
                         });
+                        if (isChecked == false) {
+                          phoneNumberController.clear();
+                          userNameController.clear();
+                          phoneError = "";
+                          setState(() {});
+                        } else {
+                          phoneNumberController.text = widget.phone ?? "";
+                          userNameController.text = widget.name ?? "";
+                        }
                       },
                     ),
                   ),
-                if (widget.mode == Permission.add)
+                if (widget.mode == Permission.add && isChecked)
                   // SĐT người khai hộ
                   Input(
+                    key: const Key("phone"),
                     label: 'Số điện thoại',
                     hint: 'SĐT người được khai báo',
                     margin: const EdgeInsets.fromLTRB(16, 4, 16, 0),
@@ -158,10 +177,9 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     validatorFunction: isChecked ? phoneValidator : null,
                     enabled: isChecked,
                     onChangedFunction: (_) async {
-                      if (phoneNumberController.text.isEmpty) {
-                        userNameController.text = "";
-                        setState(() {});
-                      } else {
+                      userNameController.text = "";
+                      setState(() {});
+                      if (phoneNumberController.text.isNotEmpty) {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                         }
@@ -182,11 +200,15 @@ class _MedDeclFormState extends State<MedDeclForm> {
                     autoValidate: false,
                     error: phoneError,
                   ),
-                Input(
-                  label: 'Họ và tên',
-                  controller: userNameController,
-                  enabled: false,
-                ),
+                if ((widget.mode != Permission.add) ||
+                    (widget.mode == Permission.add && isChecked))
+                  Input(
+                    key: const Key("name"),
+                    label: 'Họ và tên',
+                    controller: userNameController,
+                    enabled: false,
+                    showClearButton: false,
+                  ),
 
                 if (widget.mode == Permission.view)
                   Input(
@@ -220,7 +242,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp tim (lần/phút)',
                   type: TextInputType.number,
                   controller: heartBeatController,
-                  validatorFunction: intNullableValidator,
+                  validatorFunction: (String? num) =>
+                      intRangeValidator(num, 1, 220),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -228,6 +251,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhiệt độ cơ thể (\u00B0C)',
                   type: TextInputType.number,
                   controller: temperatureController,
+                  validatorFunction: (String? num) =>
+                      doubleRangeValidator(num, 30, 45),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -235,6 +260,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nồng độ Oxi trong máu (%)',
                   type: TextInputType.number,
                   controller: spo2Controller,
+                  validatorFunction: (String? num) =>
+                      intRangeValidator(num, 1, 100),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -242,7 +269,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Nhịp thở (lần/phút)',
                   type: TextInputType.number,
                   controller: breathingController,
-                  validatorFunction: intNullableValidator,
+                  validatorFunction: (String? num) =>
+                      intRangeValidator(num, 1, 150),
                   enabled: widget.mode == Permission.add,
                 ),
                 Input(
@@ -250,6 +278,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Huyết áp tâm thu (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureMaxController,
+                  validatorFunction: (String? num) =>
+                      intRangeValidator(num, 50, 250),
                   enabled: widget.mode == Permission.add,
                   onChangedFunction: (_) async {
                     if (bloodPressureMaxController.text.isEmpty) {
@@ -268,6 +298,8 @@ class _MedDeclFormState extends State<MedDeclForm> {
                   hint: 'Huyết áp tâm trương (mmHg)',
                   type: TextInputType.number,
                   controller: bloodPressureMinController,
+                  validatorFunction: (String? num) =>
+                      intRangeValidator(num, 10, 150),
                   enabled: widget.mode == Permission.add,
                   onChangedFunction: (_) async {
                     if (bloodPressureMinController.text.isEmpty) {
@@ -413,13 +445,7 @@ class _MedDeclFormState extends State<MedDeclForm> {
                         alignment: Alignment.center,
                         margin: const EdgeInsets.all(16),
                         child: ElevatedButton(
-                          onPressed: agree
-                              ? _submit
-                              : () {
-                                  showNotification(
-                                      'Vui lòng chọn cam kết trước khi khai báo.',
-                                      status: Status.error);
-                                },
+                          onPressed: _submit,
                           child: Text(
                             "Khai báo",
                             style: TextStyle(color: white),

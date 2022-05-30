@@ -9,6 +9,7 @@ import 'package:qlkcl/models/custom_user.dart';
 import 'package:qlkcl/models/member.dart';
 import 'package:qlkcl/networking/response.dart';
 import 'package:qlkcl/screens/destination_history/list_destination_history_screen.dart';
+import 'package:qlkcl/screens/manager/update_manager_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/list_medical_declaration_screen.dart';
 import 'package:qlkcl/screens/medical_declaration/medical_declaration_screen.dart';
 import 'package:qlkcl/screens/members/change_quarantine_info.dart';
@@ -40,6 +41,7 @@ enum menusOptions {
   accept,
   deny,
   moveHospital,
+  updateManagerInfo,
 }
 
 const Map<menusOptions, String> menusOptionsValue = {
@@ -59,6 +61,7 @@ const Map<menusOptions, String> menusOptionsValue = {
   menusOptions.accept: 'accpet',
   menusOptions.deny: 'deny',
   menusOptions.moveHospital: 'move_hospital',
+  menusOptions.updateManagerInfo: 'update_manager_info',
 };
 
 const Map<menusOptions, String> menusOptionsTitle = {
@@ -78,6 +81,7 @@ const Map<menusOptions, String> menusOptionsTitle = {
   menusOptions.accept: 'Chấp nhận',
   menusOptions.deny: 'Từ chối',
   menusOptions.moveHospital: 'Chuyển viện',
+  menusOptions.updateManagerInfo: 'Cập nhật thông tin',
 };
 
 Widget menus<T>(
@@ -152,7 +156,16 @@ Widget menus<T>(
                     builder: (context) => AddTest(
                           phoneNumber: phoneNumber,
                           name: fullName,
-                        )));
+                        )))
+                .then((value) => {
+                      if (value.status == Status.success)
+                        {
+                          if (Responsive.isDesktopLayout(context))
+                            {tableKey?.currentState!.refresh()}
+                          else
+                            {pagingController!.refresh()}
+                        }
+                    });
           } else if (result == menusOptions.testHistory) {
             Navigator.of(context,
                     rootNavigator: !Responsive.isDesktopLayout(context))
@@ -334,6 +347,13 @@ Widget menus<T>(
                   "Tài khoản này đã thực hiện chuyển viện. Vui lòng chờ xác nhận từ phía bệnh viện!",
                   status: Status.error);
             }
+          } else if (result == menusOptions.updateManagerInfo) {
+            Navigator.of(context,
+                    rootNavigator: !Responsive.isDesktopLayout(context))
+                .push(MaterialPageRoute(
+                    builder: (context) => UpdateManager(
+                          code: code,
+                        )));
           }
         },
         itemBuilder: (BuildContext context) => showMenusItems

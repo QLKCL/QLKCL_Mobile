@@ -40,6 +40,7 @@ class Member {
     this.numberOfVaccineDoses = "0",
     this.quarantineReason,
     this.firstPositiveTestDate,
+    this.lastHealthStatusTime,
   });
 
   final int id;
@@ -66,6 +67,7 @@ class Member {
   final String numberOfVaccineDoses;
   final String? quarantineReason;
   final String? firstPositiveTestDate;
+  final String? lastHealthStatusTime;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         id: json["id"],
@@ -95,6 +97,7 @@ class Member {
         numberOfVaccineDoses: json["number_of_vaccine_doses"],
         quarantineReason: json["quarantine_reason"],
         firstPositiveTestDate: json["first_positive_test_date"],
+        lastHealthStatusTime: json["last_health_status_time"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -121,6 +124,7 @@ class Member {
         "number_of_vaccine_doses": numberOfVaccineDoses,
         "quarantine_reason": quarantineReason,
         "first_positive_test_date": firstPositiveTestDate,
+        "last_health_status_time": lastHealthStatusTime,
       };
 }
 

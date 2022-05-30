@@ -506,7 +506,8 @@ class QuarantineItem extends StatefulWidget {
   final String id;
   final String name;
   final String manager;
-  final int currentMem;
+  final String currentMem;
+  final String phoneNumber;
   final String? address;
   final Widget? menus;
   final String? image;
@@ -516,6 +517,7 @@ class QuarantineItem extends StatefulWidget {
     required this.name,
     required this.manager,
     required this.currentMem,
+    required this.phoneNumber,
     this.menus,
     this.address,
     this.image,
@@ -552,14 +554,14 @@ class _QuarantineItemState extends State<QuarantineItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return Column(
       children: [
         Card(
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
             onTap: () => selectQuarantine(context),
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(8),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -593,11 +595,15 @@ class _QuarantineItemState extends State<QuarantineItem> {
                         cardLine(
                             icon: Icons.groups_rounded,
                             title: "Đang cách ly",
-                            content: widget.currentMem.toString()),
+                            content: widget.currentMem),
+                        // cardLine(
+                        //     icon: Icons.account_box_outlined,
+                        //     title: "Quản lý",
+                        //     content: widget.manager),
                         cardLine(
-                            icon: Icons.account_box_outlined,
-                            title: "Quản lý",
-                            content: widget.manager),
+                            icon: Icons.phone,
+                            title: "Liên hệ",
+                            content: widget.phoneNumber),
                         const SizedBox(
                           height: 4,
                         ),
@@ -630,7 +636,7 @@ class _QuarantineItemState extends State<QuarantineItem> {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -748,12 +754,14 @@ class VaccineDoseCard extends StatelessWidget {
   final VoidCallback? onTap;
   final String vaccine;
   final String time;
+  final String? place;
   final Widget? menus;
   const VaccineDoseCard({
     this.onTap,
     required this.time,
     required this.vaccine,
     this.menus,
+    this.place,
   });
 
   @override
@@ -781,29 +789,10 @@ class VaccineDoseCard extends StatelessWidget {
                     ),
                     cardLine(
                         icon: Icons.history, title: "Thời gian", content: time),
-                    // const SizedBox(
-                    //   height: 4,
-                    // ),
-                    // Text.rich(
-                    //   TextSpan(
-                    //     style: TextStyle(
-                    //       color: disableText,
-                    //     ),
-                    //     children: [
-                    //       WidgetSpan(
-                    //         alignment: PlaceholderAlignment.middle,
-                    //         child: const Icon(
-                    //           Icons.description_outlined,
-                    //           size: 16,
-                    //           color: disableText,
-                    //         ),
-                    //       ),
-                    //       TextSpan(
-                    //         text: " Nơi tiêm: " ,
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
+                    cardLine(
+                        icon: Icons.description_outlined,
+                        title: "Nơi tiêm",
+                        content: place ?? "Chưa rõ"),
                   ],
                 ),
               ),
@@ -963,6 +952,8 @@ Widget cardLine({
   IconData? icon,
   String? title,
   required String content,
+  String? extraContent,
+  Color? contentColor,
   Color? textColor,
   double topPadding = 4,
 }) {
@@ -984,9 +975,22 @@ Widget cardLine({
               ),
             ),
           TextSpan(
-            text: (icon != null ? " " : "") +
-                (title != null ? "$title: $content" : content),
-          )
+            text: icon != null && title != null
+                ? " $title: "
+                : icon != null
+                    ? " "
+                    : title != null
+                        ? "$title: "
+                        : "",
+          ),
+          TextSpan(
+            text: content,
+            style: TextStyle(color: contentColor ?? textColor ?? disableText),
+          ),
+          if (extraContent != null && extraContent.isNotEmpty)
+            TextSpan(
+              text: " $extraContent",
+            ),
         ],
       ),
     ),
@@ -1029,6 +1033,7 @@ Widget textField({
             if (extraContent != null && extraContent.isNotEmpty)
               TextSpan(
                 text: " $extraContent",
+                style: TextStyle(color: primaryText),
               ),
           ],
         ),

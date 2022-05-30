@@ -111,6 +111,7 @@ class _ListVaccineDoseState extends State<ListVaccineDose> {
                 vaccine: item["vaccine"]["name"],
                 time: DateFormat("dd/MM/yyyy HH:mm:ss")
                     .format(DateTime.parse(item['injection_date']).toLocal()),
+                place: item["injection_place"],
               ),
             ),
           ),

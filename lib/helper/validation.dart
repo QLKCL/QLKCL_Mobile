@@ -52,8 +52,8 @@ String? identityValidator(String? number) {
   final RegExp regExp = RegExp(patttern);
   if (number == null || number.isEmpty) {
     return null;
-  } else if (number.length < 9 || number.length > 12) {
-    return 'Số CMND/CCCD phải từ 9 - 12 số';
+  } else if (number.length != 9 && number.length != 12) {
+    return 'Số CMND/CCCD phải là 9 hoặc 12 số';
   } else if (!regExp.hasMatch(number)) {
     return 'Số CMND/CCCD không hợp lệ';
   }
@@ -110,13 +110,39 @@ String? intNullableValidator(String? num) {
   return null;
 }
 
+String? doubleRangeValidator(String? num, double min, double max) {
+  const String patttern = r'^[0-9.]+$';
+  final RegExp regExp = RegExp(patttern);
+  if (num == null || num.isEmpty) {
+    return null;
+  } else if (!regExp.hasMatch(num)) {
+    return 'Chỉ số phải là số thập phân';
+  } else if (double.parse(num) < min || double.parse(num) > max) {
+    return 'Ngoài giới hạn cho phép $min - $max';
+  }
+  return null;
+}
+
+String? intRangeValidator(String? num, int min, int max) {
+  const String patttern = r'^[0-9]+$';
+  final RegExp regExp = RegExp(patttern);
+  if (num == null || num.isEmpty) {
+    return null;
+  } else if (!regExp.hasMatch(num)) {
+    return 'Chỉ số phải là số nguyên';
+  } else if (int.parse(num) < min || int.parse(num) > max) {
+    return 'Ngoài giới hạn cho phép $min - $max';
+  }
+  return null;
+}
+
 String? phoneNullableValidator(String? phone) {
-  const String patttern = r'(^[0-9]{10}$)';
+  const String patttern = r'(^[0-9]{10,11}$)';
   final RegExp regExp = RegExp(patttern);
   if (phone == null || phone.isEmpty) {
     return null;
-  } else if (phone.length != 10) {
-    return 'Số điện thoại phải là 10 số';
+  } else if (phone.length < 10 || phone.length > 11) {
+    return 'Số điện thoại phải là 10-11 số';
   } else if (!regExp.hasMatch(phone)) {
     return 'Số điện thoại không hợp lệ';
   }

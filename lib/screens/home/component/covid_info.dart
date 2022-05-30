@@ -21,10 +21,12 @@ class InfoCovid extends StatelessWidget {
   Widget build(BuildContext context) {
     final formatter = NumberFormat('#,###,###');
     return SizedBox(
-      // width: 128,
       height: 128,
       child: Card(
-        color: color,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: disableText.withOpacity(0.5)),
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+        ),
         margin: EdgeInsets.zero,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -33,7 +35,7 @@ class InfoCovid extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: white, fontSize: 18),
+              style: TextStyle(color: primaryText, fontSize: 18),
             ),
             const SizedBox(
               height: 8,
@@ -45,14 +47,18 @@ class InfoCovid extends StatelessWidget {
                       ? "- ${formatter.format(-newCase)}"
                       : "0",
               textAlign: TextAlign.center,
-              style: TextStyle(color: white),
+              style: TextStyle(color: primaryText),
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
               formatter.format(totalCase),
-              style: TextStyle(color: white, fontSize: 18),
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
             ),
           ],
         ),
@@ -124,7 +130,7 @@ class InfoCovidHomePage extends StatelessWidget {
     return Column(
       children: <Widget>[
         ResponsiveGridView.builder(
-          padding: const EdgeInsets.only(top: 8),
+          padding: const EdgeInsets.only(top: 8, bottom: 12),
           gridDelegate: ResponsiveGridDelegate(
             mainAxisSpacing: 8,
             crossAxisSpacing: 8,

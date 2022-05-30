@@ -410,7 +410,7 @@ class DataSource extends DataGridSource {
                     )
                   : row.getCells()[5].value.toString() == "LEAVE"
                       ? Text(
-                          "Leave",
+                          "Không hoạt động",
                           style: TextStyle(color: warning),
                         )
                       : Text(
@@ -430,7 +430,7 @@ class DataSource extends DataGridSource {
                     _paginatedRows.safeFirstWhere(
                         (e) => e.code == row.getCells()[6].value.toString())!,
                     showMenusItems: [
-                      menusOptions.updateInfo,
+                      menusOptions.updateManagerInfo,
                     ],
                   );
           },

@@ -285,7 +285,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
           otpNumber: otpController.text,
         ),
       );
-      print(response);
+      print(response.data);
       cancel();
       if (response.status == Status.success) {
         if (response.data['errorResponse']['code'] == 1) {
@@ -300,8 +300,7 @@ class _SyncVaccinePortalState extends State<SyncVaccinePortal> {
           }
         }
       } else {
-        showNotification(response.data['errorResponse']['description'],
-            status: Status.error);
+        showNotification(response.data['title'], status: Status.error);
       }
     }
   }
